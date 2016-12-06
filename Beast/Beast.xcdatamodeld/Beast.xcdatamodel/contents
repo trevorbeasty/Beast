@@ -1,39 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="ChainTemplate" representedClassName="ChainTemplate" syncable="YES" codeGenerationType="class">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="realizations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedChain" syncable="YES"/>
         <relationship name="targetExercises" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" syncable="YES"/>
         <relationship name="targetRepsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsSequence" syncable="YES"/>
+        <relationship name="targetRestTimeArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RestTimeSequence" syncable="YES"/>
+        <relationship name="targetWeightArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WeightSequence" syncable="YES"/>
     </entity>
-    <entity name="DateSequence" representedClassName="DateSequence" syncable="YES" codeGenerationType="class"/>
-    <entity name="DateTypeArrayComp" representedClassName="DateTypeArrayComp" syncable="YES" codeGenerationType="class"/>
-    <entity name="Exercise" representedClassName="Exercise" syncable="YES" codeGenerationType="class"/>
-    <entity name="ExerciseCategory" representedClassName="ExerciseCategory" syncable="YES" codeGenerationType="class"/>
-    <entity name="GeolocationSequence" representedClassName="GeolocationSequence" syncable="YES" codeGenerationType="class"/>
-    <entity name="NumberTypeArrayComp" representedClassName="NumberTypeArrayComp" syncable="YES" codeGenerationType="class"/>
-    <entity name="RealizedChain" representedClassName="RealizedChain" syncable="YES" codeGenerationType="class"/>
+    <entity name="DateSequence" representedClassName="DateSequence" syncable="YES" codeGenerationType="class">
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="dates" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DateTypeArrayComp" syncable="YES"/>
+    </entity>
+    <entity name="DateTypeArrayComp" representedClassName="DateTypeArrayComp" syncable="YES" codeGenerationType="class">
+        <attribute name="dateValue" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="Exercise" representedClassName="Exercise" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseCategory" syncable="YES"/>
+    </entity>
+    <entity name="ExerciseCategory" representedClassName="ExerciseCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" syncable="YES"/>
+    </entity>
+    <entity name="NumberTypeArrayComp" representedClassName="NumberTypeArrayComp" syncable="YES" codeGenerationType="class">
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="numberValue" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="RealizedChain" representedClassName="RealizedChain" syncable="YES" codeGenerationType="class">
+        <attribute name="postMortem" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="realizedDateArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DateTypeArrayComp" syncable="YES"/>
+        <relationship name="realizedExercises" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" syncable="YES"/>
+        <relationship name="realizedRepsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComp" syncable="YES"/>
+        <relationship name="realizedWeightArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComp" syncable="YES"/>
+    </entity>
     <entity name="RealizedSet" representedClassName="RealizedSet" syncable="YES" codeGenerationType="class">
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="postMortem" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="reps" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
-    <entity name="RealizedWorkout" representedClassName="RealizedWorkout" syncable="YES" codeGenerationType="class"/>
-    <entity name="RepsSequence" representedClassName="RepsSequence" syncable="YES" codeGenerationType="class"/>
-    <entity name="WeightSequence" representedClassName="WeightSequence" syncable="YES" codeGenerationType="class"/>
-    <entity name="WorkoutTemplate" representedClassName="WorkoutTemplate" syncable="YES" codeGenerationType="class"/>
+    <entity name="RealizedWorkout" representedClassName="RealizedWorkout" syncable="YES" codeGenerationType="class">
+        <attribute name="postMortem" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="realizedChains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedChain" syncable="YES"/>
+    </entity>
+    <entity name="RepsSequence" representedClassName="RepsSequence" syncable="YES" codeGenerationType="class">
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="reps" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComp" syncable="YES"/>
+    </entity>
+    <entity name="RestTimeSequence" representedClassName="RestTimeSequence" syncable="YES" codeGenerationType="class">
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="restTimes" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComp" syncable="YES"/>
+    </entity>
+    <entity name="WeightSequence" representedClassName="WeightSequence" syncable="YES" codeGenerationType="class">
+        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="weights" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComp" syncable="YES"/>
+    </entity>
+    <entity name="WorkoutTemplate" representedClassName="WorkoutTemplate" syncable="YES" codeGenerationType="class">
+        <relationship name="realizations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" syncable="YES"/>
+        <relationship name="targetChains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ChainTemplate" syncable="YES"/>
+    </entity>
     <elements>
         <element name="RealizedSet" positionX="-63" positionY="-18" width="128" height="105"/>
-        <element name="ChainTemplate" positionX="-54" positionY="-9" width="128" height="75"/>
-        <element name="RealizedChain" positionX="-36" positionY="9" width="128" height="45"/>
-        <element name="WorkoutTemplate" positionX="-18" positionY="27" width="128" height="45"/>
-        <element name="Exercise" positionX="0" positionY="45" width="128" height="45"/>
-        <element name="RealizedWorkout" positionX="18" positionY="63" width="128" height="45"/>
-        <element name="ExerciseCategory" positionX="36" positionY="81" width="128" height="45"/>
-        <element name="WeightSequence" positionX="-9" positionY="36" width="128" height="45"/>
-        <element name="RepsSequence" positionX="0" positionY="45" width="128" height="45"/>
-        <element name="DateSequence" positionX="9" positionY="54" width="128" height="45"/>
-        <element name="GeolocationSequence" positionX="18" positionY="63" width="128" height="45"/>
-        <element name="NumberTypeArrayComp" positionX="27" positionY="72" width="128" height="45"/>
-        <element name="DateTypeArrayComp" positionX="36" positionY="81" width="128" height="45"/>
+        <element name="ChainTemplate" positionX="-54" positionY="-9" width="128" height="150"/>
+        <element name="RealizedChain" positionX="-36" positionY="9" width="128" height="120"/>
+        <element name="WorkoutTemplate" positionX="-18" positionY="27" width="128" height="75"/>
+        <element name="Exercise" positionX="0" positionY="45" width="128" height="75"/>
+        <element name="RealizedWorkout" positionX="18" positionY="63" width="128" height="75"/>
+        <element name="ExerciseCategory" positionX="36" positionY="81" width="128" height="75"/>
+        <element name="WeightSequence" positionX="-9" positionY="36" width="128" height="75"/>
+        <element name="RepsSequence" positionX="0" positionY="45" width="128" height="75"/>
+        <element name="DateSequence" positionX="9" positionY="54" width="128" height="75"/>
+        <element name="NumberTypeArrayComp" positionX="27" positionY="72" width="128" height="75"/>
+        <element name="DateTypeArrayComp" positionX="36" positionY="81" width="128" height="75"/>
+        <element name="RestTimeSequence" positionX="-9" positionY="36" width="128" height="75"/>
     </elements>
 </model>
