@@ -44,6 +44,7 @@
 		0B517BB21DF77C20009981F9 = {
 			isa = PBXGroup;
 			children = (
+				0B517BD81DF77CB6009981F9 /* Model */,
 				0B517BBD1DF77C20009981F9 /* Beast */,
 				0B517BBC1DF77C20009981F9 /* Products */,
 			);
@@ -68,7 +69,6 @@
 				0B517BCD1DF77C20009981F9 /* Assets.xcassets */,
 				0B517BCF1DF77C20009981F9 /* LaunchScreen.storyboard */,
 				0B517BD21DF77C20009981F9 /* Info.plist */,
-				0B517BCA1DF77C20009981F9 /* Beast.xcdatamodeld */,
 				0B517BBE1DF77C20009981F9 /* Supporting Files */,
 			);
 			path = Beast;
@@ -80,6 +80,15 @@
 				0B517BBF1DF77C20009981F9 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0B517BD81DF77CB6009981F9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0B517BCA1DF77C20009981F9 /* Beast.xcdatamodeld */,
+			);
+			name = Model;
+			path = Beast;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

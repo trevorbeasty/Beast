@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <elements/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="ChainTemplate" representedClassName="ChainTemplate" syncable="YES" codeGenerationType="class">
+        <relationship name="targetExercises" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" syncable="YES"/>
+        <relationship name="targetRepsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsSequence" syncable="YES"/>
+    </entity>
+    <entity name="DateSequence" representedClassName="DateSequence" syncable="YES" codeGenerationType="class"/>
+    <entity name="DateTypeArrayComp" representedClassName="DateTypeArrayComp" syncable="YES" codeGenerationType="class"/>
+    <entity name="Exercise" representedClassName="Exercise" syncable="YES" codeGenerationType="class"/>
+    <entity name="ExerciseCategory" representedClassName="ExerciseCategory" syncable="YES" codeGenerationType="class"/>
+    <entity name="GeolocationSequence" representedClassName="GeolocationSequence" syncable="YES" codeGenerationType="class"/>
+    <entity name="NumberTypeArrayComp" representedClassName="NumberTypeArrayComp" syncable="YES" codeGenerationType="class"/>
+    <entity name="RealizedChain" representedClassName="RealizedChain" syncable="YES" codeGenerationType="class"/>
+    <entity name="RealizedSet" representedClassName="RealizedSet" syncable="YES" codeGenerationType="class">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="postMortem" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="reps" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+    </entity>
+    <entity name="RealizedWorkout" representedClassName="RealizedWorkout" syncable="YES" codeGenerationType="class"/>
+    <entity name="RepsSequence" representedClassName="RepsSequence" syncable="YES" codeGenerationType="class"/>
+    <entity name="WeightSequence" representedClassName="WeightSequence" syncable="YES" codeGenerationType="class"/>
+    <entity name="WorkoutTemplate" representedClassName="WorkoutTemplate" syncable="YES" codeGenerationType="class"/>
+    <elements>
+        <element name="RealizedSet" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="ChainTemplate" positionX="-54" positionY="-9" width="128" height="75"/>
+        <element name="RealizedChain" positionX="-36" positionY="9" width="128" height="45"/>
+        <element name="WorkoutTemplate" positionX="-18" positionY="27" width="128" height="45"/>
+        <element name="Exercise" positionX="0" positionY="45" width="128" height="45"/>
+        <element name="RealizedWorkout" positionX="18" positionY="63" width="128" height="45"/>
+        <element name="ExerciseCategory" positionX="36" positionY="81" width="128" height="45"/>
+        <element name="WeightSequence" positionX="-9" positionY="36" width="128" height="45"/>
+        <element name="RepsSequence" positionX="0" positionY="45" width="128" height="45"/>
+        <element name="DateSequence" positionX="9" positionY="54" width="128" height="45"/>
+        <element name="GeolocationSequence" positionX="18" positionY="63" width="128" height="45"/>
+        <element name="NumberTypeArrayComp" positionX="27" positionY="72" width="128" height="45"/>
+        <element name="DateTypeArrayComp" positionX="36" positionY="81" width="128" height="45"/>
+    </elements>
 </model>
