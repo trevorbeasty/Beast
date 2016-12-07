@@ -14,6 +14,8 @@
 		0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BCA1DF77C20009981F9 /* Beast.xcdatamodeld */; };
 		0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BCD1DF77C20009981F9 /* Assets.xcassets */; };
 		0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BCF1DF77C20009981F9 /* LaunchScreen.storyboard */; };
+		0B517BDD1DF8869C009981F9 /* TJBNumberSelectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */; };
+		0B517BE01DF888A3009981F9 /* TJBNumberSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,11 @@
 		0B517BCD1DF77C20009981F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B517BD01DF77C20009981F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0B517BD21DF77C20009981F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionVC.h; sourceTree = "<group>"; };
+		0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNumberSelectionVC.m; sourceTree = "<group>"; };
+		0B517BDE1DF88802009981F9 /* TJBNumberSelectionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionDelegate.h; sourceTree = "<group>"; };
+		0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TJBNumberSelection.storyboard; sourceTree = "<group>"; };
+		0B517BE11DF8899B009981F9 /* TJBNumberSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionCell.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +51,7 @@
 		0B517BB21DF77C20009981F9 = {
 			isa = PBXGroup;
 			children = (
+				0B517BD91DF88641009981F9 /* View Controllers */,
 				0B517BD81DF77CB6009981F9 /* Model */,
 				0B517BBD1DF77C20009981F9 /* Beast */,
 				0B517BBC1DF77C20009981F9 /* Products */,
@@ -89,6 +97,26 @@
 			);
 			name = Model;
 			path = Beast;
+			sourceTree = "<group>";
+		};
+		0B517BD91DF88641009981F9 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0B517BDA1DF88651009981F9 /* NumberSelection */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		0B517BDA1DF88651009981F9 /* NumberSelection */ = {
+			isa = PBXGroup;
+			children = (
+				0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */,
+				0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */,
+				0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */,
+				0B517BE11DF8899B009981F9 /* TJBNumberSelectionCell.h */,
+				0B517BDE1DF88802009981F9 /* TJBNumberSelectionDelegate.h */,
+			);
+			name = NumberSelection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,6 +180,7 @@
 				0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
+				0B517BE01DF888A3009981F9 /* TJBNumberSelection.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +195,7 @@
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
+				0B517BDD1DF8869C009981F9 /* TJBNumberSelectionVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +352,7 @@
 				0B517BD71DF77C20009981F9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
