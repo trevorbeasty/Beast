@@ -9,6 +9,7 @@
         <attribute name="targetingReps" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingRestTime" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingWeight" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="associatedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutTemplate" inverseName="targetChains" inverseEntity="WorkoutTemplate" syncable="YES"/>
         <relationship name="realizations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="chainTemplate" inverseEntity="RealizedChain" syncable="YES"/>
         <relationship name="targetExercises" toMany="YES" deletionRule="Nullify" destinationEntity="ChainTemplateExercise" inverseName="associatedChainTemplate" inverseEntity="ChainTemplateExercise" syncable="YES"/>
         <relationship name="targetRepsArrays" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChainTemplateRepsSequence" inverseName="associatedChainTemplate" inverseEntity="ChainTemplateRepsSequence" syncable="YES"/>
@@ -52,7 +53,8 @@
         <relationship name="numberSequence" maxCount="1" deletionRule="Nullify" destinationEntity="NumberSequence" inverseName="numbers" inverseEntity="NumberSequence" syncable="YES"/>
     </entity>
     <entity name="RealizedChain" representedClassName="RealizedChain" syncable="YES" codeGenerationType="class">
-        <attribute name="postMortem" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="associatedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedWorkout" inverseName="realizedChains" inverseEntity="RealizedWorkout" syncable="YES"/>
         <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="realizations" inverseEntity="ChainTemplate" syncable="YES"/>
         <relationship name="realizedDateArrays" toMany="YES" deletionRule="Nullify" destinationEntity="DateSequence" inverseName="associatedRealizedChain" inverseEntity="DateSequence" syncable="YES"/>
         <relationship name="realizedExercises" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedChainExercise" inverseName="associatedRealizedChain" inverseEntity="RealizedChainExercise" syncable="YES"/>
@@ -69,42 +71,41 @@
         <relationship name="associatedRealizedChain" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="realizedWeightArrays" inverseEntity="RealizedChain" syncable="YES"/>
     </entity>
     <entity name="RealizedSet" representedClassName="RealizedSet" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="postMortem" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="reps" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="weight" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="reps" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weight" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedSetExercise" inverseName="associatedRealizedSets" inverseEntity="RealizedSetExercise" syncable="YES"/>
     </entity>
     <entity name="RealizedSetExercise" representedClassName="RealizedSetExercise" parentEntity="Exercise" syncable="YES" codeGenerationType="class">
         <relationship name="associatedRealizedSets" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
     </entity>
     <entity name="RealizedWorkout" representedClassName="RealizedWorkout" syncable="YES" codeGenerationType="class">
-        <attribute name="postMortem" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="realizedChains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedChain" syncable="YES"/>
+        <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="realizedChains" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="associatedWorkouts" inverseEntity="RealizedChain" syncable="YES"/>
+        <relationship name="workoutTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutTemplate" inverseName="realizations" inverseEntity="WorkoutTemplate" syncable="YES"/>
     </entity>
-    <entity name="RestTimeSequence" representedClassName="RestTimeSequence" syncable="YES" codeGenerationType="class">
-        <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    <entity name="RestTimeSequence" representedClassName="RestTimeSequence" parentEntity="NumberSequence" syncable="YES" codeGenerationType="class">
         <relationship name="associatedChainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="targetRestTimeArrays" inverseEntity="ChainTemplate" syncable="YES"/>
-        <relationship name="restTimes" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComp" syncable="YES"/>
     </entity>
     <entity name="WorkoutTemplate" representedClassName="WorkoutTemplate" syncable="YES" codeGenerationType="class">
-        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="realizations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" syncable="YES"/>
-        <relationship name="targetChains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ChainTemplate" syncable="YES"/>
+        <attribute name="identifier" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <relationship name="realizations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedWorkout" inverseName="workoutTemplate" inverseEntity="RealizedWorkout" syncable="YES"/>
+        <relationship name="targetChains" toMany="YES" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="associatedWorkouts" inverseEntity="ChainTemplate" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ChainTemplate" positionX="-54" positionY="-9" width="128" height="195"/>
+        <element name="ChainTemplate" positionX="-54" positionY="-9" width="128" height="210"/>
         <element name="DateSequence" positionX="9" positionY="54" width="128" height="90"/>
         <element name="DateTypeArrayComp" positionX="36" positionY="81" width="128" height="90"/>
         <element name="Exercise" positionX="0" positionY="45" width="128" height="75"/>
         <element name="ExerciseCategory" positionX="36" positionY="81" width="128" height="75"/>
         <element name="NumberTypeArrayComp" positionX="27" positionY="72" width="128" height="90"/>
-        <element name="RealizedChain" positionX="-36" positionY="9" width="128" height="135"/>
+        <element name="RealizedChain" positionX="-36" positionY="9" width="128" height="150"/>
         <element name="RealizedSet" positionX="-63" positionY="-18" width="128" height="120"/>
-        <element name="RealizedWorkout" positionX="18" positionY="63" width="128" height="75"/>
+        <element name="RealizedWorkout" positionX="18" positionY="63" width="128" height="90"/>
         <element name="ChainTemplateRepsSequence" positionX="0" positionY="45" width="128" height="60"/>
-        <element name="RestTimeSequence" positionX="-9" positionY="36" width="128" height="90"/>
+        <element name="RestTimeSequence" positionX="-9" positionY="36" width="128" height="60"/>
         <element name="ChainTemplateWeightSequence" positionX="-9" positionY="36" width="128" height="60"/>
         <element name="WorkoutTemplate" positionX="-18" positionY="27" width="128" height="105"/>
         <element name="RealizedSetExercise" positionX="9" positionY="90" width="128" height="60"/>
