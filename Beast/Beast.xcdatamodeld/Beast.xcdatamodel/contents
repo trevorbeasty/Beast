@@ -109,7 +109,7 @@
         <element name="RealizedChain" positionX="-776" positionY="-333" width="128" height="148"/>
         <element name="RealizedChainExercise" positionX="430" positionY="-0" width="128" height="58"/>
         <element name="RealizedChainRepsSequence" positionX="-36" positionY="255" width="128" height="58"/>
-        <element name="RealizedChainWeightSequence" positionX="-558" positionY="174" width="128" height="58"/>
+        <element name="RealizedChainWeightSequence" positionX="-558" positionY="174" width="128" height="60"/>
         <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="118"/>
         <element name="RealizedSetExercise" positionX="540" positionY="351" width="128" height="58"/>
         <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="88"/>

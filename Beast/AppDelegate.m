@@ -8,6 +8,12 @@
 
 #import "AppDelegate.h"
 
+#import "TJBChainTemplate+CoreDataProperties.h"
+#import "TJBExerciseCategory+CoreDataProperties.h"
+#import "TJBExercise+CoreDataProperties.h"
+
+#import "TJBRealizedSetActiveEntryVC.h"
+
 @interface AppDelegate ()
 
 @end
@@ -17,6 +23,34 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    NSManagedObjectContext *moc = [self.persistentContainer viewContext];
+    
+    TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
+                                                          inManagedObjectContext: moc];
+    
+    exercise.name = @"Military Press";
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = 'Push'"];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [moc executeFetchRequest: fetch
+                                     error: &error];
+    
+    exercise.category = results[0];
+    
+    
+    [self saveContext];
+    
+    NSURL *path = [NSPersistentContainer defaultDirectoryURL];
+    NSLog(@"%@", [path absoluteString]);
+    
+    TJBRealizedSetActiveEntryVC *rsaeVC = [[TJBRealizedSetActiveEntryVC alloc] init];
+    
+    self.window.rootViewController = rsaeVC;
+    
     return YES;
 }
 

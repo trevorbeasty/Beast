@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBRealizedSetActiveEntryVC">
+            <connections>
+                <outlet property="exerciseTableView" destination="tSH-8D-UsU" id="cgp-No-VAp"/>
+                <outlet property="timerLabel" destination="sw3-k5-xCu" id="NDE-1K-afg"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWv-BT-UWM">
+                    <rect key="frame" x="0.0" y="0.0" width="275" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="xDg-Jh-B8t"/>
+                    </constraints>
+                    <state key="normal" title="Set Completed"/>
+                    <connections>
+                        <action selector="setCompleted:" destination="-1" eventType="touchUpInside" id="HZ8-6O-sCh"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="68G-R0-PBK">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="fYe-uy-xL1"/>
+                    </constraints>
+                    <state key="normal" title="Add New Exerise"/>
+                    <connections>
+                        <action selector="addNewExercise:" destination="-1" eventType="touchUpInside" id="Wxp-3c-XSI"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tSH-8D-UsU">
+                    <rect key="frame" x="0.0" y="50" width="375" height="567"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="hOJ-8U-G5d"/>
+                        <outlet property="delegate" destination="-1" id="4pE-M6-Psf"/>
+                    </connections>
+                </tableView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sw3-k5-xCu">
+                    <rect key="frame" x="275" y="0.0" width="100" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="Stg-fO-EVb"/>
+                        <constraint firstAttribute="height" constant="50" id="fcl-Vh-RsO"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="68G-R0-PBK" firstAttribute="top" secondItem="tSH-8D-UsU" secondAttribute="bottom" id="6cu-uR-HQY"/>
+                <constraint firstItem="sw3-k5-xCu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="93B-LP-MjU"/>
+                <constraint firstItem="sWv-BT-UWM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="A3A-5O-94h"/>
+                <constraint firstItem="tSH-8D-UsU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="F3z-aq-o1n"/>
+                <constraint firstAttribute="trailing" secondItem="68G-R0-PBK" secondAttribute="trailing" id="I65-Lf-LgR"/>
+                <constraint firstAttribute="bottom" secondItem="68G-R0-PBK" secondAttribute="bottom" id="QZs-UG-hdt"/>
+                <constraint firstItem="sWv-BT-UWM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="TyH-4A-pWW"/>
+                <constraint firstItem="68G-R0-PBK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="b4f-Wz-ojK"/>
+                <constraint firstAttribute="trailing" secondItem="tSH-8D-UsU" secondAttribute="trailing" id="bdX-eb-06z"/>
+                <constraint firstItem="sw3-k5-xCu" firstAttribute="leading" secondItem="sWv-BT-UWM" secondAttribute="trailing" id="eC7-ta-BXv"/>
+                <constraint firstAttribute="trailing" secondItem="sw3-k5-xCu" secondAttribute="trailing" id="wem-rU-AoY"/>
+                <constraint firstItem="tSH-8D-UsU" firstAttribute="top" secondItem="sWv-BT-UWM" secondAttribute="bottom" id="zSz-MF-Tew"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
