@@ -24,25 +24,29 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
-    NSManagedObjectContext *moc = [self.persistentContainer viewContext];
+//    NSManagedObjectContext *moc = [self.persistentContainer viewContext];
+//    
+//    TJBExerciseCategory *category = [NSEntityDescription insertNewObjectForEntityForName: @"ExerciseCategory"
+//                                                                  inManagedObjectContext: moc];
+//    category.name = @"Push";
+//    
+//    TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
+//                                                          inManagedObjectContext: moc];
+//    
+//    exercise.name = @"Military Press";
+//    
+//    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = 'Push'"];
+//    fetch.predicate = predicate;
+//    
+//    NSError *error =  nil;
+//    NSArray *results = [moc executeFetchRequest: fetch
+//                                     error: &error];
     
-    TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
-                                                          inManagedObjectContext: moc];
-    
-    exercise.name = @"Military Press";
-    
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = 'Push'"];
-    fetch.predicate = predicate;
-    
-    NSError *error =  nil;
-    NSArray *results = [moc executeFetchRequest: fetch
-                                     error: &error];
-    
-    exercise.category = results[0];
-    
-    
-    [self saveContext];
+//    exercise.category = category;
+//    
+//    
+//    [self saveContext];
     
     NSURL *path = [NSPersistentContainer defaultDirectoryURL];
     NSLog(@"%@", [path absoluteString]);

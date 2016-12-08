@@ -12,7 +12,7 @@
 #import "TJBRealizedSetActiveEntryVC.h"
 
 #import "TJBExercise+CoreDataProperties.h"
-//#import "TJBExerciseCategory+CoreDataProperties.h"
+#import "TJBExerciseCategory+CoreDataProperties.h"
 
 
 
@@ -82,7 +82,10 @@
 {
     UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
     
-//    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    cell.textLabel.text = exercise.name;
+    
     return cell;
 }
 
