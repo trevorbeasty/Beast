@@ -136,36 +136,19 @@
 
     BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
     
-    if ([exerciseString isEqualToString: @""])
+    if ([exerciseString isEqualToString: @""] || exerciseExists || !self.exerciseCategory)
     {
-        NSLog(@"\nPlease enter a new exercise\n");
         return;
     }
     else
     {
-        if (exerciseExists)
-        {
-            NSLog(@"\nThis exercise already exists\n");
-            return;
-        }
-        else
-        {
-            TJBRealizedSetExercise *newExercise = [[CoreDataController singleton] realizedSetExerciseForName: exerciseString];
-            
-            if (self.exerciseCategory)
-            {
-                newExercise.category = self.exerciseCategory;
+        TJBRealizedSetExercise *newExercise = [[CoreDataController singleton] realizedSetExerciseForName: exerciseString];
+    
+        newExercise.category = self.exerciseCategory;
                 
-                [[CoreDataController singleton] saveContext];
+        [[CoreDataController singleton] saveContext];
                 
-                [self.associateVC didCreateNewExercise: newExercise];
-            }
-            else
-            {
-                NSLog(@"Please select a category");
-                return;
-            }
-        }
+        [self.associateVC didCreateNewExercise: newExercise];
     }
 }
 

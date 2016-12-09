@@ -78,7 +78,9 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSetExercise"];
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
-    [request setSortDescriptors: @[nameSort]];
+    NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
+                                                                   ascending: YES];
+    [request setSortDescriptors: @[categorySort, nameSort]];
     
     NSManagedObjectContext *moc = [self.cdc.persistentContainer viewContext];
     
@@ -189,6 +191,7 @@
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self addRealizedSetToCoreData];
+            [self.cdc saveContext];
         }
     }
 }
