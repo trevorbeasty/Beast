@@ -8,6 +8,12 @@
 
 #import "CoreDataController.h"
 
+@interface CoreDataController ()
+
+@property (nonatomic, weak) NSManagedObjectContext *moc;
+
+@end
+
 @implementation CoreDataController
 
 #pragma mark - Singleton
@@ -27,6 +33,9 @@
 - (instancetype)initPrivate
 {
     self = [super init];
+    
+    self.moc = [self.persistentContainer viewContext];
+    
     return self;
 }
 
@@ -82,4 +91,131 @@
     }
 }
 
+#pragma mark - Core Methods
+
+- (BOOL)exerciseExistsForName:(NSString *)name
+{
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 0)
+    {
+        return NO;
+    }
+    else if (arrayLength == 1)
+    {
+        return YES;
+    }
+    else
+    {
+        abort();
+    }
+}
+
+- (TJBExercise *)exerciseForName:(NSString *)name
+{
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 0)
+    {
+        TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
+                                                              inManagedObjectContext: self.moc];
+        
+        exercise.name = name;
+        
+        return exercise;
+    }
+    else if (arrayLength == 1)
+    {
+        return results[0];
+    }
+    else
+    {
+        abort();
+    }
+}
+
+- (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name
+{
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 0)
+    {
+        TJBExerciseCategory *exerciseCategory = [NSEntityDescription insertNewObjectForEntityForName: @"ExerciseCategory"
+                                                                              inManagedObjectContext: self.moc];
+        
+        exerciseCategory.name = name;
+        
+        return exerciseCategory;
+    }
+    else if (arrayLength == 1)
+    {
+        return results[0];
+    }
+    else
+    {
+        abort();
+    }
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

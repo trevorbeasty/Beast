@@ -8,19 +8,25 @@
 
 #import "TJBNewExerciseCreationVC.h"
 
-
+#import "CoreDataController.h"
 
 @interface TJBNewExerciseCreationVC () <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 
 // core IV's
 
+@property (nonatomic, strong) TJBExerciseCategory *exerciseCategory;
 
+@property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
+
+- (IBAction)addNewExercise:(id)sender;
 
 @end
 
 @implementation TJBNewExerciseCreationVC
 
 #pragma mark - <UITextFieldDelegate>
+
+
 
 #pragma mark - <UIPickerViewDelegate>
 
@@ -63,6 +69,10 @@
         abort();
     
     NSLog(@"categoryString: %@", categoryString);
+    
+    TJBExerciseCategory *category = [[CoreDataController singleton] exerciseCategoryForName: categoryString];
+    
+    self.exerciseCategory = category;
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
@@ -82,6 +92,46 @@
     return 4;
 }
 
+#pragma mark - Button Actions
+
+- (IBAction)addNewExercise:(id)sender
+{
+    NSString *exerciseString = self.exerciseTextField.text;
+    
+    BOOL exerciseExists = [[CoreDataController singleton] exerciseExistsForName: exerciseString];
+    
+    if ([exerciseString isEqualToString: @""])
+    {
+        NSLog(@"\nPlease enter a new exercise\n");
+        return;
+    }
+    else
+    {
+        if (exerciseExists)
+        {
+            NSLog(@"\nThis exercise already exists\n");
+            return;
+        }
+        else
+        {
+            TJBExercise *newExercise = [[CoreDataController singleton] exerciseForName: exerciseString];
+            
+            if (self.exerciseCategory)
+            {
+                newExercise.category = self.exerciseCategory;
+                
+                [[CoreDataController singleton] saveContext];
+                
+                [self.associateVC didCreateNewExercise: newExercise];
+            }
+            else
+            {
+                NSLog(@"Please select a category");
+                return;
+            }
+        }
+    }
+}
 @end
 
 

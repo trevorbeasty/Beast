@@ -10,13 +10,23 @@
 
 #import <CoreData/CoreData.h>
 
+#import "TJBExerciseCategory+CoreDataProperties.h"
+#import "TJBExercise+CoreDataProperties.h"
+
 @interface CoreDataController : NSObject
 
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
 
 + (instancetype)singleton;
 
+- (TJBExercise *)exerciseForName:(NSString *)name;
+- (BOOL)exerciseExistsForName:(NSString *)name;
+
+- (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;
+
 - (void)saveContext;
+
+
 
 
 

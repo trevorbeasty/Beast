@@ -209,9 +209,55 @@
     [self.cdc saveContext];
 }
 
+#pragma mark - <NewExerciseCreationDelegate>
 
+- (void)didCreateNewExercise:(TJBExercise *)exercise
+{
+    self.exercise = exercise;
+    
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
+}
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

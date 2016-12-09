@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBNewExerciseCreationVC">
             <connections>
+                <outlet property="exerciseTextField" destination="kqW-hM-k3M" id="Xzd-H8-HfL"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -49,18 +50,29 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MaS-jb-VZ4">
-                    <rect key="frame" x="0.0" y="210" width="375" height="200"/>
+                    <rect key="frame" x="0.0" y="210" width="375" height="250"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="200" id="ftI-3R-cF6"/>
+                        <constraint firstAttribute="height" constant="250" id="ftI-3R-cF6"/>
                     </constraints>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="fIc-dV-GY5"/>
                         <outlet property="delegate" destination="-1" id="nkj-5o-NYf"/>
                     </connections>
                 </pickerView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8pl-gF-Wq7">
+                    <rect key="frame" x="0.0" y="592" width="375" height="75"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="ZhK-Jg-ToN"/>
+                    </constraints>
+                    <state key="normal" title="Add New Exercise"/>
+                    <connections>
+                        <action selector="addNewExercise:" destination="-1" eventType="touchUpInside" id="Ulg-KK-QzT"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="8pl-gF-Wq7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EK6-oI-Ugh"/>
                 <constraint firstItem="cki-Zp-SfL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="IJD-rJ-jiM"/>
                 <constraint firstAttribute="trailing" secondItem="kqW-hM-k3M" secondAttribute="trailing" constant="20" id="P7o-Eh-cby"/>
                 <constraint firstItem="zoZ-VM-c69" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="TQv-RI-zrE"/>
@@ -70,7 +82,9 @@
                 <constraint firstAttribute="trailing" secondItem="MaS-jb-VZ4" secondAttribute="trailing" id="d5l-0w-6sM"/>
                 <constraint firstItem="kqW-hM-k3M" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="fev-Xo-0QF"/>
                 <constraint firstItem="MaS-jb-VZ4" firstAttribute="top" secondItem="zoZ-VM-c69" secondAttribute="bottom" constant="20" id="iPB-5O-Gwx"/>
+                <constraint firstAttribute="bottom" secondItem="8pl-gF-Wq7" secondAttribute="bottom" id="rLb-g1-QNa"/>
                 <constraint firstItem="MaS-jb-VZ4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rRh-zp-HZY"/>
+                <constraint firstAttribute="trailing" secondItem="8pl-gF-Wq7" secondAttribute="trailing" id="vHB-Qs-bZ6"/>
             </constraints>
         </view>
     </objects>
