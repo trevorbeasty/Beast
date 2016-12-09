@@ -25,8 +25,6 @@
 
 @implementation TJBNumberSelectionVC
 
-static NSString * const reuseIdentifier = @"numberCell";
-
 #pragma mark - Initialization
 
 - (void)viewDidLoad
@@ -86,9 +84,7 @@ static NSString * const reuseIdentifier = @"numberCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"basicCell"
-                                                                             forIndexPath: indexPath];
-    
-    // configure the cell
+                                                                           forIndexPath: indexPath];
     
     NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
     NSString *cellNumberAsString = [cellNumber stringValue];
@@ -97,7 +93,7 @@ static NSString * const reuseIdentifier = @"numberCell";
     cell.numberLabel.backgroundColor = [UIColor lightGrayColor];
     cell.numberLabel.layer.cornerRadius = 4;
     cell.numberLabel.layer.masksToBounds = YES;
-    cell.numberLabel.layer.opacity = 0.2;
+    cell.numberLabel.layer.opacity = 0.8;
     
     return cell;
 }
@@ -108,11 +104,11 @@ static NSString * const reuseIdentifier = @"numberCell";
 {
     // if there is a previously selected cell, change its color back to light gray
     if (self.lastSelectedCell)
-        self.lastSelectedCell.numberLabel.backgroundColor = [UIColor whiteColor];
+        self.lastSelectedCell.numberLabel.backgroundColor = [UIColor lightGrayColor];
     
     // change the color of the newly selected cell
     TJBNumberSelectionCell *selectedCell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
-    selectedCell.numberLabel.backgroundColor = [UIColor redColor];
+    selectedCell.numberLabel.backgroundColor = [UIColor greenColor];
     
     // update the lastSelectedCell property to point to the newly selected cell
     self.lastSelectedCell = selectedCell;
@@ -130,7 +126,8 @@ static NSString * const reuseIdentifier = @"numberCell";
     NSNumber *selectedNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
     
     // pass relevant data to the presenting VC
-    [self.associatedVC didSelectNumber: selectedNumber];
+    [self.associatedVC didSelectNumber: selectedNumber
+                  numberTypeIdentifier: self.numberTypeIdentifier];
 }
 
 - (void)pinch:(UIGestureRecognizer *)gr
@@ -194,7 +191,7 @@ static NSString * const reuseIdentifier = @"numberCell";
 
 - (void)cancel
 {
-    [self dismissViewControllerAnimated: YES
+    [self.associatedVC dismissViewControllerAnimated: YES
                              completion: nil];
 }
 

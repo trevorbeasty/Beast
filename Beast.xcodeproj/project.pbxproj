@@ -18,6 +18,7 @@
 		0B517BE01DF888A3009981F9 /* TJBNumberSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */; };
 		0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */; };
 		0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */; };
+		0B843C831DFA28270093F057 /* TJBNumberSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C821DFA28270093F057 /* TJBNumberSelectionCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,10 +37,11 @@
 		0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNumberSelectionVC.m; sourceTree = "<group>"; };
 		0B517BDE1DF88802009981F9 /* TJBNumberSelectionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionDelegate.h; sourceTree = "<group>"; };
 		0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TJBNumberSelection.storyboard; sourceTree = "<group>"; };
-		0B517BE11DF8899B009981F9 /* TJBNumberSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionCell.h; sourceTree = "<group>"; };
 		0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryVC.h; sourceTree = "<group>"; };
 		0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryVC.m; sourceTree = "<group>"; };
 		0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedSetActiveEntryVC.xib; sourceTree = "<group>"; };
+		0B843C811DFA28270093F057 /* TJBNumberSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionCell.h; sourceTree = "<group>"; };
+		0B843C821DFA28270093F057 /* TJBNumberSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNumberSelectionCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +123,9 @@
 				0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */,
 				0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */,
 				0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */,
-				0B517BE11DF8899B009981F9 /* TJBNumberSelectionCell.h */,
 				0B517BDE1DF88802009981F9 /* TJBNumberSelectionDelegate.h */,
+				0B843C811DFA28270093F057 /* TJBNumberSelectionCell.h */,
+				0B843C821DFA28270093F057 /* TJBNumberSelectionCell.m */,
 			);
 			name = NumberSelection;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B517BC61DF77C20009981F9 /* ViewController.m in Sources */,
+				0B843C831DFA28270093F057 /* TJBNumberSelectionCell.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,

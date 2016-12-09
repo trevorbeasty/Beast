@@ -14,9 +14,9 @@
 #import "TJBExercise+CoreDataProperties.h"
 #import "TJBExerciseCategory+CoreDataProperties.h"
 
+#import "TJBNumberSelectionVC.h"
 
-
-@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource>
+@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, TJBNumberSelectionDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
@@ -24,6 +24,11 @@
 - (IBAction)addNewExercise:(id)sender;
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+
+// realized set
+
+@property (nonatomic, strong) NSNumber *weight;
+@property (nonatomic, strong) NSNumber *reps;
 
 @end
 
@@ -97,11 +102,79 @@
 
 - (IBAction)setCompleted:(id)sender
 {
+    // modal presentation of number selection for weight
     
+    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
+                                                                        bundle: nil];
+    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
+    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+    
+    numberSelectionVC.numberTypeIdentifier = @"weight";
+    numberSelectionVC.numberMultiple = [NSNumber numberWithFloat: 2.5];
+    numberSelectionVC.associatedVC = self;
+    numberSelectionVC.title = @"Weight";
+    
+    [self presentViewController: numberSelectionNav
+                       animated: YES
+                     completion: nil];
 }
 
 - (IBAction)addNewExercise:(id)sender
 {
     
 }
+
+#pragma mark - <TJBNumberSelectionDelegate>
+
+- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier
+{
+    if ([identifier isEqualToString: @"reps"])
+    {
+        self.reps = number;
+        [self dismissViewControllerAnimated: YES
+                                 completion: nil];
+    }
+    else if ([identifier isEqualToString: @"weight"])
+    {
+        self.weight = number;
+        [self dismissViewControllerAnimated: YES
+                                 completion: nil];
+    }
+    
+    if (!self.reps)
+    {
+        UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
+                                                                            bundle: nil];
+        UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
+        TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+        
+        numberSelectionVC.numberTypeIdentifier = @"reps";
+        numberSelectionVC.numberMultiple = [NSNumber numberWithFloat: 1.0];
+        numberSelectionVC.associatedVC = self;
+        numberSelectionVC.title = @"Reps";
+        
+        [self presentViewController: numberSelectionNav
+                           animated: YES
+                         completion: nil];
+    }
+    
+    NSLog(@"\nweight: %f\nreps: %f\n", [self.weight floatValue], [self.reps floatValue]);
+}
+
+
+
+
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+

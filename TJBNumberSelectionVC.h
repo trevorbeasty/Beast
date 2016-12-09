@@ -20,6 +20,7 @@
 // delegate view controller
 
 @property (nonatomic, weak) UIViewController <TJBNumberSelectionDelegate> *associatedVC;
+@property (nonatomic, strong) NSString *numberTypeIdentifier;
 
 // view specifications
 
