@@ -10,10 +10,4 @@
 
 @interface TJBRealizedSetActiveEntryVC : UIViewController
 
-{
-    int _timeElapsedInSeconds;
-}
-
-@property (weak, nonatomic) IBOutlet UILabel *timerLabel;
-
 @end

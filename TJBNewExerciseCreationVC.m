@@ -10,6 +10,8 @@
 
 #import "CoreDataController.h"
 
+#import "TJBStopwatch.h"
+
 @interface TJBNewExerciseCreationVC () <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 
 // core IV's
@@ -20,6 +22,10 @@
 
 - (IBAction)addNewExercise:(id)sender;
 
+// timer
+
+@property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+
 @end
 
 @implementation TJBNewExerciseCreationVC
@@ -27,6 +33,12 @@
 - (void)viewDidLoad
 {
     self.exerciseCategory = [[CoreDataController singleton] exerciseCategoryForName: @"Push"];
+    
+    // timer
+    
+    self.timerLabel.text = [[[TJBStopwatch singleton] timeElapsedInSeconds] stringValue];
+    
+    [[TJBStopwatch singleton] addStopwatchObserver: self.timerLabel];
 }
 
 #pragma mark - <UITextFieldDelegate>

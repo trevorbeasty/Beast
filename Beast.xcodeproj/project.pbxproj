@@ -22,6 +22,7 @@
 		0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C851DFAD0A00093F057 /* CoreDataController.m */; };
 		0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */; };
 		0B843C8B1DFADBED0093F057 /* TJBNewExerciseCreationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */; };
+		0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +52,8 @@
 		0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNewExerciseCreationVC.m; sourceTree = "<group>"; };
 		0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBNewExerciseCreationVC.xib; sourceTree = "<group>"; };
 		0B843C8C1DFADF670093F057 /* TJBNewExerciseCreationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNewExerciseCreationDelegate.h; sourceTree = "<group>"; };
+		0B843C8D1DFB24C70093F057 /* TJBStopwatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBStopwatch.h; sourceTree = "<group>"; };
+		0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBStopwatch.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 		0B517BB21DF77C20009981F9 = {
 			isa = PBXGroup;
 			children = (
+				0B843C8D1DFB24C70093F057 /* TJBStopwatch.h */,
+				0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */,
 				0B843C841DFAD0A00093F057 /* CoreDataController.h */,
 				0B843C851DFAD0A00093F057 /* CoreDataController.m */,
 				0B517BD91DF88641009981F9 /* View Controllers */,
@@ -219,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */,
 				0B517BC61DF77C20009981F9 /* ViewController.m in Sources */,
 				0B843C831DFA28270093F057 /* TJBNumberSelectionCell.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
