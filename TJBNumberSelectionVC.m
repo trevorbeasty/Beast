@@ -31,7 +31,7 @@
 {
     // configure the navigation item
     
-    self.navigationItem.title = self.titleString;
+    [self.navigationItem setTitle: self.title];
     
     // set the collection view's background color
     

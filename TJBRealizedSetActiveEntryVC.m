@@ -115,7 +115,7 @@
     numberSelectionVC.title = @"Weight";
     
     [self presentViewController: numberSelectionNav
-                       animated: YES
+                       animated: NO
                      completion: nil];
 }
 
@@ -131,13 +131,13 @@
     if ([identifier isEqualToString: @"reps"])
     {
         self.reps = number;
-        [self dismissViewControllerAnimated: YES
+        [self dismissViewControllerAnimated: NO
                                  completion: nil];
     }
     else if ([identifier isEqualToString: @"weight"])
     {
         self.weight = number;
-        [self dismissViewControllerAnimated: YES
+        [self dismissViewControllerAnimated: NO
                                  completion: nil];
     }
     
@@ -154,7 +154,7 @@
         numberSelectionVC.title = @"Reps";
         
         [self presentViewController: numberSelectionNav
-                           animated: YES
+                           animated: NO
                          completion: nil];
     }
     
