@@ -93,9 +93,9 @@
 
 #pragma mark - Core Methods
 
-- (BOOL)exerciseExistsForName:(NSString *)name
+- (BOOL)realizedSetExerciseExistsForName:(NSString *)name
 {
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSetExercise"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
     fetch.predicate = predicate;
     
@@ -119,9 +119,9 @@
     }
 }
 
-- (TJBExercise *)exerciseForName:(NSString *)name
+- (TJBRealizedSetExercise *)realizedSetExerciseForName:(NSString *)name
 {
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSetExercise"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
     fetch.predicate = predicate;
     
@@ -133,7 +133,7 @@
     
     if (arrayLength == 0)
     {
-        TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
+        TJBRealizedSetExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSetExercise"
                                                               inManagedObjectContext: self.moc];
         
         exercise.name = name;

@@ -6,13 +6,8 @@
 //  Copyright © 2016 Trevor Beasty. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
-#import "AppDelegate.h"
-
 #import "TJBRealizedSetActiveEntryVC.h"
 
-#import "TJBExercise+CoreDataProperties.h"
-#import "TJBExerciseCategory+CoreDataProperties.h"
 #import "TJBRealizedSet+CoreDataProperties.h"
 
 #import "TJBNumberSelectionVC.h"
@@ -37,7 +32,7 @@
 
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
-@property (nonatomic, strong) TJBExercise *exercise;
+@property (nonatomic, strong) TJBRealizedSetExercise *exercise;
 
 // core data controller
 
@@ -80,7 +75,7 @@
     
     // NSFetchedResultsController
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSetExercise"];
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
     [request setSortDescriptors: @[nameSort]];
@@ -126,7 +121,7 @@
 {
     UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
     
-    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    TJBRealizedSetExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     cell.textLabel.text = exercise.name;
     
@@ -143,7 +138,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    TJBRealizedSetExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     self.exercise = exercise;
     [self.navItem setTitle: exercise.name];
 }
@@ -176,6 +171,8 @@
         
         
     }
+    
+    
 
 }
 
@@ -241,13 +238,14 @@
     realizedSet.postMortem = postMortem;
     realizedSet.weight = [self.weight floatValue];
     realizedSet.reps = [self.reps floatValue];
+    realizedSet.exercise = self.exercise;
     
     [self.cdc saveContext];
 }
 
 #pragma mark - <NewExerciseCreationDelegate>
 
-- (void)didCreateNewExercise:(TJBExercise *)exercise
+- (void)didCreateNewExercise:(TJBRealizedSetExercise *)exercise
 {
     self.exercise = exercise;
     [self.navItem setTitle: exercise.name];

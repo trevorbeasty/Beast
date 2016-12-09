@@ -133,8 +133,8 @@
 - (IBAction)addNewExercise:(id)sender
 {
     NSString *exerciseString = self.exerciseTextField.text;
-    
-    BOOL exerciseExists = [[CoreDataController singleton] exerciseExistsForName: exerciseString];
+
+    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
     
     if ([exerciseString isEqualToString: @""])
     {
@@ -150,7 +150,7 @@
         }
         else
         {
-            TJBExercise *newExercise = [[CoreDataController singleton] exerciseForName: exerciseString];
+            TJBRealizedSetExercise *newExercise = [[CoreDataController singleton] realizedSetExerciseForName: exerciseString];
             
             if (self.exerciseCategory)
             {

@@ -11,7 +11,7 @@
 #import <CoreData/CoreData.h>
 
 #import "TJBExerciseCategory+CoreDataProperties.h"
-#import "TJBExercise+CoreDataProperties.h"
+#import "TJBRealizedSetExercise+CoreDataProperties.h"
 
 @interface CoreDataController : NSObject
 
@@ -19,8 +19,8 @@
 
 + (instancetype)singleton;
 
-- (TJBExercise *)exerciseForName:(NSString *)name;
-- (BOOL)exerciseExistsForName:(NSString *)name;
+- (TJBRealizedSetExercise *)realizedSetExerciseForName:(NSString *)name;
+- (BOOL)realizedSetExerciseExistsForName:(NSString *)name;
 
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;
 
