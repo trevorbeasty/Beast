@@ -141,7 +141,12 @@
 
 #pragma mark - <UITableViewDelegate>
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    self.exercise = exercise;
+    [self.navItem setTitle: exercise.name];
+}
 
 #pragma mark - Button Actions
 
@@ -245,6 +250,7 @@
 - (void)didCreateNewExercise:(TJBExercise *)exercise
 {
     self.exercise = exercise;
+    [self.navItem setTitle: exercise.name];
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch: &error];
