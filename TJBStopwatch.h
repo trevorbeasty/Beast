@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong, readonly) NSNumber *timeElapsedInSeconds;
 @property (nonatomic, strong, readonly) NSNumber *isRunning;
+- (NSString *)elapsedTimeAsFormattedString;
 
 + (instancetype)singleton;
 

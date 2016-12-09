@@ -26,17 +26,36 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 
+// navigation bar
+
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, strong) UINavigationItem *navItem;
+
 @end
 
 @implementation TJBNewExerciseCreationVC
 
 - (void)viewDidLoad
 {
+    // navigation bar
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"New Exercise"];
+    
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+                                                                                  target: self
+                                                                                  action: @selector(cancel)];
+    [navItem setLeftBarButtonItem: cancelButton];
+    
+    [self.navigationBar setItems: @[navItem]];
+    self.navItem = navItem;
+    
+    // idiosyncratic initialization
+    
     self.exerciseCategory = [[CoreDataController singleton] exerciseCategoryForName: @"Push"];
     
     // timer
     
-    self.timerLabel.text = [[[TJBStopwatch singleton] timeElapsedInSeconds] stringValue];
+    self.timerLabel.text = [[TJBStopwatch singleton] elapsedTimeAsFormattedString];
     
     [[TJBStopwatch singleton] addStopwatchObserver: self.timerLabel];
 }
@@ -149,6 +168,15 @@
         }
     }
 }
+
+- (void)cancel
+{
+    [self.associateVC dismissViewControllerAnimated: YES
+                                         completion: nil];
+}
+
+
+
 @end
 
 

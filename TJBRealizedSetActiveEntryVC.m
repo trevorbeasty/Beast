@@ -48,6 +48,11 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 
+// navigation bar
+
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (nonatomic, strong) UINavigationItem *navItem;
+
 @end
 
 @implementation TJBRealizedSetActiveEntryVC
@@ -56,6 +61,13 @@
 
 - (void)viewDidLoad
 {
+    // navigation bar
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select an Exercise"];
+    self.navItem = navItem;
+    
+    [self.navigationBar setItems: @[navItem]];
+    
     // core data controller
     
     self.cdc = [CoreDataController singleton];

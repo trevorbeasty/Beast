@@ -65,7 +65,7 @@
 {
     _elapsedTimeInSeconds++;
     
-    NSString *elapsedTimeAsString = [self convertElapsedTimeToString];
+    NSString *elapsedTimeAsString = [self elapsedTimeAsFormattedString];
     
     for (UILabel *timerLabel in self.observers)
     {
@@ -73,7 +73,7 @@
     }
 }
 
-- (NSString *)convertElapsedTimeToString
+- (NSString *)elapsedTimeAsFormattedString
 {
     int minutes = _elapsedTimeInSeconds / 60;
     int seconds = _elapsedTimeInSeconds % 60;
