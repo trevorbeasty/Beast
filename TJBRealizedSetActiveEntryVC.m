@@ -69,7 +69,7 @@
     
     NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
                                                                           managedObjectContext: moc
-                                                                            sectionNameKeyPath: nil
+                                                                            sectionNameKeyPath: @"category.name"
                                                                                      cacheName: nil];
     frc.delegate = self;
     
@@ -89,12 +89,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+    return sectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self.fetchedResultsController fetchedObjects] count];
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+    return numberOfObjects;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -106,6 +109,12 @@
     cell.textLabel.text = exercise.name;
     
     return cell;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+    return [sectionInfo name];
 }
 
 #pragma mark - <UITableViewDelegate>
