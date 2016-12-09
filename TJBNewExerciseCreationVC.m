@@ -24,6 +24,11 @@
 
 @implementation TJBNewExerciseCreationVC
 
+- (void)viewDidLoad
+{
+    self.exerciseCategory = [[CoreDataController singleton] exerciseCategoryForName: @"Push"];
+}
+
 #pragma mark - <UITextFieldDelegate>
 
 

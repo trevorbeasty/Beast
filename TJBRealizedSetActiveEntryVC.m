@@ -20,7 +20,7 @@
 
 #import "CoreDataController.h"
 
-@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, TJBNumberSelectionDelegate, NewExerciseCreationDelegate>
+@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, TJBNumberSelectionDelegate, NewExerciseCreationDelegate, NSFetchedResultsControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
@@ -71,7 +71,7 @@
                                                                           managedObjectContext: moc
                                                                             sectionNameKeyPath: nil
                                                                                      cacheName: nil];
-    frc.delegate = nil;
+    frc.delegate = self;
     
     self.fetchedResultsController = frc;
     
@@ -215,9 +215,17 @@
 {
     self.exercise = exercise;
     
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch: &error];
+    [self.exerciseTableView reloadData];
+    
     [self dismissViewControllerAnimated: YES
                              completion: nil];
 }
+
+#pragma mark - <NSFetchedResultsControllerDelegate>
+
+
 
 @end
 
