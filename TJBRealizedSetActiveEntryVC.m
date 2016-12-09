@@ -13,12 +13,14 @@
 
 #import "TJBExercise+CoreDataProperties.h"
 #import "TJBExerciseCategory+CoreDataProperties.h"
+#import "TJBRealizedSet+CoreDataProperties.h"
 
 #import "TJBNumberSelectionVC.h"
+#import "TJBNewExerciseCreationVC.h"
 
 #import "CoreDataController.h"
 
-@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, TJBNumberSelectionDelegate>
+@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, TJBNumberSelectionDelegate, NewExerciseCreationDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
@@ -31,10 +33,12 @@
 
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
+@property (nonatomic, strong) TJBExercise *exercise;
 
 // core data controller
 
 @property (nonatomic, strong) CoreDataController *cdc;
+@property (nonatomic, strong) NSManagedObjectContext *moc;
 
 @end
 
@@ -47,6 +51,7 @@
     // core data controller
     
     self.cdc = [CoreDataController singleton];
+    self.moc = [self.cdc.persistentContainer viewContext];
     
     // table view setup
     
@@ -111,26 +116,42 @@
 
 - (IBAction)setCompleted:(id)sender
 {
-    // modal presentation of number selection for weight
+    // modal presentation of number selection for weight if exercise has been selected
     
-    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
-                                                                        bundle: nil];
-    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
-    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
-    
-    numberSelectionVC.numberTypeIdentifier = @"weight";
-    numberSelectionVC.numberMultiple = [NSNumber numberWithFloat: 2.5];
-    numberSelectionVC.associatedVC = self;
-    numberSelectionVC.title = @"Weight";
-    
-    [self presentViewController: numberSelectionNav
-                       animated: NO
-                     completion: nil];
+    if (self.exercise)
+    {
+        UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
+                                                                            bundle: nil];
+        UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
+        TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+        
+        numberSelectionVC.numberTypeIdentifier = @"weight";
+        numberSelectionVC.numberMultiple = [NSNumber numberWithFloat: 2.5];
+        numberSelectionVC.associatedVC = self;
+        numberSelectionVC.title = @"Weight";
+        
+        [self presentViewController: numberSelectionNav
+                           animated: NO
+                         completion: nil];
+    }
+    else
+    {
+        // notification to please select an exercise first
+        
+        
+    }
+
 }
 
 - (IBAction)addNewExercise:(id)sender
 {
+    TJBNewExerciseCreationVC *necVC = [[TJBNewExerciseCreationVC alloc] init];
     
+    necVC.associateVC = self;
+    
+    [self presentViewController: necVC
+                       animated: YES
+                     completion: nil];
 }
 
 #pragma mark - <TJBNumberSelectionDelegate>
@@ -140,15 +161,14 @@
     if ([identifier isEqualToString: @"reps"])
     {
         self.reps = number;
-        [self dismissViewControllerAnimated: NO
-                                 completion: nil];
     }
     else if ([identifier isEqualToString: @"weight"])
     {
         self.weight = number;
-        [self dismissViewControllerAnimated: NO
-                                 completion: nil];
     }
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
     
     if (!self.reps)
     {
@@ -167,10 +187,27 @@
                          completion: nil];
     }
     
-    NSLog(@"\nweight: %f\nreps: %f\n", [self.weight floatValue], [self.reps floatValue]);
+    if (self.weight && self.reps)
+    {
+        [self addRealizedSetToCoreData];
+    }
 }
 
-
+- (void)addRealizedSetToCoreData
+{
+    NSDate *date = [NSDate date];
+    BOOL postMortem = FALSE;
+    
+    TJBRealizedSet *realizedSet = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
+                                                                inManagedObjectContext: self.moc];
+    
+    realizedSet.date = date;
+    realizedSet.postMortem = postMortem;
+    realizedSet.weight = [self.weight floatValue];
+    realizedSet.reps = [self.reps floatValue];
+    
+    [self.cdc saveContext];
+}
 
 
 
