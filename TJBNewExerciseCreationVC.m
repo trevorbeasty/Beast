@@ -31,9 +31,13 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, strong) UINavigationItem *navItem;
 
+//
+
 @end
 
 @implementation TJBNewExerciseCreationVC
+
+#pragma mark - Instantiation
 
 - (void)viewDidLoad
 {
