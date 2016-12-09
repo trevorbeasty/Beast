@@ -48,6 +48,15 @@
 
 - (void)viewDidLoad
 {
+    // timer
+    
+    _timeElapsedInSeconds = 0;
+    
+    [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                     target: self
+                                   selector: @selector(updateTimerLabel)
+                                   userInfo: nil
+                                    repeats: YES];
     // core data controller
     
     self.cdc = [CoreDataController singleton];
@@ -233,6 +242,23 @@
 }
 
 #pragma mark - <NSFetchedResultsControllerDelegate>
+
+#pragma mark - Timer and Related Methods
+
+- (void)updateTimerLabel
+{
+    _timeElapsedInSeconds++;
+    
+    self.timerLabel.text = [self convertElapsedTimeToString];
+}
+
+- (NSString *)convertElapsedTimeToString
+{
+    int minutes = _timeElapsedInSeconds / 60;
+    int seconds = _timeElapsedInSeconds % 60;
+    
+    return [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
+}
 
 
 
