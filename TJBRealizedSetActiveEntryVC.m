@@ -145,35 +145,52 @@
 
 #pragma mark - Button Actions
 
+- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NSString *)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
+{
+    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
+                                                                        bundle: nil];
+    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
+    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+    
+    numberSelectionVC.numberTypeIdentifier = identifier;
+    numberSelectionVC.numberMultiple = numberMultiple;
+    numberSelectionVC.associatedVC = self;
+    numberSelectionVC.title = title;
+    
+    [self presentViewController: numberSelectionNav
+                       animated: animated
+                     completion: nil];
+}
+
 - (IBAction)setCompleted:(id)sender
 {
-    // modal presentation of number selection for weight if exercise has been selected
-    
-    if (self.exercise)
+    if (!self.exercise)
     {
-        UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
-                                                                            bundle: nil];
-        UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
-        TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
-        
-        numberSelectionVC.numberTypeIdentifier = @"weight";
-        numberSelectionVC.numberMultiple = [NSNumber numberWithFloat: 2.5];
-        numberSelectionVC.associatedVC = self;
-        numberSelectionVC.title = @"Weight";
-        
-        [self presentViewController: numberSelectionNav
-                           animated: NO
-                         completion: nil];
+        NSLog(@"Please select an exercise first");
     }
     else
     {
-        // notification to please select an exercise first
-        
-        
+        if (!self.weight)
+        {
+            [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"weight"
+                                                       numberMultiple: [NSNumber numberWithFloat: 2.5]
+                                                                title: @"Select Weight"
+                                                             animated: YES];
+        }
+        else if (!self.reps)
+        {
+            [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"reps"
+                                                       numberMultiple: [NSNumber numberWithFloat: 1.0]
+                                                                title: @"SelectReps"
+                                                             animated: YES];
+        }
+        else
+        {
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+            [self addRealizedSetToCoreData];
+        }
     }
-    
-    
-
 }
 
 - (IBAction)addNewExercise:(id)sender
@@ -203,27 +220,7 @@
     [self dismissViewControllerAnimated: NO
                              completion: nil];
     
-    if (!self.reps)
-    {
-        UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
-                                                                            bundle: nil];
-        UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
-        TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
-        
-        numberSelectionVC.numberTypeIdentifier = @"reps";
-        numberSelectionVC.numberMultiple = [NSNumber numberWithFloat: 1.0];
-        numberSelectionVC.associatedVC = self;
-        numberSelectionVC.title = @"Reps";
-        
-        [self presentViewController: numberSelectionNav
-                           animated: NO
-                         completion: nil];
-    }
-    
-    if (self.weight && self.reps)
-    {
-        [self addRealizedSetToCoreData];
-    }
+    [self setCompleted: nil];
 }
 
 - (void)addRealizedSetToCoreData
