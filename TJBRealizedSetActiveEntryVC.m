@@ -16,6 +16,8 @@
 
 #import "TJBNumberSelectionVC.h"
 
+#import "CoreDataController.h"
+
 @interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, TJBNumberSelectionDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
@@ -30,6 +32,10 @@
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
 
+// core data controller
+
+@property (nonatomic, strong) CoreDataController *cdc;
+
 @end
 
 @implementation TJBRealizedSetActiveEntryVC
@@ -38,6 +44,10 @@
 
 - (void)viewDidLoad
 {
+    // core data controller
+    
+    self.cdc = [CoreDataController singleton];
+    
     // table view setup
     
     [self.exerciseTableView registerClass: [UITableViewCell class]
@@ -50,8 +60,7 @@
                                                                ascending: YES];
     [request setSortDescriptors: @[nameSort]];
     
-    AppDelegate *ad = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSManagedObjectContext *moc = [ad.persistentContainer viewContext];
+    NSManagedObjectContext *moc = [self.cdc.persistentContainer viewContext];
     
     NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
                                                                           managedObjectContext: moc
