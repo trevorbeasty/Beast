@@ -10,6 +10,8 @@
 
 #import "CoreDataController.h"
 
+#import "RealizedSetHistoryCell.h"
+
 @interface TJBRealizedSetHistoryByDay () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -37,7 +39,7 @@
     // NSFetchedResultsController
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
-    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"date"
+    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"date"
                                                                ascending: NO];
     
     // create NSDate objects defining the first and last seconds of today in order to effectively filter the retrieved 'realized set' objects
@@ -54,7 +56,7 @@
     
     [request setPredicate: predicate];
     
-    [request setSortDescriptors: @[nameSort]];
+    [request setSortDescriptors: @[dateSort]];
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
@@ -62,7 +64,6 @@
                                                                           managedObjectContext: moc
                                                                             sectionNameKeyPath: nil
                                                                                      cacheName: nil];
-    NSLog(@"\ntotal sets fetched: %lu\n", [[frc fetchedObjects] count]);
     
     frc.delegate = nil;
     
@@ -75,10 +76,15 @@
         abort();
     }
     
+    NSLog(@"\ntotal sets fetched: %lu\n", [[frc fetchedObjects] count]);
+    
     // table view
     
-    [self.tableView registerClass: [UITableViewCell class]
-           forCellReuseIdentifier: @"basicCell"];
+    UINib *nib = [UINib nibWithNibName: @"RealizedSetHistoryCell"
+                                bundle: nil];
+    
+    [self.tableView registerNib: nib
+         forCellReuseIdentifier: @"setHistoryCell"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,24 +107,31 @@
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self frc] sections][section];
     NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
     return numberOfObjects;
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"basicCell"];
+    RealizedSetHistoryCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"setHistoryCell"];
     
     TJBRealizedSet *realizedSet = [self.frc objectAtIndexPath: indexPath];
     
-    cell.textLabel.text = realizedSet.exercise.name;
+    // format date
+    
+    NSDate *date = realizedSet.date;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    dateFormatter.dateStyle = NSDateFormatterNoStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    cell.timeLabel.text = [dateFormatter stringFromDate: date];
+    cell.exerciseLabel.text = realizedSet.exercise.name;
+    cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
+    cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
     
     return cell;
 }
-
-//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-//    return [sectionInfo name];
-//}
 
 #pragma mark - <UITableViewDelegate>
 
