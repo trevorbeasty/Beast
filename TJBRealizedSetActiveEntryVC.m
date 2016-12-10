@@ -170,29 +170,32 @@
     {
         NSLog(@"Please select an exercise first");
     }
-    else
+    else if (!self.weight)
     {
-        if (!self.weight)
-        {
-            [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"weight"
+        [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"weight"
                                                        numberMultiple: [NSNumber numberWithFloat: 2.5]
                                                                 title: @"Select Weight"
                                                              animated: YES];
-        }
-        else if (!self.reps)
-        {
-            [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"reps"
-                                                       numberMultiple: [NSNumber numberWithFloat: 1.0]
-                                                                title: @"SelectReps"
-                                                             animated: YES];
-        }
-        else
-        {
-            [self dismissViewControllerAnimated: NO
-                                     completion: nil];
-            [self addRealizedSetToCoreData];
-            [self.cdc saveContext];
-        }
+    }
+    else if (!self.reps)
+    {
+        [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"reps"
+                                                   numberMultiple: [NSNumber numberWithFloat: 1.0]
+                                                            title: @"SelectReps"
+                                                         animated: YES];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+            
+        [self addRealizedSetToCoreData];
+        [self.cdc saveContext];
+            
+        self.reps = nil;
+        self.weight = nil;
+        
+        [[TJBStopwatch singleton] resetStopwatch];
     }
 }
 

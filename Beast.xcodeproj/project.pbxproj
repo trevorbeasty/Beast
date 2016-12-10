@@ -23,6 +23,8 @@
 		0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */; };
 		0B843C8B1DFADBED0093F057 /* TJBNewExerciseCreationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */; };
 		0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */; };
+		0B843C941DFB80640093F057 /* TJBRealizedSetHistoryByDay.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C921DFB80640093F057 /* TJBRealizedSetHistoryByDay.m */; };
+		0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C931DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,9 @@
 		0B843C8C1DFADF670093F057 /* TJBNewExerciseCreationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNewExerciseCreationDelegate.h; sourceTree = "<group>"; };
 		0B843C8D1DFB24C70093F057 /* TJBStopwatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBStopwatch.h; sourceTree = "<group>"; };
 		0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBStopwatch.m; sourceTree = "<group>"; };
+		0B843C911DFB80640093F057 /* TJBRealizedSetHistoryByDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetHistoryByDay.h; sourceTree = "<group>"; };
+		0B843C921DFB80640093F057 /* TJBRealizedSetHistoryByDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetHistoryByDay.m; sourceTree = "<group>"; };
+		0B843C931DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedSetHistoryByDay.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,14 +130,8 @@
 		0B517BD91DF88641009981F9 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0B843C901DFB7E9C0093F057 /* Realized Set Active Entry */,
 				0B517BDA1DF88651009981F9 /* NumberSelection */,
-				0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */,
-				0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */,
-				0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */,
-				0B843C871DFADBED0093F057 /* TJBNewExerciseCreationVC.h */,
-				0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */,
-				0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */,
-				0B843C8C1DFADF670093F057 /* TJBNewExerciseCreationDelegate.h */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -148,6 +147,23 @@
 				0B843C821DFA28270093F057 /* TJBNumberSelectionCell.m */,
 			);
 			name = NumberSelection;
+			sourceTree = "<group>";
+		};
+		0B843C901DFB7E9C0093F057 /* Realized Set Active Entry */ = {
+			isa = PBXGroup;
+			children = (
+				0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */,
+				0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */,
+				0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */,
+				0B843C871DFADBED0093F057 /* TJBNewExerciseCreationVC.h */,
+				0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */,
+				0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */,
+				0B843C8C1DFADF670093F057 /* TJBNewExerciseCreationDelegate.h */,
+				0B843C911DFB80640093F057 /* TJBRealizedSetHistoryByDay.h */,
+				0B843C921DFB80640093F057 /* TJBRealizedSetHistoryByDay.m */,
+				0B843C931DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib */,
+			);
+			name = "Realized Set Active Entry";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,6 +226,7 @@
 			files = (
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
 				0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */,
+				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
 				0B517BE01DF888A3009981F9 /* TJBNumberSelection.storyboard in Resources */,
@@ -227,6 +244,7 @@
 				0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */,
 				0B517BC61DF77C20009981F9 /* ViewController.m in Sources */,
 				0B843C831DFA28270093F057 /* TJBNumberSelectionCell.m in Sources */,
+				0B843C941DFB80640093F057 /* TJBRealizedSetHistoryByDay.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */,
