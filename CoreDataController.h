@@ -12,6 +12,8 @@
 
 #import "TJBExerciseCategory+CoreDataProperties.h"
 #import "TJBRealizedSetExercise+CoreDataProperties.h"
+#import "TJBRealizedSet+CoreDataProperties.h"
+
 
 @interface CoreDataController : NSObject
 
@@ -25,6 +27,8 @@
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;
 
 - (void)saveContext;
+
+- (NSManagedObjectContext *)moc;
 
 
 

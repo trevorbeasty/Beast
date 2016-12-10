@@ -13,6 +13,7 @@
 #import "TJBExercise+CoreDataProperties.h"
 
 #import "TJBRealizedSetActiveEntryVC.h"
+#import "TJBRealizedSetHistoryByDay.h"
 
 #import "CoreDataController.h"
 
@@ -38,11 +39,14 @@
     
     // root view controller
     
-    TJBRealizedSetActiveEntryVC *rsaeVC = [[TJBRealizedSetActiveEntryVC alloc] init];
+    TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
+    TJBRealizedSetHistoryByDay *vc2 = [[TJBRealizedSetHistoryByDay alloc] init];
     
-    self.window.rootViewController = rsaeVC;
+    UITabBarController *tbc = [[UITabBarController alloc] init];
     
-    //
+    [tbc setViewControllers: @[vc1, vc2]];
+    
+    self.window.rootViewController = tbc;
     
     return YES;
 }
@@ -81,29 +85,6 @@
 
 @end
 
-//    NSManagedObjectContext *moc = [self.persistentContainer viewContext];
-//
-//    TJBExerciseCategory *category = [NSEntityDescription insertNewObjectForEntityForName: @"ExerciseCategory"
-//                                                                  inManagedObjectContext: moc];
-//    category.name = @"Push";
-//
-//    TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
-//                                                          inManagedObjectContext: moc];
-//
-//    exercise.name = @"Military Press";
-//
-//    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = 'Push'"];
-//    fetch.predicate = predicate;
-//
-//    NSError *error =  nil;
-//    NSArray *results = [moc executeFetchRequest: fetch
-//                                     error: &error];
-
-//    exercise.category = category;
-//
-//
-//    [self saveContext];
 
 
 

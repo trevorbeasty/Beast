@@ -46,6 +46,14 @@
                                  userInfo: nil];
 }
 
+#pragma mark - Retrieving IV's
+
+- (NSManagedObjectContext *)moc
+{
+    return [self.persistentContainer viewContext];
+}
+
+
 #pragma mark - Core Data stack
 
 @synthesize persistentContainer = _persistentContainer;
