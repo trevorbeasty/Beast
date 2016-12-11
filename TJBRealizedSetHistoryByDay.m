@@ -21,6 +21,13 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
 
+// column labels
+
+@property (weak, nonatomic) IBOutlet UILabel *timeColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
+
 @end
 
 @implementation TJBRealizedSetHistoryByDay
@@ -85,6 +92,21 @@
     
     [self.tableView registerNib: nib
          forCellReuseIdentifier: @"setHistoryCell"];
+    
+    // column labels
+    
+    self.timeColumnLabel.layer.cornerRadius = 4;
+    self.timeColumnLabel.layer.masksToBounds = YES;
+    
+    self.weightColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
+    self.weightColumnLabel.layer.borderWidth = 2.5;
+    self.weightColumnLabel.layer.cornerRadius = 4;
+    self.weightColumnLabel.layer.masksToBounds = YES;
+    
+    self.repsColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
+    self.repsColumnLabel.layer.borderWidth = 2.5;
+    self.repsColumnLabel.layer.cornerRadius = 6;
+    self.repsColumnLabel.layer.masksToBounds = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -123,12 +145,25 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    dateFormatter.timeStyle = NSDateFormatterMediumStyle;
     
     cell.timeLabel.text = [dateFormatter stringFromDate: date];
     cell.exerciseLabel.text = realizedSet.exercise.name;
     cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
     cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
+    
+    cell.timeLabel.layer.cornerRadius = 4;
+    cell.timeLabel.layer.masksToBounds = YES;
+    
+    cell.weightLabel.layer.borderColor = [[UIColor greenColor] CGColor];
+    cell.weightLabel.layer.borderWidth = 2.5;
+    cell.weightLabel.layer.cornerRadius = 4;
+    cell.weightLabel.layer.masksToBounds = YES;
+    
+    cell.repsLabel.layer.borderColor = [[UIColor greenColor] CGColor];
+    cell.repsLabel.layer.borderWidth = 2.5;
+    cell.repsLabel.layer.cornerRadius = 6;
+    cell.repsLabel.layer.masksToBounds = YES;
     
     return cell;
 }
