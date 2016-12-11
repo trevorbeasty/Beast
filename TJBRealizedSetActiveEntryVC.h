@@ -10,4 +10,6 @@
 
 @interface TJBRealizedSetActiveEntryVC : UIViewController
 
+@property (nonatomic, weak) NSMutableArray *dependentVCs;
+
 @end
