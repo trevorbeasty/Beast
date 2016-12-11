@@ -138,6 +138,33 @@
     
     TJBRealizedSet *realizedSet = [self.frc objectAtIndexPath: indexPath];
     
+    // rest calculation
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self frc] sections][indexPath.section];
+    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+    
+    NSInteger previousSetRowIndex = indexPath.row + 1;
+    
+    if ( previousSetRowIndex < numberOfObjects )
+    {
+        NSIndexPath *previousSetPath = [NSIndexPath indexPathForRow: previousSetRowIndex
+                                                          inSection: indexPath.section];
+        
+        TJBRealizedSet *previousSet = [self.frc objectAtIndexPath: previousSetPath];
+        
+        int elapsedTime = (int)[realizedSet.date timeIntervalSinceDate: previousSet.date];
+        
+        int minutes = elapsedTime / 60;
+        int seconds = elapsedTime % 60;
+        
+        cell.restLabel.text = [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
+    }
+    else
+    {
+        cell.restLabel.text = @"NA";
+    }
+   
+    
     // format date
     
     NSDate *date = realizedSet.date;
