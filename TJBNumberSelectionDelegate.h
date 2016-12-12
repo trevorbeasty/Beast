@@ -12,4 +12,6 @@
 
 - (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier;
 
+- (void)didCancelNumberSelection;
+
 @end

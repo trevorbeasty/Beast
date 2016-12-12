@@ -112,6 +112,11 @@
     [[TJBStopwatch singleton] addStopwatchObserver: self.timerLabel];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.timerLabel.text = [[TJBStopwatch singleton] elapsedTimeAsFormattedString];
+}
+
 #pragma mark - <UITableViewDataSource>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -184,7 +189,21 @@
 {
     if (!self.exercise)
     {
-        NSLog(@"Please select an exercise first");
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"No Exercise Selected"
+                                                                       message: @"Please select an exercise before submitting a completed set"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+//        __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: nil];
+        
+        [alert addAction: action];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
     }
     else if (!self.weight)
     {
@@ -218,6 +237,12 @@
 }
 
 #pragma mark - <TJBNumberSelectionDelegate>
+
+- (void)didCancelNumberSelection
+{
+    self.reps = nil;
+    self.weight = nil;
+}
 
 - (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier
 {
@@ -280,12 +305,12 @@
 {
     // UIAlertController
     
-    NSString *string = [NSString stringWithFormat: @"%@: %f lbs for %f reps",
+    NSString *string = [NSString stringWithFormat: @"%@: %.01f lbs for %.00f reps",
                         self.exercise.name,
                         [self.weight floatValue],
                         [self.reps floatValue]];
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Input Confirmation"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Detail Confirmation"
                                                                    message: string
                                                             preferredStyle: UIAlertControllerStyleAlert];
     

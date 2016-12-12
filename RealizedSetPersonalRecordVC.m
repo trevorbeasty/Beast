@@ -163,7 +163,7 @@
     {
         NSString *name = self.activeExercise.name;
     
-        NSString *title = [NSString stringWithFormat: @"%@ PR's", name];
+        NSString *title = [NSString stringWithFormat: @"Personal Records: %@", name];
         
         [self.navBar.topItem setTitle: title];
     }
