@@ -8,12 +8,12 @@
 
 #import "AppDelegate.h"
 
-#import "TJBChainTemplate+CoreDataProperties.h"
 #import "TJBExerciseCategory+CoreDataProperties.h"
 #import "TJBExercise+CoreDataProperties.h"
 
 #import "TJBRealizedSetActiveEntryVC.h"
 #import "TJBRealizedSetHistoryByDay.h"
+#import "RealizedSetPersonalRecordVC.h"
 
 #import "CoreDataController.h"
 
@@ -45,9 +45,14 @@
     TJBRealizedSetHistoryByDay *vc2 = [[TJBRealizedSetHistoryByDay alloc] init];
     [vc2.tabBarItem setTitle: @"Today's History"];
     
+    RealizedSetPersonalRecordVC *vc3 = [[RealizedSetPersonalRecordVC alloc] init];
+    [vc3.tabBarItem setTitle: @"Personal Records"];
+    
+    vc1.personalRecordVC = vc3;
+    
     UITabBarController *tbc = [[UITabBarController alloc] init];
     
-    [tbc setViewControllers: @[vc1, vc2]];
+    [tbc setViewControllers: @[vc1, vc2, vc3]];
     tbc.tabBar.translucent = NO;
     
     self.window.rootViewController = tbc;

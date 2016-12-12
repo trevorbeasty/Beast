@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SelectedExerciseObserver.h"
+
 @interface TJBRealizedSetActiveEntryVC : UIViewController
 
-@property (nonatomic, weak) NSMutableArray *dependentVCs;
+@property (nonatomic, weak) UIViewController<SelectedExerciseObserver> *personalRecordVC;
 
 @end

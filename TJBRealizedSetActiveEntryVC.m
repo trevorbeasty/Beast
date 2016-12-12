@@ -143,6 +143,8 @@
     TJBRealizedSetExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     self.exercise = exercise;
     [self.navItem setTitle: exercise.name];
+    
+    [self.personalRecordVC didSelectExercise: exercise];
 }
 
 #pragma mark - Button Actions

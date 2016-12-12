@@ -21,6 +21,8 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
 
+@property (nonatomic, strong) TJBRealizedSetExercise *activeExercise;
+
 @end
 
 @implementation RealizedSetPersonalRecordVC
@@ -47,12 +49,10 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
     NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
                                                                ascending: YES];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"exercise.name = %@", self.activeExercise.name];
-    
-    [request setPredicate: predicate];
-    
-    [request setSortDescriptors: @[repsSort]];
+    NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
+                                                                 ascending: YES];
+
+    [request setSortDescriptors: @[repsSort, weightSort]];
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
@@ -64,6 +64,26 @@
     frc.delegate = nil;
     
     self.frc = frc;
+
+    
+}
+
+- (void)refineFetchedResults
+{
+    
+}
+
+#pragma mark - <SelectedExerciseObserver>
+
+- (void)didSelectExercise:(TJBRealizedSetExercise *)exercise
+{
+    NSLog(@"didSelectExercise called");
+    
+    self.activeExercise = exercise;
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"exercise.name = %@", exercise.name];
+    
+    [self.frc.fetchRequest setPredicate: predicate];
     
     NSError *error = nil;
     if (![self.frc performFetch: &error])
@@ -72,6 +92,66 @@
         abort();
     }
     
+    [self.tableView reloadData];
 }
 
+#pragma mark - <UITableViewDataSource>
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSUInteger sectionCount = [[[self frc] sections] count];
+    return sectionCount;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self frc] sections][section];
+    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+    return numberOfObjects;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    RealizedSetPersonalRecordCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"PRCell"];
+    
+    TJBRealizedSet *realizedSet = [self.frc objectAtIndexPath: indexPath];
+    
+    cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
+    cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
+    
+    // date formatter
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    cell.dateLabel.text = [dateFormatter stringFromDate: realizedSet.date];
+    
+    return cell;
+}
+
+#pragma mark - <UITableViewDelegate>
+
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

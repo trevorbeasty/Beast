@@ -74,6 +74,7 @@
 		0B843CA01DFDB5B00093F057 /* RealizedSetPersonalRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealizedSetPersonalRecordCell.h; sourceTree = "<group>"; };
 		0B843CA11DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealizedSetPersonalRecordCell.m; sourceTree = "<group>"; };
 		0B843CA21DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RealizedSetPersonalRecordCell.xib; sourceTree = "<group>"; };
+		0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedExerciseObserver.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +187,7 @@
 				0B843CA01DFDB5B00093F057 /* RealizedSetPersonalRecordCell.h */,
 				0B843CA11DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m */,
 				0B843CA21DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib */,
+				0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */,
 			);
 			name = "Realized Set Active Entry";
 			sourceTree = "<group>";

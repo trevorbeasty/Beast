@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SelectedExerciseObserver.h"
+
 @class TJBRealizedSetExercise;
 
-@interface RealizedSetPersonalRecordVC : UIViewController
-
-@property (nonatomic, strong) TJBRealizedSetExercise *activeExercise;
+@interface RealizedSetPersonalRecordVC : UIViewController <SelectedExerciseObserver>
 
 @end
