@@ -197,22 +197,19 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSUInteger sectionCount = [[[self frc] sections] count];
-    return sectionCount;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self frc] sections][section];
-    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-    return numberOfObjects;
+    return [self.refinedFRCResults count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RealizedSetPersonalRecordCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"PRCell"];
     
-    TJBRealizedSet *realizedSet = [self.frc objectAtIndexPath: indexPath];
+    TJBRealizedSet *realizedSet = self.refinedFRCResults[indexPath.row];
     
     cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
     cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
