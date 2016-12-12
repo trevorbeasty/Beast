@@ -261,6 +261,8 @@
     
     [self dismissViewControllerAnimated: YES
                              completion: nil];
+    
+    [self.personalRecordVC didSelectExercise: exercise];
 }
 
 #pragma mark - <NSFetchedResultsControllerDelegate>

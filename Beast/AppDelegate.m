@@ -43,7 +43,7 @@
     [vc1.tabBarItem setTitle: @"Active Entry"];
     
     TJBRealizedSetHistoryByDay *vc2 = [[TJBRealizedSetHistoryByDay alloc] init];
-    [vc2.tabBarItem setTitle: @"Today's History"];
+    [vc2.tabBarItem setTitle: @"Today's Log"];
     
     RealizedSetPersonalRecordVC *vc3 = [[RealizedSetPersonalRecordVC alloc] init];
     [vc3.tabBarItem setTitle: @"Personal Records"];

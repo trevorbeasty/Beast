@@ -41,31 +41,13 @@
     
     // nav bar/item
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.activeExercise.name];
-    self.navItem = navItem;
+    [self configureNavObjects];
     
+    [self.navBar.topItem setTitle: @"Select an Exercise"];
+
     // NSFetchedResultsController
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
-    NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
-                                                               ascending: YES];
-    NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
-                                                                 ascending: YES];
-
-    [request setSortDescriptors: @[repsSort, weightSort]];
-    
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                          managedObjectContext: moc
-                                                                            sectionNameKeyPath: nil
-                                                                                     cacheName: nil];
-    
-    frc.delegate = nil;
-    
-    self.frc = frc;
-
-    
+    [self createFRCIfNecessary];
 }
 
 - (void)refineFetchedResults
@@ -73,11 +55,68 @@
     
 }
 
+- (void)configureNavObjects
+{
+    if (!self.navItem)
+    {
+        UINavigationItem *navItem = [[UINavigationItem alloc] init];
+        self.navItem = navItem;
+    }
+    if (!self.navBar.items)
+    {
+        [self.navBar setItems: @[self.navItem]];
+    }
+}
+
+- (void)createFRCIfNecessary
+{
+    if (!self.frc)
+    {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
+        
+        NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
+                                                                   ascending: YES];
+        NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
+                                                                     ascending: NO];
+        
+        [request setSortDescriptors: @[repsSort, weightSort]];
+        
+        NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+        
+        NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
+                                                                              managedObjectContext: moc
+                                                                                sectionNameKeyPath: nil
+                                                                                         cacheName: nil];
+        
+        frc.delegate = nil;
+        
+        self.frc = frc;
+    }
+}
+
+#pragma mark - View Life Cycle
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (self.activeExercise)
+    {
+        NSString *name = self.activeExercise.name;
+    
+        NSString *title = [NSString stringWithFormat: @"%@ PR's", name];
+        
+        [self.navBar.topItem setTitle: title];
+    }
+}
+
 #pragma mark - <SelectedExerciseObserver>
 
 - (void)didSelectExercise:(TJBRealizedSetExercise *)exercise
 {
     NSLog(@"didSelectExercise called");
+
+    // fetched results
+    
+    [self createFRCIfNecessary];
     
     self.activeExercise = exercise;
     
