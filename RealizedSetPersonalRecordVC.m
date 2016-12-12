@@ -24,6 +24,10 @@
 
 @property (nonatomic, strong) TJBRealizedSetExercise *activeExercise;
 
+@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateColumnLabel;
+
+
 @end
 
 @implementation RealizedSetPersonalRecordVC
@@ -49,6 +53,16 @@
     // NSFetchedResultsController
     
     [self createFRCIfNecessary];
+    
+    // column labels
+    
+    self.dateColumnLabel.layer.cornerRadius = 8;
+    self.dateColumnLabel.layer.masksToBounds = YES;
+    
+    self.weightColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
+    self.weightColumnLabel.layer.borderWidth = 2.5;
+    self.weightColumnLabel.layer.cornerRadius = 8;
+    self.weightColumnLabel.layer.masksToBounds = YES;
 }
 
 - (void)refineFetchedResults
@@ -100,8 +114,6 @@
     }
     
     self.refinedFRCResults = [refinedResults copy];
-    
-    NSLog(@"%@", self.refinedFRCResults);
 }
 
 - (void)configureNavObjects
@@ -222,6 +234,16 @@
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     
     cell.dateLabel.text = [dateFormatter stringFromDate: realizedSet.date];
+    
+    // aesthetics
+    
+    cell.dateLabel.layer.cornerRadius = 8;
+    cell.dateLabel.layer.masksToBounds = YES;
+    
+    cell.weightLabel.layer.borderColor = [[UIColor greenColor] CGColor];
+    cell.weightLabel.layer.borderWidth = 2.5;
+    cell.weightLabel.layer.cornerRadius = 8;
+    cell.weightLabel.layer.masksToBounds = YES;
     
     return cell;
 }

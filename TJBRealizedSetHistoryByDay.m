@@ -95,17 +95,17 @@
     
     // column labels
     
-    self.timeColumnLabel.layer.cornerRadius = 4;
+    self.timeColumnLabel.layer.cornerRadius = 8;
     self.timeColumnLabel.layer.masksToBounds = YES;
     
     self.weightColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
     self.weightColumnLabel.layer.borderWidth = 2.5;
-    self.weightColumnLabel.layer.cornerRadius = 4;
+    self.weightColumnLabel.layer.cornerRadius = 8;
     self.weightColumnLabel.layer.masksToBounds = YES;
     
     self.repsColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
     self.repsColumnLabel.layer.borderWidth = 2.5;
-    self.repsColumnLabel.layer.cornerRadius = 6;
+    self.repsColumnLabel.layer.cornerRadius = 8;
     self.repsColumnLabel.layer.masksToBounds = YES;
 }
 
@@ -179,17 +179,17 @@
     cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
     cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
     
-    cell.timeLabel.layer.cornerRadius = 4;
+    cell.timeLabel.layer.cornerRadius = 8;
     cell.timeLabel.layer.masksToBounds = YES;
     
     cell.weightLabel.layer.borderColor = [[UIColor greenColor] CGColor];
     cell.weightLabel.layer.borderWidth = 2.5;
-    cell.weightLabel.layer.cornerRadius = 4;
+    cell.weightLabel.layer.cornerRadius = 8;
     cell.weightLabel.layer.masksToBounds = YES;
     
     cell.repsLabel.layer.borderColor = [[UIColor greenColor] CGColor];
     cell.repsLabel.layer.borderWidth = 2.5;
-    cell.repsLabel.layer.cornerRadius = 6;
+    cell.repsLabel.layer.cornerRadius = 8;
     cell.repsLabel.layer.masksToBounds = YES;
     
     return cell;
