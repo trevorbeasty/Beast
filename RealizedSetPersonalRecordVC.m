@@ -20,6 +20,7 @@
 @property (nonatomic, strong) UINavigationItem *navItem;
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
+@property (nonatomic, strong) NSArray *refinedFRCResults;
 
 @property (nonatomic, strong) TJBRealizedSetExercise *activeExercise;
 
@@ -52,7 +53,55 @@
 
 - (void)refineFetchedResults
 {
+    NSMutableArray *refinedResults = [[NSMutableArray alloc] init];
+    NSArray *fetchedObjects = self.frc.fetchedObjects;
     
+    int FRCount = (int)[self.frc.fetchedObjects count];
+    
+    int currentRepIndex;
+    int previousRepIndex;
+    
+    int currentArrayIndex;
+    int previousArrayIndex;
+    
+    if (FRCount == 0)
+    {
+        return;
+    }
+    
+    [refinedResults addObject: fetchedObjects[0]];
+
+    if (FRCount > 1)
+    {
+        previousRepIndex = (int)[fetchedObjects[0] reps];
+        previousArrayIndex = 0;
+        
+        currentRepIndex = (int)[fetchedObjects[1] reps];
+        currentArrayIndex = 1;
+        
+        if (currentRepIndex > previousRepIndex)
+        {
+            [refinedResults addObject: fetchedObjects[currentArrayIndex]];
+        }
+        
+        for (int generalIndex = 0; generalIndex < FRCount - 2; generalIndex++)
+        {
+            previousArrayIndex = currentArrayIndex;
+            previousRepIndex = currentRepIndex;
+            
+            currentArrayIndex++;
+            currentRepIndex = [fetchedObjects[currentArrayIndex] reps];
+            
+            if (currentRepIndex > previousRepIndex)
+            {
+                [refinedResults addObject: fetchedObjects[currentArrayIndex]];
+            }
+        }
+    }
+    
+    self.refinedFRCResults = [refinedResults copy];
+    
+    NSLog(@"%@", self.refinedFRCResults);
 }
 
 - (void)configureNavObjects
@@ -112,8 +161,6 @@
 
 - (void)didSelectExercise:(TJBRealizedSetExercise *)exercise
 {
-    NSLog(@"didSelectExercise called");
-
     // fetched results
     
     [self createFRCIfNecessary];
@@ -124,12 +171,24 @@
     
     [self.frc.fetchRequest setPredicate: predicate];
     
+    [self refreshFRC];
+}
+
+- (void)newSetSubmitted
+{
+    [self refreshFRC];
+}
+
+- (void)refreshFRC
+{
     NSError *error = nil;
     if (![self.frc performFetch: &error])
     {
         NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
+    
+    [self refineFetchedResults];
     
     [self.tableView reloadData];
 }

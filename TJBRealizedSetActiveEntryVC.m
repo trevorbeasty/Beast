@@ -246,6 +246,8 @@
     realizedSet.exercise = self.exercise;
     
     [self.cdc saveContext];
+    
+    [self.personalRecordVC newSetSubmitted];
 }
 
 #pragma mark - <NewExerciseCreationDelegate>

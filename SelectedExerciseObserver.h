@@ -13,5 +13,6 @@
 @protocol SelectedExerciseObserver <NSObject>
 
 - (void)didSelectExercise:(TJBRealizedSetExercise *)exercise;
+- (void)newSetSubmitted;
 
 @end
