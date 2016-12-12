@@ -11,9 +11,7 @@
 #import "TJBExerciseCategory+CoreDataProperties.h"
 #import "TJBExercise+CoreDataProperties.h"
 
-#import "TJBRealizedSetActiveEntryVC.h"
-#import "TJBRealizedSetHistoryByDay.h"
-#import "RealizedSetPersonalRecordVC.h"
+#import "TJBWorkoutNavigationHub.h"
 
 #import "CoreDataController.h"
 
@@ -39,23 +37,9 @@
     
     // root view controller
     
-    TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
-    [vc1.tabBarItem setTitle: @"Active Entry"];
+    TJBWorkoutNavigationHub *wnh = [[TJBWorkoutNavigationHub alloc] init];
     
-    TJBRealizedSetHistoryByDay *vc2 = [[TJBRealizedSetHistoryByDay alloc] init];
-    [vc2.tabBarItem setTitle: @"Today's Log"];
-    
-    RealizedSetPersonalRecordVC *vc3 = [[RealizedSetPersonalRecordVC alloc] init];
-    [vc3.tabBarItem setTitle: @"Personal Records"];
-    
-    vc1.personalRecordVC = vc3;
-    
-    UITabBarController *tbc = [[UITabBarController alloc] init];
-    
-    [tbc setViewControllers: @[vc1, vc2, vc3]];
-    tbc.tabBar.translucent = NO;
-    
-    self.window.rootViewController = tbc;
+    self.window.rootViewController = wnh;
     
     return YES;
 }

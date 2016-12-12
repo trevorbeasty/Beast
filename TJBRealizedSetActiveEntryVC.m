@@ -59,6 +59,14 @@
     // navigation bar
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select an Exercise"];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Home"
+                                                                      style: UIBarButtonItemStyleDone
+                                                                     target: self
+                                                                     action: @selector(didPressDone)];
+    
+    [navItem setLeftBarButtonItem: barButtonItem];
+    
     self.navItem = navItem;
     
     [self.navigationBar setItems: @[navItem]];
@@ -149,6 +157,12 @@
 
 #pragma mark - Button Actions
 
+- (void)didPressDone
+{
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+}
+
 - (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NSString *)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
 {
     UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
@@ -188,9 +202,7 @@
     }
     else
     {
-        [self dismissViewControllerAnimated: NO
-                                 completion: nil];
-            
+        
         [self addRealizedSetToCoreData];
         [self.cdc saveContext];
             

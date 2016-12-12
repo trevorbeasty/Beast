@@ -31,6 +31,8 @@
 		0B843C9F1DFDB3460093F057 /* RealizedSetPersonalRecordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C9D1DFDB3460093F057 /* RealizedSetPersonalRecordVC.xib */; };
 		0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CA11DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m */; };
 		0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CA21DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib */; };
+		0B843CAA1DFEF8E50093F057 /* TJBWorkoutNavigationHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */; };
+		0B843CAB1DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +77,9 @@
 		0B843CA11DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealizedSetPersonalRecordCell.m; sourceTree = "<group>"; };
 		0B843CA21DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RealizedSetPersonalRecordCell.xib; sourceTree = "<group>"; };
 		0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedExerciseObserver.h; sourceTree = "<group>"; };
+		0B843CA71DFEF8E50093F057 /* TJBWorkoutNavigationHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBWorkoutNavigationHub.h; sourceTree = "<group>"; };
+		0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBWorkoutNavigationHub.m; sourceTree = "<group>"; };
+		0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBWorkoutNavigationHub.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +151,7 @@
 		0B517BD91DF88641009981F9 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC's */,
 				0B843C901DFB7E9C0093F057 /* Realized Set Active Entry */,
 				0B517BDA1DF88651009981F9 /* NumberSelection */,
 			);
@@ -190,6 +196,16 @@
 				0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */,
 			);
 			name = "Realized Set Active Entry";
+			sourceTree = "<group>";
+		};
+		0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC's */ = {
+			isa = PBXGroup;
+			children = (
+				0B843CA71DFEF8E50093F057 /* TJBWorkoutNavigationHub.h */,
+				0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */,
+				0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */,
+			);
+			name = "Home Tab Bar VC's";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B843CAB1DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
 				0B843C9F1DFDB3460093F057 /* RealizedSetPersonalRecordVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
@@ -279,6 +296,7 @@
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */,
 				0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */,
+				0B843CAA1DFEF8E50093F057 /* TJBWorkoutNavigationHub.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B843C9E1DFDB3460093F057 /* RealizedSetPersonalRecordVC.m in Sources */,
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
