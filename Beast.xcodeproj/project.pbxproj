@@ -33,6 +33,8 @@
 		0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CA21DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib */; };
 		0B843CAA1DFEF8E50093F057 /* TJBWorkoutNavigationHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */; };
 		0B843CAB1DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */; };
+		0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */; };
+		0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +82,9 @@
 		0B843CA71DFEF8E50093F057 /* TJBWorkoutNavigationHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBWorkoutNavigationHub.h; sourceTree = "<group>"; };
 		0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBWorkoutNavigationHub.m; sourceTree = "<group>"; };
 		0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBWorkoutNavigationHub.xib; sourceTree = "<group>"; };
+		0B843CB31DFF65110093F057 /* TJBCircuitDesignVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitDesignVC.h; sourceTree = "<group>"; };
+		0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitDesignVC.m; sourceTree = "<group>"; };
+		0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitDesignVC.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +156,7 @@
 		0B517BD91DF88641009981F9 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0B843CB21DFF64BD0093F057 /* Circuit / Superset Mode */,
 				0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC's */,
 				0B843C901DFB7E9C0093F057 /* Realized Set Active Entry */,
 				0B517BDA1DF88651009981F9 /* NumberSelection */,
@@ -206,6 +212,16 @@
 				0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */,
 			);
 			name = "Home Tab Bar VC's";
+			sourceTree = "<group>";
+		};
+		0B843CB21DFF64BD0093F057 /* Circuit / Superset Mode */ = {
+			isa = PBXGroup;
+			children = (
+				0B843CB31DFF65110093F057 /* TJBCircuitDesignVC.h */,
+				0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */,
+				0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */,
+			);
+			name = "Circuit / Superset Mode";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,6 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B843CAB1DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib in Resources */,
+				0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
 				0B843C9F1DFDB3460093F057 /* RealizedSetPersonalRecordVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
@@ -292,6 +309,7 @@
 				0B843C831DFA28270093F057 /* TJBNumberSelectionCell.m in Sources */,
 				0B843C941DFB80640093F057 /* TJBRealizedSetHistoryByDay.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
+				0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */,
 				0B843C991DFCAB470093F057 /* RealizedSetHistoryCell.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */,

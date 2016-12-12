@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBWorkoutNavigationHub">
             <connections>
+                <outlet property="circuitOrSupersetButton" destination="5vd-Pz-T1I" id="t90-1v-o1S"/>
                 <outlet property="standaloneSetFreeformButton" destination="dl0-qJ-myg" id="ngZ-fI-ffX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -39,16 +40,27 @@
                         <action selector="didPressStandaloneSetFreeformButton:" destination="-1" eventType="touchUpInside" id="BYc-zk-4iS"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vd-Pz-T1I">
+                    <rect key="frame" x="8" y="166" width="359" height="100"/>
+                    <state key="normal" title="Circuit / Superset"/>
+                    <connections>
+                        <action selector="didPressCircuitOrSupersetButton:" destination="-1" eventType="touchUpInside" id="25L-cS-m8c"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vZc-hY-Un9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5vZ-vC-jKv"/>
                 <constraint firstItem="vZc-hY-Un9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="9e1-hJ-dKo"/>
                 <constraint firstItem="dl0-qJ-myg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="E06-Dx-c6Z"/>
+                <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="8" id="ITZ-X6-d6J"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="KNR-sx-yQv"/>
                 <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="8" id="Qg6-pI-8SD"/>
                 <constraint firstItem="dl0-qJ-myg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="YhO-R0-sDb"/>
                 <constraint firstItem="dl0-qJ-myg" firstAttribute="top" secondItem="vZc-hY-Un9" secondAttribute="bottom" constant="8" id="lCX-dr-nsr"/>
                 <constraint firstAttribute="trailing" secondItem="vZc-hY-Un9" secondAttribute="trailing" id="mHI-ah-tvj"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="8" id="mLY-af-sos"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="yRn-eY-84F"/>
             </constraints>
         </view>
     </objects>

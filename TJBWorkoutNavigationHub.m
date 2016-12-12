@@ -11,12 +11,15 @@
 #import "TJBRealizedSetActiveEntryVC.h"
 #import "TJBRealizedSetHistoryByDay.h"
 #import "RealizedSetPersonalRecordVC.h"
+#import "TJBCircuitDesignVC.h"
 
 @interface TJBWorkoutNavigationHub ()
 
 @property (weak, nonatomic) IBOutlet UIButton *standaloneSetFreeformButton;
+@property (weak, nonatomic) IBOutlet UIButton *circuitOrSupersetButton;
 
 - (IBAction)didPressStandaloneSetFreeformButton:(id)sender;
+- (IBAction)didPressCircuitOrSupersetButton:(id)sender;
 
 @end
 
@@ -31,6 +34,10 @@
     self.standaloneSetFreeformButton.backgroundColor = [UIColor blueColor];
     [self.standaloneSetFreeformButton setTitleColor: [UIColor whiteColor]
                                            forState: UIControlStateNormal];
+    
+    self.circuitOrSupersetButton.backgroundColor = [UIColor blueColor];
+    [self.circuitOrSupersetButton setTitleColor: [UIColor whiteColor]
+                                       forState: UIControlStateNormal];
 }
 
 #pragma mark - Button Actions
@@ -57,4 +64,14 @@
                        animated: NO
                      completion: nil];
 }
+
+- (IBAction)didPressCircuitOrSupersetButton:(id)sender
+{
+    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
+    
+    [self presentViewController: vc
+                       animated: NO
+                     completion: nil];
+}
+
 @end
