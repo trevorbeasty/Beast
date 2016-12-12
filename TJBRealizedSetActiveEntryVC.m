@@ -189,9 +189,9 @@
     else if (!self.weight)
     {
         [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"weight"
-                                                       numberMultiple: [NSNumber numberWithFloat: 2.5]
-                                                                title: @"Select Weight"
-                                                             animated: YES];
+                                                   numberMultiple: [NSNumber numberWithFloat: 2.5]
+                                                            title: @"Select Weight"
+                                                         animated: YES];
     }
     else if (!self.reps)
     {
@@ -202,14 +202,7 @@
     }
     else
     {
-        
-        [self addRealizedSetToCoreData];
-        [self.cdc saveContext];
-            
-        self.reps = nil;
-        self.weight = nil;
-        
-        [[TJBStopwatch singleton] resetStopwatch];
+        [self presentSubmittedSetSummary];
     }
 }
 
@@ -281,9 +274,63 @@
 
 #pragma mark - <NSFetchedResultsControllerDelegate>
 
+#pragma mark - Notification to User
 
+- (void)presentSubmittedSetSummary
+{
+    // UIAlertController
+    
+    NSString *string = [NSString stringWithFormat: @"%@: %f lbs for %f reps",
+                        self.exercise.name,
+                        [self.weight floatValue],
+                        [self.reps floatValue]];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Input Confirmation"
+                                                                   message: string
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    // capture a weak reference to self in order to avoid a strong reference cycle
+    
+    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+    
+    void (^action1Block)(UIAlertAction *) = ^(UIAlertAction *action){
+        [weakSelf cancelSubmission];
+    };
+    
+    void (^action2Block)(UIAlertAction *) = ^(UIAlertAction *action){
+        [weakSelf confirmSubmission];
+    };
+    
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle: @"Cancel"
+                                                      style: UIAlertActionStyleDefault
+                                                    handler: action1Block];
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle: @"Confirm"
+                                                      style: UIAlertActionStyleDefault
+                                                    handler: action2Block];
+    
+    [alert addAction: action1];
+    [alert addAction: action2];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
+}
 
+- (void)cancelSubmission
+{
+    self.reps = nil;
+    self.weight = nil;
+}
 
+- (void)confirmSubmission
+{
+    [[TJBStopwatch singleton] resetStopwatch];
+    
+    [self addRealizedSetToCoreData];
+    
+    self.reps = nil;
+    self.weight = nil;
+}
 
 @end
 
