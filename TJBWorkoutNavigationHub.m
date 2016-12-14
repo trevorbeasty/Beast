@@ -13,6 +13,8 @@
 #import "RealizedSetPersonalRecordVC.h"
 #import "TJBCircuitDesignVC.h"
 
+#import "CircuitDesignExerciseComponent.h"
+
 @interface TJBWorkoutNavigationHub ()
 
 @property (weak, nonatomic) IBOutlet UIButton *standaloneSetFreeformButton;
@@ -20,6 +22,9 @@
 
 - (IBAction)didPressStandaloneSetFreeformButton:(id)sender;
 - (IBAction)didPressCircuitOrSupersetButton:(id)sender;
+
+- (IBAction)test:(id)sender;
+
 
 @end
 
@@ -74,4 +79,44 @@
                      completion: nil];
 }
 
+- (IBAction)test:(id)sender
+{
+    CircuitDesignExerciseComponent *vc = [[CircuitDesignExerciseComponent alloc] init];
+    
+    vc.chainIndex = [NSNumber numberWithInt: 3];
+    vc.exerciseName = @"Backsquat";
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

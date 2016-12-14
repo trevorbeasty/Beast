@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *numberOfExercisesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfRoundsLabel;
 
+- (IBAction)didPressLaunchTemplate:(id)sender;
 
 @end
 
@@ -67,6 +68,13 @@
     
     _numberOfRounds = number;
     self.numberOfRoundsLabel.text = [[NSNumber numberWithDouble: number] stringValue];
+}
+
+#pragma mark - Button Actions
+
+- (IBAction)didPressLaunchTemplate:(id)sender
+{
+    
 }
 
 @end
