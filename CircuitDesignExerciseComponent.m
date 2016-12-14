@@ -92,8 +92,21 @@
     [self.constraintMapping setObject: restColumnLabel
                                    forKey: @"restColumnLabel"];
     restColumnLabel.backgroundColor = [UIColor grayColor];
+    
+    // add a button
         
-
+    UIButton *testButton = [[UIButton alloc] init];
+    
+    [testButton setTitle: @"push me ya fuck"
+                forState: UIControlStateNormal];
+    [testButton addTarget: self
+                   action: @selector(testPress)
+         forControlEvents: UIControlEventTouchUpInside];
+    testButton.backgroundColor = [UIColor brownColor];
+    [self.constraintMapping setObject: testButton
+                               forKey: @"testButton"];
+    [containerView addSubview: testButton];
+    testButton.translatesAutoresizingMaskIntoConstraints = NO;
         
     NSArray *horizontalConstraint1 = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-8-[titleLabel]-8-|"
                                                                                  options: 0
@@ -103,36 +116,43 @@
                                                                                 options: 0
                                                                                 metrics: nil
                                                                                   views: self.constraintMapping];
-    NSArray *verticalConstraint1 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[restColumnLabel(==200)]-8-|"
+    NSArray *horizontalConstraint3 = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-8-[testButton]-8-|"
+                                                                             options: 0
+                                                                             metrics: nil
+                                                                               views: self.constraintMapping];
+    NSArray *verticalConstraint1 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[restColumnLabel(==200)]-8-[testButton(==100)]-8-|"
                                                                                options: 0
                                                                                metrics: nil
                                                                                  views: self.constraintMapping];
-    NSArray *verticalConstraint2 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[roundColumnLabel(==200)]-8-|"
+    NSArray *verticalConstraint2 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[roundColumnLabel(==200)]-8-[testButton(==100)]-8-|"
                                                                            options: 0
                                                                            metrics: nil
                                                                              views: self.constraintMapping];
-    NSArray *verticalConstraint3 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[weightColumnLabel(==200)]-8-|"
+    NSArray *verticalConstraint3 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[weightColumnLabel(==200)]-8-[testButton(==100)]-8-|"
                                                                            options: 0
                                                                            metrics: nil
                                                                              views: self.constraintMapping];
-    NSArray *verticalConstraint4 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[repsColumnLabel(==200)]-8-|"
+    NSArray *verticalConstraint4 = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-8-[titleLabel]-8-[repsColumnLabel(==200)]-8-[testButton(==100)]-8-|"
                                                                            options: 0
                                                                            metrics: nil
                                                                              views: self.constraintMapping];
     
     [containerView addConstraints: horizontalConstraint1];
     [containerView addConstraints: horizontalConstraint2];
+    [containerView addConstraints: horizontalConstraint3];
     [containerView addConstraints: verticalConstraint1];
     [containerView addConstraints: verticalConstraint2];
     [containerView addConstraints: verticalConstraint3];
     [containerView addConstraints: verticalConstraint4];
     
+    
     self.view = containerView;
-        
-
 }
 
-
+- (void)testPress
+{
+    NSLog(@"succceeeeesssss!!");
+}
 
 @end
 
