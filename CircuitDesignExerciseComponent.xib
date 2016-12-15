@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CircuitDesignExerciseComponent">
+            <connections>
+                <outlet property="repsColumnLabel" destination="Ch8-ol-3yf" id="wd9-YV-4fa"/>
+                <outlet property="restColumnLabel" destination="RUO-yi-XKP" id="U6a-sC-wgQ"/>
+                <outlet property="roundColumnLabel" destination="WCp-I0-mw9" id="oVI-Uy-iZS"/>
+                <outlet property="titleLabel" destination="9TQ-y1-oTo" id="6qt-4b-SQM"/>
+                <outlet property="view" destination="iN0-l3-epB" id="Px4-Kg-bhQ"/>
+                <outlet property="weightColumnLabel" destination="PAT-9K-79J" id="zS5-D2-cho"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="326"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chain Index: Exercise Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9TQ-y1-oTo">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="PMM-3o-VVL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WCp-I0-mw9">
+                    <rect key="frame" x="0.0" y="40" width="94" height="40"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ch8-ol-3yf">
+                    <rect key="frame" x="187.5" y="40" width="94" height="40"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RUO-yi-XKP">
+                    <rect key="frame" x="281.5" y="40" width="93.5" height="40"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAT-9K-79J">
+                    <rect key="frame" x="94" y="40" width="93.5" height="40"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="RUO-yi-XKP" secondAttribute="trailing" id="6y1-vW-eT8"/>
+                <constraint firstItem="PAT-9K-79J" firstAttribute="width" secondItem="WCp-I0-mw9" secondAttribute="width" id="CwT-Hs-7Bi"/>
+                <constraint firstItem="RUO-yi-XKP" firstAttribute="width" secondItem="WCp-I0-mw9" secondAttribute="width" id="MI8-DY-Z7L"/>
+                <constraint firstItem="PAT-9K-79J" firstAttribute="height" secondItem="WCp-I0-mw9" secondAttribute="height" id="OgM-Nl-ssD"/>
+                <constraint firstItem="Ch8-ol-3yf" firstAttribute="height" secondItem="WCp-I0-mw9" secondAttribute="height" id="SCk-5A-TGL"/>
+                <constraint firstItem="PAT-9K-79J" firstAttribute="top" secondItem="9TQ-y1-oTo" secondAttribute="bottom" id="SWQ-cY-XHx"/>
+                <constraint firstItem="WCp-I0-mw9" firstAttribute="height" secondItem="9TQ-y1-oTo" secondAttribute="height" id="T13-n6-g69"/>
+                <constraint firstItem="RUO-yi-XKP" firstAttribute="top" secondItem="9TQ-y1-oTo" secondAttribute="bottom" id="VbU-z8-pqB"/>
+                <constraint firstItem="9TQ-y1-oTo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Z8z-yE-afB"/>
+                <constraint firstItem="RUO-yi-XKP" firstAttribute="leading" secondItem="Ch8-ol-3yf" secondAttribute="trailing" id="bsv-6m-NW5"/>
+                <constraint firstItem="WCp-I0-mw9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cCp-Ym-wVt"/>
+                <constraint firstItem="Ch8-ol-3yf" firstAttribute="leading" secondItem="PAT-9K-79J" secondAttribute="trailing" id="dEH-Rk-6iW"/>
+                <constraint firstItem="WCp-I0-mw9" firstAttribute="top" secondItem="9TQ-y1-oTo" secondAttribute="bottom" id="gFM-ig-PPg"/>
+                <constraint firstItem="Ch8-ol-3yf" firstAttribute="width" secondItem="WCp-I0-mw9" secondAttribute="width" id="gFO-JK-VJI"/>
+                <constraint firstItem="9TQ-y1-oTo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="gHl-0F-wPe"/>
+                <constraint firstItem="Ch8-ol-3yf" firstAttribute="leading" secondItem="PAT-9K-79J" secondAttribute="trailing" id="oJR-ri-cEP"/>
+                <constraint firstItem="RUO-yi-XKP" firstAttribute="leading" secondItem="Ch8-ol-3yf" secondAttribute="trailing" id="ryh-UN-6eg"/>
+                <constraint firstItem="RUO-yi-XKP" firstAttribute="height" secondItem="WCp-I0-mw9" secondAttribute="height" id="t9E-uA-lvs"/>
+                <constraint firstItem="Ch8-ol-3yf" firstAttribute="top" secondItem="9TQ-y1-oTo" secondAttribute="bottom" id="zDB-ri-A1E"/>
+                <constraint firstAttribute="trailing" secondItem="9TQ-y1-oTo" secondAttribute="trailing" id="za3-ih-xv9"/>
+                <constraint firstItem="PAT-9K-79J" firstAttribute="leading" secondItem="WCp-I0-mw9" secondAttribute="trailing" id="zue-aV-LFf"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="34.5" y="-116"/>
+        </view>
+    </objects>
+</document>

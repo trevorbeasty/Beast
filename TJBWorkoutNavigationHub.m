@@ -43,6 +43,13 @@
     self.circuitOrSupersetButton.backgroundColor = [UIColor blueColor];
     [self.circuitOrSupersetButton setTitleColor: [UIColor whiteColor]
                                        forState: UIControlStateNormal];
+    
+    // test
+    
+//    UIView *testView = [[NSBundle mainBundle] loadNibNamed: @"testView"
+//                                                     owner: self
+//                                                   options: nil][0];
+//    self.view = testView;
 }
 
 #pragma mark - Button Actions

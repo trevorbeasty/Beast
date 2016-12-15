@@ -36,6 +36,9 @@
 		0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */; };
 		0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */; };
 		0B843CBA1E0030D80093F057 /* CircuitDesignExerciseComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CB91E0030D80093F057 /* CircuitDesignExerciseComponent.m */; };
+		0B843CC11E02D08B0093F057 /* CircuitDesignExerciseComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CC01E02D08B0093F057 /* CircuitDesignExerciseComponent.xib */; };
+		0B843CC51E02D34A0093F057 /* CircuitDesignRowComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */; };
+		0B843CC61E02D34A0093F057 /* CircuitDesignRowComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +91,10 @@
 		0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitDesignVC.xib; sourceTree = "<group>"; };
 		0B843CB81E0030D80093F057 /* CircuitDesignExerciseComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircuitDesignExerciseComponent.h; sourceTree = "<group>"; };
 		0B843CB91E0030D80093F057 /* CircuitDesignExerciseComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircuitDesignExerciseComponent.m; sourceTree = "<group>"; };
+		0B843CC01E02D08B0093F057 /* CircuitDesignExerciseComponent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircuitDesignExerciseComponent.xib; sourceTree = "<group>"; };
+		0B843CC21E02D34A0093F057 /* CircuitDesignRowComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircuitDesignRowComponent.h; sourceTree = "<group>"; };
+		0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircuitDesignRowComponent.m; sourceTree = "<group>"; };
+		0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CircuitDesignRowComponent.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +232,10 @@
 				0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */,
 				0B843CB81E0030D80093F057 /* CircuitDesignExerciseComponent.h */,
 				0B843CB91E0030D80093F057 /* CircuitDesignExerciseComponent.m */,
+				0B843CC01E02D08B0093F057 /* CircuitDesignExerciseComponent.xib */,
+				0B843CC21E02D34A0093F057 /* CircuitDesignRowComponent.h */,
+				0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */,
+				0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */,
 			);
 			name = "Circuit Mode";
 			sourceTree = "<group>";
@@ -292,9 +303,11 @@
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
 				0B843C9F1DFDB3460093F057 /* RealizedSetPersonalRecordVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
+				0B843CC61E02D34A0093F057 /* CircuitDesignRowComponent.xib in Resources */,
 				0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */,
 				0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */,
 				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
+				0B843CC11E02D08B0093F057 /* CircuitDesignExerciseComponent.xib in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
 				0B517BE01DF888A3009981F9 /* TJBNumberSelection.storyboard in Resources */,
@@ -321,6 +334,7 @@
 				0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */,
 				0B843CAA1DFEF8E50093F057 /* TJBWorkoutNavigationHub.m in Sources */,
 				0B843CBA1E0030D80093F057 /* CircuitDesignExerciseComponent.m in Sources */,
+				0B843CC51E02D34A0093F057 /* CircuitDesignRowComponent.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B843C9E1DFDB3460093F057 /* RealizedSetPersonalRecordVC.m in Sources */,
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
