@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 
 @end
 
@@ -57,14 +58,18 @@
     
     // row components
     
+    NSString *thinLineLabel = @"thinLineLabel";
+    [self.constraintMapping setObject: self.thinLineLabel
+                                   forKey: thinLineLabel];
+    
     NSString *roundColumnLabel = @"roundColumnLabel";
-    [self.constraintMapping setObject: self.roundColumnLabel
-                                   forKey: roundColumnLabel];
+    [self.constraintMapping setObject:self.roundColumnLabel
+                               forKey: roundColumnLabel];
     
     
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", roundColumnLabel]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", thinLineLabel]];
     
     for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++)
     {

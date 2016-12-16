@@ -32,11 +32,12 @@
     CGFloat screenWidth = screenBounds.size.width;
     
     CGFloat rowHeight = 30;
-    CGFloat componentSpacing = 20;
+    CGFloat componentToComponentSpacing = 20;
     CGFloat initialSpacing = 8;
-    CGFloat componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2);
+    CGFloat componentStyleSpacing = 8;
+    CGFloat componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
     int numberOfComponents = [self.numberOfExercises intValue];
-    CGFloat scrollSubviewHeight = componentHeight * numberOfComponents + componentSpacing * (numberOfComponents - 1) + initialSpacing;
+    CGFloat scrollSubviewHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + initialSpacing;
     
     UIView *scrollSubview = [[UIView alloc] initWithFrame: CGRectMake(0, 0, screenWidth, scrollSubviewHeight)];
     [self.scrollView addSubview: scrollSubview];
@@ -89,7 +90,7 @@
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]-%d-",
                                     dynamicComponentName,
                                     (int)componentHeight,
-                                    (int)componentSpacing];
+                                    (int)componentToComponentSpacing];
         }
         
         [verticalLayoutConstraintsString appendString: verticalAppendString];
