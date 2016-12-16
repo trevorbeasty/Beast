@@ -28,9 +28,17 @@
 {
     // scroll view
     
-    NSLog(@"scroll view auto resizing mask: %d", self.scrollView.translatesAutoresizingMaskIntoConstraints);
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    CGFloat screenWidth = screenBounds.size.width;
     
-    UIView *scrollSubview = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 600, 2000)];
+    CGFloat rowHeight = 30;
+    CGFloat componentSpacing = 20;
+    CGFloat initialSpacing = 8;
+    CGFloat componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2);
+    int numberOfComponents = [self.numberOfExercises intValue];
+    CGFloat scrollSubviewHeight = componentHeight * numberOfComponents + componentSpacing * (numberOfComponents - 1) + initialSpacing;
+    
+    UIView *scrollSubview = [[UIView alloc] initWithFrame: CGRectMake(0, 0, screenWidth, scrollSubviewHeight)];
     [self.scrollView addSubview: scrollSubview];
     self.scrollView.contentSize = scrollSubview.frame.size;
 
@@ -41,7 +49,8 @@
     // row components
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:|-0-"]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:|-%d-",
+                                                 (int)initialSpacing]];
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++)
     {
@@ -71,13 +80,16 @@
         
         if (i == [self.numberOfExercises intValue] - 1)
         {
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==200)]",
-                                    dynamicComponentName];
+            verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]",
+                                    dynamicComponentName,
+                                    (int)componentHeight];
         }
         else
         {
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==200)]-0-",
-                                    dynamicComponentName];
+            verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]-%d-",
+                                    dynamicComponentName,
+                                    (int)componentHeight,
+                                    (int)componentSpacing];
         }
         
         [verticalLayoutConstraintsString appendString: verticalAppendString];
