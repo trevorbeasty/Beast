@@ -10,7 +10,6 @@
 
 @interface CircuitDesignRowComponent ()
 
-@property (weak, nonatomic) IBOutlet UILabel *roundLabel;
 @property (weak, nonatomic) IBOutlet UIButton *weightButton;
 @property (weak, nonatomic) IBOutlet UIButton *repsButton;
 @property (weak, nonatomic) IBOutlet UIButton *restButton;

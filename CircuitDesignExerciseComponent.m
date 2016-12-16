@@ -81,6 +81,8 @@
         
         [self.view addSubview: rowVC.view];
         
+        rowVC.roundLabel.text = [NSString stringWithFormat: @"Round %d", i + 1];
+        
         NSString *dynamicRowName = [NSString stringWithFormat: @"rowComponent%d",
                                     i];
         

@@ -10,4 +10,6 @@
 
 @interface CircuitDesignRowComponent : UIViewController
 
+@property (weak, nonatomic) IBOutlet UILabel *roundLabel;
+
 @end
