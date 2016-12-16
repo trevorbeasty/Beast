@@ -8,6 +8,8 @@
 
 #import "TJBCircuitDesignVC.h"
 
+#import "TJBCircuitTemplateGeneratorVC.h"
+
 @interface TJBCircuitDesignVC ()
 
 {
@@ -74,7 +76,51 @@
 
 - (IBAction)didPressLaunchTemplate:(id)sender
 {
+    TJBCircuitTemplateGeneratorVC *vc = [[TJBCircuitTemplateGeneratorVC alloc] initWithTargetingWeight: [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex]
+                                                                                         targetingReps: [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex]
+                                                                                         targetingRest: [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex]
+                                                                                    targetsVaryByRound: [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex]
+                                                                                     numberOfExercises: [NSNumber numberWithDouble: _numberOfExercises]
+                                                                                        numberOfRounds: [NSNumber numberWithDouble: _numberOfRounds]];
     
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

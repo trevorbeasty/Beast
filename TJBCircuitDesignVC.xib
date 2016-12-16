@@ -85,29 +85,29 @@
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="w23-oF-E60">
                     <rect key="frame" x="206" y="185" width="161" height="29"/>
                     <segments>
-                        <segment title="Yes"/>
                         <segment title="No"/>
+                        <segment title="Yes"/>
                     </segments>
                 </segmentedControl>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="MyY-jC-Jgl">
                     <rect key="frame" x="206" y="243" width="161" height="29"/>
                     <segments>
-                        <segment title="Yes"/>
                         <segment title="No"/>
+                        <segment title="Yes"/>
                     </segments>
                 </segmentedControl>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Y87-lL-n3h">
                     <rect key="frame" x="206" y="301" width="161" height="29"/>
                     <segments>
-                        <segment title="Yes"/>
                         <segment title="No"/>
+                        <segment title="Yes"/>
                     </segments>
                 </segmentedControl>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Lxb-na-OHg">
                     <rect key="frame" x="206" y="359" width="161" height="29"/>
                     <segments>
-                        <segment title="Yes"/>
                         <segment title="No"/>
+                        <segment title="Yes"/>
                     </segments>
                 </segmentedControl>
                 <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="nOi-90-aP7">

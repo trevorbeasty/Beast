@@ -20,10 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
 
-@property (strong, nonatomic) NSMutableArray *rowComponentControllers;
-
-
-
 @end
 
 @implementation CircuitDesignExerciseComponent
@@ -61,8 +57,6 @@
 
 - (void)viewDidLoad
 {
-    NSLog(@"viewDidLoad");
-    
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
     // labels
@@ -91,9 +85,6 @@
         [self addChildViewController: rowVC];
         
         [self.view addSubview: rowVC.view];
-        
-        NSLog(@"number of childViewControllers: %lu",
-              (unsigned long)[self.childViewControllers count]);
         
         NSString *dynamicRowName = [NSString stringWithFormat: @"rowComponent%d",
                                     i];

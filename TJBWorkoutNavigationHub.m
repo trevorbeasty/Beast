@@ -13,7 +13,7 @@
 #import "RealizedSetPersonalRecordVC.h"
 #import "TJBCircuitDesignVC.h"
 
-#import "CircuitDesignExerciseComponent.h"
+#import "TJBCircuitTemplateGeneratorVC.h"
 
 @interface TJBWorkoutNavigationHub ()
 
@@ -88,15 +88,15 @@
 
 - (IBAction)test:(id)sender
 {
-    CircuitDesignExerciseComponent *vc = [[CircuitDesignExerciseComponent alloc] init];
-    
-    vc.chainIndex = [NSNumber numberWithInt: 3];
-    vc.exerciseName = @"Backsquat";
-    vc.numberOfRounds = [NSNumber numberWithInt: 4];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
+//    TJBCircuitTemplateGeneratorVC *vc = [[CircuitDesignExerciseComponent alloc] init];
+//    
+//    vc.chainIndex = [NSNumber numberWithInt: 3];
+//    vc.exerciseName = @"Backsquat";
+//    vc.numberOfRounds = [NSNumber numberWithInt: 4];
+//    
+//    [self presentViewController: vc
+//                       animated: YES
+//                     completion: nil];
 }
 
 @end

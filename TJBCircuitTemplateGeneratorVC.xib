@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitTemplateGeneratorVC">
+            <connections>
+                <outlet property="navBar" destination="4e9-iU-UYB" id="Y9v-n6-R7r"/>
+                <outlet property="view" destination="iN0-l3-epB" id="8hl-JL-Dmb"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4e9-iU-UYB">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="FbH-Pb-dO6"/>
+                    </constraints>
+                    <items>
+                        <navigationItem title="Circuit Name" id="zXu-vK-wX8"/>
+                    </items>
+                </navigationBar>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="4e9-iU-UYB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aWh-li-pAf"/>
+                <constraint firstItem="4e9-iU-UYB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cbD-Ka-v5m"/>
+                <constraint firstAttribute="trailing" secondItem="4e9-iU-UYB" secondAttribute="trailing" id="gZ6-Gr-Uhq"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

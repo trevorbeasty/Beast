@@ -21,8 +21,6 @@
 @property (nonatomic, strong) NSNumber *chainIndex;
 @property (nonatomic, strong) NSString *exerciseName;
 
-@property (nonatomic, strong) NSMutableDictionary *codedViewMapping;
-
 - (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainIndex:(NSNumber *)chainIndex exerciseName:(NSString *)exerciseName;
 
 @end
