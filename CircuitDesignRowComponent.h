@@ -12,4 +12,12 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *roundLabel;
 
+@property (nonatomic, strong) NSNumber *targetingWeight;
+@property (nonatomic, strong) NSNumber *targetingReps;
+@property (nonatomic, strong) NSNumber *targetingRest;
+@property (nonatomic, strong) NSNumber *targetsVaryByRound;
+@property (nonatomic, strong) NSNumber *roundNumber;
+
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber;
+
 @end

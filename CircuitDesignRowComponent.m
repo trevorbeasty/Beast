@@ -24,6 +24,21 @@
 
 @implementation CircuitDesignRowComponent
 
+#pragma mark - Instantiation
+
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber
+{
+    self = [super init];
+    
+    self.targetingWeight = targetingWeight;
+    self.targetingReps = targetingReps;
+    self.targetingRest = targetingRest;
+    self.targetsVaryByRound = targetsVaryByRound;
+    self.roundNumber = roundNumber;
+    
+    return self;
+}
+
 #pragma mark - Button Actions
 
 
