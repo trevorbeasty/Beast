@@ -36,7 +36,17 @@
     CGFloat componentToComponentSpacing = 20;
     CGFloat initialSpacing = 8;
     CGFloat componentStyleSpacing = 8;
-    CGFloat componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
+    CGFloat componentHeight;
+    
+    if ([self.targetsVaryByRound intValue])
+    {
+        componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
+    }
+    else
+    {
+        componentHeight = rowHeight * 3 + componentStyleSpacing;
+    }
+    
     int numberOfComponents = [self.numberOfExercises intValue];
     CGFloat scrollSubviewHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + initialSpacing;
     

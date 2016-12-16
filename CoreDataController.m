@@ -25,7 +25,6 @@
     if (!singleton)
     {
         singleton = [[self alloc] initPrivate];
-        NSLog(@"\nCore Data Controller initialized\n");
     }
     return singleton;
 }
