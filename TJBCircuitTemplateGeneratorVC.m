@@ -15,6 +15,8 @@
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 
 @end
 
@@ -26,26 +28,19 @@
 {
     // scroll view
     
-//    CGRect mainscreenRect = [[UIScreen mainScreen] bounds];
-//    CGRect scrollableRect = mainscreenRect;
-//    scrollableRect.size.height *= 2;
+    NSLog(@"scroll view auto resizing mask: %d", self.scrollView.translatesAutoresizingMaskIntoConstraints);
     
-    UIScrollView *scrollView = (UIScrollView *)self.view;
-    scrollView.contentSize = CGSizeMake(600, 2000);
-    
-    
+    UIView *scrollSubview = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 600, 2000)];
+    [self.scrollView addSubview: scrollSubview];
+    self.scrollView.contentSize = scrollSubview.frame.size;
+
     // constraint mapping
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
     // row components
     
-//    NSString *navBar = @"navBar";
-//    [self.constraintMapping setObject: self.navBar
-//                               forKey: navBar];
-    
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-//    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", navBar]];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:|-0-"]];
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++)
@@ -62,7 +57,7 @@
         
         [self addChildViewController: vc];
         
-        [self.view addSubview: vc.view];
+        [scrollSubview addSubview: vc.view];
         
         NSString *dynamicComponentName = [NSString stringWithFormat: @"exerciseComponent%d",
                                     i];
@@ -97,7 +92,7 @@
                                                                                        metrics: nil
                                                                                          views: self.constraintMapping];
         
-        [self.view addConstraints: horizontalLayoutConstraints];
+        [scrollSubview addConstraints: horizontalLayoutConstraints];
     }
     
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
@@ -105,7 +100,7 @@
                                                                                  metrics: nil
                                                                                    views: self.constraintMapping];
     
-    [self.view addConstraints: verticalLayoutConstraints];
+    [scrollSubview addConstraints: verticalLayoutConstraints];
     
     for (CircuitDesignExerciseComponent *child in self.childViewControllers)
     {
