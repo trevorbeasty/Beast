@@ -204,6 +204,7 @@
                 <constraint firstItem="9OV-d4-mzw" firstAttribute="top" secondItem="4CG-sV-kZ2" secondAttribute="bottom" constant="8" id="xEv-Ap-gM8"/>
                 <constraint firstAttribute="trailing" secondItem="Lxb-na-OHg" secondAttribute="trailing" constant="8" id="zu3-F2-8ej"/>
             </constraints>
+            <point key="canvasLocation" x="-429" y="12"/>
         </view>
     </objects>
 </document>

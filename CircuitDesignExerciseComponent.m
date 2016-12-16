@@ -45,16 +45,6 @@
 
 #pragma mark - Views
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    NSLog(@"viewWillAppear");
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-
-}
-
 - (void)viewDidLoad
 {
     self.constraintMapping = [[NSMutableDictionary alloc] init];
@@ -115,7 +105,6 @@
         
         NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
                                                              dynamicRowName];
-        NSLog(@"%@", horizontalLayoutConstraintsString);
         
         NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horizontalLayoutConstraintsString
                                                                                        options: 0
@@ -124,8 +113,6 @@
         
         [self.view addConstraints: horizontalLayoutConstraints];
     }
-    
-    NSLog(@"%@", verticalLayoutConstraintsString);
     
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
                                                                                  options: 0

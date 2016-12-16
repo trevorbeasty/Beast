@@ -88,15 +88,7 @@
 
 - (IBAction)test:(id)sender
 {
-//    TJBCircuitTemplateGeneratorVC *vc = [[CircuitDesignExerciseComponent alloc] init];
-//    
-//    vc.chainIndex = [NSNumber numberWithInt: 3];
-//    vc.exerciseName = @"Backsquat";
-//    vc.numberOfRounds = [NSNumber numberWithInt: 4];
-//    
-//    [self presentViewController: vc
-//                       animated: YES
-//                     completion: nil];
+
 }
 
 @end

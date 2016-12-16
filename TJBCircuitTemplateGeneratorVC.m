@@ -24,16 +24,29 @@
 
 - (void)viewDidLoad
 {
+    // scroll view
+    
+//    CGRect mainscreenRect = [[UIScreen mainScreen] bounds];
+//    CGRect scrollableRect = mainscreenRect;
+//    scrollableRect.size.height *= 2;
+    
+    UIScrollView *scrollView = (UIScrollView *)self.view;
+    scrollView.contentSize = CGSizeMake(600, 2000);
+    
+    
+    // constraint mapping
+    
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
     // row components
     
-    NSString *navBar = @"navBar";
-    [self.constraintMapping setObject: self.navBar
-                               forKey: navBar];
+//    NSString *navBar = @"navBar";
+//    [self.constraintMapping setObject: self.navBar
+//                               forKey: navBar];
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", navBar]];
+//    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", navBar]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:|-0-"]];
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++)
     {
@@ -78,7 +91,6 @@
         
         NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
                                                        dynamicComponentName];
-        NSLog(@"%@", horizontalLayoutConstraintsString);
         
         NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horizontalLayoutConstraintsString
                                                                                        options: 0
@@ -87,8 +99,6 @@
         
         [self.view addConstraints: horizontalLayoutConstraints];
     }
-    
-    NSLog(@"%@", verticalLayoutConstraintsString);
     
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
                                                                                  options: 0

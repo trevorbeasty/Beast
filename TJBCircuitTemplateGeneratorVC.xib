@@ -12,11 +12,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitTemplateGeneratorVC">
             <connections>
                 <outlet property="navBar" destination="4e9-iU-UYB" id="Y9v-n6-R7r"/>
-                <outlet property="view" destination="iN0-l3-epB" id="8hl-JL-Dmb"/>
+                <outlet property="view" destination="yuv-uS-1UT" id="lXr-z1-cFu"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UIScrollView">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -37,5 +37,10 @@
                 <constraint firstAttribute="trailing" secondItem="4e9-iU-UYB" secondAttribute="trailing" id="gZ6-Gr-Uhq"/>
             </constraints>
         </view>
+        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="yuv-uS-1UT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <point key="canvasLocation" x="95" y="23"/>
+        </scrollView>
     </objects>
 </document>
