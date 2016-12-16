@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
+@property (nonatomic, strong) UINavigationItem *navItem;
 
 @end
 
@@ -122,6 +123,15 @@
     
     // navigation item
     
+    UINavigationItem *navItem = [[UINavigationItem alloc] init];
+    
+    UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
+                                                                                target: self
+                                                                                action: @selector(didPressStop)];
+    
+    [navItem setLeftBarButtonItem: xBarButton];
+    
+    [self.navBar setItems: @[navItem]];
 }
 
 
@@ -138,6 +148,14 @@
     self.numberOfRounds = numberOfRounds;
     
     return self;
+}
+
+#pragma mark - Button Actions
+
+- (void)didPressStop
+{
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
 }
 
 

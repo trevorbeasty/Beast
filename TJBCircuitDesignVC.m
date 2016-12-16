@@ -28,6 +28,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *numberOfExercisesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfRoundsLabel;
 
+@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (nonatomic, strong) UINavigationItem *navItem;
+
 - (IBAction)didPressLaunchTemplate:(id)sender;
 
 @end
@@ -52,6 +55,19 @@
     [self.numberOfRoundsStepper addTarget: self
                                    action: @selector(didChangeRoundsStepperValue)
                          forControlEvents: UIControlEventValueChanged];
+    
+    // navigation bar
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Template Configuration"];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Home"
+                                                                      style: UIBarButtonItemStyleDone
+                                                                     target: self
+                                                                     action: @selector(didPressHome)];
+    
+    [navItem setLeftBarButtonItem: barButtonItem];
+    
+    [self.navBar setItems: @[navItem]];
 }
 
 #pragma mark - Stepper Methods
@@ -86,6 +102,12 @@
     [self presentViewController: vc
                        animated: YES
                      completion: nil];
+}
+
+- (void)didPressHome
+{
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
 }
 
 @end
