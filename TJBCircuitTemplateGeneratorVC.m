@@ -63,12 +63,12 @@
         
         if (i == [self.numberOfExercises intValue] - 1)
         {
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==400)]",
+            verticalAppendString = [NSString stringWithFormat: @"[%@(==200)]",
                                     dynamicComponentName];
         }
         else
         {
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==400)]-0-",
+            verticalAppendString = [NSString stringWithFormat: @"[%@(==200)]-0-",
                                     dynamicComponentName];
         }
         

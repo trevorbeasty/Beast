@@ -113,7 +113,7 @@
         
         // horizontal constraints
         
-        NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-8-[%@]-8-|",
+        NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
                                                              dynamicRowName];
         NSLog(@"%@", horizontalLayoutConstraintsString);
         
