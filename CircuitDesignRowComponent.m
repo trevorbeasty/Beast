@@ -26,6 +26,39 @@
 
 #pragma mark - Instantiation
 
+- (void)viewDidLoad
+{
+    if ([self.targetsVaryByRound intValue] == 0)
+    {
+        self.roundLabel.text = @"All Rounds";
+    }
+    else
+    {
+        self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
+    }
+    
+    if ([self.targetingWeight intValue] == 0)
+    {
+        self.weightButton.enabled = NO;
+        [self.weightButton setTitle: @""
+                           forState: UIControlStateDisabled];
+    }
+    
+    if ([self.targetingReps intValue] == 0)
+    {
+        self.repsButton.enabled = NO;
+        [self.repsButton setTitle: @""
+                           forState: UIControlStateDisabled];
+    }
+    
+    if ([self.targetingRest intValue] == 0)
+    {
+        self.restButton.enabled = NO;
+        [self.restButton setTitle: @""
+                           forState: UIControlStateDisabled];
+    }
+}
+
 - (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber
 {
     self = [super init];

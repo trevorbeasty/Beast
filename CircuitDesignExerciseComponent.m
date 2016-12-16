@@ -73,15 +73,17 @@
     
     for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++)
     {
-        CircuitDesignRowComponent *rowVC = [[CircuitDesignRowComponent alloc] init];
+        CircuitDesignRowComponent *rowVC = [[CircuitDesignRowComponent alloc] initWithTargetingWeight: self.targetingWeight
+                                                                                        targetingReps: self.targetingReps
+                                                                                        targetingRest: self.targetingRest
+                                                                                   targetsVaryByRound: self.targetsVaryByRound
+                                                                                          roundNumber: [NSNumber numberWithInt: i + 1]];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
         [self addChildViewController: rowVC];
         
         [self.view addSubview: rowVC.view];
-        
-        rowVC.roundLabel.text = [NSString stringWithFormat: @"Round %d", i + 1];
         
         NSString *dynamicRowName = [NSString stringWithFormat: @"rowComponent%d",
                                     i];
