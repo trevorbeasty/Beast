@@ -193,8 +193,6 @@
                                                                        message: @"Please select an exercise before submitting a completed set"
                                                                 preferredStyle: UIAlertControllerStyleAlert];
         
-//        __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
-        
         UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
                                                          style: UIAlertActionStyleDefault
                                                        handler: nil];

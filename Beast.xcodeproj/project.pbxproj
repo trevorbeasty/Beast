@@ -44,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B1616CA1E04B790001C8F45 /* TJBCircuitTemplateInputDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateInputDelegate.h; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -244,6 +245,7 @@
 				0B843CC21E02D34A0093F057 /* CircuitDesignRowComponent.h */,
 				0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */,
 				0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */,
+				0B1616CA1E04B790001C8F45 /* TJBCircuitTemplateInputDelegate.h */,
 			);
 			name = "Circuit Mode";
 			sourceTree = "<group>";

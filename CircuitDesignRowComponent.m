@@ -8,6 +8,8 @@
 
 #import "CircuitDesignRowComponent.h"
 
+#import "TJBNumberSelectionVC.h"
+
 @interface CircuitDesignRowComponent ()
 
 @property (weak, nonatomic) IBOutlet UIButton *weightButton;
@@ -59,7 +61,7 @@
     }
 }
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateGeneratorVC<TJBNumberSelectionDelegate> *)masterController chainNumber:(NSNumber *)chainNumber
 {
     self = [super init];
     
@@ -68,16 +70,17 @@
     self.targetingRest = targetingRest;
     self.targetsVaryByRound = targetsVaryByRound;
     self.roundNumber = roundNumber;
+    self.masterController = masterController;
+    self.chainNumber = chainNumber;
     
     return self;
 }
 
 #pragma mark - Button Actions
 
-
 - (IBAction)didPressWeightButton:(id)sender
 {
-    NSLog(@"weight button pressed");
+
 }
 
 - (IBAction)didPressRepsButton:(id)sender
@@ -89,4 +92,19 @@
 {
     
 }
+
+
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+

@@ -21,13 +21,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 
+
+
 @end
 
 @implementation CircuitDesignExerciseComponent
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainIndex:(NSNumber *)chainIndex exerciseName:(NSString *)exerciseName
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBNumberSelectionDelegate> *)masterController
 {
     self = [super init];
     
@@ -36,8 +38,9 @@
     self.targetingReps = targetingReps;
     self.targetingRest = targetingRest;
     self.targetsVaryByRound = targetsVaryByRound;
-    self.chainIndex = chainIndex;
+    self.chainNumber = chainNumber;
     self.exerciseName = exerciseName;
+    self.masterController = masterController;
     
     return self;
 }
@@ -53,7 +56,7 @@
     // labels
     
     self.titleLabel.text = [NSString stringWithFormat: @"Chain Element %d: %@",
-                            [self.chainIndex intValue],
+                            [self.chainNumber intValue],
                             self.exerciseName];
     
     // row components
@@ -77,7 +80,8 @@
                                                                                         targetingReps: self.targetingReps
                                                                                         targetingRest: self.targetingRest
                                                                                    targetsVaryByRound: self.targetsVaryByRound
-                                                                                          roundNumber: [NSNumber numberWithInt: i + 1]];
+                                                                                          roundNumber: [NSNumber numberWithInt: i + 1]
+                                                                                     masterController: self.masterController];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

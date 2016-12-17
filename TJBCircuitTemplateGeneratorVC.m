@@ -10,7 +10,9 @@
 
 #import "CircuitDesignExerciseComponent.h"
 
-@interface TJBCircuitTemplateGeneratorVC ()
+#import "TJBNumberSelectionDelegate.h"
+
+@interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
@@ -71,8 +73,10 @@
                                                                                               targetingReps: self.targetingReps
                                                                                               targetingRest: self.targetingRest
                                                                                          targetsVaryByRound: self.targetsVaryByRound
-                                                                                                 chainIndex: [NSNumber numberWithInt: i + 1]
-                                                                                               exerciseName: @"placeholder exercise"];
+                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
+                                                                                               exerciseName: @"placeholder"
+                                                                                           masterController: self];
+    ;
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
         
