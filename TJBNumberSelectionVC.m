@@ -192,9 +192,6 @@
 - (void)cancel
 {
     [self.associatedVC didCancelNumberSelection];
-    
-    [self.associatedVC dismissViewControllerAnimated: YES
-                             completion: nil];
 }
 
 @end

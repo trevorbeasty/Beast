@@ -31,7 +31,6 @@
     if (!singleton)
     {
         singleton = [[self alloc] initPrivate];
-        NSLog(@"\nStopwatch initialized\n");
     }
     return singleton;
 }

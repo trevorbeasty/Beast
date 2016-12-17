@@ -8,7 +8,10 @@
 
 #import "CircuitDesignRowComponent.h"
 
-#import "TJBNumberSelectionVC.h"
+// will need to delete this import statement and create delegate protocol once the delegate header begins working
+// for now, will import master controller and define methods in its header
+
+#import "TJBCircuitTemplateGeneratorVC.h"
 
 @interface CircuitDesignRowComponent ()
 
@@ -80,7 +83,10 @@
 
 - (IBAction)didPressWeightButton:(id)sender
 {
-
+    [self.masterController didPressUserInputButtonWithType: nil
+                                               chainNumber: nil
+                                               roundNumber: nil
+                                                    button: nil];
 }
 
 - (IBAction)didPressRepsButton:(id)sender

@@ -10,7 +10,7 @@
 
 #import "CircuitDesignExerciseComponent.h"
 
-#import "TJBNumberSelectionDelegate.h"
+#import "TJBNumberSelectionVC.h"
 
 @interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
 
@@ -167,6 +167,46 @@
 #pragma mark - Button Actions
 
 - (void)didPressStop
+{
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+}
+
+#pragma mark - Soon to be Delegate Methods
+
+- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NSString *)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
+{
+    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
+                                                                        bundle: nil];
+    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
+    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+    
+    numberSelectionVC.numberTypeIdentifier = identifier;
+    numberSelectionVC.numberMultiple = numberMultiple;
+    numberSelectionVC.associatedVC = self;
+    numberSelectionVC.title = title;
+    
+    [self presentViewController: numberSelectionNav
+                       animated: animated
+                     completion: nil];
+}
+
+- (void)didPressUserInputButtonWithType:(NSString *)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button
+{
+    [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"placeholder"
+                                               numberMultiple: [NSNumber numberWithDouble: 2.5]
+                                                        title: @"placeholder"
+                                                     animated: NO];
+}
+
+#pragma mark - <TJBNumberSelectionDelegate>
+
+- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier
+{
+    
+}
+
+- (void)didCancelNumberSelection
 {
     [self dismissViewControllerAnimated: NO
                              completion: nil];

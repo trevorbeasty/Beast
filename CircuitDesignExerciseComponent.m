@@ -81,7 +81,8 @@
                                                                                         targetingRest: self.targetingRest
                                                                                    targetsVaryByRound: self.targetsVaryByRound
                                                                                           roundNumber: [NSNumber numberWithInt: i + 1]
-                                                                                     masterController: self.masterController];
+                                                                                     masterController: self.masterController
+                                                                                          chainNumber: self.chainNumber];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
