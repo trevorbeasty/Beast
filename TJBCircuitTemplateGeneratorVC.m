@@ -43,7 +43,7 @@
 {
     NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
     
-    NSNumber *defaultValue = [NSNumber numberWithInteger: -1];
+    NSString *defaultValue = @"unselected";
     
     for (int i = 0; i < [self.numberOfExercises intValue]; i++)
     {
@@ -183,8 +183,13 @@
     UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
                                                                                 target: self
                                                                                 action: @selector(didPressStop)];
-    
     [navItem setLeftBarButtonItem: xBarButton];
+    
+    UIBarButtonItem *goBarButton = [[UIBarButtonItem alloc] initWithTitle: @"Go"
+                                                                    style: UIBarButtonItemStyleDone
+                                                                   target: self
+                                                                   action: @selector(didPressGoButton)];
+    [navItem setRightBarButtonItem: goBarButton];
     
     [self.navBar setItems: @[navItem]];
 }
@@ -211,6 +216,11 @@
 {
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+}
+
+- (void)didPressGoButton
+{
+    NSLog(@"go");
 }
 
 #pragma mark - Soon to be Delegate Methods
@@ -276,6 +286,16 @@
     {
         self.weightData[indexOne][indexTwo] = number;
         NSLog(@"%@", self.weightData);
+    }
+    else if ([identifier isEqualToString: @"reps"])
+    {
+        self.repsData[indexOne][indexTwo] = number;
+        NSLog(@"%@", self.repsData);
+    }
+    else if ([identifier isEqualToString: @"rest"])
+    {
+        self.restData[indexOne][indexTwo] = number;
+        NSLog(@"%@", self.restData);
     }
     
     [self dismissViewControllerAnimated: NO
