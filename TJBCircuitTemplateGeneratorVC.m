@@ -27,14 +27,49 @@
 @property (nonatomic, strong) NSNumber *activeChainNumber;
 @property (nonatomic, strong) UIButton *activeButton;
 
+// data structure
+
+@property (nonatomic, strong) NSMutableArray *weightData;
+@property (nonatomic, strong) NSMutableArray *repsData;
+@property (nonatomic, strong) NSMutableArray *restData;
+
 @end
 
 @implementation TJBCircuitTemplateGeneratorVC
 
 #pragma mark - Instantiation
 
+- (NSMutableArray *)createDataStructureObject
+{
+    NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
+    
+    NSNumber *defaultValue = [NSNumber numberWithInteger: -1];
+    
+    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
+    {
+        NSMutableArray *subArray = [[NSMutableArray alloc] init];
+        [arrayToReturn addObject: subArray];
+        
+        for (int j = 0; j < [self.numberOfRounds intValue]; j++)
+            [subArray addObject: defaultValue];
+    }
+    
+    return arrayToReturn;
+}
+
+- (void)createDataStructure
+{
+    self.weightData = [self createDataStructureObject];
+    self.repsData = [self createDataStructureObject];
+    self.restData = [self createDataStructureObject];
+}
+
 - (void)viewDidLoad
 {
+    // data structure
+    
+    [self createDataStructure];
+    
     // scroll view
     
     CGRect screenBounds = [[UIScreen mainScreen] bounds];

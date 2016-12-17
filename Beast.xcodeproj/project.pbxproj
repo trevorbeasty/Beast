@@ -114,7 +114,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0B517BB21DF77C20009981F9 = {
+		0B1616CC1E04D1AC001C8F45 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
 				0B517BC11DF77C20009981F9 /* AppDelegate.h */,
@@ -123,6 +123,14 @@
 				0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */,
 				0B843C841DFAD0A00093F057 /* CoreDataController.h */,
 				0B843C851DFAD0A00093F057 /* CoreDataController.m */,
+			);
+			name = Singletons;
+			sourceTree = "<group>";
+		};
+		0B517BB21DF77C20009981F9 = {
+			isa = PBXGroup;
+			children = (
+				0B1616CC1E04D1AC001C8F45 /* Singletons */,
 				0B517BD91DF88641009981F9 /* View Controllers */,
 				0B517BD81DF77CB6009981F9 /* Model */,
 				0B517BBD1DF77C20009981F9 /* Beast */,
