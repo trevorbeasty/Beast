@@ -21,6 +21,12 @@
 
 @property (nonatomic, strong) UINavigationItem *navItem;
 
+// should consider blocks for this instead
+
+@property (nonatomic, strong) NSNumber *activeRoundNumber;
+@property (nonatomic, strong) NSNumber *activeChainNumber;
+@property (nonatomic, strong) UIButton *activeButton;
+
 @end
 
 @implementation TJBCircuitTemplateGeneratorVC
@@ -193,17 +199,42 @@
 
 - (void)didPressUserInputButtonWithType:(NSString *)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button
 {
-    [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"placeholder"
-                                               numberMultiple: [NSNumber numberWithDouble: 2.5]
-                                                        title: @"placeholder"
-                                                     animated: NO];
+    self.activeChainNumber = chainNumber;
+    self.activeRoundNumber = roundNumber;
+    self.activeButton = button;
+    
+    if ([type isEqualToString: @"weight"])
+    {
+        [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
+                                                   numberMultiple: [NSNumber numberWithDouble: 2.5]
+                                                            title: @"Select Target Weight"
+                                                         animated: NO];
+    }
+    else if ([type isEqualToString: @"reps"])
+    {
+        [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
+                                                   numberMultiple: [NSNumber numberWithDouble: 1.0]
+                                                            title: @"Select Target Reps"
+                                                         animated: NO];
+    }
+    else if ([type isEqualToString: @"rest"])
+    {
+        [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
+                                                   numberMultiple: [NSNumber numberWithDouble: 5.0]
+                                                            title: @"Select Target Rest (in seconds)"
+                                                         animated: NO];
+    }
 }
 
 #pragma mark - <TJBNumberSelectionDelegate>
 
 - (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier
 {
+    [self.activeButton setTitle: [number stringValue]
+                       forState: UIControlStateNormal];
     
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
 }
 
 - (void)didCancelNumberSelection

@@ -240,6 +240,9 @@
 {
     self.reps = nil;
     self.weight = nil;
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
 }
 
 - (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier
