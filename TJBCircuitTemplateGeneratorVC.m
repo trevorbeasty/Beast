@@ -268,6 +268,15 @@
     [self.activeButton setTitle: [number stringValue]
                        forState: UIControlStateNormal];
     
+    int indexOne = [self.activeChainNumber intValue] - 1;
+    int indexTwo = [self.activeRoundNumber intValue] - 1;
+    
+    if ([identifier isEqualToString: @"weight"])
+    {
+        self.weightData[indexOne][indexTwo] = number;
+        NSLog(@"%@", self.weightData);
+    }
+    
     [self dismissViewControllerAnimated: NO
                              completion: nil];
 }
