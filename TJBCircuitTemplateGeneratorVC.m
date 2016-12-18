@@ -33,6 +33,8 @@
 
 @end
 
+static NSString * const defaultValue = @"unselected";
+
 @implementation TJBCircuitTemplateGeneratorVC
 
 #pragma mark - Instantiation
@@ -40,8 +42,6 @@
 - (NSMutableArray *)createDataStructureObject
 {
     NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
-    
-    NSString *defaultValue = @"unselected";
     
     for (int i = 0; i < [self.numberOfExercises intValue]; i++)
     {
@@ -218,18 +218,67 @@
 
 - (void)didPressGoButton
 {
-    NSLog(@"go");
+    NSLog(@"all selections made?: %d",
+          [self allSelectionsMade]);
 }
 
-//- (BOOL)dataStructureContainsDefaultValue:(NSArray *)data
-//{
-//    int iterationLimit = [self.numberOfExercises intValue];
-//    
-////    for (int i = 0; i < iterationLimit; i++)
-////    {
-////        if (data[i] containsObject:<#(nonnull id)#>)
-////    }
-//}
+- (BOOL)allSelectionsMade
+{
+    BOOL allWeightSelectionsMade;
+    BOOL allRepsSelectionsMade;
+    BOOL allRestSelectionsMade;
+    
+    // if it's not being targeted, set its value to true
+    
+    if ([self.targetingWeight intValue] == 1)
+    {
+        allWeightSelectionsMade = ![self dataStructureContainsDefaultValue: self.weightData];
+    }
+    else
+    {
+        allWeightSelectionsMade = YES;
+    }
+    
+    if ([self.targetingReps intValue] == 1)
+    {
+        allRepsSelectionsMade = ![self dataStructureContainsDefaultValue: self.repsData];
+    }
+    else
+    {
+        allRepsSelectionsMade = YES;
+    }
+    
+    if ([self.targetingRest intValue] == 1)
+    {
+        allRestSelectionsMade = ![self dataStructureContainsDefaultValue: self.restData];
+    }
+    else
+    {
+        allRestSelectionsMade = YES;
+    }
+    
+    NSLog(@"weight: %d\nreps: %d\nrest: %d",
+          allWeightSelectionsMade,
+          allRepsSelectionsMade,
+          allRestSelectionsMade);
+        
+    return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade;
+}
+
+- (BOOL)dataStructureContainsDefaultValue:(NSArray *)dataStructure
+{
+    int iterationLimit = [self.numberOfExercises intValue];
+    
+    for (int i = 0; i < iterationLimit; i++)
+    {
+        if ([dataStructure[i] containsObject: defaultValue])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 #pragma mark - <TJBCircuitTemplateUserInputDelegate>
 
