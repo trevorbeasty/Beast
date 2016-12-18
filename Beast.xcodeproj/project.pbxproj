@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B1616D01E06D72F001C8F45 /* TJBGlobalParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC61DF77C20009981F9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC51DF77C20009981F9 /* ViewController.m */; };
@@ -44,7 +45,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0B1616CB1E04BB20001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateUserInputDelegate.h; sourceTree = "<group>"; };
+		0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateUserInputDelegate.h; sourceTree = "<group>"; };
+		0B1616CE1E06D72F001C8F45 /* TJBGlobalParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBGlobalParameters.h; sourceTree = "<group>"; };
+		0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBGlobalParameters.m; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -130,6 +133,8 @@
 		0B517BB21DF77C20009981F9 = {
 			isa = PBXGroup;
 			children = (
+				0B1616CE1E06D72F001C8F45 /* TJBGlobalParameters.h */,
+				0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */,
 				0B1616CC1E04D1AC001C8F45 /* Singletons */,
 				0B517BD91DF88641009981F9 /* View Controllers */,
 				0B517BD81DF77CB6009981F9 /* Model */,
@@ -253,7 +258,7 @@
 				0B843CC21E02D34A0093F057 /* CircuitDesignRowComponent.h */,
 				0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */,
 				0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */,
-				0B1616CB1E04BB20001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
+				0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
 			);
 			name = "Circuit Mode";
 			sourceTree = "<group>";
@@ -354,6 +359,7 @@
 				0B843CC91E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m in Sources */,
 				0B843CAA1DFEF8E50093F057 /* TJBWorkoutNavigationHub.m in Sources */,
 				0B843CBA1E0030D80093F057 /* CircuitDesignExerciseComponent.m in Sources */,
+				0B1616D01E06D72F001C8F45 /* TJBGlobalParameters.m in Sources */,
 				0B843CC51E02D34A0093F057 /* CircuitDesignRowComponent.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B843C9E1DFDB3460093F057 /* RealizedSetPersonalRecordVC.m in Sources */,

@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TJBCircuitTemplateGeneratorVC : UIViewController
+#import "CircuitDesignExerciseComponent.h"
+
+#import "TJBCircuitTemplateUserInputDelegate.h"
+
+@interface TJBCircuitTemplateGeneratorVC : UIViewController <TJBCircuitTemplateUserInputDelegate>
 
 @property (nonatomic, strong) NSNumber *targetingWeight;
 @property (nonatomic, strong) NSNumber *targetingReps;
@@ -18,9 +22,5 @@
 @property (nonatomic, strong) NSNumber *numberOfRounds;
 
 - (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds;
-
-// soon to be delegate methods
-
-- (void)didPressUserInputButtonWithType:(NSString *)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button;
 
 @end

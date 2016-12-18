@@ -8,8 +8,6 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
-#import "CircuitDesignExerciseComponent.h"
-
 #import "TJBNumberSelectionVC.h"
 
 @interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
@@ -223,16 +221,26 @@
     NSLog(@"go");
 }
 
-#pragma mark - Soon to be Delegate Methods
+//- (BOOL)dataStructureContainsDefaultValue:(NSArray *)data
+//{
+//    int iterationLimit = [self.numberOfExercises intValue];
+//    
+////    for (int i = 0; i < iterationLimit; i++)
+////    {
+////        if (data[i] containsObject:<#(nonnull id)#>)
+////    }
+//}
 
-- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NSString *)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
+#pragma mark - <TJBCircuitTemplateUserInputDelegate>
+
+- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NumberType)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
 {
     UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
                                                                         bundle: nil];
     UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
     TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
     
-    numberSelectionVC.numberTypeIdentifier = identifier;
+    [numberSelectionVC setNumberTypeIdentifier: identifier];
     numberSelectionVC.numberMultiple = numberMultiple;
     numberSelectionVC.associatedVC = self;
     numberSelectionVC.title = title;
@@ -242,27 +250,27 @@
                      completion: nil];
 }
 
-- (void)didPressUserInputButtonWithType:(NSString *)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button
+- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button
 {
     self.activeChainNumber = chainNumber;
     self.activeRoundNumber = roundNumber;
     self.activeButton = button;
     
-    if ([type isEqualToString: @"weight"])
+    if (type == WeightType)
     {
         [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
                                                    numberMultiple: [NSNumber numberWithDouble: 2.5]
                                                             title: @"Select Target Weight"
                                                          animated: NO];
     }
-    else if ([type isEqualToString: @"reps"])
+    else if (type == RepsType)
     {
         [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
                                                    numberMultiple: [NSNumber numberWithDouble: 1.0]
                                                             title: @"Select Target Reps"
                                                          animated: NO];
     }
-    else if ([type isEqualToString: @"rest"])
+    else if (type == RestType)
     {
         [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
                                                    numberMultiple: [NSNumber numberWithDouble: 5.0]
@@ -274,7 +282,7 @@
 
 #pragma mark - <TJBNumberSelectionDelegate>
 
-- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier
+- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NumberType)identifier
 {
     [self.activeButton setTitle: [number stringValue]
                        forState: UIControlStateNormal];
@@ -282,17 +290,17 @@
     int indexOne = [self.activeChainNumber intValue] - 1;
     int indexTwo = [self.activeRoundNumber intValue] - 1;
     
-    if ([identifier isEqualToString: @"weight"])
+    if (identifier == WeightType)
     {
         self.weightData[indexOne][indexTwo] = number;
         NSLog(@"%@", self.weightData);
     }
-    else if ([identifier isEqualToString: @"reps"])
+    else if (identifier == RepsType)
     {
         self.repsData[indexOne][indexTwo] = number;
         NSLog(@"%@", self.repsData);
     }
-    else if ([identifier isEqualToString: @"rest"])
+    else if (identifier == RestType)
     {
         self.restData[indexOne][indexTwo] = number;
         NSLog(@"%@", self.restData);

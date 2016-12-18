@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "TJBNumberSelectionDelegate.h"
+#import "TJBCircuitTemplateUserInputDelegate.h"
 
 @class TJBCircuitTemplateGeneratorVC;
 
@@ -26,8 +27,8 @@
 @property (nonatomic, strong) NSNumber *chainNumber;
 @property (nonatomic, strong) NSString *exerciseName;
 
-@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC <TJBNumberSelectionDelegate> *masterController;
+@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC <TJBNumberSelectionDelegate, TJBCircuitTemplateUserInputDelegate> *masterController;
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC <TJBNumberSelectionDelegate> *)masterController;
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC <TJBNumberSelectionDelegate, TJBCircuitTemplateUserInputDelegate> *)masterController;
 
 @end

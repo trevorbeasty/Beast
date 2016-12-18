@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TJBGlobalParameters.h"
+
 @protocol TJBNumberSelectionDelegate <NSObject>
 
-- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier;
+- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NumberType)identifier;
 
 - (void)didCancelNumberSelection;
 

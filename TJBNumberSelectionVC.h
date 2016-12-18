@@ -12,6 +12,10 @@
 
 @interface TJBNumberSelectionVC : UICollectionViewController
 
+{
+    NumberType _numberTypeIdentifier;
+}
+
 // number specifications
 
 @property (nonatomic, strong) NSNumber *numberMultiple;
@@ -20,10 +24,11 @@
 // delegate view controller
 
 @property (nonatomic, weak) UIViewController <TJBNumberSelectionDelegate> *associatedVC;
-@property (nonatomic, strong) NSString *numberTypeIdentifier;
 
 // view specifications
 
 @property (nonatomic, strong) NSString *titleString;
+
+- (void)setNumberTypeIdentifier:(NumberType)type;
 
 @end

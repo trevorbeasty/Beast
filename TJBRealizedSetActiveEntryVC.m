@@ -168,14 +168,14 @@
                              completion: nil];
 }
 
-- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NSString *)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
+- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NumberType)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
 {
     UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
                                                                         bundle: nil];
     UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
     TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
     
-    numberSelectionVC.numberTypeIdentifier = identifier;
+    [numberSelectionVC setNumberTypeIdentifier: identifier];
     numberSelectionVC.numberMultiple = numberMultiple;
     numberSelectionVC.associatedVC = self;
     numberSelectionVC.title = title;
@@ -205,14 +205,14 @@
     }
     else if (!self.weight)
     {
-        [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"weight"
+        [self presentNumberSelectionSceneWithNumberTypeIdentifier: WeightType
                                                    numberMultiple: [NSNumber numberWithFloat: 2.5]
                                                             title: @"Select Weight"
                                                          animated: YES];
     }
     else if (!self.reps)
     {
-        [self presentNumberSelectionSceneWithNumberTypeIdentifier: @"reps"
+        [self presentNumberSelectionSceneWithNumberTypeIdentifier: RepsType
                                                    numberMultiple: [NSNumber numberWithFloat: 1.0]
                                                             title: @"SelectReps"
                                                          animated: YES];
@@ -245,13 +245,13 @@
                              completion: nil];
 }
 
-- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NSString *)identifier
+- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NumberType)identifier
 {
-    if ([identifier isEqualToString: @"reps"])
+    if (identifier == RepsType)
     {
         self.reps = number;
     }
-    else if ([identifier isEqualToString: @"weight"])
+    else if (identifier == WeightType)
     {
         self.weight = number;
     }

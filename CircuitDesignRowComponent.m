@@ -83,7 +83,7 @@
 
 - (IBAction)didPressWeightButton:(id)sender
 {
-    [self.masterController didPressUserInputButtonWithType: @"weight"
+    [self.masterController didPressUserInputButtonWithType: WeightType
                                                chainNumber: self.chainNumber
                                                roundNumber: self.roundNumber
                                                     button: self.weightButton];
@@ -91,7 +91,7 @@
 
 - (IBAction)didPressRepsButton:(id)sender
 {
-    [self.masterController didPressUserInputButtonWithType: @"reps"
+    [self.masterController didPressUserInputButtonWithType: RepsType
                                                chainNumber: self.chainNumber
                                                roundNumber: self.roundNumber
                                                     button: self.repsButton];
@@ -99,7 +99,7 @@
 
 - (IBAction)didPressRestButton:(id)sender
 {
-    [self.masterController didPressUserInputButtonWithType: @"rest"
+    [self.masterController didPressUserInputButtonWithType: RestType
                                                chainNumber: self.chainNumber
                                                roundNumber: self.roundNumber
                                                     button: self.restButton];

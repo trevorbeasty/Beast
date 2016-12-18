@@ -68,6 +68,13 @@
     [self.collectionView addGestureRecognizer: pinchGR];
 }
 
+#pragma mark - Setters
+
+- (void)setNumberTypeIdentifier:(NumberType)type
+{
+    _numberTypeIdentifier = type;
+}
+
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -127,7 +134,7 @@
     
     // pass relevant data to the presenting VC
     [self.associatedVC didSelectNumber: selectedNumber
-                  numberTypeIdentifier: self.numberTypeIdentifier];
+                  numberTypeIdentifier: _numberTypeIdentifier];
 }
 
 - (void)pinch:(UIGestureRecognizer *)gr
