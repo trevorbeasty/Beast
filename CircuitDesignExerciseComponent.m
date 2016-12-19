@@ -10,6 +10,12 @@
 
 #import "CircuitDesignRowComponent.h"
 
+#import "TJBExerciseSelectionScene.h"
+
+#import "TJBCircuitTemplateGeneratorVC.h"
+
+
+
 @interface CircuitDesignExerciseComponent ()
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
@@ -22,8 +28,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 
 
+@property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
+- (IBAction)didPressSelectExercise:(id)sender;
+
 
 @end
+
+
+
+
+
 
 @implementation CircuitDesignExerciseComponent
 
@@ -146,7 +160,13 @@
     }
 }
 
+#pragma mark - Button Actions
 
+- (IBAction)didPressSelectExercise:(id)sender
+{
+    [self.masterController didPressExerciseButton: self.selectedExerciseButton
+                                          inChain: self.chainNumber];
+}
 
 @end
 

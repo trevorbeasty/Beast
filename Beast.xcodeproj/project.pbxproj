@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0B1616D01E06D72F001C8F45 /* TJBGlobalParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */; };
+		0B1616D51E080E6F001C8F45 /* TJBExerciseSelectionScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B1616D31E080E6F001C8F45 /* TJBExerciseSelectionScene.m */; };
+		0B1616D61E080E6F001C8F45 /* TJBExerciseSelectionScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B1616D41E080E6F001C8F45 /* TJBExerciseSelectionScene.xib */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC61DF77C20009981F9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC51DF77C20009981F9 /* ViewController.m */; };
@@ -48,6 +50,9 @@
 		0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateUserInputDelegate.h; sourceTree = "<group>"; };
 		0B1616CE1E06D72F001C8F45 /* TJBGlobalParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBGlobalParameters.h; sourceTree = "<group>"; };
 		0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBGlobalParameters.m; sourceTree = "<group>"; };
+		0B1616D21E080E6F001C8F45 /* TJBExerciseSelectionScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseSelectionScene.h; sourceTree = "<group>"; };
+		0B1616D31E080E6F001C8F45 /* TJBExerciseSelectionScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBExerciseSelectionScene.m; sourceTree = "<group>"; };
+		0B1616D41E080E6F001C8F45 /* TJBExerciseSelectionScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseSelectionScene.xib; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -130,11 +135,62 @@
 			name = Singletons;
 			sourceTree = "<group>";
 		};
-		0B517BB21DF77C20009981F9 = {
+		0B1616D11E080E1E001C8F45 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				0B1616CE1E06D72F001C8F45 /* TJBGlobalParameters.h */,
 				0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */,
+				0B1616D21E080E6F001C8F45 /* TJBExerciseSelectionScene.h */,
+				0B1616D31E080E6F001C8F45 /* TJBExerciseSelectionScene.m */,
+				0B1616D41E080E6F001C8F45 /* TJBExerciseSelectionScene.xib */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		0B1616D71E0819BD001C8F45 /* Template Configuratioin Scene */ = {
+			isa = PBXGroup;
+			children = (
+				0B843CB31DFF65110093F057 /* TJBCircuitDesignVC.h */,
+				0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */,
+				0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */,
+			);
+			name = "Template Configuratioin Scene";
+			sourceTree = "<group>";
+		};
+		0B1616D81E0819D2001C8F45 /* Circuit Template Generator */ = {
+			isa = PBXGroup;
+			children = (
+				0B843CC71E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.h */,
+				0B843CC81E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m */,
+				0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */,
+			);
+			name = "Circuit Template Generator";
+			sourceTree = "<group>";
+		};
+		0B1616D91E0819E1001C8F45 /* Exercise Component */ = {
+			isa = PBXGroup;
+			children = (
+				0B843CB81E0030D80093F057 /* CircuitDesignExerciseComponent.h */,
+				0B843CB91E0030D80093F057 /* CircuitDesignExerciseComponent.m */,
+				0B843CC01E02D08B0093F057 /* CircuitDesignExerciseComponent.xib */,
+			);
+			name = "Exercise Component";
+			sourceTree = "<group>";
+		};
+		0B1616DA1E0819EE001C8F45 /* Row Component */ = {
+			isa = PBXGroup;
+			children = (
+				0B843CC21E02D34A0093F057 /* CircuitDesignRowComponent.h */,
+				0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */,
+				0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */,
+			);
+			name = "Row Component";
+			sourceTree = "<group>";
+		};
+		0B517BB21DF77C20009981F9 = {
+			isa = PBXGroup;
+			children = (
+				0B1616D11E080E1E001C8F45 /* Common */,
 				0B1616CC1E04D1AC001C8F45 /* Singletons */,
 				0B517BD91DF88641009981F9 /* View Controllers */,
 				0B517BD81DF77CB6009981F9 /* Model */,
@@ -246,18 +302,10 @@
 		0B843CB21DFF64BD0093F057 /* Circuit Mode */ = {
 			isa = PBXGroup;
 			children = (
-				0B843CC71E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.h */,
-				0B843CC81E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m */,
-				0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */,
-				0B843CB31DFF65110093F057 /* TJBCircuitDesignVC.h */,
-				0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */,
-				0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */,
-				0B843CB81E0030D80093F057 /* CircuitDesignExerciseComponent.h */,
-				0B843CB91E0030D80093F057 /* CircuitDesignExerciseComponent.m */,
-				0B843CC01E02D08B0093F057 /* CircuitDesignExerciseComponent.xib */,
-				0B843CC21E02D34A0093F057 /* CircuitDesignRowComponent.h */,
-				0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */,
-				0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */,
+				0B1616DA1E0819EE001C8F45 /* Row Component */,
+				0B1616D91E0819E1001C8F45 /* Exercise Component */,
+				0B1616D81E0819D2001C8F45 /* Circuit Template Generator */,
+				0B1616D71E0819BD001C8F45 /* Template Configuratioin Scene */,
 				0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
 			);
 			name = "Circuit Mode";
@@ -331,6 +379,7 @@
 				0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */,
 				0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */,
 				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
+				0B1616D61E080E6F001C8F45 /* TJBExerciseSelectionScene.xib in Resources */,
 				0B843CC11E02D08B0093F057 /* CircuitDesignExerciseComponent.xib in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
@@ -366,6 +415,7 @@
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,
 				0B517BDD1DF8869C009981F9 /* TJBNumberSelectionVC.m in Sources */,
+				0B1616D51E080E6F001C8F45 /* TJBExerciseSelectionScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

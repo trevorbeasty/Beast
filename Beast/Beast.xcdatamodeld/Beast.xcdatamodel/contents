@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="ChainExercise" representedClassName="TJBChainExercise" isAbstract="YES" parentEntity="Exercise" syncable="YES" codeGenerationType="class">
         <attribute name="chainIndex" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
     </entity>
@@ -9,6 +9,7 @@
         <attribute name="targetingReps" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingRestTime" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingWeight" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="targetsVaryByRound" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="associatedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutTemplate" inverseName="targetChains" inverseEntity="WorkoutTemplate" syncable="YES"/>
         <relationship name="realizations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="chainTemplate" inverseEntity="RealizedChain" syncable="YES"/>
         <relationship name="targetExercises" toMany="YES" deletionRule="Nullify" destinationEntity="ChainTemplateExercise" inverseName="associatedChainTemplate" inverseEntity="ChainTemplateExercise" syncable="YES"/>
@@ -35,7 +36,7 @@
         <attribute name="index" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="dateSequence" maxCount="1" deletionRule="Nullify" destinationEntity="DateSequence" inverseName="dates" inverseEntity="DateSequence" syncable="YES"/>
     </entity>
-    <entity name="Exercise" representedClassName="TJBExercise" isAbstract="YES" syncable="YES" codeGenerationType="class">
+    <entity name="Exercise" representedClassName="TJBExercise" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseCategory" inverseName="exercises" inverseEntity="ExerciseCategory" syncable="YES"/>
     </entity>
@@ -96,13 +97,13 @@
     </entity>
     <elements>
         <element name="ChainExercise" positionX="-9" positionY="102" width="128" height="58"/>
-        <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="208"/>
+        <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="225"/>
         <element name="ChainTemplateExercise" positionX="592" positionY="-414" width="128" height="58"/>
         <element name="ChainTemplateRepsSequence" positionX="-756" positionY="27" width="128" height="58"/>
         <element name="ChainTemplateWeightSequence" positionX="594" positionY="207" width="128" height="58"/>
         <element name="DateSequence" positionX="349" positionY="-198" width="128" height="88"/>
         <element name="DateTypeArrayComp" positionX="250" positionY="-477" width="128" height="88"/>
-        <element name="Exercise" positionX="-155" positionY="-63" width="128" height="73"/>
+        <element name="Exercise" positionX="-155" positionY="-63" width="128" height="75"/>
         <element name="ExerciseCategory" positionX="-396" positionY="-486" width="128" height="73"/>
         <element name="NumberSequence" positionX="90" positionY="375" width="128" height="73"/>
         <element name="NumberTypeArrayComp" positionX="304" positionY="450" width="128" height="88"/>

@@ -10,6 +10,11 @@
 
 #import "TJBNumberSelectionVC.h"
 
+#import "TJBExerciseSelectionScene.h"
+
+
+
+
 @interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
@@ -33,7 +38,18 @@
 
 @end
 
+
+
+
+
+
 static NSString * const defaultValue = @"unselected";
+
+
+
+
+
+
 
 @implementation TJBCircuitTemplateGeneratorVC
 
@@ -339,6 +355,15 @@ static NSString * const defaultValue = @"unselected";
                                                          animated: NO];
     }
     
+}
+
+- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber
+{
+    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] init];
+    
+    [self presentViewController: vc
+                       animated: NO
+                     completion: nil];
 }
 
 #pragma mark - <TJBNumberSelectionDelegate>

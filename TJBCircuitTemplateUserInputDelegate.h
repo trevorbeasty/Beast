@@ -14,4 +14,6 @@
 
 - (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button;
 
+- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber;
+
 @end
