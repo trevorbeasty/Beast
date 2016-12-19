@@ -62,12 +62,8 @@ static NSString * const defaultValue = @"unselected";
     self.restData = [self createDataStructureObject];
 }
 
-- (void)viewDidLoad
+- (void)createSubviewsAndLayoutConstraints
 {
-    // data structure
-    
-    [self createDataStructure];
-    
     // scroll view
     
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -94,7 +90,7 @@ static NSString * const defaultValue = @"unselected";
     UIView *scrollSubview = [[UIView alloc] initWithFrame: CGRectMake(0, 0, screenWidth, scrollSubviewHeight)];
     [self.scrollView addSubview: scrollSubview];
     self.scrollView.contentSize = scrollSubview.frame.size;
-
+    
     // constraint mapping
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
@@ -112,10 +108,10 @@ static NSString * const defaultValue = @"unselected";
                                                                                               targetingReps: self.targetingReps
                                                                                               targetingRest: self.targetingRest
                                                                                          targetsVaryByRound: self.targetsVaryByRound
-                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
+                                                                                                chainNumber: [NSNumber numberWithInt: i + 1]
                                                                                                exerciseName: @"placeholder"
                                                                                            masterController: self];
-    ;
+        ;
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -124,7 +120,7 @@ static NSString * const defaultValue = @"unselected";
         [scrollSubview addSubview: vc.view];
         
         NSString *dynamicComponentName = [NSString stringWithFormat: @"exerciseComponent%d",
-                                    i];
+                                          i];
         
         [self.constraintMapping setObject: vc.view
                                    forKey: dynamicComponentName];
@@ -173,9 +169,10 @@ static NSString * const defaultValue = @"unselected";
     {
         [child didMoveToParentViewController: self];
     }
-    
-    // navigation item
-    
+}
+
+- (void)createNavigationItem
+{
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
     
     UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
@@ -190,6 +187,21 @@ static NSString * const defaultValue = @"unselected";
     [navItem setRightBarButtonItem: goBarButton];
     
     [self.navBar setItems: @[navItem]];
+}
+
+- (void)viewDidLoad
+{
+    // data structure
+    
+    [self createDataStructure];
+    
+    // subviews and layout constraints
+    
+    [self createSubviewsAndLayoutConstraints];
+    
+    // navigation item
+    
+    [self createNavigationItem];
 }
 
 
