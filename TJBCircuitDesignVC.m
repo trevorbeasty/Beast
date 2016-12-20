@@ -28,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *numberOfExercisesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfRoundsLabel;
 
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, strong) UINavigationItem *navItem;
 
@@ -97,7 +99,8 @@
                                                                                          targetingRest: [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex]
                                                                                     targetsVaryByRound: [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex]
                                                                                      numberOfExercises: [NSNumber numberWithDouble: _numberOfExercises]
-                                                                                        numberOfRounds: [NSNumber numberWithDouble: _numberOfRounds]];
+                                                                                        numberOfRounds: [NSNumber numberWithDouble: _numberOfRounds]
+                                                                                                  name: self.nameTextField.text];
     
     [self presentViewController: vc
                        animated: YES

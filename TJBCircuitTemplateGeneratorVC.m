@@ -203,7 +203,7 @@ static NSString * const defaultValue = @"unselected";
     
     UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
                                                                                 target: self
-                                                                                action: @selector(didPressStop)];
+                                                                                action: @selector(didPressX)];
     [navItem setLeftBarButtonItem: xBarButton];
     
     UIBarButtonItem *goBarButton = [[UIBarButtonItem alloc] initWithTitle: @"Go"
@@ -211,6 +211,23 @@ static NSString * const defaultValue = @"unselected";
                                                                    target: self
                                                                    action: @selector(didPressGoButton)];
     [navItem setRightBarButtonItem: goBarButton];
+    
+    NSString *word;
+    int number = [self.numberOfRounds intValue];
+    if (number == 1)
+    {
+        word = @"round";
+    }
+    else
+    {
+        word = @"rounds";
+    }
+    
+    NSString *title = [NSString stringWithFormat: @"%@ (%d %@)",
+                       self.name,
+                       [self.numberOfRounds intValue],
+                       word];
+    [navItem setTitle: title];
     
     [self.navBar setItems: @[navItem]];
 }
@@ -232,7 +249,7 @@ static NSString * const defaultValue = @"unselected";
 
 
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name
 {
     self = [super init];
     
@@ -242,13 +259,14 @@ static NSString * const defaultValue = @"unselected";
     self.targetsVaryByRound = targetsVaryByRound;
     self.numberOfExercises = numberOfExercises;
     self.numberOfRounds = numberOfRounds;
+    self.name = name;
     
     return self;
 }
 
 #pragma mark - Button Actions
 
-- (void)didPressStop
+- (void)didPressX
 {
     [self dismissViewControllerAnimated: NO
                              completion: nil];
