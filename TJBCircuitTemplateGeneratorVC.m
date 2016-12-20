@@ -256,8 +256,43 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)didPressGoButton
 {
+    if ([self.targetsVaryByRound intValue] == 0)
+    {
+        [self duplicateEntries];
+    }
+    
     NSLog(@"all selections made?: %d",
           [self allSelectionsMade]);
+}
+
+- (void)duplicateEntries
+{
+    NSArray *dataArrays = @[
+                        self.weightData,
+                        self.repsData,
+                        self.restData];
+    
+    for (int i = 0; i < [dataArrays count]; i++)
+    {
+        for (int j = 0; j < [self.numberOfExercises intValue]; j++)
+        {
+            if ([dataArrays[i][j][0] class] == [NSString class])
+            {
+                continue;
+            }
+            else
+            {
+                NSNumber *numberToDuplicate = dataArrays[i][j][0];
+                
+                for (int k = 1; k < [self.numberOfRounds intValue]; k++)
+                {
+                    dataArrays[i][j][k] = numberToDuplicate;
+                    
+                  
+                }
+            }
+        }
+    }
 }
 
 - (BOOL)allSelectionsMade
