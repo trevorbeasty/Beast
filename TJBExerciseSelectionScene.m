@@ -10,7 +10,7 @@
 
 #import "CoreDataController.h"
 
-@interface TJBExerciseSelectionScene ()
+@interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
@@ -20,6 +20,11 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, strong) UINavigationItem *navItem;
+@property (nonatomic, strong) NSString *navBarTitle;
+
+// callback
+
+@property (copy) void(^callbackBlock)(TJBExercise *);
 
 @end
 
@@ -29,9 +34,21 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - Instantiation
 
+- (instancetype)initWithTitle:(NSString *)title callbackBlock:(void (^)(TJBExercise *))block
+{
+    self = [super init];
+    
+    self.navBarTitle = title;
+    self.callbackBlock = block;
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [self configureTableView];
+    
+    [self configureNavigationBar];
     
     [self createFetchedResultsController];
 }
@@ -40,6 +57,9 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 {
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
     
+    [navItem setTitle: self.navBarTitle];
+    
+    [self.navBar setItems: @[navItem]];
 }
 
 - (void)createFetchedResultsController
@@ -106,6 +126,15 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 {
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
     return [sectionInfo name];
+}
+
+#pragma mark - <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
+    self.callbackBlock(exercise);
 }
 
 @end

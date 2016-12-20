@@ -12,6 +12,8 @@
 
 #import "TJBExerciseSelectionScene.h"
 
+#import "TJBExercise+CoreDataProperties.h"
+
 
 
 
@@ -359,11 +361,34 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber
 {
-    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] init];
+    NSString *title = [NSString stringWithFormat: @"Chain Element #%d:",
+                       [chainNumber intValue]];
+    
+    TJBCircuitTemplateGeneratorVC * __weak weakSelf = self;
+    
+    void (^callback)(TJBExercise *) = ^(TJBExercise *exercise)
+    {
+        [button setTitle: exercise.name
+                forState: UIControlStateNormal];
+        
+        [weakSelf didSelectExercise: exercise
+                     forChainNumber: chainNumber];
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+    };
+    
+    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithTitle: title
+                                                                       callbackBlock: callback];
     
     [self presentViewController: vc
                        animated: NO
                      completion: nil];
+}
+                                     
+- (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber
+{
+    NSLog(@"didSelectExerciseForChainNumber");
 }
 
 #pragma mark - <TJBNumberSelectionDelegate>

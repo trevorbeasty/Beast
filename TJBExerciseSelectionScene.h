@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class TJBExercise;
+
 @interface TJBExerciseSelectionScene : UIViewController
 
-- (instancetype)initWithTitle:(NSString *)title;
+- (instancetype)initWithTitle:(NSString *)title callbackBlock:(void(^)(TJBExercise *))block;
 
 @end

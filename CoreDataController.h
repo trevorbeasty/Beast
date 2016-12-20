@@ -10,6 +10,7 @@
 
 #import <CoreData/CoreData.h>
 
+#import "TJBExercise+CoreDataProperties.h"
 #import "TJBExerciseCategory+CoreDataProperties.h"
 #import "TJBRealizedSetExercise+CoreDataProperties.h"
 #import "TJBRealizedSet+CoreDataProperties.h"
