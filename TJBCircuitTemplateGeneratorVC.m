@@ -37,6 +37,7 @@
 @property (nonatomic, strong) NSMutableArray *weightData;
 @property (nonatomic, strong) NSMutableArray *repsData;
 @property (nonatomic, strong) NSMutableArray *restData;
+@property (nonatomic, strong) NSMutableArray *exerciseData;
 
 @end
 
@@ -78,6 +79,13 @@ static NSString * const defaultValue = @"unselected";
     self.weightData = [self createDataStructureObject];
     self.repsData = [self createDataStructureObject];
     self.restData = [self createDataStructureObject];
+    
+    NSMutableArray *exerciseData = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
+    {
+        [exerciseData addObject: defaultValue];
+    }
+    self.exerciseData = exerciseData;
 }
 
 - (void)createSubviewsAndLayoutConstraints
@@ -257,6 +265,7 @@ static NSString * const defaultValue = @"unselected";
     BOOL allWeightSelectionsMade;
     BOOL allRepsSelectionsMade;
     BOOL allRestSelectionsMade;
+    BOOL allExerciseSelectionsMade;
     
     // if it's not being targeted, set its value to true
     
@@ -287,12 +296,15 @@ static NSString * const defaultValue = @"unselected";
         allRestSelectionsMade = YES;
     }
     
-    NSLog(@"weight: %d\nreps: %d\nrest: %d",
+    allExerciseSelectionsMade = ![self.exerciseData containsObject: defaultValue];
+    
+    NSLog(@"weight: %d\nreps: %d\nrest: %d\nexercise: %d",
           allWeightSelectionsMade,
           allRepsSelectionsMade,
-          allRestSelectionsMade);
+          allRestSelectionsMade,
+          allExerciseSelectionsMade);
         
-    return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade;
+    return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade && allExerciseSelectionsMade;
 }
 
 - (BOOL)dataStructureContainsDefaultValue:(NSArray *)dataStructure
@@ -389,6 +401,9 @@ static NSString * const defaultValue = @"unselected";
 - (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber
 {
     NSLog(@"didSelectExerciseForChainNumber");
+    
+    int index = [chainNumber intValue] - 1;
+    self.exerciseData[index] = exercise;
 }
 
 #pragma mark - <TJBNumberSelectionDelegate>
