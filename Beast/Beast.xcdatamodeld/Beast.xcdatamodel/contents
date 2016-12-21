@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="Chain" representedClassName="Chain" isAbstract="YES" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="Chain" representedClassName="TJBChain" syncable="YES" codeGenerationType="class">
         <relationship name="exercises" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chains" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="repsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsArray" inverseName="chain" inverseEntity="RepsArray" syncable="YES"/>
         <relationship name="weightArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WeightArray" inverseName="chain" inverseEntity="WeightArray" syncable="YES"/>
@@ -34,7 +34,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="category" inverseEntity="Exercise" syncable="YES"/>
     </entity>
-    <entity name="NumberArray" representedClassName="TJBNumberSequence" isAbstract="YES" syncable="YES" codeGenerationType="class">
+    <entity name="NumberArray" representedClassName="TJBNumberArray" syncable="YES" codeGenerationType="class">
         <relationship name="numbers" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComponent" inverseName="owningArray" inverseEntity="NumberTypeArrayComponent" syncable="YES"/>
     </entity>
     <entity name="NumberTypeArrayComponent" representedClassName="TJBNumberTypeArrayComp" syncable="YES" codeGenerationType="class">
@@ -75,9 +75,8 @@
         <relationship name="realizedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" inverseName="workoutTemplate" inverseEntity="RealizedWorkout" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Chain" positionX="-693" positionY="-324" width="128" height="90"/>
         <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="180"/>
-        <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>
-        <element name="WeightArray" positionX="594" positionY="207" width="128" height="60"/>
         <element name="DateArray" positionX="349" positionY="-198" width="128" height="75"/>
         <element name="DateTypeArrayComponent" positionX="250" positionY="-477" width="128" height="75"/>
         <element name="Exercise" positionX="-155" positionY="-63" width="128" height="105"/>
@@ -87,8 +86,9 @@
         <element name="RealizedChain" positionX="-776" positionY="-333" width="128" height="105"/>
         <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="120"/>
         <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="90"/>
+        <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>
         <element name="TargetRestTimeArray" positionX="61" positionY="-297" width="128" height="60"/>
+        <element name="WeightArray" positionX="594" positionY="207" width="128" height="60"/>
         <element name="WorkoutTemplate" positionX="-477" positionY="-63" width="128" height="105"/>
-        <element name="Chain" positionX="-693" positionY="-324" width="128" height="90"/>
     </elements>
 </model>

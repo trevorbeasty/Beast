@@ -21,6 +21,8 @@
 
 #import "TJBChainTemplate+CoreDataProperties.h"
 
+#import "TJBNumberArray+CoreDataProperties.h"
+
 #import "TJBWeightArray+CoreDataProperties.h"
 #import "TJBRepsArray+CoreDataProperties.h"
 #import "TJBTargetRestTimeArray+CoreDataClass.h"
@@ -268,7 +270,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Core Data
 
-- (void)insertAndSaveCoreDataManagedObjects
+- (void)createAndSaveChainTemplate
 {
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
@@ -284,19 +286,73 @@ static NSString * const defaultValue = @"unselected";
     
     // assign the chain template's attributes
     
+    chainTemplate.identifier = @"placeholder identifier";
+    
     chainTemplate.name = self.name;
+    chainTemplate.targetingWeight = self.targetingWeight;
+    chainTemplate.targetingReps = self.targetingReps;
+    chainTemplate.targetingRestTime = self.targetingRest;
+    chainTemplate.targetsVaryByRound = self.targetsVaryByRound;
+    
     
     for (int i = 0; i < [self.numberOfExercises intValue]; i++)
     {
         // add the current exercise to the mutable ordered set
         
         TJBExercise *currentExercise = self.exerciseData[i];
-        chainTemplate.exercises
+        [exercises addObject: currentExercise];
         
-        // create arrays for weight, reps, and rest and give them the user-selected values for the current exercise
-        TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+        // create managed objects to be collected by NSMutableOrderedSets and give them the appropriate IV's; then add them to the appropriate collections
+        
+        TJBWeightArray *currentWeightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
                                                                     inManagedObjectContext: moc];
+        TJBRepsArray *currentRepsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
+                                                                           inManagedObjectContext: moc];
+        TJBTargetRestTimeArray *currentRestArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
+                                                                           inManagedObjectContext: moc];
+        
+        // when a certain dimension is not being targeted, I should leave that relationship of the ChainTemplate untouched (weight, reps, and rest are optional relationships)
+        
+        currentWeightArray.numbers = [self copyDataFromDataArray: self.weightData[i]];
+        currentRepsArray.numbers = [self copyDataFromDataArray: self.repsData[i]];
+        currentRestArray.numbers = [self copyDataFromDataArray: self.restData[i]];
+        
+        [weightArrays addObject: currentWeightArray];
+        [repsArrays addObject: currentRepsArray];
+        [targetRestTimeArrays addObject: currentRestArray];
     }
+    
+    chainTemplate.exercises = [exercises copy];
+    chainTemplate.weightArrays = [weightArrays copy];
+    chainTemplate.repsArrays = [repsArrays copy];
+    chainTemplate.targetRestTimeArrays = [targetRestTimeArrays copy];
+    
+    [[CoreDataController singleton] saveContext];
+}
+
+- (NSMutableOrderedSet *)copyDataFromDataArray:(NSArray *)dataArray;
+{
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    // create NumberTypeArrayComponents and give them to the appropriate ordered mutable set
+    
+    int iterationLimit = [self.numberOfRounds intValue];
+    
+    NSMutableOrderedSet *collector = [[NSMutableOrderedSet alloc] init];
+    
+    for (int j = 0; j < iterationLimit ; j++)
+    {
+        
+        
+        TJBNumberTypeArrayComp *numberComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+                                                                                inManagedObjectContext: moc];
+        
+        numberComponent.value = [dataArray[j] floatValue];
+        
+        [collector addObject: numberComponent];
+    }
+    
+    return collector;
 }
 
 #pragma mark - Button Actions
@@ -314,8 +370,15 @@ static NSString * const defaultValue = @"unselected";
         [self duplicateEntries];
     }
     
-    NSLog(@"all selections made?: %d",
-          [self allSelectionsMade]);
+    BOOL allUserInputCollected = [self allSelectionsMade];
+    
+    NSLog(@"all user input collected?: %d",
+          allUserInputCollected);
+    
+    if (allUserInputCollected)
+    {
+        [self createAndSaveChainTemplate];
+    }
 }
 
 - (void)duplicateEntries
