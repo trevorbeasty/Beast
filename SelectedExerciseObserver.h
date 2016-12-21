@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class TJBRealizedSetExercise;
+@class TJBExercise;
 
 @protocol SelectedExerciseObserver <NSObject>
 
-- (void)didSelectExercise:(TJBRealizedSetExercise *)exercise;
+- (void)didSelectExercise:(TJBExercise *)exercise;
 - (void)newSetSubmitted;
 
 @end

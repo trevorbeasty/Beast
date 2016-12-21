@@ -22,7 +22,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *frc;
 @property (nonatomic, strong) NSArray *refinedFRCResults;
 
-@property (nonatomic, strong) TJBRealizedSetExercise *activeExercise;
+@property (nonatomic, strong) TJBExercise *activeExercise;
 
 @property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateColumnLabel;
@@ -171,7 +171,7 @@
 
 #pragma mark - <SelectedExerciseObserver>
 
-- (void)didSelectExercise:(TJBRealizedSetExercise *)exercise
+- (void)didSelectExercise:(TJBExercise *)exercise
 {
     // fetched results
     

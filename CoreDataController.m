@@ -126,9 +126,9 @@
     }
 }
 
-- (TJBRealizedSetExercise *)realizedSetExerciseForName:(NSString *)name
+- (TJBExercise *)exerciseForName:(NSString *)name
 {
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSetExercise"];
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
     fetch.predicate = predicate;
     
@@ -140,7 +140,7 @@
     
     if (arrayLength == 0)
     {
-        TJBRealizedSetExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSetExercise"
+        TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
                                                               inManagedObjectContext: self.moc];
         
         exercise.name = name;

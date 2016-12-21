@@ -12,15 +12,15 @@
 
 #import "TJBExercise+CoreDataProperties.h"
 #import "TJBExerciseCategory+CoreDataProperties.h"
-#import "TJBRealizedSetExercise+CoreDataProperties.h"
+
 #import "TJBRealizedSet+CoreDataProperties.h"
 
 // for chain template
 
-#import "TJBChainTemplateExercise+CoreDataClass.m"
-#import "TJBChainTemplateWeightSequence+CoreDataClass.h"
-#import "TJBChainTemplateRepsSequence+CoreDataClass.h"
-#import "TJBRestTimeSequence+CoreDataClass.h"
+
+
+
+
 
 
 
@@ -31,7 +31,7 @@
 
 + (instancetype)singleton;
 
-- (TJBRealizedSetExercise *)realizedSetExerciseForName:(NSString *)name;
+- (TJBExercise *)exerciseForName:(NSString *)name;
 - (BOOL)realizedSetExerciseExistsForName:(NSString *)name;
 
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;

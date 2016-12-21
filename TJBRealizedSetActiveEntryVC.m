@@ -32,7 +32,7 @@
 
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
-@property (nonatomic, strong) TJBRealizedSetExercise *exercise;
+@property (nonatomic, strong) TJBExercise *exercise;
 
 // core data controller
 
@@ -136,7 +136,7 @@
 {
     UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
     
-    TJBRealizedSetExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     cell.textLabel.text = exercise.name;
     
@@ -153,7 +153,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TJBRealizedSetExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     self.exercise = exercise;
     [self.navItem setTitle: exercise.name];
     
@@ -283,7 +283,7 @@
 
 #pragma mark - <NewExerciseCreationDelegate>
 
-- (void)didCreateNewExercise:(TJBRealizedSetExercise *)exercise
+- (void)didCreateNewExercise:(TJBExercise *)exercise
 {
     self.exercise = exercise;
     [self.navItem setTitle: exercise.name];

@@ -115,7 +115,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 {
     UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: cellReuseIdentifier];
     
-    TJBRealizedSetExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     cell.textLabel.text = exercise.name;
     

@@ -18,6 +18,8 @@
 
 #import "CoreDataController.h"
 
+#import "TJBChainTemplate+CoreDataProperties.h"
+
 
 
 @interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
@@ -269,18 +271,18 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Core Data
 
-- (void)insertAndSaveCoreDataManagedObjects
-{
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
-                                                                    inManagedObjectContext: moc];
-    
-    for (int i = 0;i < [self.numberOfExercises intValue]; i++)
-    {
-        TJBChainTemplateExercise *chain
-    }
-}
+//- (void)insertAndSaveCoreDataManagedObjects
+//{
+//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+//    
+//    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
+//                                                                    inManagedObjectContext: moc];
+//    
+//    for (int i = 0;i < [self.numberOfExercises intValue]; i++)
+//    {
+//        TJBChainTemplateExercise *chain
+//    }
+//}
 
 #pragma mark - Button Actions
 

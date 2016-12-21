@@ -10,10 +10,10 @@
 
 #import "CoreDataController.h"
 
-#import "TJBRealizedSetExercise+CoreDataProperties.h"
+
 
 @protocol NewExerciseCreationDelegate <NSObject>
 
-- (void)didCreateNewExercise:(TJBRealizedSetExercise *)exercise;
+- (void)didCreateNewExercise:(TJBExercise *)exercise;
 
 @end

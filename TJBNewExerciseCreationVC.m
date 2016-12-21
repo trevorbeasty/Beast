@@ -146,7 +146,7 @@
     }
     else
     {
-        TJBRealizedSetExercise *newExercise = [[CoreDataController singleton] realizedSetExerciseForName: exerciseString];
+        TJBExercise *newExercise = [[CoreDataController singleton] exerciseForName: exerciseString];
     
         newExercise.category = self.exerciseCategory;
                 
