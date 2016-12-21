@@ -102,7 +102,7 @@
 
 - (BOOL)realizedSetExerciseExistsForName:(NSString *)name
 {
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSetExercise"];
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
     fetch.predicate = predicate;
     

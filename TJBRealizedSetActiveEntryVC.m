@@ -83,7 +83,7 @@
     
     // NSFetchedResultsController
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSetExercise"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
     NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
