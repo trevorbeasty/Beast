@@ -59,6 +59,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [navItem setTitle: self.navBarTitle];
     
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+                                                                                  target: self
+                                                                                  action: @selector(didPressCancelButton)];
+    [navItem setLeftBarButtonItem: cancelButton];
+    
     [self.navBar setItems: @[navItem]];
 }
 
@@ -135,6 +140,14 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.callbackBlock(exercise);
+}
+
+#pragma mark - Button Actions
+
+- (void)didPressCancelButton
+{
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
 }
 
 @end

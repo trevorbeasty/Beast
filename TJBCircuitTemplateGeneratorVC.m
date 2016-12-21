@@ -270,66 +270,6 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Core Data
 
-//- (void)createAndSaveChainTemplate
-//{
-//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-//    
-//    // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
-//    
-//    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
-//                                                                    inManagedObjectContext: moc];
-//    
-//    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
-//    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
-//    NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
-//    NSMutableOrderedSet *targetRestTimeArrays = [[NSMutableOrderedSet alloc] init];
-//    
-//    // assign the chain template's attributes
-//    
-//    chainTemplate.identifier = @"placeholder identifier";
-//    
-//    chainTemplate.name = self.name;
-//    chainTemplate.targetingWeight = self.targetingWeight;
-//    chainTemplate.targetingReps = self.targetingReps;
-//    chainTemplate.targetingRestTime = self.targetingRest;
-//    chainTemplate.targetsVaryByRound = self.targetsVaryByRound;
-//    
-//    
-//    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
-//    {
-//        // add the current exercise to the mutable ordered set
-//        
-//        TJBExercise *currentExercise = self.exerciseData[i];
-//        [exercises addObject: currentExercise];
-//        
-//        // create managed objects to be collected by NSMutableOrderedSets and give them the appropriate IV's; then add them to the appropriate collections
-//        
-//        TJBWeightArray *currentWeightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
-//                                                                    inManagedObjectContext: moc];
-//        TJBRepsArray *currentRepsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
-//                                                                           inManagedObjectContext: moc];
-//        TJBTargetRestTimeArray *currentRestArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
-//                                                                           inManagedObjectContext: moc];
-//        
-//        // when a certain dimension is not being targeted, I should leave that relationship of the ChainTemplate untouched (weight, reps, and rest are optional relationships)
-//        
-//        currentWeightArray.numbers = [self copySingleArrayFromData: self.weightData[i]];
-//        currentRepsArray.numbers = [self copySingleArrayFromData: self.repsData[i]];
-//        currentRestArray.numbers = [self copySingleArrayFromData: self.restData[i]];
-//        
-//        [weightArrays addObject: currentWeightArray];
-//        [repsArrays addObject: currentRepsArray];
-//        [targetRestTimeArrays addObject: currentRestArray];
-//    }
-//    
-//    chainTemplate.exercises = [exercises copy];
-//    chainTemplate.weightArrays = [weightArrays copy];
-//    chainTemplate.repsArrays = [repsArrays copy];
-//    chainTemplate.targetRestTimeArrays = [targetRestTimeArrays copy];
-//    
-//    [[CoreDataController singleton] saveContext];
-//}
-
 - (void)createAndSaveChainTemplate
 {
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
@@ -616,7 +556,7 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber
 {
-    NSString *title = [NSString stringWithFormat: @"Chain Element #%d:",
+    NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
                        [chainNumber intValue]];
     
     TJBCircuitTemplateGeneratorVC * __weak weakSelf = self;
@@ -687,6 +627,29 @@ static NSString * const defaultValue = @"unselected";
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
