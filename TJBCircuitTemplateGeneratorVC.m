@@ -270,6 +270,66 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Core Data
 
+//- (void)createAndSaveChainTemplate
+//{
+//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+//    
+//    // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
+//    
+//    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
+//                                                                    inManagedObjectContext: moc];
+//    
+//    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
+//    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
+//    NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
+//    NSMutableOrderedSet *targetRestTimeArrays = [[NSMutableOrderedSet alloc] init];
+//    
+//    // assign the chain template's attributes
+//    
+//    chainTemplate.identifier = @"placeholder identifier";
+//    
+//    chainTemplate.name = self.name;
+//    chainTemplate.targetingWeight = self.targetingWeight;
+//    chainTemplate.targetingReps = self.targetingReps;
+//    chainTemplate.targetingRestTime = self.targetingRest;
+//    chainTemplate.targetsVaryByRound = self.targetsVaryByRound;
+//    
+//    
+//    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
+//    {
+//        // add the current exercise to the mutable ordered set
+//        
+//        TJBExercise *currentExercise = self.exerciseData[i];
+//        [exercises addObject: currentExercise];
+//        
+//        // create managed objects to be collected by NSMutableOrderedSets and give them the appropriate IV's; then add them to the appropriate collections
+//        
+//        TJBWeightArray *currentWeightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+//                                                                    inManagedObjectContext: moc];
+//        TJBRepsArray *currentRepsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
+//                                                                           inManagedObjectContext: moc];
+//        TJBTargetRestTimeArray *currentRestArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
+//                                                                           inManagedObjectContext: moc];
+//        
+//        // when a certain dimension is not being targeted, I should leave that relationship of the ChainTemplate untouched (weight, reps, and rest are optional relationships)
+//        
+//        currentWeightArray.numbers = [self copySingleArrayFromData: self.weightData[i]];
+//        currentRepsArray.numbers = [self copySingleArrayFromData: self.repsData[i]];
+//        currentRestArray.numbers = [self copySingleArrayFromData: self.restData[i]];
+//        
+//        [weightArrays addObject: currentWeightArray];
+//        [repsArrays addObject: currentRepsArray];
+//        [targetRestTimeArrays addObject: currentRestArray];
+//    }
+//    
+//    chainTemplate.exercises = [exercises copy];
+//    chainTemplate.weightArrays = [weightArrays copy];
+//    chainTemplate.repsArrays = [repsArrays copy];
+//    chainTemplate.targetRestTimeArrays = [targetRestTimeArrays copy];
+//    
+//    [[CoreDataController singleton] saveContext];
+//}
+
 - (void)createAndSaveChainTemplate
 {
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
@@ -277,12 +337,7 @@ static NSString * const defaultValue = @"unselected";
     // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
     
     TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
-                                                                    inManagedObjectContext: moc];
-    
-    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
-    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
-    NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
-    NSMutableOrderedSet *targetRestTimeArrays = [[NSMutableOrderedSet alloc] init];
+                                                                        inManagedObjectContext: moc];
     
     // assign the chain template's attributes
     
@@ -294,60 +349,97 @@ static NSString * const defaultValue = @"unselected";
     chainTemplate.targetingRestTime = self.targetingRest;
     chainTemplate.targetsVaryByRound = self.targetsVaryByRound;
     
+    // chain template relationships
+    
+    int exerciseLimit = [self.numberOfExercises intValue];
+    
+    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
     
     for (int i = 0; i < [self.numberOfExercises intValue]; i++)
     {
         // add the current exercise to the mutable ordered set
-        
         TJBExercise *currentExercise = self.exerciseData[i];
         [exercises addObject: currentExercise];
-        
-        // create managed objects to be collected by NSMutableOrderedSets and give them the appropriate IV's; then add them to the appropriate collections
-        
-        TJBWeightArray *currentWeightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
-                                                                    inManagedObjectContext: moc];
-        TJBRepsArray *currentRepsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
-                                                                           inManagedObjectContext: moc];
-        TJBTargetRestTimeArray *currentRestArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
-                                                                           inManagedObjectContext: moc];
-        
-        // when a certain dimension is not being targeted, I should leave that relationship of the ChainTemplate untouched (weight, reps, and rest are optional relationships)
-        
-        currentWeightArray.numbers = [self copyDataFromDataArray: self.weightData[i]];
-        currentRepsArray.numbers = [self copyDataFromDataArray: self.repsData[i]];
-        currentRestArray.numbers = [self copyDataFromDataArray: self.restData[i]];
-        
-        [weightArrays addObject: currentWeightArray];
-        [repsArrays addObject: currentRepsArray];
-        [targetRestTimeArrays addObject: currentRestArray];
     }
     
-    chainTemplate.exercises = [exercises copy];
-    chainTemplate.weightArrays = [weightArrays copy];
-    chainTemplate.repsArrays = [repsArrays copy];
-    chainTemplate.targetRestTimeArrays = [targetRestTimeArrays copy];
+    if ([self.targetingWeight intValue] == 1)
+    {
+        NSMutableArray *weightArrays = [[NSMutableArray alloc] init];
+        for (int i = 0; i < exerciseLimit; i++)
+        {
+            TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+                                                                        inManagedObjectContext: moc];
+            [weightArrays addObject: weightArray];
+        }
+        
+        chainTemplate.weightArrays = [self copyCollectionOfArraysFromData: self.weightData
+                                                             numberArrays: weightArrays];
+    }
+    
+    if ([self.targetingReps intValue] == 1)
+    {
+        NSMutableArray *repsArrays = [[NSMutableArray alloc] init];
+        for (int i = 0; i < exerciseLimit; i++)
+        {
+            TJBWeightArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
+                                                                      inManagedObjectContext: moc];
+            [repsArrays addObject: repsArray];
+        }
+        
+        chainTemplate.repsArrays = [self copyCollectionOfArraysFromData: self.repsData
+                                                           numberArrays: repsArrays];
+    }
+    
+    if ([self.targetingWeight intValue] == 1)
+    {
+        NSMutableArray *restArrays = [[NSMutableArray alloc] init];
+        for (int i = 0; i < exerciseLimit; i++)
+        {
+            TJBWeightArray *restArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
+                                                                      inManagedObjectContext: moc];
+            [restArrays addObject: restArray];
+        }
+        
+        chainTemplate.targetRestTimeArrays = [self copyCollectionOfArraysFromData: self.restData
+                                                                     numberArrays: restArrays];
+    }
     
     [[CoreDataController singleton] saveContext];
 }
 
-- (NSMutableOrderedSet *)copyDataFromDataArray:(NSArray *)dataArray;
+- (NSMutableOrderedSet *)copyCollectionOfArraysFromData:(NSArray<NSArray *> *)data numberArrays:(NSArray<TJBNumberArray *> *)numberArrays
+{
+    NSMutableOrderedSet *collector = [[NSMutableOrderedSet alloc] init];
+    
+    int exerciseLimit = [self.numberOfExercises intValue];
+    
+    for (int i = 0; i < exerciseLimit; i++)
+    {
+        numberArrays[i].numbers = [self copySingleArrayFromData: data[i]];
+        [collector addObject: numberArrays[i]];
+    }
+    
+    return collector;
+}
+
+- (NSMutableOrderedSet *)copySingleArrayFromData:(NSArray *)dataArray;
 {
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
     // create NumberTypeArrayComponents and give them to the appropriate ordered mutable set
     
-    int iterationLimit = [self.numberOfRounds intValue];
+    int roundsLimit = [self.numberOfRounds intValue];
     
     NSMutableOrderedSet *collector = [[NSMutableOrderedSet alloc] init];
     
-    for (int j = 0; j < iterationLimit ; j++)
+    for (int i = 0; i < roundsLimit ; i++)
     {
         
         
         TJBNumberTypeArrayComp *numberComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
                                                                                 inManagedObjectContext: moc];
         
-        numberComponent.value = [dataArray[j] floatValue];
+        numberComponent.value = [dataArray[i] floatValue];
         
         [collector addObject: numberComponent];
     }
