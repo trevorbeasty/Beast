@@ -8,19 +8,25 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
+// supporting VC's
+
 #import "TJBNumberSelectionVC.h"
-
 #import "TJBExerciseSelectionScene.h"
-
-#import "TJBExercise+CoreDataProperties.h"
 
 // core data
 
 #import "CoreDataController.h"
 
+// chain template
+
 #import "TJBChainTemplate+CoreDataProperties.h"
 
+#import "TJBWeightArray+CoreDataProperties.h"
+#import "TJBRepsArray+CoreDataProperties.h"
+#import "TJBTargetRestTimeArray+CoreDataClass.h"
+#import "TJBExercise+CoreDataProperties.h"
 
+#import "TJBNumberTypeArrayComp+CoreDataProperties.h"
 
 @interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
 
@@ -46,18 +52,9 @@
 
 @end
 
-
-
-
-
+// constants
 
 static NSString * const defaultValue = @"unselected";
-
-
-
-
-
-
 
 @implementation TJBCircuitTemplateGeneratorVC
 
@@ -271,18 +268,36 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Core Data
 
-//- (void)insertAndSaveCoreDataManagedObjects
-//{
-//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-//    
-//    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
-//                                                                    inManagedObjectContext: moc];
-//    
-//    for (int i = 0;i < [self.numberOfExercises intValue]; i++)
-//    {
-//        TJBChainTemplateExercise *chain
-//    }
-//}
+- (void)insertAndSaveCoreDataManagedObjects
+{
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
+    
+    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
+                                                                    inManagedObjectContext: moc];
+    
+    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
+    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
+    NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
+    NSMutableOrderedSet *targetRestTimeArrays = [[NSMutableOrderedSet alloc] init];
+    
+    // assign the chain template's attributes
+    
+    chainTemplate.name = self.name;
+    
+    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
+    {
+        // add the current exercise to the mutable ordered set
+        
+        TJBExercise *currentExercise = self.exerciseData[i];
+        chainTemplate.exercises
+        
+        // create arrays for weight, reps, and rest and give them the user-selected values for the current exercise
+        TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+                                                                    inManagedObjectContext: moc];
+    }
+}
 
 #pragma mark - Button Actions
 

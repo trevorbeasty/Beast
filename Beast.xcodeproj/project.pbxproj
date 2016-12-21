@@ -163,6 +163,7 @@
 				0B843CC71E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.h */,
 				0B843CC81E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m */,
 				0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */,
+				0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
 			);
 			name = "Circuit Template Generator";
 			sourceTree = "<group>";
@@ -306,7 +307,6 @@
 				0B1616D91E0819E1001C8F45 /* Exercise Component */,
 				0B1616D81E0819D2001C8F45 /* Circuit Template Generator */,
 				0B1616D71E0819BD001C8F45 /* Template Configuratioin Scene */,
-				0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
 			);
 			name = "Circuit Mode";
 			sourceTree = "<group>";
