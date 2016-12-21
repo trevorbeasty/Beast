@@ -14,6 +14,9 @@
 
 #import "TJBExercise+CoreDataProperties.h"
 
+// core data
+
+#import "CoreDataController.h"
 
 
 
@@ -262,6 +265,21 @@ static NSString * const defaultValue = @"unselected";
     self.name = name;
     
     return self;
+}
+
+#pragma mark - Core Data
+
+- (void)insertAndSaveCoreDataManagedObjects
+{
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
+                                                                    inManagedObjectContext: moc];
+    
+    for (int i = 0;i < [self.numberOfExercises intValue]; i++)
+    {
+        TJBChainTemplateExercise *chain
+    }
 }
 
 #pragma mark - Button Actions

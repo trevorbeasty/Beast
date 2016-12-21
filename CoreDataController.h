@@ -15,6 +15,15 @@
 #import "TJBRealizedSetExercise+CoreDataProperties.h"
 #import "TJBRealizedSet+CoreDataProperties.h"
 
+// for chain template
+
+#import "TJBChainTemplateExercise+CoreDataClass.m"
+#import "TJBChainTemplateWeightSequence+CoreDataClass.h"
+#import "TJBChainTemplateRepsSequence+CoreDataClass.h"
+#import "TJBRestTimeSequence+CoreDataClass.h"
+
+
+
 
 @interface CoreDataController : NSObject
 
