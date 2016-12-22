@@ -30,6 +30,8 @@
 
 #import "TJBNumberTypeArrayComp+CoreDataProperties.h"
 
+#import "TJBStopwatch.h"
+
 @interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
@@ -548,7 +550,7 @@ static NSString * const defaultValue = @"unselected";
     {
         [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
                                                    numberMultiple: [NSNumber numberWithDouble: 5.0]
-                                                            title: @"Select Target Rest (in seconds)"
+                                                            title: @"Select Target Rest (minutes:seconds)"
                                                          animated: NO];
     }
     
@@ -593,9 +595,19 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NumberType)identifier
 {
-    [self.activeButton setTitle: [number stringValue]
-                       forState: UIControlStateNormal];
-    
+    if (identifier == RestType)
+    {
+        NSString *title = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+        [self.activeButton setTitle: title
+                           forState: UIControlStateNormal];
+    }
+    else
+    {
+        
+        [self.activeButton setTitle: [number stringValue]
+                           forState: UIControlStateNormal];
+    }
+  
     int indexOne = [self.activeChainNumber intValue] - 1;
     int indexTwo = [self.activeRoundNumber intValue] - 1;
     

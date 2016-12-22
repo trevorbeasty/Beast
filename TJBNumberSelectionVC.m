@@ -10,6 +10,8 @@
 
 #import "TJBNumberSelectionCell.h"
 
+#import "TJBStopwatch.h"
+
 @interface TJBNumberSelectionVC ()
 
 // for cell color control in response to selection
@@ -70,6 +72,14 @@
 
 #pragma mark - Setters
 
+- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController<TJBNumberSelectionDelegate> *)associatedVC title:(NSString *)title
+{
+    [self setNumberTypeIdentifier: numberType];
+    self.numberMultiple = numberMultiple;
+    self.associatedVC = associatedVC;
+    self.titleString = title;
+}
+
 - (void)setNumberTypeIdentifier:(NumberType)type
 {
     _numberTypeIdentifier = type;
@@ -93,10 +103,19 @@
     TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"basicCell"
                                                                            forIndexPath: indexPath];
     
-    NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
-    NSString *cellNumberAsString = [cellNumber stringValue];
+
     
-    cell.numberLabel.text = cellNumberAsString;
+    NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
+    
+    if (_numberTypeIdentifier == RestType)
+    {
+        cell.numberLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber intValue]];
+    }
+    else
+    {
+        cell.numberLabel.text = [cellNumber stringValue];
+    }
+    
     cell.numberLabel.backgroundColor = [UIColor lightGrayColor];
     cell.numberLabel.layer.cornerRadius = 4;
     cell.numberLabel.layer.masksToBounds = YES;

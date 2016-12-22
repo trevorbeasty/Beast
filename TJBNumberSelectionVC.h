@@ -29,6 +29,8 @@
 
 @property (nonatomic, strong) NSString *titleString;
 
+- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController <TJBNumberSelectionDelegate> *)associatedVC title:(NSString *)title;
+
 - (void)setNumberTypeIdentifier:(NumberType)type;
 
 @end

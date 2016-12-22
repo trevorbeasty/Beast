@@ -24,4 +24,6 @@
 - (void)pauseStopwatch;
 - (void)playStopwatch;
 
+- (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds;
+
 @end

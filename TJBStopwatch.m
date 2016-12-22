@@ -121,6 +121,15 @@
     return [NSNumber numberWithBool: _isRunning];
 }
 
+#pragma mark - Convenience Methods
+
+- (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds
+{
+    int minutes = numberOfSeconds / 60;
+    int seconds = numberOfSeconds % 60;
+    
+    return [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
+}
 
 @end
 
