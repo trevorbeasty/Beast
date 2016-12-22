@@ -23,8 +23,11 @@
 
 // UI buttons
 
-- (IBAction)setCompleted:(id)sender;
+//- (IBAction)setCompleted:(id)sender;
 - (IBAction)addNewExercise:(id)sender;
+
+- (IBAction)didPressBeginNextSet:(id)sender;
+
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
@@ -175,10 +178,10 @@
     UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
     TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
     
-    [numberSelectionVC setNumberTypeIdentifier: identifier];
-    numberSelectionVC.numberMultiple = numberMultiple;
-    numberSelectionVC.associatedVC = self;
-    numberSelectionVC.title = title;
+    [numberSelectionVC setNumberTypeIdentifier: identifier
+                                numberMultiple: numberMultiple
+                                  associatedVC: self
+                                         title: title];
     
     [self presentViewController: numberSelectionNav
                        animated: animated
@@ -232,6 +235,14 @@
     [self presentViewController: necVC
                        animated: YES
                      completion: nil];
+}
+
+- (IBAction)didPressBeginNextSet:(id)sender
+{
+    [self presentNumberSelectionSceneWithNumberTypeIdentifier: RestType
+                                               numberMultiple: [NSNumber numberWithInt: 5]
+                                                        title: @"Select Time Delay"
+                                                     animated: YES];
 }
 
 #pragma mark - <TJBNumberSelectionDelegate>
