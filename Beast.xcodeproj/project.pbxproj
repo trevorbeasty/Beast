@@ -66,7 +66,6 @@
 		0B517BD21DF77C20009981F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionVC.h; sourceTree = "<group>"; };
 		0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNumberSelectionVC.m; sourceTree = "<group>"; };
-		0B517BDE1DF88802009981F9 /* TJBNumberSelectionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionDelegate.h; sourceTree = "<group>"; };
 		0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TJBNumberSelection.storyboard; sourceTree = "<group>"; };
 		0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryVC.h; sourceTree = "<group>"; };
 		0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryVC.m; sourceTree = "<group>"; };
@@ -256,7 +255,6 @@
 				0B517BDF1DF888A3009981F9 /* TJBNumberSelection.storyboard */,
 				0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */,
 				0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */,
-				0B517BDE1DF88802009981F9 /* TJBNumberSelectionDelegate.h */,
 				0B843C811DFA28270093F057 /* TJBNumberSelectionCell.h */,
 				0B843C821DFA28270093F057 /* TJBNumberSelectionCell.m */,
 			);

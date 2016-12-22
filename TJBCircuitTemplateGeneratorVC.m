@@ -32,7 +32,7 @@
 
 #import "TJBStopwatch.h"
 
-@interface TJBCircuitTemplateGeneratorVC () <TJBNumberSelectionDelegate>
+@interface TJBCircuitTemplateGeneratorVC ()
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
@@ -518,7 +518,6 @@ static NSString * const defaultValue = @"unselected";
     
     [numberSelectionVC setNumberTypeIdentifier: identifier];
     numberSelectionVC.numberMultiple = numberMultiple;
-    numberSelectionVC.associatedVC = self;
     numberSelectionVC.title = title;
     
     [self presentViewController: numberSelectionNav

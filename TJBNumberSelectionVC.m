@@ -31,10 +31,6 @@
 
 - (void)viewDidLoad
 {
-    // configure the navigation item
-    
-    [self.navigationItem setTitle: self.title];
-    
     // set the collection view's background color
     
     self.collectionView.backgroundColor = [UIColor whiteColor];
@@ -72,12 +68,13 @@
 
 #pragma mark - Setters
 
-- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController<TJBNumberSelectionDelegate> *)associatedVC title:(NSString *)title
+- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController *)associatedVC title:(NSString *)title
 {
     [self setNumberTypeIdentifier: numberType];
     self.numberMultiple = numberMultiple;
-    self.associatedVC = associatedVC;
-    self.titleString = title;
+//    self.titleString = title;
+    
+    [self.navigationItem setTitle: title];
 }
 
 - (void)setNumberTypeIdentifier:(NumberType)type
@@ -152,8 +149,7 @@
     NSNumber *selectedNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
     
     // pass relevant data to the presenting VC
-    [self.associatedVC didSelectNumber: selectedNumber
-                  numberTypeIdentifier: _numberTypeIdentifier];
+
 }
 
 - (void)pinch:(UIGestureRecognizer *)gr
@@ -217,7 +213,7 @@
 
 - (void)cancel
 {
-    [self.associatedVC didCancelNumberSelection];
+    
 }
 
 @end

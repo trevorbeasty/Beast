@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TJBNumberSelectionDelegate.h"
+#import "TJBGlobalParameters.h"
 
 @interface TJBNumberSelectionVC : UICollectionViewController
 
@@ -16,20 +16,12 @@
     NumberType _numberTypeIdentifier;
 }
 
-// number specifications
-
 @property (nonatomic, strong) NSNumber *numberMultiple;
 @property (nonatomic, strong) NSNumber *numberLimit;
 
-// delegate view controller
+@property (copy) void(^callbackBlock)(NumberType, NSNumber *);
 
-@property (nonatomic, weak) UIViewController <TJBNumberSelectionDelegate> *associatedVC;
-
-// view specifications
-
-@property (nonatomic, strong) NSString *titleString;
-
-- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController <TJBNumberSelectionDelegate> *)associatedVC title:(NSString *)title;
+- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController *)associatedVC title:(NSString *)title;
 
 - (void)setNumberTypeIdentifier:(NumberType)type;
 

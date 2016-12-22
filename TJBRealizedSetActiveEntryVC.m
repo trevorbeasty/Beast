@@ -17,7 +17,7 @@
 
 #import "CoreDataController.h"
 
-@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, TJBNumberSelectionDelegate, NewExerciseCreationDelegate, NSFetchedResultsControllerDelegate>
+@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NewExerciseCreationDelegate, NSFetchedResultsControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
