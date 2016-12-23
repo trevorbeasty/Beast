@@ -19,6 +19,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *standaloneSetFreeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *circuitOrSupersetButton;
+@property (weak, nonatomic) IBOutlet UIButton *testButton;
 
 - (IBAction)didPressStandaloneSetFreeformButton:(id)sender;
 - (IBAction)didPressCircuitOrSupersetButton:(id)sender;
@@ -36,13 +37,35 @@
 {
     // view aesthetics
     
-    self.standaloneSetFreeformButton.backgroundColor = [UIColor blueColor];
-    [self.standaloneSetFreeformButton setTitleColor: [UIColor whiteColor]
-                                           forState: UIControlStateNormal];
+    [self configureViewAesthetics];
     
-    self.circuitOrSupersetButton.backgroundColor = [UIColor blueColor];
-    [self.circuitOrSupersetButton setTitleColor: [UIColor whiteColor]
-                                       forState: UIControlStateNormal];
+    // background view
+    
+    [self addBackgroundView];
+}
+
+- (void)configureViewAesthetics
+{
+    double opacityValue = .9;
+    
+    NSArray *viewsToConfigure = @[self.standaloneSetFreeformButton,
+                                 self.circuitOrSupersetButton,
+                                 self.testButton];
+    
+    for (UIView *view in viewsToConfigure)
+    {
+        view.layer.opacity = opacityValue;
+        view.layer.masksToBounds = YES;
+        view.layer.cornerRadius = 4.0;
+    }
+}
+
+- (void)addBackgroundView
+{
+    UIImage *image = [UIImage imageNamed: @"coolRandom"];
+    UIView *imageView = [[UIImageView alloc] initWithImage: image];
+    [self.view addSubview: imageView];
+    [self.view sendSubviewToBack: imageView];
 }
 
 #pragma mark - Button Actions

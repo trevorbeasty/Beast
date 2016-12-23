@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="circuitOrSupersetButton" destination="5vd-Pz-T1I" id="t90-1v-o1S"/>
                 <outlet property="standaloneSetFreeformButton" destination="dl0-qJ-myg" id="ngZ-fI-ffX"/>
+                <outlet property="testButton" destination="8Xs-rt-TB6" id="j4N-ps-sOG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -32,6 +33,7 @@
                 </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dl0-qJ-myg">
                     <rect key="frame" x="8" y="58" width="359" height="100"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="XZh-r6-pdU"/>
                     </constraints>
@@ -42,6 +44,7 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vd-Pz-T1I">
                     <rect key="frame" x="8" y="166" width="359" height="100"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <state key="normal" title="Circuit / Superset"/>
                     <connections>
                         <action selector="didPressCircuitOrSupersetButton:" destination="-1" eventType="touchUpInside" id="25L-cS-m8c"/>
@@ -49,6 +52,7 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Xs-rt-TB6">
                     <rect key="frame" x="8" y="274" width="359" height="100"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <state key="normal" title="Test"/>
                     <connections>
                         <action selector="test:" destination="-1" eventType="touchUpInside" id="2tP-KY-1O1"/>

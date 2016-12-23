@@ -70,6 +70,18 @@
     [navItem setLeftBarButtonItem: barButtonItem];
     
     [self.navBar setItems: @[navItem]];
+    
+    // background view
+    
+    [self addBackgroundView];
+}
+
+- (void)addBackgroundView
+{
+    UIImage *image = [UIImage imageNamed: @"coolRandom"];
+    UIView *imageView = [[UIImageView alloc] initWithImage: image];
+    [self.view addSubview: imageView];
+    [self.view sendSubviewToBack: imageView];
 }
 
 #pragma mark - Stepper Methods

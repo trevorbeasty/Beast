@@ -631,7 +631,7 @@ static NSString * const defaultValue = @"unselected";
 }
                                      
 - (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber
-{    
+{
     int index = [chainNumber intValue] - 1;
     self.exerciseData[index] = exercise;
 }

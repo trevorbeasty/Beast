@@ -130,6 +130,20 @@
     // timer
     
     [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.timerLabel];
+    
+    // background view
+    
+    [self addBackgroundView];
+    
+    self.exerciseTableView.layer.opacity = .7;
+}
+
+- (void)addBackgroundView
+{
+    UIImage *image = [UIImage imageNamed: @"coolRandom"];
+    UIView *imageView = [[UIImageView alloc] initWithImage: image];
+    [self.view addSubview: imageView];
+    [self.view sendSubviewToBack: imageView];
 }
 
 - (void)viewWillAppear:(BOOL)animated

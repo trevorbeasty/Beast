@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad
 {
-    // set the collection view's background color
+    // set the collection view's background image
     
     UIImage *image = [UIImage imageNamed: @"chick"];
     UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
