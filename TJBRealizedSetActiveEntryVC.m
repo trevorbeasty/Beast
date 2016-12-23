@@ -33,6 +33,8 @@
 
 // realized set
 
+@property (nonatomic, strong) NSNumber *timeDelay;
+@property (nonatomic, strong) NSNumber *timeLag;
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
 @property (nonatomic, strong) TJBExercise *exercise;
@@ -51,11 +53,38 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, strong) UINavigationItem *navItem;
 
+
+//@property TJBNumberSelectionVC *(^numberSelectionBlock)(void);
+
 @end
+
+
+typedef void(^CancelBlock)(void);
+typedef void(^NumberSelectedBlock)(NSNumber *);
 
 @implementation TJBRealizedSetActiveEntryVC
 
 #pragma mark - Instantiation
+
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock;
+{
+    
+    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
+                                                                        bundle: nil];
+    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
+    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+    
+    [numberSelectionVC setNumberTypeIdentifier: numberType
+                                numberMultiple: numberMultiple
+                                   numberLimit: numberLimit
+                                         title: title
+                                   cancelBlock: cancelBlock
+                           numberSelectedBlock: numberSelectedBlock];
+    
+    [self presentViewController: numberSelectionNav
+                       animated: YES
+                     completion: nil];
+}
 
 - (void)viewDidLoad
 {
@@ -171,25 +200,25 @@
                              completion: nil];
 }
 
-- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NumberType)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
+- (IBAction)addNewExercise:(id)sender
 {
-    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
-                                                                        bundle: nil];
-    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
-    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+    TJBNewExerciseCreationVC *necVC = [[TJBNewExerciseCreationVC alloc] init];
     
-    [numberSelectionVC setNumberTypeIdentifier: identifier
-                                numberMultiple: numberMultiple
-                                  associatedVC: self
-                                         title: title];
+    necVC.associateVC = self;
     
-    [self presentViewController: numberSelectionNav
-                       animated: animated
+    [self presentViewController: necVC
+                       animated: YES
                      completion: nil];
 }
 
-- (IBAction)setCompleted:(id)sender
+- (IBAction)didPressBeginNextSet:(id)sender
 {
+    CancelBlock cancelBlock = ^{
+        [self setRealizedSetParametersToNil];
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+    };
+    
     if (!self.exercise)
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"No Exercise Selected"
@@ -205,6 +234,39 @@
         [self presentViewController: alert
                            animated: YES
                          completion: nil];
+   
+    }
+    else if(!self.timeDelay)
+    {
+        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            self.timeDelay = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        
+        [self presentNumberSelectionSceneWithNumberType: RestType
+                                         numberMultiple: [NSNumber numberWithInt: 5]
+                                            numberLimit: nil
+                                                  title: @"Select Delay"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: numberSelectedBlock];
+    }
+    else if (!self.timeLag)
+    {
+        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            self.timeLag = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        
+        [self presentNumberSelectionSceneWithNumberType: RestType
+                                         numberMultiple: [NSNumber numberWithInt: 5]
+                                            numberLimit: nil
+                                                  title: @"Select Lag"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: numberSelectedBlock];
     }
     else if (!self.weight)
     {
@@ -224,53 +286,6 @@
     {
         [self presentSubmittedSetSummary];
     }
-}
-
-- (IBAction)addNewExercise:(id)sender
-{
-    TJBNewExerciseCreationVC *necVC = [[TJBNewExerciseCreationVC alloc] init];
-    
-    necVC.associateVC = self;
-    
-    [self presentViewController: necVC
-                       animated: YES
-                     completion: nil];
-}
-
-- (IBAction)didPressBeginNextSet:(id)sender
-{
-    [self presentNumberSelectionSceneWithNumberTypeIdentifier: RestType
-                                               numberMultiple: [NSNumber numberWithInt: 5]
-                                                        title: @"Select Time Delay"
-                                                     animated: YES];
-}
-
-#pragma mark - <TJBNumberSelectionDelegate>
-
-- (void)didCancelNumberSelection
-{
-    self.reps = nil;
-    self.weight = nil;
-    
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
-}
-
-- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NumberType)identifier
-{
-    if (identifier == RepsType)
-    {
-        self.reps = number;
-    }
-    else if (identifier == WeightType)
-    {
-        self.weight = number;
-    }
-    
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
-    
-    [self setCompleted: nil];
 }
 
 - (void)addRealizedSetToCoreData
@@ -331,7 +346,7 @@
     __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
     
     void (^action1Block)(UIAlertAction *) = ^(UIAlertAction *action){
-        [weakSelf cancelSubmission];
+        [weakSelf setRealizedSetParametersToNil];
     };
     
     void (^action2Block)(UIAlertAction *) = ^(UIAlertAction *action){
@@ -353,10 +368,12 @@
                      completion: nil];
 }
 
-- (void)cancelSubmission
+- (void)setRealizedSetParametersToNil
 {
-    self.reps = nil;
+    self.timeDelay = nil;
+    self.timeLag = nil;
     self.weight = nil;
+    self.reps = nil;
 }
 
 - (void)confirmSubmission

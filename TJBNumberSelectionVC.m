@@ -68,13 +68,14 @@
 
 #pragma mark - Setters
 
-- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController *)associatedVC title:(NSString *)title
+- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void (^)(void))cancelBlock numberSelectedBlock:(void (^)(NSNumber *))numberSelectedBlock
 {
     [self setNumberTypeIdentifier: numberType];
     self.numberMultiple = numberMultiple;
-//    self.titleString = title;
-    
+    self.numberLimit = numberLimit;
     [self.navigationItem setTitle: title];
+    self.cancelBlock = cancelBlock;
+    self.numberSelectedBlock = numberSelectedBlock;
 }
 
 - (void)setNumberTypeIdentifier:(NumberType)type
@@ -149,7 +150,7 @@
     NSNumber *selectedNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
     
     // pass relevant data to the presenting VC
-
+    self.numberSelectedBlock(selectedNumber);
 }
 
 - (void)pinch:(UIGestureRecognizer *)gr
@@ -213,7 +214,7 @@
 
 - (void)cancel
 {
-    
+    self.cancelBlock();
 }
 
 @end

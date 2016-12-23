@@ -18,10 +18,10 @@
 
 @property (nonatomic, strong) NSNumber *numberMultiple;
 @property (nonatomic, strong) NSNumber *numberLimit;
+@property (copy) void (^cancelBlock)(void);
+@property (copy) void (^numberSelectedBlock)(NSNumber *);
 
-@property (copy) void(^callbackBlock)(NumberType, NSNumber *);
-
-- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple associatedVC:(UIViewController *)associatedVC title:(NSString *)title;
+- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock;
 
 - (void)setNumberTypeIdentifier:(NumberType)type;
 

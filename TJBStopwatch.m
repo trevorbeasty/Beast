@@ -12,11 +12,13 @@
 
 {
     int _elapsedTimeInSeconds;
+    int _secondaryElapsedTimeInSeconds;
     BOOL _isRunning;
 }
 
 @property (nonatomic, strong) NSTimer *stopwatch;
 @property (nonatomic, strong) NSMutableSet *observers;
+@property (nonatomic, strong) NSMutableSet *secondaryTimeObservers;
 
 @end
 
@@ -40,6 +42,7 @@
     self = [super init];
     
     _elapsedTimeInSeconds = 0;
+    _secondaryElapsedTimeInSeconds = 0;
     self.observers = [[NSMutableSet alloc] init];
     
     self.stopwatch = [NSTimer scheduledTimerWithTimeInterval: 1.0
@@ -63,6 +66,7 @@
 - (void)updateTimerLabels
 {
     _elapsedTimeInSeconds++;
+    _secondaryElapsedTimeInSeconds++;
     
     NSString *elapsedTimeAsString = [self elapsedTimeAsFormattedString];
     
@@ -87,6 +91,11 @@
     [self.observers addObject: timerLabel];
 }
 
+- (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel
+{
+    [self.secondaryTimeObservers addObject: timerLabel];
+}
+
 - (void)removeStopwatchObserver:(UILabel *)timerLabel
 {
     
@@ -97,6 +106,11 @@
 - (void)resetStopwatch
 {
     _elapsedTimeInSeconds = 0;
+}
+
+- (void)resetSecondaryStopwatch
+{
+    _secondaryElapsedTimeInSeconds = 0;
 }
 
 - (void)playStopwatch
@@ -113,7 +127,12 @@
 
 - (NSNumber *)timeElapsedInSeconds
 {
-    return [NSNumber numberWithFloat: _elapsedTimeInSeconds];
+    return [NSNumber numberWithInt: _elapsedTimeInSeconds];
+}
+
+- (NSNumber *)secondaryTimeElapsedInSeconds
+{
+    return [NSNumber numberWithInt: _secondaryElapsedTimeInSeconds];
 }
 
 - (NSNumber *)isRunning
