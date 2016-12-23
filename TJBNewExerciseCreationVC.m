@@ -59,9 +59,9 @@
     
     // timer
     
-    self.timerLabel.text = [[TJBStopwatch singleton] elapsedTimeAsFormattedString];
+    self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
     
-    [[TJBStopwatch singleton] addStopwatchObserver: self.timerLabel];
+    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.timerLabel];
 }
 
 #pragma mark - <UITextFieldDelegate>

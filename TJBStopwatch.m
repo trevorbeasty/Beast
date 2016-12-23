@@ -11,13 +11,12 @@
 @interface TJBStopwatch ()
 
 {
-    int _elapsedTimeInSeconds;
+    int _primaryElapsedTimeInSeconds;
     int _secondaryElapsedTimeInSeconds;
-    BOOL _isRunning;
 }
 
 @property (nonatomic, strong) NSTimer *stopwatch;
-@property (nonatomic, strong) NSMutableSet *observers;
+@property (nonatomic, strong) NSMutableSet *primaryTimeObservers;
 @property (nonatomic, strong) NSMutableSet *secondaryTimeObservers;
 
 @end
@@ -41,9 +40,11 @@
 {
     self = [super init];
     
-    _elapsedTimeInSeconds = 0;
+    _primaryElapsedTimeInSeconds = 0;
     _secondaryElapsedTimeInSeconds = 0;
-    self.observers = [[NSMutableSet alloc] init];
+    
+    self.primaryTimeObservers = [[NSMutableSet alloc] init];
+    self.secondaryTimeObservers = [[NSMutableSet alloc] init];
     
     self.stopwatch = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                         target: self
@@ -65,30 +66,25 @@
 
 - (void)updateTimerLabels
 {
-    _elapsedTimeInSeconds++;
+    _primaryElapsedTimeInSeconds++;
     _secondaryElapsedTimeInSeconds++;
     
-    NSString *elapsedTimeAsString = [self elapsedTimeAsFormattedString];
-    
-    for (UILabel *timerLabel in self.observers)
+    for (UILabel *timerLabel in self.primaryTimeObservers)
     {
-        timerLabel.text = elapsedTimeAsString;
+        timerLabel.text = [self minutesAndSecondsStringFromNumberOfSeconds: _primaryElapsedTimeInSeconds];
     }
-}
-
-- (NSString *)elapsedTimeAsFormattedString
-{
-    int minutes = _elapsedTimeInSeconds / 60;
-    int seconds = _elapsedTimeInSeconds % 60;
     
-    return [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
+    for (UILabel *timerLable in self.secondaryTimeObservers)
+    {
+        timerLable.text = [self minutesAndSecondsStringFromNumberOfSeconds: _secondaryElapsedTimeInSeconds];
+    }
 }
 
 #pragma mark - Observers
 
-- (void)addStopwatchObserver:(UILabel *)timerLabel
+- (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel
 {
-    [self.observers addObject: timerLabel];
+    [self.primaryTimeObservers addObject: timerLabel];
 }
 
 - (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel
@@ -103,9 +99,9 @@
 
 #pragma mark - Stopwatch Manipulation
 
-- (void)resetStopwatch
+- (void)resetPrimaryStopwatch
 {
-    _elapsedTimeInSeconds = 0;
+    _primaryElapsedTimeInSeconds = 0;
 }
 
 - (void)resetSecondaryStopwatch
@@ -113,21 +109,11 @@
     _secondaryElapsedTimeInSeconds = 0;
 }
 
-- (void)playStopwatch
-{
-    
-}
-
-- (void)pauseStopwatch
-{
-    
-}
-
 #pragma mark - Getters
 
-- (NSNumber *)timeElapsedInSeconds
+- (NSNumber *)primaryTimeElapsedInSeconds
 {
-    return [NSNumber numberWithInt: _elapsedTimeInSeconds];
+    return [NSNumber numberWithInt: _primaryElapsedTimeInSeconds];
 }
 
 - (NSNumber *)secondaryTimeElapsedInSeconds
@@ -135,12 +121,17 @@
     return [NSNumber numberWithInt: _secondaryElapsedTimeInSeconds];
 }
 
-- (NSNumber *)isRunning
+- (NSString *)primaryTimeElapsedAsString
 {
-    return [NSNumber numberWithBool: _isRunning];
+    return [self minutesAndSecondsStringFromNumberOfSeconds: _primaryElapsedTimeInSeconds];
 }
 
-#pragma mark - Convenience Methods
+- (NSString *)secondaryTimeElapsedAsString
+{
+    return [self minutesAndSecondsStringFromNumberOfSeconds: _secondaryElapsedTimeInSeconds];
+}
+
+#pragma mark - Conversion
 
 - (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds
 {

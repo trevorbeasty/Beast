@@ -131,12 +131,12 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
     
     // timer
     
-    [[TJBStopwatch singleton] addStopwatchObserver: self.timerLabel];
+    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.timerLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.timerLabel.text = [[TJBStopwatch singleton] elapsedTimeAsFormattedString];
+    self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
 }
 
 #pragma mark - <UITableViewDataSource>
@@ -455,12 +455,11 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
 
 - (void)confirmSubmission
 {
-    [[TJBStopwatch singleton] resetStopwatch];
+    [[TJBStopwatch singleton] resetPrimaryStopwatch];
     
     [self addRealizedSetToCoreData];
     
-    self.reps = nil;
-    self.weight = nil;
+    [self setRealizedSetParametersToNil];
 }
 
 @end

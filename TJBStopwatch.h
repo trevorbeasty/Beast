@@ -11,24 +11,20 @@
 
 @interface TJBStopwatch : NSObject
 
-@property (nonatomic, strong, readonly) NSNumber *timeElapsedInSeconds;
+@property (nonatomic, strong, readonly) NSNumber *primaryTimeElapsedInSeconds;
 @property (nonatomic, strong, readonly) NSNumber *secondaryTimeElapsedInSeconds;
-@property (nonatomic, strong, readonly) NSNumber *isRunning;
-- (NSString *)elapsedTimeAsFormattedString;
 
 + (instancetype)singleton;
 
-- (void)addStopwatchObserver:(UILabel *)timerLabel;
+- (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel;
 - (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel;
 
-- (void)removeStopwatchObserver:(UILabel *)timerLabel;
-
-- (void)resetStopwatch;
-- (void)pauseStopwatch;
-- (void)playStopwatch;
-
+- (void)resetPrimaryStopwatch;
 - (void)resetSecondaryStopwatch;
 
 - (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds;
+
+- (NSString *)primaryTimeElapsedAsString;
+- (NSString *)secondaryTimeElapsedAsString;
 
 @end
