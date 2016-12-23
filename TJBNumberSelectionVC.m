@@ -104,7 +104,7 @@
     TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"basicCell"
                                                                            forIndexPath: indexPath];
     
-    cell.layer.opacity = .2;
+    cell.layer.opacity = .3;
     
 
     
@@ -121,7 +121,6 @@
     
     cell.numberLabel.layer.cornerRadius = 4;
     cell.numberLabel.layer.masksToBounds = YES;
-//    cell.numberLabel.layer.opacity = 0.2;
     
     return cell;
 }
@@ -132,11 +131,11 @@
 {
     // if there is a previously selected cell, change its color back to light gray
     if (self.lastSelectedCell)
-        self.lastSelectedCell.numberLabel.backgroundColor = [UIColor lightGrayColor];
+        self.lastSelectedCell.layer.opacity = .3;
     
     // change the color of the newly selected cell
     TJBNumberSelectionCell *selectedCell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
-    selectedCell.numberLabel.backgroundColor = [UIColor greenColor];
+    selectedCell.layer.opacity = 1;
     
     // update the lastSelectedCell property to point to the newly selected cell
     self.lastSelectedCell = selectedCell;

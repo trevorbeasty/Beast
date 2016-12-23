@@ -43,9 +43,9 @@
 
 // should consider blocks for this instead
 
-@property (nonatomic, strong) NSNumber *activeRoundNumber;
-@property (nonatomic, strong) NSNumber *activeChainNumber;
-@property (nonatomic, strong) UIButton *activeButton;
+//@property (nonatomic, strong) NSNumber *activeRoundNumber;
+//@property (nonatomic, strong) NSNumber *activeChainNumber;
+//@property (nonatomic, strong) UIButton *activeButton;
 
 // data structure
 
@@ -509,16 +509,22 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - <TJBCircuitTemplateUserInputDelegate>
 
-- (void)presentNumberSelectionSceneWithNumberTypeIdentifier:(NumberType)identifier numberMultiple:(NSNumber *)numberMultiple title:(NSString *)title animated:(BOOL)animated
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle;
 {
+    
     UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
                                                                         bundle: nil];
     UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
     TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
     
-    [numberSelectionVC setNumberTypeIdentifier: identifier];
-    numberSelectionVC.numberMultiple = numberMultiple;
-    numberSelectionVC.title = title;
+    [numberSelectionVC setNumberTypeIdentifier: numberType
+                                numberMultiple: numberMultiple
+                                   numberLimit: numberLimit
+                                         title: title
+                                   cancelBlock: cancelBlock
+                           numberSelectedBlock: numberSelectedBlock];
+    
+    numberSelectionNav.modalTransitionStyle = transitionStyle;
     
     [self presentViewController: numberSelectionNav
                        animated: animated
@@ -527,32 +533,74 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button
 {
-    self.activeChainNumber = chainNumber;
-    self.activeRoundNumber = roundNumber;
-    self.activeButton = button;
+    CancelBlock cancelBlock = ^{
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+    };
+    
+    int indexOne = [chainNumber intValue] - 1;
+    int indexTwo = [roundNumber intValue] - 1;
     
     if (type == WeightType)
     {
-        [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
-                                                   numberMultiple: [NSNumber numberWithDouble: 2.5]
-                                                            title: @"Select Target Weight"
-                                                         animated: NO];
+        
+        NumberSelectedBlock block = ^(NSNumber *number){
+            [button setTitle: [number stringValue]
+                    forState: UIControlStateNormal];
+            self.weightData[indexOne][indexTwo] = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: WeightType
+                                         numberMultiple: [NSNumber numberWithDouble: 2.5]
+                                            numberLimit: nil
+                                                  title: @"Select Weight"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: block
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else if (type == RepsType)
     {
-        [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
-                                                   numberMultiple: [NSNumber numberWithDouble: 1.0]
-                                                            title: @"Select Target Reps"
-                                                         animated: NO];
+        NumberSelectedBlock block = ^(NSNumber *number){
+            [button setTitle: [number stringValue]
+                    forState: UIControlStateNormal];
+            self.repsData[indexOne][indexTwo] = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: RepsType
+                                         numberMultiple: [NSNumber numberWithDouble: 1.0]
+                                            numberLimit: nil
+                                                  title: @"Select Reps"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: block
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else if (type == RestType)
     {
-        [self presentNumberSelectionSceneWithNumberTypeIdentifier: type
-                                                   numberMultiple: [NSNumber numberWithDouble: 5.0]
-                                                            title: @"Select Target Rest (minutes:seconds)"
-                                                         animated: NO];
+        
+        NumberSelectedBlock block = ^(NSNumber *number){
+            NSString *title = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+            [button setTitle: title
+                    forState: UIControlStateNormal];
+            self.restData[indexOne][indexTwo] = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: RestType
+                                         numberMultiple: [NSNumber numberWithDouble: 5.0]
+                                            numberLimit: nil
+                                                  title: @"Select Rest"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: block
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    
 }
 
 - (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber
@@ -583,58 +631,11 @@ static NSString * const defaultValue = @"unselected";
 }
                                      
 - (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber
-{
-    NSLog(@"didSelectExerciseForChainNumber");
-    
+{    
     int index = [chainNumber intValue] - 1;
     self.exerciseData[index] = exercise;
 }
 
-#pragma mark - <TJBNumberSelectionDelegate>
-
-- (void)didSelectNumber:(NSNumber *)number numberTypeIdentifier:(NumberType)identifier
-{
-    if (identifier == RestType)
-    {
-        NSString *title = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
-        [self.activeButton setTitle: title
-                           forState: UIControlStateNormal];
-    }
-    else
-    {
-        
-        [self.activeButton setTitle: [number stringValue]
-                           forState: UIControlStateNormal];
-    }
-  
-    int indexOne = [self.activeChainNumber intValue] - 1;
-    int indexTwo = [self.activeRoundNumber intValue] - 1;
-    
-    if (identifier == WeightType)
-    {
-        self.weightData[indexOne][indexTwo] = number;
-        NSLog(@"%@", self.weightData);
-    }
-    else if (identifier == RepsType)
-    {
-        self.repsData[indexOne][indexTwo] = number;
-        NSLog(@"%@", self.repsData);
-    }
-    else if (identifier == RestType)
-    {
-        self.restData[indexOne][indexTwo] = number;
-        NSLog(@"%@", self.restData);
-    }
-    
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
-}
-
-- (void)didCancelNumberSelection
-{
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
-}
 
 
 @end

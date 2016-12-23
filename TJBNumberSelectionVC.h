@@ -10,6 +10,9 @@
 
 #import "TJBGlobalParameters.h"
 
+typedef void(^CancelBlock)(void);
+typedef void(^NumberSelectedBlock)(NSNumber *);
+
 @interface TJBNumberSelectionVC : UICollectionViewController
 
 {

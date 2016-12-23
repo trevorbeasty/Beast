@@ -69,9 +69,8 @@
     
     // labels
     
-    self.titleLabel.text = [NSString stringWithFormat: @"Chain Element %d: %@",
-                            [self.chainNumber intValue],
-                            self.exerciseName];
+    self.titleLabel.text = [NSString stringWithFormat: @"Circuit Element %d",
+                            [self.chainNumber intValue]];
     
     // row components
     

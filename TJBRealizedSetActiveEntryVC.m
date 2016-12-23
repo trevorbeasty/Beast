@@ -67,9 +67,6 @@
 @end
 
 
-typedef void(^CancelBlock)(void);
-typedef void(^NumberSelectedBlock)(NSNumber *);
-
 @implementation TJBRealizedSetActiveEntryVC
 
 #pragma mark - Instantiation
