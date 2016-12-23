@@ -40,6 +40,7 @@
                                         </label>
                                     </subviews>
                                 </view>
+                                <color key="backgroundColor" red="0.6231534481048584" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="DgF-Qo-bCA" firstAttribute="leading" secondItem="Z8g-rN-Sq0" secondAttribute="leadingMargin" id="11z-TB-CT5"/>
                                     <constraint firstAttribute="bottomMargin" secondItem="DgF-Qo-bCA" secondAttribute="bottom" id="Hgx-FR-tcE"/>

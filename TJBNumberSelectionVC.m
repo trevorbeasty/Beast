@@ -33,7 +33,10 @@
 {
     // set the collection view's background color
     
-    self.collectionView.backgroundColor = [UIColor whiteColor];
+    UIImage *image = [UIImage imageNamed: @"chick"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+    
+    self.collectionView.backgroundView = imageView;
     
     // add cancel bar button item
     
@@ -101,6 +104,8 @@
     TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"basicCell"
                                                                            forIndexPath: indexPath];
     
+    cell.layer.opacity = .2;
+    
 
     
     NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
@@ -114,10 +119,9 @@
         cell.numberLabel.text = [cellNumber stringValue];
     }
     
-    cell.numberLabel.backgroundColor = [UIColor lightGrayColor];
     cell.numberLabel.layer.cornerRadius = 4;
     cell.numberLabel.layer.masksToBounds = YES;
-    cell.numberLabel.layer.opacity = 0.8;
+//    cell.numberLabel.layer.opacity = 0.2;
     
     return cell;
 }
