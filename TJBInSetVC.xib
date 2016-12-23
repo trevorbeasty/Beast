@@ -29,7 +29,7 @@
                         <navigationItem title="Title" id="PJC-yE-cLd"/>
                     </items>
                 </navigationBar>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Time Elapsed:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNv-xx-TpN">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time In Set:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QNv-xx-TpN">
                     <rect key="frame" x="8" y="58" width="175.5" height="50"/>
                     <color key="backgroundColor" red="0.0" green="1" blue="0.98363369703292847" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>

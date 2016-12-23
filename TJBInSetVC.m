@@ -12,6 +12,10 @@
 
 @interface TJBInSetVC ()
 
+{
+    int _timeDelay;
+}
+
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 
 - (IBAction)didPressSetCompleted:(id)sender;
@@ -26,10 +30,11 @@
 
 #pragma mark - Instantiation
 
-- (id)initWithDidPressSetCompletedBlock:(void (^)(void))block
+- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(void))block
 {
     self = [super init];
     
+    _timeDelay = timeDelay * -1;
     self.didPressSetCompletedBlock = block;
     
     return self;
@@ -40,8 +45,12 @@
     // stopwatch
     
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-    [stopwatch resetSecondaryStopwatch];
+    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay];
     [stopwatch addSecondaryStopwatchObserver: self.timerLabel];
+    
+    // timer label
+    
+    self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
 }
 
 #pragma mark - Button Actions

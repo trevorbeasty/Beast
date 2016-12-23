@@ -267,7 +267,8 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
             [self didPressBeginNextSet: nil];
         };
         
-        TJBInSetVC *vc = [[TJBInSetVC alloc] initWithDidPressSetCompletedBlock: block];
+        TJBInSetVC *vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.timeDelay intValue]
+                                     DidPressSetCompletedBlock: block];
         
         [self presentViewController: vc
                            animated: NO

@@ -32,8 +32,8 @@
     
     // core data file path
     
-    NSURL *path = [NSPersistentContainer defaultDirectoryURL];
-    NSLog(@"%@", [path absoluteString]);
+//    NSURL *path = [NSPersistentContainer defaultDirectoryURL];
+//    NSLog(@"%@", [path absoluteString]);
     
     // root view controller
     

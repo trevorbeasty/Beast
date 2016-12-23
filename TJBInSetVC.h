@@ -10,6 +10,6 @@
 
 @interface TJBInSetVC : UIViewController
 
-- initWithDidPressSetCompletedBlock:(void(^)(void))block;
+- initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void(^)(void))block;
 
 @end

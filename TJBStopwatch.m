@@ -92,11 +92,6 @@
     [self.secondaryTimeObservers addObject: timerLabel];
 }
 
-- (void)removeStopwatchObserver:(UILabel *)timerLabel
-{
-    
-}
-
 #pragma mark - Stopwatch Manipulation
 
 - (void)resetPrimaryStopwatch
@@ -107,6 +102,11 @@
 - (void)resetSecondaryStopwatch
 {
     _secondaryElapsedTimeInSeconds = 0;
+}
+
+- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds
+{
+    _secondaryElapsedTimeInSeconds = timeInSeconds;
 }
 
 #pragma mark - Getters
@@ -135,10 +135,22 @@
 
 - (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds
 {
-    int minutes = numberOfSeconds / 60;
-    int seconds = numberOfSeconds % 60;
-    
-    return [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
+    if (numberOfSeconds < 0)
+    {
+        numberOfSeconds *= -1;
+        
+        int minutes = numberOfSeconds / 60;
+        int seconds = numberOfSeconds % 60;
+        
+        return [NSString stringWithFormat: @"-%02d:%02d", minutes, seconds];
+    }
+    else
+    {
+        int minutes = numberOfSeconds / 60;
+        int seconds = numberOfSeconds % 60;
+        
+        return [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
+    }
 }
 
 @end

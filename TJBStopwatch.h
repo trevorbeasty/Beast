@@ -22,6 +22,8 @@
 - (void)resetPrimaryStopwatch;
 - (void)resetSecondaryStopwatch;
 
+- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds;
+
 - (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds;
 
 - (NSString *)primaryTimeElapsedAsString;
