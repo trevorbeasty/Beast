@@ -255,8 +255,8 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
                                                   title: @"Select Delay"
                                             cancelBlock: cancelBlock
                                     numberSelectedBlock: numberSelectedBlock
-                                               animated: NO
-                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else if (_setCompletedButtonPressed == NO)
     {
@@ -268,8 +268,6 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
         };
         
         TJBInSetVC *vc = [[TJBInSetVC alloc] initWithDidPressSetCompletedBlock: block];
-        
-        vc.modalTransitionStyle = UIModalTransitionStylePartialCurl;
         
         [self presentViewController: vc
                            animated: NO
@@ -290,8 +288,8 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
                                                   title: @"Select Lag"
                                             cancelBlock: cancelBlock
                                     numberSelectedBlock: numberSelectedBlock
-                                               animated: NO
-                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else if (!self.weight)
     {
@@ -309,8 +307,8 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
                                                   title: @"Select Weight"
                                             cancelBlock: cancelBlock
                                     numberSelectedBlock: numberSelectedBlock
-                                               animated: NO
-                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else if (!self.reps)
     {
@@ -328,8 +326,8 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
                                                   title: @"Select Reps"
                                             cancelBlock: cancelBlock
                                     numberSelectedBlock: numberSelectedBlock
-                                               animated: NO
-                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else
     {
