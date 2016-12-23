@@ -22,6 +22,7 @@
 
 {
     BOOL _setCompletedButtonPressed;
+    int _timerAtSetCompletion;
     BOOL _whiteoutActive;
 }
 
@@ -260,8 +261,9 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
     }
     else if (_setCompletedButtonPressed == NO)
     {
-        void(^block)(void) = ^{
+        void(^block)(int) = ^(int timeInSeconds){
             _setCompletedButtonPressed = YES;
+            _timerAtSetCompletion = timeInSeconds;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self didPressBeginNextSet: nil];
@@ -367,13 +369,13 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
 
 - (void)addRealizedSetToCoreData
 {
-    NSDate *date = [NSDate date];
     BOOL postMortem = FALSE;
     
     TJBRealizedSet *realizedSet = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
                                                                 inManagedObjectContext: self.moc];
     
-    realizedSet.date = date;
+    realizedSet.endDate = [NSDate date];
+    realizedSet.lengthInSeconds = _timerAtSetCompletion - [self.timeLag intValue];
     realizedSet.postMortem = postMortem;
     realizedSet.weight = [self.weight floatValue];
     realizedSet.reps = [self.reps floatValue];

@@ -152,7 +152,7 @@
         
         TJBRealizedSet *previousSet = [self.frc objectAtIndexPath: previousSetPath];
         
-        int elapsedTime = (int)[realizedSet.date timeIntervalSinceDate: previousSet.date];
+        int elapsedTime = (int)[realizedSet.endDate timeIntervalSinceDate: previousSet.endDate];
         
         int minutes = elapsedTime / 60;
         int seconds = elapsedTime % 60;
@@ -167,7 +167,7 @@
     
     // format date
     
-    NSDate *date = realizedSet.date;
+    NSDate *date = realizedSet.endDate;
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
@@ -197,12 +197,7 @@
 
 #pragma mark - <UITableViewDelegate>
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    TJBRealizedSetExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
-//    self.exercise = exercise;
-//    [self.navItem setTitle: exercise.name];
-//}
+
 
 
 

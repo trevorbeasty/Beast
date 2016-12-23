@@ -20,7 +20,7 @@
 
 - (IBAction)didPressSetCompleted:(id)sender;
 
-@property (copy) void(^didPressSetCompletedBlock)(void);
+@property (copy) void(^didPressSetCompletedBlock)(int);
 
 @end
 
@@ -30,7 +30,7 @@
 
 #pragma mark - Instantiation
 
-- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(void))block
+- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block
 {
     self = [super init];
     
@@ -57,7 +57,7 @@
 
 - (IBAction)didPressSetCompleted:(id)sender
 {
-    self.didPressSetCompletedBlock();
+    self.didPressSetCompletedBlock([[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue]);
 }
 
 

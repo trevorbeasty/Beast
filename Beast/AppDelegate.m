@@ -17,7 +17,6 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong) CoreDataController *cdc;
 
 @end
 
@@ -26,14 +25,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    // core data controller
-    
-    self.cdc = [CoreDataController singleton];
-    
     // core data file path
     
-//    NSURL *path = [NSPersistentContainer defaultDirectoryURL];
-//    NSLog(@"%@", [path absoluteString]);
+    NSURL *path = [NSPersistentContainer defaultDirectoryURL];
+    NSLog(@"%@", [path absoluteString]);
     
     // root view controller
     

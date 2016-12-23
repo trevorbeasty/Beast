@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Chain" representedClassName="TJBChain" syncable="YES" codeGenerationType="class">
         <relationship name="exercises" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chains" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="repsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsArray" inverseName="chain" inverseEntity="RepsArray" syncable="YES"/>
@@ -48,7 +48,8 @@
         <relationship name="realizedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" inverseName="realizedChains" inverseEntity="RealizedWorkout" syncable="YES"/>
     </entity>
     <entity name="RealizedSet" representedClassName="TJBRealizedSet" syncable="YES" codeGenerationType="class">
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="endDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="lengthInSeconds" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="reps" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="weight" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
@@ -84,7 +85,7 @@
         <element name="NumberArray" positionX="90" positionY="375" width="128" height="60"/>
         <element name="NumberTypeArrayComponent" positionX="304" positionY="450" width="128" height="75"/>
         <element name="RealizedChain" positionX="-776" positionY="-333" width="128" height="105"/>
-        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="120"/>
+        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="135"/>
         <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="90"/>
         <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>
         <element name="TargetRestTimeArray" positionX="61" positionY="-297" width="128" height="60"/>
