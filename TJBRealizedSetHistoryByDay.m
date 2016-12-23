@@ -12,6 +12,8 @@
 
 #import "RealizedSetHistoryCell.h"
 
+#import "TJBStopwatch.h"
+
 @interface TJBRealizedSetHistoryByDay () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -46,7 +48,7 @@
     // NSFetchedResultsController
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
-    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"date"
+    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"endDate"
                                                                ascending: NO];
     
     // create NSDate objects defining the first and last seconds of today in order to effectively filter the retrieved 'realized set' objects
@@ -59,7 +61,7 @@
                                                                                                            toDate: todayBegin
                                                                                                           options: 0];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(date >= %@) AND (date <= %@)", todayBegin, todayEnd];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"(endDate >= %@) AND (endDate <= %@)", todayBegin, todayEnd];
     
     [request setPredicate: predicate];
     
@@ -152,12 +154,9 @@
         
         TJBRealizedSet *previousSet = [self.frc objectAtIndexPath: previousSetPath];
         
-        int elapsedTime = (int)[realizedSet.endDate timeIntervalSinceDate: previousSet.endDate];
+        int elapsedTime = (int)[realizedSet.endDate timeIntervalSinceDate: previousSet.endDate] - realizedSet.lengthInSeconds;
         
-        int minutes = elapsedTime / 60;
-        int seconds = elapsedTime % 60;
-        
-        cell.restLabel.text = [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
+        cell.restLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: elapsedTime];
     }
     else
     {

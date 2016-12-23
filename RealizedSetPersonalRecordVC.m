@@ -233,7 +233,9 @@
     dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     
-    cell.dateLabel.text = [dateFormatter stringFromDate: realizedSet.endDate];
+    NSDate *realizedSetStartDate = [realizedSet.endDate dateByAddingTimeInterval: realizedSet.lengthInSeconds * -1];
+    
+    cell.dateLabel.text = [dateFormatter stringFromDate: realizedSetStartDate];
     
     // aesthetics
     
