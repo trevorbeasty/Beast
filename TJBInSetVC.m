@@ -16,6 +16,8 @@
 
 - (IBAction)didPressSetCompleted:(id)sender;
 
+@property (copy) void(^didPressSetCompletedBlock)(void);
+
 @end
 
 
@@ -23,6 +25,15 @@
 @implementation TJBInSetVC
 
 #pragma mark - Instantiation
+
+- (id)initWithDidPressSetCompletedBlock:(void (^)(void))block
+{
+    self = [super init];
+    
+    self.didPressSetCompletedBlock = block;
+    
+    return self;
+}
 
 -(void)viewDidLoad
 {
@@ -37,7 +48,7 @@
 
 - (IBAction)didPressSetCompleted:(id)sender
 {
-    
+    self.didPressSetCompletedBlock();
 }
 
 

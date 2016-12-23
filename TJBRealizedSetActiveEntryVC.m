@@ -12,12 +12,18 @@
 
 #import "TJBNumberSelectionVC.h"
 #import "TJBNewExerciseCreationVC.h"
+#import "TJBInSetVC.h"
 
 #import "TJBStopWatch.h"
 
 #import "CoreDataController.h"
 
 @interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NewExerciseCreationDelegate, NSFetchedResultsControllerDelegate>
+
+{
+    BOOL _setCompletedButtonPressed;
+    BOOL _whiteoutActive;
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
@@ -39,6 +45,8 @@
 @property (nonatomic, strong) NSNumber *reps;
 @property (nonatomic, strong) TJBExercise *exercise;
 
+@property (nonatomic, strong) UIView *whiteoutView;
+
 // core data controller
 
 @property (nonatomic, strong) CoreDataController *cdc;
@@ -54,7 +62,6 @@
 @property (nonatomic, strong) UINavigationItem *navItem;
 
 
-//@property TJBNumberSelectionVC *(^numberSelectionBlock)(void);
 
 @end
 
@@ -66,28 +73,11 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
 
 #pragma mark - Instantiation
 
-- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock;
-{
-    
-    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
-                                                                        bundle: nil];
-    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
-    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
-    
-    [numberSelectionVC setNumberTypeIdentifier: numberType
-                                numberMultiple: numberMultiple
-                                   numberLimit: numberLimit
-                                         title: title
-                                   cancelBlock: cancelBlock
-                           numberSelectedBlock: numberSelectedBlock];
-    
-    [self presentViewController: numberSelectionNav
-                       animated: YES
-                     completion: nil];
-}
-
 - (void)viewDidLoad
 {
+    _setCompletedButtonPressed = NO;
+    _whiteoutActive = NO;
+    
     // navigation bar
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select an Exercise"];
@@ -214,10 +204,21 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
 - (IBAction)didPressBeginNextSet:(id)sender
 {
     CancelBlock cancelBlock = ^{
+        [self removeWhiteoutView];
         [self setRealizedSetParametersToNil];
         [self dismissViewControllerAnimated: NO
                                  completion: nil];
     };
+    
+    if (_whiteoutActive == NO)
+    {
+        UIView *whiteout = [[UIView alloc] initWithFrame: [self.view bounds]];
+        whiteout.backgroundColor = [UIColor whiteColor];
+        
+        self.whiteoutView = whiteout;
+        [self.view addSubview: whiteout];
+        _whiteoutActive = YES;
+    }
     
     if (!self.exercise)
     {
@@ -231,6 +232,8 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
         
         [alert addAction: action];
         
+        [self removeWhiteoutView];
+        
         [self presentViewController: alert
                            animated: YES
                          completion: nil];
@@ -242,6 +245,7 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
             self.timeDelay = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
+            [self didPressBeginNextSet: nil];
         };
         
         
@@ -250,7 +254,26 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
                                             numberLimit: nil
                                                   title: @"Select Delay"
                                             cancelBlock: cancelBlock
-                                    numberSelectedBlock: numberSelectedBlock];
+                                    numberSelectedBlock: numberSelectedBlock
+                                               animated: NO
+                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
+    }
+    else if (_setCompletedButtonPressed == NO)
+    {
+        void(^block)(void) = ^{
+            _setCompletedButtonPressed = YES;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+            [self didPressBeginNextSet: nil];
+        };
+        
+        TJBInSetVC *vc = [[TJBInSetVC alloc] initWithDidPressSetCompletedBlock: block];
+        
+        vc.modalTransitionStyle = UIModalTransitionStylePartialCurl;
+        
+        [self presentViewController: vc
+                           animated: NO
+                         completion: nil];
     }
     else if (!self.timeLag)
     {
@@ -258,34 +281,89 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
             self.timeLag = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
+            [self didPressBeginNextSet: nil];
         };
-        
         
         [self presentNumberSelectionSceneWithNumberType: RestType
                                          numberMultiple: [NSNumber numberWithInt: 5]
                                             numberLimit: nil
                                                   title: @"Select Lag"
                                             cancelBlock: cancelBlock
-                                    numberSelectedBlock: numberSelectedBlock];
+                                    numberSelectedBlock: numberSelectedBlock
+                                               animated: NO
+                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
     }
     else if (!self.weight)
     {
-        [self presentNumberSelectionSceneWithNumberTypeIdentifier: WeightType
-                                                   numberMultiple: [NSNumber numberWithFloat: 2.5]
-                                                            title: @"Select Weight"
-                                                         animated: YES];
+        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            self.weight = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+            [self didPressBeginNextSet: nil];
+        };
+        
+        
+        [self presentNumberSelectionSceneWithNumberType: WeightType
+                                         numberMultiple: [NSNumber numberWithFloat: 2.5]
+                                            numberLimit: nil
+                                                  title: @"Select Weight"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: numberSelectedBlock
+                                               animated: NO
+                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
     }
     else if (!self.reps)
     {
-        [self presentNumberSelectionSceneWithNumberTypeIdentifier: RepsType
-                                                   numberMultiple: [NSNumber numberWithFloat: 1.0]
-                                                            title: @"SelectReps"
-                                                         animated: YES];
+        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            self.reps = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+            [self didPressBeginNextSet: nil];
+        };
+        
+        
+        [self presentNumberSelectionSceneWithNumberType: RepsType
+                                         numberMultiple: [NSNumber numberWithInt: 1]
+                                            numberLimit: nil
+                                                  title: @"Select Reps"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: numberSelectedBlock
+                                               animated: NO
+                                   modalTransitionStyle: UIModalTransitionStylePartialCurl];
     }
     else
     {
+        [self removeWhiteoutView];
         [self presentSubmittedSetSummary];
     }
+}
+
+- (void)removeWhiteoutView
+{
+    [self.whiteoutView removeFromSuperview];
+    _whiteoutActive = NO;
+}
+
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle;
+{
+    
+    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
+                                                                        bundle: nil];
+    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
+    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+    
+    [numberSelectionVC setNumberTypeIdentifier: numberType
+                                numberMultiple: numberMultiple
+                                   numberLimit: numberLimit
+                                         title: title
+                                   cancelBlock: cancelBlock
+                           numberSelectedBlock: numberSelectedBlock];
+    
+    numberSelectionNav.modalTransitionStyle = transitionStyle;
+    
+    [self presentViewController: numberSelectionNav
+                       animated: animated
+                     completion: nil];
 }
 
 - (void)addRealizedSetToCoreData
@@ -371,6 +449,7 @@ typedef void(^NumberSelectedBlock)(NSNumber *);
 - (void)setRealizedSetParametersToNil
 {
     self.timeDelay = nil;
+    _setCompletedButtonPressed = NO;
     self.timeLag = nil;
     self.weight = nil;
     self.reps = nil;
