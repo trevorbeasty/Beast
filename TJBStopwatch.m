@@ -13,6 +13,9 @@
 {
     int _primaryElapsedTimeInSeconds;
     int _secondaryElapsedTimeInSeconds;
+    
+    BOOL _incrementPrimaryElapsedTimeForwards;
+    BOOL _incrementSecondaryElapsedTimeForwards;
 }
 
 @property (nonatomic, strong) NSTimer *stopwatch;
@@ -64,10 +67,9 @@
 
 #pragma mark - Internal Methods
 
-- (void)updateTimerLabels
-{
-    _primaryElapsedTimeInSeconds++;
-    _secondaryElapsedTimeInSeconds++;
+- (void)updateTimerLabels{
+    [self incrementPrimaryElapsedTime];
+    [self incrementSecondaryElapsedTime];
     
     for (UILabel *timerLabel in self.primaryTimeObservers)
     {
@@ -77,6 +79,24 @@
     for (UILabel *timerLable in self.secondaryTimeObservers)
     {
         timerLable.text = [self minutesAndSecondsStringFromNumberOfSeconds: _secondaryElapsedTimeInSeconds];
+    }
+}
+
+- (void)incrementPrimaryElapsedTime{
+    if (_incrementPrimaryElapsedTimeForwards == YES){
+        _primaryElapsedTimeInSeconds++;
+    }
+    else{
+        _primaryElapsedTimeInSeconds--;
+    }
+}
+
+- (void)incrementSecondaryElapsedTime{
+    if (_incrementSecondaryElapsedTimeForwards == YES){
+        _secondaryElapsedTimeInSeconds++;
+    }
+    else{
+        _secondaryElapsedTimeInSeconds--;
     }
 }
 
@@ -94,19 +114,26 @@
 
 #pragma mark - Stopwatch Manipulation
 
-- (void)resetPrimaryStopwatch
+- (void)resetPrimaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing
 {
     _primaryElapsedTimeInSeconds = 0;
+    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
 }
 
-- (void)resetSecondaryStopwatch
+- (void)resetSecondaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing
 {
     _secondaryElapsedTimeInSeconds = 0;
+    _incrementSecondaryElapsedTimeForwards = forwardIncrementing;
 }
 
-- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds
-{
+- (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing{
+    _primaryElapsedTimeInSeconds = timeInSeconds;
+    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
+}
+
+- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing{
     _secondaryElapsedTimeInSeconds = timeInSeconds;
+    _incrementSecondaryElapsedTimeForwards = forwardIncrementing;
 }
 
 #pragma mark - Getters

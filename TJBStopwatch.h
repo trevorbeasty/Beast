@@ -19,10 +19,11 @@
 - (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel;
 - (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel;
 
-- (void)resetPrimaryStopwatch;
-- (void)resetSecondaryStopwatch;
+- (void)resetPrimaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing;
+- (void)resetSecondaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing;
 
-- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds;
+- (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing;
+- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing;
 
 - (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds;
 

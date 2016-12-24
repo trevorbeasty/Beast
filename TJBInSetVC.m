@@ -45,7 +45,7 @@
     // stopwatch
     
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay];
+    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay withForwardIncrementing: YES];
     [stopwatch addSecondaryStopwatchObserver: self.timerLabel];
     
     // timer label

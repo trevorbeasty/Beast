@@ -32,6 +32,8 @@
 
 #import "TJBStopwatch.h"
 
+#import "TJBActiveCircuitGuidance.h"
+
 @interface TJBCircuitTemplateGeneratorVC ()
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
@@ -41,18 +43,14 @@
 
 @property (nonatomic, strong) UINavigationItem *navItem;
 
-// should consider blocks for this instead
-
-//@property (nonatomic, strong) NSNumber *activeRoundNumber;
-//@property (nonatomic, strong) NSNumber *activeChainNumber;
-//@property (nonatomic, strong) UIButton *activeButton;
-
 // data structure
 
 @property (nonatomic, strong) NSMutableArray *weightData;
 @property (nonatomic, strong) NSMutableArray *repsData;
 @property (nonatomic, strong) NSMutableArray *restData;
 @property (nonatomic, strong) NSMutableArray *exerciseData;
+
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @end
 
@@ -347,6 +345,8 @@ static NSString * const defaultValue = @"unselected";
     }
     
     [[CoreDataController singleton] saveContext];
+    
+    self.chainTemplate = chainTemplate;
 }
 
 - (NSMutableOrderedSet *)copyCollectionOfArraysFromData:(NSArray<NSArray *> *)data numberArrays:(NSArray<TJBNumberArray *> *)numberArrays
@@ -397,21 +397,21 @@ static NSString * const defaultValue = @"unselected";
                              completion: nil];
 }
 
-- (void)didPressGoButton
-{
+- (void)didPressGoButton{
     if ([self.targetsVaryByRound intValue] == 0)
     {
         [self duplicateEntries];
     }
     
     BOOL allUserInputCollected = [self allSelectionsMade];
-    
-    NSLog(@"all user input collected?: %d",
-          allUserInputCollected);
-    
     if (allUserInputCollected)
     {
         [self createAndSaveChainTemplate];
+        
+        TJBActiveCircuitGuidance *vc = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: self.chainTemplate];
+        [self presentViewController: vc
+                           animated: YES
+                         completion: nil];
     }
 }
 
@@ -482,12 +482,6 @@ static NSString * const defaultValue = @"unselected";
     }
     
     allExerciseSelectionsMade = ![self.exerciseData containsObject: defaultValue];
-    
-    NSLog(@"weight: %d\nreps: %d\nrest: %d\nexercise: %d",
-          allWeightSelectionsMade,
-          allRepsSelectionsMade,
-          allRestSelectionsMade,
-          allExerciseSelectionsMade);
         
     return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade && allExerciseSelectionsMade;
 }

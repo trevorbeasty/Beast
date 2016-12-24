@@ -469,7 +469,7 @@
 
 - (void)confirmSubmission
 {
-    [[TJBStopwatch singleton] resetPrimaryStopwatch];
+    [[TJBStopwatch singleton] resetPrimaryStopwatchWithForwardIncrementing: YES];
     
     [self addRealizedSetToCoreData];
     
