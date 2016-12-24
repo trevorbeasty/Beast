@@ -62,8 +62,9 @@
 
 - (void)addBackgroundView
 {
-    UIImage *image = [UIImage imageNamed: @"coolRandom"];
+    UIImage *image = [UIImage imageNamed: @"Arnold"];
     UIView *imageView = [[UIImageView alloc] initWithImage: image];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview: imageView];
     [self.view sendSubviewToBack: imageView];
 }
