@@ -15,13 +15,7 @@
 
 #import "TJBRealizedSet+CoreDataProperties.h"
 
-// for chain template
-
-
-
-
-
-
+#import "TJBChainTemplate+CoreDataProperties.h"
 
 
 
