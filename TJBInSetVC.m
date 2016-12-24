@@ -24,21 +24,9 @@
 
 @end
 
-
-
 @implementation TJBInSetVC
 
 #pragma mark - Instantiation
-
-- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block
-{
-    self = [super init];
-    
-    _timeDelay = timeDelay * -1;
-    self.didPressSetCompletedBlock = block;
-    
-    return self;
-}
 
 -(void)viewDidLoad
 {
@@ -51,7 +39,39 @@
     // timer label
     
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
+    
+    // background
+    
+    [self addBackgroundView];
+    
+    [self viewAesthetics];
 }
+
+- (void)viewAesthetics{
+    self.timerLabel.layer.masksToBounds = YES;
+    self.timerLabel.layer.cornerRadius = 4;
+    self.timerLabel.layer.opacity = .85;
+}
+
+- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block
+{
+    self = [super init];
+    
+    _timeDelay = timeDelay * -1;
+    self.didPressSetCompletedBlock = block;
+    
+    return self;
+}
+
+- (void)addBackgroundView
+{
+    UIImage *image = [UIImage imageNamed: @"barbell"];
+    UIView *imageView = [[UIImageView alloc] initWithImage: image];
+    [self.view addSubview: imageView];
+    [self.view sendSubviewToBack: imageView];
+}
+
+
 
 #pragma mark - Button Actions
 
@@ -62,3 +82,22 @@
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
