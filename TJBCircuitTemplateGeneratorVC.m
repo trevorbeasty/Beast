@@ -298,9 +298,11 @@ static NSString * const defaultValue = @"unselected";
     for (int i = 0; i < [self.numberOfExercises intValue]; i++)
     {
         // add the current exercise to the mutable ordered set
-        TJBExercise *currentExercise = self.exerciseData[i];
-        [exercises addObject: currentExercise];
+        TJBExercise *exercise = self.exerciseData[i];
+        [exercises addObject: exercise];
     }
+    
+    chainTemplate.exercises = exercises;
     
     if ([self.targetingWeight intValue] == 1)
     {
