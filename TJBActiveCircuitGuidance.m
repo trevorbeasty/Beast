@@ -185,7 +185,8 @@
         };
         
         TJBInSetVC *vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.selectedTimeDelay intValue]
-                                     DidPressSetCompletedBlock: block];
+                                     DidPressSetCompletedBlock: block
+                          exerciseName: self.chainTemplate.exercises[_activeExerciseIndex].name];
         
         [self presentViewController: vc
                            animated: NO

@@ -11,6 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBInSetVC">
             <connections>
+                <outlet property="navBar" destination="yAU-D4-fNs" id="xQu-Sw-8fD"/>
+                <outlet property="setCompletedButton" destination="Jgf-xI-uKc" id="iCj-mA-kyo"/>
                 <outlet property="timerLabel" destination="H3k-zw-EnZ" id="IcK-BP-gXu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -30,8 +32,8 @@
                     </items>
                 </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jgf-xI-uKc">
-                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
-                    <color key="backgroundColor" red="0.042260741676936386" green="0.55925932615168206" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="20" y="609" width="335" height="50"/>
+                    <color key="backgroundColor" red="0.0" green="1" blue="0.85579097014808791" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="ftg-kb-sDb"/>
                     </constraints>
@@ -60,9 +62,9 @@
                 <constraint firstAttribute="trailing" secondItem="H3k-zw-EnZ" secondAttribute="trailing" constant="8" id="4ki-JO-4zO"/>
                 <constraint firstItem="H3k-zw-EnZ" firstAttribute="top" secondItem="yAU-D4-fNs" secondAttribute="bottom" constant="8" id="AwL-Wt-PKB"/>
                 <constraint firstAttribute="trailing" secondItem="yAU-D4-fNs" secondAttribute="trailing" id="Iyu-Sh-VJ7"/>
-                <constraint firstAttribute="trailing" secondItem="Jgf-xI-uKc" secondAttribute="trailing" id="Krt-P3-mYG"/>
-                <constraint firstItem="Jgf-xI-uKc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="r9H-Tv-v7p"/>
-                <constraint firstAttribute="bottom" secondItem="Jgf-xI-uKc" secondAttribute="bottom" id="r9u-PQ-OwO"/>
+                <constraint firstAttribute="trailing" secondItem="Jgf-xI-uKc" secondAttribute="trailing" constant="20" id="Krt-P3-mYG"/>
+                <constraint firstItem="Jgf-xI-uKc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="r9H-Tv-v7p"/>
+                <constraint firstAttribute="bottom" secondItem="Jgf-xI-uKc" secondAttribute="bottom" constant="8" id="r9u-PQ-OwO"/>
                 <constraint firstItem="yAU-D4-fNs" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="zYQ-6b-31c"/>
                 <constraint firstItem="yAU-D4-fNs" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zez-kG-hZy"/>
             </constraints>

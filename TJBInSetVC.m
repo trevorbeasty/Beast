@@ -18,9 +18,12 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 
+@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 - (IBAction)didPressSetCompleted:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *setCompletedButton;
 
 @property (copy) void(^didPressSetCompletedBlock)(int);
+@property (nonatomic, strong) NSString *exerciseName;
 
 @end
 
@@ -35,9 +38,6 @@
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
     [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay withForwardIncrementing: YES];
     [stopwatch addSecondaryStopwatchObserver: self.timerLabel];
-    
-    // timer label
-    
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
     
     // background
@@ -45,20 +45,26 @@
     [self addBackgroundView];
     
     [self viewAesthetics];
+    
+    [self configureNavBar];
 }
 
 - (void)viewAesthetics{
     self.timerLabel.layer.masksToBounds = YES;
     self.timerLabel.layer.cornerRadius = 4;
     self.timerLabel.layer.opacity = .85;
+    
+    self.setCompletedButton.layer.masksToBounds = YES;
+    self.setCompletedButton.layer.cornerRadius = 20;
 }
 
-- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block
+- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block exerciseName:(NSString *)exerciseName
 {
     self = [super init];
     
     _timeDelay = timeDelay * -1;
     self.didPressSetCompletedBlock = block;
+    self.exerciseName = exerciseName;
     
     return self;
 }
@@ -71,7 +77,12 @@
     [self.view sendSubviewToBack: imageView];
 }
 
-
+- (void)configureNavBar{
+    NSString *title = [NSString stringWithFormat: @"In Set: %@",
+                       self.exerciseName];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: title];
+    [self.navBar setItems: @[navItem]];
+}
 
 #pragma mark - Button Actions
 
