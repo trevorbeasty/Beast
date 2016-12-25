@@ -10,4 +10,8 @@
 
 @interface TJBAestheticsController : NSObject
 
++ (instancetype)singleton;
+
+- (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView;
+
 @end

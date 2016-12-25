@@ -15,6 +15,8 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBWorkoutNavigationHub ()
 
 @property (weak, nonatomic) IBOutlet UIButton *standaloneSetButton;
@@ -33,7 +35,10 @@
 - (void)viewDidLoad{
     [self configureViewAesthetics];
     
-    [self addBackgroundView];
+    // background view
+    UIImage *image = [UIImage imageNamed: @"weightStack"];
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
+                                                                   toRootView: self.view];
     
     [self viewAesthetics];
 }
@@ -59,29 +64,6 @@
         view.layer.masksToBounds = YES;
         view.layer.cornerRadius = 4.0;
     }
-}
-
-- (void)addBackgroundView{
-    UIImage *image = [UIImage imageNamed: @"weightStack"];
-    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
-    UIImage *resizedImage = [self imageWithImage: image
-                                   scaledToSize: screenSize];
-    
-    UIView *imageView = [[UIImageView alloc] initWithImage: resizedImage];
-    
-    [self.view addSubview: imageView];
-    [self.view sendSubviewToBack: imageView];
-}
-
-- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize{
-    UIGraphicsBeginImageContext(newSize);
-    
-    [image drawInRect: CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return newImage;
 }
 
 #pragma mark - Button Actions

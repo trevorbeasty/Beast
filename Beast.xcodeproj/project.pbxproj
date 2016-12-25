@@ -268,7 +268,7 @@
 			children = (
 				0B26199F1E0DC94B006FB2D9 /* Circuit - Active Guidance */,
 				0B843CB21DFF64BD0093F057 /* Circuit Mode */,
-				0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC's */,
+				0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC */,
 				0B843C901DFB7E9C0093F057 /* Realized Set Active Entry */,
 				0B517BDA1DF88651009981F9 /* NumberSelection */,
 			);
@@ -300,14 +300,14 @@
 			name = "Realized Set Active Entry";
 			sourceTree = "<group>";
 		};
-		0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC's */ = {
+		0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC */ = {
 			isa = PBXGroup;
 			children = (
 				0B843CA71DFEF8E50093F057 /* TJBWorkoutNavigationHub.h */,
 				0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */,
 				0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */,
 			);
-			name = "Home Tab Bar VC's";
+			name = "Home Tab Bar VC";
 			sourceTree = "<group>";
 		};
 		0B843CB21DFF64BD0093F057 /* Circuit Mode */ = {
