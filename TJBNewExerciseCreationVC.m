@@ -39,12 +39,10 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     // navigation bar
-    
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"New Exercise"];
-    
+
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                   target: self
                                                                                   action: @selector(cancel)];
@@ -62,6 +60,16 @@
     self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
     
     [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.timerLabel];
+    
+    [self viewAesthetics];
+}
+
+- (void)viewAesthetics{
+    CALayer *layer = self.exerciseTextField.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+    layer.borderWidth = 1;
+    layer.borderColor = [[UIColor blueColor] CGColor];
 }
 
 #pragma mark - <UITextFieldDelegate>

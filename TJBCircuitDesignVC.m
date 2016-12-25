@@ -71,17 +71,15 @@
     
     [self.navBar setItems: @[navItem]];
     
-    // background view
-    
-    [self addBackgroundView];
+    [self viewAesthetics];
 }
 
-- (void)addBackgroundView
-{
-    UIImage *image = [UIImage imageNamed: @"coolRandom"];
-    UIView *imageView = [[UIImageView alloc] initWithImage: image];
-    [self.view addSubview: imageView];
-    [self.view sendSubviewToBack: imageView];
+- (void)viewAesthetics{
+    CALayer *layer = self.nameTextField.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+    layer.borderWidth = 1;
+    layer.borderColor = [[UIColor blueColor] CGColor];
 }
 
 #pragma mark - Stepper Methods

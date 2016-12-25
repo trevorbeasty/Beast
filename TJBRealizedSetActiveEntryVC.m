@@ -71,8 +71,7 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     _setCompletedButtonPressed = NO;
     _whiteoutActive = NO;
     
@@ -127,23 +126,11 @@
         abort();
     }
     
-    // timer
-    
-    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.timerLabel];
-    
-    // background view
-    
-    [self addBackgroundView];
-    
-    self.exerciseTableView.layer.opacity = .7;
-}
-
-- (void)addBackgroundView
-{
-    UIImage *image = [UIImage imageNamed: @"coolRandom"];
-    UIView *imageView = [[UIImageView alloc] initWithImage: image];
-    [self.view addSubview: imageView];
-    [self.view sendSubviewToBack: imageView];
+    // timer (see viewWillAppear as well)
+    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    [stopwatch setPrimaryStopWatchToTimeInSeconds: 0
+                          withForwardIncrementing: YES];
+    [stopwatch addPrimaryStopwatchObserver: self.timerLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
