@@ -10,6 +10,8 @@
 
 #import "TJBStopwatch.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBInSetVC ()
 
 {
@@ -42,7 +44,9 @@
     
     // background
     
-    [self addBackgroundView];
+    UIImage *image = [UIImage imageNamed: @"barbell"];
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
+                                                                   toRootView: self.view];
     
     [self viewAesthetics];
     
@@ -67,14 +71,6 @@
     self.exerciseName = exerciseName;
     
     return self;
-}
-
-- (void)addBackgroundView
-{
-    UIImage *image = [UIImage imageNamed: @"barbell"];
-    UIView *imageView = [[UIImageView alloc] initWithImage: image];
-    [self.view addSubview: imageView];
-    [self.view sendSubviewToBack: imageView];
 }
 
 - (void)configureNavBar{

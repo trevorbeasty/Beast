@@ -29,13 +29,10 @@
 
 #pragma mark - Initialization
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     // set the collection view's background image
-    
     UIImage *image = [UIImage imageNamed: @"chick"];
     UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
-    
     self.collectionView.backgroundView = imageView;
     
     // add cancel bar button item
