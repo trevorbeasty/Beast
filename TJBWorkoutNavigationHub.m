@@ -17,15 +17,12 @@
 
 @interface TJBWorkoutNavigationHub ()
 
-@property (weak, nonatomic) IBOutlet UIButton *standaloneSetFreeformButton;
-@property (weak, nonatomic) IBOutlet UIButton *circuitOrSupersetButton;
+@property (weak, nonatomic) IBOutlet UIButton *standaloneSetButton;
+@property (weak, nonatomic) IBOutlet UIButton *circuitSlashSupersetButton;
 @property (weak, nonatomic) IBOutlet UIButton *testButton;
 
-- (IBAction)didPressStandaloneSetFreeformButton:(id)sender;
-- (IBAction)didPressCircuitOrSupersetButton:(id)sender;
-
-- (IBAction)test:(id)sender;
-
+- (IBAction)didPressStandaloneSetButton:(id)sender;
+- (IBAction)didPressCircuitSlashSupersetButton:(id)sender;
 
 @end
 
@@ -33,24 +30,28 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad
-{
-    // view aesthetics
-    
+- (void)viewDidLoad{
     [self configureViewAesthetics];
     
-    // background view
-    
     [self addBackgroundView];
+    
+    [self viewAesthetics];
 }
 
-- (void)configureViewAesthetics
-{
+- (void)viewAesthetics{
+    NSArray *views = @[self.standaloneSetButton,
+                       self.circuitSlashSupersetButton];
+    for (UIView *view in views){
+        view.layer.masksToBounds = YES;
+        view.layer.cornerRadius = 25;
+    }
+}
+
+- (void)configureViewAesthetics{
     double opacityValue = .9;
     
-    NSArray *viewsToConfigure = @[self.standaloneSetFreeformButton,
-                                 self.circuitOrSupersetButton,
-                                 self.testButton];
+    NSArray *viewsToConfigure = @[self.standaloneSetButton,
+                                 self.circuitSlashSupersetButton];
     
     for (UIView *view in viewsToConfigure)
     {
@@ -60,19 +61,32 @@
     }
 }
 
-- (void)addBackgroundView
-{
-    UIImage *image = [UIImage imageNamed: @"Arnold"];
-    UIView *imageView = [[UIImageView alloc] initWithImage: image];
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
+- (void)addBackgroundView{
+    UIImage *image = [UIImage imageNamed: @"weightStack"];
+    CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+    UIImage *resizedImage = [self imageWithImage: image
+                                   scaledToSize: screenSize];
+    
+    UIView *imageView = [[UIImageView alloc] initWithImage: resizedImage];
+    
     [self.view addSubview: imageView];
     [self.view sendSubviewToBack: imageView];
 }
 
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize{
+    UIGraphicsBeginImageContext(newSize);
+    
+    [image drawInRect: CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
 #pragma mark - Button Actions
 
-- (IBAction)didPressStandaloneSetFreeformButton:(id)sender
-{
+- (void)didPressStandaloneSetButton:(id)sender{
     TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
     [vc1.tabBarItem setTitle: @"Active Entry"];
     
@@ -94,18 +108,12 @@
                      completion: nil];
 }
 
-- (IBAction)didPressCircuitOrSupersetButton:(id)sender
-{
+- (void)didPressCircuitSlashSupersetButton:(id)sender{
     TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
     
     [self presentViewController: vc
                        animated: NO
                      completion: nil];
-}
-
-- (IBAction)test:(id)sender
-{
-
 }
 
 @end

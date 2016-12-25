@@ -48,6 +48,7 @@
 		0B843CCB1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */; };
 		0B843CD41E0C984D0093F057 /* TJBInSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CD21E0C984D0093F057 /* TJBInSetVC.m */; };
 		0B843CD51E0C984D0093F057 /* TJBInSetVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CD31E0C984D0093F057 /* TJBInSetVC.xib */; };
+		0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +119,8 @@
 		0B843CD11E0C984D0093F057 /* TJBInSetVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBInSetVC.h; sourceTree = "<group>"; };
 		0B843CD21E0C984D0093F057 /* TJBInSetVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBInSetVC.m; sourceTree = "<group>"; };
 		0B843CD31E0C984D0093F057 /* TJBInSetVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBInSetVC.xib; sourceTree = "<group>"; };
+		0B86FB6B1E102921000D1B5F /* TJBAestheticsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBAestheticsController.h; sourceTree = "<group>"; };
+		0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBAestheticsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +143,8 @@
 				0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */,
 				0B843C841DFAD0A00093F057 /* CoreDataController.h */,
 				0B843C851DFAD0A00093F057 /* CoreDataController.m */,
+				0B86FB6B1E102921000D1B5F /* TJBAestheticsController.h */,
+				0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */,
 			);
 			name = Singletons;
 			sourceTree = "<group>";
@@ -464,6 +469,7 @@
 				0B517BC61DF77C20009981F9 /* ViewController.m in Sources */,
 				0B843C831DFA28270093F057 /* TJBNumberSelectionCell.m in Sources */,
 				0B843C941DFB80640093F057 /* TJBRealizedSetHistoryByDay.m in Sources */,
+				0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */,
 				0B843C991DFCAB470093F057 /* RealizedSetHistoryCell.m in Sources */,

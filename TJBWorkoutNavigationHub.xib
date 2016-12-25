@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,9 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBWorkoutNavigationHub">
             <connections>
-                <outlet property="circuitOrSupersetButton" destination="5vd-Pz-T1I" id="t90-1v-o1S"/>
-                <outlet property="standaloneSetFreeformButton" destination="dl0-qJ-myg" id="ngZ-fI-ffX"/>
-                <outlet property="testButton" destination="8Xs-rt-TB6" id="j4N-ps-sOG"/>
+                <outlet property="circuitSlashSupersetButton" destination="5vd-Pz-T1I" id="Vqe-7b-UO6"/>
+                <outlet property="standaloneSetButton" destination="dl0-qJ-myg" id="cnm-fM-aCI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,60 +21,41 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vZc-hY-Un9">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="PMH-nE-PLZ"/>
-                    </constraints>
-                    <items>
-                        <navigationItem title="Select Desired Schema" id="5pv-Yx-IP9"/>
-                    </items>
-                </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dl0-qJ-myg">
-                    <rect key="frame" x="8" y="58" width="359" height="100"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="50" y="100" width="275" height="40"/>
+                    <color key="backgroundColor" red="0.31663491707119074" green="1" blue="0.99097504945429948" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="100" id="XZh-r6-pdU"/>
+                        <constraint firstAttribute="height" constant="40" id="a75-rA-RHd"/>
                     </constraints>
-                    <state key="normal" title="Stand-Alone Set Free-Form"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <state key="normal" title="Standalone Set">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                     <connections>
-                        <action selector="didPressStandaloneSetFreeformButton:" destination="-1" eventType="touchUpInside" id="BYc-zk-4iS"/>
+                        <action selector="didPressStandaloneSetButton:" destination="-1" eventType="touchUpInside" id="Zmu-vh-hp8"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vd-Pz-T1I">
-                    <rect key="frame" x="8" y="166" width="359" height="100"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" title="Circuit / Superset"/>
+                    <rect key="frame" x="50" y="220" width="275" height="40"/>
+                    <color key="backgroundColor" red="0.41313043090000001" green="0.99707198500000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <state key="normal" title="Circuit / Superset">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                     <connections>
-                        <action selector="didPressCircuitOrSupersetButton:" destination="-1" eventType="touchUpInside" id="25L-cS-m8c"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Xs-rt-TB6">
-                    <rect key="frame" x="8" y="274" width="359" height="100"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" title="Test"/>
-                    <connections>
-                        <action selector="test:" destination="-1" eventType="touchUpInside" id="2tP-KY-1O1"/>
+                        <action selector="didPressCircuitSlashSupersetButton:" destination="-1" eventType="touchUpInside" id="K8N-Ar-l6n"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="8Xs-rt-TB6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="1ko-94-CaH"/>
-                <constraint firstItem="vZc-hY-Un9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="5vZ-vC-jKv"/>
-                <constraint firstItem="8Xs-rt-TB6" firstAttribute="top" secondItem="5vd-Pz-T1I" secondAttribute="bottom" constant="8" id="8Xe-Gz-sEe"/>
-                <constraint firstItem="vZc-hY-Un9" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="9e1-hJ-dKo"/>
-                <constraint firstItem="dl0-qJ-myg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="E06-Dx-c6Z"/>
-                <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="8" id="ITZ-X6-d6J"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="KNR-sx-yQv"/>
-                <constraint firstItem="8Xs-rt-TB6" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="KRa-Z0-pRM"/>
-                <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="8" id="Qg6-pI-8SD"/>
-                <constraint firstAttribute="trailing" secondItem="8Xs-rt-TB6" secondAttribute="trailing" constant="8" id="Ubi-pa-Mbr"/>
-                <constraint firstItem="dl0-qJ-myg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="YhO-R0-sDb"/>
-                <constraint firstItem="dl0-qJ-myg" firstAttribute="top" secondItem="vZc-hY-Un9" secondAttribute="bottom" constant="8" id="lCX-dr-nsr"/>
-                <constraint firstAttribute="trailing" secondItem="vZc-hY-Un9" secondAttribute="trailing" id="mHI-ah-tvj"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="8" id="mLY-af-sos"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="yRn-eY-84F"/>
+                <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="50" id="3dQ-kH-wbN"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="9ys-lP-Amq"/>
+                <constraint firstItem="dl0-qJ-myg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="Goa-uo-yPD"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="gmR-of-RWH"/>
+                <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="50" id="ph1-wa-Ic8"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="80" id="szu-bW-pmZ"/>
+                <constraint firstItem="dl0-qJ-myg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="xuy-EB-CDg"/>
             </constraints>
         </view>
     </objects>
