@@ -384,6 +384,7 @@ static NSString * const defaultValue = @"unselected";
                                                                                 inManagedObjectContext: moc];
         
         numberComponent.value = [dataArray[i] floatValue];
+        numberComponent.isDefaultObject = NO;
         
         [collector addObject: numberComponent];
     }

@@ -12,6 +12,7 @@
 
 #import "TJBWeightArray+CoreDataProperties.h"
 #import "TJBRepsArray+CoreDataProperties.h"
+#import "TJBDateArray+CoreDataProperties.h"
 #import "TJBTargetRestTimeArray+CoreDataProperties.h"
 #import "TJBNumberArray+CoreDataProperties.h"
 #import "TJBNumberTypeArrayComp+CoreDataProperties.h"
@@ -72,11 +73,21 @@
 @property (nonatomic, strong) NSNumber *selectedWeight;
 @property (nonatomic, strong) NSNumber *selectedReps;
 
+// realized chain
+
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
+
 @end
+
+static NSString * const defaultValue = @"default value";
 
 @implementation TJBActiveCircuitGuidance
 
-#pragma mark - Instantiation
+#pragma mark - View Cycle
+
+- (void)viewDidLoad{
+    [self configureViews];
+}
 
 - (void)configureViews{
     // nav bar
@@ -104,34 +115,7 @@
     self.nextUpExerciseLabel.text = activeExerciseTitle;
 }
 
-- (void)initializeActiveInstanceVariables{
-    _activeExerciseIndex = 0;
-    _activeRoundIndex = 0;
-    
-    TJBChainTemplate *chainTemplate = self.chainTemplate;
-    
-    _activeTargetWeight = chainTemplate.weightArrays[0].numbers[0].value;
-    _activeTargetReps = chainTemplate.repsArrays[0].numbers[0].value;
-    _activeTargetRestTime = chainTemplate.targetRestTimeArrays[0].numbers[0].value;
-    
-    _setCompletedButtonPressed = NO;
-}
-
-- (void)viewDidLoad{
-    [self configureViews];
-}
-
-- (void)setDerivedInstanceVariables{
-    TJBChainTemplate *chainTemplate = self.chainTemplate;
-    
-    NSNumber *numberOfExercises = [NSNumber numberWithUnsignedLong: [chainTemplate.exercises count]];
-    self.numberOfExercises = numberOfExercises;
-    
-    TJBRepsArray *repsArray = chainTemplate.repsArrays[0];
-    NSNumber *numberOfRounds = [NSNumber numberWithUnsignedLong: [repsArray.numbers count]];
-    self.numberOfRounds = numberOfRounds;
-}
-
+#pragma mark - Init
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate{
     self = [super init];
@@ -141,9 +125,93 @@
     self.chainTemplate = chainTemplate;
     
     [self setDerivedInstanceVariables];
+    
     [self initializeActiveInstanceVariables];
     
     return self;
+}
+
+- (void)createSkeletonForRealizedChainObject{
+    // create managed object
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    TJBRealizedChain *realizedChain = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedChain"
+                                                                    inManagedObjectContext: moc];
+    self.realizedChain = realizedChain;
+    
+    // fill managed object with default values for weight, reps, dates
+    // exercises are known
+    // post-mortem is known
+    realizedChain.postMortem = NO;
+    
+    realizedChain.exercises = self.chainTemplate.exercises;
+    
+    int exerciseLimit = [self.numberOfExercises intValue];
+    int roundLimit = [self.numberOfRounds intValue];
+    
+    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
+    NSMutableOrderedSet *repArrays = [[NSMutableOrderedSet alloc] init];
+    NSMutableOrderedSet *dateArrays = [[NSMutableOrderedSet alloc] init];
+    
+    realizedChain.weightArrays = weightArrays;
+    realizedChain.repsArrays = repArrays;
+    realizedChain.dateArrays = dateArrays;
+    
+    for (int i = 0; i < exerciseLimit; i++){
+        
+        TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+                                                                    inManagedObjectContext: moc];
+        TJBRepsArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
+                                                                inManagedObjectContext: moc];
+        TJBDateArray *dateArray = [NSEntityDescription insertNewObjectForEntityForName: @"DateArray"
+                                                                inManagedObjectContext: moc];
+        
+        [weightArrays addObject: weightArray];
+        [repArrays addObject: repsArray];
+        [dateArrays addObject: dateArray];
+        
+        NSMutableOrderedSet *weightComponentsArray = [[NSMutableOrderedSet alloc] init];
+        NSMutableOrderedSet *repComponentsArray = [[NSMutableOrderedSet alloc] init];
+        NSMutableOrderedSet *dateComponentsArray = [[NSMutableOrderedSet alloc] init];
+        
+        weightArray.numbers = weightComponentsArray;
+        repsArray.numbers = repComponentsArray;
+        dateArray.dates = dateComponentsArray;
+        
+        for (int j = 0; j < roundLimit; j++){
+            TJBNumberTypeArrayComp *weightComponent = [[TJBNumberTypeArrayComp alloc] init];
+            TJBNumberTypeArrayComp *repComponent = [[TJBNumberTypeArrayComp alloc] init];
+            TJBDateTypeArrayComp *dateComponent = [[TJBDateTypeArrayComp alloc] init];
+            
+            weightComponent.isDefaultObject = YES;
+            repComponent.isDefaultObject = YES;
+            dateComponent.isDefaultObject = YES;
+        }
+    }
+}
+
+- (void)initializeActiveInstanceVariables{
+    _activeExerciseIndex = 0;
+    _activeRoundIndex = 0;
+    
+    TJBChainTemplate *chainTemplate = self.chainTemplate;
+    
+    _activeTargetWeight = chainTemplate.weightArrays[0].numbers[0].value;
+    _activeTargetReps = chainTemplate.repsArrays[0].numbers[0].value;
+    
+    _setCompletedButtonPressed = NO;
+}
+
+
+
+- (void)setDerivedInstanceVariables{
+    TJBChainTemplate *chainTemplate = self.chainTemplate;
+    
+    NSNumber *numberOfExercises = [NSNumber numberWithUnsignedLong: [chainTemplate.exercises count]];
+    self.numberOfExercises = numberOfExercises;
+    
+    TJBWeightArray *weightArray = chainTemplate.weightArrays[0];
+    NSNumber *numberOfRounds = [NSNumber numberWithUnsignedLong: [weightArray.numbers count]];
+    self.numberOfRounds = numberOfRounds;
 }
 
 #pragma mark - Button Actions
@@ -251,8 +319,15 @@
     else
     {
         [self incrementControllerAndUpdateViews];
+        
+        [self addSelectedValuesToRealizedChainObject];
+        
         [self setUserSelectedValuesToNil];
     }
+    
+}
+
+- (void)addSelectedValuesToRealizedChainObject{
     
 }
 

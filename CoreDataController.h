@@ -17,6 +17,10 @@
 
 #import "TJBChainTemplate+CoreDataProperties.h"
 
+#import "TJBRealizedChain+CoreDataProperties.h"
+
+#import "TJBDateTypeArrayComp+CoreDataProperties.h"
+
 
 
 @interface CoreDataController : NSObject
