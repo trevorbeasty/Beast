@@ -89,6 +89,10 @@ static NSString * const defaultValue = @"default value";
     [self configureViews];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [self createSkeletonForRealizedChainObject];
+}
+
 - (void)configureViews{
     // nav bar
     
@@ -142,7 +146,7 @@ static NSString * const defaultValue = @"default value";
     // exercises are known
     // post-mortem is known
     realizedChain.postMortem = NO;
-    
+    realizedChain.chainTemplate = self.chainTemplate;
     realizedChain.exercises = self.chainTemplate.exercises;
     
     int exerciseLimit = [self.numberOfExercises intValue];
@@ -178,15 +182,25 @@ static NSString * const defaultValue = @"default value";
         dateArray.dates = dateComponentsArray;
         
         for (int j = 0; j < roundLimit; j++){
-            TJBNumberTypeArrayComp *weightComponent = [[TJBNumberTypeArrayComp alloc] init];
-            TJBNumberTypeArrayComp *repComponent = [[TJBNumberTypeArrayComp alloc] init];
-            TJBDateTypeArrayComp *dateComponent = [[TJBDateTypeArrayComp alloc] init];
+            TJBNumberTypeArrayComp *weightComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+                                                                                    inManagedObjectContext: moc];
+            TJBNumberTypeArrayComp *repComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+                                                                                 inManagedObjectContext: moc];
+            TJBDateTypeArrayComp *dateComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+                                                                                inManagedObjectContext: moc];
             
-            weightComponent.isDefaultObject = YES;
-            repComponent.isDefaultObject = YES;
-            dateComponent.isDefaultObject = YES;
+            BOOL isDefaultObject = YES;
+            weightComponent.isDefaultObject = isDefaultObject;
+            repComponent.isDefaultObject = isDefaultObject;
+            dateComponent.isDefaultObject = isDefaultObject;
+            
+            [weightComponentsArray addObject: weightComponent];
+            [repComponentsArray addObject: repComponent];
+            [dateComponentsArray addObject: dateComponent];
         }
     }
+    
+    [[CoreDataController singleton] saveContext];
 }
 
 - (void)initializeActiveInstanceVariables{
