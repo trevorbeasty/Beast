@@ -41,17 +41,8 @@
                         <navigationItem title="Chain Selection" id="H2u-uh-nl0"/>
                     </items>
                 </navigationBar>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Existing Chains" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4G-NA-ssJ">
-                    <rect key="frame" x="0.0" y="50" width="375" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="hiS-ut-gZy"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                    <rect key="frame" x="0.0" y="100" width="375" height="517"/>
+                    <rect key="frame" x="0.0" y="50" width="375" height="567"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
@@ -65,13 +56,10 @@
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1u0-fT-gRq"/>
                 <constraint firstAttribute="trailing" secondItem="Tap-We-N9B" secondAttribute="trailing" id="7Mc-Se-naT"/>
                 <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="C5h-p0-fkt"/>
-                <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="h4G-NA-ssJ" secondAttribute="bottom" id="KgS-13-daw"/>
-                <constraint firstItem="h4G-NA-ssJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Of3-fX-ftK"/>
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OoE-xT-0w5"/>
                 <constraint firstItem="Tap-We-N9B" firstAttribute="top" secondItem="YLP-je-fi9" secondAttribute="bottom" id="cLg-Nk-lEb"/>
-                <constraint firstAttribute="trailing" secondItem="h4G-NA-ssJ" secondAttribute="trailing" id="hAU-mv-9ON"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" id="i4q-WS-hRR"/>
                 <constraint firstAttribute="bottom" secondItem="Tap-We-N9B" secondAttribute="bottom" id="sw9-vE-q9J"/>
-                <constraint firstItem="h4G-NA-ssJ" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" id="tpu-Xt-QxP"/>
                 <constraint firstItem="Tap-We-N9B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uf0-YM-Uag"/>
                 <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" id="xcq-D5-iBb"/>
             </constraints>

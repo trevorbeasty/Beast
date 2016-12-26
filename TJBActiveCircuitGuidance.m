@@ -148,56 +148,29 @@ static NSString * const defaultValue = @"default value";
     realizedChain.chainTemplate = self.chainTemplate;
     realizedChain.exercises = self.chainTemplate.exercises;
     
-//    int exerciseLimit = [self.numberOfExercises intValue];
-//    int roundLimit = [self.numberOfRounds intValue];
-//    
-//    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
-//    NSMutableOrderedSet *repArrays = [[NSMutableOrderedSet alloc] init];
-//    NSMutableOrderedSet *dateArrays = [[NSMutableOrderedSet alloc] init];
-//    
-//    realizedChain.weightArrays = weightArrays;
-//    realizedChain.repsArrays = repArrays;
-//    realizedChain.dateArrays = dateArrays;
-//    
-//    for (int i = 0; i < exerciseLimit; i++){
-//        
-//        TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
-//                                                                    inManagedObjectContext: moc];
-//        TJBRepsArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
-//                                                                inManagedObjectContext: moc];
-//        TJBDateArray *dateArray = [NSEntityDescription insertNewObjectForEntityForName: @"DateArray"
-//                                                                inManagedObjectContext: moc];
-//        
-//        [weightArrays addObject: weightArray];
-//        [repArrays addObject: repsArray];
-//        [dateArrays addObject: dateArray];
-//        
-//        NSMutableOrderedSet *weightComponentsArray = [[NSMutableOrderedSet alloc] init];
-//        NSMutableOrderedSet *repComponentsArray = [[NSMutableOrderedSet alloc] init];
-//        NSMutableOrderedSet *dateComponentsArray = [[NSMutableOrderedSet alloc] init];
-//        
-//        weightArray.numbers = weightComponentsArray;
-//        repsArray.numbers = repComponentsArray;
-//        dateArray.dates = dateComponentsArray;
-//        
-//        for (int j = 0; j < roundLimit; j++){
-//            TJBNumberTypeArrayComp *weightComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-//                                                                                    inManagedObjectContext: moc];
-//            TJBNumberTypeArrayComp *repComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-//                                                                                 inManagedObjectContext: moc];
-//            TJBDateTypeArrayComp *dateComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-//                                                                                inManagedObjectContext: moc];
-//            
-//            BOOL isDefaultObject = YES;
-//            weightComponent.isDefaultObject = isDefaultObject;
-//            repComponent.isDefaultObject = isDefaultObject;
-//            dateComponent.isDefaultObject = isDefaultObject;
-//            
-//            [weightComponentsArray addObject: weightComponent];
-//            [repComponentsArray addObject: repComponent];
-//            [dateComponentsArray addObject: dateComponent];
-//        }
-//    }
+    int exerciseLimit = [self.numberOfExercises intValue];
+    int roundLimit = [self.numberOfRounds intValue];
+    
+    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
+    realizedChain.weightArrays = weightArrays;
+    
+    for (int i = 0; i < exerciseLimit; i++){
+        
+        TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+                                                                    inManagedObjectContext: moc];
+        weightArray.chain = realizedChain;
+        [weightArrays addObject: weightArray];
+        NSMutableOrderedSet *weightArrayNumbers = [[NSMutableOrderedSet alloc] init];
+        weightArray.numbers = weightArrayNumbers;
+        
+        for (int j = 0; j < roundLimit; j++){
+            TJBNumberTypeArrayComp *weightNumberTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+                                                                                    inManagedObjectContext: moc];
+            [weightArrayNumbers addObject: weightNumberTypeArrayComponent];
+            weightNumberTypeArrayComponent.isDefaultObject = YES;
+            weightNumberTypeArrayComponent.owningArray = weightArray;
+        }
+    }
     
     [[CoreDataController singleton] saveContext];
 }
@@ -279,6 +252,19 @@ static NSString * const defaultValue = @"default value";
             self.selectedTimeLag = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
+            
+            // stopwatch
+            _activeTargetRestTime = self.chainTemplate.targetRestTimeArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
+            TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+            int restTimeAccountingForLag = _activeTargetRestTime - [number intValue];
+            self.remainingRestLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: restTimeAccountingForLag];
+            [stopwatch setPrimaryStopWatchToTimeInSeconds: restTimeAccountingForLag
+                                  withForwardIncrementing: NO];
+            if (_restLabelAddedAsStopwatchObserver == NO){
+                [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.remainingRestLabel];
+            }
+            
+            // recursive
             [self didPressBeginSet];
         };
         
@@ -367,15 +353,6 @@ static NSString * const defaultValue = @"default value";
     
     _activeTargetReps = self.chainTemplate.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
     self.repsLabel.text = [[NSNumber numberWithFloat: _activeTargetReps] stringValue];
-    
-    _activeTargetRestTime = self.chainTemplate.targetRestTimeArrays[_previousExerciseIndex].numbers[_previousRoundIndex].value;
-    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-    self.remainingRestLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: _activeTargetRestTime];
-    [stopwatch setPrimaryStopWatchToTimeInSeconds: _activeTargetRestTime
-                          withForwardIncrementing: NO];
-    if (_restLabelAddedAsStopwatchObserver == NO){
-        [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.remainingRestLabel];
-    }
     
     TJBExercise *exercise = self.chainTemplate.exercises[_activeExerciseIndex];
     self.nextUpExerciseLabel.text = [NSString stringWithFormat: @"Round %d - Next up: %@",
