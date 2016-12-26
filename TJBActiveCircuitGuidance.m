@@ -275,7 +275,6 @@ static NSString * const defaultValue = @"default value";
     {
         void(^block)(int) = ^(int timeInSeconds){
             _setCompletedButtonPressed = YES;
-//            _timerAtSetCompletion = timeInSeconds;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self didPressBeginSet];
@@ -307,6 +306,13 @@ static NSString * const defaultValue = @"default value";
                 [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.remainingRestLabel];
             }
             
+            // core data
+            NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
+            
+            TJBDateTypeArrayComp *arrayComp = self.realizedChain.dateArrays[_activeExerciseIndex].dates[_activeRoundIndex];
+            arrayComp.value = date;
+            arrayComp.isDefaultObject = NO;
+            
             // recursive
             [self didPressBeginSet];
         };
@@ -326,6 +332,12 @@ static NSString * const defaultValue = @"default value";
             self.selectedWeight = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
+            
+            // core data
+            TJBNumberTypeArrayComp *arrayComp = self.realizedChain.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+            arrayComp.value = [number floatValue];
+            arrayComp.isDefaultObject = NO;
+            
             [self didPressBeginSet];
         };
         
@@ -345,6 +357,12 @@ static NSString * const defaultValue = @"default value";
             self.selectedReps = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
+            
+            // core data
+            TJBNumberTypeArrayComp *arrayComp = self.realizedChain.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+            arrayComp.value = [number floatValue];
+            arrayComp.isDefaultObject = NO;
+            
             [self didPressBeginSet];
         };
         
