@@ -13,9 +13,9 @@
 #import "RealizedSetPersonalRecordVC.h"
 #import "TJBCircuitDesignVC.h"
 
-#import "TJBCircuitTemplateGeneratorVC.h"
-
 #import "TJBAestheticsController.h"
+
+#import "NewOrExistinigCircuitVC.h"
 
 @interface TJBWorkoutNavigationHub ()
 
@@ -91,7 +91,7 @@
 }
 
 - (void)didPressCircuitSlashSupersetButton:(id)sender{
-    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
+    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc]  init];
     
     [self presentViewController: vc
                        animated: NO

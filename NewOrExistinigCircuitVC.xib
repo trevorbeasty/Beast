@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewOrExistinigCircuitVC">
+            <connections>
+                <outlet property="createNewChainButton" destination="Tap-We-N9B" id="dvy-Gf-Tgg"/>
+                <outlet property="navBar" destination="Qe7-Np-Lhw" id="3MW-NG-cQD"/>
+                <outlet property="tableView" destination="YLP-je-fi9" id="baC-bn-5lA"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tap-We-N9B">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="NV2-Y2-XWX"/>
+                    </constraints>
+                    <state key="normal" title="Create New Chain"/>
+                    <connections>
+                        <action selector="didPressCreateNewChain:" destination="-1" eventType="touchUpInside" id="HGv-sq-C3s"/>
+                    </connections>
+                </button>
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qe7-Np-Lhw">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="vwp-82-cbo"/>
+                    </constraints>
+                    <items>
+                        <navigationItem title="Chain Selection" id="H2u-uh-nl0"/>
+                    </items>
+                </navigationBar>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Existing Chains" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4G-NA-ssJ">
+                    <rect key="frame" x="0.0" y="50" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="hiS-ut-gZy"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
+                    <rect key="frame" x="0.0" y="100" width="375" height="517"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
+                        <outlet property="delegate" destination="-1" id="oVB-Jp-xB6"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Qe7-Np-Lhw" secondAttribute="trailing" id="1KY-zU-Eda"/>
+                <constraint firstItem="Qe7-Np-Lhw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1u0-fT-gRq"/>
+                <constraint firstAttribute="trailing" secondItem="Tap-We-N9B" secondAttribute="trailing" id="7Mc-Se-naT"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="C5h-p0-fkt"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="h4G-NA-ssJ" secondAttribute="bottom" id="KgS-13-daw"/>
+                <constraint firstItem="h4G-NA-ssJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Of3-fX-ftK"/>
+                <constraint firstItem="Qe7-Np-Lhw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OoE-xT-0w5"/>
+                <constraint firstItem="Tap-We-N9B" firstAttribute="top" secondItem="YLP-je-fi9" secondAttribute="bottom" id="cLg-Nk-lEb"/>
+                <constraint firstAttribute="trailing" secondItem="h4G-NA-ssJ" secondAttribute="trailing" id="hAU-mv-9ON"/>
+                <constraint firstAttribute="bottom" secondItem="Tap-We-N9B" secondAttribute="bottom" id="sw9-vE-q9J"/>
+                <constraint firstItem="h4G-NA-ssJ" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" id="tpu-Xt-QxP"/>
+                <constraint firstItem="Tap-We-N9B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uf0-YM-Uag"/>
+                <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" id="xcq-D5-iBb"/>
+            </constraints>
+        </view>
+    </objects>
+</document>

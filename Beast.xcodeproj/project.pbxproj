@@ -49,6 +49,8 @@
 		0B843CD41E0C984D0093F057 /* TJBInSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CD21E0C984D0093F057 /* TJBInSetVC.m */; };
 		0B843CD51E0C984D0093F057 /* TJBInSetVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CD31E0C984D0093F057 /* TJBInSetVC.xib */; };
 		0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */; };
+		0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */; };
+		0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,6 +123,9 @@
 		0B843CD31E0C984D0093F057 /* TJBInSetVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBInSetVC.xib; sourceTree = "<group>"; };
 		0B86FB6B1E102921000D1B5F /* TJBAestheticsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBAestheticsController.h; sourceTree = "<group>"; };
 		0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBAestheticsController.m; sourceTree = "<group>"; };
+		0B86FB6F1E11638E000D1B5F /* NewOrExistinigCircuitVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewOrExistinigCircuitVC.h; sourceTree = "<group>"; };
+		0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewOrExistinigCircuitVC.m; sourceTree = "<group>"; };
+		0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewOrExistinigCircuitVC.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -313,6 +318,7 @@
 		0B843CB21DFF64BD0093F057 /* Circuit Mode */ = {
 			isa = PBXGroup;
 			children = (
+				0B86FB6E1E116360000D1B5F /* New or Existing Selection  */,
 				0B1616DA1E0819EE001C8F45 /* Row Component */,
 				0B1616D91E0819E1001C8F45 /* Exercise Component */,
 				0B1616D81E0819D2001C8F45 /* Circuit Template Generator */,
@@ -376,6 +382,16 @@
 				0B843CD31E0C984D0093F057 /* TJBInSetVC.xib */,
 			);
 			name = "In Set Scene";
+			sourceTree = "<group>";
+		};
+		0B86FB6E1E116360000D1B5F /* New or Existing Selection  */ = {
+			isa = PBXGroup;
+			children = (
+				0B86FB6F1E11638E000D1B5F /* NewOrExistinigCircuitVC.h */,
+				0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */,
+				0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */,
+			);
+			name = "New or Existing Selection ";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -444,6 +460,7 @@
 				0B843CD51E0C984D0093F057 /* TJBInSetVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
 				0B843CC61E02D34A0093F057 /* CircuitDesignRowComponent.xib in Resources */,
+				0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */,
 				0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */,
 				0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */,
 				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
@@ -488,6 +505,7 @@
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,
 				0B517BDD1DF8869C009981F9 /* TJBNumberSelectionVC.m in Sources */,
 				0B1616D51E080E6F001C8F45 /* TJBExerciseSelectionScene.m in Sources */,
+				0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

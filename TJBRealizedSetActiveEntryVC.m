@@ -48,11 +48,6 @@
 
 @property (nonatomic, strong) UIView *whiteoutView;
 
-// core data controller
-
-@property (nonatomic, strong) CoreDataController *cdc;
-@property (nonatomic, strong) NSManagedObjectContext *moc;
-
 // timer
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
@@ -62,118 +57,98 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, strong) UINavigationItem *navItem;
 
-
-
 @end
-
 
 @implementation TJBRealizedSetActiveEntryVC
 
-#pragma mark - Instantiation
+#pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
     _setCompletedButtonPressed = NO;
     _whiteoutActive = NO;
     
-    // navigation bar
-    
+    [self configureNavigationBar];
+    [self fetchCoreDataAndConfigureTableView];
+    [self configureTimer];
+}
+
+- (void)configureNavigationBar{
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select an Exercise"];
-    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                       style: UIBarButtonItemStyleDone
                                                                      target: self
                                                                      action: @selector(didPressDone)];
-    
     [navItem setLeftBarButtonItem: barButtonItem];
-    
     self.navItem = navItem;
-    
     [self.navigationBar setItems: @[navItem]];
-    
-    // core data controller
-    
-    self.cdc = [CoreDataController singleton];
-    self.moc = [self.cdc.persistentContainer viewContext];
-    
-    // table view setup
-    
+}
+
+- (void)fetchCoreDataAndConfigureTableView{
+    // table view configuration
     [self.exerciseTableView registerClass: [UITableViewCell class]
                    forCellReuseIdentifier: @"basicCell"];
     
     // NSFetchedResultsController
-    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
     NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
                                                                    ascending: YES];
     [request setSortDescriptors: @[categorySort, nameSort]];
-    
-    NSManagedObjectContext *moc = [self.cdc.persistentContainer viewContext];
-    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
                                                                           managedObjectContext: moc
                                                                             sectionNameKeyPath: @"category.name"
                                                                                      cacheName: nil];
     frc.delegate = self;
-    
     self.fetchedResultsController = frc;
-    
     NSError *error = nil;
     if (![self.fetchedResultsController performFetch: &error])
     {
         NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
-    
-    // timer (see viewWillAppear as well)
+}
+
+- (void)configureTimer{
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
     [stopwatch setPrimaryStopWatchToTimeInSeconds: 0
                           withForwardIncrementing: YES];
     [stopwatch addPrimaryStopwatchObserver: self.timerLabel];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
 }
 
 #pragma mark - <UITableViewDataSource>
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
     return sectionCount;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
     NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
     return numberOfObjects;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
-    
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
     cell.textLabel.text = exercise.name;
-    
     return cell;
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
     return [sectionInfo name];
 }
 
 #pragma mark - <UITableViewDelegate>
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     self.exercise = exercise;
     [self.navItem setTitle: exercise.name];
@@ -366,12 +341,11 @@
                      completion: nil];
 }
 
-- (void)addRealizedSetToCoreData
-{
+- (void)addRealizedSetToCoreData{
     BOOL postMortem = FALSE;
-    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     TJBRealizedSet *realizedSet = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
-                                                                inManagedObjectContext: self.moc];
+                                                                inManagedObjectContext: moc];
     
     realizedSet.endDate = [NSDate date];
     realizedSet.lengthInSeconds = _timerAtSetCompletion - [self.timeLag intValue];
@@ -380,7 +354,7 @@
     realizedSet.reps = [self.reps floatValue];
     realizedSet.exercise = self.exercise;
     
-    [self.cdc saveContext];
+    [[CoreDataController singleton] saveContext];
     
     [self.personalRecordVC newSetSubmitted];
 }
