@@ -10,6 +10,9 @@
 
 #import "CoreDataController.h"
 
+#import "TJBCircuitDesignVC.h"
+#import "TJBActiveCircuitGuidance.h"
+
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
@@ -30,6 +33,13 @@
 - (void)viewDidLoad{
     [self configureNavigationBar];
     [self fetchCoreDataAndConfigureTableView];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    NSError *error = nil;
+    [self.frc performFetch: &error];
+    [self.tableView reloadData];
+
 }
 
 - (void)configureNavigationBar{
@@ -87,9 +97,24 @@
     return cell;
 }
 
+#pragma mark - <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
+    
+    TJBActiveCircuitGuidance *vc = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
+}
+
 #pragma mark - Button Actions
 
 - (IBAction)didPressCreateNewChain:(id)sender {
+    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
 }
 
 - (void)didPressHomeButton{

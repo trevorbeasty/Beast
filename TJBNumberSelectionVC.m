@@ -101,7 +101,7 @@
     TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"basicCell"
                                                                            forIndexPath: indexPath];
     
-    cell.layer.opacity = .3;
+    cell.layer.opacity = .5;
     
 
     

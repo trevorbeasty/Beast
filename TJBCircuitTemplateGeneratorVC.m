@@ -9,16 +9,13 @@
 #import "TJBCircuitTemplateGeneratorVC.h"
 
 // supporting VC's
-
 #import "TJBNumberSelectionVC.h"
 #import "TJBExerciseSelectionScene.h"
 
 // core data
-
 #import "CoreDataController.h"
 
 // chain template
-
 #import "TJBChainTemplate+CoreDataProperties.h"
 
 #import "TJBNumberArray+CoreDataProperties.h"
@@ -43,8 +40,11 @@
 
 @property (nonatomic, strong) UINavigationItem *navItem;
 
-// data structure
+- (IBAction)didPressLaunchCircuit:(id)sender;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *launchCircuitButton;
 
+
+// data structure
 @property (nonatomic, strong) NSMutableArray *weightData;
 @property (nonatomic, strong) NSMutableArray *repsData;
 @property (nonatomic, strong) NSMutableArray *restData;
@@ -55,15 +55,48 @@
 @end
 
 // constants
-
 static NSString * const defaultValue = @"unselected";
 
 @implementation TJBCircuitTemplateGeneratorVC
 
 #pragma mark - Instantiation
 
-- (NSMutableArray *)createDataStructureObject
-{
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name{
+    self = [super init];
+    
+    self.targetingWeight = targetingWeight;
+    self.targetingReps = targetingReps;
+    self.targetingRest = targetingRest;
+    self.targetsVaryByRound = targetsVaryByRound;
+    self.numberOfExercises = numberOfExercises;
+    self.numberOfRounds = numberOfRounds;
+    self.name = name;
+    
+    return self;
+}
+
+#pragma mark - View Life Cycle
+
+- (void)viewDidLoad{
+    [self createDataStructure];
+    [self createSubviewsAndLayoutConstraints];
+    [self createNavigationItem];
+}
+
+- (void)createDataStructure{
+    self.weightData = [self createDataStructureObject];
+    self.repsData = [self createDataStructureObject];
+    self.restData = [self createDataStructureObject];
+    
+    NSMutableArray *exerciseData = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
+    {
+        [exerciseData addObject: defaultValue];
+    }
+    self.exerciseData = exerciseData;
+}
+
+- (NSMutableArray *)createDataStructureObject{
     NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
     
     for (int i = 0; i < [self.numberOfExercises intValue]; i++)
@@ -78,24 +111,8 @@ static NSString * const defaultValue = @"unselected";
     return arrayToReturn;
 }
 
-- (void)createDataStructure
-{
-    self.weightData = [self createDataStructureObject];
-    self.repsData = [self createDataStructureObject];
-    self.restData = [self createDataStructureObject];
-    
-    NSMutableArray *exerciseData = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
-    {
-        [exerciseData addObject: defaultValue];
-    }
-    self.exerciseData = exerciseData;
-}
-
-- (void)createSubviewsAndLayoutConstraints
-{
+- (void)createSubviewsAndLayoutConstraints{
     // scroll view
-    
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenBounds.size.width;
     
@@ -122,11 +139,9 @@ static NSString * const defaultValue = @"unselected";
     self.scrollView.contentSize = scrollSubview.frame.size;
     
     // constraint mapping
-    
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
     // row components
-    
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:|-%d-",
                                                  (int)initialSpacing]];
@@ -156,7 +171,6 @@ static NSString * const defaultValue = @"unselected";
                                    forKey: dynamicComponentName];
         
         // vertical constraints
-        
         NSString *verticalAppendString;
         
         if (i == [self.numberOfExercises intValue] - 1)
@@ -176,7 +190,6 @@ static NSString * const defaultValue = @"unselected";
         [verticalLayoutConstraintsString appendString: verticalAppendString];
         
         // horizontal constraints
-        
         NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
                                                        dynamicComponentName];
         
@@ -201,21 +214,16 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (void)createNavigationItem
-{
+- (void)createNavigationItem{
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
-    
     UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
                                                                                 target: self
                                                                                 action: @selector(didPressX)];
     [navItem setLeftBarButtonItem: xBarButton];
-    
-    UIBarButtonItem *goBarButton = [[UIBarButtonItem alloc] initWithTitle: @"Go"
-                                                                    style: UIBarButtonItemStyleDone
-                                                                   target: self
-                                                                   action: @selector(didPressGoButton)];
+    UIBarButtonItem *goBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
+                                                                                 target: self
+                                                                                 action: @selector(didPressAdd)];
     [navItem setRightBarButtonItem: goBarButton];
-    
     NSString *word;
     int number = [self.numberOfRounds intValue];
     if (number == 1)
@@ -226,61 +234,28 @@ static NSString * const defaultValue = @"unselected";
     {
         word = @"rounds";
     }
-    
     NSString *title = [NSString stringWithFormat: @"%@ (%d %@)",
                        self.name,
                        [self.numberOfRounds intValue],
                        word];
     [navItem setTitle: title];
-    
     [self.navBar setItems: @[navItem]];
 }
 
-- (void)viewDidLoad
-{
-    // data structure
-    
-    [self createDataStructure];
-    
-    // subviews and layout constraints
-    
-    [self createSubviewsAndLayoutConstraints];
-    
-    // navigation item
-    
-    [self createNavigationItem];
-}
 
 
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name
-{
-    self = [super init];
-    
-    self.targetingWeight = targetingWeight;
-    self.targetingReps = targetingReps;
-    self.targetingRest = targetingRest;
-    self.targetsVaryByRound = targetsVaryByRound;
-    self.numberOfExercises = numberOfExercises;
-    self.numberOfRounds = numberOfRounds;
-    self.name = name;
-    
-    return self;
-}
 
 #pragma mark - Core Data
 
-- (void)createAndSaveChainTemplate
-{
+- (void)createAndSaveChainTemplate{
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
     // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
-    
     TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
                                                                         inManagedObjectContext: moc];
     
     // assign the chain template's attributes
-    
     chainTemplate.identifier = @"placeholder identifier";
     
     chainTemplate.name = self.name;
@@ -290,7 +265,6 @@ static NSString * const defaultValue = @"unselected";
     chainTemplate.targetsVaryByRound = self.targetsVaryByRound;
     
     // chain template relationships
-    
     int exerciseLimit = [self.numberOfExercises intValue];
     
     NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
@@ -351,8 +325,7 @@ static NSString * const defaultValue = @"unselected";
     self.chainTemplate = chainTemplate;
 }
 
-- (NSMutableOrderedSet *)copyCollectionOfArraysFromData:(NSArray<NSArray *> *)data numberArrays:(NSArray<TJBNumberArray *> *)numberArrays
-{
+- (NSMutableOrderedSet *)copyCollectionOfArraysFromData:(NSArray<NSArray *> *)data numberArrays:(NSArray<TJBNumberArray *> *)numberArrays{
     NSMutableOrderedSet *collector = [[NSMutableOrderedSet alloc] init];
     
     int exerciseLimit = [self.numberOfExercises intValue];
@@ -366,12 +339,10 @@ static NSString * const defaultValue = @"unselected";
     return collector;
 }
 
-- (NSMutableOrderedSet *)copySingleArrayFromData:(NSArray *)dataArray;
-{
+- (NSMutableOrderedSet *)copySingleArrayFromData:(NSArray *)dataArray;{
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
     // create NumberTypeArrayComponents and give them to the appropriate ordered mutable set
-    
     int roundsLimit = [self.numberOfRounds intValue];
     
     NSMutableOrderedSet *collector = [[NSMutableOrderedSet alloc] init];
@@ -394,18 +365,16 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Button Actions
 
-- (void)didPressX
-{
+- (void)didPressX{
     [self dismissViewControllerAnimated: NO
                              completion: nil];
 }
 
-- (void)didPressGoButton{
+- (void)didPressLaunchCircuit:(id)sender{
     if ([self.targetsVaryByRound intValue] == 0)
     {
         [self duplicateEntries];
     }
-    
     BOOL allUserInputCollected = [self allSelectionsMade];
     if (allUserInputCollected)
     {
@@ -418,8 +387,21 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (void)duplicateEntries
-{
+- (void)didPressAdd{
+    if ([self.targetsVaryByRound intValue] == 0)
+    {
+        [self duplicateEntries];
+    }
+    BOOL allUserInputCollected = [self allSelectionsMade];
+    if (allUserInputCollected)
+    {
+        [self createAndSaveChainTemplate];
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+    }
+}
+
+- (void)duplicateEntries{
     NSArray *dataArrays = @[
                         self.weightData,
                         self.repsData,
@@ -448,15 +430,13 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (BOOL)allSelectionsMade
-{
+- (BOOL)allSelectionsMade{
     BOOL allWeightSelectionsMade;
     BOOL allRepsSelectionsMade;
     BOOL allRestSelectionsMade;
     BOOL allExerciseSelectionsMade;
     
     // if it's not being targeted, set its value to true
-    
     if ([self.targetingWeight intValue] == 1)
     {
         allWeightSelectionsMade = ![self dataStructureContainsDefaultValue: self.weightData];
@@ -489,8 +469,7 @@ static NSString * const defaultValue = @"unselected";
     return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade && allExerciseSelectionsMade;
 }
 
-- (BOOL)dataStructureContainsDefaultValue:(NSArray *)dataStructure
-{
+- (BOOL)dataStructureContainsDefaultValue:(NSArray *)dataStructure{
     int iterationLimit = [self.numberOfExercises intValue];
     
     for (int i = 0; i < iterationLimit; i++)
@@ -506,8 +485,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - <TJBCircuitTemplateUserInputDelegate>
 
-- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle;
-{
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
     
     UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
                                                                         bundle: nil];
@@ -528,8 +506,7 @@ static NSString * const defaultValue = @"unselected";
                      completion: nil];
 }
 
-- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button
-{
+- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button{
     CancelBlock cancelBlock = ^{
         [self dismissViewControllerAnimated: NO
                                  completion: nil];
@@ -600,8 +577,7 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber
-{
+- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
     NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
                        [chainNumber intValue]];
     
@@ -627,8 +603,7 @@ static NSString * const defaultValue = @"unselected";
                      completion: nil];
 }
                                      
-- (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber
-{
+- (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber{
     int index = [chainNumber intValue] - 1;
     self.exerciseData[index] = exercise;
 }

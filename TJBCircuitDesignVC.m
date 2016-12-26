@@ -41,10 +41,13 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad
-{
-    // steppers
-    
+- (void)viewDidLoad{
+    [self configureView];
+    [self configureNavigationBar];
+    [self viewAesthetics];
+}
+
+- (void)configureView{
     _numberOfExercises = 1.0;
     _numberOfRounds = 1.0;
     
@@ -57,21 +60,16 @@
     [self.numberOfRoundsStepper addTarget: self
                                    action: @selector(didChangeRoundsStepperValue)
                          forControlEvents: UIControlEventValueChanged];
-    
-    // navigation bar
-    
+}
+
+- (void)configureNavigationBar{
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Template Configuration"];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Home"
-                                                                      style: UIBarButtonItemStyleDone
-                                                                     target: self
-                                                                     action: @selector(didPressHome)];
-    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+                                                                                   target: self
+                                                                                   action: @selector(didPressCancel)];
     [navItem setLeftBarButtonItem: barButtonItem];
-    
     [self.navBar setItems: @[navItem]];
-    
-    [self viewAesthetics];
 }
 
 - (void)viewAesthetics{
@@ -84,16 +82,14 @@
 
 #pragma mark - Stepper Methods
 
-- (void)didChangeExerciseStepperValue
-{
+- (void)didChangeExerciseStepperValue{
     double number = self.numberOfExercisesStepper.value;
     
     _numberOfExercises = number;
     self.numberOfExercisesLabel.text = [[NSNumber numberWithDouble: number] stringValue];
 }
 
-- (void)didChangeRoundsStepperValue
-{
+- (void)didChangeRoundsStepperValue{
     double number = self.numberOfRoundsStepper.value;
     
     _numberOfRounds = number;
@@ -102,8 +98,7 @@
 
 #pragma mark - Button Actions
 
-- (IBAction)didPressLaunchTemplate:(id)sender
-{
+- (IBAction)didPressLaunchTemplate:(id)sender{
     TJBCircuitTemplateGeneratorVC *vc = [[TJBCircuitTemplateGeneratorVC alloc] initWithTargetingWeight: [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex]
                                                                                          targetingReps: [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex]
                                                                                          targetingRest: [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex]
@@ -117,8 +112,7 @@
                      completion: nil];
 }
 
-- (void)didPressHome
-{
+- (void)didPressCancel{
     [self dismissViewControllerAnimated: NO
                              completion: nil];
 }
