@@ -87,7 +87,6 @@
 		0B843C871DFADBED0093F057 /* TJBNewExerciseCreationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNewExerciseCreationVC.h; sourceTree = "<group>"; };
 		0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNewExerciseCreationVC.m; sourceTree = "<group>"; };
 		0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBNewExerciseCreationVC.xib; sourceTree = "<group>"; };
-		0B843C8C1DFADF670093F057 /* TJBNewExerciseCreationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNewExerciseCreationDelegate.h; sourceTree = "<group>"; };
 		0B843C8D1DFB24C70093F057 /* TJBStopwatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBStopwatch.h; sourceTree = "<group>"; };
 		0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBStopwatch.m; sourceTree = "<group>"; };
 		0B843C911DFB80640093F057 /* TJBRealizedSetHistoryByDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetHistoryByDay.h; sourceTree = "<group>"; };
@@ -343,7 +342,6 @@
 		0B843CCD1E0C969F0093F057 /* Exercise Creation Scene */ = {
 			isa = PBXGroup;
 			children = (
-				0B843C8C1DFADF670093F057 /* TJBNewExerciseCreationDelegate.h */,
 			);
 			name = "Exercise Creation Scene";
 			sourceTree = "<group>";

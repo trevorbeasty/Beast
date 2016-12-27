@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TJBNewExerciseCreationDelegate.h"
-
 @interface TJBNewExerciseCreationVC : UIViewController
-
-@property (nonatomic, strong) UIViewController <NewExerciseCreationDelegate> *associateVC;
 
 @end

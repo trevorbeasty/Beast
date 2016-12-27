@@ -18,7 +18,7 @@
 
 #import "CoreDataController.h"
 
-@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NewExerciseCreationDelegate, NSFetchedResultsControllerDelegate>
+@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate>
 
 {
     BOOL _setCompletedButtonPressed;
@@ -166,11 +166,9 @@
 
 - (IBAction)addNewExercise:(id)sender
 {
-    TJBNewExerciseCreationVC *necVC = [[TJBNewExerciseCreationVC alloc] init];
+    TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
     
-    necVC.associateVC = self;
-    
-    [self presentViewController: necVC
+    [self presentViewController: vc
                        animated: YES
                      completion: nil];
 }
