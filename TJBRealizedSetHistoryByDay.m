@@ -14,6 +14,8 @@
 
 #import "TJBStopwatch.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBRealizedSetHistoryByDay () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -109,6 +111,19 @@
     self.repsColumnLabel.layer.borderWidth = 2.5;
     self.repsColumnLabel.layer.cornerRadius = 8;
     self.repsColumnLabel.layer.masksToBounds = YES;
+    
+    [self addBackgroundImage];
+    [self viewAesthetics];
+}
+
+- (void)addBackgroundImage{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
+}
+
+- (void)viewAesthetics{
+    self.tableView.layer.opacity = .85;
 }
 
 - (void)viewWillAppear:(BOOL)animated

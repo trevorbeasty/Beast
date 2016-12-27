@@ -12,6 +12,8 @@
 
 #import "CoreDataController.h"
 
+#import "TJBAestheticsController.h"
+
 @interface RealizedSetPersonalRecordVC ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
@@ -63,6 +65,19 @@
     self.weightColumnLabel.layer.borderWidth = 2.5;
     self.weightColumnLabel.layer.cornerRadius = 8;
     self.weightColumnLabel.layer.masksToBounds = YES;
+    
+    [self addBackgroundImage];
+    [self viewAesthetics];
+}
+
+- (void)addBackgroundImage{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
+}
+
+- (void)viewAesthetics{
+    self.tableView.layer.opacity = .85;
 }
 
 - (void)refineFetchedResults

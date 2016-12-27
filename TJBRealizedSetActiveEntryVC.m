@@ -34,6 +34,10 @@
 - (IBAction)addNewExercise:(id)sender;
 - (IBAction)didPressBeginNextSet:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
+@property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
+
+
 // core data
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
@@ -72,6 +76,11 @@
 
 - (void)viewAesthetics{
     self.exerciseTableView.layer.opacity = .85;
+    
+    NSArray *buttons = @[self.beginNextSetButton,
+                         self.addNewExerciseButton];
+    [[TJBAestheticsController singleton] configureButtonsInArray: buttons
+                                                     withOpacity: .85];
 }
 
 - (void)addBackgroundImage{
@@ -123,6 +132,11 @@
     [stopwatch setPrimaryStopWatchToTimeInSeconds: 0
                           withForwardIncrementing: YES];
     [stopwatch addPrimaryStopwatchObserver: self.timerLabel];
+    
+    CALayer *layer = self.timerLabel.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+    layer.opacity = .85;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
