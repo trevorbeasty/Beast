@@ -32,13 +32,7 @@
 #pragma mark - Initialization
 
 - (void)viewDidLoad{
-    // add cancel bar button item
-    
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-                                                                                  target: self
-                                                                                  action: @selector(cancel)];
-    [self.navigationItem setLeftBarButtonItem: cancelButton];
-    
+
     // add gesture recognizers to collection view
     
     // tap GR
@@ -63,6 +57,14 @@
     [self.collectionView addGestureRecognizer: pinchGR];
     
     [self addBackgroundView];
+    [self configureNavigationItem];
+}
+
+- (void)configureNavigationItem{
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+                                                                                  target: self
+                                                                                  action: @selector(cancel)];
+    [self.navigationItem setLeftBarButtonItem: cancelButton];
 }
 
 - (void)addBackgroundView{

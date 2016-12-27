@@ -16,49 +16,43 @@
             <rect key="frame" x="0.0" y="0.0" width="724" height="73"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="724" height="72"/>
+                <rect key="frame" x="0.0" y="0.0" width="724" height="72.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1i-Wo-Mpp">
-                        <rect key="frame" x="8" y="8" width="100" height="56.5"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p1i-Wo-Mpp">
+                        <rect key="frame" x="8" y="8" width="75" height="56.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="100" id="o2b-eM-SQX"/>
+                            <constraint firstAttribute="width" constant="75" id="o2b-eM-SQX"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWf-7D-m4Y">
-                        <rect key="frame" x="543" y="0.0" width="65" height="72.5"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="65" id="iQw-F4-WCb"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="216" y="0.0" width="164" height="72.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOM-Qs-eVP">
-                        <rect key="frame" x="612" y="0.0" width="50" height="73"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="50" id="ymy-eP-FZF"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="384" y="0.0" width="164" height="73"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9a-Fx-8Yy">
-                        <rect key="frame" x="112" y="0.0" width="427" height="72.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="87" y="0.0" width="125" height="72.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="125" id="nrI-SM-xl7"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ost-w4-d1z">
-                        <rect key="frame" x="666" y="8" width="50" height="56.5"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="50" id="HFf-lC-xPc"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="552" y="8" width="164" height="56.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -68,6 +62,7 @@
                     <constraint firstItem="v9a-Fx-8Yy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="8wX-gu-CQI"/>
                     <constraint firstItem="Ost-w4-d1z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="EZO-qX-Hrg"/>
                     <constraint firstAttribute="bottom" secondItem="VOM-Qs-eVP" secondAttribute="bottom" id="J0q-ts-7ES"/>
+                    <constraint firstItem="VOM-Qs-eVP" firstAttribute="width" secondItem="RWf-7D-m4Y" secondAttribute="width" id="Pxr-0C-sZG"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Ost-w4-d1z" secondAttribute="trailing" id="Sp8-sY-6vE"/>
                     <constraint firstAttribute="bottom" secondItem="v9a-Fx-8Yy" secondAttribute="bottom" id="TNT-cz-eKC"/>
                     <constraint firstItem="p1i-Wo-Mpp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Wjs-UE-XNF"/>
@@ -77,6 +72,7 @@
                     <constraint firstItem="p1i-Wo-Mpp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="iiR-kL-o5Q"/>
                     <constraint firstItem="v9a-Fx-8Yy" firstAttribute="leading" secondItem="p1i-Wo-Mpp" secondAttribute="trailing" constant="4" id="koX-bL-RT1"/>
                     <constraint firstAttribute="bottomMargin" secondItem="Ost-w4-d1z" secondAttribute="bottom" id="mQY-Uk-cLT"/>
+                    <constraint firstItem="Ost-w4-d1z" firstAttribute="width" secondItem="RWf-7D-m4Y" secondAttribute="width" id="myt-hH-eos"/>
                     <constraint firstItem="RWf-7D-m4Y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="niS-c5-WdG"/>
                     <constraint firstAttribute="bottomMargin" secondItem="p1i-Wo-Mpp" secondAttribute="bottom" id="sCq-Pa-0br"/>
                     <constraint firstItem="RWf-7D-m4Y" firstAttribute="leading" secondItem="v9a-Fx-8Yy" secondAttribute="trailing" constant="4" id="t66-lo-4Gd"/>

@@ -133,8 +133,7 @@
     
     TJBRealizedSet *realizedSet = [self.frc objectAtIndexPath: indexPath];
     
-    // rest calculation
-    
+    // rest leading up to set
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self frc] sections][indexPath.section];
     NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
     
@@ -144,45 +143,36 @@
     {
         NSIndexPath *previousSetPath = [NSIndexPath indexPathForRow: previousSetRowIndex
                                                           inSection: indexPath.section];
-        
         TJBRealizedSet *previousSet = [self.frc objectAtIndexPath: previousSetPath];
         
         int elapsedTime = (int)[realizedSet.endDate timeIntervalSinceDate: previousSet.endDate] - realizedSet.lengthInSeconds;
-        
-        cell.restLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: elapsedTime];
+        NSString *restTimeStringComponent = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: elapsedTime];
+        NSString *fullRestTimeString = [NSString stringWithFormat: @"+ %@",
+                                        restTimeStringComponent];
+        cell.restLabel.text = fullRestTimeString;
     }
     else
     {
-        cell.restLabel.text = @"NA";
+        cell.restLabel.text = @"";
     }
    
     
-    // format date
-    
-    NSDate *date = realizedSet.endDate;
-    
+    // date
+    NSDate *date = [NSDate dateWithTimeInterval: realizedSet.lengthInSeconds * -1
+                                      sinceDate: realizedSet.endDate];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
     dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-    
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
     cell.timeLabel.text = [dateFormatter stringFromDate: date];
-    cell.exerciseLabel.text = realizedSet.exercise.name;
+    
+    // weight
     cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
+    
+    // reps
     cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
     
-    cell.timeLabel.layer.cornerRadius = 8;
-    cell.timeLabel.layer.masksToBounds = YES;
-    
-    cell.weightLabel.layer.borderColor = [[UIColor greenColor] CGColor];
-    cell.weightLabel.layer.borderWidth = 2.5;
-    cell.weightLabel.layer.cornerRadius = 8;
-    cell.weightLabel.layer.masksToBounds = YES;
-    
-    cell.repsLabel.layer.borderColor = [[UIColor greenColor] CGColor];
-    cell.repsLabel.layer.borderWidth = 2.5;
-    cell.repsLabel.layer.cornerRadius = 8;
-    cell.repsLabel.layer.masksToBounds = YES;
+    // exercise
+    cell.exerciseLabel.text = realizedSet.exercise.name;
     
     return cell;
 }
