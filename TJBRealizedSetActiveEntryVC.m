@@ -18,6 +18,8 @@
 
 #import "CoreDataController.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate>
 
 {
@@ -29,17 +31,13 @@
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
 // UI buttons
-
-//- (IBAction)setCompleted:(id)sender;
 - (IBAction)addNewExercise:(id)sender;
-
 - (IBAction)didPressBeginNextSet:(id)sender;
 
-
+// core data
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 // realized set
-
 @property (nonatomic, strong) NSNumber *timeDelay;
 @property (nonatomic, strong) NSNumber *timeLag;
 @property (nonatomic, strong) NSNumber *weight;
@@ -49,11 +47,9 @@
 @property (nonatomic, strong) UIView *whiteoutView;
 
 // timer
-
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 
 // navigation bar
-
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (nonatomic, strong) UINavigationItem *navItem;
 
@@ -70,6 +66,18 @@
     [self configureNavigationBar];
     [self fetchCoreDataAndConfigureTableView];
     [self configureTimer];
+    [self addBackgroundImage];
+    [self viewAesthetics];
+}
+
+- (void)viewAesthetics{
+    self.exerciseTableView.layer.opacity = .85;
+}
+
+- (void)addBackgroundImage{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
 }
 
 - (void)configureNavigationBar{

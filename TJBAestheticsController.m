@@ -38,15 +38,23 @@
 
 #pragma mark - Images
 
-- (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView{
+- (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView imageOpacity:(double)opacity{
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     UIImage *resizedImage = [self imageWithImage: image
                                     scaledToSize: screenSize];
     
     UIView *imageView = [[UIImageView alloc] initWithImage: resizedImage];
+    imageView.layer.opacity = opacity;
     
     [rootView addSubview: imageView];
     [rootView sendSubviewToBack: imageView];
+
+}
+
+- (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView{
+    [self addFullScreenBackgroundViewWithImage: image
+                                    toRootView: rootView
+                                  imageOpacity: 1.0];
 }
 
 - (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize{

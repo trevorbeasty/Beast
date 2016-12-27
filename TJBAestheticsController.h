@@ -21,7 +21,9 @@
 @property (nonatomic, strong) UIFont *buttonFont;
 + (instancetype)singleton;
 
+// backgroun images
 - (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView;
+- (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView imageOpacity:(double)opacity;
 
 // action button configuration
 - (void)configureButtonsInArray:(NSArray<UIButton *> *)buttons withOpacity:(double)opacity;
