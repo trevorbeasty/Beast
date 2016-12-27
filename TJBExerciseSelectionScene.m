@@ -10,6 +10,8 @@
 
 #import "CoreDataController.h"
 
+#import "TJBNewExerciseCreationVC.h"
+
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -25,6 +27,10 @@
 // callback
 
 @property (copy) void(^callbackBlock)(TJBExercise *);
+
+@property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
+- (IBAction)didPressAddNewExercise:(id)sender;
+
 
 @end
 
@@ -44,6 +50,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     return self;
 }
 
+#pragma mark - View Life Cycle
+
 - (void)viewDidLoad
 {
     [self configureTableView];
@@ -51,6 +59,12 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     [self configureNavigationBar];
     
     [self createFetchedResultsController];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch: &error];
+    [self.exerciseTableView reloadData];
 }
 
 - (void)configureNavigationBar
@@ -150,6 +164,12 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                              completion: nil];
 }
 
+- (IBAction)didPressAddNewExercise:(id)sender {
+    TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
+}
 @end
 
 

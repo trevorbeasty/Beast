@@ -162,6 +162,9 @@
 				0B1616D21E080E6F001C8F45 /* TJBExerciseSelectionScene.h */,
 				0B1616D31E080E6F001C8F45 /* TJBExerciseSelectionScene.m */,
 				0B1616D41E080E6F001C8F45 /* TJBExerciseSelectionScene.xib */,
+				0B843C871DFADBED0093F057 /* TJBNewExerciseCreationVC.h */,
+				0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */,
+				0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -341,9 +344,6 @@
 			isa = PBXGroup;
 			children = (
 				0B843C8C1DFADF670093F057 /* TJBNewExerciseCreationDelegate.h */,
-				0B843C871DFADBED0093F057 /* TJBNewExerciseCreationVC.h */,
-				0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */,
-				0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */,
 			);
 			name = "Exercise Creation Scene";
 			sourceTree = "<group>";

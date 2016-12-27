@@ -12,26 +12,22 @@
 
 #import "TJBStopwatch.h"
 
-@interface TJBNewExerciseCreationVC () <UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+#import "TJBAestheticsController.h"
 
-// core IV's
+@interface TJBNewExerciseCreationVC () <UITextFieldDelegate>
 
-@property (nonatomic, strong) TJBExerciseCategory *exerciseCategory;
-
+// exercise text field and segmented control
+//@property (nonatomic, strong) TJBExerciseCategory *exerciseCategory;
 @property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
 
-- (IBAction)addNewExercise:(id)sender;
-
-// timer
-
-@property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *categorySegmentedControl;
 
 // navigation bar
-
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (nonatomic, strong) UINavigationItem *navItem;
 
-//
+// labels
+@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
+@property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
 
 @end
 
@@ -39,138 +35,148 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad{
-    // navigation bar
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"New Exercise"];
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-                                                                                  target: self
-                                                                                  action: @selector(cancel)];
-    [navItem setLeftBarButtonItem: cancelButton];
-    
-    [self.navigationBar setItems: @[navItem]];
-    self.navItem = navItem;
-    
-    // idiosyncratic initialization
-    
-    self.exerciseCategory = [[CoreDataController singleton] exerciseCategoryForName: @"Push"];
-    
-    // timer
-    
-    self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
-    
-    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.timerLabel];
-    
+- (void)viewDidLoad{    
+    [self configureNavigationBar];
     [self viewAesthetics];
+    [self configureBackgroundImage];
+}
+
+- (void)configureNavigationBar{
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Add New Exercise"];
+    
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone
+                                                                                  target: self
+                                                                                  action: @selector(didPressDone)];
+    [navItem setLeftBarButtonItem: cancelButton];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
+                                                                               target: self
+                                                                               action: @selector(didPressAdd)];
+    [navItem setRightBarButtonItem: addButton];
+    [self.navigationBar setItems: @[navItem]];
 }
 
 - (void)viewAesthetics{
-    CALayer *layer = self.exerciseTextField.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
-    layer.borderWidth = 1;
-    layer.borderColor = [[UIColor blueColor] CGColor];
-}
-
-#pragma mark - <UITextFieldDelegate>
-
-
-
-#pragma mark - <UIPickerViewDelegate>
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    if (component == 0)
-    {
-        if (row == 0)
-            return @"Push";
-        if (row == 1)
-            return @"Pull";
-        if (row == 2)
-            return @"Legs";
-        if (row == 3)
-            return @"Other";
+    // exercise text field and category SC
+    CALayer *exerciseTextFieldLayer = self.exerciseTextField.layer;
+    CALayer *categorySC = self.categorySegmentedControl.layer;
+    NSArray *layers = @[exerciseTextFieldLayer,
+                        categorySC];
+    
+    for (CALayer *layer in layers){
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 10;
+        layer.borderWidth = 1;
+        layer.borderColor = [[UIColor blackColor] CGColor];
     }
-    
-    NSLog(@"picker view not behaving as expected");
-    return @"";
-    
-}
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    NSString *categoryString = nil;
-    
-    if (component == 0)
-    {
-        if (row == 0)
-            categoryString = @"Push";
-        if (row == 1)
-            categoryString = @"Pull";
-        if (row == 2)
-            categoryString = @"Legs";
-        if (row == 3)
-            categoryString = @"Other";
+    // labels
+    NSArray *labeLayers = @[self.exerciseLabel.layer,
+                        self.categoryLabel.layer];
+    for (CALayer *layer in labeLayers){
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 10;
+        
     }
-    
-    if (!categoryString)
-        abort();
-    
-    NSLog(@"categoryString: %@", categoryString);
-    
-    TJBExerciseCategory *category = [[CoreDataController singleton] exerciseCategoryForName: categoryString];
-    
-    self.exerciseCategory = category;
 }
 
-- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
-{
-    return 50.0;
-}
-
-#pragma mark - <UIPickerViewDataSource>
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return 4;
+- (void)configureBackgroundImage{
+    UIImage *image = [UIImage imageNamed: @"chinaCleanAndJerk"];
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
+                                                                   toRootView: self.view];
 }
 
 #pragma mark - Button Actions
 
-- (IBAction)addNewExercise:(id)sender
-{
+- (void)didPressAdd{
     NSString *exerciseString = self.exerciseTextField.text;
-
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: nil];
+    
     BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
-    
-    if ([exerciseString isEqualToString: @""] || exerciseExists || !self.exerciseCategory)
-    {
-        return;
-    }
-    else
-    {
-        TJBExercise *newExercise = [[CoreDataController singleton] exerciseForName: exerciseString];
-    
-        newExercise.category = self.exerciseCategory;
-                
-        [[CoreDataController singleton] saveContext];
-                
-        [self.associateVC didCreateNewExercise: newExercise];
+    if (exerciseExists){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"This exercise already exists"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        [alert addAction: continueAction];
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+    } else if([exerciseString isEqualToString: @""]){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"Exercise entry is blank"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        [alert addAction: continueAction];
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+    } else{
+        NSString *alertMessage = [NSString stringWithFormat: @"Add exercise '%@' for '%@' category?",
+                                  exerciseString,
+                                  [self selectedCategory]];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"New Exercise Confirmation"
+                                                                       message: alertMessage
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        void (^yesBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+            __weak TJBNewExerciseCreationVC *weakSelf = self;
+            [weakSelf addNewExerciseAndClearExerciseTextField];
+        };
+        
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle: @"Yes"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: yesBlock];
+        UIAlertAction *noAction = [UIAlertAction actionWithTitle: @"No"
+                                                           style: UIAlertActionStyleDefault
+                                                         handler: nil];
+        
+        [alert addAction: noAction];
+        [alert addAction: yesAction];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
     }
 }
 
-- (void)cancel
-{
-    [self.associateVC dismissViewControllerAnimated: YES
-                                         completion: nil];
+- (void)addNewExerciseAndClearExerciseTextField{
+    CoreDataController *coreDataController = [CoreDataController singleton];
+    TJBExercise *newExercise = [coreDataController exerciseForName: self.exerciseTextField.text];
+    newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
+    
+    [[CoreDataController singleton] saveContext];
+    
+    self.exerciseTextField.text = @"";
 }
 
+- (void)didPressDone{
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
+}
 
+#pragma  mark - Convenience
+
+- (NSString *)selectedCategory{
+    NSString *selectedCategory;
+    NSInteger categoryIndex = self.categorySegmentedControl.selectedSegmentIndex;
+    switch (categoryIndex){
+        case 0:
+            selectedCategory = @"Push";
+            break;
+        case 1:
+            selectedCategory = @"Pull";
+            break;
+        case 2:
+            selectedCategory = @"Legs";
+            break;
+        case 3:
+            selectedCategory = @"Other";
+            break;
+        default:
+            break;
+    }
+    return selectedCategory;
+}
 
 @end
 
