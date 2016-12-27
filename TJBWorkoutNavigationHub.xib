@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dl0-qJ-myg">
-                    <rect key="frame" x="50" y="100" width="275" height="40"/>
+                    <rect key="frame" x="8" y="571" width="359" height="40"/>
                     <color key="backgroundColor" red="0.31663491707119074" green="1" blue="0.99097504945429948" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="a75-rA-RHd"/>
@@ -36,7 +36,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vd-Pz-T1I">
-                    <rect key="frame" x="50" y="220" width="275" height="40"/>
+                    <rect key="frame" x="8" y="619" width="359" height="40"/>
                     <color key="backgroundColor" red="0.41313043090000001" green="0.99707198500000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <state key="normal" title="Circuit / Superset">
@@ -49,13 +49,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="50" id="3dQ-kH-wbN"/>
+                <constraint firstItem="dl0-qJ-myg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="4KW-gX-bxx"/>
+                <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="8" id="5kk-8i-FuJ"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="76L-CH-5BE"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="9ys-lP-Amq"/>
-                <constraint firstItem="dl0-qJ-myg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="Goa-uo-yPD"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="gmR-of-RWH"/>
-                <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="50" id="ph1-wa-Ic8"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="80" id="szu-bW-pmZ"/>
-                <constraint firstItem="dl0-qJ-myg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="50" id="xuy-EB-CDg"/>
+                <constraint firstAttribute="bottom" secondItem="5vd-Pz-T1I" secondAttribute="bottom" constant="8" id="bIa-TX-8au"/>
+                <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="8" id="c2o-L5-4Oh"/>
+                <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="8" id="eDm-bO-66p"/>
             </constraints>
         </view>
     </objects>

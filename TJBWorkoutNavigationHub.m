@@ -39,11 +39,12 @@
 
 - (void)viewAesthetics{
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.standaloneSetButton,
-                                                                    self.circuitSlashSupersetButton]];
+                                                                    self.circuitSlashSupersetButton]
+                                                     withOpacity: .9];
 }
 
 - (void)configureBackgroundView{
-    UIImage *image = [UIImage imageNamed: @"weightStack"];
+    UIImage *image = [UIImage imageNamed: @"girlOverheadKettlebell"];
     [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
                                                                    toRootView: self.view];
 }

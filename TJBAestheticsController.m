@@ -62,11 +62,12 @@
 
 #pragma mark - Action Buttons
 
-- (void)configureButtonsInArray:(NSArray<UIButton *> *)buttons{
+- (void)configureButtonsInArray:(NSArray<UIButton *> *)buttons withOpacity:(double)opacity{
     for (UIButton *button in buttons){
         CALayer *layer = button.layer;
         layer.masksToBounds = YES;
         layer.cornerRadius = [[self buttonCornerRadius] intValue];
+        layer.opacity = opacity;
         
         button.backgroundColor = [self buttonBackgroundColor];
         [button setTitleColor: [self buttonTextColor]

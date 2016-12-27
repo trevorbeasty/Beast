@@ -24,6 +24,6 @@
 - (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView;
 
 // action button configuration
-- (void)configureButtonsInArray:(NSArray<UIButton *> *)buttons;
+- (void)configureButtonsInArray:(NSArray<UIButton *> *)buttons withOpacity:(double)opacity;
 
 @end

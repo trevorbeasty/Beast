@@ -107,7 +107,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 }
 
 - (void)viewAesthetics{
-    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.addNewExerciseButton]];
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.addNewExerciseButton]
+                                                     withOpacity: 1.0];
 }
 
 - (void)configureTableView
