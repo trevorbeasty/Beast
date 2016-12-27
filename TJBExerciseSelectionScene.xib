@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
-                    <rect key="frame" x="0.0" y="50" width="375" height="567"/>
+                    <rect key="frame" x="0.0" y="50" width="375" height="561"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Ejm-bA-dJN"/>
@@ -40,11 +40,14 @@
                     </items>
                 </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIv-ZX-jxj">
-                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <rect key="frame" x="8" y="619" width="359" height="40"/>
+                    <color key="backgroundColor" red="0.0" green="0.67129021883010864" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="r33-AD-nOV"/>
+                        <constraint firstAttribute="height" constant="40" id="r33-AD-nOV"/>
                     </constraints>
-                    <state key="normal" title="Add New Exercise"/>
+                    <state key="normal" title="Add New Exercise">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
                     <connections>
                         <action selector="didPressAddNewExercise:" destination="-1" eventType="touchUpInside" id="gVw-qy-Cql"/>
                     </connections>
@@ -55,12 +58,12 @@
                 <constraint firstItem="zM0-Hh-pvf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8sr-Bu-RCM"/>
                 <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9qV-ui-oSl"/>
                 <constraint firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" id="Fab-ff-P71"/>
-                <constraint firstAttribute="bottom" secondItem="XIv-ZX-jxj" secondAttribute="bottom" id="LRi-LH-lgL"/>
-                <constraint firstItem="XIv-ZX-jxj" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" id="NXi-Uf-JIl"/>
+                <constraint firstAttribute="bottom" secondItem="XIv-ZX-jxj" secondAttribute="bottom" constant="8" id="LRi-LH-lgL"/>
+                <constraint firstItem="XIv-ZX-jxj" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" constant="8" id="NXi-Uf-JIl"/>
                 <constraint firstItem="zM0-Hh-pvf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="QHv-E8-Rgd"/>
-                <constraint firstAttribute="trailing" secondItem="XIv-ZX-jxj" secondAttribute="trailing" id="dP6-0N-V0l"/>
+                <constraint firstAttribute="trailing" secondItem="XIv-ZX-jxj" secondAttribute="trailing" constant="8" id="dP6-0N-V0l"/>
                 <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="zM0-Hh-pvf" secondAttribute="bottom" id="ggg-w0-wBM"/>
-                <constraint firstItem="XIv-ZX-jxj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="l1L-rx-BHT"/>
+                <constraint firstItem="XIv-ZX-jxj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="l1L-rx-BHT"/>
                 <constraint firstAttribute="trailing" secondItem="zM0-Hh-pvf" secondAttribute="trailing" id="mSJ-SM-604"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>

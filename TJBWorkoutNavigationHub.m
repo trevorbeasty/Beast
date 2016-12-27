@@ -33,37 +33,19 @@
 #pragma mark - Instantiation
 
 - (void)viewDidLoad{
-    [self configureViewAesthetics];
-    
-    // background view
-    UIImage *image = [UIImage imageNamed: @"weightStack"];
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
-                                                                   toRootView: self.view];
-    
+    [self configureBackgroundView];
     [self viewAesthetics];
 }
 
 - (void)viewAesthetics{
-    NSArray *views = @[self.standaloneSetButton,
-                       self.circuitSlashSupersetButton];
-    for (UIView *view in views){
-        view.layer.masksToBounds = YES;
-        view.layer.cornerRadius = 25;
-    }
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.standaloneSetButton,
+                                                                    self.circuitSlashSupersetButton]];
 }
 
-- (void)configureViewAesthetics{
-    double opacityValue = .9;
-    
-    NSArray *viewsToConfigure = @[self.standaloneSetButton,
-                                 self.circuitSlashSupersetButton];
-    
-    for (UIView *view in viewsToConfigure)
-    {
-        view.layer.opacity = opacityValue;
-        view.layer.masksToBounds = YES;
-        view.layer.cornerRadius = 4.0;
-    }
+- (void)configureBackgroundView{
+    UIImage *image = [UIImage imageNamed: @"weightStack"];
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
+                                                                   toRootView: self.view];
 }
 
 #pragma mark - Button Actions

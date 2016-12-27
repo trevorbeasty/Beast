@@ -12,6 +12,8 @@
 
 #import "TJBNewExerciseCreationVC.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -40,8 +42,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitle:(NSString *)title callbackBlock:(void (^)(TJBExercise *))block
-{
+- (instancetype)initWithTitle:(NSString *)title callbackBlock:(void (^)(TJBExercise *))block{
     self = [super init];
     
     self.navBarTitle = title;
@@ -52,13 +53,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - View Life Cycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [self configureTableView];
-    
     [self configureNavigationBar];
-    
     [self createFetchedResultsController];
+    [self viewAesthetics];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -105,6 +104,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
+}
+
+- (void)viewAesthetics{
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.addNewExerciseButton]];
 }
 
 - (void)configureTableView
