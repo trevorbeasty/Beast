@@ -98,6 +98,8 @@
     [navItem setLeftBarButtonItem: barButtonItem];
     self.navItem = navItem;
     [self.navigationBar setItems: @[navItem]];
+    
+    [TJBAestheticsController configureNavigationBar: self.navigationBar];
 }
 
 - (void)fetchCoreDataAndConfigureTableView{

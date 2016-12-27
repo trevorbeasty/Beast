@@ -105,6 +105,14 @@
     return [UIFont systemFontOfSize: 28.0];
 }
 
+#pragma mark - Navigation Bar
+
++ (void)configureNavigationBar:(UINavigationBar *)navBar{
+    navBar.backgroundColor = [UIColor darkGrayColor];
+    [navBar.titleTextAttributes setValue: [UIColor whiteColor]
+                                  forKey: NSForegroundColorAttributeName];
+}
+
 @end
 
 

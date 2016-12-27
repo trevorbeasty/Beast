@@ -21,7 +21,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (nonatomic, strong) UINavigationItem *navItem;
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
 
@@ -33,21 +32,38 @@
 
 - (void)viewDidLoad
 {
-    // navigation bar
-    
+    [self configureNavigationBar];
+    [self configureFetchedResultsController];
+    [self configureTableView];
+    [self addBackgroundImage];
+    [self viewAesthetics];
+}
+
+- (void)configureNavigationBar{
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Today's Sets"];
-    self.navItem = navItem;
-    
     [self.navigationBar setItems: @[navItem]];
-    
-    // NSFetchedResultsController
-    
+    [TJBAestheticsController configureNavigationBar: self.navigationBar];
+}
+
+- (void)addBackgroundImage{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
+}
+
+- (void)configureTableView{
+    UINib *nib = [UINib nibWithNibName: @"RealizedSetHistoryCell"
+                                bundle: nil];
+    [self.tableView registerNib: nib
+         forCellReuseIdentifier: @"setHistoryCell"];
+}
+
+- (void)configureFetchedResultsController{
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
     NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"endDate"
                                                                ascending: NO];
     
     // create NSDate objects defining the first and last seconds of today in order to effectively filter the retrieved 'realized set' objects
-    
     NSDate *todayBegin = [[NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian] startOfDayForDate: [NSDate date]];
     
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
@@ -76,28 +92,8 @@
     NSError *error = nil;
     if (![self.frc performFetch: &error])
     {
-        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
-    
-    NSLog(@"\ntotal sets fetched: %lu\n", [[frc fetchedObjects] count]);
-    
-    // table view
-    
-    UINib *nib = [UINib nibWithNibName: @"RealizedSetHistoryCell"
-                                bundle: nil];
-    
-    [self.tableView registerNib: nib
-         forCellReuseIdentifier: @"setHistoryCell"];
-    
-    [self addBackgroundImage];
-    [self viewAesthetics];
-}
-
-- (void)addBackgroundImage{
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
-                                                                   toRootView: self.view
-                                                                 imageOpacity: .35];
 }
 
 - (void)viewAesthetics{

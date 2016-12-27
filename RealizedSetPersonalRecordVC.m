@@ -47,6 +47,8 @@
     [self configureNavObjects];
     
     [self.navBar.topItem setTitle: @"Select an Exercise"];
+    
+    [TJBAestheticsController configureNavigationBar: self.navBar];
 
     // NSFetchedResultsController
     
