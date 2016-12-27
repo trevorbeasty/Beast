@@ -35,7 +35,7 @@
                     </connections>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tSH-8D-UsU">
-                    <rect key="frame" x="0.0" y="106" width="375" height="505"/>
+                    <rect key="frame" x="8" y="106" width="359" height="505"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="hOJ-8U-G5d"/>
@@ -79,12 +79,12 @@
                 <constraint firstItem="68G-R0-PBK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="3zH-s9-d8P"/>
                 <constraint firstAttribute="trailing" secondItem="guv-Qd-dcg" secondAttribute="trailing" id="6ci-D2-Qjb"/>
                 <constraint firstItem="sw3-k5-xCu" firstAttribute="top" secondItem="guv-Qd-dcg" secondAttribute="bottom" constant="8" id="AkJ-br-l0H"/>
+                <constraint firstAttribute="trailing" secondItem="tSH-8D-UsU" secondAttribute="trailing" constant="8" id="EJ2-66-NO1"/>
                 <constraint firstItem="guv-Qd-dcg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EvT-JL-Ezc"/>
-                <constraint firstItem="tSH-8D-UsU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="F3z-aq-o1n"/>
                 <constraint firstAttribute="trailing" secondItem="68G-R0-PBK" secondAttribute="trailing" constant="8" id="FVg-C0-vzV"/>
                 <constraint firstItem="sw3-k5-xCu" firstAttribute="leading" secondItem="sWv-BT-UWM" secondAttribute="trailing" constant="8" id="Nm1-n2-587"/>
                 <constraint firstItem="tSH-8D-UsU" firstAttribute="top" secondItem="sWv-BT-UWM" secondAttribute="bottom" constant="8" id="Zmj-ju-TGJ"/>
-                <constraint firstAttribute="trailing" secondItem="tSH-8D-UsU" secondAttribute="trailing" id="bdX-eb-06z"/>
+                <constraint firstItem="tSH-8D-UsU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="ffV-jE-eLC"/>
                 <constraint firstItem="guv-Qd-dcg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gmz-Ce-qcK"/>
                 <constraint firstItem="68G-R0-PBK" firstAttribute="top" secondItem="tSH-8D-UsU" secondAttribute="bottom" constant="8" id="jKQ-Pi-sXx"/>
                 <constraint firstAttribute="bottom" secondItem="68G-R0-PBK" secondAttribute="bottom" constant="8" id="kQV-3B-VQt"/>

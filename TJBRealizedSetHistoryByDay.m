@@ -25,13 +25,6 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
 
-// column labels
-
-@property (weak, nonatomic) IBOutlet UILabel *timeColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *exerciseColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
-
 @end
 
 @implementation TJBRealizedSetHistoryByDay
@@ -96,21 +89,6 @@
     
     [self.tableView registerNib: nib
          forCellReuseIdentifier: @"setHistoryCell"];
-    
-    // column labels
-    
-    self.timeColumnLabel.layer.cornerRadius = 8;
-    self.timeColumnLabel.layer.masksToBounds = YES;
-    
-    self.weightColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
-    self.weightColumnLabel.layer.borderWidth = 2.5;
-    self.weightColumnLabel.layer.cornerRadius = 8;
-    self.weightColumnLabel.layer.masksToBounds = YES;
-    
-    self.repsColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
-    self.repsColumnLabel.layer.borderWidth = 2.5;
-    self.repsColumnLabel.layer.cornerRadius = 8;
-    self.repsColumnLabel.layer.masksToBounds = YES;
     
     [self addBackgroundImage];
     [self viewAesthetics];

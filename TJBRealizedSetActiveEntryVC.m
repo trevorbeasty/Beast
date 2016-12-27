@@ -141,6 +141,10 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch: &error];
+    [self.exerciseTableView reloadData];
 }
 
 #pragma mark - <UITableViewDataSource>
@@ -197,10 +201,12 @@
 
 - (IBAction)didPressBeginNextSet:(id)sender
 {
+    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+    
     CancelBlock cancelBlock = ^{
-        [self removeWhiteoutView];
-        [self setRealizedSetParametersToNil];
-        [self dismissViewControllerAnimated: NO
+        [weakSelf removeWhiteoutView];
+        [weakSelf setRealizedSetParametersToNil];
+        [weakSelf dismissViewControllerAnimated: NO
                                  completion: nil];
     };
     
@@ -236,10 +242,10 @@
     else if(!self.timeDelay)
     {
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
-            self.timeDelay = number;
-            [self dismissViewControllerAnimated: NO
+            weakSelf.timeDelay = number;
+            [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
-            [self didPressBeginNextSet: nil];
+            [weakSelf didPressBeginNextSet: nil];
         };
         
         
@@ -257,9 +263,9 @@
         void(^block)(int) = ^(int timeInSeconds){
             _setCompletedButtonPressed = YES;
             _timerAtSetCompletion = timeInSeconds;
-            [self dismissViewControllerAnimated: NO
+            [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
-            [self didPressBeginNextSet: nil];
+            [weakSelf didPressBeginNextSet: nil];
         };
         
         TJBInSetVC *vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.timeDelay intValue]
@@ -273,10 +279,10 @@
     else if (!self.timeLag)
     {
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
-            self.timeLag = number;
-            [self dismissViewControllerAnimated: NO
+            weakSelf.timeLag = number;
+            [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
-            [self didPressBeginNextSet: nil];
+            [weakSelf didPressBeginNextSet: nil];
         };
         
         [self presentNumberSelectionSceneWithNumberType: RestType
@@ -291,10 +297,10 @@
     else if (!self.weight)
     {
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
-            self.weight = number;
-            [self dismissViewControllerAnimated: NO
+            weakSelf.weight = number;
+            [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
-            [self didPressBeginNextSet: nil];
+            [weakSelf didPressBeginNextSet: nil];
         };
         
         
@@ -310,10 +316,10 @@
     else if (!self.reps)
     {
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
-            self.reps = number;
-            [self dismissViewControllerAnimated: NO
+            weakSelf.reps = number;
+            [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
-            [self didPressBeginNextSet: nil];
+            [weakSelf didPressBeginNextSet: nil];
         };
         
         

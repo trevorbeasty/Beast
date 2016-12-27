@@ -26,10 +26,6 @@
 
 @property (nonatomic, strong) TJBExercise *activeExercise;
 
-@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dateColumnLabel;
-
-
 @end
 
 @implementation RealizedSetPersonalRecordVC
@@ -55,17 +51,6 @@
     // NSFetchedResultsController
     
     [self createFRCIfNecessary];
-    
-    // column labels
-    
-    self.dateColumnLabel.layer.cornerRadius = 8;
-    self.dateColumnLabel.layer.masksToBounds = YES;
-    
-    self.weightColumnLabel.layer.borderColor = [[UIColor greenColor] CGColor];
-    self.weightColumnLabel.layer.borderWidth = 2.5;
-    self.weightColumnLabel.layer.cornerRadius = 8;
-    self.weightColumnLabel.layer.masksToBounds = YES;
-    
     [self addBackgroundImage];
     [self viewAesthetics];
 }
