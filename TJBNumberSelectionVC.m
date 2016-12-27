@@ -12,6 +12,8 @@
 
 #import "TJBStopwatch.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBNumberSelectionVC ()
 
 // for cell color control in response to selection
@@ -30,11 +32,6 @@
 #pragma mark - Initialization
 
 - (void)viewDidLoad{
-    // set the collection view's background image
-    UIImage *image = [UIImage imageNamed: @"chick"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
-    self.collectionView.backgroundView = imageView;
-    
     // add cancel bar button item
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
@@ -64,6 +61,15 @@
     pinchGR.delaysTouchesEnded = NO;
     
     [self.collectionView addGestureRecognizer: pinchGR];
+    
+    [self addBackgroundView];
+}
+
+- (void)addBackgroundView{
+    UIImage *image = [UIImage imageNamed: @"pileOfPlates"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+    imageView.layer.opacity = .9;
+    self.collectionView.backgroundView = imageView;
 }
 
 #pragma mark - Setters
@@ -85,23 +91,20 @@
 
 #pragma mark <UICollectionViewDataSource>
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
     return 1;
 }
 
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     return 500;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"basicCell"
                                                                            forIndexPath: indexPath];
     
-    cell.layer.opacity = .5;
+  
     
 
     
@@ -116,8 +119,16 @@
         cell.numberLabel.text = [cellNumber stringValue];
     }
     
-    cell.numberLabel.layer.cornerRadius = 4;
     cell.numberLabel.layer.masksToBounds = YES;
+    cell.numberLabel.layer.cornerRadius = 16;
+    cell.backgroundColor = [UIColor clearColor];
+    
+    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
+    cell.numberLabel.backgroundColor = [aesthetics buttonBackgroundColor];
+    [cell.numberLabel setTextColor: [aesthetics buttonTextColor]];
+    
+    cell.layer.opacity = .75;
+    
     
     return cell;
 }
@@ -126,13 +137,19 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // if there is a previously selected cell, change its color back to light gray
-    if (self.lastSelectedCell)
-        self.lastSelectedCell.layer.opacity = .3;
+    // if there is a previously selected cell, change its attributes accordingly
+    if (self.lastSelectedCell){
+        self.lastSelectedCell.layer.opacity = .75;
+        self.lastSelectedCell.backgroundColor = [UIColor clearColor];
+    }
     
-    // change the color of the newly selected cell
+    // change the attributes of the newly selected cell
     TJBNumberSelectionCell *selectedCell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
+    selectedCell.layer.masksToBounds = YES;
+    selectedCell.layer.cornerRadius = 16;
     selectedCell.layer.opacity = 1;
+    selectedCell.backgroundColor = [UIColor yellowColor];
+    
     
     // update the lastSelectedCell property to point to the newly selected cell
     self.lastSelectedCell = selectedCell;
