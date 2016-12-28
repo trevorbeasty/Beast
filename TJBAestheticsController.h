@@ -13,12 +13,16 @@
 
 // action buttons
 // buttons will have a height of 40; must be set in interface builder
-@property (nonatomic, strong) UIColor *buttonBackgroundColor;
-@property (nonatomic, strong) UIColor *buttonTextColor;
+@property (nonatomic, strong, readonly) UIColor *buttonBackgroundColor;
+@property (nonatomic, strong, readonly) UIColor *buttonTextColor;
 
-@property (nonatomic, strong) NSNumber *buttonCornerRadius;
+@property (nonatomic, strong, readonly) NSNumber *buttonCornerRadius;
 
-@property (nonatomic, strong) UIFont *buttonFont;
+@property (nonatomic, strong, readonly) UIFont *buttonFont;
+
+// label type 1
+@property (nonatomic, strong, readonly) UIColor *labelType1Color;
+
 + (instancetype)singleton;
 
 // background images

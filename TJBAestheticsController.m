@@ -105,6 +105,15 @@
     return [UIFont systemFontOfSize: 28.0];
 }
 
+#pragma mark - Labels
+
+- (UIColor *)labelType1Color{
+    return [UIColor colorWithRed: 1.0
+                           green: 229.0 / 255.0
+                            blue: 188.0 / 255.0
+                           alpha: 1.0];
+}
+
 #pragma mark - Navigation Bar
 
 + (void)configureNavigationBar:(UINavigationBar *)navBar{
