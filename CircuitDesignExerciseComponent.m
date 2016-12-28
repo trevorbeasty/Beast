@@ -17,6 +17,19 @@
 
 
 @interface CircuitDesignExerciseComponent ()
+{
+    // core
+    BOOL _supportsUserInput;
+}
+// core
+@property (nonatomic, strong) NSNumber *numberOfRounds;
+@property (nonatomic, strong) NSNumber *targetingWeight;
+@property (nonatomic, strong) NSNumber *targetingReps;
+@property (nonatomic, strong) NSNumber *targetingRest;
+@property (nonatomic, strong) NSNumber *targetsVaryByRound;
+
+@property (nonatomic, strong) NSNumber *chainNumber;
+@property (nonatomic, strong) NSString *exerciseName;
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
@@ -43,7 +56,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController supportsUserInput:(BOOL)supportsUserInput
 {
     self = [super init];
     
@@ -55,6 +68,7 @@
     self.chainNumber = chainNumber;
     self.exerciseName = exerciseName;
     self.masterController = masterController;
+    _supportsUserInput = supportsUserInput;
     
     return self;
 }
@@ -65,6 +79,10 @@
 
 - (void)viewDidLoad
 {
+//    if (_supportsUserInput == NO){
+//        self.selectedExerciseButton.enabled = NO;
+//    }
+    
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
     // labels
@@ -95,7 +113,8 @@
                                                                                    targetsVaryByRound: self.targetsVaryByRound
                                                                                           roundNumber: [NSNumber numberWithInt: i + 1]
                                                                                      masterController: self.masterController
-                                                                                          chainNumber: self.chainNumber];
+                                                                                          chainNumber: self.chainNumber
+                                                                                    supportsUserInput: _supportsUserInput];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -163,8 +182,10 @@
 
 - (IBAction)didPressSelectExercise:(id)sender
 {
-    [self.masterController didPressExerciseButton: self.selectedExerciseButton
+    if (_supportsUserInput == YES){
+        [self.masterController didPressExerciseButton: self.selectedExerciseButton
                                           inChain: self.chainNumber];
+    }
 }
 
 @end

@@ -12,6 +12,7 @@
 
 #import "TJBCircuitDesignVC.h"
 #import "TJBActiveCircuitGuidance.h"
+#import "TJBCircuitTemplateGeneratorVC.h"
 
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
@@ -102,8 +103,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-    TJBActiveCircuitGuidance *vc = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
-    [self presentViewController: vc
+    TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
+    TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
+                                                                                    supportsUserInput: NO];
+    
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    [tabBarController setViewControllers: @[vc1,
+                                            vc2]];
+    
+    [self presentViewController: tabBarController
                        animated: YES
                      completion: nil];
 }

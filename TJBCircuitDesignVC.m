@@ -105,7 +105,8 @@
                                                                                     targetsVaryByRound: [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex]
                                                                                      numberOfExercises: [NSNumber numberWithDouble: _numberOfExercises]
                                                                                         numberOfRounds: [NSNumber numberWithDouble: _numberOfRounds]
-                                                                                                  name: self.nameTextField.text];
+                                                                                                  name: self.nameTextField.text
+                                                                                     supportsUserInput: YES];
     
     [self presentViewController: vc
                        animated: YES

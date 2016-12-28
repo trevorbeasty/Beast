@@ -31,15 +31,31 @@
 
 #import "TJBActiveCircuitGuidance.h"
 
-@interface TJBCircuitTemplateGeneratorVC ()
+//#import "TJBWeightArray+CoreDataProperties.h"
 
+@interface TJBCircuitTemplateGeneratorVC ()
+{
+    // core
+    BOOL _supportsUserInput;
+}
+// core
+@property (nonatomic, strong) NSNumber *targetingWeight;
+@property (nonatomic, strong) NSNumber *targetingReps;
+@property (nonatomic, strong) NSNumber *targetingRest;
+@property (nonatomic, strong) NSNumber *targetsVaryByRound;
+@property (nonatomic, strong) NSNumber *numberOfExercises;
+@property (nonatomic, strong) NSNumber *numberOfRounds;
+@property (nonatomic, strong) NSString *name;
+
+// view
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-
 @property (nonatomic, strong) UINavigationItem *navItem;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+// IBAction
 - (IBAction)didPressLaunchCircuit:(id)sender;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *launchCircuitButton;
 
@@ -61,7 +77,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name{
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name supportsUserInput:(BOOL)supportsUserInput{
     self = [super init];
     
     self.targetingWeight = targetingWeight;
@@ -71,6 +87,24 @@ static NSString * const defaultValue = @"unselected";
     self.numberOfExercises = numberOfExercises;
     self.numberOfRounds = numberOfRounds;
     self.name = name;
+    
+    _supportsUserInput = supportsUserInput;
+    
+    return self;
+}
+
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput{
+    self = [super init];
+    
+    self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
+    self.targetingReps = [NSNumber numberWithBool: chainTemplate.targetingReps];
+    self.targetingRest = [NSNumber numberWithBool: chainTemplate.targetingRestTime];
+    self.targetsVaryByRound = [NSNumber numberWithBool: chainTemplate.targetsVaryByRound];
+    self.numberOfExercises = [NSNumber numberWithUnsignedLong: chainTemplate.exercises.count];
+    self.numberOfRounds = [NSNumber numberWithUnsignedLong: chainTemplate.weightArrays[0].numbers.count];
+    self.name = chainTemplate.name;
+    
+    _supportsUserInput = supportsUserInput;
     
     return self;
 }
@@ -155,7 +189,8 @@ static NSString * const defaultValue = @"unselected";
                                                                                          targetsVaryByRound: self.targetsVaryByRound
                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
                                                                                                exerciseName: @"placeholder"
-                                                                                           masterController: self];
+                                                                                           masterController: self
+                                                                                          supportsUserInput: _supportsUserInput];
         ;
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -380,8 +415,15 @@ static NSString * const defaultValue = @"unselected";
     {
         [self createAndSaveChainTemplate];
         
-        TJBActiveCircuitGuidance *vc = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: self.chainTemplate];
-        [self presentViewController: vc
+        TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: self.chainTemplate];
+        TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: self.chainTemplate
+                                                                                        supportsUserInput: NO];
+        
+        UITabBarController *tabBarController = [[UITabBarController alloc] init];
+        [tabBarController setViewControllers: @[vc1,
+                                                vc2]];
+        
+        [self presentViewController: tabBarController
                            animated: YES
                          completion: nil];
     }
