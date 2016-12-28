@@ -35,7 +35,7 @@
                     </items>
                 </navigationBar>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kqW-hM-k3M">
-                    <rect key="frame" x="8" y="106" width="359" height="30"/>
+                    <rect key="frame" x="8" y="96" width="359" height="30"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
@@ -44,28 +44,25 @@
                     </connections>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoZ-VM-c69">
-                    <rect key="frame" x="138" y="144" width="100" height="40"/>
+                    <rect key="frame" x="138" y="134" width="100" height="30"/>
                     <color key="backgroundColor" red="1" green="0.89196020364761353" blue="0.71738725900650024" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="o0j-f3-RuF"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cki-Zp-SfL">
-                    <rect key="frame" x="137.5" y="58" width="100" height="40"/>
+                    <rect key="frame" x="137.5" y="58" width="100" height="30"/>
                     <color key="backgroundColor" red="1" green="0.89196020364761353" blue="0.71738725900650024" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="100" id="iBN-Vp-0HW"/>
-                        <constraint firstAttribute="height" constant="40" id="oNT-bd-jfk"/>
+                        <constraint firstAttribute="height" constant="30" id="oNT-bd-jfk"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fDg-FP-nuu">
-                    <rect key="frame" x="8" y="192" width="359" height="29"/>
+                    <rect key="frame" x="8" y="172" width="359" height="29"/>
                     <segments>
                         <segment title="Push"/>
                         <segment title="Pull"/>
@@ -84,6 +81,7 @@
                 <constraint firstItem="kqW-hM-k3M" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Mzb-TI-jUS"/>
                 <constraint firstAttribute="trailing" secondItem="kqW-hM-k3M" secondAttribute="trailing" constant="8" id="R2S-H7-cyf"/>
                 <constraint firstAttribute="trailing" secondItem="fDg-FP-nuu" secondAttribute="trailing" constant="8" id="ROw-e4-kDe"/>
+                <constraint firstItem="zoZ-VM-c69" firstAttribute="height" secondItem="cki-Zp-SfL" secondAttribute="height" id="S0p-eZ-InG"/>
                 <constraint firstItem="zoZ-VM-c69" firstAttribute="width" secondItem="cki-Zp-SfL" secondAttribute="width" id="Tle-et-MTq"/>
                 <constraint firstItem="kqW-hM-k3M" firstAttribute="top" secondItem="cki-Zp-SfL" secondAttribute="bottom" constant="8" id="ghC-AM-ceo"/>
                 <constraint firstItem="fDg-FP-nuu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="jCa-Xu-vWE"/>
