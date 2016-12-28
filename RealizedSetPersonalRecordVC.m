@@ -18,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *columnLabelContainer;
 
 @property (nonatomic, strong) UINavigationItem *navItem;
 
@@ -65,6 +66,9 @@
 
 - (void)viewAesthetics{
     self.tableView.layer.opacity = .85;
+    
+    [TJBAestheticsController configureViewsWithType1Format: @[self.columnLabelContainer]
+                                               withOpacity: .85];
 }
 
 - (void)refineFetchedResults
@@ -238,16 +242,6 @@
     NSDate *realizedSetStartDate = [realizedSet.endDate dateByAddingTimeInterval: realizedSet.lengthInSeconds * -1];
     
     cell.dateLabel.text = [dateFormatter stringFromDate: realizedSetStartDate];
-    
-    // aesthetics
-    
-    cell.dateLabel.layer.cornerRadius = 8;
-    cell.dateLabel.layer.masksToBounds = YES;
-    
-    cell.weightLabel.layer.borderColor = [[UIColor greenColor] CGColor];
-    cell.weightLabel.layer.borderWidth = 2.5;
-    cell.weightLabel.layer.cornerRadius = 8;
-    cell.weightLabel.layer.masksToBounds = YES;
     
     return cell;
 }

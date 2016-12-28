@@ -184,6 +184,15 @@
     [self.personalRecordVC didSelectExercise: exercise];
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 40)];
+    label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
+    label.text = [self tableView: tableView
+         titleForHeaderInSection: section];
+    label.textAlignment = NSTextAlignmentCenter;
+    return label;
+}
+
 #pragma mark - Button Actions
 
 - (void)didPressDone
