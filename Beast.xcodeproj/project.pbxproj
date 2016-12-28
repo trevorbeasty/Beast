@@ -164,6 +164,7 @@
 				0B843C871DFADBED0093F057 /* TJBNewExerciseCreationVC.h */,
 				0B843C881DFADBED0093F057 /* TJBNewExerciseCreationVC.m */,
 				0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */,
+				0B843CD01E0C98230093F057 /* In Set Scene */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -298,7 +299,6 @@
 			isa = PBXGroup;
 			children = (
 				0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */,
-				0B843CD01E0C98230093F057 /* In Set Scene */,
 				0B843CCF1E0C96E20093F057 /* Personal Record Scene */,
 				0B843CCE1E0C96CA0093F057 /* History by Day Scene */,
 				0B843CCD1E0C969F0093F057 /* Exercise Creation Scene */,

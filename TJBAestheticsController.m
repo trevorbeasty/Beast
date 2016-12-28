@@ -113,6 +113,16 @@
                             blue: 188.0 / 255.0
                            alpha: 1.0];
 }
++ (void)configureViewsWithType1Format:(NSArray<UIView *> *)views withOpacity:(double)opacity{
+    for(UIView *view in views){
+        view.backgroundColor = [[self singleton] labelType1Color];
+        
+        CALayer *layer = view.layer;
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 8;
+        layer.opacity = opacity;
+    }
+}
 
 #pragma mark - Navigation Bar
 

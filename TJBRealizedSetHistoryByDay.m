@@ -102,11 +102,8 @@
 - (void)viewAesthetics{
     self.tableView.layer.opacity = .85;
     
-    self.columnLabelSubview.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
-    CALayer *layer = self.columnLabelSubview.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
-    layer.opacity = .85;
+    [TJBAestheticsController configureViewsWithType1Format: @[self.columnLabelSubview]
+                                               withOpacity: .85];
 }
 
 - (void)viewWillAppear:(BOOL)animated

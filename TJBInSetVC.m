@@ -33,8 +33,7 @@
 
 #pragma mark - Instantiation
 
--(void)viewDidLoad
-{
+-(void)viewDidLoad{
     // stopwatch
     
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
@@ -58,12 +57,11 @@
     self.timerLabel.layer.cornerRadius = 4;
     self.timerLabel.layer.opacity = .85;
     
-    self.setCompletedButton.layer.masksToBounds = YES;
-    self.setCompletedButton.layer.cornerRadius = 20;
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.setCompletedButton]
+                                                     withOpacity: 85];
 }
 
-- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block exerciseName:(NSString *)exerciseName
-{
+- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block exerciseName:(NSString *)exerciseName{
     self = [super init];
     
     _timeDelay = timeDelay * -1;

@@ -70,13 +70,9 @@
     }
 
     // labels
-    NSArray *labeLayers = @[self.exerciseLabel.layer,
-                        self.categoryLabel.layer];
-    for (CALayer *layer in labeLayers){
-        layer.masksToBounds = YES;
-        layer.cornerRadius = 10;
-        
-    }
+    [TJBAestheticsController configureViewsWithType1Format: @[self.exerciseLabel,
+                                                              self.categoryLabel]
+                                                withOpacity: .85];
 }
 
 - (void)configureBackgroundImage{
