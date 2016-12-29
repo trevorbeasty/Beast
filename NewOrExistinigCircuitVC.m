@@ -14,6 +14,8 @@
 #import "TJBActiveCircuitGuidance.h"
 #import "TJBCircuitTemplateGeneratorVC.h"
 
+#import "TJBAestheticsController.h"
+
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
@@ -34,6 +36,21 @@
 - (void)viewDidLoad{
     [self configureNavigationBar];
     [self fetchCoreDataAndConfigureTableView];
+    [self addBackground];
+    [self viewAesthetics];
+}
+
+- (void)viewAesthetics{
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.createNewChainButton]
+                                                     withOpacity: .85];
+    
+    self.tableView.layer.opacity = .85;
+}
+
+- (void)addBackground{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -44,7 +61,7 @@
 }
 
 - (void)configureNavigationBar{
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Chain Selectin"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Chain Selection"];
     UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                    style: UIBarButtonItemStyleDone
                                                                   target: self

@@ -22,16 +22,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tap-We-N9B">
-                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="NV2-Y2-XWX"/>
-                    </constraints>
-                    <state key="normal" title="Create New Chain"/>
-                    <connections>
-                        <action selector="didPressCreateNewChain:" destination="-1" eventType="touchUpInside" id="HGv-sq-C3s"/>
-                    </connections>
-                </button>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qe7-Np-Lhw">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                     <constraints>
@@ -42,27 +32,38 @@
                     </items>
                 </navigationBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                    <rect key="frame" x="0.0" y="50" width="375" height="567"/>
+                    <rect key="frame" x="8" y="106" width="359" height="553"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
                         <outlet property="delegate" destination="-1" id="oVB-Jp-xB6"/>
                     </connections>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tap-We-N9B">
+                    <rect key="frame" x="8" y="58" width="359" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="6eH-Bd-V60"/>
+                    </constraints>
+                    <state key="normal" title="Create New Chain"/>
+                    <connections>
+                        <action selector="didPressCreateNewChain:" destination="-1" eventType="touchUpInside" id="HGv-sq-C3s"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Qe7-Np-Lhw" secondAttribute="trailing" id="1KY-zU-Eda"/>
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1u0-fT-gRq"/>
-                <constraint firstAttribute="trailing" secondItem="Tap-We-N9B" secondAttribute="trailing" id="7Mc-Se-naT"/>
-                <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="C5h-p0-fkt"/>
+                <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" constant="8" id="EgV-fD-Qc4"/>
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OoE-xT-0w5"/>
-                <constraint firstItem="Tap-We-N9B" firstAttribute="top" secondItem="YLP-je-fi9" secondAttribute="bottom" id="cLg-Nk-lEb"/>
-                <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" id="i4q-WS-hRR"/>
-                <constraint firstAttribute="bottom" secondItem="Tap-We-N9B" secondAttribute="bottom" id="sw9-vE-q9J"/>
-                <constraint firstItem="Tap-We-N9B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uf0-YM-Uag"/>
-                <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" id="xcq-D5-iBb"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="Tap-We-N9B" secondAttribute="bottom" constant="8" id="Qxa-LZ-RJM"/>
+                <constraint firstAttribute="trailing" secondItem="Tap-We-N9B" secondAttribute="trailing" constant="8" id="TTA-0K-vce"/>
+                <constraint firstAttribute="bottom" secondItem="YLP-je-fi9" secondAttribute="bottom" constant="8" id="XhD-YP-Whe"/>
+                <constraint firstItem="Tap-We-N9B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="g3Y-vJ-QVm"/>
+                <constraint firstItem="Tap-We-N9B" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" constant="8" id="jny-Ov-dZE"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="oHD-mb-IQv"/>
             </constraints>
+            <point key="canvasLocation" x="35.5" y="53.5"/>
         </view>
     </objects>
 </document>

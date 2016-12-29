@@ -100,9 +100,10 @@ static NSString * const defaultValue = @"default value";
     NSString *title = [NSString stringWithFormat: @"%@",
                        self.chainTemplate.name];
     [navItem setTitle: title];
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-                                                                                     target: self
-                                                                                     action: @selector(didPressCancel)];
+    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle: @"Quit"
+                                                                        style: UIBarButtonItemStyleDone
+                                                                       target: self
+                                                                       action: @selector(quit)];
     [navItem setLeftBarButtonItem: cancelBarButton];
     [self.navBar setItems: @[navItem]];
     
@@ -421,7 +422,7 @@ static NSString * const defaultValue = @"default value";
                                      exercise.name];
 }
 
-- (void)didPressCancel{
+- (void)quit{
     [self dismissViewControllerAnimated: NO
                              completion: nil];
 }
