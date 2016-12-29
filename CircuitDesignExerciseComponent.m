@@ -31,6 +31,8 @@
 @property (nonatomic, strong) NSNumber *chainNumber;
 @property (nonatomic, strong) NSString *exerciseName;
 
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -56,7 +58,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController supportsUserInput:(BOOL)supportsUserInput
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController supportsUserInput:(BOOL)supportsUserInput chainTemplate:(id)chainTemplate
 {
     self = [super init];
     
@@ -69,6 +71,7 @@
     self.exerciseName = exerciseName;
     self.masterController = masterController;
     _supportsUserInput = supportsUserInput;
+    self.chainTemplate = chainTemplate;
     
     return self;
 }
@@ -79,9 +82,10 @@
 
 - (void)viewDidLoad
 {
-//    if (_supportsUserInput == NO){
-//        self.selectedExerciseButton.enabled = NO;
-//    }
+    if (_supportsUserInput == NO){
+        [self.selectedExerciseButton setTitle: self.exerciseName
+                                     forState: UIControlStateNormal];
+    }
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
@@ -114,7 +118,8 @@
                                                                                           roundNumber: [NSNumber numberWithInt: i + 1]
                                                                                      masterController: self.masterController
                                                                                           chainNumber: self.chainNumber
-                                                                                    supportsUserInput: _supportsUserInput];
+                                                                                    supportsUserInput: _supportsUserInput
+                                                                                        chainTemplate: self.chainTemplate];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

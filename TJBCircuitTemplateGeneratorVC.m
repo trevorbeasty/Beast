@@ -104,6 +104,8 @@ static NSString * const defaultValue = @"unselected";
     self.numberOfRounds = [NSNumber numberWithUnsignedLong: chainTemplate.weightArrays[0].numbers.count];
     self.name = chainTemplate.name;
     
+    self.chainTemplate = chainTemplate;
+    
     _supportsUserInput = supportsUserInput;
     
     return self;
@@ -182,15 +184,20 @@ static NSString * const defaultValue = @"unselected";
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++)
     {
+        NSString *exerciseName = @"placeholder";
+        if (_supportsUserInput == NO){
+            exerciseName = self.chainTemplate.exercises[i].name;
+        }
         CircuitDesignExerciseComponent *vc = [[CircuitDesignExerciseComponent alloc] initWithNumberOfRounds: self.numberOfRounds
                                                                                             targetingWeight: self.targetingWeight
                                                                                               targetingReps: self.targetingReps
                                                                                               targetingRest: self.targetingRest
                                                                                          targetsVaryByRound: self.targetsVaryByRound
                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
-                                                                                               exerciseName: @"placeholder"
+                                                                                               exerciseName: exerciseName
                                                                                            masterController: self
-                                                                                          supportsUserInput: _supportsUserInput];
+                                                                                          supportsUserInput: _supportsUserInput
+                                                                                              chainTemplate: self.chainTemplate];
         ;
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -251,14 +258,7 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)createNavigationItem{
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
-    UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
-                                                                                target: self
-                                                                                action: @selector(didPressX)];
-    [navItem setLeftBarButtonItem: xBarButton];
-    UIBarButtonItem *goBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
-                                                                                 target: self
-                                                                                 action: @selector(didPressAdd)];
-    [navItem setRightBarButtonItem: goBarButton];
+    
     NSString *word;
     int number = [self.numberOfRounds intValue];
     if (number == 1)
@@ -274,6 +274,18 @@ static NSString * const defaultValue = @"unselected";
                        [self.numberOfRounds intValue],
                        word];
     [navItem setTitle: title];
+    
+    if (_supportsUserInput == YES){
+    UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
+                                                                                target: self
+                                                                                action: @selector(didPressX)];
+    [navItem setLeftBarButtonItem: xBarButton];
+    UIBarButtonItem *goBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
+                                                                                 target: self
+                                                                                 action: @selector(didPressAdd)];
+    [navItem setRightBarButtonItem: goBarButton];
+    }
+    
     [self.navBar setItems: @[navItem]];
 }
 

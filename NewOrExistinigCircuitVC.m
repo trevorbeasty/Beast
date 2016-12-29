@@ -107,7 +107,11 @@
     TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                     supportsUserInput: NO];
     
+    [vc1.tabBarItem setTitle: @"Active"];
+    [vc2.tabBarItem setTitle: @"Targets"];
+    
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController.tabBar.translucent = NO;
     [tabBarController setViewControllers: @[vc1,
                                             vc2]];
     
