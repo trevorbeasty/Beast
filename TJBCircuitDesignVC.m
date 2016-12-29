@@ -10,6 +10,8 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBCircuitDesignVC ()
 
 {
@@ -25,15 +27,22 @@
 @property (weak, nonatomic) IBOutlet UIStepper *numberOfExercisesStepper;
 @property (weak, nonatomic) IBOutlet UIStepper *numberOfRoundsStepper;
 
-@property (weak, nonatomic) IBOutlet UILabel *numberOfExercisesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *numberOfRoundsLabel;
-
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, strong) UINavigationItem *navItem;
 
 - (IBAction)didPressLaunchTemplate:(id)sender;
+
+// labels
+@property (weak, nonatomic) IBOutlet UIButton *launchTemplateButton;
+@property (weak, nonatomic) IBOutlet UILabel *circuitNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfExercisesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfRoundsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetingWeightLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetingRepsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetingRestLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetsVaryByRoundLabel;
 
 @end
 
@@ -77,7 +86,17 @@
     layer.masksToBounds = YES;
     layer.cornerRadius = 8;
     layer.borderWidth = 1;
-    layer.borderColor = [[UIColor blueColor] CGColor];
+    layer.borderColor = [[UIColor darkGrayColor] CGColor];
+    
+    NSArray *views = @[self.circuitNameLabel,
+                       self.numberOfExercisesLabel,
+                       self.numberOfRoundsLabel,
+                       self.targetingWeightLabel,
+                       self.targetingRepsLabel,
+                       self.targetingRestLabel,
+                       self.targetsVaryByRoundLabel];
+    [TJBAestheticsController configureViewsWithType1Format: views
+                                               withOpacity: .85];
 }
 
 #pragma mark - Stepper Methods
