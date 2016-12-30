@@ -14,6 +14,7 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
+#import "TJBAestheticsController.h"
 
 
 @interface CircuitDesignExerciseComponent ()
@@ -80,8 +81,34 @@
 
 #pragma mark - Views
 
+- (void)viewAesthetics{
+    NSArray *labelViews = @[self.titleLabel,
+                            self.roundColumnLabel,
+                            self.weightColumnLabel,
+                            self.repsColumnLabel,
+                            self.restColumnLabel];
+    for (UIView *view in labelViews){
+        view.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
+        view.layer.opacity = .85;
+    }
+    CALayer *titleLayer = self.titleLabel.layer;
+    titleLayer.masksToBounds = YES;
+    titleLayer.cornerRadius = 8;
+    
+    self.selectedExerciseButton.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
+    UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
+    [self.selectedExerciseButton setTitleColor: color
+                                      forState: UIControlStateNormal];
+    CALayer *layer = self.selectedExerciseButton .layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+    layer.opacity = .85;
+}
+
 - (void)viewDidLoad
 {
+    [self viewAesthetics];
+    
     if (_supportsUserInput == NO){
         [self.selectedExerciseButton setTitle: self.exerciseName
                                      forState: UIControlStateNormal];
@@ -91,7 +118,7 @@
     
     // labels
     
-    self.titleLabel.text = [NSString stringWithFormat: @"Circuit Element %d",
+    self.titleLabel.text = [NSString stringWithFormat: @"Exercise #%d",
                             [self.chainNumber intValue]];
     
     // row components

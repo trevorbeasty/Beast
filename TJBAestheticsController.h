@@ -36,7 +36,6 @@
 + (void)configureNavigationBar:(UINavigationBar *)navBar;
 
 // labels
-
 + (void)configureViewsWithType1Format:(NSArray<UIView *> *)views withOpacity:(double)opacity;
 
 @end

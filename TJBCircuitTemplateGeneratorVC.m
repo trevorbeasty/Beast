@@ -157,7 +157,7 @@ static NSString * const defaultValue = @"unselected";
 - (void)createSubviewsAndLayoutConstraints{
     // scroll view
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenBounds.size.width;
+    CGFloat screenWidth = screenBounds.size.width - 16.0;
     
     CGFloat rowHeight = 30;
     CGFloat componentToComponentSpacing = 20;
