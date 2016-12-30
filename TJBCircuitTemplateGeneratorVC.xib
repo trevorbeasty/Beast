@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitTemplateGeneratorVC">
             <connections>
-                <outlet property="launchCircuitButton" destination="Xd0-4t-X83" id="h6P-Ku-1Ez"/>
+                <outlet property="launchCircuitButton" destination="UBC-ld-mav" id="U3q-u6-0Du"/>
                 <outlet property="navBar" destination="4e9-iU-UYB" id="Y9v-n6-R7r"/>
                 <outlet property="scrollView" destination="79C-tM-Age" id="aEe-IB-fF8"/>
                 <outlet property="view" destination="iN0-l3-epB" id="oo7-TZ-yH4"/>
@@ -32,12 +32,12 @@
                     </items>
                 </navigationBar>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="79C-tM-Age">
-                    <rect key="frame" x="0.0" y="50" width="375" height="567"/>
+                    <rect key="frame" x="8" y="106" width="359" height="553"/>
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UBC-ld-mav">
-                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <rect key="frame" x="8" y="58" width="359" height="40"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="UcP-fw-5sM"/>
+                        <constraint firstAttribute="height" constant="40" id="gde-T6-wtL"/>
                     </constraints>
                     <state key="normal" title="Launch Circuit"/>
                     <connections>
@@ -47,16 +47,16 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="UBC-ld-mav" firstAttribute="top" secondItem="79C-tM-Age" secondAttribute="bottom" id="D8A-e7-Hpy"/>
-                <constraint firstItem="79C-tM-Age" firstAttribute="top" secondItem="4e9-iU-UYB" secondAttribute="bottom" id="G66-IH-8sd"/>
-                <constraint firstAttribute="trailing" secondItem="UBC-ld-mav" secondAttribute="trailing" id="WKb-h9-Qjx"/>
-                <constraint firstAttribute="bottom" secondItem="UBC-ld-mav" secondAttribute="bottom" id="Xd0-4t-X83"/>
+                <constraint firstAttribute="trailing" secondItem="UBC-ld-mav" secondAttribute="trailing" constant="8" id="2Mb-sO-rpa"/>
+                <constraint firstAttribute="trailing" secondItem="79C-tM-Age" secondAttribute="trailing" constant="8" id="EV8-d9-3NU"/>
                 <constraint firstItem="4e9-iU-UYB" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aWh-li-pAf"/>
-                <constraint firstAttribute="trailing" secondItem="79C-tM-Age" secondAttribute="trailing" id="baQ-Ss-Vo8"/>
+                <constraint firstItem="UBC-ld-mav" firstAttribute="top" secondItem="4e9-iU-UYB" secondAttribute="bottom" constant="8" id="ao7-fO-mpS"/>
                 <constraint firstItem="4e9-iU-UYB" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cbD-Ka-v5m"/>
-                <constraint firstItem="UBC-ld-mav" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gEq-Jq-ccl"/>
+                <constraint firstItem="79C-tM-Age" firstAttribute="top" secondItem="UBC-ld-mav" secondAttribute="bottom" constant="8" id="g3P-LL-KpM"/>
                 <constraint firstAttribute="trailing" secondItem="4e9-iU-UYB" secondAttribute="trailing" id="gZ6-Gr-Uhq"/>
-                <constraint firstItem="79C-tM-Age" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="oRs-Ej-GuF"/>
+                <constraint firstItem="79C-tM-Age" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="oy7-4c-8ny"/>
+                <constraint firstAttribute="bottom" secondItem="79C-tM-Age" secondAttribute="bottom" constant="8" id="xkk-5z-zW5"/>
+                <constraint firstItem="UBC-ld-mav" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="zma-xr-0mk"/>
             </constraints>
             <point key="canvasLocation" x="35.5" y="53.5"/>
         </view>

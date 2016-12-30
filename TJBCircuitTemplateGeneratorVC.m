@@ -31,6 +31,8 @@
 
 #import "TJBActiveCircuitGuidance.h"
 
+#import "TJBAestheticsController.h"
+
 //#import "TJBWeightArray+CoreDataProperties.h"
 
 @interface TJBCircuitTemplateGeneratorVC ()
@@ -57,8 +59,7 @@
 
 // IBAction
 - (IBAction)didPressLaunchCircuit:(id)sender;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *launchCircuitButton;
-
+@property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
 
 // data structure
 @property (nonatomic, strong) NSMutableArray *weightData;
@@ -117,6 +118,12 @@ static NSString * const defaultValue = @"unselected";
     [self createDataStructure];
     [self createSubviewsAndLayoutConstraints];
     [self createNavigationItem];
+    [self viewAesthetics];
+}
+
+- (void)viewAesthetics{
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchCircuitButton]
+                                                     withOpacity: .85];
 }
 
 - (void)createDataStructure{
