@@ -458,6 +458,8 @@ static NSString * const defaultValue = @"unselected";
         [self presentViewController: tabBarController
                            animated: YES
                          completion: nil];
+    } else{
+        [self alertUserInputIncomplete];
     }
 }
 
@@ -472,7 +474,22 @@ static NSString * const defaultValue = @"unselected";
         [self createAndSaveChainTemplate];
         [self dismissViewControllerAnimated: NO
                                  completion: nil];
+    } else{
+        [self alertUserInputIncomplete];
     }
+}
+
+- (void)alertUserInputIncomplete{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"User Input Incomplete"
+                                                                   message: @"Please enter all required user input"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                     style: UIAlertActionStyleDefault
+                                                   handler: nil];
+    [alert addAction: action];
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
 }
 
 - (void)duplicateEntries{

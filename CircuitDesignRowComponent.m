@@ -97,25 +97,28 @@
         self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
     }
     
+    void (^eraseButton)(UIButton *) = ^(UIButton *button){
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitle: @""
+                forState: UIControlStateNormal];
+        button.enabled = NO;
+    };
+    
     if ([self.targetingWeight intValue] == 0)
     {
-        self.weightButton.enabled = NO;
-        [self.weightButton setTitle: @""
-                           forState: UIControlStateDisabled];
+        eraseButton(self.weightButton);
+    } else{
+        
     }
     
     if ([self.targetingReps intValue] == 0)
     {
-        self.repsButton.enabled = NO;
-        [self.repsButton setTitle: @""
-                           forState: UIControlStateDisabled];
+        eraseButton(self.repsButton);
     }
     
     if ([self.targetingRest intValue] == 0)
     {
-        self.restButton.enabled = NO;
-        [self.restButton setTitle: @""
-                           forState: UIControlStateDisabled];
+        eraseButton(self.restButton);
     }
 }
 
