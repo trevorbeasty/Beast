@@ -168,7 +168,7 @@ static NSString * const defaultValue = @"unselected";
     
     CGFloat rowHeight = 30;
     CGFloat componentToComponentSpacing = 20;
-    CGFloat initialSpacing = 8;
+    CGFloat initialSpacing = 0;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
     
@@ -672,6 +672,9 @@ static NSString * const defaultValue = @"unselected";
     {
         [button setTitle: exercise.name
                 forState: UIControlStateNormal];
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
         
         [weakSelf didSelectExercise: exercise
                      forChainNumber: chainNumber];
