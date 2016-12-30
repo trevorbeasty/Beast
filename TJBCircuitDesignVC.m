@@ -44,6 +44,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *targetingRestLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetsVaryByRoundLabel;
 
+// dynamic labels
+@property (weak, nonatomic) IBOutlet UILabel *counterNumberOfExercises;
+@property (weak, nonatomic) IBOutlet UILabel *counterNumberOfRounds;
+
+// backdrop view
+@property (weak, nonatomic) IBOutlet UIView *backdropView;
+
 @end
 
 @implementation TJBCircuitDesignVC
@@ -51,17 +58,34 @@
 #pragma mark - Instantiation
 
 - (void)viewDidLoad{
+    [self configureBackropView];
     [self configureView];
     [self configureNavigationBar];
     [self viewAesthetics];
+    [self addBackgroundImage];
+}
+
+- (void)configureBackropView{
+    [self.view sendSubviewToBack: self.backdropView];
+    
+    CALayer *layer = self.backdropView.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+    layer.opacity = .65;
+}
+
+- (void)addBackgroundImage{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
 }
 
 - (void)configureView{
     _numberOfExercises = 1.0;
     _numberOfRounds = 1.0;
     
-    self.numberOfExercisesLabel.text = [[NSNumber numberWithDouble: _numberOfExercises] stringValue];
-    self.numberOfRoundsLabel.text = [[NSNumber numberWithDouble: _numberOfRounds] stringValue];
+    self.counterNumberOfExercises.text = [[NSNumber numberWithDouble: _numberOfExercises] stringValue];
+    self.counterNumberOfRounds.text = [[NSNumber numberWithDouble: _numberOfRounds] stringValue];
     
     [self.numberOfExercisesStepper addTarget: self
                                       action: @selector(didChangeExerciseStepperValue)
@@ -72,7 +96,7 @@
 }
 
 - (void)configureNavigationBar{
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Template Configuration"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Design"];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                    target: self
@@ -97,6 +121,10 @@
                        self.targetsVaryByRoundLabel];
     [TJBAestheticsController configureViewsWithType1Format: views
                                                withOpacity: .85];
+    
+    // button
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchTemplateButton]
+                                                     withOpacity: .85];
 }
 
 #pragma mark - Stepper Methods
@@ -105,14 +133,14 @@
     double number = self.numberOfExercisesStepper.value;
     
     _numberOfExercises = number;
-    self.numberOfExercisesLabel.text = [[NSNumber numberWithDouble: number] stringValue];
+    self.counterNumberOfExercises.text = [[NSNumber numberWithDouble: number] stringValue];
 }
 
 - (void)didChangeRoundsStepperValue{
     double number = self.numberOfRoundsStepper.value;
     
     _numberOfRounds = number;
-    self.numberOfRoundsLabel.text = [[NSNumber numberWithDouble: number] stringValue];
+    self.counterNumberOfRounds.text = [[NSNumber numberWithDouble: number] stringValue];
 }
 
 #pragma mark - Button Actions
