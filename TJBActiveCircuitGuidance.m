@@ -90,9 +90,6 @@ static NSString * const defaultValue = @"default value";
     [self createSkeletonForRealizedChainObject];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-}
 
 - (void)configureViews{
     // nav bar
@@ -108,10 +105,12 @@ static NSString * const defaultValue = @"default value";
     [self.navBar setItems: @[navItem]];
     
     // dynamic views
-    self.weightLabel.text = [[NSNumber numberWithDouble: _activeTargetWeight] stringValue];
-    self.repsLabel.text = [[NSNumber numberWithDouble: _activeTargetReps] stringValue];
+    if (self.chainTemplate.targetingWeight == YES)
+        self.weightLabel.text = [[NSNumber numberWithDouble: _activeTargetWeight] stringValue];
+    if (self.chainTemplate.targetingReps == YES)
+        self.repsLabel.text = [[NSNumber numberWithDouble: _activeTargetReps] stringValue];
     
-    self.remainingRestLabel.text = @"NA";
+    self.remainingRestLabel.text = @"";
 
     TJBExercise *exercise = self.chainTemplate.exercises[0];
     NSString *activeExerciseTitle = [NSString stringWithFormat: @"First exercise: %@",
@@ -225,8 +224,10 @@ static NSString * const defaultValue = @"default value";
     
     TJBChainTemplate *chainTemplate = self.chainTemplate;
     
-    _activeTargetWeight = chainTemplate.weightArrays[0].numbers[0].value;
-    _activeTargetReps = chainTemplate.repsArrays[0].numbers[0].value;
+    if (chainTemplate.targetingWeight == YES)
+        _activeTargetWeight = chainTemplate.weightArrays[0].numbers[0].value;
+    if (chainTemplate.targetingReps == YES)
+        _activeTargetReps = chainTemplate.repsArrays[0].numbers[0].value;
     
     _setCompletedButtonPressed = NO;
 }
