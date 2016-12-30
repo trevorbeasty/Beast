@@ -581,9 +581,17 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button{
+    __weak TJBCircuitTemplateGeneratorVC *weakSelf = self;
+    
     CancelBlock cancelBlock = ^{
-        [self dismissViewControllerAnimated: NO
+        [weakSelf dismissViewControllerAnimated: NO
                                  completion: nil];
+    };
+    
+    void (^buttonAlterationBlock)(void) = ^{
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
     };
     
     int indexOne = [chainNumber intValue] - 1;
@@ -595,6 +603,7 @@ static NSString * const defaultValue = @"unselected";
         NumberSelectedBlock block = ^(NSNumber *number){
             [button setTitle: [number stringValue]
                     forState: UIControlStateNormal];
+            buttonAlterationBlock();
             self.weightData[indexOne][indexTwo] = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
@@ -614,6 +623,7 @@ static NSString * const defaultValue = @"unselected";
         NumberSelectedBlock block = ^(NSNumber *number){
             [button setTitle: [number stringValue]
                     forState: UIControlStateNormal];
+            buttonAlterationBlock();
             self.repsData[indexOne][indexTwo] = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
@@ -635,6 +645,7 @@ static NSString * const defaultValue = @"unselected";
             NSString *title = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
             [button setTitle: title
                     forState: UIControlStateNormal];
+            buttonAlterationBlock();
             self.restData[indexOne][indexTwo] = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];

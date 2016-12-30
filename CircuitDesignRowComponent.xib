@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,28 +24,28 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c0F-2o-hht">
-                    <rect key="frame" x="94" y="0.0" width="93.5" height="53"/>
+                    <rect key="frame" x="94" y="2" width="91.5" height="49"/>
                     <state key="normal" title="Weight"/>
                     <connections>
                         <action selector="didPressWeightButton:" destination="-1" eventType="touchUpInside" id="D9o-FE-w6R"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="otU-jG-jm8">
-                    <rect key="frame" x="187.5" y="0.0" width="94" height="53"/>
+                    <rect key="frame" x="187.5" y="2" width="91.5" height="49"/>
                     <state key="normal" title="Reps"/>
                     <connections>
                         <action selector="didPressRepsButton:" destination="-1" eventType="touchUpInside" id="BWn-PQ-wve"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HLu-nz-seg">
-                    <rect key="frame" x="281.5" y="0.0" width="93.5" height="53"/>
+                    <rect key="frame" x="281" y="2" width="92" height="49"/>
                     <state key="normal" title="Rest"/>
                     <connections>
                         <action selector="didPressRestButton:" destination="-1" eventType="touchUpInside" id="3u9-2J-rdJ"/>
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDb-bB-pOp">
-                    <rect key="frame" x="0.0" y="0.0" width="94" height="53"/>
+                    <rect key="frame" x="0.0" y="0.0" width="92" height="53"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -53,23 +53,22 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="c0F-2o-hht" firstAttribute="leading" secondItem="hDb-bB-pOp" secondAttribute="trailing" id="1Nt-65-B2R"/>
-                <constraint firstAttribute="bottom" secondItem="otU-jG-jm8" secondAttribute="bottom" id="6SW-xS-MP1"/>
+                <constraint firstItem="HLu-nz-seg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="2" id="1eb-rW-OVR"/>
+                <constraint firstItem="otU-jG-jm8" firstAttribute="leading" secondItem="c0F-2o-hht" secondAttribute="trailing" constant="2" id="3jU-Kk-2YQ"/>
                 <constraint firstItem="hDb-bB-pOp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="83e-ka-sc2"/>
                 <constraint firstItem="otU-jG-jm8" firstAttribute="width" secondItem="hDb-bB-pOp" secondAttribute="width" id="9zl-A9-IHm"/>
                 <constraint firstItem="hDb-bB-pOp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="A2f-p3-zHt"/>
-                <constraint firstItem="otU-jG-jm8" firstAttribute="leading" secondItem="c0F-2o-hht" secondAttribute="trailing" id="D4o-F2-tdz"/>
-                <constraint firstItem="HLu-nz-seg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Fg4-QV-Hs7"/>
-                <constraint firstItem="HLu-nz-seg" firstAttribute="leading" secondItem="otU-jG-jm8" secondAttribute="trailing" id="GLy-Cb-qXB"/>
+                <constraint firstItem="HLu-nz-seg" firstAttribute="leading" secondItem="otU-jG-jm8" secondAttribute="trailing" constant="2" id="H5X-DD-GcY"/>
                 <constraint firstAttribute="bottom" secondItem="hDb-bB-pOp" secondAttribute="bottom" id="Lic-mf-7IK"/>
+                <constraint firstAttribute="bottom" secondItem="HLu-nz-seg" secondAttribute="bottom" constant="2" id="NOs-hx-oxV"/>
+                <constraint firstItem="c0F-2o-hht" firstAttribute="leading" secondItem="hDb-bB-pOp" secondAttribute="trailing" constant="2" id="Q6y-HQ-73W"/>
+                <constraint firstItem="otU-jG-jm8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="2" id="R1L-nR-TRJ"/>
+                <constraint firstAttribute="bottom" secondItem="c0F-2o-hht" secondAttribute="bottom" constant="2" id="UGt-As-adP"/>
                 <constraint firstItem="HLu-nz-seg" firstAttribute="width" secondItem="hDb-bB-pOp" secondAttribute="width" id="UbS-XB-sSK"/>
-                <constraint firstItem="otU-jG-jm8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gjS-Pn-Uw9"/>
+                <constraint firstAttribute="trailing" secondItem="HLu-nz-seg" secondAttribute="trailing" constant="2" id="Ww1-7u-JTd"/>
+                <constraint firstAttribute="bottom" secondItem="otU-jG-jm8" secondAttribute="bottom" constant="2" id="ZoJ-lu-Tbz"/>
+                <constraint firstItem="c0F-2o-hht" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="2" id="cd0-nh-O8M"/>
                 <constraint firstItem="c0F-2o-hht" firstAttribute="width" secondItem="hDb-bB-pOp" secondAttribute="width" id="hYU-F4-NJE"/>
-                <constraint firstAttribute="bottom" secondItem="HLu-nz-seg" secondAttribute="bottom" id="n2V-aV-3gs"/>
-                <constraint firstAttribute="trailing" secondItem="HLu-nz-seg" secondAttribute="trailing" id="qTd-IJ-abu"/>
-                <constraint firstItem="c0F-2o-hht" firstAttribute="leading" secondItem="hDb-bB-pOp" secondAttribute="trailing" id="wbF-5Q-BRO"/>
-                <constraint firstItem="c0F-2o-hht" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="weL-U2-YrY"/>
-                <constraint firstAttribute="bottom" secondItem="c0F-2o-hht" secondAttribute="bottom" id="zVm-rT-haQ"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

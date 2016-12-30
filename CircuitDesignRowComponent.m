@@ -16,6 +16,8 @@
 #import "TJBNumberTypeArrayComp+CoreDataProperties.h"
 #import "TJBStopwatch.h"
 
+#import "TJBAestheticsController.h"
+
 @interface CircuitDesignRowComponent ()
 {
     // core
@@ -48,8 +50,27 @@
 
 #pragma mark - Instantiation
 
+- (void)viewAesthetics{
+    NSArray *buttons = @[self.weightButton,
+                      self.repsButton,
+                      self.restButton];
+    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
+    for (UIButton *button in buttons){
+        button.backgroundColor = [aesthetics buttonBackgroundColor];
+        [button setTitleColor: [aesthetics buttonTextColor]
+                     forState: UIControlStateNormal];
+        
+        CALayer *layer = button.layer;
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 8.0;
+        layer.opacity = .85;
+    }
+}
+
 - (void)viewDidLoad
 {
+    [self viewAesthetics];
+    
     if (_supportsUserInput == NO){
         int chainIndex = [self.chainNumber intValue] - 1;
         int roundIndex = [self.roundNumber intValue] - 1;
