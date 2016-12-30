@@ -6,6 +6,8 @@
 //  Copyright © 2016 Trevor Beasty. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 #import "TJBCircuitDesignVC.h"
 
 #import "TJBCircuitTemplateGeneratorVC.h"
@@ -146,18 +148,34 @@
 #pragma mark - Button Actions
 
 - (IBAction)didPressLaunchTemplate:(id)sender{
-    TJBCircuitTemplateGeneratorVC *vc = [[TJBCircuitTemplateGeneratorVC alloc] initWithTargetingWeight: [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex]
-                                                                                         targetingReps: [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex]
-                                                                                         targetingRest: [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex]
-                                                                                    targetsVaryByRound: [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex]
-                                                                                     numberOfExercises: [NSNumber numberWithDouble: _numberOfExercises]
-                                                                                        numberOfRounds: [NSNumber numberWithDouble: _numberOfRounds]
-                                                                                                  name: self.nameTextField.text
-                                                                                     supportsUserInput: YES];
+    if ([self.nameTextField.text isEqualToString: @""]){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Title"
+                                                                       message: @"Please enter a title before proceeding"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: nil];
+        [alert addAction: action];
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        TJBCircuitTemplateGeneratorVC *vc = [[TJBCircuitTemplateGeneratorVC alloc] initWithTargetingWeight: [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex]
+                                                                                             targetingReps: [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex]
+                                                                                             targetingRest: [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex]
+                                                                                        targetsVaryByRound: [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex]
+                                                                                         numberOfExercises: [NSNumber numberWithDouble: _numberOfExercises]
+                                                                                            numberOfRounds: [NSNumber numberWithDouble: _numberOfRounds]
+                                                                                                      name: self.nameTextField.text
+                                                                                         supportsUserInput: YES];
+        
+        [self presentViewController: vc
+                           animated: YES
+                         completion: nil];
+    }
     
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
+
 }
 
 - (void)didPressCancel{

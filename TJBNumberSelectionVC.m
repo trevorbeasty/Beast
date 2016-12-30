@@ -122,7 +122,7 @@
     }
     
     cell.numberLabel.layer.masksToBounds = YES;
-    cell.numberLabel.layer.cornerRadius = 16;
+    cell.numberLabel.layer.cornerRadius = 8.0;
     cell.backgroundColor = [UIColor clearColor];
     
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
@@ -142,15 +142,15 @@
     // if there is a previously selected cell, change its attributes accordingly
     if (self.lastSelectedCell){
         self.lastSelectedCell.layer.opacity = .75;
-        self.lastSelectedCell.backgroundColor = [UIColor clearColor];
+        self.lastSelectedCell.numberLabel.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
     }
     
     // change the attributes of the newly selected cell
     TJBNumberSelectionCell *selectedCell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
-    selectedCell.layer.masksToBounds = YES;
-    selectedCell.layer.cornerRadius = 16;
+//    selectedCell.layer.masksToBounds = YES;
+//    selectedCell.layer.cornerRadius = 16;
     selectedCell.layer.opacity = 1;
-    selectedCell.backgroundColor = [UIColor yellowColor];
+    selectedCell.numberLabel.backgroundColor = [UIColor redColor];
     
     
     // update the lastSelectedCell property to point to the newly selected cell
