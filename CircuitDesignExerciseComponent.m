@@ -82,6 +82,11 @@
 #pragma mark - Views
 
 - (void)viewAesthetics{
+    CALayer *viewLayer = self.view.layer;
+    viewLayer.masksToBounds = YES;
+    viewLayer.cornerRadius = 8.0;
+    viewLayer.opacity = .85;
+    
     NSArray *labelViews = @[self.titleLabel,
                             self.roundColumnLabel,
                             self.weightColumnLabel,

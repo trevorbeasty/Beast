@@ -119,6 +119,13 @@ static NSString * const defaultValue = @"unselected";
     [self createSubviewsAndLayoutConstraints];
     [self createNavigationItem];
     [self viewAesthetics];
+    [self addBackgroundView];
+}
+
+- (void)addBackgroundView{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
 }
 
 - (void)viewAesthetics{
