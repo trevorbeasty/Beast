@@ -22,14 +22,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
-                    <rect key="frame" x="0.0" y="50" width="375" height="561"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="Ejm-bA-dJN"/>
-                        <outlet property="delegate" destination="-1" id="y0n-6X-M8H"/>
-                    </connections>
-                </tableView>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zM0-Hh-pvf">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                     <constraints>
@@ -40,7 +32,7 @@
                     </items>
                 </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIv-ZX-jxj">
-                    <rect key="frame" x="8" y="619" width="359" height="40"/>
+                    <rect key="frame" x="8" y="58" width="359" height="40"/>
                     <color key="backgroundColor" red="0.0" green="0.67129021883010864" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="r33-AD-nOV"/>
@@ -52,19 +44,27 @@
                         <action selector="didPressAddNewExercise:" destination="-1" eventType="touchUpInside" id="gVw-qy-Cql"/>
                     </connections>
                 </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
+                    <rect key="frame" x="8" y="106" width="359" height="553"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Ejm-bA-dJN"/>
+                        <outlet property="delegate" destination="-1" id="y0n-6X-M8H"/>
+                    </connections>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="XIv-ZX-jxj" secondAttribute="trailing" constant="8" id="4l9-ya-UG3"/>
                 <constraint firstItem="zM0-Hh-pvf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8sr-Bu-RCM"/>
-                <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9qV-ui-oSl"/>
-                <constraint firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" id="Fab-ff-P71"/>
-                <constraint firstAttribute="bottom" secondItem="XIv-ZX-jxj" secondAttribute="bottom" constant="8" id="LRi-LH-lgL"/>
-                <constraint firstItem="XIv-ZX-jxj" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" constant="8" id="NXi-Uf-JIl"/>
+                <constraint firstAttribute="bottom" secondItem="hdc-bj-tBP" secondAttribute="bottom" constant="8" id="IGh-5D-n1m"/>
                 <constraint firstItem="zM0-Hh-pvf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="QHv-E8-Rgd"/>
-                <constraint firstAttribute="trailing" secondItem="XIv-ZX-jxj" secondAttribute="trailing" constant="8" id="dP6-0N-V0l"/>
-                <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="zM0-Hh-pvf" secondAttribute="bottom" id="ggg-w0-wBM"/>
-                <constraint firstItem="XIv-ZX-jxj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="l1L-rx-BHT"/>
+                <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="XIv-ZX-jxj" secondAttribute="bottom" constant="8" id="SJY-bV-Rhl"/>
+                <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="fL7-nK-Ti9"/>
                 <constraint firstAttribute="trailing" secondItem="zM0-Hh-pvf" secondAttribute="trailing" id="mSJ-SM-604"/>
+                <constraint firstItem="XIv-ZX-jxj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="mrD-t2-s3D"/>
+                <constraint firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" constant="8" id="oEs-fd-HDO"/>
+                <constraint firstItem="XIv-ZX-jxj" firstAttribute="top" secondItem="zM0-Hh-pvf" secondAttribute="bottom" constant="8" id="vKL-D1-Z1M"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
