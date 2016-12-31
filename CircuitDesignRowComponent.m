@@ -71,6 +71,12 @@
 {
     [self viewAesthetics];
     
+    void (^buttonState_UserInputCollected)(UIButton *) = ^(UIButton *button){
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
+    };
+    
     if (_supportsUserInput == NO){
         int chainIndex = [self.chainNumber intValue] - 1;
         int roundIndex = [self.roundNumber intValue] - 1;
@@ -86,6 +92,13 @@
                          forState: UIControlStateNormal];
         [self.restButton setTitle: restString
                          forState: UIControlStateNormal];
+        
+        NSArray *buttons = @[self.weightButton,
+                             self.repsButton,
+                             self.restButton];
+        for (UIButton *button in buttons){
+            buttonState_UserInputCollected(button);
+        }
     }
     
     if ([self.targetsVaryByRound intValue] == 0)

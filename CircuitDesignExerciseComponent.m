@@ -117,6 +117,9 @@
     if (_supportsUserInput == NO){
         [self.selectedExerciseButton setTitle: self.exerciseName
                                      forState: UIControlStateNormal];
+        self.selectedExerciseButton.backgroundColor = [UIColor whiteColor];
+        [self.selectedExerciseButton setTitleColor: [UIColor blackColor]
+                                          forState: UIControlStateNormal];
     }
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];

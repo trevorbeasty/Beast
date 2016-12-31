@@ -167,7 +167,7 @@ static NSString * const defaultValue = @"unselected";
     CGFloat screenWidth = screenBounds.size.width - 16.0;
     
     CGFloat rowHeight = 30;
-    CGFloat componentToComponentSpacing = 20;
+    CGFloat componentToComponentSpacing = 16;
     CGFloat initialSpacing = 0;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
