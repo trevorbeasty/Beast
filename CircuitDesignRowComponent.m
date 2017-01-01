@@ -67,10 +67,7 @@
     }
 }
 
-- (void)viewDidLoad
-{
-    [self viewAesthetics];
-    
+- (void)populateButtonsWithDataIfNotCollectingUserInput{
     void (^buttonState_UserInputCollected)(UIButton *) = ^(UIButton *button){
         button.backgroundColor = [UIColor whiteColor];
         [button setTitleColor: [UIColor blackColor]
@@ -81,17 +78,35 @@
         int chainIndex = [self.chainNumber intValue] - 1;
         int roundIndex = [self.roundNumber intValue] - 1;
         
-        NSString *weightString = [[NSNumber numberWithDouble: self.chainTemplate.weightArrays[chainIndex].numbers[roundIndex].value] stringValue];
-        NSString *repsString = [[NSNumber numberWithDouble: self.chainTemplate.repsArrays[chainIndex].numbers[roundIndex].value] stringValue];
-        double rest = self.chainTemplate.targetRestTimeArrays[chainIndex].numbers[roundIndex].value;
-        NSString *restString =[[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)rest];
-
-        [self.weightButton setTitle: weightString
-                           forState: UIControlStateNormal];
-        [self.repsButton setTitle: repsString
-                         forState: UIControlStateNormal];
-        [self.restButton setTitle: restString
-                         forState: UIControlStateNormal];
+        TJBChainTemplate *chainTemplate = self.chainTemplate;
+        
+        if (chainTemplate.targetingWeight == YES){
+            NSString *weightString = [[NSNumber numberWithDouble: chainTemplate.weightArrays[chainIndex].numbers[roundIndex].value] stringValue];
+            [self.weightButton setTitle: weightString
+                               forState: UIControlStateNormal];
+        } else{
+//            [self.weightButton setTitle: @""
+//                               forState: UIControlStateNormal];
+        }
+        
+        if (chainTemplate.targetingReps == YES){
+            NSString *repsString = [[NSNumber numberWithDouble: chainTemplate.repsArrays[chainIndex].numbers[roundIndex].value] stringValue];
+            [self.repsButton setTitle: repsString
+                             forState: UIControlStateNormal];
+        } else{
+//            [self.repsButton setTitle: @""
+//                             forState: UIControlStateNormal];
+        }
+        
+        if (chainTemplate.targetingRestTime == YES){
+            double rest = chainTemplate.targetRestTimeArrays[chainIndex].numbers[roundIndex].value;
+            NSString *restString =[[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)rest];
+            [self.restButton setTitle: restString
+                             forState: UIControlStateNormal];
+        } else{
+//            [self.restButton setTitle: @""
+//                             forState: UIControlStateNormal];
+        }
         
         NSArray *buttons = @[self.weightButton,
                              self.repsButton,
@@ -100,7 +115,9 @@
             buttonState_UserInputCollected(button);
         }
     }
-    
+}
+
+- (void)configureViewsAccordingly{
     if ([self.targetsVaryByRound intValue] == 0)
     {
         self.roundLabel.text = @"All Rounds";
@@ -117,22 +134,29 @@
         button.enabled = NO;
     };
     
-    if ([self.targetingWeight intValue] == 0)
+    if ([self.targetingWeight intValue] == NO)
     {
         eraseButton(self.weightButton);
     } else{
         
     }
     
-    if ([self.targetingReps intValue] == 0)
+    if ([self.targetingReps intValue] == NO)
     {
         eraseButton(self.repsButton);
     }
     
-    if ([self.targetingRest intValue] == 0)
+    if ([self.targetingRest intValue] == NO)
     {
         eraseButton(self.restButton);
     }
+}
+
+- (void)viewDidLoad
+{
+    [self viewAesthetics];
+    [self populateButtonsWithDataIfNotCollectingUserInput];
+    [self configureViewsAccordingly];
 }
 
 - (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateGeneratorVC *)masterController chainNumber:(NSNumber *)chainNumber supportsUserInput:(BOOL)supportsUserInput chainTemplate:(TJBChainTemplate *)chainTemplate{

@@ -102,11 +102,22 @@ static NSString * const defaultValue = @"unselected";
     self.targetingRest = [NSNumber numberWithBool: chainTemplate.targetingRestTime];
     self.targetsVaryByRound = [NSNumber numberWithBool: chainTemplate.targetsVaryByRound];
     self.numberOfExercises = [NSNumber numberWithUnsignedLong: chainTemplate.exercises.count];
-    self.numberOfRounds = [NSNumber numberWithUnsignedLong: chainTemplate.weightArrays[0].numbers.count];
+    
+    NSNumber *numberOfRounds;
+    if (chainTemplate.targetingWeight == YES){
+        TJBWeightArray *weightArray = chainTemplate.weightArrays[0];
+        numberOfRounds = [NSNumber numberWithUnsignedLong: [weightArray.numbers count]];
+    } else if (chainTemplate.targetingReps == YES){
+        TJBRepsArray *repsArray = chainTemplate.repsArrays[0];
+        numberOfRounds = [NSNumber numberWithUnsignedLong: [repsArray.numbers count]];
+    } else if (chainTemplate.targetingRestTime == YES){
+        TJBTargetRestTimeArray *restArray = chainTemplate.targetRestTimeArrays[0];
+        numberOfRounds = [NSNumber numberWithUnsignedLong: [restArray.numbers count]];
+    }
+    self.numberOfRounds = numberOfRounds;
+    
     self.name = chainTemplate.name;
-    
     self.chainTemplate = chainTemplate;
-    
     _supportsUserInput = supportsUserInput;
     
     return self;
@@ -320,10 +331,10 @@ static NSString * const defaultValue = @"unselected";
     chainTemplate.identifier = @"placeholder identifier";
     
     chainTemplate.name = self.name;
-    chainTemplate.targetingWeight = self.targetingWeight;
-    chainTemplate.targetingReps = self.targetingReps;
-    chainTemplate.targetingRestTime = self.targetingRest;
-    chainTemplate.targetsVaryByRound = self.targetsVaryByRound;
+    chainTemplate.targetingWeight = [self.targetingWeight intValue];
+    chainTemplate.targetingReps = [self.targetingReps intValue];
+    chainTemplate.targetingRestTime = [self.targetingRest intValue];
+    chainTemplate.targetsVaryByRound = [self.targetsVaryByRound intValue];
     
     // chain template relationships
     int exerciseLimit = [self.numberOfExercises intValue];
@@ -480,8 +491,8 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)alertUserInputIncomplete{
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"User Input Incomplete"
-                                                                   message: @"Please enter all required user input"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"User Input Error"
+                                                                   message: @"Please make selections for all active fields"
                                                             preferredStyle: UIAlertControllerStyleAlert];
     UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
                                                      style: UIAlertActionStyleDefault

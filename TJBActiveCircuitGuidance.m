@@ -240,8 +240,19 @@ static NSString * const defaultValue = @"default value";
     NSNumber *numberOfExercises = [NSNumber numberWithUnsignedLong: [chainTemplate.exercises count]];
     self.numberOfExercises = numberOfExercises;
     
-    TJBWeightArray *weightArray = chainTemplate.weightArrays[0];
-    NSNumber *numberOfRounds = [NSNumber numberWithUnsignedLong: [weightArray.numbers count]];
+    NSNumber *numberOfRounds;
+    
+    if (chainTemplate.targetingWeight == YES){
+        TJBWeightArray *weightArray = chainTemplate.weightArrays[0];
+        numberOfRounds = [NSNumber numberWithUnsignedLong: [weightArray.numbers count]];
+    } else if (chainTemplate.targetingReps == YES){
+        TJBRepsArray *repsArray = chainTemplate.repsArrays[0];
+        numberOfRounds = [NSNumber numberWithUnsignedLong: [repsArray.numbers count]];
+    } else if (chainTemplate.targetingRestTime == YES){
+        TJBTargetRestTimeArray *restArray = chainTemplate.targetRestTimeArrays[0];
+        numberOfRounds = [NSNumber numberWithUnsignedLong: [restArray.numbers count]];
+    }
+
     self.numberOfRounds = numberOfRounds;
 }
 
