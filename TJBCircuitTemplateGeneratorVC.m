@@ -378,7 +378,7 @@ static NSString * const defaultValue = @"unselected";
                                                            numberArrays: repsArrays];
     }
     
-    if ([self.targetingWeight intValue] == 1)
+    if ([self.targetingRest intValue] == 1)
     {
         NSMutableArray *restArrays = [[NSMutableArray alloc] init];
         for (int i = 0; i < exerciseLimit; i++)

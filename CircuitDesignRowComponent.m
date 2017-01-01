@@ -73,7 +73,12 @@
         [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
     };
-    
+    NSArray *buttons = @[self.weightButton,
+                         self.repsButton,
+                         self.restButton];
+    for (UIButton *button in buttons){
+        buttonState_UserInputCollected(button);
+    }
     if (_supportsUserInput == NO){
         int chainIndex = [self.chainNumber intValue] - 1;
         int roundIndex = [self.roundNumber intValue] - 1;
@@ -106,13 +111,6 @@
         } else{
 //            [self.restButton setTitle: @""
 //                             forState: UIControlStateNormal];
-        }
-        
-        NSArray *buttons = @[self.weightButton,
-                             self.repsButton,
-                             self.restButton];
-        for (UIButton *button in buttons){
-            buttonState_UserInputCollected(button);
         }
     }
 }
