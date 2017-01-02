@@ -48,35 +48,33 @@
 - (IBAction)didPressBeginSet;
 
 // UI
-
-@property (weak, nonatomic) IBOutlet UIView *containerSubview;
-
+@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *nextUpExerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remainingRestLabel;
 
+@property (weak, nonatomic) IBOutlet UIButton *beginSetButton;
+
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
 // data
-
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 // derived IV's
-
 @property (nonatomic, strong) NSNumber *numberOfExercises;
 @property (nonatomic, strong) NSNumber *numberOfRounds;
 
 // user selections
-
 @property (nonatomic, strong) NSNumber *selectedTimeDelay;
 @property (nonatomic, strong) NSNumber *selectedTimeLag;
 @property (nonatomic, strong) NSNumber *selectedWeight;
 @property (nonatomic, strong) NSNumber *selectedReps;
 
 // realized chain
-
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 @end
@@ -102,13 +100,14 @@ static NSString * const defaultValue = @"default value";
 
 - (void)viewAesthetics{
     NSArray *labels = @[self.nextUpExerciseLabel,
-                        self.weightLabel,
-                        self.repsLabel,
-                        self.remainingRestLabel];
+                        self.weightColumnLabel,
+                        self.repsColumnLabel,
+                        self.restColumnLabel];
     [TJBAestheticsController configureViewsWithType1Format: labels
                                                withOpacity: .85];
     
-//    [TJBAestheticsController singleton] configureButtonsInArray: @[self.] withOpacity:<#(double)#>
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.beginSetButton]
+                                                     withOpacity: .85];
     
 }
 
