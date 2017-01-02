@@ -173,6 +173,12 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)createSubviewsAndLayoutConstraints{
+    // top button
+    if (_supportsUserInput == NO){
+        [self.launchCircuitButton setTitle: @"Edit"
+                                  forState: UIControlStateNormal];
+    }
+    
     // scroll view
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenBounds.size.width - 16.0;
@@ -443,50 +449,55 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)didPressLaunchCircuit:(id)sender{
-    if ([self.targetsVaryByRound intValue] == 0)
-    {
-        [self duplicateEntries];
-    }
-    BOOL allUserInputCollected = [self allSelectionsMade];
-    if (allUserInputCollected)
-    {
-        [self createAndSaveChainTemplate];
-        
-        TJBChainTemplate *chainTemplate = self.chainTemplate;
-        
-        // alert
-        NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
-                             chainTemplate.name];
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Added"
-                                                                       message: message
-                                                                preferredStyle: UIAlertControllerStyleAlert];
-        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
-            TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
-            TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
-                                                                                            supportsUserInput: NO];
+    if (_supportsUserInput == YES){
+        if ([self.targetsVaryByRound intValue] == 0)
+        {
+            [self duplicateEntries];
+        }
+        BOOL allUserInputCollected = [self allSelectionsMade];
+        if (allUserInputCollected)
+        {
+            [self createAndSaveChainTemplate];
             
-            [vc1.tabBarItem setTitle: @"Active"];
-            [vc2.tabBarItem setTitle: @"Targets"];
+            TJBChainTemplate *chainTemplate = self.chainTemplate;
             
-            UITabBarController *tabBarController = [[UITabBarController alloc] init];
-            tabBarController.tabBar.translucent = NO;
-            [tabBarController setViewControllers: @[vc1,
-                                                    vc2]];
-            
-            [self presentViewController: tabBarController
+            // alert
+            NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
+                                 chainTemplate.name];
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Added"
+                                                                           message: message
+                                                                    preferredStyle: UIAlertControllerStyleAlert];
+            void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+                TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
+                TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
+                                                                                                supportsUserInput: NO];
+                
+                [vc1.tabBarItem setTitle: @"Active"];
+                [vc2.tabBarItem setTitle: @"Targets"];
+                
+                UITabBarController *tabBarController = [[UITabBarController alloc] init];
+                tabBarController.tabBar.translucent = NO;
+                [tabBarController setViewControllers: @[vc1,
+                                                        vc2]];
+                
+                [self presentViewController: tabBarController
+                                   animated: YES
+                                 completion: nil];
+            };
+            UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: alertBlock];
+            [alert addAction: action];
+            [self presentViewController: alert
                                animated: YES
                              completion: nil];
-        };
-        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
-                                                         style: UIAlertActionStyleDefault
-                                                       handler: alertBlock];
-        [alert addAction: action];
-        [self presentViewController: alert
-                           animated: YES
-                         completion: nil];
+        } else{
+            [self alertUserInputIncomplete];
+        }
     } else{
-        [self alertUserInputIncomplete];
+        NSLog(@"edit");
     }
+
 }
 
 - (void)didPressAdd{
