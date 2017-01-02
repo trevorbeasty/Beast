@@ -117,8 +117,6 @@ static NSString * const defaultValue = @"default value";
     for (UILabel *label in labels){
         label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
     }
-//    [TJBAestheticsController configureViewsWithType1Format: labels
-//                                               withOpacity: 1];
     
     // buttons
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.beginSetButton]
@@ -150,16 +148,17 @@ static NSString * const defaultValue = @"default value";
     [self.navBar setItems: @[navItem]];
     
     // dynamic views
+    NSString *notTargetedString = @"not targeted";
     if (self.chainTemplate.targetingWeight == YES){
         self.weightLabel.text = [[NSNumber numberWithDouble: _activeTargetWeight] stringValue];
     } else{
-        self.weightLabel.text = @"";
+        self.weightLabel.text = notTargetedString;
     }
  
     if (self.chainTemplate.targetingReps == YES){
         self.repsLabel.text = [[NSNumber numberWithDouble: _activeTargetReps] stringValue];
     } else{
-        self.repsLabel.text = @"";
+        self.repsLabel.text = notTargetedString;
     }
 
     self.restLabel.text = @"";
@@ -168,7 +167,7 @@ static NSString * const defaultValue = @"default value";
     self.exerciseLabel.text = exercise.name;
     
     NSString *roundText = [NSString stringWithFormat: @"Round 1/%d",
-                           _activeRoundIndex];
+                           [self.numberOfRounds intValue]];
     self.roundColumnLabel.text = roundText;
 }
 
@@ -446,12 +445,9 @@ static NSString * const defaultValue = @"default value";
     else
     {
         [self incrementControllerAndUpdateViews];
-        
         [self addSelectedValuesToRealizedChainObject];
-        
         [self setUserSelectedValuesToNil];
     }
-    
 }
 
 - (void)addSelectedValuesToRealizedChainObject{
@@ -471,19 +467,32 @@ static NSString * const defaultValue = @"default value";
         } else{
             _activeRoundIndex++;
             _activeExerciseIndex = 0;
+            
+            NSString *roundText = [NSString stringWithFormat: @"Round %d/%d",
+                                   _activeRoundIndex + 1,
+                                   [self.numberOfRounds intValue]];
+            self.roundColumnLabel.text = roundText;
         }
     } else{
         _activeExerciseIndex++;
     }
     
-    _activeTargetWeight = self.chainTemplate.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
-    self.weightLabel.text = [[NSNumber numberWithFloat: _activeTargetWeight] stringValue];
+    TJBChainTemplate *chainTemplate = self.chainTemplate;
     
-    _activeTargetReps = self.chainTemplate.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
-    self.repsLabel.text = [[NSNumber numberWithFloat: _activeTargetReps] stringValue];
+    if (chainTemplate.targetingWeight == YES){
+        _activeTargetWeight = self.chainTemplate.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
+        self.weightLabel.text = [[NSNumber numberWithFloat: _activeTargetWeight] stringValue];
+    }
+
+    if (chainTemplate.targetingReps == YES){
+        _activeTargetReps = self.chainTemplate.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
+        self.repsLabel.text = [[NSNumber numberWithFloat: _activeTargetReps] stringValue];
+    }
     
     TJBExercise *exercise = self.chainTemplate.exercises[_activeExerciseIndex];
     self.exerciseLabel.text = exercise.name;
+    
+
 }
 
 - (void)quit{
