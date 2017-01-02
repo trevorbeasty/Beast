@@ -87,8 +87,7 @@
     viewLayer.cornerRadius = 8.0;
     viewLayer.opacity = .85;
     
-    NSArray *labelViews = @[self.titleLabel,
-                            self.roundColumnLabel,
+    NSArray *labelViews = @[self.roundColumnLabel,
                             self.weightColumnLabel,
                             self.repsColumnLabel,
                             self.restColumnLabel];
@@ -96,9 +95,9 @@
         view.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
         view.layer.opacity = .85;
     }
-    CALayer *titleLayer = self.titleLabel.layer;
-    titleLayer.masksToBounds = YES;
-    titleLayer.cornerRadius = 8;
+    
+    self.titleLabel.backgroundColor = [UIColor darkGrayColor];
+    [self.titleLabel setTextColor: [UIColor whiteColor]];
     
     self.selectedExerciseButton.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
     UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
