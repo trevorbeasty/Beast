@@ -102,16 +102,35 @@ static NSString * const defaultValue = @"default value";
 }
 
 - (void)viewAesthetics{
-    NSArray *labels = @[self.nextUpExerciseLabel,
+    // container view
+    UIView *container = self.containerView;
+    container.backgroundColor = [UIColor whiteColor];
+    CALayer *containerLayer = container.layer;
+    containerLayer.masksToBounds = YES;
+    containerLayer.cornerRadius = 8.0;
+    containerLayer.opacity = .75;
+    
+    // labels
+    NSArray *labels = @[self.exerciseColumnLabel,
                         self.weightColumnLabel,
-                        self.repsColumnLabel,
-                        self.restColumnLabel];
+                        self.repsColumnLabel];
     [TJBAestheticsController configureViewsWithType1Format: labels
-                                               withOpacity: .85];
+                                               withOpacity: 1];
     
+    // buttons
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.beginSetButton]
-                                                     withOpacity: .85];
+                                                     withOpacity: 1];
     
+    // dynamic labels
+    
+    
+    // round and timer labels
+    NSArray *otherLabels = @[self.roundColumnLabel,
+                             self.restLabel];
+    for (UILabel *label in otherLabels){
+        label.backgroundColor = [UIColor darkGrayColor];
+        [label setTextColor: [UIColor whiteColor]];
+    }
 }
 
 - (void)configureViewData{
@@ -128,17 +147,26 @@ static NSString * const defaultValue = @"default value";
     [self.navBar setItems: @[navItem]];
     
     // dynamic views
-    if (self.chainTemplate.targetingWeight == YES)
+    if (self.chainTemplate.targetingWeight == YES){
         self.weightLabel.text = [[NSNumber numberWithDouble: _activeTargetWeight] stringValue];
-    if (self.chainTemplate.targetingReps == YES)
+    } else{
+        self.weightLabel.text = @"";
+    }
+ 
+    if (self.chainTemplate.targetingReps == YES){
         self.repsLabel.text = [[NSNumber numberWithDouble: _activeTargetReps] stringValue];
-    
-    self.remainingRestLabel.text = @"";
+    } else{
+        self.repsLabel.text = @"";
+    }
+
+    self.restLabel.text = @"";
 
     TJBExercise *exercise = self.chainTemplate.exercises[0];
-    NSString *activeExerciseTitle = [NSString stringWithFormat: @"First exercise: %@",
-                                     exercise.name];
-    self.nextUpExerciseLabel.text = activeExerciseTitle;
+    self.exerciseLabel.text = exercise.name;
+    
+    NSString *roundText = [NSString stringWithFormat: @"Round 1/%d",
+                           _activeRoundIndex];
+    self.roundColumnLabel.text = roundText;
 }
 
 #pragma mark - Init
@@ -335,11 +363,11 @@ static NSString * const defaultValue = @"default value";
             _activeTargetRestTime = self.chainTemplate.targetRestTimeArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
             int restTimeAccountingForLag = _activeTargetRestTime - [number intValue];
-            self.remainingRestLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: restTimeAccountingForLag];
+            self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: restTimeAccountingForLag];
             [stopwatch setPrimaryStopWatchToTimeInSeconds: restTimeAccountingForLag
                                   withForwardIncrementing: NO];
             if (_restLabelAddedAsStopwatchObserver == NO){
-                [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.remainingRestLabel];
+                [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.restLabel];
             }
             
             // core data
@@ -452,9 +480,7 @@ static NSString * const defaultValue = @"default value";
     self.repsLabel.text = [[NSNumber numberWithFloat: _activeTargetReps] stringValue];
     
     TJBExercise *exercise = self.chainTemplate.exercises[_activeExerciseIndex];
-    self.nextUpExerciseLabel.text = [NSString stringWithFormat: @"Round %d - Next up: %@",
-                                     _activeRoundIndex + 1,
-                                     exercise.name];
+    self.exerciseLabel.text = exercise.name;
 }
 
 - (void)quit{
