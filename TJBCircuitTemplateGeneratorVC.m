@@ -454,19 +454,34 @@ static NSString * const defaultValue = @"unselected";
         
         TJBChainTemplate *chainTemplate = self.chainTemplate;
         
-        TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
-        TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
-                                                                                        supportsUserInput: NO];
-        
-        [vc1.tabBarItem setTitle: @"Active"];
-        [vc2.tabBarItem setTitle: @"Targets"];
-        
-        UITabBarController *tabBarController = [[UITabBarController alloc] init];
-        tabBarController.tabBar.translucent = NO;
-        [tabBarController setViewControllers: @[vc1,
-                                                vc2]];
-        
-        [self presentViewController: tabBarController
+        // alert
+        NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
+                             chainTemplate.name];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Added"
+                                                                       message: message
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+            TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
+            TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
+                                                                                            supportsUserInput: NO];
+            
+            [vc1.tabBarItem setTitle: @"Active"];
+            [vc2.tabBarItem setTitle: @"Targets"];
+            
+            UITabBarController *tabBarController = [[UITabBarController alloc] init];
+            tabBarController.tabBar.translucent = NO;
+            [tabBarController setViewControllers: @[vc1,
+                                                    vc2]];
+            
+            [self presentViewController: tabBarController
+                               animated: YES
+                             completion: nil];
+        };
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: alertBlock];
+        [alert addAction: action];
+        [self presentViewController: alert
                            animated: YES
                          completion: nil];
     } else{
@@ -483,8 +498,23 @@ static NSString * const defaultValue = @"unselected";
     if (allUserInputCollected)
     {
         [self createAndSaveChainTemplate];
-        [self dismissViewControllerAnimated: NO
-                                 completion: nil];
+        
+        NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
+                             self.chainTemplate.name];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Added"
+                                                                       message: message
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: alertBlock];
+        [alert addAction: action];
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
     } else{
         [self alertUserInputIncomplete];
     }
