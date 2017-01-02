@@ -134,9 +134,15 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)addBackgroundView{
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
-                                                                   toRootView: self.view
-                                                                 imageOpacity: .35];
+    if (_supportsUserInput == YES){
+        [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
+                                                                       toRootView: self.view
+                                                                     imageOpacity: .35];
+    } else{
+        [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"FinlandBackSquat"]
+                                                                       toRootView: self.view
+                                                                     imageOpacity: .45];
+    }
 }
 
 - (void)viewAesthetics{

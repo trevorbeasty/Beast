@@ -23,6 +23,8 @@
 
 #import "TJBNumberSelectionVC.h"
 
+#import "TJBAestheticsController.h"
+
 @interface TJBActiveCircuitGuidance ()
 
 {
@@ -86,12 +88,31 @@ static NSString * const defaultValue = @"default value";
 #pragma mark - View Cycle
 
 - (void)viewDidLoad{
-    [self configureViews];
+    [self configureViewData];
     [self createSkeletonForRealizedChainObject];
+    [self addBackgroundImage];
+    [self viewAesthetics];
 }
 
+- (void)addBackgroundImage{
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"FinlandBackSquat"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .45];
+}
 
-- (void)configureViews{
+- (void)viewAesthetics{
+    NSArray *labels = @[self.nextUpExerciseLabel,
+                        self.weightLabel,
+                        self.repsLabel,
+                        self.remainingRestLabel];
+    [TJBAestheticsController configureViewsWithType1Format: labels
+                                               withOpacity: .85];
+    
+//    [TJBAestheticsController singleton] configureButtonsInArray: @[self.] withOpacity:<#(double)#>
+    
+}
+
+- (void)configureViewData{
     // nav bar
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
     NSString *title = [NSString stringWithFormat: @"%@",
