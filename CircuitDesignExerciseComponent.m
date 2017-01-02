@@ -21,6 +21,9 @@
 {
     // core
     BOOL _supportsUserInput;
+    BOOL _valuesPopulatedDuringWorkout;
+    int _limitRoundIndex;
+    int _limitExerciseIndex;
 }
 // core
 @property (nonatomic, strong) NSNumber *numberOfRounds;
@@ -59,7 +62,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController supportsUserInput:(BOOL)supportsUserInput chainTemplate:(id)chainTemplate
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController supportsUserInput:(BOOL)supportsUserInput chainTemplate:(id)chainTemplate valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout limitRoundIndex:(int)limitRoundIndex limitExerciseIndex:(int)limitExerciseIndex
 {
     self = [super init];
     
@@ -73,6 +76,10 @@
     self.masterController = masterController;
     _supportsUserInput = supportsUserInput;
     self.chainTemplate = chainTemplate;
+    
+    _valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
+    _limitRoundIndex = limitRoundIndex;
+    _limitExerciseIndex = limitExerciseIndex;
     
     return self;
 }
@@ -153,7 +160,10 @@
                                                                                      masterController: self.masterController
                                                                                           chainNumber: self.chainNumber
                                                                                     supportsUserInput: _supportsUserInput
-                                                                                        chainTemplate: self.chainTemplate];
+                                                                                        chainTemplate: self.chainTemplate
+                                                                         valuesPopulatedDuringWorkout: NO
+                                                                                      limitRoundIndex: 0
+                                                                                   limitExerciseIndex: 0];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

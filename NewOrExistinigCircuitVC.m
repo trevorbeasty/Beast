@@ -124,7 +124,8 @@
     TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                     supportsUserInput: NO
                                                                          valuesPopulatedDuringWorkout: NO
-                                                                                activePopulationBlock: nil];
+                                                                                      limitRoundIndex: 0
+                                                                                   limitExerciseIndex: 0];
     
     [vc1.tabBarItem setTitle: @"Active"];
     [vc2.tabBarItem setTitle: @"Targets"];

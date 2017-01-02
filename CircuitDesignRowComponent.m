@@ -22,6 +22,9 @@
 {
     // core
     BOOL _supportsUserInput;
+    BOOL _valuesPopulatedDuringWorkout;
+    int _limitRoundIndex;
+    int _limitExerciseIndex;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *weightButton;
@@ -50,7 +53,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateGeneratorVC *)masterController chainNumber:(NSNumber *)chainNumber supportsUserInput:(BOOL)supportsUserInput chainTemplate:(TJBChainTemplate *)chainTemplate{
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateGeneratorVC *)masterController chainNumber:(NSNumber *)chainNumber supportsUserInput:(BOOL)supportsUserInput chainTemplate:(TJBChainTemplate *)chainTemplate valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout limitRoundIndex:(int)limitRoundIndex limitExerciseIndex:(int)limitExerciseIndex{
     self = [super init];
     
     self.targetingWeight = targetingWeight;
@@ -62,6 +65,10 @@
     self.chainNumber = chainNumber;
     _supportsUserInput = supportsUserInput;
     self.chainTemplate = chainTemplate;
+    
+    _valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
+    _limitRoundIndex = limitRoundIndex;
+    _limitExerciseIndex = limitExerciseIndex;
     
     return self;
 }

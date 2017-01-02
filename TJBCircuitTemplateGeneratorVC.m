@@ -40,6 +40,8 @@
     // core
     BOOL _supportsUserInput;
     BOOL _valuesPopulatedDuringWorkout;
+    int _limitRoundIndex;
+    int _limitExerciseIndex;
 }
 // core
 @property (nonatomic, strong) NSNumber *targetingWeight;
@@ -96,7 +98,7 @@ static NSString * const defaultValue = @"unselected";
     return self;
 }
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout activePopulationBlock:(void (^)(void))activePopulationBlock{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout limitRoundIndex:(int)limitRoundIndex limitExerciseIndex:(int)limitExerciseIndex{
     self = [super init];
     
     self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
@@ -121,7 +123,9 @@ static NSString * const defaultValue = @"unselected";
     self.name = chainTemplate.name;
     self.chainTemplate = chainTemplate;
     _supportsUserInput = supportsUserInput;
-    valuesPopulatedDuringWorkout = YES;
+    valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
+    _limitRoundIndex = limitRoundIndex;
+    _limitExerciseIndex = limitExerciseIndex;
     
     return self;
 }
@@ -237,7 +241,10 @@ static NSString * const defaultValue = @"unselected";
                                                                                                exerciseName: exerciseName
                                                                                            masterController: self
                                                                                           supportsUserInput: _supportsUserInput
-                                                                                              chainTemplate: self.chainTemplate];
+                                                                                              chainTemplate: self.chainTemplate
+                                                                               valuesPopulatedDuringWorkout: NO
+                                                                                            limitRoundIndex: 0
+                                                                                         limitExerciseIndex: 0];
         ;
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -481,7 +488,8 @@ static NSString * const defaultValue = @"unselected";
                 TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                                 supportsUserInput: NO
                                                                                      valuesPopulatedDuringWorkout: NO
-                                                                                            activePopulationBlock: nil];
+                                                                                                  limitRoundIndex: 0
+                                                                                               limitExerciseIndex: 0];
                 
                 [vc1.tabBarItem setTitle: @"Active"];
                 [vc2.tabBarItem setTitle: @"Targets"];
