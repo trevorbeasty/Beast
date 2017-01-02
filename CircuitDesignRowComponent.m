@@ -50,113 +50,6 @@
 
 #pragma mark - Instantiation
 
-- (void)viewAesthetics{
-    NSArray *buttons = @[self.weightButton,
-                      self.repsButton,
-                      self.restButton];
-    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
-    for (UIButton *button in buttons){
-        button.backgroundColor = [aesthetics buttonBackgroundColor];
-        [button setTitleColor: [aesthetics buttonTextColor]
-                     forState: UIControlStateNormal];
-        
-        CALayer *layer = button.layer;
-        layer.masksToBounds = YES;
-        layer.cornerRadius = 8.0;
-        layer.opacity = .85;
-    }
-}
-
-- (void)populateButtonsWithDataIfNotCollectingUserInput{
-    void (^buttonState_UserInputCollected)(UIButton *) = ^(UIButton *button){
-        button.backgroundColor = [UIColor whiteColor];
-        [button setTitleColor: [UIColor blackColor]
-                     forState: UIControlStateNormal];
-    };
-    NSArray *buttons = @[self.weightButton,
-                         self.repsButton,
-                         self.restButton];
-    for (UIButton *button in buttons){
-        buttonState_UserInputCollected(button);
-    }
-    if (_supportsUserInput == NO){
-        int chainIndex = [self.chainNumber intValue] - 1;
-        int roundIndex = [self.roundNumber intValue] - 1;
-        
-        TJBChainTemplate *chainTemplate = self.chainTemplate;
-        
-        if (chainTemplate.targetingWeight == YES){
-            NSString *weightString = [[NSNumber numberWithDouble: chainTemplate.weightArrays[chainIndex].numbers[roundIndex].value] stringValue];
-            [self.weightButton setTitle: weightString
-                               forState: UIControlStateNormal];
-        } else{
-//            [self.weightButton setTitle: @""
-//                               forState: UIControlStateNormal];
-        }
-        
-        if (chainTemplate.targetingReps == YES){
-            NSString *repsString = [[NSNumber numberWithDouble: chainTemplate.repsArrays[chainIndex].numbers[roundIndex].value] stringValue];
-            [self.repsButton setTitle: repsString
-                             forState: UIControlStateNormal];
-        } else{
-//            [self.repsButton setTitle: @""
-//                             forState: UIControlStateNormal];
-        }
-        
-        if (chainTemplate.targetingRestTime == YES){
-            double rest = chainTemplate.targetRestTimeArrays[chainIndex].numbers[roundIndex].value;
-            NSString *restString =[[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)rest];
-            [self.restButton setTitle: restString
-                             forState: UIControlStateNormal];
-        } else{
-//            [self.restButton setTitle: @""
-//                             forState: UIControlStateNormal];
-        }
-    }
-}
-
-- (void)configureViewsAccordingly{
-    if ([self.targetsVaryByRound intValue] == 0)
-    {
-        self.roundLabel.text = @"All Rounds";
-    }
-    else
-    {
-        self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
-    }
-    
-    void (^eraseButton)(UIButton *) = ^(UIButton *button){
-        button.backgroundColor = [UIColor whiteColor];
-        [button setTitle: @""
-                forState: UIControlStateNormal];
-        button.enabled = NO;
-    };
-    
-    if ([self.targetingWeight intValue] == NO)
-    {
-        eraseButton(self.weightButton);
-    } else{
-        
-    }
-    
-    if ([self.targetingReps intValue] == NO)
-    {
-        eraseButton(self.repsButton);
-    }
-    
-    if ([self.targetingRest intValue] == NO)
-    {
-        eraseButton(self.restButton);
-    }
-}
-
-- (void)viewDidLoad
-{
-    [self viewAesthetics];
-    [self populateButtonsWithDataIfNotCollectingUserInput];
-    [self configureViewsAccordingly];
-}
-
 - (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateGeneratorVC *)masterController chainNumber:(NSNumber *)chainNumber supportsUserInput:(BOOL)supportsUserInput chainTemplate:(TJBChainTemplate *)chainTemplate{
     self = [super init];
     
@@ -171,6 +64,112 @@
     self.chainTemplate = chainTemplate;
     
     return self;
+}
+
+#pragma mark - View Life Cycle
+
+- (void)viewDidLoad{
+    [self viewAesthetics];
+    [self populateButtonsWithDataIfNotCollectingUserInput];
+}
+
+- (void)viewAesthetics{
+    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
+
+    
+    // round label
+    if ([self.targetsVaryByRound intValue] == 0)
+    {
+        self.roundLabel.text = @"All Rounds";
+    }
+    else
+    {
+        self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
+    }
+    
+    // button appearance
+    void (^eraseButton)(UIButton *) = ^(UIButton *button){
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitle: @""
+                forState: UIControlStateNormal];
+        button.enabled = NO;
+    };
+    
+    if (_supportsUserInput == YES){
+        void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
+            button.backgroundColor = [aesthetics buttonBackgroundColor];
+            [button setTitleColor: [aesthetics buttonTextColor]
+                         forState: UIControlStateNormal];
+            CALayer *layer = button.layer;
+            layer.masksToBounds = YES;
+            layer.cornerRadius = 8.0;
+            layer.opacity = .85;
+        };
+        
+        if ([self.targetingWeight boolValue] == YES){
+            activeButtonConfiguration(self.weightButton);
+        } else{
+            eraseButton(self.weightButton);
+        }
+        
+        if ([self.targetingReps boolValue] == YES){
+            activeButtonConfiguration(self.repsButton);
+        } else{
+            eraseButton(self.repsButton);
+        }
+        
+        if ([self.targetingRest boolValue] == YES){
+            activeButtonConfiguration(self.restButton);
+        } else{
+            eraseButton(self.restButton);
+        }
+    } else if (_supportsUserInput == NO){
+        NSArray *buttons = @[self.weightButton,
+                             self.repsButton,
+                             self.restButton];
+        for (UIButton *button in buttons){
+            [button setTitleColor: [UIColor blackColor]
+                         forState: UIControlStateNormal];
+        }
+        
+        if ([self.targetingWeight intValue] == NO){
+            eraseButton(self.weightButton);
+        }
+        if ([self.targetingReps intValue] == NO){
+            eraseButton(self.repsButton);
+        }
+        if ([self.targetingRest intValue] == NO){
+            eraseButton(self.restButton);
+        }
+    }
+}
+
+- (void)populateButtonsWithDataIfNotCollectingUserInput{
+    if (_supportsUserInput == NO){
+        int chainIndex = [self.chainNumber intValue] - 1;
+        int roundIndex = [self.roundNumber intValue] - 1;
+        
+        TJBChainTemplate *chainTemplate = self.chainTemplate;
+        
+        if (chainTemplate.targetingWeight == YES){
+            NSString *weightString = [[NSNumber numberWithDouble: chainTemplate.weightArrays[chainIndex].numbers[roundIndex].value] stringValue];
+            [self.weightButton setTitle: weightString
+                               forState: UIControlStateNormal];
+        };
+        
+        if (chainTemplate.targetingReps == YES){
+            NSString *repsString = [[NSNumber numberWithDouble: chainTemplate.repsArrays[chainIndex].numbers[roundIndex].value] stringValue];
+            [self.repsButton setTitle: repsString
+                             forState: UIControlStateNormal];
+        };
+        
+        if (chainTemplate.targetingRestTime == YES){
+            double rest = chainTemplate.targetRestTimeArrays[chainIndex].numbers[roundIndex].value;
+            NSString *restString =[[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)rest];
+            [self.restButton setTitle: restString
+                             forState: UIControlStateNormal];
+        };
+    }
 }
 
 #pragma mark - Button Actions
