@@ -48,14 +48,17 @@
 - (IBAction)didPressBeginSet;
 
 // UI
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
 @property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *roundColumnLabel;
 
-@property (weak, nonatomic) IBOutlet UILabel *nextUpExerciseLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *remainingRestLabel;
+@property (weak, nonatomic) IBOutlet UILabel *restLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *beginSetButton;
 
