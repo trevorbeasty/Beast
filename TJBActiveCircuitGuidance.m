@@ -318,15 +318,13 @@ static NSString * const defaultValue = @"default value";
                                  completion: nil];
     };
     
-    if(!self.selectedTimeDelay)
-    {
+    if(!self.selectedTimeDelay){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             self.selectedTimeDelay = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self didPressBeginSet];
         };
-        
         
         [self presentNumberSelectionSceneWithNumberType: RestType
                                          numberMultiple: [NSNumber numberWithInt: 5]
@@ -337,8 +335,7 @@ static NSString * const defaultValue = @"default value";
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    else if (_setCompletedButtonPressed == NO)
-    {
+    else if (_setCompletedButtonPressed == NO){
         void(^block)(int) = ^(int timeInSeconds){
             _setCompletedButtonPressed = YES;
             [self dismissViewControllerAnimated: NO
@@ -348,14 +345,13 @@ static NSString * const defaultValue = @"default value";
         
         TJBInSetVC *vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.selectedTimeDelay intValue]
                                      DidPressSetCompletedBlock: block
-                          exerciseName: self.chainTemplate.exercises[_activeExerciseIndex].name];
+                                                  exerciseName: self.chainTemplate.exercises[_activeExerciseIndex].name];
         
         [self presentViewController: vc
                            animated: NO
                          completion: nil];
     }
-    else if (!self.selectedTimeLag)
-    {
+    else if (!self.selectedTimeLag){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             self.selectedTimeLag = number;
             [self dismissViewControllerAnimated: NO
@@ -392,8 +388,7 @@ static NSString * const defaultValue = @"default value";
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    else if (!self.selectedWeight)
-    {
+    else if (!self.selectedWeight){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             self.selectedWeight = number;
             [self dismissViewControllerAnimated: NO
@@ -417,8 +412,7 @@ static NSString * const defaultValue = @"default value";
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    else if (!self.selectedReps)
-    {
+    else if (!self.selectedReps){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             self.selectedReps = number;
             [self dismissViewControllerAnimated: NO
@@ -442,16 +436,25 @@ static NSString * const defaultValue = @"default value";
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    else
-    {
-        [self incrementControllerAndUpdateViews];
+    else{
+        // order dependent - addSelectedValues... must be called before incrementController...
         [self addSelectedValuesToRealizedChainObject];
+        [self incrementControllerAndUpdateViews];
         [self setUserSelectedValuesToNil];
     }
 }
 
 - (void)addSelectedValuesToRealizedChainObject{
+    // need to ammend core data model to include start date as well as end date
+    TJBRealizedChain *chain = self.realizedChain;
     
+    TJBNumberTypeArrayComp *weight = chain.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+    weight.value = [self.selectedWeight floatValue];
+    weight.isDefaultObject = NO;
+    
+    TJBNumberTypeArrayComp *reps = chain.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+    reps.value = [self.selectedReps floatValue];
+    reps.isDefaultObject = NO;
 }
 
 - (void)incrementControllerAndUpdateViews{

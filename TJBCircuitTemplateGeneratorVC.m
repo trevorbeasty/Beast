@@ -39,6 +39,7 @@
 {
     // core
     BOOL _supportsUserInput;
+    BOOL _valuesPopulatedDuringWorkout;
 }
 // core
 @property (nonatomic, strong) NSNumber *targetingWeight;
@@ -90,11 +91,12 @@ static NSString * const defaultValue = @"unselected";
     self.name = name;
     
     _supportsUserInput = supportsUserInput;
+    _valuesPopulatedDuringWorkout = NO;
     
     return self;
 }
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout activePopulationBlock:(void (^)(void))activePopulationBlock{
     self = [super init];
     
     self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
@@ -119,6 +121,7 @@ static NSString * const defaultValue = @"unselected";
     self.name = chainTemplate.name;
     self.chainTemplate = chainTemplate;
     _supportsUserInput = supportsUserInput;
+    valuesPopulatedDuringWorkout = YES;
     
     return self;
 }
@@ -476,7 +479,9 @@ static NSString * const defaultValue = @"unselected";
             void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
                 TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
                 TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
-                                                                                                supportsUserInput: NO];
+                                                                                                supportsUserInput: NO
+                                                                                     valuesPopulatedDuringWorkout: NO
+                                                                                            activePopulationBlock: nil];
                 
                 [vc1.tabBarItem setTitle: @"Active"];
                 [vc2.tabBarItem setTitle: @"Targets"];
