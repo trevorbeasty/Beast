@@ -114,8 +114,11 @@ static NSString * const defaultValue = @"default value";
     NSArray *labels = @[self.exerciseColumnLabel,
                         self.weightColumnLabel,
                         self.repsColumnLabel];
-    [TJBAestheticsController configureViewsWithType1Format: labels
-                                               withOpacity: 1];
+    for (UILabel *label in labels){
+        label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
+    }
+//    [TJBAestheticsController configureViewsWithType1Format: labels
+//                                               withOpacity: 1];
     
     // buttons
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.beginSetButton]
