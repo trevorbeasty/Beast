@@ -36,6 +36,8 @@
 #import "RowComponentActiveUpdatingProtocol.h"
 #import "CircuitDesignRowComponent.h"
 
+//#import "TJBGlobalParameters.h"
+
 //#import "TJBWeightArray+CoreDataProperties.h"
 
 @interface TJBCircuitTemplateGeneratorVC ()
@@ -47,6 +49,8 @@
 // values populated during workout
 // this controller will keep track of its children rows so that it can updated their values during workouts to show active progress
 @property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
+// for updating rest times during the workout
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *activeUpdateDates;
 
 
 // core
@@ -139,7 +143,7 @@ static NSString * const defaultValue = @"unselected";
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
-    [self createContainerArrayForChildRowControllers];
+    [self createContainerArraysForChildRowControllersAndDates];
     [self createDataStructure];
     [self createSubviewsAndLayoutConstraints];
     [self createNavigationItem];
@@ -147,13 +151,17 @@ static NSString * const defaultValue = @"unselected";
     [self addBackgroundView];
 }
 
-- (void)createContainerArrayForChildRowControllers{
+- (void)createContainerArraysForChildRowControllersAndDates{
     self.childRowControllers = [[NSMutableArray alloc] init];
+    self.activeUpdateDates = [[NSMutableArray alloc] init];
     
     int exerciseLimit = [self.numberOfExercises intValue];
     for (int i = 0; i < exerciseLimit; i++){
         NSMutableArray *array = [[NSMutableArray alloc] init];
         [self.childRowControllers addObject: array];
+        
+        NSMutableArray *dateArray = [[NSMutableArray alloc] init];
+        [self.activeUpdateDates addObject: dateArray];
     }
 }
 
@@ -803,10 +811,36 @@ static NSString * const defaultValue = @"unselected";
     [array addObject: rowController];
 }
 
-- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex{
-    CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent = self.childRowControllers[exerciseIndex][roundIndex];
-    [rowComponent updateLabelWithNumberType: numberType
-                                      value: number];
+- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex date:(NSDate *)date{
+    if (numberType == RestType){
+        NSMutableArray *array = self.activeUpdateDates[exerciseIndex];
+        [array addObject: date];
+        
+        BOOL isFirstExerciseInFirstRound = exerciseIndex == 0 && roundIndex == 0;
+        if (!isFirstExerciseInFirstRound){
+            NSDate *laterDate = self.activeUpdateDates[exerciseIndex][roundIndex];
+            NSDate *earlierDate;
+            
+            CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent;
+            
+            if (exerciseIndex == 0){
+                int maxExerciseIndex = [self.numberOfExercises intValue] - 1;
+                earlierDate = self.activeUpdateDates[maxExerciseIndex][roundIndex - 1];
+                rowComponent = self.childRowControllers[maxExerciseIndex][roundIndex - 1];
+            } else{
+                earlierDate = self.activeUpdateDates[exerciseIndex - 1][roundIndex];
+                rowComponent = self.childRowControllers[exerciseIndex - 1][roundIndex];
+            }
+            
+            double restAsDouble = [laterDate timeIntervalSinceDate: earlierDate];
+            [rowComponent updateLabelWithNumberType: numberType
+                                              value: restAsDouble];
+        }
+    } else{
+        CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent = self.childRowControllers[exerciseIndex][roundIndex];
+        [rowComponent updateLabelWithNumberType: numberType
+                                          value: number];
+    }
 }
 
 - (BOOL)doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout{

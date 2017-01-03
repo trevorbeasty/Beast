@@ -380,6 +380,15 @@ static NSString * const defaultValue = @"default value";
             arrayComp.value = date;
             arrayComp.isDefaultObject = NO;
             
+            // circuit template generator
+            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
+                [self.circuitTemplateGenerator userDidSelectNumber: 0
+                                                    withNumberType: RestType
+                                                  forExerciseIndex: _activeExerciseIndex
+                                                     forRoundIndex: _activeRoundIndex
+                                                              date: date];
+            }
+            
             // recursive
             [self didPressBeginSet];
         };
@@ -409,7 +418,8 @@ static NSString * const defaultValue = @"default value";
                 [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
                                                     withNumberType: WeightType
                                                   forExerciseIndex: _activeExerciseIndex
-                                                     forRoundIndex: _activeRoundIndex];
+                                                     forRoundIndex: _activeRoundIndex
+                                                              date: nil];
             }
             
             [self didPressBeginSet];
@@ -441,7 +451,8 @@ static NSString * const defaultValue = @"default value";
                 [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
                                                     withNumberType: RepsType
                                                   forExerciseIndex: _activeExerciseIndex
-                                                     forRoundIndex: _activeRoundIndex];
+                                                     forRoundIndex: _activeRoundIndex
+                                                              date: nil];
             }
             
             [self didPressBeginSet];
