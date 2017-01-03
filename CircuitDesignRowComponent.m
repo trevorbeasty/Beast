@@ -80,7 +80,7 @@
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
 
     // round label
-    if ([self.targetsVaryByRound intValue] == 0)
+    if ([self.targetsVaryByRound intValue] == 0 && _supportsUserInput == YES)
     {
         self.roundLabel.text = @"All Rounds";
     }

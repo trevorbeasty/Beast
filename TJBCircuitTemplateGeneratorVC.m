@@ -131,7 +131,7 @@ static NSString * const defaultValue = @"unselected";
     self.chainTemplate = chainTemplate;
     
     _supportsUserInput = supportsUserInput;
-    valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
+    _valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
     
     return self;
 }
@@ -219,7 +219,7 @@ static NSString * const defaultValue = @"unselected";
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
     
-    if ([self.targetsVaryByRound intValue])
+    if ([self.targetsVaryByRound intValue] || _supportsUserInput == NO)
     {
         componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
     }
@@ -259,7 +259,7 @@ static NSString * const defaultValue = @"unselected";
                                                                                            masterController: self
                                                                                           supportsUserInput: _supportsUserInput
                                                                                               chainTemplate: self.chainTemplate
-                                                                               valuesPopulatedDuringWorkout: NO];
+                                                                               valuesPopulatedDuringWorkout: _valuesPopulatedDuringWorkout];
         
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;

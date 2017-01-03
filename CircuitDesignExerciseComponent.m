@@ -153,7 +153,7 @@
                                                                                           chainNumber: self.chainNumber
                                                                                     supportsUserInput: _supportsUserInput
                                                                                         chainTemplate: self.chainTemplate
-                                                                         valuesPopulatedDuringWorkout: NO];
+                                                                         valuesPopulatedDuringWorkout: _valuesPopulatedDuringWorkout];
         // add the newly created row component to the master controller's child collection
         [self.masterController addChildRowController: rowVC
                                     forExerciseIndex: [self.chainNumber intValue]
@@ -175,7 +175,7 @@
         
         NSString *verticalAppendString;
         
-        if ([self.targetsVaryByRound intValue] == 0)
+        if ([self.targetsVaryByRound intValue] == 0 && _supportsUserInput == YES)
         {
             i = [self.numberOfRounds intValue] - 1;
         }
