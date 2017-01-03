@@ -18,6 +18,8 @@
 
 #import "TJBAestheticsController.h"
 
+#import "TJBStopwatch.h"
+
 @interface CircuitDesignRowComponent ()
 {
     // core
@@ -218,6 +220,7 @@
 #pragma mark - <RowComponentActiveUpdatingProtocol>
 - (void)updateLabelWithNumberType:(NumberType)numberType value:(double)value{
     NSString *string = [[NSNumber numberWithDouble: value] stringValue];
+    NSString *restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: value];
     
     switch (numberType) {
         case WeightType:
@@ -229,7 +232,7 @@
                              forState: UIControlStateNormal];
             break;
         case RestType:
-            [self.restButton setTitle: string
+            [self.restButton setTitle: restString
                              forState: UIControlStateNormal];
             break;
             

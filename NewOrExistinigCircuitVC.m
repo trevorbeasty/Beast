@@ -123,6 +123,8 @@
     TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                     supportsUserInput: NO
                                                                          valuesPopulatedDuringWorkout: YES];
+    // need to load the view ahead of time so that it can be ammended without the user first directly accessing it
+    [vc3 loadViewIfNeeded];
     TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                                    circuitTemplateGenerator: vc3];
     TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
