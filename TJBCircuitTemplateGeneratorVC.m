@@ -33,6 +33,8 @@
 
 #import "TJBAestheticsController.h"
 
+#import "RowComponentActiveUpdatingProtocol.h"
+
 //#import "TJBWeightArray+CoreDataProperties.h"
 
 @interface TJBCircuitTemplateGeneratorVC ()
@@ -40,9 +42,11 @@
     // core
     BOOL _supportsUserInput;
     BOOL _valuesPopulatedDuringWorkout;
-    int _limitRoundIndex;
-    int _limitExerciseIndex;
 }
+// values populated during workout
+// this controller will keep track of its children rows so that it can updated their values during workouts to show active progress
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
+
 // core
 @property (nonatomic, strong) NSNumber *targetingWeight;
 @property (nonatomic, strong) NSNumber *targetingReps;
@@ -92,13 +96,14 @@ static NSString * const defaultValue = @"unselected";
     self.numberOfRounds = numberOfRounds;
     self.name = name;
     
+    // secondary capabilities
     _supportsUserInput = supportsUserInput;
     _valuesPopulatedDuringWorkout = NO;
     
     return self;
 }
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout limitRoundIndex:(int)limitRoundIndex limitExerciseIndex:(int)limitExerciseIndex{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout{
     self = [super init];
     
     self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
@@ -122,10 +127,9 @@ static NSString * const defaultValue = @"unselected";
     
     self.name = chainTemplate.name;
     self.chainTemplate = chainTemplate;
+    
     _supportsUserInput = supportsUserInput;
     valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
-    _limitRoundIndex = limitRoundIndex;
-    _limitExerciseIndex = limitExerciseIndex;
     
     return self;
 }
@@ -138,6 +142,17 @@ static NSString * const defaultValue = @"unselected";
     [self createNavigationItem];
     [self viewAesthetics];
     [self addBackgroundView];
+    [self createContainerArrayForChildRowControllers];
+}
+
+- (void)createContainerArrayForChildRowControllers{
+    self.childRowControllers = [[NSMutableArray alloc] init];
+    
+    int exerciseLimit = [self.numberOfExercises intValue];
+    for (int i = 0; i < exerciseLimit; i++){
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        [self.childRowControllers addObject: array];
+    }
 }
 
 - (void)addBackgroundView{
@@ -242,10 +257,8 @@ static NSString * const defaultValue = @"unselected";
                                                                                            masterController: self
                                                                                           supportsUserInput: _supportsUserInput
                                                                                               chainTemplate: self.chainTemplate
-                                                                               valuesPopulatedDuringWorkout: NO
-                                                                                            limitRoundIndex: 0
-                                                                                         limitExerciseIndex: 0];
-        ;
+                                                                               valuesPopulatedDuringWorkout: NO];
+        
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -487,9 +500,7 @@ static NSString * const defaultValue = @"unselected";
                 TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
                 TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                                 supportsUserInput: NO
-                                                                                     valuesPopulatedDuringWorkout: NO
-                                                                                                  limitRoundIndex: 0
-                                                                                               limitExerciseIndex: 0];
+                                                                                     valuesPopulatedDuringWorkout: NO];
                 
                 [vc1.tabBarItem setTitle: @"Active"];
                 [vc2.tabBarItem setTitle: @"Targets"];
@@ -782,6 +793,11 @@ static NSString * const defaultValue = @"unselected";
 - (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber{
     int index = [chainNumber intValue] - 1;
     self.exerciseData[index] = exercise;
+}
+
+- (void)addChildRowController:(CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+    NSMutableArray *array = self.childRowControllers[exerciseIndex];
+    [array addObject: rowController];
 }
 
 

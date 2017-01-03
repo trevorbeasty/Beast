@@ -22,9 +22,8 @@
     // core
     BOOL _supportsUserInput;
     BOOL _valuesPopulatedDuringWorkout;
-    int _limitRoundIndex;
-    int _limitExerciseIndex;
 }
+
 // core
 @property (nonatomic, strong) NSNumber *numberOfRounds;
 @property (nonatomic, strong) NSNumber *targetingWeight;
@@ -50,20 +49,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
 - (IBAction)didPressSelectExercise:(id)sender;
 
+@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC <TJBCircuitTemplateUserInputDelegate> *masterController;
 
 @end
-
-
-
-
-
 
 @implementation CircuitDesignExerciseComponent
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController supportsUserInput:(BOOL)supportsUserInput chainTemplate:(id)chainTemplate valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout limitRoundIndex:(int)limitRoundIndex limitExerciseIndex:(int)limitExerciseIndex
-{
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exerciseName:(NSString *)exerciseName masterController:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)masterController supportsUserInput:(BOOL)supportsUserInput chainTemplate:(id)chainTemplate valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout{
     self = [super init];
     
     self.numberOfRounds = numberOfRounds;
@@ -78,8 +72,6 @@
     self.chainTemplate = chainTemplate;
     
     _valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
-    _limitRoundIndex = limitRoundIndex;
-    _limitExerciseIndex = limitExerciseIndex;
     
     return self;
 }
@@ -161,9 +153,11 @@
                                                                                           chainNumber: self.chainNumber
                                                                                     supportsUserInput: _supportsUserInput
                                                                                         chainTemplate: self.chainTemplate
-                                                                         valuesPopulatedDuringWorkout: NO
-                                                                                      limitRoundIndex: 0
-                                                                                   limitExerciseIndex: 0];
+                                                                         valuesPopulatedDuringWorkout: NO];
+        // add the newly created row component to the master controller's child collection
+        [self.masterController addChildRowController: rowVC
+                                    forExerciseIndex: [self.chainNumber intValue]
+                                          roundIndex: i];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

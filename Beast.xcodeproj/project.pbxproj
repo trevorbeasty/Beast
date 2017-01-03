@@ -125,6 +125,7 @@
 		0B86FB6F1E11638E000D1B5F /* NewOrExistinigCircuitVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewOrExistinigCircuitVC.h; sourceTree = "<group>"; };
 		0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewOrExistinigCircuitVC.m; sourceTree = "<group>"; };
 		0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewOrExistinigCircuitVC.xib; sourceTree = "<group>"; };
+		0BA8ACE31E1BCAF400EE10C2 /* RowComponentActiveUpdatingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowComponentActiveUpdatingProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +207,7 @@
 				0B843CC21E02D34A0093F057 /* CircuitDesignRowComponent.h */,
 				0B843CC31E02D34A0093F057 /* CircuitDesignRowComponent.m */,
 				0B843CC41E02D34A0093F057 /* CircuitDesignRowComponent.xib */,
+				0BA8ACE31E1BCAF400EE10C2 /* RowComponentActiveUpdatingProtocol.h */,
 			);
 			name = "Row Component";
 			sourceTree = "<group>";

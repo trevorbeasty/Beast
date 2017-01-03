@@ -23,8 +23,6 @@
     // core
     BOOL _supportsUserInput;
     BOOL _valuesPopulatedDuringWorkout;
-    int _limitRoundIndex;
-    int _limitExerciseIndex;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *weightButton;
@@ -45,7 +43,7 @@
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
-@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC *masterController;
+@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC <TJBCircuitTemplateUserInputDelegate> *masterController;
 
 @end
 
@@ -53,7 +51,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateGeneratorVC *)masterController chainNumber:(NSNumber *)chainNumber supportsUserInput:(BOOL)supportsUserInput chainTemplate:(TJBChainTemplate *)chainTemplate valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout limitRoundIndex:(int)limitRoundIndex limitExerciseIndex:(int)limitExerciseIndex{
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateGeneratorVC *)masterController chainNumber:(NSNumber *)chainNumber supportsUserInput:(BOOL)supportsUserInput chainTemplate:(TJBChainTemplate *)chainTemplate valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout{
     self = [super init];
     
     self.targetingWeight = targetingWeight;
@@ -67,8 +65,6 @@
     self.chainTemplate = chainTemplate;
     
     _valuesPopulatedDuringWorkout = valuesPopulatedDuringWorkout;
-    _limitRoundIndex = limitRoundIndex;
-    _limitExerciseIndex = limitExerciseIndex;
     
     return self;
 }
@@ -83,7 +79,6 @@
 - (void)viewAesthetics{
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
 
-    
     // round label
     if ([self.targetsVaryByRound intValue] == 0)
     {
@@ -153,29 +148,38 @@
 
 - (void)populateButtonsWithDataIfNotCollectingUserInput{
     if (_supportsUserInput == NO){
-        int chainIndex = [self.chainNumber intValue] - 1;
-        int roundIndex = [self.roundNumber intValue] - 1;
-        
-        TJBChainTemplate *chainTemplate = self.chainTemplate;
-        
-        if (chainTemplate.targetingWeight == YES){
-            NSString *weightString = [[NSNumber numberWithDouble: chainTemplate.weightArrays[chainIndex].numbers[roundIndex].value] stringValue];
-            [self.weightButton setTitle: weightString
-                               forState: UIControlStateNormal];
-        };
-        
-        if (chainTemplate.targetingReps == YES){
-            NSString *repsString = [[NSNumber numberWithDouble: chainTemplate.repsArrays[chainIndex].numbers[roundIndex].value] stringValue];
-            [self.repsButton setTitle: repsString
-                             forState: UIControlStateNormal];
-        };
-        
-        if (chainTemplate.targetingRestTime == YES){
-            double rest = chainTemplate.targetRestTimeArrays[chainIndex].numbers[roundIndex].value;
-            NSString *restString =[[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)rest];
-            [self.restButton setTitle: restString
-                             forState: UIControlStateNormal];
-        };
+        if (_valuesPopulatedDuringWorkout == YES){
+            
+            
+            
+            
+            
+        } else{
+            int chainIndex = [self.chainNumber intValue] - 1;
+            int roundIndex = [self.roundNumber intValue] - 1;
+            
+            TJBChainTemplate *chainTemplate = self.chainTemplate;
+            
+            if (chainTemplate.targetingWeight == YES){
+                NSString *weightString = [[NSNumber numberWithDouble: chainTemplate.weightArrays[chainIndex].numbers[roundIndex].value] stringValue];
+                [self.weightButton setTitle: weightString
+                                   forState: UIControlStateNormal];
+            };
+            
+            if (chainTemplate.targetingReps == YES){
+                NSString *repsString = [[NSNumber numberWithDouble: chainTemplate.repsArrays[chainIndex].numbers[roundIndex].value] stringValue];
+                [self.repsButton setTitle: repsString
+                                 forState: UIControlStateNormal];
+            };
+            
+            if (chainTemplate.targetingRestTime == YES){
+                double rest = chainTemplate.targetRestTimeArrays[chainIndex].numbers[roundIndex].value;
+                NSString *restString =[[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)rest];
+                [self.restButton setTitle: restString
+                                 forState: UIControlStateNormal];
+            };
+        }
+  
     }
 }
 
@@ -208,7 +212,10 @@
                                                     button: self.restButton];
 }
 
-
+#pragma mark - <RowComponentActiveUpdatingProtocol>
+- (void)updateLabelWithNumberType:(NumberType)numberType value:(double)value{
+    
+}
 
 @end
 

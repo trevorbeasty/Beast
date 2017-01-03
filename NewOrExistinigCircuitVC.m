@@ -123,9 +123,7 @@
     TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
     TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                     supportsUserInput: NO
-                                                                         valuesPopulatedDuringWorkout: NO
-                                                                                      limitRoundIndex: 0
-                                                                                   limitExerciseIndex: 0];
+                                                                         valuesPopulatedDuringWorkout: NO];
     
     [vc1.tabBarItem setTitle: @"Active"];
     [vc2.tabBarItem setTitle: @"Targets"];
