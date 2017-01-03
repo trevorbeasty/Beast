@@ -436,6 +436,14 @@ static NSString * const defaultValue = @"default value";
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
             
+            // circuit template generator
+            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
+                [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
+                                                    withNumberType: RepsType
+                                                  forExerciseIndex: _activeExerciseIndex
+                                                     forRoundIndex: _activeRoundIndex];
+            }
+            
             [self didPressBeginSet];
         };
         
