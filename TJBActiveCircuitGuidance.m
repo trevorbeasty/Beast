@@ -25,6 +25,8 @@
 
 #import "TJBAestheticsController.h"
 
+#import "TJBCircuitTemplateGeneratorVC.h"
+
 @interface TJBActiveCircuitGuidance ()
 
 {
@@ -79,6 +81,8 @@
 
 // realized chain
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+
+@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
 
 @end
 
@@ -173,12 +177,13 @@ static NSString * const defaultValue = @"default value";
 
 #pragma mark - Init
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator{
     self = [super init];
     
     // IV's
     
     self.chainTemplate = chainTemplate;
+    self.circuitTemplateGenerator = circuitTemplateGenerator;
     
     [self setDerivedInstanceVariables];
     
@@ -398,6 +403,14 @@ static NSString * const defaultValue = @"default value";
             TJBNumberTypeArrayComp *arrayComp = self.realizedChain.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
+            
+            // circuit template generator
+            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
+                [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
+                                                    withNumberType: WeightType
+                                                  forExerciseIndex: _activeExerciseIndex
+                                                     forRoundIndex: _activeRoundIndex];
+            }
             
             [self didPressBeginSet];
         };

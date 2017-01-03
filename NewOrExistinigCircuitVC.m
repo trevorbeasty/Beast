@@ -120,18 +120,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-    TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
+    TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
+                                                                                    supportsUserInput: NO
+                                                                         valuesPopulatedDuringWorkout: YES];
+    TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
+                                                                   circuitTemplateGenerator: vc3];
     TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                     supportsUserInput: NO
                                                                          valuesPopulatedDuringWorkout: NO];
     
     [vc1.tabBarItem setTitle: @"Active"];
     [vc2.tabBarItem setTitle: @"Targets"];
+    [vc3.tabBarItem setTitle: @"Progress"];
     
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.tabBar.translucent = NO;
     [tabBarController setViewControllers: @[vc1,
-                                            vc2]];
+                                            vc2,
+                                            vc3]];
     
     [self presentViewController: tabBarController
                        animated: YES

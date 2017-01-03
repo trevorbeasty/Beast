@@ -23,5 +23,6 @@
 
 // child row controller collection
 - (void)addChildRowController:(CircuitDesignRowComponent <RowComponentActiveUpdatingProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
+- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex;
 
 @end

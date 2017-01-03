@@ -22,6 +22,6 @@
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout;
 
-
+- (BOOL)doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout;
 
 @end

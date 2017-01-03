@@ -34,6 +34,7 @@
 #import "TJBAestheticsController.h"
 
 #import "RowComponentActiveUpdatingProtocol.h"
+#import "CircuitDesignRowComponent.h"
 
 //#import "TJBWeightArray+CoreDataProperties.h"
 
@@ -46,6 +47,7 @@
 // values populated during workout
 // this controller will keep track of its children rows so that it can updated their values during workouts to show active progress
 @property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
+
 
 // core
 @property (nonatomic, strong) NSNumber *targetingWeight;
@@ -497,7 +499,8 @@ static NSString * const defaultValue = @"unselected";
                                                                            message: message
                                                                     preferredStyle: UIAlertControllerStyleAlert];
             void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
-                TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate];
+                TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
+                                                                               circuitTemplateGenerator: nil];
                 TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
                                                                                                 supportsUserInput: NO
                                                                                      valuesPopulatedDuringWorkout: NO];
@@ -798,6 +801,20 @@ static NSString * const defaultValue = @"unselected";
 - (void)addChildRowController:(CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
     NSMutableArray *array = self.childRowControllers[exerciseIndex];
     [array addObject: rowController];
+}
+
+- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex{
+    CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent = self.childRowControllers[exerciseIndex][roundIndex];
+    [rowComponent updateLabelWithNumberType: numberType
+                                      value: number];
+}
+
+- (BOOL)doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout{
+    if (_supportsUserInput == NO && _valuesPopulatedDuringWorkout == YES){
+        return YES;
+    } else{
+        return NO;
+    }
 }
 
 

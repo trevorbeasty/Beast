@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TJBCircuitTemplateUserInputDelegate.h"
+
 @class TJBChainTemplate;
+@class TJBCircuitTemplateGeneratorVC;
 
 @interface TJBActiveCircuitGuidance : UIViewController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator;
 
 @end

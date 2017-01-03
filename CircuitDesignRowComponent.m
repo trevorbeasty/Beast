@@ -149,11 +149,14 @@
 - (void)populateButtonsWithDataIfNotCollectingUserInput{
     if (_supportsUserInput == NO){
         if (_valuesPopulatedDuringWorkout == YES){
-            
-            
-            
-            
-            
+            NSArray *buttons = @[self.weightButton,
+                                 self.repsButton,
+                                 self.restButton];
+            NSString *blank = @"";
+            for (UIButton *button in buttons){
+                [button setTitle: blank
+                        forState: UIControlStateNormal];
+            }
         } else{
             int chainIndex = [self.chainNumber intValue] - 1;
             int roundIndex = [self.roundNumber intValue] - 1;
@@ -214,7 +217,25 @@
 
 #pragma mark - <RowComponentActiveUpdatingProtocol>
 - (void)updateLabelWithNumberType:(NumberType)numberType value:(double)value{
+    NSString *string = [[NSNumber numberWithDouble: value] stringValue];
     
+    switch (numberType) {
+        case WeightType:
+            [self.weightButton setTitle: string
+                               forState: UIControlStateNormal];
+            break;
+        case RepsType:
+            [self.repsButton setTitle: string
+                             forState: UIControlStateNormal];
+            break;
+        case RestType:
+            [self.restButton setTitle: string
+                             forState: UIControlStateNormal];
+            break;
+            
+        default:
+            break;
+    }
 }
 
 @end
