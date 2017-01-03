@@ -156,7 +156,7 @@
                                                                          valuesPopulatedDuringWorkout: _valuesPopulatedDuringWorkout];
         // add the newly created row component to the master controller's child collection
         [self.masterController addChildRowController: rowVC
-                                    forExerciseIndex: [self.chainNumber intValue]
+                                    forExerciseIndex: [self.chainNumber intValue] - 1
                                           roundIndex: i];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;

@@ -139,12 +139,12 @@ static NSString * const defaultValue = @"unselected";
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    [self createContainerArrayForChildRowControllers];
     [self createDataStructure];
     [self createSubviewsAndLayoutConstraints];
     [self createNavigationItem];
     [self viewAesthetics];
     [self addBackgroundView];
-    [self createContainerArrayForChildRowControllers];
 }
 
 - (void)createContainerArrayForChildRowControllers{
