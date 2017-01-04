@@ -19,13 +19,10 @@
 @interface TJBRealizedSetHistoryByDay () <UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-
-@property (nonatomic, strong) NSFetchedResultsController *frc;
-
 @property (weak, nonatomic) IBOutlet UIView *columnLabelSubview;
 
+@property (nonatomic, strong) NSFetchedResultsController *frc;
 
 @end
 
@@ -33,8 +30,7 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [self configureNavigationBar];
     [self configureFetchedResultsController];
     [self configureTableView];
@@ -87,7 +83,6 @@
                                                                           managedObjectContext: moc
                                                                             sectionNameKeyPath: nil
                                                                                      cacheName: nil];
-    
     frc.delegate = nil;
     
     self.frc = frc;
@@ -106,8 +101,7 @@
                                                withOpacity: .85];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     NSError *error = nil;
     [self.frc performFetch: &error];
     [self.tableView reloadData];
@@ -115,22 +109,19 @@
 
 #pragma mark - <UITableViewDataSource>
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     NSUInteger sectionCount = [[[self frc] sections] count];
     return sectionCount;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self frc] sections][section];
     NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
     return numberOfObjects;
     
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     RealizedSetHistoryCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"setHistoryCell"];
     
     TJBRealizedSet *realizedSet = [self.frc objectAtIndexPath: indexPath];
@@ -178,12 +169,6 @@
     
     return cell;
 }
-
-#pragma mark - <UITableViewDelegate>
-
-
-
-
 
 @end
 

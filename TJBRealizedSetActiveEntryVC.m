@@ -37,11 +37,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 
-
 // core data
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
-// realized set
+// realized set user input
 @property (nonatomic, strong) NSNumber *timeDelay;
 @property (nonatomic, strong) NSNumber *timeLag;
 @property (nonatomic, strong) NSNumber *weight;
@@ -55,7 +54,9 @@
 
 // navigation bar
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (nonatomic, strong) UINavigationItem *navItem;
+// need to keep it around to update the title as exercises are selected
+// should this be a weak property?
+@property (nonatomic, weak) UINavigationItem *navItem;
 
 @end
 
@@ -412,8 +413,6 @@
     
     [self.personalRecordVC didSelectExercise: exercise];
 }
-
-#pragma mark - <NSFetchedResultsControllerDelegate>
 
 #pragma mark - Notification to User
 

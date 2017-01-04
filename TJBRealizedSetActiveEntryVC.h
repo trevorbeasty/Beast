@@ -12,6 +12,6 @@
 
 @interface TJBRealizedSetActiveEntryVC : UIViewController
 
-@property (nonatomic, weak) UIViewController<SelectedExerciseObserver> *personalRecordVC;
+@property (nonatomic, weak) UIViewController <SelectedExerciseObserver> *personalRecordVC;
 
 @end

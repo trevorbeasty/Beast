@@ -17,10 +17,9 @@
 @interface RealizedSetPersonalRecordVC ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (weak, nonatomic) UINavigationItem *navItem;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *columnLabelContainer;
-
-@property (nonatomic, strong) UINavigationItem *navItem;
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
 @property (nonatomic, strong) NSArray *refinedFRCResults;
@@ -33,8 +32,7 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     // table view
     
     UINib *nib = [UINib nibWithNibName: @"RealizedSetPersonalRecordCell"
@@ -71,8 +69,7 @@
                                                withOpacity: .85];
 }
 
-- (void)refineFetchedResults
-{
+- (void)refineFetchedResults{
     NSMutableArray *refinedResults = [[NSMutableArray alloc] init];
     NSArray *fetchedObjects = self.frc.fetchedObjects;
     
@@ -122,8 +119,7 @@
     self.refinedFRCResults = [refinedResults copy];
 }
 
-- (void)configureNavObjects
-{
+- (void)configureNavObjects{
     if (!self.navItem)
     {
         UINavigationItem *navItem = [[UINavigationItem alloc] init];
@@ -135,8 +131,7 @@
     }
 }
 
-- (void)createFRCIfNecessary
-{
+- (void)createFRCIfNecessary{
     if (!self.frc)
     {
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
@@ -163,8 +158,7 @@
 
 #pragma mark - View Life Cycle
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     if (self.activeExercise)
     {
         NSString *name = self.activeExercise.name;
@@ -177,8 +171,7 @@
 
 #pragma mark - <SelectedExerciseObserver>
 
-- (void)didSelectExercise:(TJBExercise *)exercise
-{
+- (void)didSelectExercise:(TJBExercise *)exercise{
     // fetched results
     
     [self createFRCIfNecessary];
@@ -192,13 +185,11 @@
     [self refreshFRC];
 }
 
-- (void)newSetSubmitted
-{
+- (void)newSetSubmitted{
     [self refreshFRC];
 }
 
-- (void)refreshFRC
-{
+- (void)refreshFRC{
     NSError *error = nil;
     if (![self.frc performFetch: &error])
     {
@@ -213,18 +204,15 @@
 
 #pragma mark - <UITableViewDataSource>
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.refinedFRCResults count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     RealizedSetPersonalRecordCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"PRCell"];
     
     TJBRealizedSet *realizedSet = self.refinedFRCResults[indexPath.row];
@@ -245,9 +233,6 @@
     
     return cell;
 }
-
-#pragma mark - <UITableViewDelegate>
-
 
 @end
 

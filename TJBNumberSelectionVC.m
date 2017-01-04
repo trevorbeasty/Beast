@@ -15,13 +15,22 @@
 #import "TJBAestheticsController.h"
 
 @interface TJBNumberSelectionVC ()
+// core variables set in init methods
+{
+    NumberType _numberTypeIdentifier;
+}
+
+// core variables set in init methods
+@property (nonatomic, strong) NSNumber *numberMultiple;
+@property (nonatomic, strong) NSNumber *numberLimit;
+@property (copy) void (^cancelBlock)(void);
+@property (copy) void (^numberSelectedBlock)(NSNumber *);
 
 // for cell color control in response to selection
-
+// should this be a strong or weak property?
 @property (nonatomic, weak) TJBNumberSelectionCell *lastSelectedCell;
 
 // for aiding the pinch GR
-
 @property CGPoint lastPinchTouchOne;
 @property CGPoint lastPinchTouchTwo;
 
@@ -147,8 +156,6 @@
     
     // change the attributes of the newly selected cell
     TJBNumberSelectionCell *selectedCell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
-//    selectedCell.layer.masksToBounds = YES;
-//    selectedCell.layer.cornerRadius = 16;
     selectedCell.layer.opacity = 1;
     selectedCell.numberLabel.backgroundColor = [UIColor redColor];
     
@@ -222,11 +229,7 @@
         self.lastPinchTouchOne = pinchTouchOne;
         self.lastPinchTouchTwo = pinchTouchTwo;
         
-    } else if (state == UIGestureRecognizerStateEnded)
-    {
-        // deallocate the touches defined in the class extension to free memory
-        // this is not necessary for functionality - the 'last touches' will be replaced when a new pinch gesture occurs
-    }
+    } 
 }
 
 #pragma mark - Bar Button Item Actions
