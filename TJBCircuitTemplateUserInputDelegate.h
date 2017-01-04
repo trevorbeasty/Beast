@@ -14,6 +14,11 @@
 
 @class CircuitDesignRowComponent;
 
+typedef  enum{
+    SetBeginDate,
+    SetEndDate,
+    SetDateNullType
+} SetDateType;
 
 @protocol TJBCircuitTemplateUserInputDelegate <NSObject>
 
@@ -23,6 +28,6 @@
 
 // child row controller collection
 - (void)addChildRowController:(CircuitDesignRowComponent <RowComponentActiveUpdatingProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
-- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex date:(NSDate *)date;
+- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex date:(NSDate *)date setDateType:(SetDateType)setDateType;
 
 @end

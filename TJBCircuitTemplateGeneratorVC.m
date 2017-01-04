@@ -50,7 +50,8 @@
 // this controller will keep track of its children rows so that it can updated their values during workouts to show active progress
 @property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
 // for updating rest times during the workout
-@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *activeUpdateDates;
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *setBeginDates;
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *setEndDates;
 
 
 // core
@@ -153,15 +154,19 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)createContainerArraysForChildRowControllersAndDates{
     self.childRowControllers = [[NSMutableArray alloc] init];
-    self.activeUpdateDates = [[NSMutableArray alloc] init];
+    self.setBeginDates = [[NSMutableArray alloc] init];
+    self.setEndDates = [[NSMutableArray alloc] init];
     
     int exerciseLimit = [self.numberOfExercises intValue];
     for (int i = 0; i < exerciseLimit; i++){
         NSMutableArray *array = [[NSMutableArray alloc] init];
         [self.childRowControllers addObject: array];
         
-        NSMutableArray *dateArray = [[NSMutableArray alloc] init];
-        [self.activeUpdateDates addObject: dateArray];
+        NSMutableArray *dateArray1 = [[NSMutableArray alloc] init];
+        [self.setBeginDates addObject: dateArray1];
+        
+        NSMutableArray *dateArray2 = [[NSMutableArray alloc] init];
+        [self.setEndDates addObject: dateArray2];
     }
 }
 
@@ -811,30 +816,43 @@ static NSString * const defaultValue = @"unselected";
     [array addObject: rowController];
 }
 
-- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex date:(NSDate *)date{
+- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex date:(NSDate *)date setDateType:(SetDateType)setDateType{
+    CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent;
+    
     if (numberType == RestType){
-        NSMutableArray *array = self.activeUpdateDates[exerciseIndex];
+        NSMutableArray *array;
+        
+        if (setDateType == SetBeginDate){
+            array = self.setBeginDates[exerciseIndex];
+        } else if (setDateType == SetEndDate){
+            array = self.setEndDates[exerciseIndex];
+        }
+        
         [array addObject: date];
         
         BOOL isFirstExerciseInFirstRound = exerciseIndex == 0 && roundIndex == 0;
         if (!isFirstExerciseInFirstRound){
-            NSDate *laterDate = self.activeUpdateDates[exerciseIndex][roundIndex];
+            
+            NSDate *laterDate = date;
             NSDate *earlierDate;
             
-            CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent;
-            
-            if (exerciseIndex == 0){
-                int maxExerciseIndex = [self.numberOfExercises intValue] - 1;
-                earlierDate = self.activeUpdateDates[maxExerciseIndex][roundIndex - 1];
-                rowComponent = self.childRowControllers[maxExerciseIndex][roundIndex - 1];
-            } else{
-                earlierDate = self.activeUpdateDates[exerciseIndex - 1][roundIndex];
-                rowComponent = self.childRowControllers[exerciseIndex - 1][roundIndex];
+            if (setDateType == SetBeginDate){
+                // should calculate the rest between sets here
+                // will need to use multiple indexes because the end of set 1 is held at an index one less than the beginning of set 2
+                
+                if (exerciseIndex == 0){
+                    int maxExerciseIndex = [self.numberOfExercises intValue] - 1;
+                    earlierDate = self.setEndDates[maxExerciseIndex][roundIndex - 1];
+                    rowComponent = self.childRowControllers[maxExerciseIndex][roundIndex - 1];
+                } else{
+                    earlierDate = self.setEndDates[exerciseIndex - 1][roundIndex];
+                    rowComponent = self.childRowControllers[exerciseIndex - 1][roundIndex];
+                }
+                
+                float timeDifferenceAsFloat = [laterDate timeIntervalSinceDate: earlierDate];
+                [rowComponent updateLabelWithNumberType: RestType
+                                                  value: timeDifferenceAsFloat];
             }
-            
-            double restAsDouble = [laterDate timeIntervalSinceDate: earlierDate];
-            [rowComponent updateLabelWithNumberType: numberType
-                                              value: restAsDouble];
         }
     } else{
         CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent = self.childRowControllers[exerciseIndex][roundIndex];

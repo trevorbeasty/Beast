@@ -329,6 +329,18 @@ static NSString * const defaultValue = @"default value";
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self didPressBeginSet];
+            
+            // circuit template generator
+            NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
+            
+            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
+                [self.circuitTemplateGenerator userDidSelectNumber: 0
+                                                    withNumberType: RestType
+                                                  forExerciseIndex: _activeExerciseIndex
+                                                     forRoundIndex: _activeRoundIndex
+                                                              date: date
+                                                       setDateType: SetBeginDate];
+            }
         };
         
         [self presentNumberSelectionSceneWithNumberType: RestType
@@ -386,7 +398,8 @@ static NSString * const defaultValue = @"default value";
                                                     withNumberType: RestType
                                                   forExerciseIndex: _activeExerciseIndex
                                                      forRoundIndex: _activeRoundIndex
-                                                              date: date];
+                                                              date: date
+                                                       setDateType: SetEndDate];
             }
             
             // recursive
@@ -419,7 +432,8 @@ static NSString * const defaultValue = @"default value";
                                                     withNumberType: WeightType
                                                   forExerciseIndex: _activeExerciseIndex
                                                      forRoundIndex: _activeRoundIndex
-                                                              date: nil];
+                                                              date: nil
+                                                       setDateType: SetDateNullType];
             }
             
             [self didPressBeginSet];
@@ -452,7 +466,8 @@ static NSString * const defaultValue = @"default value";
                                                     withNumberType: RepsType
                                                   forExerciseIndex: _activeExerciseIndex
                                                      forRoundIndex: _activeRoundIndex
-                                                              date: nil];
+                                                              date: nil
+                                                       setDateType: SetDateNullType];
             }
             
             [self didPressBeginSet];
