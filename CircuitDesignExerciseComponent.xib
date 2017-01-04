@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -27,9 +27,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chain Index #" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9TQ-y1-oTo">
-                    <rect key="frame" x="0.0" y="0.0" width="186.5" height="30"/>
+                    <rect key="frame" x="0.0" y="0.0" width="110" height="30"/>
                     <color key="backgroundColor" red="0.41313043090000001" green="0.99707198500000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="110" id="DA1-VA-Tm5"/>
                         <constraint firstAttribute="height" constant="30" id="zx8-2x-ChW"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -71,7 +72,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jJZ-ip-ahq">
-                    <rect key="frame" x="188.5" y="0.0" width="186.5" height="30"/>
+                    <rect key="frame" x="112" y="0.0" width="263" height="30"/>
                     <state key="normal" title="Select Exercise"/>
                     <connections>
                         <action selector="didPressSelectExercise:" destination="-1" eventType="touchUpInside" id="urZ-LT-xfi"/>
@@ -105,7 +106,6 @@
                 <constraint firstItem="N6h-gr-hg1" firstAttribute="top" secondItem="PAT-9K-79J" secondAttribute="bottom" constant="2" id="qyQ-ce-m3R"/>
                 <constraint firstItem="RUO-yi-XKP" firstAttribute="leading" secondItem="Ch8-ol-3yf" secondAttribute="trailing" id="ryh-UN-6eg"/>
                 <constraint firstItem="RUO-yi-XKP" firstAttribute="height" secondItem="WCp-I0-mw9" secondAttribute="height" id="t9E-uA-lvs"/>
-                <constraint firstItem="jJZ-ip-ahq" firstAttribute="width" secondItem="9TQ-y1-oTo" secondAttribute="width" id="vIp-Dj-xbr"/>
                 <constraint firstItem="Ch8-ol-3yf" firstAttribute="top" secondItem="9TQ-y1-oTo" secondAttribute="bottom" constant="2" id="zDB-ri-A1E"/>
                 <constraint firstItem="PAT-9K-79J" firstAttribute="leading" secondItem="WCp-I0-mw9" secondAttribute="trailing" id="zue-aV-LFf"/>
             </constraints>

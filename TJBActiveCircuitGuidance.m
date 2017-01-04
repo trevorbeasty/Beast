@@ -31,7 +31,6 @@
 
 {
     // active IV's
-    
     int _activeExerciseIndex;
     int _activeRoundIndex;
     int _previousExerciseIndex;
@@ -42,7 +41,6 @@
     float _activeTargetRestTime;
     
     // user selection progression
-    
     BOOL _setCompletedButtonPressed;
     BOOL _restLabelAddedAsStopwatchObserver;
 }
@@ -82,7 +80,7 @@
 // realized chain
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
-@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
+@property (nonatomic, weak) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
 
 @end
 

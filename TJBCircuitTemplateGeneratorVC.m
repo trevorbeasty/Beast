@@ -511,6 +511,11 @@ static NSString * const defaultValue = @"unselected";
                                                                            message: message
                                                                     preferredStyle: UIAlertControllerStyleAlert];
             void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+                TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
+                                                                                                supportsUserInput: NO
+                                                                                     valuesPopulatedDuringWorkout: YES];
+                // need to load the view ahead of time so that it can be ammended without the user first directly accessing it
+                [vc3 loadViewIfNeeded];
                 TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                                                circuitTemplateGenerator: nil];
                 TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
@@ -519,11 +524,13 @@ static NSString * const defaultValue = @"unselected";
                 
                 [vc1.tabBarItem setTitle: @"Active"];
                 [vc2.tabBarItem setTitle: @"Targets"];
+                [vc3.tabBarItem setTitle: @"Progress"];
                 
                 UITabBarController *tabBarController = [[UITabBarController alloc] init];
                 tabBarController.tabBar.translucent = NO;
                 [tabBarController setViewControllers: @[vc1,
-                                                        vc2]];
+                                                        vc2,
+                                                        vc3]];
                 
                 [self presentViewController: tabBarController
                                    animated: YES
