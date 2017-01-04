@@ -173,23 +173,6 @@ static NSString * const defaultValue = @"default value";
     self.roundColumnLabel.text = roundText;
 }
 
-#pragma mark - Init
-
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator{
-    self = [super init];
-    
-    // IV's
-    
-    self.chainTemplate = chainTemplate;
-    self.circuitTemplateGenerator = circuitTemplateGenerator;
-    
-    [self setDerivedInstanceVariables];
-    
-    [self initializeActiveInstanceVariables];
-    
-    return self;
-}
-
 - (void)createSkeletonForRealizedChainObject{
     // create managed object
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
@@ -231,7 +214,7 @@ static NSString * const defaultValue = @"default value";
         
         // reps
         TJBRepsArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
-                                                                    inManagedObjectContext: moc];
+                                                                inManagedObjectContext: moc];
         repsArray.chain = realizedChain;
         
         [repsArrays addObject: repsArray];
@@ -250,21 +233,21 @@ static NSString * const defaultValue = @"default value";
         for (int j = 0; j < roundLimit; j++){
             // weight
             TJBNumberTypeArrayComp *weightNumberTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-                                                                                    inManagedObjectContext: moc];
+                                                                                                   inManagedObjectContext: moc];
             [weightArrayNumbers addObject: weightNumberTypeArrayComponent];
             weightNumberTypeArrayComponent.isDefaultObject = YES;
             weightNumberTypeArrayComponent.owningArray = weightArray;
             
             // reps
             TJBNumberTypeArrayComp *repsNumberTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-                                                                                                   inManagedObjectContext: moc];
+                                                                                                 inManagedObjectContext: moc];
             [repsArrayNumbers addObject: repsNumberTypeArrayComponent];
             repsNumberTypeArrayComponent.isDefaultObject = YES;
             repsNumberTypeArrayComponent.owningArray = repsArray;
             
             // date
             TJBDateTypeArrayComp *dateTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"DateTypeArrayComponent"
-                                                                                                   inManagedObjectContext: moc];
+                                                                                         inManagedObjectContext: moc];
             [dateArrayDates addObject: dateTypeArrayComponent];
             dateTypeArrayComponent.isDefaultObject = YES;
             dateTypeArrayComponent.owningArray = dateArray;
@@ -272,6 +255,23 @@ static NSString * const defaultValue = @"default value";
     }
     
     [[CoreDataController singleton] saveContext];
+}
+
+#pragma mark - Init
+
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator{
+    self = [super init];
+    
+    // IV's
+    
+    self.chainTemplate = chainTemplate;
+    self.circuitTemplateGenerator = circuitTemplateGenerator;
+    
+    [self setDerivedInstanceVariables];
+    
+    [self initializeActiveInstanceVariables];
+    
+    return self;
 }
 
 - (void)initializeActiveInstanceVariables{
@@ -511,6 +511,7 @@ static NSString * const defaultValue = @"default value";
     
     if (atMaxExerciseIndex){
         if (atMaxRoundIndex){
+            NSLog(@"reached end of circuit");
             abort();
         } else{
             _activeRoundIndex++;

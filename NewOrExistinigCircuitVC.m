@@ -16,7 +16,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -30,6 +30,18 @@
 @end
 
 @implementation NewOrExistinigCircuitVC
+
+#pragma mark - Instantiation
+
+- (instancetype)init{
+    self = [super init];
+    
+    // for restoration
+    self.restorationIdentifier = @"TJBNewOrExistingCircuit";
+    self.restorationClass = [NewOrExistinigCircuitVC class];
+    
+    return self;
+}
 
 #pragma mark - View Cycle
 
@@ -158,6 +170,13 @@
 - (void)didPressHomeButton{
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+}
+
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
+    return vc;
 }
 
 @end

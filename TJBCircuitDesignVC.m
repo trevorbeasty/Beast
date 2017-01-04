@@ -14,7 +14,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBCircuitDesignVC ()
+@interface TJBCircuitDesignVC () <UIViewControllerRestoration>
 
 {
     double _numberOfExercises;
@@ -58,6 +58,17 @@
 @implementation TJBCircuitDesignVC
 
 #pragma mark - Instantiation
+
+- (instancetype)init{
+    self = [super init];
+    
+    self.restorationIdentifier = @"TJBCircuitDesignVC";
+    self.restorationClass = [TJBCircuitDesignVC class];
+    
+    return self;
+}
+
+#pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
     [self configureViewDataAndFunctionality];
@@ -185,6 +196,12 @@
 - (void)didPressCancel{
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+}
+
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    return [[TJBCircuitDesignVC alloc] init];
 }
 
 @end

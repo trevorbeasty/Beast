@@ -28,9 +28,23 @@
 
 @end
 
+//NSString  *navigationHubRestorationIdentifier = @"TJBWorkoutNavigationHub";
+
 @implementation TJBWorkoutNavigationHub
 
 #pragma mark - Instantiation
+
+- (instancetype)init{
+    self = [super init];
+    
+    // for restoration
+    self.restorationClass = [TJBWorkoutNavigationHub class];
+    self.restorationIdentifier = @"TJBWorkoutNavigationHub";
+    
+    return self;
+}
+
+#pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
     [self configureBackgroundView];
