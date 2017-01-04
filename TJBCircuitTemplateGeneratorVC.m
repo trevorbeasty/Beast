@@ -67,7 +67,6 @@
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-@property (nonatomic, strong) UINavigationItem *navItem;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
@@ -147,7 +146,7 @@ static NSString * const defaultValue = @"unselected";
     [self createContainerArraysForChildRowControllersAndDates];
     [self createDataStructure];
     [self createSubviewsAndLayoutConstraints];
-    [self createNavigationItem];
+    [self configureNavBar];
     [self viewAesthetics];
     [self addBackgroundView];
 }
@@ -331,7 +330,7 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (void)createNavigationItem{
+- (void)configureNavBar{
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
     
     NSString *word;

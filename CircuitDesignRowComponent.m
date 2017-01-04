@@ -45,7 +45,7 @@
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
-@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC <TJBCircuitTemplateUserInputDelegate> *masterController;
+@property (nonatomic, weak) TJBCircuitTemplateGeneratorVC <TJBCircuitTemplateUserInputDelegate> *masterController;
 
 @end
 

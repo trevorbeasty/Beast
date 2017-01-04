@@ -49,7 +49,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
 - (IBAction)didPressSelectExercise:(id)sender;
 
-@property (nonatomic, strong) TJBCircuitTemplateGeneratorVC <TJBCircuitTemplateUserInputDelegate> *masterController;
+@property (nonatomic, weak) TJBCircuitTemplateGeneratorVC <TJBCircuitTemplateUserInputDelegate> *masterController;
 
 @end
 

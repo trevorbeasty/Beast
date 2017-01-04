@@ -32,7 +32,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-@property (nonatomic, strong) UINavigationItem *navItem;
 
 - (IBAction)didPressLaunchTemplate:(id)sender;
 
