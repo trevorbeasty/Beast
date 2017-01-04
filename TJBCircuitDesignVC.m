@@ -49,8 +49,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *counterNumberOfExercises;
 @property (weak, nonatomic) IBOutlet UILabel *counterNumberOfRounds;
 
-// backdrop view
+// container views
 @property (weak, nonatomic) IBOutlet UIView *backdropView;
+@property (weak, nonatomic) IBOutlet UIView *metaContainerView;
 
 @end
 
@@ -59,20 +60,10 @@
 #pragma mark - Instantiation
 
 - (void)viewDidLoad{
-    [self configureBackropView];
-    [self configureView];
+    [self configureViewDataAndFunctionality];
     [self configureNavigationBar];
     [self viewAesthetics];
     [self addBackgroundImage];
-}
-
-- (void)configureBackropView{
-    [self.view sendSubviewToBack: self.backdropView];
-    
-    CALayer *layer = self.backdropView.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
-    layer.opacity = .65;
 }
 
 - (void)addBackgroundImage{
@@ -81,7 +72,7 @@
                                                                  imageOpacity: .35];
 }
 
-- (void)configureView{
+- (void)configureViewDataAndFunctionality{
     _numberOfExercises = 1.0;
     _numberOfRounds = 1.0;
     
@@ -107,21 +98,35 @@
 }
 
 - (void)viewAesthetics{
-    CALayer *layer = self.nameTextField.layer;
+    // meta container view
+    self.metaContainerView.backgroundColor = [UIColor whiteColor];
+    CALayer *layer;
+    layer = self.metaContainerView.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8.0;
+    layer.opacity = .85;
+    
+    // text field
+    [self.circuitNameLabel setTextColor: [UIColor whiteColor]];
+    self.circuitNameLabel.backgroundColor = [UIColor darkGrayColor];
+    
+    layer = self.nameTextField.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8;
     layer.borderWidth = 1;
     layer.borderColor = [[UIColor darkGrayColor] CGColor];
     
-    NSArray *views = @[self.circuitNameLabel,
-                       self.numberOfExercisesLabel,
+    // labels
+    NSArray *labels = @[self.numberOfExercisesLabel,
                        self.numberOfRoundsLabel,
                        self.targetingWeightLabel,
                        self.targetingRepsLabel,
                        self.targetingRestLabel,
                        self.targetsVaryByRoundLabel];
-    [TJBAestheticsController configureViewsWithType1Format: views
-                                               withOpacity: .85];
+    for (UILabel *label in labels){
+        label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
+        label.layer.opacity = .85;
+    }
     
     // button
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchTemplateButton]
