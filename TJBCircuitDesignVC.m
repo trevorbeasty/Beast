@@ -244,6 +244,9 @@ typedef enum{
                   forKey: @"targetingRest"];
     [coder encodeInteger: self.targetsVaryByRoundSC.selectedSegmentIndex
                   forKey: @"targetsVaryByRound"];
+    
+    [coder encodeObject: self.nameTextField.text
+                 forKey: @"circuitName"];
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
@@ -261,6 +264,8 @@ typedef enum{
     self.targetingRepsSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetingReps"];
     self.targetingRestSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetingRest"];
     self.targetsVaryByRoundSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetsVaryByRound"];
+    
+    self.nameTextField.text = [coder decodeObjectForKey: @"circuitName"];
 }
 
 @end
