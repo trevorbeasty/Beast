@@ -17,8 +17,8 @@
 @interface TJBCircuitDesignVC () <UIViewControllerRestoration>
 
 {
-    double _numberOfExercises;
-    double _numberOfRounds;
+    int _numberOfExercises;
+    int _numberOfRounds;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *targetingWeightSC;
@@ -53,6 +53,12 @@
 @property (weak, nonatomic) IBOutlet UIView *backdropView;
 @property (weak, nonatomic) IBOutlet UIView *metaContainerView;
 
+// for encoding and decoding
+@property (nonatomic, strong) NSDictionary *encodingDecodingDictionary;
+
+// for restoration
+@property (nonatomic, strong) NSNumber *wasRestored;
+
 @end
 
 @implementation TJBCircuitDesignVC
@@ -84,12 +90,14 @@
 }
 
 - (void)configureViewDataAndFunctionality{
-    _numberOfExercises = 1.0;
-    _numberOfRounds = 1.0;
-    
-    self.counterNumberOfExercises.text = [[NSNumber numberWithDouble: _numberOfExercises] stringValue];
-    self.counterNumberOfRounds.text = [[NSNumber numberWithDouble: _numberOfRounds] stringValue];
-    
+    if ([self.wasRestored boolValue] == NO){
+        _numberOfExercises = 1.0;
+        _numberOfRounds = 1.0;
+        
+        self.counterNumberOfExercises.text = [[NSNumber numberWithDouble: _numberOfExercises] stringValue];
+        self.counterNumberOfRounds.text = [[NSNumber numberWithDouble: _numberOfRounds] stringValue];
+    }
+
     [self.numberOfExercisesStepper addTarget: self
                                       action: @selector(didChangeExerciseStepperValue)
                             forControlEvents: UIControlEventValueChanged];
@@ -201,7 +209,58 @@
 #pragma mark - <UIViewControllerRestoration>
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    return [[TJBCircuitDesignVC alloc] init];
+    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
+    vc.wasRestored = [NSNumber numberWithBool: YES];
+    return vc;
+}
+
+typedef enum{
+    NumberOfExercises,
+    NumberOfRounds,
+    TargetsWeight,
+    TargetsReps,
+    TargetsRest,
+    TargetsVaryByRound,
+    CircuitName
+} RestorationKeys;
+
+- (void)createEncodingDictionary{
+    
+}
+
+// for preserving state
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    [super encodeRestorableStateWithCoder: coder];
+    
+    [coder encodeInt: _numberOfExercises
+              forKey: @"numberOfExercises"];
+    [coder encodeInt: _numberOfRounds
+              forKey: @"numberOfRounds"];
+    [coder encodeInteger: self.targetingWeightSC.selectedSegmentIndex
+              forKey: @"targetingWeight"];
+    [coder encodeInteger: self.targetingRepsSC.selectedSegmentIndex
+                  forKey: @"targetingReps"];
+    [coder encodeInteger: self.targetingRestSC.selectedSegmentIndex
+                  forKey: @"targetingRest"];
+    [coder encodeInteger: self.targetsVaryByRoundSC.selectedSegmentIndex
+                  forKey: @"targetsVaryByRound"];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    [super decodeRestorableStateWithCoder: coder];
+    
+    _numberOfExercises = [coder decodeIntForKey: @"numberOfExercises"];
+    self.counterNumberOfExercises.text = [[NSNumber numberWithInt: _numberOfExercises] stringValue];
+    self.numberOfExercisesStepper.value = _numberOfExercises;
+    
+    _numberOfRounds = [coder decodeIntForKey: @"numberOfRounds"];
+    self.counterNumberOfRounds.text = [[NSNumber numberWithInt: _numberOfRounds] stringValue];
+    self.numberOfRoundsStepper.value = _numberOfRounds;
+    
+    self.targetingWeightSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetingWeight"];
+    self.targetingRepsSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetingReps"];
+    self.targetingRestSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetingRest"];
+    self.targetsVaryByRoundSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetsVaryByRound"];
 }
 
 @end
