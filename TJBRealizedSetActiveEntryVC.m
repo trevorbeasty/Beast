@@ -20,7 +20,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate>
+@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UIViewControllerRestoration>
 
 {
     BOOL _setCompletedButtonPressed;
@@ -61,6 +61,18 @@
 @end
 
 @implementation TJBRealizedSetActiveEntryVC
+
+#pragma mark - Instantiation
+
+- (instancetype)init{
+    self = [super init];
+    
+    // for restoration
+    self.restorationIdentifier = @"TJBRealizedSetActiveEntryVC";
+    self.restorationClass = [TJBRealizedSetActiveEntryVC class];
+    
+    return self;
+}
 
 #pragma mark - View Life Cycle
 
@@ -472,6 +484,12 @@
     [self addRealizedSetToCoreData];
     
     [self setRealizedSetParametersToNil];
+}
+
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    return [[TJBRealizedSetActiveEntryVC alloc] init];
 }
 
 @end

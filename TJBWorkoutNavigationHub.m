@@ -81,6 +81,7 @@
     
     [tbc setViewControllers: @[vc1, vc2, vc3]];
     tbc.tabBar.translucent = NO;
+    tbc.restorationIdentifier = @"singleSetTabBar";
     
     [self presentViewController: tbc
                        animated: NO
