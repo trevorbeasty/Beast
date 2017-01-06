@@ -519,6 +519,8 @@
     [super decodeRestorableStateWithCoder: coder];
     
     int time = [coder decodeIntForKey: @"time"];
+    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: time
+                                         withForwardIncrementing: YES];
     NSLog(@"time: %d", time);
 }
 
