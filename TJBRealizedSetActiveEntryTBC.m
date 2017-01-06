@@ -20,7 +20,19 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)init{
+- (instancetype)initWithoutChildViewControllers{
+    self = [super init];
+    
+    // for restoration
+    self.restorationIdentifier = @"TJBRealizedSetActiveEntryTBC";
+    self.restorationClass = [TJBRealizedSetActiveEntryTBC class];
+    
+    self.tabBar.translucent = NO;
+    
+    return self;
+}
+
+- (instancetype)initWithChildViewControllers{
     self = [super init];
     
     // for restoration
@@ -57,7 +69,7 @@
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
 //    return [[TJBRealizedSetActiveEntryTBC alloc] init];
-    TJBRealizedSetActiveEntryTBC *tbc = [[TJBRealizedSetActiveEntryTBC alloc] init];
+    TJBRealizedSetActiveEntryTBC *tbc = [[TJBRealizedSetActiveEntryTBC alloc] initWithoutChildViewControllers];
     
     // for restoration
     tbc.restorationIdentifier = @"TJBRealizedSetActiveEntryTBC";

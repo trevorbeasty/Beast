@@ -64,7 +64,8 @@
 #pragma mark - Button Actions
 
 - (void)didPressStandaloneSetButton:(id)sender{
-    [self presentViewController: [[TJBRealizedSetActiveEntryTBC alloc] init]
+    TJBRealizedSetActiveEntryTBC *tbc = [[TJBRealizedSetActiveEntryTBC alloc] initWithChildViewControllers];
+    [self presentViewController: tbc
                        animated: YES
                      completion: nil];
 }

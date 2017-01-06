@@ -76,7 +76,6 @@
     self.restorationIdentifier = @"TJBRealizedSetActiveEntryVC";
     self.restorationClass = [TJBRealizedSetActiveEntryVC class];
     
-    self.restorationTest = [NSNumber numberWithBool: NO];
     
     return self;
 }
@@ -94,6 +93,8 @@
     [self viewAesthetics];
     
     NSLog(@"restoration test: %d", [self.restorationTest boolValue]);
+    // for restoration
+    self.exerciseTableView.restorationIdentifier = @"tableView";
 }
 
 - (void)viewAesthetics{
@@ -510,18 +511,23 @@
     [super encodeRestorableStateWithCoder: coder];
     
     int time = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
-    
     [coder encodeInt: time
               forKey: @"time"];
+    
+    [coder encodeObject: self.exerciseTableView
+                 forKey: @"exerciseTableView"];
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     [super decodeRestorableStateWithCoder: coder];
     
+    // timer
     int time = [coder decodeIntForKey: @"time"];
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: time
                                          withForwardIncrementing: YES];
     NSLog(@"time: %d", time);
+    
+    [coder decodeObjectForKey: @"exerciseTableView"];
 }
 
 @end
