@@ -58,11 +58,6 @@
 // should this be a weak property?
 @property (nonatomic, weak) UINavigationItem *navItem;
 
-
-
-
-@property NSNumber *restorationTest;
-
 @end
 
 @implementation TJBRealizedSetActiveEntryVC
@@ -75,7 +70,6 @@
     // for restoration
     self.restorationIdentifier = @"TJBRealizedSetActiveEntryVC";
     self.restorationClass = [TJBRealizedSetActiveEntryVC class];
-    
     
     return self;
 }
@@ -91,10 +85,6 @@
     [self configureTimer];
     [self addBackgroundImage];
     [self viewAesthetics];
-    
-    NSLog(@"restoration test: %d", [self.restorationTest boolValue]);
-    // for restoration
-    self.exerciseTableView.restorationIdentifier = @"tableView";
 }
 
 - (void)viewAesthetics{
@@ -218,15 +208,12 @@
 
 #pragma mark - Button Actions
 
-- (void)didPressDone
-{
+- (void)didPressDone{
     [self dismissViewControllerAnimated: NO
                              completion: nil];
 }
 
-- (IBAction)addNewExercise:(id)sender
-{
-    NSLog(@"restoration test: %d", [self.restorationTest boolValue]);
+- (IBAction)addNewExercise:(id)sender{
     TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
     
     [self presentViewController: vc
@@ -234,8 +221,7 @@
                      completion: nil];
 }
 
-- (IBAction)didPressBeginNextSet:(id)sender
-{
+- (IBAction)didPressBeginNextSet:(id)sender{
     __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
     
     CancelBlock cancelBlock = ^{
@@ -502,8 +488,6 @@
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     TJBRealizedSetActiveEntryVC *vc = [[TJBRealizedSetActiveEntryVC alloc] init];
     
-    vc.restorationTest = [NSNumber numberWithBool: YES];
-    
     return vc;
 }
 
@@ -523,9 +507,6 @@
         [coder encodeObject: path
                      forKey: @"path"];
     }
-    
-//    [coder encodeObject: self.exerciseTableView
-//                 forKey: @"exerciseTableView"];
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
@@ -541,6 +522,9 @@
     NSIndexPath *path = [coder decodeObjectForKey: @"path"];
     NSLog(@"%@", path);
     if (path){
+        [self.exerciseTableView selectRowAtIndexPath: path
+                                            animated: NO
+                                      scrollPosition: UITableViewScrollPositionNone];
         [self tableView: self.exerciseTableView didSelectRowAtIndexPath: path];
     }
 }
