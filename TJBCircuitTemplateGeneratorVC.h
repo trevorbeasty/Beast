@@ -12,16 +12,24 @@
 
 #import "TJBCircuitTemplateUserInputDelegate.h"
 
-
+typedef enum{
+    TemplateType,
+    ReferenceType,
+    ActiveUpdatingType
+} TJBCircuitTemplateType;
 
 @class TJBChainTemplate;
 
 @interface TJBCircuitTemplateGeneratorVC : UIViewController <TJBCircuitTemplateUserInputDelegate>
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name supportsUserInput:(BOOL)supportsUserInput;
+// init methods
+- (instancetype)initReferenceTypeWithChainTemplate:(TJBChainTemplate *)chainTemplate;
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout;
+- (instancetype)initTemplateTypeWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name;
 
+- (instancetype)initActiveUpdatingTypeWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+
+// other
 - (BOOL)doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout;
 
 @end

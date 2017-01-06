@@ -165,14 +165,6 @@
     layer.opacity = .85;
 }
 
-//- (void)viewWillAppear:(BOOL)animated{
-//    self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
-//    
-//    NSError *error = nil;
-//    [self.fetchedResultsController performFetch: &error];
-//    [self.exerciseTableView reloadData];
-//}
-
 #pragma mark - <UITableViewDataSource>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

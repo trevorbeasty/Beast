@@ -46,13 +46,6 @@
     BOOL _supportsUserInput;
     BOOL _valuesPopulatedDuringWorkout;
 }
-// values populated during workout
-// this controller will keep track of its children rows so that it can updated their values during workouts to show active progress
-@property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
-// for updating rest times during the workout
-@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *setBeginDates;
-@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *setEndDates;
-
 
 // core
 @property (nonatomic, strong) NSNumber *targetingWeight;
@@ -63,24 +56,32 @@
 @property (nonatomic, strong) NSNumber *numberOfRounds;
 @property (nonatomic, strong) NSString *name;
 
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+
+// for ActiveUpdatingType
+// keeps track of its children rows so that it can updated their values during workouts to show active progress
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
+
+// for updating rest times during the workout
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *setBeginDates;
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <NSDate *> *> *setEndDates;
+
 // view
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
+@property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 // IBAction
 - (IBAction)didPressLaunchCircuit:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
 
 // data structure
+// used by TemplateType for creating TJBChainTemplate managed object
 @property (nonatomic, strong) NSMutableArray *weightData;
 @property (nonatomic, strong) NSMutableArray *repsData;
 @property (nonatomic, strong) NSMutableArray *restData;
 @property (nonatomic, strong) NSMutableArray *exerciseData;
-
-@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @end
 
@@ -91,7 +92,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name supportsUserInput:(BOOL)supportsUserInput{
+- (instancetype)initTemplateTypeWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name{
     self = [super init];
     
     self.targetingWeight = targetingWeight;
@@ -102,11 +103,22 @@ static NSString * const defaultValue = @"unselected";
     self.numberOfRounds = numberOfRounds;
     self.name = name;
     
-    // secondary capabilities
-    _supportsUserInput = supportsUserInput;
+    _supportsUserInput = YES;
     _valuesPopulatedDuringWorkout = NO;
     
     return self;
+}
+
+- (instancetype)initActiveUpdatingTypeWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+    return [self initWithChainTemplate: chainTemplate
+              supportsUserInput: NO
+   valuesPopulatedDuringWorkout: YES];
+}
+
+- (instancetype)initReferenceTypeWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+    return [self initWithChainTemplate: chainTemplate
+              supportsUserInput: NO
+   valuesPopulatedDuringWorkout: NO];
 }
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout{
