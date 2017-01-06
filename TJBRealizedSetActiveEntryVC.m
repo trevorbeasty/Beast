@@ -506,10 +506,20 @@
     return vc;
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    [super encodeRestorableStateWithCoder: coder];
+    
+    int time = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
+    
+    [coder encodeInt: time
+              forKey: @"time"];
+}
+
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     [super decodeRestorableStateWithCoder: coder];
     
-    
+    int time = [coder decodeIntForKey: @"time"];
+    NSLog(@"time: %d", time);
 }
 
 @end
