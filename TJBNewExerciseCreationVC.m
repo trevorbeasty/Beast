@@ -140,7 +140,11 @@
     TJBExercise *newExercise = [coreDataController exerciseForName: self.exerciseTextField.text];
     newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
     
+    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
     [[CoreDataController singleton] saveContext];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
+                                                        object: nil];
     
     self.exerciseTextField.text = @"";
 }

@@ -21,7 +21,7 @@
 
 #import "TJBDateTypeArrayComp+CoreDataProperties.h"
 
-
+extern NSString * const ExerciseDataChanged;
 
 @interface CoreDataController : NSObject
 

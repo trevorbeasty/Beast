@@ -117,8 +117,13 @@
 
 - (void)fetchCoreDataAndConfigureTableView{
     // table view configuration
+    // notification center registration as well
     [self.exerciseTableView registerClass: [UITableViewCell class]
                    forCellReuseIdentifier: @"basicCell"];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(exerciseDataChanged)
+                                                 name: ExerciseDataChanged
+                                               object: nil];
     
     // NSFetchedResultsController
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
@@ -140,6 +145,12 @@
         NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
+}
+
+- (void)exerciseDataChanged{
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch: &error];
+    [self.exerciseTableView reloadData];
 }
 
 - (void)configureTimer{

@@ -14,6 +14,8 @@
 
 @end
 
+NSString * const ExerciseDataChanged = @"exerciseDataChanged";
+
 @implementation CoreDataController
 
 #pragma mark - Singleton
