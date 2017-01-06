@@ -535,23 +535,14 @@
     int time = [coder decodeIntForKey: @"time"];
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: time
                                          withForwardIncrementing: YES];
-    NSLog(@"time: %d", time);
-
+    self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: time];
+    
+    // tabel view
     NSIndexPath *path = [coder decodeObjectForKey: @"path"];
     NSLog(@"%@", path);
     if (path){
-        NSLog(@"selecting index path");
-//        [self.exerciseTableView selectRowAtIndexPath: path
-//                                            animated: NO
-//                                      scrollPosition: UITableViewScrollPositionNone];
         [self tableView: self.exerciseTableView didSelectRowAtIndexPath: path];
-//        UITableViewCell *cell = [self.exerciseTableView cellForRowAtIndexPath: path];
-//        cell.backgroundColor = [UIColor redColor];
-        
     }
-
-    
-//    [coder decodeObjectForKey: @"exerciseTableView"];
 }
 
 @end
