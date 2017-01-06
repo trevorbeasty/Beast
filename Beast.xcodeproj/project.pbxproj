@@ -51,6 +51,7 @@
 		0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */; };
 		0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */; };
 		0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */; };
+		0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +127,8 @@
 		0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewOrExistinigCircuitVC.m; sourceTree = "<group>"; };
 		0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewOrExistinigCircuitVC.xib; sourceTree = "<group>"; };
 		0BA8ACE31E1BCAF400EE10C2 /* RowComponentActiveUpdatingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowComponentActiveUpdatingProtocol.h; sourceTree = "<group>"; };
+		0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryTBC.h; sourceTree = "<group>"; };
+		0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryTBC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -300,6 +303,8 @@
 		0B843C901DFB7E9C0093F057 /* Realized Set Active Entry */ = {
 			isa = PBXGroup;
 			children = (
+				0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */,
+				0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */,
 				0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */,
 				0B843CCF1E0C96E20093F057 /* Personal Record Scene */,
 				0B843CCE1E0C96CA0093F057 /* History by Day Scene */,
@@ -489,6 +494,7 @@
 				0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */,
+				0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */,
 				0B843C991DFCAB470093F057 /* RealizedSetHistoryCell.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */,

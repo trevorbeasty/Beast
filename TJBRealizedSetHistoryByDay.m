@@ -16,7 +16,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBRealizedSetHistoryByDay () <UITableViewDelegate, UITableViewDataSource>
+@interface TJBRealizedSetHistoryByDay () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
@@ -29,6 +29,18 @@
 @implementation TJBRealizedSetHistoryByDay
 
 #pragma mark - Instantiation
+
+- (instancetype)init{
+    self = [super init];
+    
+    self.restorationClass = [TJBRealizedSetHistoryByDay class];
+    self.restorationIdentifier = @"TJBRealizedSetHistoryByDay";
+    
+    return self;
+}
+
+
+#pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
     [self configureNavigationBar];
@@ -168,6 +180,12 @@
     cell.exerciseLabel.text = realizedSet.exercise.name;
     
     return cell;
+}
+
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    return [[TJBRealizedSetHistoryByDay alloc] init];
 }
 
 @end

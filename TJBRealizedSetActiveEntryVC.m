@@ -58,6 +58,11 @@
 // should this be a weak property?
 @property (nonatomic, weak) UINavigationItem *navItem;
 
+
+
+
+@property NSNumber *restorationTest;
+
 @end
 
 @implementation TJBRealizedSetActiveEntryVC
@@ -70,6 +75,8 @@
     // for restoration
     self.restorationIdentifier = @"TJBRealizedSetActiveEntryVC";
     self.restorationClass = [TJBRealizedSetActiveEntryVC class];
+    
+    self.restorationTest = [NSNumber numberWithBool: NO];
     
     return self;
 }
@@ -85,6 +92,8 @@
     [self configureTimer];
     [self addBackgroundImage];
     [self viewAesthetics];
+    
+    NSLog(@"restoration test: %d", [self.restorationTest boolValue]);
 }
 
 - (void)viewAesthetics{
@@ -216,6 +225,7 @@
 
 - (IBAction)addNewExercise:(id)sender
 {
+    NSLog(@"restoration test: %d", [self.restorationTest boolValue]);
     TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
     
     [self presentViewController: vc
@@ -489,7 +499,17 @@
 #pragma mark - <UIViewControllerRestoration>
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    return [[TJBRealizedSetActiveEntryVC alloc] init];
+    TJBRealizedSetActiveEntryVC *vc = [[TJBRealizedSetActiveEntryVC alloc] init];
+    
+    vc.restorationTest = [NSNumber numberWithBool: YES];
+    
+    return vc;
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    [super decodeRestorableStateWithCoder: coder];
+    
+    
 }
 
 @end

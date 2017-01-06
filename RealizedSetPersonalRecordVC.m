@@ -14,7 +14,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface RealizedSetPersonalRecordVC ()
+@interface RealizedSetPersonalRecordVC () <UIViewControllerRestoration>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) UINavigationItem *navItem;
@@ -31,6 +31,17 @@
 @implementation RealizedSetPersonalRecordVC
 
 #pragma mark - Instantiation
+
+- (instancetype)init{
+    self = [super init];
+    
+    self.restorationIdentifier = @"RealizedSetPersonalRecordVC";
+    self.restorationClass = [RealizedSetPersonalRecordVC class];
+    
+    return self;
+}
+
+#pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
     // table view
@@ -156,8 +167,6 @@
     }
 }
 
-#pragma mark - View Life Cycle
-
 - (void)viewWillAppear:(BOOL)animated{
     if (self.activeExercise)
     {
@@ -232,6 +241,12 @@
     cell.dateLabel.text = [dateFormatter stringFromDate: realizedSetStartDate];
     
     return cell;
+}
+
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    return [[RealizedSetPersonalRecordVC alloc] init];
 }
 
 @end
