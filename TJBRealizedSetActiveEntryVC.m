@@ -164,13 +164,13 @@
     layer.opacity = .85;
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
-    
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch: &error];
-    [self.exerciseTableView reloadData];
-}
+//- (void)viewWillAppear:(BOOL)animated{
+//    self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
+//    
+//    NSError *error = nil;
+//    [self.fetchedResultsController performFetch: &error];
+//    [self.exerciseTableView reloadData];
+//}
 
 #pragma mark - <UITableViewDataSource>
 
@@ -514,8 +514,18 @@
     [coder encodeInt: time
               forKey: @"time"];
     
-    [coder encodeObject: self.exerciseTableView
-                 forKey: @"exerciseTableView"];
+    // table view
+    
+//    UIEdgeInsets scrollPosition = self.exerciseTableView.contentInset;
+    
+    NSIndexPath *path = self.exerciseTableView.indexPathForSelectedRow;
+    if (path){
+        [coder encodeObject: path
+                     forKey: @"path"];
+    }
+    
+//    [coder encodeObject: self.exerciseTableView
+//                 forKey: @"exerciseTableView"];
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
@@ -526,8 +536,22 @@
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: time
                                          withForwardIncrementing: YES];
     NSLog(@"time: %d", time);
+
+    NSIndexPath *path = [coder decodeObjectForKey: @"path"];
+    NSLog(@"%@", path);
+    if (path){
+        NSLog(@"selecting index path");
+//        [self.exerciseTableView selectRowAtIndexPath: path
+//                                            animated: NO
+//                                      scrollPosition: UITableViewScrollPositionNone];
+        [self tableView: self.exerciseTableView didSelectRowAtIndexPath: path];
+//        UITableViewCell *cell = [self.exerciseTableView cellForRowAtIndexPath: path];
+//        cell.backgroundColor = [UIColor redColor];
+        
+    }
+
     
-    [coder decodeObjectForKey: @"exerciseTableView"];
+//    [coder decodeObjectForKey: @"exerciseTableView"];
 }
 
 @end
