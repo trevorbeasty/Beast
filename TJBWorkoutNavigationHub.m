@@ -17,7 +17,7 @@
 
 #import "NewOrExistinigCircuitVC.h"
 
-@interface TJBWorkoutNavigationHub ()
+@interface TJBWorkoutNavigationHub () 
 
 @property (weak, nonatomic) IBOutlet UIButton *standaloneSetButton;
 @property (weak, nonatomic) IBOutlet UIButton *circuitSlashSupersetButton;
@@ -88,6 +88,27 @@
                      completion: nil];
 }
 
+//+ (UITabBarController *)singleSetModeTabBar{
+//    TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
+//    [vc1.tabBarItem setTitle: @"Active Entry"];
+//    
+//    TJBRealizedSetHistoryByDay *vc2 = [[TJBRealizedSetHistoryByDay alloc] init];
+//    [vc2.tabBarItem setTitle: @"Today's Log"];
+//    
+//    RealizedSetPersonalRecordVC *vc3 = [[RealizedSetPersonalRecordVC alloc] init];
+//    [vc3.tabBarItem setTitle: @"Personal Records"];
+//    
+//    vc1.personalRecordVC = vc3;
+//    
+//    UITabBarController *tbc = [[UITabBarController alloc] init];
+//    
+//    [tbc setViewControllers: @[vc1, vc2, vc3]];
+//    tbc.tabBar.translucent = NO;
+//    tbc.restorationIdentifier = @"singleSetTabBar";
+//    
+//    return tbc;
+//}
+
 - (void)didPressCircuitSlashSupersetButton:(id)sender{
     NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc]  init];
     
@@ -95,6 +116,12 @@
                        animated: NO
                      completion: nil];
 }
+
+#pragma mark - <UIViewControllerRestoration>
+
+//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+//    return [self singleSetModeTabBar]
+//}
 
 @end
 

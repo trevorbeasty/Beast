@@ -57,6 +57,16 @@
 
 - (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     // UIKit automatically finds TJBWorkoutNavigation hub as part of its restoration effort (see view controller programming guide)
+    
+    NSString *currentRestorationIdentifier = [identifierComponents lastObject];
+    NSLog(@"%@", currentRestorationIdentifier);
+    if ([currentRestorationIdentifier isEqualToString: @"singleSetTabBar"]){
+        UITabBarController *tbc = [[UITabBarController alloc] init];
+        tbc.restorationIdentifier = @"singleSetTabBar";
+        tbc.tabBar.translucent = NO;
+        return tbc;
+    }
+    
     return nil;
 }
 
