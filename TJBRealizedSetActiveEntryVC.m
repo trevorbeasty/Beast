@@ -494,13 +494,22 @@
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
     [super encodeRestorableStateWithCoder: coder];
     
+    // timer
+    // need to encode current date so time interval can be applied upon app entering foreground
+    NSDate *date = [NSDate date];
+    [coder encodeObject: date
+                 forKey: @"date"];
+    
     int time = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
     [coder encodeInt: time
               forKey: @"time"];
     
     // table view
     
-//    UIEdgeInsets scrollPosition = self.exerciseTableView.contentInset;
+    CGPoint scrollPosition = self.exerciseTableView.contentOffset;
+    int y = scrollPosition.y;
+    [coder encodeFloat: y
+                forKey: @"scrollYPosition"];
     
     NSIndexPath *path = self.exerciseTableView.indexPathForSelectedRow;
     if (path){
@@ -513,12 +522,20 @@
     [super decodeRestorableStateWithCoder: coder];
     
     // timer
+    NSDate *earlierDate = [coder decodeObjectForKey: @"date"];
+    NSDate *laterDate = [NSDate date];
+    int elapsedTimeInSeconds = [laterDate timeIntervalSinceDate: earlierDate];
+    
     int time = [coder decodeIntForKey: @"time"];
+    time += elapsedTimeInSeconds;
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: time
                                          withForwardIncrementing: YES];
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: time];
     
-    // tabel view
+    // table view
+    float y = [coder decodeDoubleForKey: @"scrollYPosition"];
+    self.exerciseTableView.contentOffset = CGPointMake(0, y);
+    
     NSIndexPath *path = [coder decodeObjectForKey: @"path"];
     NSLog(@"%@", path);
     if (path){
