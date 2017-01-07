@@ -13,7 +13,7 @@
 typedef void(^CancelBlock)(void);
 typedef void(^NumberSelectedBlock)(NSNumber *);
 
-@interface TJBNumberSelectionVC : UICollectionViewController
+@interface TJBNumberSelectionVC: UIViewController
 
 - (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock;
 

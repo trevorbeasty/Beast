@@ -52,6 +52,7 @@
 		0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */; };
 		0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */; };
 		0B86FB751E2129C4000D1B5F /* TJBNumberSelectionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB741E2129C4000D1B5F /* TJBNumberSelectionVC.xib */; };
+		0B86FB771E2139D9000D1B5F /* TJBNumberSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB761E2139D9000D1B5F /* TJBNumberSelectionCell.xib */; };
 		0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */; };
 /* End PBXBuildFile section */
 
@@ -128,6 +129,7 @@
 		0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewOrExistinigCircuitVC.m; sourceTree = "<group>"; };
 		0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewOrExistinigCircuitVC.xib; sourceTree = "<group>"; };
 		0B86FB741E2129C4000D1B5F /* TJBNumberSelectionVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBNumberSelectionVC.xib; sourceTree = "<group>"; };
+		0B86FB761E2139D9000D1B5F /* TJBNumberSelectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBNumberSelectionCell.xib; sourceTree = "<group>"; };
 		0BA8ACE31E1BCAF400EE10C2 /* RowComponentActiveUpdatingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowComponentActiveUpdatingProtocol.h; sourceTree = "<group>"; };
 		0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryTBC.h; sourceTree = "<group>"; };
 		0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryTBC.m; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				0B86FB741E2129C4000D1B5F /* TJBNumberSelectionVC.xib */,
 				0B843C811DFA28270093F057 /* TJBNumberSelectionCell.h */,
 				0B843C821DFA28270093F057 /* TJBNumberSelectionCell.m */,
+				0B86FB761E2139D9000D1B5F /* TJBNumberSelectionCell.xib */,
 			);
 			name = NumberSelection;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
 				0B1616D61E080E6F001C8F45 /* TJBExerciseSelectionScene.xib in Resources */,
 				0B86FB751E2129C4000D1B5F /* TJBNumberSelectionVC.xib in Resources */,
+				0B86FB771E2139D9000D1B5F /* TJBNumberSelectionCell.xib in Resources */,
 				0B843CC11E02D08B0093F057 /* CircuitDesignExerciseComponent.xib in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
 				0B2619A41E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.xib in Resources */,

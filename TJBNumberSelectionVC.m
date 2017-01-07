@@ -14,7 +14,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBNumberSelectionVC () <UIViewControllerRestoration>
+@interface TJBNumberSelectionVC () <UIViewControllerRestoration, UICollectionViewDelegate, UICollectionViewDataSource>
 // core variables set in init methods
 {
     NumberType _numberTypeIdentifier;
@@ -38,6 +38,7 @@
 
 // IBOutlets
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end
 
@@ -48,8 +49,6 @@ static NSString * const reuseIdentifier = @"basicCell";
 #pragma mark - Instantiation
 
 - (instancetype)init{
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    self = [super initWithCollectionViewLayout: layout];
     
     // for restoration
     self.restorationIdentifier = @"TJBNumberSelectionVC";
@@ -89,6 +88,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     // other methods
     [self addBackgroundView];
     [self configureNavigationItem];
+    [self viewAesthetics];
 }
 
 - (void)configureNavigationItem{
@@ -103,6 +103,10 @@ static NSString * const reuseIdentifier = @"basicCell";
     UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
     imageView.layer.opacity = .9;
     self.collectionView.backgroundView = imageView;
+}
+
+- (void)viewAesthetics{
+    
 }
 
 #pragma mark - Setters
@@ -151,7 +155,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     
     cell.numberLabel.layer.masksToBounds = YES;
     cell.numberLabel.layer.cornerRadius = 8.0;
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor whiteColor];
     
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
     cell.numberLabel.backgroundColor = [aesthetics buttonBackgroundColor];
