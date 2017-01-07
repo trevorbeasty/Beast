@@ -58,6 +58,11 @@
 // should this be a weak property?
 @property (nonatomic, weak) UINavigationItem *navItem;
 
+// for restoration
+// if user is in the middle of making selections when app enters the background state, this block will execute aftert the view loads and then be destroyed so that it is not called again when the view again loads
+
+@property (copy) void (^restorationBlock)(void);
+
 @end
 
 @implementation TJBRealizedSetActiveEntryVC
@@ -82,6 +87,17 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     NSLog(@"view will appear");
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    NSLog(@"viewDidAppear");
+    
+    if (self.restorationBlock){
+        self.restorationBlock();
+        
+        self.restorationBlock = nil;
+    }
 }
 
 - (void)viewDidLoad{
@@ -524,10 +540,16 @@
     
     // realized set user selections
     
+    [coder encodeBool: _whiteoutActive
+               forKey: @"whiteoutActive"];
+    
     if (self.timeDelay){
         [coder encodeObject: self.timeDelay
                      forKey: @"timeDelay"];
     }
+    
+    [coder encodeBool: _setCompletedButtonPressed
+               forKey: @"setCompletedButtonPressed"];
     
     if (self.timeLag){
         [coder encodeObject: self.timeLag
@@ -588,10 +610,25 @@
     
     // realized set user selections
     
+    _whiteoutActive = [coder decodeObjectForKey: @"whiteoutActive"];
     self.timeDelay = [coder decodeObjectForKey: @"timeDelay"];
+    _setCompletedButtonPressed = [coder decodeBoolForKey: @"setCompletedButtonPressed"];
     self.timeLag = [coder decodeObjectForKey: @"timeLag"];
     self.weight = [coder decodeObjectForKey: @"weight"];
     self.reps = [coder decodeObjectForKey: @"reps"];
+    
+    
+
+    if (self.timeDelay){
+        
+        __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+        
+        void (^restorationBlock)(void) = ^{
+            [weakSelf didPressBeginNextSet: nil];
+        };
+        
+        self.restorationBlock = restorationBlock;
+    }
 }
 
 @end
