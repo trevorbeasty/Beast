@@ -36,15 +36,22 @@
 @property CGPoint lastPinchTouchOne;
 @property CGPoint lastPinchTouchTwo;
 
+// IBOutlets
+@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+
 @end
+
+static NSString * const reuseIdentifier = @"basicCell";
 
 @implementation TJBNumberSelectionVC
 
 #pragma mark - Instantiation
 
 - (instancetype)init{
-    self = [super init];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    self = [super initWithCollectionViewLayout: layout];
     
+    // for restoration
     self.restorationIdentifier = @"TJBNumberSelectionVC";
     self.restorationClass = [TJBNumberSelectionVC class];
     
@@ -54,11 +61,13 @@
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
+    // collection view
+    [self.collectionView registerClass: [TJBNumberSelectionCell class]
+            forCellWithReuseIdentifier: reuseIdentifier];
 
     // add gesture recognizers to collection view
-    
     // tap GR
-    
     UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                             action: @selector(doubleTap:)];
     tapGR.numberOfTapsRequired = 2;
@@ -69,7 +78,6 @@
     [self.collectionView addGestureRecognizer: tapGR];
     
     // pinch GR
-    
     UIPinchGestureRecognizer *pinchGR = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                   action: @selector(pinch:)];
     pinchGR.cancelsTouchesInView = YES;
@@ -78,6 +86,7 @@
     
     [self.collectionView addGestureRecognizer: pinchGR];
     
+    // other methods
     [self addBackgroundView];
     [self configureNavigationItem];
 }
@@ -122,7 +131,7 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: @"basicCell"
+    TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: reuseIdentifier
                                                                            forIndexPath: indexPath];
     
   

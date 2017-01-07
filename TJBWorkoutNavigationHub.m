@@ -17,6 +17,8 @@
 
 #import "TJBRealizedSetActiveEntryTBC.h"
 
+#import "TJBNumberSelectionVC.h"
+
 @interface TJBWorkoutNavigationHub () 
 
 @property (weak, nonatomic) IBOutlet UIButton *standaloneSetButton;
@@ -25,6 +27,9 @@
 
 - (IBAction)didPressStandaloneSetButton:(id)sender;
 - (IBAction)didPressCircuitSlashSupersetButton:(id)sender;
+- (IBAction)didPressTest:(id)sender;
+
+
 
 @end
 
@@ -77,6 +82,23 @@
                        animated: NO
                      completion: nil];
 }
+
+- (IBAction)didPressTest:(id)sender{
+    
+    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] init];
+    [vc setNumberTypeIdentifier: WeightType
+                 numberMultiple: [NSNumber numberWithDouble: 2.5]
+                    numberLimit: nil
+                          title: @"Test"
+                    cancelBlock: nil
+            numberSelectedBlock: nil];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
+}
+
+
 
 @end
 

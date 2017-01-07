@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -46,6 +46,17 @@
                         <action selector="didPressCircuitSlashSupersetButton:" destination="-1" eventType="touchUpInside" id="K8N-Ar-l6n"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kWI-Qx-Anm">
+                    <rect key="frame" x="8" y="523" width="359" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="zhC-WD-W2m"/>
+                    </constraints>
+                    <state key="normal" title="Test"/>
+                    <connections>
+                        <action selector="didPressTest:" destination="-1" eventType="touchUpInside" id="e5T-Y5-boA"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -53,6 +64,9 @@
                 <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="8" id="5kk-8i-FuJ"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="76L-CH-5BE"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="9ys-lP-Amq"/>
+                <constraint firstItem="dl0-qJ-myg" firstAttribute="top" secondItem="kWI-Qx-Anm" secondAttribute="bottom" constant="8" id="CXD-XO-u5k"/>
+                <constraint firstAttribute="trailing" secondItem="kWI-Qx-Anm" secondAttribute="trailing" constant="8" id="PxJ-BA-sKh"/>
+                <constraint firstItem="kWI-Qx-Anm" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Rk9-bZ-XOI"/>
                 <constraint firstAttribute="bottom" secondItem="5vd-Pz-T1I" secondAttribute="bottom" constant="8" id="bIa-TX-8au"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="8" id="c2o-L5-4Oh"/>
                 <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="8" id="eDm-bO-66p"/>
