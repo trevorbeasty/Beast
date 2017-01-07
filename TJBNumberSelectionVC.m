@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSNumber *numberLimit;
 @property (copy) void (^cancelBlock)(void);
 @property (copy) void (^numberSelectedBlock)(NSNumber *);
+@property (nonatomic, strong) NSString *selectionTitle;
 
 // for cell color control in response to selection
 // should this be a strong or weak property?
@@ -49,11 +50,20 @@ static NSString * const reuseIdentifier = @"basicCell";
 
 #pragma mark - Instantiation
 
-- (instancetype)init{
+- (instancetype)initWithNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void (^)(void))cancelBlock numberSelectedBlock:(void (^)(NSNumber *))numberSelectedBlock{
+
+    self = [super init];
     
     // for restoration
     self.restorationIdentifier = @"TJBNumberSelectionVC";
     self.restorationClass = [TJBNumberSelectionVC class];
+    
+    _numberTypeIdentifier = numberType;
+    self.numberMultiple = numberMultiple;
+    self.numberLimit = numberLimit;
+    self.selectionTitle = title;
+    self.cancelBlock = cancelBlock;
+    self.numberSelectedBlock = numberSelectedBlock;
     
     return self;
 }
@@ -90,14 +100,17 @@ static NSString * const reuseIdentifier = @"basicCell";
     
     // other methods
     [self addBackgroundView];
-    [self configureNavigationItem];
+    [self configureNavigationBar];
 }
 
-- (void)configureNavigationItem{
+- (void)configureNavigationBar{
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.selectionTitle];
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                   target: self
                                                                                   action: @selector(cancel)];
-    [self.navigationItem setLeftBarButtonItem: cancelButton];
+    [navItem setLeftBarButtonItem: cancelButton];
+    
+    [self.navBar setItems: @[navItem]];
 }
 
 - (void)addBackgroundView{
@@ -106,20 +119,6 @@ static NSString * const reuseIdentifier = @"basicCell";
     imageView.layer.opacity = .9;
     self.collectionView.backgroundView = imageView;
 }
-
-#pragma mark - Setters
-
-- (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void (^)(void))cancelBlock numberSelectedBlock:(void (^)(NSNumber *))numberSelectedBlock
-{
-    _numberTypeIdentifier = numberType;
-    self.numberMultiple = numberMultiple;
-    self.numberLimit = numberLimit;
-    [self.navigationItem setTitle: title];
-    self.cancelBlock = cancelBlock;
-    self.numberSelectedBlock = numberSelectedBlock;
-}
-
-
 
 #pragma mark <UICollectionViewDataSource>
 

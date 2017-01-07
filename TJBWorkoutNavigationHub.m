@@ -85,17 +85,17 @@
 
 - (IBAction)didPressTest:(id)sender{
     
-    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] init];
-    [vc setNumberTypeIdentifier: WeightType
-                 numberMultiple: [NSNumber numberWithDouble: 2.5]
-                    numberLimit: nil
-                          title: @"Test"
-                    cancelBlock: nil
-            numberSelectedBlock: nil];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
+//    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] init];
+//    [vc setNumberTypeIdentifier: WeightType
+//                 numberMultiple: [NSNumber numberWithDouble: 2.5]
+//                    numberLimit: nil
+//                          title: @"Test"
+//                    cancelBlock: nil
+//            numberSelectedBlock: nil];
+//    
+//    [self presentViewController: vc
+//                       animated: YES
+//                     completion: nil];
 }
 
 

@@ -549,24 +549,18 @@ static NSString * const defaultValue = @"default value";
                              completion: nil];
 }
 
-- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle;
-{
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
     
-    UIStoryboard *numberSelectionStoryboard = [UIStoryboard storyboardWithName: @"TJBNumberSelection"
-                                                                        bundle: nil];
-    UINavigationController *numberSelectionNav = (UINavigationController *)[numberSelectionStoryboard instantiateInitialViewController];
-    TJBNumberSelectionVC *numberSelectionVC = (TJBNumberSelectionVC *)[numberSelectionNav viewControllers][0];
+    TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType
+                                                                                          numberMultiple: numberMultiple
+                                                                                             numberLimit: numberLimit
+                                                                                                   title: title
+                                                                                             cancelBlock: cancelBlock
+                                                                                     numberSelectedBlock: numberSelectedBlock];
     
-    [numberSelectionVC setNumberTypeIdentifier: numberType
-                                numberMultiple: numberMultiple
-                                   numberLimit: numberLimit
-                                         title: title
-                                   cancelBlock: cancelBlock
-                           numberSelectedBlock: numberSelectedBlock];
+    numberSelectionVC.modalTransitionStyle = transitionStyle;
     
-    numberSelectionNav.modalTransitionStyle = transitionStyle;
-    
-    [self presentViewController: numberSelectionNav
+    [self presentViewController: numberSelectionVC
                        animated: animated
                      completion: nil];
 }
