@@ -45,6 +45,7 @@
     // core
     BOOL _supportsUserInput;
     BOOL _valuesPopulatedDuringWorkout;
+    TJBCircuitTemplateType _circuitGeneratorType;
 }
 
 // core
@@ -95,6 +96,8 @@ static NSString * const defaultValue = @"unselected";
 - (instancetype)initTemplateTypeWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name{
     self = [super init];
     
+    _circuitGeneratorType = TemplateType;
+    
     self.targetingWeight = targetingWeight;
     self.targetingReps = targetingReps;
     self.targetingRest = targetingRest;
@@ -110,12 +113,16 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (instancetype)initActiveUpdatingTypeWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+    _circuitGeneratorType = ActiveUpdatingType;
+    
     return [self initWithChainTemplate: chainTemplate
               supportsUserInput: NO
    valuesPopulatedDuringWorkout: YES];
 }
 
 - (instancetype)initReferenceTypeWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+    _circuitGeneratorType = ReferenceType;
+    
     return [self initWithChainTemplate: chainTemplate
               supportsUserInput: NO
    valuesPopulatedDuringWorkout: NO];
@@ -523,16 +530,16 @@ static NSString * const defaultValue = @"unselected";
                                                                            message: message
                                                                     preferredStyle: UIAlertControllerStyleAlert];
             void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
-                TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
-                                                                                                supportsUserInput: NO
-                                                                                     valuesPopulatedDuringWorkout: YES];
+                
+                TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initActiveUpdatingTypeWithChainTemplate: chainTemplate];
                 // need to load the view ahead of time so that it can be ammended without the user first directly accessing it
                 [vc3 loadViewIfNeeded];
                 TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
-                                                                               circuitTemplateGenerator: nil];
-                TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
-                                                                                                supportsUserInput: NO
-                                                                                     valuesPopulatedDuringWorkout: NO];
+                                                                               circuitTemplateGenerator: vc3];
+                
+                
+                
+                TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initReferenceTypeWithChainTemplate: chainTemplate];
                 
                 [vc1.tabBarItem setTitle: @"Active"];
                 [vc2.tabBarItem setTitle: @"Targets"];

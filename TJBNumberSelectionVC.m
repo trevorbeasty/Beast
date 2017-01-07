@@ -14,7 +14,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBNumberSelectionVC ()
+@interface TJBNumberSelectionVC () <UIViewControllerRestoration>
 // core variables set in init methods
 {
     NumberType _numberTypeIdentifier;
@@ -29,6 +29,8 @@
 // for cell color control in response to selection
 // should this be a strong or weak property?
 @property (nonatomic, weak) TJBNumberSelectionCell *lastSelectedCell;
+// for state restoration
+@property (nonatomic, strong) NSIndexPath *highlightedCellPath;
 
 // for aiding the pinch GR
 @property CGPoint lastPinchTouchOne;
@@ -38,7 +40,18 @@
 
 @implementation TJBNumberSelectionVC
 
-#pragma mark - Initialization
+#pragma mark - Instantiation
+
+- (instancetype)init{
+    self = [super init];
+    
+    self.restorationIdentifier = @"TJBNumberSelectionVC";
+    self.restorationClass = [TJBNumberSelectionVC class];
+    
+    return self;
+}
+
+#pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
 
@@ -87,7 +100,7 @@
 
 - (void)setNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void (^)(void))cancelBlock numberSelectedBlock:(void (^)(NSNumber *))numberSelectedBlock
 {
-    [self setNumberTypeIdentifier: numberType];
+    _numberTypeIdentifier = numberType;
     self.numberMultiple = numberMultiple;
     self.numberLimit = numberLimit;
     [self.navigationItem setTitle: title];
@@ -95,10 +108,7 @@
     self.numberSelectedBlock = numberSelectedBlock;
 }
 
-- (void)setNumberTypeIdentifier:(NumberType)type
-{
-    _numberTypeIdentifier = type;
-}
+
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -154,14 +164,20 @@
         self.lastSelectedCell.numberLabel.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
     }
     
+    // for state restoration of currently highlighted cell
+    self.highlightedCellPath = indexPath;
+    
     // change the attributes of the newly selected cell
     TJBNumberSelectionCell *selectedCell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
-    selectedCell.layer.opacity = 1;
-    selectedCell.numberLabel.backgroundColor = [UIColor redColor];
-    
+    [self configureCellForSelectedState: selectedCell];
     
     // update the lastSelectedCell property to point to the newly selected cell
     self.lastSelectedCell = selectedCell;
+}
+
+- (void)configureCellForSelectedState:(TJBNumberSelectionCell *)cell{
+    cell.layer.opacity = 1;
+    cell.numberLabel.backgroundColor = [UIColor redColor];
 }
 
 #pragma mark - Gesture Recognizer Actions
@@ -237,6 +253,69 @@
 - (void)cancel
 {
     self.cancelBlock();
+}
+
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    return [[TJBNumberSelectionVC alloc] init];
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    // scroll position
+    int y = self.collectionView.contentOffset.y;
+    [coder encodeInt: y
+              forKey: @"y"];
+ 
+    // highlighted cell
+    if (self.highlightedCellPath){
+        [coder encodeObject: self.highlightedCellPath
+                     forKey: @"path"];
+    }
+
+    // core attributes (see 'set' method in header)
+    [coder encodeInt: _numberTypeIdentifier
+              forKey: @"numberType"];
+    [coder encodeObject: self.numberMultiple
+                 forKey: @"numberMultiple"];
+    [coder encodeObject: self.numberLimit
+                 forKey: @"numberLimit"];
+    [coder encodeObject: self.title
+                 forKey: @"title"];
+    [coder encodeObject: self.cancelBlock
+                 forKey: @"cancelBlock"];
+    [coder encodeObject: self.numberSelectedBlock
+                 forKey: @"numberSelectionBlock"];
+    
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super decodeRestorableStateWithCoder: coder];
+    
+    // scroll position
+    int y = [coder decodeIntForKey: @"y"];
+    self.collectionView.contentOffset = CGPointMake(0, y);
+    
+    // highlighted cell
+    NSIndexPath *path = [coder decodeObjectForKey: @"path"];
+    TJBNumberSelectionCell *cell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: path];
+    [self configureCellForSelectedState: cell];
+    
+    // core attributes
+    _numberTypeIdentifier = [coder decodeIntForKey: @"numberType"];
+    self.numberMultiple = [coder decodeObjectForKey: @"numberMultiple"];
+    NSLog(@"number multiple: %d", [self.numberMultiple intValue]);
+    self.numberLimit = [coder decodeObjectForKey: @"numberLimit"];
+    self.title = [coder decodeObjectForKey: @"title"];
+    self.cancelBlock = [coder decodeObjectForKey: @"cancelBlock"];
+    self.numberSelectedBlock = [coder decodeObjectForKey: @"numberSelectionBlock"];
+    
+    // reload data
+    [self.collectionView reloadData];
 }
 
 @end

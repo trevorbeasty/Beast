@@ -132,16 +132,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-    TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
-                                                                                    supportsUserInput: NO
-                                                                         valuesPopulatedDuringWorkout: YES];
+    TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initActiveUpdatingTypeWithChainTemplate: chainTemplate];
     // need to load the view ahead of time so that it can be ammended without the user first directly accessing it
     [vc3 loadViewIfNeeded];
     TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                                    circuitTemplateGenerator: vc3];
-    TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initWithChainTemplate: chainTemplate
-                                                                                    supportsUserInput: NO
-                                                                         valuesPopulatedDuringWorkout: NO];
+    
+    
+
+    TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initReferenceTypeWithChainTemplate: chainTemplate];
     
     [vc1.tabBarItem setTitle: @"Active"];
     [vc2.tabBarItem setTitle: @"Targets"];

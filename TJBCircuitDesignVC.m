@@ -184,14 +184,20 @@
                          completion: nil];
         
     } else{
-        TJBCircuitTemplateGeneratorVC *vc = [[TJBCircuitTemplateGeneratorVC alloc] initWithTargetingWeight: [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex]
-                                                                                             targetingReps: [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex]
-                                                                                             targetingRest: [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex]
-                                                                                        targetsVaryByRound: [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex]
-                                                                                         numberOfExercises: [NSNumber numberWithDouble: _numberOfExercises]
-                                                                                            numberOfRounds: [NSNumber numberWithDouble: _numberOfRounds]
-                                                                                                      name: self.nameTextField.text
-                                                                                         supportsUserInput: YES];
+        NSNumber *targetingWeight = [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex];
+        NSNumber *targetingReps = [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex];
+        NSNumber *targetingRest = [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex];
+        NSNumber *targetsVaryByRound = [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex];
+        NSNumber *numberOfExercises = [NSNumber numberWithDouble: _numberOfExercises];
+        NSNumber *numberOfRounds = [NSNumber numberWithDouble: _numberOfRounds];
+        
+        TJBCircuitTemplateGeneratorVC *vc = [[TJBCircuitTemplateGeneratorVC alloc] initTemplateTypeWithTargetingWeight: targetingWeight
+                                                                                                         targetingReps: targetingReps
+                                                                                                         targetingRest: targetingRest
+                                                                                                    targetsVaryByRound: targetsVaryByRound
+                                                                                                     numberOfExercises: numberOfExercises
+                                                                                                        numberOfRounds: numberOfRounds
+                                                                                                                  name: self.nameTextField.text];
         
         [self presentViewController: vc
                            animated: YES
