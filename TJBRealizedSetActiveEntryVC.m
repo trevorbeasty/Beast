@@ -65,6 +65,9 @@
 #pragma mark - Instantiation
 
 - (instancetype)init{
+    
+    NSLog(@"init");
+    
     self = [super init];
     
     // for restoration
@@ -76,7 +79,15 @@
 
 #pragma mark - View Life Cycle
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    NSLog(@"view will appear");
+}
+
 - (void)viewDidLoad{
+    
+    NSLog(@"view did load");
+    
     _setCompletedButtonPressed = NO;
     _whiteoutActive = NO;
     
@@ -116,7 +127,7 @@
 }
 
 - (void)fetchCoreDataAndConfigureTableView{
-    // table view configuration
+    // table view reusable cell registration
     // notification center registration as well
     [self.exerciseTableView registerClass: [UITableViewCell class]
                    forCellReuseIdentifier: @"basicCell"];
@@ -363,13 +374,12 @@
     }
 }
 
-- (void)removeWhiteoutView
-{
+- (void)removeWhiteoutView{
     [self.whiteoutView removeFromSuperview];
     _whiteoutActive = NO;
 }
 
-- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle;{
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
 
     TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType
                                                                                           numberMultiple: numberMultiple
@@ -406,8 +416,7 @@
 
 #pragma mark - <NewExerciseCreationDelegate>
 
-- (void)didCreateNewExercise:(TJBExercise *)exercise
-{
+- (void)didCreateNewExercise:(TJBExercise *)exercise{
     self.exercise = exercise;
     [self.navItem setTitle: exercise.name];
     
@@ -423,8 +432,7 @@
 
 #pragma mark - Notification to User
 
-- (void)presentSubmittedSetSummary
-{
+- (void)presentSubmittedSetSummary{
     // UIAlertController
     
     NSString *string = [NSString stringWithFormat: @"%@: %.01f lbs for %.00f reps",
@@ -463,8 +471,7 @@
                      completion: nil];
 }
 
-- (void)setRealizedSetParametersToNil
-{
+- (void)setRealizedSetParametersToNil{
     self.timeDelay = nil;
     _setCompletedButtonPressed = NO;
     self.timeLag = nil;
@@ -472,8 +479,7 @@
     self.reps = nil;
 }
 
-- (void)confirmSubmission
-{
+- (void)confirmSubmission{
     [[TJBStopwatch singleton] resetPrimaryStopwatchWithForwardIncrementing: YES];
     
     [self addRealizedSetToCoreData];
@@ -490,6 +496,7 @@
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
     [super encodeRestorableStateWithCoder: coder];
     
     // timer
@@ -514,12 +521,40 @@
         [coder encodeObject: path
                      forKey: @"path"];
     }
+    
+    // realized set user selections
+    
+    if (self.timeDelay){
+        [coder encodeObject: self.timeDelay
+                     forKey: @"timeDelay"];
+    }
+    
+    if (self.timeLag){
+        [coder encodeObject: self.timeLag
+                     forKey: @"timeLag"];
+    }
+    
+    if (self.weight){
+        [coder encodeObject: self.weight
+                     forKey: @"weight"];
+    }
+    
+    if (self.reps){
+        [coder encodeObject: self.reps
+                     forKey: @"reps"];
+    }
+    
 }
 
+
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    NSLog(@"decode restorable state");
+    
     [super decodeRestorableStateWithCoder: coder];
     
     // timer
+    
     NSDate *earlierDate = [coder decodeObjectForKey: @"date"];
     NSDate *laterDate = [NSDate date];
     int elapsedTimeInSeconds = [laterDate timeIntervalSinceDate: earlierDate];
@@ -531,17 +566,32 @@
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: time];
     
     // table view
+    
     float y = [coder decodeDoubleForKey: @"scrollYPosition"];
     self.exerciseTableView.contentOffset = CGPointMake(0, y);
     
     NSIndexPath *path = [coder decodeObjectForKey: @"path"];
-    NSLog(@"%@", path);
     if (path){
+        
+        // artificially make table view selections for state restoration
+        
         [self.exerciseTableView selectRowAtIndexPath: path
                                             animated: NO
                                       scrollPosition: UITableViewScrollPositionNone];
         [self tableView: self.exerciseTableView didSelectRowAtIndexPath: path];
+        
+        // use the saved path to restore the 'exercise' property
+        
+        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: path];
+        self.exercise = exercise;
     }
+    
+    // realized set user selections
+    
+    self.timeDelay = [coder decodeObjectForKey: @"timeDelay"];
+    self.timeLag = [coder decodeObjectForKey: @"timeLag"];
+    self.weight = [coder decodeObjectForKey: @"weight"];
+    self.reps = [coder decodeObjectForKey: @"reps"];
 }
 
 @end

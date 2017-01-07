@@ -15,7 +15,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBNumberSelectionVC () <UIViewControllerRestoration, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface TJBNumberSelectionVC () <UIViewControllerRestoration, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 // core variables set in init methods
 {
     NumberType _numberTypeIdentifier;
@@ -70,7 +70,13 @@ static NSString * const reuseIdentifier = @"basicCell";
 
 #pragma mark - View Life Cycle
 
+- (void)viewWillAppear:(BOOL)animated{
+    NSLog(@"view will appear");
+}
+
 - (void)viewDidLoad{
+    
+    NSLog(@"view did load");
     
     // collection view
     UINib *nib = [UINib nibWithNibName: @"TJBBasicCollectionViewCell"
@@ -152,7 +158,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     
     cell.label.layer.masksToBounds = YES;
     cell.label.layer.cornerRadius = 8.0;
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = [UIColor clearColor];
     
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
     cell.label.backgroundColor = [aesthetics buttonBackgroundColor];
@@ -303,6 +309,8 @@ static NSString * const reuseIdentifier = @"basicCell";
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     
+    NSLog(@"decode restorable state with coder");
+    
     [super decodeRestorableStateWithCoder: coder];
     
     // scroll position
@@ -326,6 +334,8 @@ static NSString * const reuseIdentifier = @"basicCell";
     // reload data
     [self.collectionView reloadData];
 }
+
+#pragma mark - <UICollectionViewDelegateFlowLayout>
 
 @end
 

@@ -48,11 +48,11 @@
 
 // the app delegate must opt in to state restoration via the following 2 methods
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder{
-    return NO;
+    return YES;
 }
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder{
-    return NO;
+    return YES;
 }
 
 - (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
