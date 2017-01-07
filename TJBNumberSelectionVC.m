@@ -8,7 +8,8 @@
 
 #import "TJBNumberSelectionVC.h"
 
-#import "TJBNumberSelectionCell.h"
+//#import "TJBNumberSelectionCell.h"
+#import "TJBBasicCollectionViewCell.h"
 
 #import "TJBStopwatch.h"
 
@@ -28,7 +29,7 @@
 
 // for cell color control in response to selection
 // should this be a strong or weak property?
-@property (nonatomic, weak) TJBNumberSelectionCell *lastSelectedCell;
+@property (nonatomic, weak) TJBBasicCollectionViewCell *lastSelectedCell;
 // for state restoration
 @property (nonatomic, strong) NSIndexPath *highlightedCellPath;
 
@@ -62,8 +63,10 @@ static NSString * const reuseIdentifier = @"basicCell";
 - (void)viewDidLoad{
     
     // collection view
-    [self.collectionView registerClass: [TJBNumberSelectionCell class]
-            forCellWithReuseIdentifier: reuseIdentifier];
+    UINib *nib = [UINib nibWithNibName: @"TJBBasicCollectionViewCell"
+                                bundle: nil];
+    [self.collectionView registerNib: nib
+          forCellWithReuseIdentifier: reuseIdentifier];
 
     // add gesture recognizers to collection view
     // tap GR
@@ -88,7 +91,6 @@ static NSString * const reuseIdentifier = @"basicCell";
     // other methods
     [self addBackgroundView];
     [self configureNavigationItem];
-    [self viewAesthetics];
 }
 
 - (void)configureNavigationItem{
@@ -103,10 +105,6 @@ static NSString * const reuseIdentifier = @"basicCell";
     UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
     imageView.layer.opacity = .9;
     self.collectionView.backgroundView = imageView;
-}
-
-- (void)viewAesthetics{
-    
 }
 
 #pragma mark - Setters
@@ -135,7 +133,7 @@ static NSString * const reuseIdentifier = @"basicCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    TJBNumberSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: reuseIdentifier
+    TJBBasicCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: reuseIdentifier
                                                                            forIndexPath: indexPath];
     
   
@@ -146,23 +144,22 @@ static NSString * const reuseIdentifier = @"basicCell";
     
     if (_numberTypeIdentifier == RestType)
     {
-        cell.numberLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber intValue]];
+        cell.label.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber intValue]];
     }
     else
     {
-        cell.numberLabel.text = [cellNumber stringValue];
+        cell.label.text = [cellNumber stringValue];
     }
     
-    cell.numberLabel.layer.masksToBounds = YES;
-    cell.numberLabel.layer.cornerRadius = 8.0;
+    cell.label.layer.masksToBounds = YES;
+    cell.label.layer.cornerRadius = 8.0;
     cell.backgroundColor = [UIColor whiteColor];
     
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
-    cell.numberLabel.backgroundColor = [aesthetics buttonBackgroundColor];
-    [cell.numberLabel setTextColor: [aesthetics buttonTextColor]];
+    cell.label.backgroundColor = [aesthetics buttonBackgroundColor];
+    [cell.label setTextColor: [aesthetics buttonTextColor]];
     
     cell.layer.opacity = .75;
-    
     
     return cell;
 }
@@ -174,23 +171,23 @@ static NSString * const reuseIdentifier = @"basicCell";
     // if there is a previously selected cell, change its attributes accordingly
     if (self.lastSelectedCell){
         self.lastSelectedCell.layer.opacity = .75;
-        self.lastSelectedCell.numberLabel.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
+        self.lastSelectedCell.label.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
     }
     
     // for state restoration of currently highlighted cell
     self.highlightedCellPath = indexPath;
     
     // change the attributes of the newly selected cell
-    TJBNumberSelectionCell *selectedCell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
+    TJBBasicCollectionViewCell *selectedCell = (TJBBasicCollectionViewCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
     [self configureCellForSelectedState: selectedCell];
     
     // update the lastSelectedCell property to point to the newly selected cell
     self.lastSelectedCell = selectedCell;
 }
 
-- (void)configureCellForSelectedState:(TJBNumberSelectionCell *)cell{
+- (void)configureCellForSelectedState:(TJBBasicCollectionViewCell *)cell{
     cell.layer.opacity = 1;
-    cell.numberLabel.backgroundColor = [UIColor redColor];
+    cell.label.backgroundColor = [UIColor redColor];
 }
 
 #pragma mark - Gesture Recognizer Actions
@@ -315,7 +312,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     
     // highlighted cell
     NSIndexPath *path = [coder decodeObjectForKey: @"path"];
-    TJBNumberSelectionCell *cell = (TJBNumberSelectionCell *)[self.collectionView cellForItemAtIndexPath: path];
+    TJBBasicCollectionViewCell *cell = (TJBBasicCollectionViewCell *)[self.collectionView cellForItemAtIndexPath: path];
     [self configureCellForSelectedState: cell];
     
     // core attributes
