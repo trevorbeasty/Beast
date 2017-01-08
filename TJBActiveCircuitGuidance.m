@@ -27,23 +27,22 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
-@interface TJBActiveCircuitGuidance ()
+@interface TJBActiveCircuitGuidance () <UIViewControllerRestoration>
 
-{
-    // active IV's
-    int _activeExerciseIndex;
-    int _activeRoundIndex;
-    int _previousExerciseIndex;
-    int _previousRoundIndex;
+// active IV's
+@property NSNumber *activeExerciseIndex;
+@property NSNumber *activeRoundIndex;
+@property NSNumber *previousExerciseIndex;
+@property NSNumber *previousRoundIndex;
     
-    float _activeTargetWeight;
-    float _activeTargetReps;
-    float _activeTargetRestTime;
+@property NSNumber *activeTargetWeight;
+@property NSNumber *activeTargetReps;
+@property NSNumber *activeTargetRestTime;
     
-    // user selection progression
-    BOOL _setCompletedButtonPressed;
-    BOOL _restLabelAddedAsStopwatchObserver;
-}
+// user selection progression
+@property NSNumber *setCompletedButtonPressed;
+@property NSNumber *restLabelAddedAsStopwatchObserver;
+
 
 - (IBAction)didPressBeginSet;
 
@@ -87,6 +86,9 @@
 static NSString * const defaultValue = @"default value";
 
 @implementation TJBActiveCircuitGuidance
+
+#pragma  mark - Setters
+
 
 #pragma mark - View Cycle
 
@@ -152,13 +154,13 @@ static NSString * const defaultValue = @"default value";
     // dynamic views
     NSString *notTargetedString = @"not targeted";
     if (self.chainTemplate.targetingWeight == YES){
-        self.weightLabel.text = [[NSNumber numberWithDouble: _activeTargetWeight] stringValue];
+        self.weightLabel.text = [self.activeTargetWeight stringValue];
     } else{
         self.weightLabel.text = notTargetedString;
     }
  
     if (self.chainTemplate.targetingReps == YES){
-        self.repsLabel.text = [[NSNumber numberWithDouble: _activeTargetReps] stringValue];
+        self.repsLabel.text = [self.activeTargetReps stringValue];
     } else{
         self.repsLabel.text = notTargetedString;
     }
@@ -269,6 +271,8 @@ static NSString * const defaultValue = @"default value";
     
     [self setDerivedInstanceVariables];
     
+    [self setRestorationProperties];
+    
     [self initializeActiveInstanceVariables];
     
     return self;
@@ -281,13 +285,17 @@ static NSString * const defaultValue = @"default value";
     TJBChainTemplate *chainTemplate = self.chainTemplate;
     
     if (chainTemplate.targetingWeight == YES)
-        _activeTargetWeight = chainTemplate.weightArrays[0].numbers[0].value;
+        self.activeTargetWeight = [NSNumber numberWithDouble: chainTemplate.weightArrays[0].numbers[0].value];
     if (chainTemplate.targetingReps == YES)
-        _activeTargetReps = chainTemplate.repsArrays[0].numbers[0].value;
+        self.activeTargetReps = [NSNumber numberWithDouble: chainTemplate.repsArrays[0].numbers[0].value];
     
-    _setCompletedButtonPressed = NO;
+    self.setCompletedButtonPressed = [NSNumber numberWithBool: NO];
 }
 
+- (void)setRestorationProperties{
+    self.restorationIdentifier = @"TJBActiveCircuitGuidance";
+    self.restorationClass = [TJBActiveCircuitGuidance class];
+}
 
 
 - (void)setDerivedInstanceVariables{
@@ -321,6 +329,9 @@ static NSString * const defaultValue = @"default value";
                                  completion: nil];
     };
     
+    int exerciseIndex = [self.activeExerciseIndex intValue];
+    int roundIndex = [self.activeRoundIndex intValue];
+    
     if(!self.selectedTimeDelay){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             self.selectedTimeDelay = number;
@@ -334,8 +345,8 @@ static NSString * const defaultValue = @"default value";
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
                 [self.circuitTemplateGenerator userDidSelectNumber: 0
                                                     withNumberType: RestType
-                                                  forExerciseIndex: _activeExerciseIndex
-                                                     forRoundIndex: _activeRoundIndex
+                                                  forExerciseIndex: exerciseIndex
+                                                     forRoundIndex: roundIndex
                                                               date: date
                                                        setDateType: SetBeginDate];
             }
@@ -352,7 +363,7 @@ static NSString * const defaultValue = @"default value";
     }
     else if (_setCompletedButtonPressed == NO){
         void(^block)(int) = ^(int timeInSeconds){
-            _setCompletedButtonPressed = YES;
+            self.setCompletedButtonPressed = [NSNumber numberWithBool: YES];
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self didPressBeginSet];
@@ -360,7 +371,7 @@ static NSString * const defaultValue = @"default value";
         
         TJBInSetVC *vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.selectedTimeDelay intValue]
                                      DidPressSetCompletedBlock: block
-                                                  exerciseName: self.chainTemplate.exercises[_activeExerciseIndex].name];
+                                                  exerciseName: self.chainTemplate.exercises[exerciseIndex].name];
         
         [self presentViewController: vc
                            animated: NO
@@ -373,9 +384,9 @@ static NSString * const defaultValue = @"default value";
                                      completion: nil];
             
             // stopwatch
-            _activeTargetRestTime = self.chainTemplate.targetRestTimeArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
+            self.activeTargetRestTime = [NSNumber numberWithDouble: self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value];
             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-            int restTimeAccountingForLag = _activeTargetRestTime - [number intValue];
+            int restTimeAccountingForLag = [self.activeTargetRestTime doubleValue] - [number intValue];
             self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: restTimeAccountingForLag];
             [stopwatch setPrimaryStopWatchToTimeInSeconds: restTimeAccountingForLag
                                   withForwardIncrementing: NO];
@@ -386,7 +397,7 @@ static NSString * const defaultValue = @"default value";
             // core data
             NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
             
-            TJBDateTypeArrayComp *arrayComp = self.realizedChain.dateArrays[_activeExerciseIndex].dates[_activeRoundIndex];
+            TJBDateTypeArrayComp *arrayComp = self.realizedChain.dateArrays[exerciseIndex].dates[roundIndex];
             arrayComp.value = date;
             arrayComp.isDefaultObject = NO;
             
@@ -394,8 +405,8 @@ static NSString * const defaultValue = @"default value";
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
                 [self.circuitTemplateGenerator userDidSelectNumber: 0
                                                     withNumberType: RestType
-                                                  forExerciseIndex: _activeExerciseIndex
-                                                     forRoundIndex: _activeRoundIndex
+                                                  forExerciseIndex: exerciseIndex
+                                                     forRoundIndex: roundIndex
                                                               date: date
                                                        setDateType: SetEndDate];
             }
@@ -420,7 +431,7 @@ static NSString * const defaultValue = @"default value";
                                      completion: nil];
             
             // core data
-            TJBNumberTypeArrayComp *arrayComp = self.realizedChain.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+            TJBNumberTypeArrayComp *arrayComp = self.realizedChain.weightArrays[exerciseIndex].numbers[roundIndex];
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
             
@@ -428,8 +439,8 @@ static NSString * const defaultValue = @"default value";
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
                 [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
                                                     withNumberType: WeightType
-                                                  forExerciseIndex: _activeExerciseIndex
-                                                     forRoundIndex: _activeRoundIndex
+                                                  forExerciseIndex: exerciseIndex
+                                                     forRoundIndex: roundIndex
                                                               date: nil
                                                        setDateType: SetDateNullType];
             }
@@ -454,7 +465,7 @@ static NSString * const defaultValue = @"default value";
                                      completion: nil];
             
             // core data
-            TJBNumberTypeArrayComp *arrayComp = self.realizedChain.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+            TJBNumberTypeArrayComp *arrayComp = self.realizedChain.repsArrays[exerciseIndex].numbers[roundIndex];
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
             
@@ -462,8 +473,8 @@ static NSString * const defaultValue = @"default value";
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
                 [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
                                                     withNumberType: RepsType
-                                                  forExerciseIndex: _activeExerciseIndex
-                                                     forRoundIndex: _activeRoundIndex
+                                                  forExerciseIndex: exerciseIndex
+                                                     forRoundIndex: roundIndex
                                                               date: nil
                                                        setDateType: SetDateNullType];
             }
@@ -493,52 +504,60 @@ static NSString * const defaultValue = @"default value";
     // need to ammend core data model to include start date as well as end date
     TJBRealizedChain *chain = self.realizedChain;
     
-    TJBNumberTypeArrayComp *weight = chain.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+    int exerciseIndex = [self.activeExerciseIndex intValue];
+    int roundIndex = [self.activeRoundIndex intValue];
+    
+    TJBNumberTypeArrayComp *weight = chain.weightArrays[exerciseIndex].numbers[roundIndex];
     weight.value = [self.selectedWeight floatValue];
     weight.isDefaultObject = NO;
     
-    TJBNumberTypeArrayComp *reps = chain.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex];
+    TJBNumberTypeArrayComp *reps = chain.repsArrays[exerciseIndex].numbers[roundIndex];
     reps.value = [self.selectedReps floatValue];
     reps.isDefaultObject = NO;
 }
 
 - (void)incrementControllerAndUpdateViews{
-    _previousExerciseIndex = _activeExerciseIndex;
-    _previousRoundIndex = _activeRoundIndex;
+    self.previousExerciseIndex = self.activeExerciseIndex;
+    self.previousRoundIndex = self.activeRoundIndex;
     
-    BOOL atMaxRoundIndex = _activeRoundIndex == [self.numberOfRounds intValue] - 1;
-    BOOL atMaxExerciseIndex = _activeExerciseIndex == [self.numberOfExercises intValue] - 1;
+    BOOL atMaxRoundIndex = [self.activeRoundIndex intValue] == [self.numberOfRounds intValue] - 1;
+    BOOL atMaxExerciseIndex = [self.activeExerciseIndex intValue] == [self.numberOfExercises intValue] - 1;
     
     if (atMaxExerciseIndex){
         if (atMaxRoundIndex){
             NSLog(@"reached end of circuit");
             abort();
         } else{
-            _activeRoundIndex++;
-            _activeExerciseIndex = 0;
+            
+            self.activeRoundIndex = [NSNumber numberWithInt: [self.activeRoundIndex intValue] + 1];
+            self.activeRoundIndex = [NSNumber numberWithInt: 0];
             
             NSString *roundText = [NSString stringWithFormat: @"Round %d/%d",
-                                   _activeRoundIndex + 1,
+                                   [self.activeRoundIndex intValue] + 1,
                                    [self.numberOfRounds intValue]];
             self.roundColumnLabel.text = roundText;
         }
     } else{
-        _activeExerciseIndex++;
+
+        self.activeExerciseIndex = [NSNumber numberWithInt: [self.activeExerciseIndex intValue] + 1];
     }
     
     TJBChainTemplate *chainTemplate = self.chainTemplate;
     
+    int exerciseIndex = [self.activeExerciseIndex intValue];
+    int roundIndex = [self.activeRoundIndex intValue];
+    
     if (chainTemplate.targetingWeight == YES){
-        _activeTargetWeight = self.chainTemplate.weightArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
-        self.weightLabel.text = [[NSNumber numberWithFloat: _activeTargetWeight] stringValue];
+        self.activeTargetWeight = [NSNumber numberWithDouble: self.chainTemplate.weightArrays[exerciseIndex].numbers[roundIndex].value];
+        self.weightLabel.text = [self.activeTargetWeight stringValue];
     }
 
     if (chainTemplate.targetingReps == YES){
-        _activeTargetReps = self.chainTemplate.repsArrays[_activeExerciseIndex].numbers[_activeRoundIndex].value;
-        self.repsLabel.text = [[NSNumber numberWithFloat: _activeTargetReps] stringValue];
+        self.activeTargetReps = [NSNumber numberWithDouble: self.chainTemplate.repsArrays[exerciseIndex].numbers[roundIndex].value];
+        self.repsLabel.text = [self.activeTargetReps stringValue];
     }
     
-    TJBExercise *exercise = self.chainTemplate.exercises[_activeExerciseIndex];
+    TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndex];
     self.exerciseLabel.text = exercise.name;
     
 
@@ -568,10 +587,163 @@ static NSString * const defaultValue = @"default value";
 - (void)setUserSelectedValuesToNil{
     self.selectedTimeDelay = nil;
     self.selectedTimeLag = nil;
-    _setCompletedButtonPressed = NO;
+    self.setCompletedButtonPressed = nil;
     self.selectedWeight = nil;
     self.selectedReps = nil;
 }
+
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    TJBActiveCircuitGuidance * vc = [[TJBActiveCircuitGuidance alloc] init];
+    
+    // active IV's
+    
+    vc.activeExerciseIndex = [coder decodeObjectForKey: @"activeExerciseIndex"];
+    vc.activeRoundIndex = [coder decodeObjectForKey: @"activeRoundIndex"];
+    vc.previousExerciseIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
+    vc.previousRoundIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
+    vc.activeTargetWeight = [coder decodeObjectForKey: @"activeTargetWeight"];
+    vc.activeTargetReps = [coder decodeObjectForKey: @"activeTargetReps"];
+    vc.activeTargetRestTime = [coder decodeObjectForKey: @"activeTargetRestTime"];
+    
+    // derived IV's
+    
+    vc.numberOfExercises = [coder decodeObjectForKey: @"numberOfExercises"];
+    vc.numberOfRounds = [coder decodeObjectForKey: @"numberOfRounds"];
+    
+    // state restoration
+    
+    [vc setRestorationProperties];
+    
+    return vc;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    // active IV's
+    
+    [coder encodeObject: self.activeExerciseIndex
+                 forKey: @"activeExerciseIndex"];
+    [coder encodeObject: self.activeRoundIndex
+                 forKey: @"activeRoundIndex"];
+    [coder encodeObject: self.previousExerciseIndex
+                 forKey: @"previousExerciseIndex"];
+    [coder encodeObject: self.previousRoundIndex
+                 forKey: @"previousRoundIndex"];
+    [coder encodeObject: self.activeTargetWeight
+                 forKey: @"activeTargetWeight"];
+    [coder encodeObject: self.activeTargetReps
+                 forKey: @"activeTargetReps"];
+    [coder encodeObject: self.activeTargetRestTime
+                 forKey: @"activeTargetRestTime"];
+    
+    // derived IV's
+    
+    [coder encodeObject: self.numberOfExercises
+                 forKey: @"numberOfExercises"];
+    [coder encodeObject: self.numberOfRounds
+                 forKey: @"numberOfRounds"];
+    
+    // core
+    // NSUUID for chain template; need to implement and change data model
+    // NSUUID for realized chain; need to implement and change data model
+    
+    // user selection
+    
+    if (self.selectedTimeDelay){
+        [coder encodeObject: self.selectedTimeDelay
+                     forKey: @"selectedTimeDelay"];
+    }
+    
+    if (self.selectedTimeLag){
+        [coder encodeObject: self.selectedTimeLag
+                     forKey: @"selectedTimeLag"];
+    }
+    
+    if (self.setCompletedButtonPressed){
+        [coder encodeObject: self.setCompletedButtonPressed
+                     forKey: @"setCompletedButtonPressed"];
+    }
+    
+    if (self.selectedWeight){
+        [coder encodeObject: self.selectedWeight
+                     forKey: @"selectedWeight"];
+    }
+    
+    if (self.selectedReps){
+        [coder encodeObject: self.selectedReps
+                     forKey: @"selectedReps"];
+    }
+    
+    // delegate - circuit template generator of 'active updating' type
+    
+    [coder encodeObject: self.circuitTemplateGenerator
+                 forKey: @"circuitTemplateGenerator"];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super decodeRestorableStateWithCoder: coder];
+    
+
+}
+
+//{
+//    // active IV's
+//    int _activeExerciseIndex;
+//    int _activeRoundIndex;
+//    int _previousExerciseIndex;
+//    int _previousRoundIndex;
+//    
+//    float _activeTargetWeight;
+//    float _activeTargetReps;
+//    float _activeTargetRestTime;
+//    
+//    // user selection progression
+//    BOOL _setCompletedButtonPressed;
+//    BOOL _restLabelAddedAsStopwatchObserver;
+//}
+//
+//- (IBAction)didPressBeginSet;
+//
+//// UI
+//@property (weak, nonatomic) IBOutlet UIView *containerView;
+//
+//@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *exerciseColumnLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *roundColumnLabel;
+//
+//@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *weightLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *repsLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *restLabel;
+//
+//@property (weak, nonatomic) IBOutlet UIButton *beginSetButton;
+//
+//@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+//
+//// data
+//@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+//
+//// derived IV's
+//@property (nonatomic, strong) NSNumber *numberOfExercises;
+//@property (nonatomic, strong) NSNumber *numberOfRounds;
+//
+//// user selections
+//@property (nonatomic, strong) NSNumber *selectedTimeDelay;
+//@property (nonatomic, strong) NSNumber *selectedTimeLag;
+//@property (nonatomic, strong) NSNumber *selectedWeight;
+//@property (nonatomic, strong) NSNumber *selectedReps;
+//
+//// realized chain
+//@property (nonatomic, strong) TJBRealizedChain *realizedChain;
+//
+//@property (nonatomic, weak) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
 
 @end
 
