@@ -185,7 +185,12 @@ static NSString * const defaultValue = @"default value";
     // fill managed object with default values for weight, reps, dates
     // exercises are known
     // post-mortem is known
+    
+    realizedChain.dateCreated = [NSDate date];
     realizedChain.postMortem = NO;
+    realizedChain.isIncomplete = YES;
+    realizedChain.firstIncompleteRoundIndex = 0;
+    realizedChain.firstIncompleteExerciseIndex = 0;
     realizedChain.chainTemplate = self.chainTemplate;
     realizedChain.exercises = self.chainTemplate.exercises;
     
@@ -255,6 +260,8 @@ static NSString * const defaultValue = @"default value";
             dateTypeArrayComponent.owningArray = dateArray;
         }
     }
+    
+    
     
     [[CoreDataController singleton] saveContext];
 }
@@ -329,8 +336,15 @@ static NSString * const defaultValue = @"default value";
                                  completion: nil];
     };
     
+    // used in following statements
+    
     int exerciseIndex = [self.activeExerciseIndex intValue];
     int roundIndex = [self.activeRoundIndex intValue];
+    
+    BOOL buttonWasNotPressed = [self.setCompletedButtonPressed boolValue] == NO;
+    BOOL IVNotCreated = !self.setCompletedButtonPressed;
+    
+    // recursive if tree
     
     if(!self.selectedTimeDelay){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
@@ -360,8 +374,7 @@ static NSString * const defaultValue = @"default value";
                                     numberSelectedBlock: numberSelectedBlock
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
-    else if (_setCompletedButtonPressed == NO){
+    } else if (buttonWasNotPressed || IVNotCreated){
         void(^block)(int) = ^(int timeInSeconds){
             self.setCompletedButtonPressed = [NSNumber numberWithBool: YES];
             [self dismissViewControllerAnimated: NO
@@ -502,6 +515,9 @@ static NSString * const defaultValue = @"default value";
 
 - (void)addSelectedValuesToRealizedChainObject{
     // need to ammend core data model to include start date as well as end date
+    
+    // update TJBRealizedChain to account for just completed set
+    
     TJBRealizedChain *chain = self.realizedChain;
     
     int exerciseIndex = [self.activeExerciseIndex intValue];
@@ -514,6 +530,9 @@ static NSString * const defaultValue = @"default value";
     TJBNumberTypeArrayComp *reps = chain.repsArrays[exerciseIndex].numbers[roundIndex];
     reps.value = [self.selectedReps floatValue];
     reps.isDefaultObject = NO;
+    
+    // save the managed object context to persist progress made so far
+    [[CoreDataController singleton] saveContext];
 }
 
 - (void)incrementControllerAndUpdateViews{
@@ -563,9 +582,57 @@ static NSString * const defaultValue = @"default value";
 
 }
 
+
 - (void)quit{
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
+    // this will only ever be called before the chain has been completed, so no need to check if the set is completed in method body
+
+    // present alert controller that gives the option to save or discard progress
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Not Completed"
+                                                                   message: @"Save or discard progress that has been made?"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    void (^discardHandler)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        // reset the managed object context and nullify the IV referencing the previously inserted TJBRealizedChain
+        
+        TJBRealizedChain *chain = self.realizedChain;
+        
+        self.realizedChain = nil;
+        NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+        [moc deleteObject: chain];
+        [[CoreDataController singleton] saveContext];
+        
+        [self.tabBarController dismissViewControllerAnimated: NO
+                                                  completion: nil];
+    };
+    
+    void (^saveHandler)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        // save the managed object context and update the 'first complete' type core data properties of TJBRealizedCHain
+        
+        self.realizedChain.firstIncompleteRoundIndex = [self.activeRoundIndex intValue];
+        self.realizedChain.firstIncompleteExerciseIndex = [self.activeExerciseIndex intValue];
+        
+        [[CoreDataController singleton] saveContext];
+        
+        [self.tabBarController dismissViewControllerAnimated: NO
+                                                  completion: nil];
+    };
+    
+    UIAlertAction *discardAction = [UIAlertAction actionWithTitle: @"Discard"
+                                                            style: UIAlertActionStyleDefault
+                                                          handler: discardHandler];
+    UIAlertAction *saveAction = [UIAlertAction actionWithTitle: @"Save"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: saveHandler];
+    
+    [alert addAction: discardAction];
+    [alert addAction: saveAction];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
 }
 
 - (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{

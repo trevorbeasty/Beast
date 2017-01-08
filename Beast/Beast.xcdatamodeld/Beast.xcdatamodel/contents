@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="Chain" representedClassName="TJBChain" syncable="YES" codeGenerationType="class">
         <relationship name="exercises" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chains" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="repsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsArray" inverseName="chain" inverseEntity="RepsArray" syncable="YES"/>
@@ -44,6 +44,10 @@
         <relationship name="owningArray" maxCount="1" deletionRule="Nullify" destinationEntity="NumberArray" inverseName="numbers" inverseEntity="NumberArray" syncable="YES"/>
     </entity>
     <entity name="RealizedChain" representedClassName="TJBRealizedChain" parentEntity="Chain" syncable="YES" codeGenerationType="class">
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="firstIncompleteExerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="firstIncompleteRoundIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isIncomplete" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="realizedChains" inverseEntity="ChainTemplate" syncable="YES"/>
         <relationship name="dateArrays" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="DateArray" inverseName="realizedChain" inverseEntity="DateArray" syncable="YES"/>
@@ -86,7 +90,7 @@
         <element name="ExerciseCategory" positionX="-396" positionY="-486" width="128" height="73"/>
         <element name="NumberArray" positionX="90" positionY="375" width="128" height="60"/>
         <element name="NumberTypeArrayComponent" positionX="304" positionY="450" width="128" height="90"/>
-        <element name="RealizedChain" positionX="-776" positionY="-333" width="128" height="105"/>
+        <element name="RealizedChain" positionX="-776" positionY="-333" width="128" height="165"/>
         <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="135"/>
         <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="90"/>
         <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>
