@@ -599,10 +599,9 @@ static NSString * const defaultValue = @"default value";
         TJBRealizedChain *chain = self.realizedChain;
         
         self.realizedChain = nil;
-        NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-        [moc deleteObject: chain];
-        [[CoreDataController singleton] saveContext];
-        
+        [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
+                                                           chain: chain];
+        [[[CoreDataController singleton] moc] reset];
         [self.tabBarController dismissViewControllerAnimated: NO
                                                   completion: nil];
     };

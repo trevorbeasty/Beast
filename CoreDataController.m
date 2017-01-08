@@ -10,7 +10,7 @@
 
 @interface CoreDataController ()
 
-@property (nonatomic, weak) NSManagedObjectContext *moc;
+@property (nonatomic, strong) NSManagedObjectContext *moc;
 
 @end
 
@@ -188,6 +188,73 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
     {
         abort();
     }
+}
+
+- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain{
+    // must guarantee that all trickle-down managed objects are deleted as well as the chain itself
+    // only some objects must be deleted, others should continue to exist in their own right
+    
+    // some relationships are common to both chain types
+    
+    NSOrderedSet *weightArrays = chain.weightArrays;
+    NSOrderedSet *repsArrays = chain.repsArrays;
+    
+    // weight arrays
+    
+    for (TJBWeightArray *array in weightArrays){
+        
+        NSOrderedSet *numbers = array.numbers;
+        
+        for (TJBNumberTypeArrayComp *comp in numbers){
+            
+            [_moc deleteObject: comp];
+        }
+        
+        [_moc deleteObject: array];
+    }
+    
+    // reps arrays
+    
+    for (TJBRepsArray *array in repsArrays){
+        
+        NSOrderedSet *numbers = array.numbers;
+        
+        for (TJBNumberTypeArrayComp *comp in numbers){
+            
+            [_moc deleteObject: comp];
+        }
+        
+        [_moc deleteObject: array];
+    }
+    
+    
+    if (chainType == RealizedChainType){
+        
+        // cast the chain as a realized chain
+        
+        TJBRealizedChain *realizedChain = (TJBRealizedChain *)chain;
+        
+        // date arrays
+        
+        NSOrderedSet *dateArrays = realizedChain.dateArrays;
+        
+        for (TJBDateArray *array in dateArrays){
+            
+            NSOrderedSet *dates = array.dates;
+            
+            for (TJBDateTypeArrayComp *comp in dates){
+                
+                [_moc deleteObject: comp];
+            }
+            
+            [_moc deleteObject: array];
+        }
+    }
+    
+    [_moc deleteObject: chain];
+    
+    NSError *error;
+    [_moc save: &error];
 }
 
 @end

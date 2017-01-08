@@ -21,7 +21,19 @@
 
 #import "TJBDateTypeArrayComp+CoreDataProperties.h"
 
+#import "TJBWeightArray+CoreDataProperties.h"
+#import "TJBRepsArray+CoreDataProperties.h"
+#import "TJBNumberArray+CoreDataProperties.h"
+#import "TJBNumberTypeArrayComp+CoreDataClass.h"
+#import "TJBDateArray+CoreDataProperties.h"
+#import "TJBDateTypeArrayComp+CoreDataProperties.h"
+
 extern NSString * const ExerciseDataChanged;
+
+typedef enum{
+    ChainTemplateType,
+    RealizedChainType
+} ChainType;
 
 @interface CoreDataController : NSObject
 
@@ -38,7 +50,7 @@ extern NSString * const ExerciseDataChanged;
 
 - (NSManagedObjectContext *)moc;
 
-
+- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain;
 
 
 
