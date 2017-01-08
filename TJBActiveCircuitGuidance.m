@@ -601,9 +601,9 @@ static NSString * const defaultValue = @"default value";
         self.realizedChain = nil;
         [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
                                                            chain: chain];
-        [[[CoreDataController singleton] moc] reset];
-        [self.tabBarController dismissViewControllerAnimated: NO
-                                                  completion: nil];
+//        [[[CoreDataController singleton] moc] reset];
+        [self.tabBarController.presentingViewController dismissViewControllerAnimated: NO
+                                                                           completion: nil];
     };
     
     void (^saveHandler)(UIAlertAction *) = ^(UIAlertAction *action){
@@ -615,8 +615,8 @@ static NSString * const defaultValue = @"default value";
         
         [[CoreDataController singleton] saveContext];
         
-        [self.tabBarController dismissViewControllerAnimated: NO
-                                                  completion: nil];
+        [self.tabBarController.presentingViewController dismissViewControllerAnimated: NO
+                                                                           completion: nil];
     };
     
     UIAlertAction *discardAction = [UIAlertAction actionWithTitle: @"Discard"
