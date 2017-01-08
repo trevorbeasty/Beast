@@ -128,6 +128,8 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
     }
 }
 
+#pragma mark - Queries
+
 - (TJBExercise *)exerciseForName:(NSString *)name
 {
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
@@ -181,6 +183,50 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
         return exerciseCategory;
     }
     else if (arrayLength == 1)
+    {
+        return results[0];
+    }
+    else
+    {
+        abort();
+    }
+}
+
+- (TJBRealizedChain *)realizedChainWithUniqueID:(NSString *)uniqueID{
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"RealizedChain"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueID = %@", uniqueID];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 1)
+    {
+        return results[0];
+    }
+    else
+    {
+        abort();
+    }
+}
+
+- (TJBChainTemplate *)chainTemplateWithUniqueID:(NSString *)uniqueID{
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate "];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueID = %@", uniqueID];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 1)
     {
         return results[0];
     }

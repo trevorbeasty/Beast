@@ -94,7 +94,6 @@ static NSString * const defaultValue = @"default value";
 
 - (void)viewDidLoad{
     [self configureViewData];
-    [self createSkeletonForRealizedChainObject];
     [self addBackgroundImage];
     [self viewAesthetics];
 }
@@ -139,7 +138,9 @@ static NSString * const defaultValue = @"default value";
 }
 
 - (void)configureViewData{
+    
     // nav bar
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
     NSString *title = [NSString stringWithFormat: @"%@",
                        self.chainTemplate.name];
@@ -152,7 +153,9 @@ static NSString * const defaultValue = @"default value";
     [self.navBar setItems: @[navItem]];
     
     // dynamic views
+    
     NSString *notTargetedString = @"not targeted";
+    
     if (self.chainTemplate.targetingWeight == YES){
         self.weightLabel.text = [self.activeTargetWeight stringValue];
     } else{
@@ -173,6 +176,29 @@ static NSString * const defaultValue = @"default value";
     NSString *roundText = [NSString stringWithFormat: @"Round 1/%d",
                            [self.numberOfRounds intValue]];
     self.roundColumnLabel.text = roundText;
+}
+
+
+
+#pragma mark - Init
+
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator{
+    self = [super init];
+    
+    // IV's
+    
+    self.chainTemplate = chainTemplate;
+    self.circuitTemplateGenerator = circuitTemplateGenerator;
+    
+    [self setDerivedInstanceVariables];
+    
+    [self setRestorationProperties];
+    
+    [self initializeActiveInstanceVariables];
+    
+    [self createSkeletonForRealizedChainObject];
+    
+    return self;
 }
 
 - (void)createSkeletonForRealizedChainObject{
@@ -262,28 +288,7 @@ static NSString * const defaultValue = @"default value";
         }
     }
     
-    
-    
     [[CoreDataController singleton] saveContext];
-}
-
-#pragma mark - Init
-
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator{
-    self = [super init];
-    
-    // IV's
-    
-    self.chainTemplate = chainTemplate;
-    self.circuitTemplateGenerator = circuitTemplateGenerator;
-    
-    [self setDerivedInstanceVariables];
-    
-    [self setRestorationProperties];
-    
-    [self initializeActiveInstanceVariables];
-    
-    return self;
 }
 
 - (void)initializeActiveInstanceVariables{
@@ -680,9 +685,29 @@ static NSString * const defaultValue = @"default value";
     vc.numberOfExercises = [coder decodeObjectForKey: @"numberOfExercises"];
     vc.numberOfRounds = [coder decodeObjectForKey: @"numberOfRounds"];
     
+    // core
+    
+    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
+    vc.chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
+    
+    NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
+    vc.realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
+    
+    vc.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
+    
     // state restoration
     
     [vc setRestorationProperties];
+    
+    // user selection
+    
+    vc.selectedTimeDelay = [coder decodeObjectForKey: @"selectedTimeDelay"];
+    vc.setCompletedButtonPressed = [coder decodeObjectForKey: @"setCompletedButtonPressed"];
+    vc.selectedTimeLag = [coder decodeObjectForKey: @"selectedTimeLag"];
+    vc.selectedWeight = [coder decodeObjectForKey: @"selectedWeight"];
+    vc.selectedReps = [coder decodeObjectForKey: @"selectedReps"];
+    
+    // if the user exited the app during the selection process, kick off that process
     
     return vc;
 }
@@ -733,14 +758,14 @@ static NSString * const defaultValue = @"default value";
                      forKey: @"selectedTimeDelay"];
     }
     
-    if (self.selectedTimeLag){
-        [coder encodeObject: self.selectedTimeLag
-                     forKey: @"selectedTimeLag"];
-    }
-    
     if (self.setCompletedButtonPressed){
         [coder encodeObject: self.setCompletedButtonPressed
                      forKey: @"setCompletedButtonPressed"];
+    }
+    
+    if (self.selectedTimeLag){
+        [coder encodeObject: self.selectedTimeLag
+                     forKey: @"selectedTimeLag"];
     }
     
     if (self.selectedWeight){
@@ -752,19 +777,9 @@ static NSString * const defaultValue = @"default value";
         [coder encodeObject: self.selectedReps
                      forKey: @"selectedReps"];
     }
-    
-    // delegate - circuit template generator of 'active updating' type
-    
-    [coder encodeObject: self.circuitTemplateGenerator
-                 forKey: @"circuitTemplateGenerator"];
 }
 
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super decodeRestorableStateWithCoder: coder];
-    
 
-}
 
 
 

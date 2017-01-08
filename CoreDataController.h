@@ -41,10 +41,17 @@ typedef enum{
 
 + (instancetype)singleton;
 
+// specific queries
+
 - (TJBExercise *)exerciseForName:(NSString *)name;
 - (BOOL)realizedSetExerciseExistsForName:(NSString *)name;
 
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;
+
+- (TJBRealizedChain *)realizedChainWithUniqueID:(NSString *)uniqueID;
+- (TJBChainTemplate *)chainTemplateWithUniqueID:(NSString *)uniqueID;
+
+//
 
 - (void)saveContext;
 
