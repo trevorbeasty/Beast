@@ -61,14 +61,11 @@
 
 #pragma mark - View Life Cycle
 
-//- (void)viewDidLoad{
-//    
-//}
 
 #pragma mark - <UIViewControllerRestoration>
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-//    return [[TJBRealizedSetActiveEntryTBC alloc] init];
+
     TJBRealizedSetActiveEntryTBC *tbc = [[TJBRealizedSetActiveEntryTBC alloc] initWithoutChildViewControllers];
     
     // for restoration

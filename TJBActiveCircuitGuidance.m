@@ -87,9 +87,6 @@ static NSString * const defaultValue = @"default value";
 
 @implementation TJBActiveCircuitGuidance
 
-#pragma  mark - Setters
-
-
 #pragma mark - View Cycle
 
 - (void)viewDidLoad{

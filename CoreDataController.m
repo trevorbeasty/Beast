@@ -216,7 +216,7 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
 
 - (TJBChainTemplate *)chainTemplateWithUniqueID:(NSString *)uniqueID{
     
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate "];
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"uniqueID = %@", uniqueID];
     fetch.predicate = predicate;
     

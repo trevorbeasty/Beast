@@ -38,7 +38,7 @@
 
 #import "TJBCircuitModeTBC.h"
 
-@interface TJBCircuitTemplateGeneratorVC ()
+@interface TJBCircuitTemplateGeneratorVC () <UIViewControllerRestoration>
 {
     // core
     BOOL _supportsUserInput;
@@ -107,7 +107,27 @@ static NSString * const defaultValue = @"unselected";
     _supportsUserInput = YES;
     _valuesPopulatedDuringWorkout = NO;
     
+    [self setRestorationProperties];
+    
     return self;
+}
+
+- (void)setRestorationProperties{
+    
+    NSString *string = @"TJBCircuitTemplateGenerator";
+    
+    NSString *appendString;
+    
+    if (_circuitGeneratorType == ReferenceType){
+        appendString = @"Reference";
+    } else if (_circuitGeneratorType == ActiveUpdatingType){
+        appendString = @"ActiveUpdating";
+    } else if (_circuitGeneratorType == TemplateType){
+        appendString = @"Template";
+    }
+    
+    self.restorationIdentifier = [string stringByAppendingString: appendString];
+    self.restorationClass = [TJBCircuitTemplateGeneratorVC class];
 }
 
 - (instancetype)initActiveUpdatingTypeWithChainTemplate:(TJBChainTemplate *)chainTemplate{
@@ -128,6 +148,8 @@ static NSString * const defaultValue = @"unselected";
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate supportsUserInput:(BOOL)supportsUserInput valuesPopulatedDuringWorkout:(BOOL)valuesPopulatedDuringWorkout{
     self = [super init];
+    
+    [self setRestorationProperties];
     
     self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
     self.targetingReps = [NSNumber numberWithBool: chainTemplate.targetingReps];
@@ -872,7 +894,49 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
+#pragma mark - <UIViewControllerRestoration>
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    TJBCircuitTemplateGeneratorVC *vc;
+    
+    // type
+    
+    TJBCircuitTemplateType type = [coder decodeIntForKey: @"circuitGeneratorType"];
+    
+    NSString *uniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
+    
+    if (type == ReferenceType){
+        
+        TJBChainTemplate *chain = [[CoreDataController singleton] chainTemplateWithUniqueID: uniqueID];
+        vc = [[TJBCircuitTemplateGeneratorVC alloc] initReferenceTypeWithChainTemplate: chain];
+        
+    } else if(type == ActiveUpdatingType){
+        
+        TJBChainTemplate *chain = [[CoreDataController singleton] chainTemplateWithUniqueID: uniqueID];
+        vc = [[TJBCircuitTemplateGeneratorVC alloc] initActiveUpdatingTypeWithChainTemplate: chain];
+    }
+    
+    [vc setRestorationProperties];
+    
+    return vc;
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    // type
+    
+    [coder encodeInt: _circuitGeneratorType
+              forKey: @"circuitGeneratorType"];
+    
+    // encode chain template uniqueID if is reference or active updating type
+    
+    if (_circuitGeneratorType == ReferenceType || _circuitGeneratorType == ActiveUpdatingType){
+        
+        [coder encodeObject: self.chainTemplate.uniqueID
+                     forKey: @"chainTemplateUniqueID"];
+    }
+}
 
 @end
 

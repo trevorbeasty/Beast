@@ -82,6 +82,18 @@
     
     [tbc configureCommonAttributes];
     
+    TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
+    
+    TJBCircuitTemplateGeneratorVC *vc2 = [coder decodeObjectForKey: @"vc2"];
+    
+    TJBCircuitTemplateGeneratorVC *vc3 = [coder decodeObjectForKey: @"vc3"];
+    
+    [vc3 loadViewIfNeeded];
+    
+    [tbc setViewControllers: @[vc1,
+                               vc2,
+                               vc3]];
+    
     return tbc;
 }
 
@@ -89,7 +101,7 @@
     
     [super encodeRestorableStateWithCoder: coder];
     
-    NSArray *children = self.childViewControllers;
+    NSArray *children = self.viewControllers;
     
     [coder encodeObject: children[0]
                  forKey: @"vc1"];
@@ -103,16 +115,7 @@
     
     [super decodeRestorableStateWithCoder: coder];
     
-    TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
-    TJBCircuitTemplateGeneratorVC *vc2 = [coder decodeObjectForKey: @"vc2"];
-    TJBCircuitTemplateGeneratorVC *vc3 = [coder decodeObjectForKey: @"vc3"];
-    
-    [vc3 loadViewIfNeeded];
-    
-    [self setViewControllers: @[vc1,
-                                vc2,
-                                vc3]];
-    
+
 }
 
 
