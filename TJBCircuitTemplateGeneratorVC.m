@@ -36,9 +36,7 @@
 #import "RowComponentActiveUpdatingProtocol.h"
 #import "CircuitDesignRowComponent.h"
 
-//#import "TJBGlobalParameters.h"
-
-//#import "TJBWeightArray+CoreDataProperties.h"
+#import "TJBCircuitModeTBC.h"
 
 @interface TJBCircuitTemplateGeneratorVC ()
 {
@@ -531,27 +529,9 @@ static NSString * const defaultValue = @"unselected";
                                                                     preferredStyle: UIAlertControllerStyleAlert];
             void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
                 
-                TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initActiveUpdatingTypeWithChainTemplate: chainTemplate];
-                // need to load the view ahead of time so that it can be ammended without the user first directly accessing it
-                [vc3 loadViewIfNeeded];
-                TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
-                                                                               circuitTemplateGenerator: vc3];
+                TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: chainTemplate];
                 
-                
-                
-                TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initReferenceTypeWithChainTemplate: chainTemplate];
-                
-                [vc1.tabBarItem setTitle: @"Active"];
-                [vc2.tabBarItem setTitle: @"Targets"];
-                [vc3.tabBarItem setTitle: @"Progress"];
-                
-                UITabBarController *tabBarController = [[UITabBarController alloc] init];
-                tabBarController.tabBar.translucent = NO;
-                [tabBarController setViewControllers: @[vc1,
-                                                        vc2,
-                                                        vc3]];
-                
-                [self presentViewController: tabBarController
+                [self presentViewController: tbc
                                    animated: YES
                                  completion: nil];
             };

@@ -53,6 +53,7 @@
 		0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB791E217326000D1B5F /* TJBBasicCollectionViewCell.m */; };
 		0B86FB7C1E217326000D1B5F /* TJBBasicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB7A1E217326000D1B5F /* TJBBasicCollectionViewCell.xib */; };
 		0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */; };
+		0BA8ACE91E22709700EE10C2 /* TJBCircuitModeTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,6 +132,8 @@
 		0BA8ACE31E1BCAF400EE10C2 /* RowComponentActiveUpdatingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowComponentActiveUpdatingProtocol.h; sourceTree = "<group>"; };
 		0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryTBC.h; sourceTree = "<group>"; };
 		0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryTBC.m; sourceTree = "<group>"; };
+		0BA8ACE71E22709700EE10C2 /* TJBCircuitModeTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitModeTBC.h; sourceTree = "<group>"; };
+		0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitModeTBC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,7 +314,6 @@
 				0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */,
 				0B843CCF1E0C96E20093F057 /* Personal Record Scene */,
 				0B843CCE1E0C96CA0093F057 /* History by Day Scene */,
-				0B843CCD1E0C969F0093F057 /* Exercise Creation Scene */,
 				0B843CCC1E0C96840093F057 /* Active Entry Scene */,
 			);
 			name = "Realized Set Active Entry";
@@ -330,6 +332,8 @@
 		0B843CB21DFF64BD0093F057 /* Circuit Mode */ = {
 			isa = PBXGroup;
 			children = (
+				0BA8ACE71E22709700EE10C2 /* TJBCircuitModeTBC.h */,
+				0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */,
 				0B86FB6E1E116360000D1B5F /* New or Existing Selection  */,
 				0B1616DA1E0819EE001C8F45 /* Row Component */,
 				0B1616D91E0819E1001C8F45 /* Exercise Component */,
@@ -347,13 +351,6 @@
 				0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */,
 			);
 			name = "Active Entry Scene";
-			sourceTree = "<group>";
-		};
-		0B843CCD1E0C969F0093F057 /* Exercise Creation Scene */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Exercise Creation Scene";
 			sourceTree = "<group>";
 		};
 		0B843CCE1E0C96CA0093F057 /* History by Day Scene */ = {
@@ -500,6 +497,7 @@
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,
 				0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */,
 				0B843C991DFCAB470093F057 /* RealizedSetHistoryCell.m in Sources */,
+				0BA8ACE91E22709700EE10C2 /* TJBCircuitModeTBC.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */,
 				0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */,

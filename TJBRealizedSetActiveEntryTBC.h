@@ -11,6 +11,6 @@
 @interface TJBRealizedSetActiveEntryTBC : UITabBarController
 
 - (instancetype)initWithChildViewControllers;
-- (instancetype)initWithoutChildViewControllers;
+//- (instancetype)initWithoutChildViewControllers;
 
 @end
