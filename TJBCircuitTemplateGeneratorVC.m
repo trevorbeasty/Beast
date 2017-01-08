@@ -394,8 +394,10 @@ static NSString * const defaultValue = @"unselected";
                                                                         inManagedObjectContext: moc];
     
     // assign the chain template's attributes
-    chainTemplate.identifier = @"placeholder identifier";
     
+    chainTemplate.dateCreated = [NSDate date];
+    chainTemplate.identifier = @"placeholder identifier";
+    chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
     chainTemplate.name = self.name;
     chainTemplate.targetingWeight = [self.targetingWeight intValue];
     chainTemplate.targetingReps = [self.targetingReps intValue];

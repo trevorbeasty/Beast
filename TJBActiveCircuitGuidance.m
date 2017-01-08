@@ -186,6 +186,7 @@ static NSString * const defaultValue = @"default value";
     // exercises are known
     // post-mortem is known
     
+    realizedChain.uniqueID = [[NSUUID UUID] UUIDString];
     realizedChain.dateCreated = [NSDate date];
     realizedChain.postMortem = NO;
     realizedChain.isIncomplete = YES;
@@ -715,8 +716,15 @@ static NSString * const defaultValue = @"default value";
                  forKey: @"numberOfRounds"];
     
     // core
-    // NSUUID for chain template; need to implement and change data model
-    // NSUUID for realized chain; need to implement and change data model
+    
+    [coder encodeObject: self.chainTemplate.uniqueID
+                 forKey: @"chainTemplateUniqueID"];
+    
+    [coder encodeObject: self.realizedChain.uniqueID
+                 forKey: @"realizedChainUniqueID"];
+    
+    [coder encodeObject: self.circuitTemplateGenerator
+                 forKey: @"circuitTemplateGenerator"];
     
     // user selection
     
@@ -758,58 +766,7 @@ static NSString * const defaultValue = @"default value";
 
 }
 
-//{
-//    // active IV's
-//    int _activeExerciseIndex;
-//    int _activeRoundIndex;
-//    int _previousExerciseIndex;
-//    int _previousRoundIndex;
-//    
-//    float _activeTargetWeight;
-//    float _activeTargetReps;
-//    float _activeTargetRestTime;
-//    
-//    // user selection progression
-//    BOOL _setCompletedButtonPressed;
-//    BOOL _restLabelAddedAsStopwatchObserver;
-//}
-//
-//- (IBAction)didPressBeginSet;
-//
-//// UI
-//@property (weak, nonatomic) IBOutlet UIView *containerView;
-//
-//@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *exerciseColumnLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *roundColumnLabel;
-//
-//@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *weightLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *repsLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *restLabel;
-//
-//@property (weak, nonatomic) IBOutlet UIButton *beginSetButton;
-//
-//@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-//
-//// data
-//@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
-//
-//// derived IV's
-//@property (nonatomic, strong) NSNumber *numberOfExercises;
-//@property (nonatomic, strong) NSNumber *numberOfRounds;
-//
-//// user selections
-//@property (nonatomic, strong) NSNumber *selectedTimeDelay;
-//@property (nonatomic, strong) NSNumber *selectedTimeLag;
-//@property (nonatomic, strong) NSNumber *selectedWeight;
-//@property (nonatomic, strong) NSNumber *selectedReps;
-//
-//// realized chain
-//@property (nonatomic, strong) TJBRealizedChain *realizedChain;
-//
-//@property (nonatomic, weak) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
+
 
 @end
 
