@@ -26,6 +26,7 @@
     BOOL _setCompletedButtonPressed;
     int _timerAtSetCompletion;
     BOOL _whiteoutActive;
+    int _timeSpentInBackgroundState;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
@@ -73,8 +74,6 @@
 
 - (instancetype)init{
     
-    NSLog(@"init");
-    
     self = [super init];
     
     // for restoration
@@ -86,14 +85,8 @@
 
 #pragma mark - View Life Cycle
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    NSLog(@"view will appear");
-}
 
 - (void)viewDidAppear:(BOOL)animated{
-    
-    NSLog(@"viewDidAppear");
     
     if (self.restorationBlock){
         self.restorationBlock();
@@ -103,8 +96,6 @@
 }
 
 - (void)viewDidLoad{
-    
-    NSLog(@"view did load");
     
     _setCompletedButtonPressed = NO;
     _whiteoutActive = NO;
@@ -296,6 +287,7 @@
     {
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             weakSelf.timeDelay = number;
+            weakSelf.setBeginDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
             [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
             [weakSelf didPressBeginNextSet: nil];
@@ -333,6 +325,7 @@
     {
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             weakSelf.timeLag = number;
+            weakSelf.setEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
             [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
             [weakSelf didPressBeginNextSet: nil];
@@ -549,6 +542,8 @@
     if (self.timeDelay){
         [coder encodeObject: self.timeDelay
                      forKey: @"timeDelay"];
+        [coder encodeObject: self.setBeginDate
+                     forKey: @"setBeginDate"];
     }
     
     [coder encodeBool: _setCompletedButtonPressed
@@ -557,6 +552,8 @@
     if (self.timeLag){
         [coder encodeObject: self.timeLag
                      forKey: @"timeLag"];
+        [coder encodeObject: self.setEndDate
+                     forKey: @"setEndDate"];
     }
     
     if (self.weight){
@@ -590,6 +587,10 @@
                                          withForwardIncrementing: YES];
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: time];
     
+    // store the elapsed time for use by the InSetVC to adjust its timer in response to the app entering the background state
+   
+    _timeSpentInBackgroundState = elapsedTimeInSeconds;
+    
     // table view
     
     float y = [coder decodeDoubleForKey: @"scrollYPosition"];
@@ -615,8 +616,10 @@
     
     _whiteoutActive = [coder decodeObjectForKey: @"whiteoutActive"];
     self.timeDelay = [coder decodeObjectForKey: @"timeDelay"];
+    self.setBeginDate = [coder decodeObjectForKey: @"setBeginDate"];
     _setCompletedButtonPressed = [coder decodeBoolForKey: @"setCompletedButtonPressed"];
     self.timeLag = [coder decodeObjectForKey: @"timeLag"];
+    self.setEndDate = [coder decodeObjectForKey: @"setEndDate"];
     self.weight = [coder decodeObjectForKey: @"weight"];
     self.reps = [coder decodeObjectForKey: @"reps"];
     

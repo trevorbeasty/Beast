@@ -31,9 +31,10 @@
 
 @implementation TJBInSetVC
 
-#pragma mark - Instantiation
+#pragma mark - View Life Cycle
 
 -(void)viewDidLoad{
+    
     // stopwatch
     
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
@@ -60,6 +61,8 @@
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.setCompletedButton]
                                                      withOpacity: 85];
 }
+
+#pragma mark - Instantiation
 
 - (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block exerciseName:(NSString *)exerciseName{
     self = [super init];
