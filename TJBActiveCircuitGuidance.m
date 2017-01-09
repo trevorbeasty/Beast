@@ -410,6 +410,7 @@ static NSString * const defaultValue = @"default value";
             [self didPressBeginSet];
             
             // circuit template generator
+            
             NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
             
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
@@ -457,6 +458,7 @@ static NSString * const defaultValue = @"default value";
             self.impliedEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
             
             // stopwatch
+            
             self.activeTargetRestTime = [NSNumber numberWithDouble: self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value];
             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
             int restTimeAccountingForLag = [self.activeTargetRestTime doubleValue] - [number intValue];
@@ -470,6 +472,7 @@ static NSString * const defaultValue = @"default value";
             }
             
             // circuit template generator
+            
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
                 [self.circuitTemplateGenerator userDidSelectNumber: 0
                                                     withNumberType: RestType
@@ -504,6 +507,7 @@ static NSString * const defaultValue = @"default value";
             arrayComp.isDefaultObject = NO;
             
             // circuit template generator
+            
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
                 [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
                                                     withNumberType: WeightType
@@ -561,15 +565,16 @@ static NSString * const defaultValue = @"default value";
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else{
-        // order dependent - addSelectedValues... must be called before incrementController...
+        // order dependent - addSelectedValues must be called before incrementController
+        
         [self addSelectedValuesToRealizedChainObject];
         [self incrementControllerAndUpdateViews];
         [self setUserSelectedValuesToNil];
     }
 }
 
+
 - (void)addSelectedValuesToRealizedChainObject{
-    // need to ammend core data model to include start date as well as end date
     
     // update TJBRealizedChain to account for just completed set
     
