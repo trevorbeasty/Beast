@@ -25,8 +25,6 @@
 - (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing;
 - (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing;
 
-//- (void)incrementSecondaryStopwatchForwardByNumberOfSeconds:(int)seconds;
-
 - (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds;
 
 - (NSString *)primaryTimeElapsedAsString;

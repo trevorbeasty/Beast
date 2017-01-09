@@ -72,7 +72,9 @@
 
 // user selections
 @property (nonatomic, strong) NSNumber *selectedTimeDelay;
+@property (nonatomic, strong) NSDate *impliedBeginDate;
 @property (nonatomic, strong) NSNumber *selectedTimeLag;
+@property (nonatomic, strong) NSDate *impliedEndDate;
 @property (nonatomic, strong) NSNumber *selectedWeight;
 @property (nonatomic, strong) NSNumber *selectedReps;
 
@@ -398,6 +400,11 @@ static NSString * const defaultValue = @"default value";
     if(!self.selectedTimeDelay){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             self.selectedTimeDelay = number;
+            
+            // calculate the implied begin date and add store it
+            
+            self.impliedBeginDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
+            
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self didPressBeginSet];
@@ -445,6 +452,10 @@ static NSString * const defaultValue = @"default value";
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             
+            // store the implied end date
+            
+            self.impliedEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
+            
             // stopwatch
             self.activeTargetRestTime = [NSNumber numberWithDouble: self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value];
             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
@@ -452,16 +463,11 @@ static NSString * const defaultValue = @"default value";
             self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: restTimeAccountingForLag];
             [stopwatch setPrimaryStopWatchToTimeInSeconds: restTimeAccountingForLag
                                   withForwardIncrementing: NO];
+            
             if (_restLabelAddedAsStopwatchObserver == NO){
+                
                 [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.restLabel];
             }
-            
-            // core data
-            NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
-            
-//            TJBDateTypeArrayComp *arrayComp = self.realizedChain.dateArrays[exerciseIndex].dates[roundIndex];
-//            arrayComp.value = date;
-//            arrayComp.isDefaultObject = NO;
             
             // circuit template generator
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
@@ -469,7 +475,7 @@ static NSString * const defaultValue = @"default value";
                                                     withNumberType: RestType
                                                   forExerciseIndex: exerciseIndex
                                                      forRoundIndex: roundIndex
-                                                              date: date
+                                                              date: self.impliedEndDate
                                                        setDateType: SetEndDate];
             }
             
@@ -579,6 +585,11 @@ static NSString * const defaultValue = @"default value";
     TJBNumberTypeArrayComp *reps = chain.repsArrays[exerciseIndex].numbers[roundIndex];
     reps.value = [self.selectedReps floatValue];
     reps.isDefaultObject = NO;
+    
+    // begin and end set dates
+    
+    chain.setBegindateArrays[exerciseIndex].dates[roundIndex].value = self.impliedBeginDate;
+    chain.setEndDateArrays[exerciseIndex].dates[roundIndex].value = self.impliedEndDate;
     
     // save the managed object context to persist progress made so far
     [[CoreDataController singleton] saveContext];
@@ -702,6 +713,8 @@ static NSString * const defaultValue = @"default value";
 - (void)setUserSelectedValuesToNil{
     self.selectedTimeDelay = nil;
     self.selectedTimeLag = nil;
+    self.impliedBeginDate = nil;
+    self.impliedEndDate = nil;
     self.setCompletedButtonPressed = nil;
     self.selectedWeight = nil;
     self.selectedReps = nil;
@@ -741,8 +754,10 @@ static NSString * const defaultValue = @"default value";
     // user selection
     
     vc.selectedTimeDelay = [coder decodeObjectForKey: @"selectedTimeDelay"];
+    vc.impliedBeginDate = [coder decodeObjectForKey: @"impliedBeginDate"];
     vc.setCompletedButtonPressed = [coder decodeObjectForKey: @"setCompletedButtonPressed"];
     vc.selectedTimeLag = [coder decodeObjectForKey: @"selectedTimeLag"];
+    vc.impliedEndDate = [coder decodeObjectForKey: @"impliedEndDate"];
     vc.selectedWeight = [coder decodeObjectForKey: @"selectedWeight"];
     vc.selectedReps = [coder decodeObjectForKey: @"selectedReps"];
     
@@ -795,6 +810,8 @@ static NSString * const defaultValue = @"default value";
     if (self.selectedTimeDelay){
         [coder encodeObject: self.selectedTimeDelay
                      forKey: @"selectedTimeDelay"];
+        [coder encodeObject: self.impliedBeginDate
+                     forKey: @"impliedBeginDate"];
     }
     
     if (self.setCompletedButtonPressed){
@@ -805,6 +822,8 @@ static NSString * const defaultValue = @"default value";
     if (self.selectedTimeLag){
         [coder encodeObject: self.selectedTimeLag
                      forKey: @"selectedTimeLag"];
+        [coder encodeObject: self.impliedEndDate
+                     forKey: @"impliedEndDate"];
     }
     
     if (self.selectedWeight){
