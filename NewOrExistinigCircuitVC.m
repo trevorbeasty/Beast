@@ -24,6 +24,10 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *createNewChainButton;
 
+// for restoration
+
+@property (copy) void (^restorationBlock)(void);
+
 - (IBAction)didPressCreateNewChain:(id)sender;
 
 // core data
@@ -53,6 +57,15 @@
     [self addBackground];
     [self viewAesthetics];
 }
+
+//- (void)viewDidAppear:(BOOL)animated{
+//    
+//    if (self.restorationBlock){
+//        
+//        self.restorationBlock();
+//        self.restorationBlock = nil;
+//    }
+//}
 
 - (void)viewAesthetics{
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.createNewChainButton]
@@ -160,35 +173,6 @@
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
     return vc;
-}
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super encodeRestorableStateWithCoder: coder];
-    
-    if (self.presentedViewController){
-        NSLog(@"%@", self.presentedViewController);
-        TJBCircuitModeTBC *tbc = (TJBCircuitModeTBC *)self.presentedViewController;
-        [coder encodeObject: tbc
-                     forKey: @"presentedVC"];
-    }
-    
-    return;
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super decodeRestorableStateWithCoder: coder];
-    
-    UIViewController *presentedVC = [coder decodeObjectForKey: @"presentedVC"];
-    
-    if (presentedVC){
-        [self presentViewController: presentedVC
-                           animated: NO
-                         completion: nil];
-    }
-    
-    return;
 }
 
 @end

@@ -81,6 +81,10 @@
 
 @property (nonatomic, weak) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
 
+// state restoration
+
+@property (copy) void (^restorationBlock)(void);
+
 @end
 
 static NSString * const defaultValue = @"default value";
@@ -93,6 +97,15 @@ static NSString * const defaultValue = @"default value";
     [self configureViewData];
     [self addBackgroundImage];
     [self viewAesthetics];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (self.restorationBlock){
+        
+        self.restorationBlock();
+        self.restorationBlock = nil;
+    }
 }
 
 - (void)addBackgroundImage{
@@ -345,7 +358,6 @@ static NSString * const defaultValue = @"default value";
     int roundIndex = [self.activeRoundIndex intValue];
     
     BOOL buttonWasNotPressed = [self.setCompletedButtonPressed boolValue] == NO;
-    BOOL IVNotCreated = !self.setCompletedButtonPressed;
     
     // recursive if tree
     
@@ -377,7 +389,7 @@ static NSString * const defaultValue = @"default value";
                                     numberSelectedBlock: numberSelectedBlock
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    } else if (buttonWasNotPressed || IVNotCreated){
+    } else if (buttonWasNotPressed){
         void(^block)(int) = ^(int timeInSeconds){
             self.setCompletedButtonPressed = [NSNumber numberWithBool: YES];
             [self dismissViewControllerAnimated: NO
@@ -777,6 +789,18 @@ static NSString * const defaultValue = @"default value";
     [super decodeRestorableStateWithCoder: coder];
     
     self.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
+    
+    // kick off the user selection process if the user is mid-selection
+    // if any of the user selection properties exist, the user must be mid-selection
+    
+    if (self.selectedTimeDelay){
+        
+        __weak TJBActiveCircuitGuidance *weakSelf = self;
+        
+        self.restorationBlock = ^{
+            [weakSelf didPressBeginSet];
+        };
+    }
 }
 
 
