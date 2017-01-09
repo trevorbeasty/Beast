@@ -162,6 +162,33 @@
     return vc;
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    if (self.presentedViewController){
+        NSLog(@"%@", self.presentedViewController);
+        TJBCircuitModeTBC *tbc = (TJBCircuitModeTBC *)self.presentedViewController;
+        [coder encodeObject: tbc
+                     forKey: @"presentedVC"];
+    }
+    
+    return;
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super decodeRestorableStateWithCoder: coder];
+    
+    TJBCircuitModeTBC *presentedVC = [coder decodeObjectForKey: @"presentedVC"];
+    
+    if (presentedVC){
+        [self presentViewController: presentedVC
+                           animated: NO
+                         completion: nil];
+    }
+}
+
 @end
 
 

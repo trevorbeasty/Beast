@@ -940,13 +940,6 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    [super decodeRestorableStateWithCoder: coder];
-//    
-//    
-//    
-//}
 
 @end
 

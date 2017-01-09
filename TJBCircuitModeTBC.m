@@ -80,7 +80,7 @@
     
     // for restoration
     
-
+    [tbc configureCommonAttributes];
     
     return tbc;
 }

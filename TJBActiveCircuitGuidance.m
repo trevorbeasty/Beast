@@ -667,6 +667,41 @@ static NSString * const defaultValue = @"default value";
     
     TJBActiveCircuitGuidance * vc = [[TJBActiveCircuitGuidance alloc] init];
     
+    vc.activeExerciseIndex = [coder decodeObjectForKey: @"activeExerciseIndex"];
+    vc.activeRoundIndex = [coder decodeObjectForKey: @"activeRoundIndex"];
+    vc.previousExerciseIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
+    vc.previousRoundIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
+    vc.activeTargetWeight = [coder decodeObjectForKey: @"activeTargetWeight"];
+    vc.activeTargetReps = [coder decodeObjectForKey: @"activeTargetReps"];
+    vc.activeTargetRestTime = [coder decodeObjectForKey: @"activeTargetRestTime"];
+    
+    // derived IV's
+    
+    vc.numberOfExercises = [coder decodeObjectForKey: @"numberOfExercises"];
+    vc.numberOfRounds = [coder decodeObjectForKey: @"numberOfRounds"];
+    
+    // core
+    
+    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
+    vc.chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
+    
+    NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
+    vc.realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
+    
+    vc.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
+    
+    // state restoration
+    
+    [vc setRestorationProperties];
+    
+    // user selection
+    
+    vc.selectedTimeDelay = [coder decodeObjectForKey: @"selectedTimeDelay"];
+    vc.setCompletedButtonPressed = [coder decodeObjectForKey: @"setCompletedButtonPressed"];
+    vc.selectedTimeLag = [coder decodeObjectForKey: @"selectedTimeLag"];
+    vc.selectedWeight = [coder decodeObjectForKey: @"selectedWeight"];
+    vc.selectedReps = [coder decodeObjectForKey: @"selectedReps"];
+    
     [vc setRestorationProperties];
     
     return vc;
@@ -739,47 +774,14 @@ static NSString * const defaultValue = @"default value";
     }
 }
 
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super decodeRestorableStateWithCoder: coder];
-    
-    TJBActiveCircuitGuidance *vc = self;
-    
-    vc.activeExerciseIndex = [coder decodeObjectForKey: @"activeExerciseIndex"];
-    vc.activeRoundIndex = [coder decodeObjectForKey: @"activeRoundIndex"];
-    vc.previousExerciseIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
-    vc.previousRoundIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
-    vc.activeTargetWeight = [coder decodeObjectForKey: @"activeTargetWeight"];
-    vc.activeTargetReps = [coder decodeObjectForKey: @"activeTargetReps"];
-    vc.activeTargetRestTime = [coder decodeObjectForKey: @"activeTargetRestTime"];
-    
-    // derived IV's
-    
-    vc.numberOfExercises = [coder decodeObjectForKey: @"numberOfExercises"];
-    vc.numberOfRounds = [coder decodeObjectForKey: @"numberOfRounds"];
-    
-    // core
-    
-    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
-    vc.chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
-    
-    NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
-    vc.realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
-    
-    vc.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
-    
-    // state restoration
-    
-    [vc setRestorationProperties];
-    
-    // user selection
-    
-    vc.selectedTimeDelay = [coder decodeObjectForKey: @"selectedTimeDelay"];
-    vc.setCompletedButtonPressed = [coder decodeObjectForKey: @"setCompletedButtonPressed"];
-    vc.selectedTimeLag = [coder decodeObjectForKey: @"selectedTimeLag"];
-    vc.selectedWeight = [coder decodeObjectForKey: @"selectedWeight"];
-    vc.selectedReps = [coder decodeObjectForKey: @"selectedReps"];
-}
+//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    [super decodeRestorableStateWithCoder: coder];
+//    
+//    TJBActiveCircuitGuidance *vc = self;
+//    
+//
+//}
 
 
 
