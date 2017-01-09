@@ -932,6 +932,8 @@ static NSString * const defaultValue = @"unselected";
               forKey: @"circuitGeneratorType"];
     
     // encode chain template uniqueID if is reference or active updating type
+    // need to encode the begin and end dates for active updating type (and maybe row components array as well?)
+    // may need to encode all child row controllers and give all descending view VC's restoration identifiers for active updating type (or create data structure to restore them) 
     
     if (_circuitGeneratorType == ReferenceType || _circuitGeneratorType == ActiveUpdatingType){
         

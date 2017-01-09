@@ -180,12 +180,23 @@ static NSString * const defaultValue = @"default value";
         self.repsLabel.text = notTargetedString;
     }
 
-    self.restLabel.text = @"";
+    // the NSNumber activeTargetRestTimie is only created upon state restoration;  it is set to nil during normal instantiation
+    
+    if (self.activeTargetRestTime){
+        
+        NSString *restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeTargetRestTime intValue]];
+        self.restLabel.text = restString;
+    } else{
+        
+        self.restLabel.text = @"";
+    }
+    
 
     TJBExercise *exercise = self.chainTemplate.exercises[0];
     self.exerciseLabel.text = exercise.name;
     
-    NSString *roundText = [NSString stringWithFormat: @"Round 1/%d",
+    NSString *roundText = [NSString stringWithFormat: @"Round %d/%d",
+                           [self.activeRoundIndex intValue] + 1,
                            [self.numberOfRounds intValue]];
     self.roundColumnLabel.text = roundText;
 }
@@ -338,8 +349,9 @@ static NSString * const defaultValue = @"default value";
 }
 
 - (void)initializeActiveInstanceVariables{
-    _activeExerciseIndex = 0;
-    _activeRoundIndex = 0;
+    self.activeRoundIndex = [NSNumber numberWithInt: 0];
+    self.activeExerciseIndex = [NSNumber numberWithInt: 0];
+    self.activeTargetRestTime = nil;
     
     TJBChainTemplate *chainTemplate = self.chainTemplate;
     
@@ -565,6 +577,7 @@ static NSString * const defaultValue = @"default value";
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
     else{
+        
         // order dependent - addSelectedValues must be called before incrementController
         
         [self addSelectedValuesToRealizedChainObject];
@@ -614,7 +627,7 @@ static NSString * const defaultValue = @"default value";
         } else{
             
             self.activeRoundIndex = [NSNumber numberWithInt: [self.activeRoundIndex intValue] + 1];
-            self.activeRoundIndex = [NSNumber numberWithInt: 0];
+            self.activeExerciseIndex = [NSNumber numberWithInt: 0];
             
             NSString *roundText = [NSString stringWithFormat: @"Round %d/%d",
                                    [self.activeRoundIndex intValue] + 1,
