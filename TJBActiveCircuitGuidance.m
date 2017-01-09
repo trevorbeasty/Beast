@@ -459,9 +459,9 @@ static NSString * const defaultValue = @"default value";
             // core data
             NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
             
-            TJBDateTypeArrayComp *arrayComp = self.realizedChain.dateArrays[exerciseIndex].dates[roundIndex];
-            arrayComp.value = date;
-            arrayComp.isDefaultObject = NO;
+//            TJBDateTypeArrayComp *arrayComp = self.realizedChain.dateArrays[exerciseIndex].dates[roundIndex];
+//            arrayComp.value = date;
+//            arrayComp.isDefaultObject = NO;
             
             // circuit template generator
             if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){

@@ -282,19 +282,34 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
         
         // date arrays
         
-        NSOrderedSet *dateArrays = realizedChain.dateArrays;
+        NSOrderedSet *beginDateArrays = realizedChain.setBegindateArrays;
+        NSOrderedSet *endDateArrays = realizedChain.setEndDateArrays;
+            
+        for (SetBeginDateArray *array in beginDateArrays){
+                
+            NSOrderedSet *dates = array.dates;
+                
+            for (TJBBeginDateComp *comp in dates){
+                    
+                [_moc deleteObject: comp];
+            }
+                
+            [_moc deleteObject: array];
+        }
         
-        for (TJBDateArray *array in dateArrays){
+        for (SetEndDateArray *array in endDateArrays){
             
             NSOrderedSet *dates = array.dates;
             
-            for (TJBDateTypeArrayComp *comp in dates){
+            for (TJBEndDateComp *comp in dates){
                 
                 [_moc deleteObject: comp];
             }
             
             [_moc deleteObject: array];
         }
+        
+
     }
     
     [_moc deleteObject: chain];
