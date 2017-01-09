@@ -19,14 +19,20 @@
 
 #import "TJBRealizedChain+CoreDataProperties.h"
 
-#import "TJBDateTypeArrayComp+CoreDataProperties.h"
-
 #import "TJBWeightArray+CoreDataProperties.h"
 #import "TJBRepsArray+CoreDataProperties.h"
 #import "TJBNumberArray+CoreDataProperties.h"
 #import "TJBNumberTypeArrayComp+CoreDataClass.h"
-#import "TJBDateArray+CoreDataProperties.h"
-#import "TJBDateTypeArrayComp+CoreDataProperties.h"
+
+
+
+// set begin and end dates
+
+#import "SetEndDateArray+CoreDataProperties.h"
+#import "SetBeginDateArray+CoreDataProperties.h"
+#import "TJBEndDateComp+CoreDataProperties.h"
+#import "TJBBeginDateComp+CoreDataProperties.h"
+
 
 extern NSString * const ExerciseDataChanged;
 
