@@ -924,6 +924,8 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
     
+    [super encodeRestorableStateWithCoder: coder];
+    
     // type
     
     [coder encodeInt: _circuitGeneratorType
@@ -937,6 +939,14 @@ static NSString * const defaultValue = @"unselected";
                      forKey: @"chainTemplateUniqueID"];
     }
 }
+
+//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    [super decodeRestorableStateWithCoder: coder];
+//    
+//    
+//    
+//}
 
 @end
 
