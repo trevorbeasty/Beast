@@ -180,13 +180,15 @@
     
     [super decodeRestorableStateWithCoder: coder];
     
-    TJBCircuitModeTBC *presentedVC = [coder decodeObjectForKey: @"presentedVC"];
+    UIViewController *presentedVC = [coder decodeObjectForKey: @"presentedVC"];
     
     if (presentedVC){
         [self presentViewController: presentedVC
                            animated: NO
                          completion: nil];
     }
+    
+    return;
 }
 
 @end

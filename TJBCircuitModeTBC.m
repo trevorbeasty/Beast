@@ -97,6 +97,9 @@
                  forKey: @"vc2"];
     [coder encodeObject: children[2]
                  forKey: @"vc3"];
+    
+    [coder encodeInteger: self.selectedIndex
+                  forKey: @"selectedIndex"];
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
@@ -111,11 +114,17 @@
     
     TJBCircuitTemplateGeneratorVC *vc3 = [coder decodeObjectForKey: @"vc3"];
     
+    [vc1.tabBarItem setTitle: @"Active"];
+    [vc2.tabBarItem setTitle: @"Targets"];
+    [vc3.tabBarItem setTitle: @"Progress"];
+    
     [vc3 loadViewIfNeeded];
     
     [self setViewControllers: @[vc1,
                                vc2,
                                vc3]];
+    
+    self.selectedIndex = [coder decodeIntegerForKey: @"selectedIndex"];
 }
 
 

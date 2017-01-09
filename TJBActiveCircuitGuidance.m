@@ -688,8 +688,6 @@ static NSString * const defaultValue = @"default value";
     NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
     vc.realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
     
-    vc.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
-    
     // state restoration
     
     [vc setRestorationProperties];
@@ -774,14 +772,12 @@ static NSString * const defaultValue = @"default value";
     }
 }
 
-//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    [super decodeRestorableStateWithCoder: coder];
-//    
-//    TJBActiveCircuitGuidance *vc = self;
-//    
-//
-//}
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super decodeRestorableStateWithCoder: coder];
+    
+    self.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
+}
 
 
 
