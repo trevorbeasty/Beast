@@ -43,6 +43,8 @@
 // realized set user input
 @property (nonatomic, strong) NSNumber *timeDelay;
 @property (nonatomic, strong) NSNumber *timeLag;
+@property (nonatomic, strong) NSDate *setBeginDate;
+@property (nonatomic, strong) NSDate *setEndDate;
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
 @property (nonatomic, strong) TJBExercise *exercise;
@@ -418,7 +420,8 @@
     TJBRealizedSet *realizedSet = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
                                                                 inManagedObjectContext: moc];
     
-    realizedSet.endDate = [NSDate date];
+    realizedSet.beginDate = self.setBeginDate;
+    realizedSet.endDate = self.setEndDate;
     realizedSet.lengthInSeconds = _timerAtSetCompletion - [self.timeLag intValue];
     realizedSet.postMortem = postMortem;
     realizedSet.weight = [self.weight floatValue];

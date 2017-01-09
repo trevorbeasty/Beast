@@ -57,7 +57,7 @@
         <relationship name="setEndDateArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SetEndDateArray" inverseName="realizedChain" inverseEntity="SetEndDateArray" syncable="YES"/>
     </entity>
     <entity name="RealizedSet" representedClassName="TJBRealizedSet" syncable="YES" codeGenerationType="class">
-        <attribute name="beginDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="beginDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="endDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="lengthInSeconds" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -102,7 +102,7 @@
         <element name="NumberArray" positionX="90" positionY="375" width="128" height="60"/>
         <element name="NumberTypeArrayComponent" positionX="304" positionY="450" width="128" height="90"/>
         <element name="RealizedChain" positionX="-945" positionY="-300" width="128" height="163"/>
-        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="150"/>
+        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="148"/>
         <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="90"/>
         <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>
         <element name="TargetRestTimeArray" positionX="61" positionY="-297" width="128" height="60"/>
