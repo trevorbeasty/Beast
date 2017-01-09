@@ -150,10 +150,10 @@
                                                           inSection: indexPath.section];
         TJBRealizedSet *previousSet = [self.frc objectAtIndexPath: previousSetPath];
         
-        int elapsedTime = (int)[realizedSet.endDate timeIntervalSinceDate: previousSet.endDate] - realizedSet.lengthInSeconds;
-        NSString *restTimeStringComponent = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: elapsedTime];
+        int restTimeFromPreviousSet = (int)[realizedSet.beginDate timeIntervalSinceDate: previousSet.endDate];
+        NSString *restTimeString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: restTimeFromPreviousSet];
         NSString *fullRestTimeString = [NSString stringWithFormat: @"+ %@",
-                                        restTimeStringComponent];
+                                        restTimeString];
         cell.restLabel.text = fullRestTimeString;
     }
     else
@@ -163,8 +163,7 @@
    
     
     // date
-    NSDate *date = [NSDate dateWithTimeInterval: realizedSet.lengthInSeconds * -1
-                                      sinceDate: realizedSet.endDate];
+    NSDate *date = realizedSet.beginDate;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateStyle = NSDateFormatterNoStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;

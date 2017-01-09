@@ -136,6 +136,8 @@
     _incrementSecondaryElapsedTimeForwards = forwardIncrementing;
 }
 
+//- (void)incrementSecondaryStopwatchForwardByNumberOfSeconds:(int)seconds
+
 #pragma mark - Getters
 
 - (NSNumber *)primaryTimeElapsedInSeconds

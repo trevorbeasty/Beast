@@ -26,7 +26,6 @@
     BOOL _setCompletedButtonPressed;
     int _timerAtSetCompletion;
     BOOL _whiteoutActive;
-    int _timeSpentInBackgroundState;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
@@ -62,6 +61,9 @@
 @property (nonatomic, weak) UINavigationItem *navItem;
 
 // for restoration
+
+@property (nonatomic, strong) NSNumber *adjustedSecondaryTimerTime;
+
 // if user is in the middle of making selections when app enters the background state, this block will execute aftert the view loads and then be destroyed so that it is not called again when the view again loads
 
 @property (copy) void (^restorationBlock)(void);
@@ -313,9 +315,23 @@
             [weakSelf didPressBeginNextSet: nil];
         };
         
-        TJBInSetVC *vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.timeDelay intValue]
-                                     DidPressSetCompletedBlock: block
-                                                  exerciseName: self.exercise.name];
+        // if the app was launched with state restoration and the user entered the background state from the InSetVC, adjustedSecondaryTimerTime will exist
+        // if it does exist, that time should be used.  The object should be destroyed after it is used so that it is not used again
+        
+        TJBInSetVC *vc;
+        
+        if (self.adjustedSecondaryTimerTime){
+            
+            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.adjustedSecondaryTimerTime intValue] * -1
+                           DidPressSetCompletedBlock: block
+                                        exerciseName: self.exercise.name];
+            self.adjustedSecondaryTimerTime = nil;
+        } else{
+            
+            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.timeDelay intValue]
+                             DidPressSetCompletedBlock: block
+                                          exerciseName: self.exercise.name];
+        }
         
         [self presentViewController: vc
                            animated: NO
@@ -326,6 +342,8 @@
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             weakSelf.timeLag = number;
             weakSelf.setEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
+            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue] * -1
+                                                 withForwardIncrementing: YES];
             [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
             [weakSelf didPressBeginNextSet: nil];
@@ -415,7 +433,6 @@
     
     realizedSet.beginDate = self.setBeginDate;
     realizedSet.endDate = self.setEndDate;
-    realizedSet.lengthInSeconds = _timerAtSetCompletion - [self.timeLag intValue];
     realizedSet.postMortem = postMortem;
     realizedSet.weight = [self.weight floatValue];
     realizedSet.reps = [self.reps floatValue];
@@ -468,10 +485,10 @@
         [weakSelf confirmSubmission];
     };
     
-    UIAlertAction *action1 = [UIAlertAction actionWithTitle: @"Cancel"
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle: @"Discard"
                                                       style: UIAlertActionStyleDefault
                                                     handler: action1Block];
-    UIAlertAction *action2 = [UIAlertAction actionWithTitle: @"Confirm"
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle: @"Save"
                                                       style: UIAlertActionStyleDefault
                                                     handler: action2Block];
     
@@ -492,7 +509,6 @@
 }
 
 - (void)confirmSubmission{
-    [[TJBStopwatch singleton] resetPrimaryStopwatchWithForwardIncrementing: YES];
     
     [self addRealizedSetToCoreData];
     
@@ -513,13 +529,18 @@
     
     // timer
     // need to encode current date so time interval can be applied upon app entering foreground
+    // also need to encode value of secondary stopwatch so that it can be incremented upon the app entering the foreground
     NSDate *date = [NSDate date];
     [coder encodeObject: date
                  forKey: @"date"];
     
-    int time = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
-    [coder encodeInt: time
-              forKey: @"time"];
+    int primaryTime = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
+    [coder encodeInt: primaryTime
+              forKey: @"primaryTime"];
+    
+    int secondaryTime = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
+    [coder encodeInt: secondaryTime
+              forKey: @"secondaryTime"];
     
     // table view
     
@@ -575,21 +596,17 @@
     
     [super decodeRestorableStateWithCoder: coder];
     
-    // timer
+    // primary timer (which keeps track of the timer as displayed on
     
     NSDate *earlierDate = [coder decodeObjectForKey: @"date"];
     NSDate *laterDate = [NSDate date];
     int elapsedTimeInSeconds = [laterDate timeIntervalSinceDate: earlierDate];
     
-    int time = [coder decodeIntForKey: @"time"];
-    time += elapsedTimeInSeconds;
-    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: time
+    int primaryTime = [coder decodeIntForKey: @"primaryTime"];
+    primaryTime += elapsedTimeInSeconds;
+    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: primaryTime
                                          withForwardIncrementing: YES];
-    self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: time];
-    
-    // store the elapsed time for use by the InSetVC to adjust its timer in response to the app entering the background state
-   
-    _timeSpentInBackgroundState = elapsedTimeInSeconds;
+    self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: primaryTime];
     
     // table view
     
@@ -623,8 +640,16 @@
     self.weight = [coder decodeObjectForKey: @"weight"];
     self.reps = [coder decodeObjectForKey: @"reps"];
     
-    
+    // store the time the secondary timer should start at if app entered background state from InSetVC
 
+    if (self.timeDelay && _setCompletedButtonPressed == NO){
+        
+        int previousValueOfSecondaryTimer = [coder decodeIntForKey: @"secondaryTimer"];
+        self.adjustedSecondaryTimerTime = [NSNumber numberWithInt: elapsedTimeInSeconds + previousValueOfSecondaryTimer];
+    }
+    
+    // kicks off the selection process if user ended mid-selection
+    
     if (self.timeDelay){
         
         __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
