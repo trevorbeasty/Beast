@@ -44,7 +44,6 @@
     return YES;
 }
 
-///// learning persistence
 
 // the app delegate must opt in to state restoration via the following 2 methods
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder{

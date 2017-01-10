@@ -182,12 +182,43 @@ static NSString * const defaultValue = @"unselected";
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
-    [self createContainerArraysForChildRowControllersAndDates];
-    [self createDataStructure];
-    [self createSubviewsAndLayoutConstraints];
-    [self configureNavBar];
-    [self viewAesthetics];
+    
+    // most of the heavy lifting it terms of view appearance is done by the child classes, CircuitDesignRowComponent and CircuitDesignExerciseComponent
+    
+    // only need to create these arrays if is 'active updating' type.  TJBActiveCircuitGuidance will eventually send delegate methods to this class to update the views as the user makes selections.  This class in turn calls 'row' and 'exercise' delegate methods
+    
+    if (_circuitGeneratorType == ActiveUpdatingType){
+        
+        [self createContainerArraysForChildRowControllersAndDates];
+    }
+    
+    //// for 'user input' type only
+    
+    // creates a chain template filled with default values
+    // *** SHOULD CONSIDER UPDATNG THIS AND ASSOCIATED METHODS TO ACCOUNT FOR CURRENT MODEL. RIGHT NOW, IT USES A DEFAULT STRING AS OPPOSED TO THE DEFAULT PROPERTY OF CHAIN COMPONENTS
+    
+    if (_circuitGeneratorType == TemplateType){
+        
+        [self createDataStructure];
+    }
+    
+    //// called for all types
+    
+    // adds different background views based on the type of circuit generator
+    
     [self addBackgroundView];
+    
+    // configures the aesthetics of the large button and changes its title according to type
+    
+    [self configureLargeButton];
+    
+    // configures the navigation bar
+    
+    [self configureNavBar];
+    
+    // creates the view hierarchy, including child VC's
+    
+    [self createSubviewsAndLayoutConstraints];
 }
 
 - (void)createContainerArraysForChildRowControllersAndDates{
@@ -209,20 +240,29 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)addBackgroundView{
+    
     if (_supportsUserInput == YES){
+        
         [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
                                                                        toRootView: self.view
                                                                      imageOpacity: .35];
     } else{
+        
         [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"FinlandBackSquat"]
                                                                        toRootView: self.view
                                                                      imageOpacity: .45];
     }
 }
 
-- (void)viewAesthetics{
+- (void)configureLargeButton{
+    
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchCircuitButton]
                                                      withOpacity: .85];
+    
+    if (_supportsUserInput == NO){
+        [self.launchCircuitButton setTitle: @"Edit"
+                                  forState: UIControlStateNormal];
+    }
 }
 
 - (void)createDataStructure{
@@ -239,10 +279,11 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (NSMutableArray *)createDataStructureObject{
+    
     NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
-    {
+    for (int i = 0; i < [self.numberOfExercises intValue]; i++){
+        
         NSMutableArray *subArray = [[NSMutableArray alloc] init];
         [arrayToReturn addObject: subArray];
         
@@ -254,13 +295,9 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)createSubviewsAndLayoutConstraints{
-    // top button
-    if (_supportsUserInput == NO){
-        [self.launchCircuitButton setTitle: @"Edit"
-                                  forState: UIControlStateNormal];
-    }
     
     // scroll view
+    
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenBounds.size.width - 16.0;
     
@@ -270,12 +307,11 @@ static NSString * const defaultValue = @"unselected";
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
     
-    if ([self.targetsVaryByRound intValue] || _supportsUserInput == NO)
-    {
+    if ([self.targetsVaryByRound intValue] || _supportsUserInput == NO){
+        
         componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
-    }
-    else
-    {
+    } else{
+        
         componentHeight = rowHeight * 3 + componentStyleSpacing;
     }
     
@@ -287,19 +323,24 @@ static NSString * const defaultValue = @"unselected";
     self.scrollView.contentSize = scrollSubview.frame.size;
     
     // constraint mapping
+    
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
     // row components
+    
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:|-%d-",
                                                  (int)initialSpacing]];
     
-    for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++)
-    {
+    for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
+        
         NSString *exerciseName = @"placeholder";
+        
         if (_supportsUserInput == NO){
+            
             exerciseName = self.chainTemplate.exercises[i].name;
         }
+        
         CircuitDesignExerciseComponent *vc = [[CircuitDesignExerciseComponent alloc] initWithNumberOfRounds: self.numberOfRounds
                                                                                             targetingWeight: self.targetingWeight
                                                                                               targetingReps: self.targetingReps
@@ -326,16 +367,16 @@ static NSString * const defaultValue = @"unselected";
                                    forKey: dynamicComponentName];
         
         // vertical constraints
+        
         NSString *verticalAppendString;
         
-        if (i == [self.numberOfExercises intValue] - 1)
-        {
+        if (i == [self.numberOfExercises intValue] - 1){
+            
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]",
                                     dynamicComponentName,
                                     (int)componentHeight];
-        }
-        else
-        {
+        } else{
+            
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]-%d-",
                                     dynamicComponentName,
                                     (int)componentHeight,
@@ -345,6 +386,7 @@ static NSString * const defaultValue = @"unselected";
         [verticalLayoutConstraintsString appendString: verticalAppendString];
         
         // horizontal constraints
+        
         NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
                                                        dynamicComponentName];
         
@@ -363,25 +405,27 @@ static NSString * const defaultValue = @"unselected";
     
     [scrollSubview addConstraints: verticalLayoutConstraints];
     
-    for (CircuitDesignExerciseComponent *child in self.childViewControllers)
-    {
+    for (CircuitDesignExerciseComponent *child in self.childViewControllers){
+        
         [child didMoveToParentViewController: self];
     }
 }
 
 - (void)configureNavBar{
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
     
     NSString *word;
     int number = [self.numberOfRounds intValue];
-    if (number == 1)
-    {
+    
+    if (number == 1){
+        
         word = @"round";
-    }
-    else
-    {
+    } else{
+        
         word = @"rounds";
     }
+    
     NSString *title = [NSString stringWithFormat: @"%@ (%d %@)",
                        self.name,
                        [self.numberOfRounds intValue],
@@ -389,6 +433,7 @@ static NSString * const defaultValue = @"unselected";
     [navItem setTitle: title];
     
     if (_supportsUserInput == YES){
+        
     UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
                                                                                 target: self
                                                                                 action: @selector(didPressX)];
