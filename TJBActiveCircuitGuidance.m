@@ -30,6 +30,7 @@
 @interface TJBActiveCircuitGuidance () <UIViewControllerRestoration>
 
 // active IV's
+
 @property NSNumber *activeExerciseIndex;
 @property NSNumber *activeRoundIndex;
 @property NSNumber *previousExerciseIndex;
@@ -40,6 +41,7 @@
 @property NSNumber *activeTargetRestTime;
     
 // user selection progression
+
 @property NSNumber *setCompletedButtonPressed;
 @property NSNumber *restLabelAddedAsStopwatchObserver;
 
@@ -79,6 +81,7 @@
 @property (nonatomic, strong) NSNumber *selectedReps;
 
 // realized chain
+
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 @property (nonatomic, weak) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
@@ -86,6 +89,7 @@
 // state restoration
 
 @property (copy) void (^restorationBlock)(void);
+@property (nonatomic, strong) NSNumber *secondaryTimerFromStateRestoration;
 
 @end
 
@@ -398,6 +402,11 @@ static NSString * const defaultValue = @"default value";
 
 #pragma mark - Button Actions
 
+- (BOOL)setCompletedButtonWasNotPressed{
+    
+    return [self.setCompletedButtonPressed boolValue] == NO || !self.setCompletedButtonPressed;
+}
+
 -(void)didPressBeginSet{
     CancelBlock cancelBlock = ^{
         [self setUserSelectedValuesToNil];
@@ -409,8 +418,6 @@ static NSString * const defaultValue = @"default value";
     
     int exerciseIndex = [self.activeExerciseIndex intValue];
     int roundIndex = [self.activeRoundIndex intValue];
-    
-    BOOL buttonWasNotPressed = [self.setCompletedButtonPressed boolValue] == NO;
     
     // recursive if tree
     
@@ -448,7 +455,8 @@ static NSString * const defaultValue = @"default value";
                                     numberSelectedBlock: numberSelectedBlock
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    } else if (buttonWasNotPressed){
+    } else if ([self setCompletedButtonWasNotPressed]){
+        
         void(^block)(int) = ^(int timeInSeconds){
             self.setCompletedButtonPressed = [NSNumber numberWithBool: YES];
             [self dismissViewControllerAnimated: NO
@@ -456,13 +464,30 @@ static NSString * const defaultValue = @"default value";
             [self didPressBeginSet];
         };
         
-        TJBInSetVC *vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.selectedTimeDelay intValue]
-                                     DidPressSetCompletedBlock: block
-                                                  exerciseName: self.chainTemplate.exercises[exerciseIndex].name];
+        // the existence of secondaryTimerFromStateRestoration indicates the app entered the background scene from the InSetVC and the timer should be updated accordingly
+        // object must be destroyed after first use to allow for normal logic flow to resume
         
+        TJBInSetVC *vc;
+        
+        if (self.secondaryTimerFromStateRestoration){
+            
+            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.secondaryTimerFromStateRestoration intValue] * -1
+                             DidPressSetCompletedBlock: block
+                                          exerciseName: self.chainTemplate.exercises[exerciseIndex].name];
+            
+            self.secondaryTimerFromStateRestoration = nil;
+            
+        } else{
+            
+            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.selectedTimeDelay intValue]
+                                         DidPressSetCompletedBlock: block
+                                                      exerciseName: self.chainTemplate.exercises[exerciseIndex].name];
+        }
+    
         [self presentViewController: vc
                            animated: NO
                          completion: nil];
+        
     }else if (!self.selectedTimeLag){
         
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
@@ -862,16 +887,26 @@ static NSString * const defaultValue = @"default value";
                      forKey: @"selectedReps"];
     }
     
-    // timer
+    //// timer
     
     // the primary stopwatch holds the value of the timer for this VC's view
-    // not sure if I'll want to hold on to the primary timer value further into the user selection process.  May need to update the conditional encoding below
+    // the primary timer's value is significant throughout the entire selection process and should thus always be saved
     
     int primaryTimerValue = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
     
-    if (!self.selectedTimeDelay){
-        [coder encodeInt: primaryTimerValue
-                  forKey: @"primaryTimerValue"];
+    [coder encodeInt: primaryTimerValue
+              forKey: @"primaryTimerValue"];
+    
+    // the secondary timer is only pertinent if the InSetVC is currently being displayed
+    
+    BOOL userIsInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
+    
+    if (userIsInSet){
+        
+        int secondaryTimerValue = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
+        
+        [coder encodeInt: secondaryTimerValue
+                  forKey: @"secondaryTimerValue"];
     }
     
     // date - used to determine elapsed time in background state
@@ -908,21 +943,31 @@ static NSString * const defaultValue = @"default value";
     
     // timer
     
-    if (!self.selectedTimeDelay){
+    // primary
+    
+    int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
+    primaryTimerValue -= elapsedTimeInBackgroundState;
         
-        int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
-        primaryTimerValue -= elapsedTimeInBackgroundState;
+    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    
+    [stopwatch addPrimaryStopwatchObserver: self.restLabel];
+    self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
         
-        TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-        
-        [stopwatch addPrimaryStopwatchObserver: self.restLabel];
-        self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
-        
-        self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
-        [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
+    self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
+    [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
                               withForwardIncrementing: NO];
+    
+    // secondary
+    
+    BOOL userWasInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
+    
+    if (userWasInSet){
         
+        int secondaryTimerValue = [coder decodeIntForKey: @"secondaryTimerValue"];
+        secondaryTimerValue += elapsedTimeInBackgroundState;
+        self.secondaryTimerFromStateRestoration  = [NSNumber numberWithInt: secondaryTimerValue];
     }
+    
 }
 
 
