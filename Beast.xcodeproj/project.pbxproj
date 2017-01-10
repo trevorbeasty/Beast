@@ -52,6 +52,7 @@
 		0B86FB751E2129C4000D1B5F /* TJBNumberSelectionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB741E2129C4000D1B5F /* TJBNumberSelectionVC.xib */; };
 		0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB791E217326000D1B5F /* TJBBasicCollectionViewCell.m */; };
 		0B86FB7C1E217326000D1B5F /* TJBBasicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB7A1E217326000D1B5F /* TJBBasicCollectionViewCell.xib */; };
+		0B86FB801E257310000D1B5F /* TJBCircuitTemplateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB7F1E257310000D1B5F /* TJBCircuitTemplateVC.m */; };
 		0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */; };
 		0BA8ACE91E22709700EE10C2 /* TJBCircuitModeTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */; };
 /* End PBXBuildFile section */
@@ -129,6 +130,8 @@
 		0B86FB781E217326000D1B5F /* TJBBasicCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBBasicCollectionViewCell.h; sourceTree = "<group>"; };
 		0B86FB791E217326000D1B5F /* TJBBasicCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBBasicCollectionViewCell.m; sourceTree = "<group>"; };
 		0B86FB7A1E217326000D1B5F /* TJBBasicCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBBasicCollectionViewCell.xib; sourceTree = "<group>"; };
+		0B86FB7E1E257310000D1B5F /* TJBCircuitTemplateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateVC.h; sourceTree = "<group>"; };
+		0B86FB7F1E257310000D1B5F /* TJBCircuitTemplateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitTemplateVC.m; sourceTree = "<group>"; };
 		0BA8ACE31E1BCAF400EE10C2 /* RowComponentActiveUpdatingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RowComponentActiveUpdatingProtocol.h; sourceTree = "<group>"; };
 		0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryTBC.h; sourceTree = "<group>"; };
 		0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryTBC.m; sourceTree = "<group>"; };
@@ -191,6 +194,7 @@
 		0B1616D81E0819D2001C8F45 /* Circuit Template Generator */ = {
 			isa = PBXGroup;
 			children = (
+				0B86FB7D1E256D4A000D1B5F /* refactor circuit generator */,
 				0B843CC71E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.h */,
 				0B843CC81E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m */,
 				0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */,
@@ -399,6 +403,15 @@
 			name = "New or Existing Selection ";
 			sourceTree = "<group>";
 		};
+		0B86FB7D1E256D4A000D1B5F /* refactor circuit generator */ = {
+			isa = PBXGroup;
+			children = (
+				0B86FB7E1E257310000D1B5F /* TJBCircuitTemplateVC.h */,
+				0B86FB7F1E257310000D1B5F /* TJBCircuitTemplateVC.m */,
+			);
+			name = "refactor circuit generator";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -496,6 +509,7 @@
 				0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */,
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,
 				0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */,
+				0B86FB801E257310000D1B5F /* TJBCircuitTemplateVC.m in Sources */,
 				0B843C991DFCAB470093F057 /* RealizedSetHistoryCell.m in Sources */,
 				0BA8ACE91E22709700EE10C2 /* TJBCircuitModeTBC.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
