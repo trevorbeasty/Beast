@@ -117,7 +117,9 @@ static NSString * const defaultValue = @"default value";
 }
 
 - (void)viewAesthetics{
+    
     // container view
+    
     UIView *container = self.containerView;
     container.backgroundColor = [UIColor whiteColor];
     CALayer *containerLayer = container.layer;
@@ -126,6 +128,7 @@ static NSString * const defaultValue = @"default value";
     containerLayer.opacity = .75;
     
     // labels
+    
     NSArray *labels = @[self.exerciseColumnLabel,
                         self.weightColumnLabel,
                         self.repsColumnLabel];
@@ -134,6 +137,7 @@ static NSString * const defaultValue = @"default value";
     }
     
     // buttons
+    
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.beginSetButton]
                                                      withOpacity: 1];
     
@@ -141,6 +145,7 @@ static NSString * const defaultValue = @"default value";
     
     
     // round and timer labels
+    
     NSArray *otherLabels = @[self.roundColumnLabel,
                              self.restLabel];
     for (UILabel *label in otherLabels){
@@ -458,8 +463,8 @@ static NSString * const defaultValue = @"default value";
         [self presentViewController: vc
                            animated: NO
                          completion: nil];
-    }
-    else if (!self.selectedTimeLag){
+    }else if (!self.selectedTimeLag){
+        
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             self.selectedTimeLag = number;
             [self dismissViewControllerAnimated: NO
@@ -614,6 +619,7 @@ static NSString * const defaultValue = @"default value";
 }
 
 - (void)incrementControllerAndUpdateViews{
+    
     self.previousExerciseIndex = self.activeExerciseIndex;
     self.previousRoundIndex = self.activeRoundIndex;
     
@@ -621,7 +627,9 @@ static NSString * const defaultValue = @"default value";
     BOOL atMaxExerciseIndex = [self.activeExerciseIndex intValue] == [self.numberOfExercises intValue] - 1;
     
     if (atMaxExerciseIndex){
+        
         if (atMaxRoundIndex){
+            
             NSLog(@"reached end of circuit");
             abort();
         } else{
@@ -634,6 +642,7 @@ static NSString * const defaultValue = @"default value";
                                    [self.numberOfRounds intValue]];
             self.roundColumnLabel.text = roundText;
         }
+        
     } else{
 
         self.activeExerciseIndex = [NSNumber numberWithInt: [self.activeExerciseIndex intValue] + 1];
@@ -656,8 +665,6 @@ static NSString * const defaultValue = @"default value";
     
     TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndex];
     self.exerciseLabel.text = exercise.name;
-    
-
 }
 
 
@@ -729,6 +736,7 @@ static NSString * const defaultValue = @"default value";
 }
 
 - (void)setUserSelectedValuesToNil{
+    
     self.selectedTimeDelay = nil;
     self.selectedTimeLag = nil;
     self.impliedBeginDate = nil;
@@ -853,6 +861,24 @@ static NSString * const defaultValue = @"default value";
         [coder encodeObject: self.selectedReps
                      forKey: @"selectedReps"];
     }
+    
+    // timer
+    
+    // the primary stopwatch holds the value of the timer for this VC's view
+    // not sure if I'll want to hold on to the primary timer value further into the user selection process.  May need to update the conditional encoding below
+    
+    int primaryTimerValue = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
+    
+    if (!self.selectedTimeDelay){
+        [coder encodeInt: primaryTimerValue
+                  forKey: @"primaryTimerValue"];
+    }
+    
+    // date - used to determine elapsed time in background state
+    
+    [coder encodeObject: [NSDate date]
+                 forKey: @"enteredBackgroundDate"];
+    
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
@@ -860,6 +886,13 @@ static NSString * const defaultValue = @"default value";
     [super decodeRestorableStateWithCoder: coder];
     
     self.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
+    
+    // elapsed time in background state
+    
+    NSDate *enteredForegroundDate = [NSDate date];
+    NSDate *enteredBackgroundDate = [coder decodeObjectForKey: @"enteredBackgroundDate"];
+    
+    int elapsedTimeInBackgroundState = [enteredForegroundDate timeIntervalSinceDate: enteredBackgroundDate];
     
     // kick off the user selection process if the user is mid-selection
     // if any of the user selection properties exist, the user must be mid-selection
@@ -871,6 +904,24 @@ static NSString * const defaultValue = @"default value";
         self.restorationBlock = ^{
             [weakSelf didPressBeginSet];
         };
+    }
+    
+    // timer
+    
+    if (!self.selectedTimeDelay){
+        
+        int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
+        primaryTimerValue -= elapsedTimeInBackgroundState;
+        
+        TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+        
+        [stopwatch addPrimaryStopwatchObserver: self.restLabel];
+        self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
+        
+        self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
+        [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
+                              withForwardIncrementing: NO];
+        
     }
 }
 
