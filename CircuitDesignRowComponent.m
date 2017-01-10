@@ -21,21 +21,28 @@
 #import "TJBStopwatch.h"
 
 @interface CircuitDesignRowComponent ()
+
 {
     // core
+    
     BOOL _supportsUserInput;
     BOOL _valuesPopulatedDuringWorkout;
 }
 
+// IBOutlet
+
 @property (weak, nonatomic) IBOutlet UIButton *weightButton;
 @property (weak, nonatomic) IBOutlet UIButton *repsButton;
 @property (weak, nonatomic) IBOutlet UIButton *restButton;
+
+// IBAction
 
 - (IBAction)didPressWeightButton:(id)sender;
 - (IBAction)didPressRepsButton:(id)sender;
 - (IBAction)didPressRestButton:(id)sender;
 
 // core
+
 @property (nonatomic, strong) NSNumber *targetingWeight;
 @property (nonatomic, strong) NSNumber *targetingReps;
 @property (nonatomic, strong) NSNumber *targetingRest;
@@ -44,6 +51,8 @@
 @property (nonatomic, strong) NSNumber *chainNumber;
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+
+// delegate
 
 @property (nonatomic, weak) TJBCircuitTemplateGeneratorVC <TJBCircuitTemplateUserInputDelegate> *masterController;
 
@@ -74,7 +83,9 @@
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
     [self viewAesthetics];
+    
     [self populateButtonsWithDataIfNotCollectingUserInput];
 }
 
@@ -82,6 +93,7 @@
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
 
     // round label
+    
     if ([self.targetsVaryByRound intValue] == 0 && _supportsUserInput == YES)
     {
         self.roundLabel.text = @"All Rounds";
@@ -92,6 +104,7 @@
     }
     
     // button appearance
+    
     void (^eraseButton)(UIButton *) = ^(UIButton *button){
         button.backgroundColor = [UIColor whiteColor];
         [button setTitle: @""
@@ -100,6 +113,7 @@
     };
     
     if (_supportsUserInput == YES){
+        
         void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
             button.backgroundColor = [aesthetics buttonBackgroundColor];
             [button setTitleColor: [aesthetics buttonTextColor]
@@ -111,55 +125,77 @@
         };
         
         if ([self.targetingWeight boolValue] == YES){
+            
             activeButtonConfiguration(self.weightButton);
         } else{
+            
             eraseButton(self.weightButton);
         }
         
         if ([self.targetingReps boolValue] == YES){
+            
             activeButtonConfiguration(self.repsButton);
         } else{
+            
             eraseButton(self.repsButton);
         }
         
         if ([self.targetingRest boolValue] == YES){
+            
             activeButtonConfiguration(self.restButton);
         } else{
+            
             eraseButton(self.restButton);
         }
+        
     } else if (_supportsUserInput == NO){
+        
         NSArray *buttons = @[self.weightButton,
                              self.repsButton,
                              self.restButton];
+        
         for (UIButton *button in buttons){
+            
             [button setTitleColor: [UIColor blackColor]
                          forState: UIControlStateNormal];
         }
         
         if ([self.targetingWeight intValue] == NO){
+            
             eraseButton(self.weightButton);
         }
+        
         if ([self.targetingReps intValue] == NO){
+            
             eraseButton(self.repsButton);
         }
+        
         if ([self.targetingRest intValue] == NO){
+            
             eraseButton(self.restButton);
         }
     }
 }
 
 - (void)populateButtonsWithDataIfNotCollectingUserInput{
+    
     if (_supportsUserInput == NO){
+        
         if (_valuesPopulatedDuringWorkout == YES){
+            
             NSArray *buttons = @[self.weightButton,
                                  self.repsButton,
                                  self.restButton];
             NSString *blank = @"";
+            
             for (UIButton *button in buttons){
+                
                 [button setTitle: blank
                         forState: UIControlStateNormal];
             }
+
         } else{
+            
             int chainIndex = [self.chainNumber intValue] - 1;
             int roundIndex = [self.roundNumber intValue] - 1;
             
@@ -199,8 +235,8 @@
                                                     button: self.weightButton];
 }
 
-- (IBAction)didPressRepsButton:(id)sender
-{
+- (IBAction)didPressRepsButton:(id)sender{
+    
     if (_supportsUserInput == YES)
         [self.masterController didPressUserInputButtonWithType: RepsType
                                                chainNumber: self.chainNumber
@@ -208,8 +244,8 @@
                                                     button: self.repsButton];
 }
 
-- (IBAction)didPressRestButton:(id)sender
-{
+- (IBAction)didPressRestButton:(id)sender{
+    
     if (_supportsUserInput == YES)
         [self.masterController didPressUserInputButtonWithType: RestType
                                                chainNumber: self.chainNumber
@@ -219,6 +255,7 @@
 
 #pragma mark - <RowComponentActiveUpdatingProtocol>
 - (void)updateLabelWithNumberType:(NumberType)numberType value:(double)value{
+    
     NSString *string = [[NSNumber numberWithDouble: value] stringValue];
     NSString *restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: value];
     

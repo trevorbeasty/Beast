@@ -185,13 +185,6 @@ static NSString * const defaultValue = @"unselected";
     
     // most of the heavy lifting it terms of view appearance is done by the child classes, CircuitDesignRowComponent and CircuitDesignExerciseComponent
     
-    // only need to create these arrays if is 'active updating' type.  TJBActiveCircuitGuidance will eventually send delegate methods to this class to update the views as the user makes selections.  This class in turn calls 'row' and 'exercise' delegate methods
-    
-    if (_circuitGeneratorType == ActiveUpdatingType){
-        
-        [self createContainerArraysForChildRowControllersAndDates];
-    }
-    
     //// for 'user input' type only
     
     // creates a chain template filled with default values
@@ -199,10 +192,21 @@ static NSString * const defaultValue = @"unselected";
     
     if (_circuitGeneratorType == TemplateType){
         
-        [self createDataStructure];
+        [self createSkeletonChainTemplate];
+    }
+    
+    //// for the 'active updating' type only
+    
+    if (_circuitGeneratorType == ActiveUpdatingType){
+        
+        [self createSkeletonArraysForSetBeginAndEndDates];
     }
     
     //// called for all types
+    
+    // all modes require some delegate interaction
+    
+    [self createSkeletonArrayForChildRowControllers];
     
     // adds different background views based on the type of circuit generator
     
@@ -221,15 +225,29 @@ static NSString * const defaultValue = @"unselected";
     [self createSubviewsAndLayoutConstraints];
 }
 
-- (void)createContainerArraysForChildRowControllersAndDates{
+- (void)createSkeletonArrayForChildRowControllers{
+    
+    // only row controllers are tracked because only their views change.  TJBExerciseComponent only has the 'exercise' dynamic view and it will remain the same for active updating type
+    
     self.childRowControllers = [[NSMutableArray alloc] init];
+    
+    int exerciseLimit = [self.numberOfExercises intValue];
+    
+    for (int i = 0; i < exerciseLimit; i++){
+        
+        NSMutableArray *array = [[NSMutableArray alloc] init];
+        [self.childRowControllers addObject: array];
+    }
+}
+
+- (void)createSkeletonArraysForSetBeginAndEndDates{
+    
     self.setBeginDates = [[NSMutableArray alloc] init];
     self.setEndDates = [[NSMutableArray alloc] init];
     
     int exerciseLimit = [self.numberOfExercises intValue];
+    
     for (int i = 0; i < exerciseLimit; i++){
-        NSMutableArray *array = [[NSMutableArray alloc] init];
-        [self.childRowControllers addObject: array];
         
         NSMutableArray *dateArray1 = [[NSMutableArray alloc] init];
         [self.setBeginDates addObject: dateArray1];
@@ -265,20 +283,22 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (void)createDataStructure{
-    self.weightData = [self createDataStructureObject];
-    self.repsData = [self createDataStructureObject];
-    self.restData = [self createDataStructureObject];
+- (void)createSkeletonChainTemplate{
+    self.weightData = [self createSkeletonDataStructure];
+    self.repsData = [self createSkeletonDataStructure];
+    self.restData = [self createSkeletonDataStructure];
     
     NSMutableArray *exerciseData = [[NSMutableArray alloc] init];
-    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
-    {
+    
+    for (int i = 0; i < [self.numberOfExercises intValue]; i++){
+        
         [exerciseData addObject: defaultValue];
     }
+    
     self.exerciseData = exerciseData;
 }
 
-- (NSMutableArray *)createDataStructureObject{
+- (NSMutableArray *)createSkeletonDataStructure{
     
     NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
     
@@ -942,6 +962,8 @@ static NSString * const defaultValue = @"unselected";
 #pragma mark - <UIViewControllerRestoration>
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    // *** MUST CREATE THE CHILD ROW CONTROLLER ARRAY BEFORE VIEWDIDLOAD IS CALLED IN CIRCUITDESIGNEXERCISECOMPONENT
     
     TJBCircuitTemplateGeneratorVC *vc;
     
