@@ -241,26 +241,23 @@
 			name = General;
 			sourceTree = "<group>";
 		};
-		0B1616D71E0819BD001C8F45 /* Template Configuratioin Scene */ = {
+		0B1616D71E0819BD001C8F45 /* Template Configuration */ = {
 			isa = PBXGroup;
 			children = (
 				0B843CB31DFF65110093F057 /* TJBCircuitDesignVC.h */,
 				0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */,
 				0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */,
 			);
-			name = "Template Configuratioin Scene";
+			name = "Template Configuration";
 			sourceTree = "<group>";
 		};
 		0B1616D81E0819D2001C8F45 /* Circuit Mode */ = {
 			isa = PBXGroup;
 			children = (
+				0BA8AD211E26D74800EE10C2 /* Old Circuit Generator */,
 				0BA8AD071E26753500EE10C2 /* CircuitActiveUpdating */,
 				0BA8ACF71E26562300EE10C2 /* Circuit Reference */,
 				0B86FB7D1E256D4A000D1B5F /* Circuit Template */,
-				0B843CC71E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.h */,
-				0B843CC81E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m */,
-				0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */,
-				0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
 			);
 			name = "Circuit Mode";
 			sourceTree = "<group>";
@@ -402,7 +399,6 @@
 				0B1616DA1E0819EE001C8F45 /* Row Component */,
 				0B1616D91E0819E1001C8F45 /* Exercise Component */,
 				0B1616D81E0819D2001C8F45 /* Circuit Mode */,
-				0B1616D71E0819BD001C8F45 /* Template Configuratioin Scene */,
 			);
 			name = "Circuit Mode";
 			sourceTree = "<group>";
@@ -466,6 +462,7 @@
 		0B86FB7D1E256D4A000D1B5F /* Circuit Template */ = {
 			isa = PBXGroup;
 			children = (
+				0B1616D71E0819BD001C8F45 /* Template Configuration */,
 				0BA8ACF01E25BC5300EE10C2 /* TJBCircuitTemplateVCProtocol.h */,
 				0B86FB7E1E257310000D1B5F /* TJBCircuitTemplateVC.h */,
 				0B86FB7F1E257310000D1B5F /* TJBCircuitTemplateVC.m */,
@@ -536,6 +533,17 @@
 				0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */,
 			);
 			name = "Tab Bar";
+			sourceTree = "<group>";
+		};
+		0BA8AD211E26D74800EE10C2 /* Old Circuit Generator */ = {
+			isa = PBXGroup;
+			children = (
+				0B843CC71E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.h */,
+				0B843CC81E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m */,
+				0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */,
+				0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
+			);
+			name = "Old Circuit Generator";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

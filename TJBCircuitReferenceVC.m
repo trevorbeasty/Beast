@@ -19,6 +19,10 @@
 
 #import "TJBCircuitReferenceExerciseComp.h"
 
+// experimenting
+
+#import "CoreDataController.h"
+
 @interface TJBCircuitReferenceVC ()
 
 // core
@@ -36,7 +40,6 @@
 @property (nonatomic, strong) NSNumber *targetingReps;
 @property (nonatomic, strong) NSNumber *targetingRest;
 @property (nonatomic, strong) NSNumber *targetsVaryByRound;
-
 @property (nonatomic, strong) NSString *name;
 
 // for programmatic layout constraints
@@ -49,7 +52,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate contentViewHeight:(NSNumber *)viewHeight contentViewWidth:(NSNumber *)viewWidth{
     
     self = [super init];
     
@@ -61,17 +64,23 @@
     
     // set IV's derived from chain template
     
+    [self setDerivedInstanceVariables];
+    
+    return self;
+}
+
+- (void)setDerivedInstanceVariables{
+    
+    TJBChainTemplate *chainTemplate = self.chainTemplate;
+    
     self.numberOfRounds = [NSNumber numberWithInt: chainTemplate.numberOfRounds];
     self.numberOfExercises = [NSNumber numberWithInt: chainTemplate.numberOfExercises];
-    
     self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
     self.targetingReps = [NSNumber numberWithBool: chainTemplate.targetingReps];
     self.targetingRest = [NSNumber numberWithBool: chainTemplate.targetingRestTime];
     self.targetsVaryByRound = [NSNumber numberWithBool: chainTemplate.targetsVaryByRound];
-    
     self.name = chainTemplate.name;
     
-    return self;
 }
 
 #pragma mark - View Life Cycle
@@ -79,11 +88,11 @@
 - (void)loadView{
     
     // this must be called when creating the view programatically
-    
+        
     float viewWidth = [self.viewWidth floatValue];
     float viewHeight = [self.viewHeight floatValue];
     UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = [UIColor redColor];
     self.view = view;
     
 }
@@ -91,9 +100,8 @@
 
 - (void)viewDidLoad{
     
-    //    [self addBackgroundView];
-    
     [self createChildViewControllersAndLayoutViews];
+    
 }
 
 - (void)createChildViewControllersAndLayoutViews{
@@ -115,7 +123,7 @@
     CGFloat componentHeight;
     // there is something wrong with my math in calculating contentSize.height
     // I have included an error term for now
-    CGFloat error = 16;
+    CGFloat error = 0;
     
     componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
     
@@ -131,7 +139,7 @@
     
     
     
-    // row components
+    // exercise components
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: @"V:|-"];
@@ -217,6 +225,8 @@
         
         [scrollViewSubview addConstraints: horizontalLayoutConstraints];
     }
+    
+    NSLog(@"%@", verticalLayoutConstraintsString);
     
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
                                                                                  options: 0

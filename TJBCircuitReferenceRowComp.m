@@ -109,19 +109,8 @@
 }
 
 - (void)configureViewAestheticsAndFunctionality{
-    
-//    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
-    
-    // round label
-    
-//    if ([self.targetsVaryByRound intValue] == 0)
-//    {
-//        self.roundLabel.text = @"All Rounds";
-//    }
-//    else
-//    {
-        self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
-//    }
+
+    self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
     
     // button appearance
     

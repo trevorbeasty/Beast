@@ -20,6 +20,11 @@
 
 #import "TJBCircuitReferenceContainerVC.h"
 
+// for experimenting
+
+#import "TJBCircuitReferenceVC.h"
+#import "CoreDataController.h"
+
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
@@ -150,17 +155,12 @@
     
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-//    TJBCircuitReferenceContainerVC *vc = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
-//    
-//    [self presentViewController: vc
-//                       animated: YES
-//                     completion: nil];
-    
     TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: chainTemplate];
     
     [self presentViewController: tbc
                        animated: YES
                      completion: nil];
+    
 }
 
 #pragma mark - Button Actions

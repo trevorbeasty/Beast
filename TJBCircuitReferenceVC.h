@@ -12,6 +12,6 @@
 
 @interface TJBCircuitReferenceVC : UIViewController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate contentViewHeight:(NSNumber *)viewHeight contentViewWidth:(NSNumber *)viewWidth;
 
 @end

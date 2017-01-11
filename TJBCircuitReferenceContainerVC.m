@@ -56,20 +56,37 @@
     NSNumber *viewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
     
     TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithChainTemplate: self.chainTemplate
-                                                                          viewHeight: viewHeight
-                                                                           viewWidth: viewWidth];
+                                                                   contentViewHeight: viewHeight
+                                                                    contentViewWidth: viewWidth];
     
     [self addChildViewController: vc];
     
     [self.circuitReferenceView addSubview: vc.view];
     
     [vc didMoveToParentViewController: self];
+    
 }
 
 
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
