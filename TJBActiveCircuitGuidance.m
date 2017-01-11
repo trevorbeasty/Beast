@@ -596,7 +596,16 @@ static NSString * const defaultValue = @"default value";
         
         [self setUserSelectedValuesToNil];
         
+        [self postNotificationThatRealizedSetHasBeenUpdated];
+        
     }
+}
+
+- (void)postNotificationThatRealizedSetHasBeenUpdated{
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: NSManagedObjectContextDidSaveNotification
+                                                        object: self.realizedChain];
+    
 }
 
 

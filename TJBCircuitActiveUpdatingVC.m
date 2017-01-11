@@ -14,6 +14,8 @@
 
 // core data
 
+#import "CoreDataController.h"
+
 #import "TJBRealizedChain+CoreDataProperties.h"
 #import "TJBChainTemplate+CoreDataProperties.h"
 #import "TJBWeightArray+CoreDataProperties.h"
@@ -34,13 +36,8 @@
 
 @property (nonatomic, strong) NSNumber *numberOfExercises;
 @property (nonatomic, strong) NSNumber *numberOfRounds;
-
-//@property (nonatomic, strong) NSNumber *targetingWeight;
-//@property (nonatomic, strong) NSNumber *targetingReps;
-//@property (nonatomic, strong) NSNumber *targetingRest;
 @property (nonatomic, strong) NSNumber *targetsVaryByRound;
-
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *realizedChainUniqueID;
 
 // for programmatic layout constraints
 
@@ -62,17 +59,55 @@
     self.viewHeight = viewHeight;
     self.viewWidth = viewWidth;
     
+    // set derived instance variables
+    
+    [self setDerivedInstanceVariables];
+    
+    // for notifications
+    
+    [self registerForRelevantNotifications];
+    
+    return self;
+}
+
+- (void)setDerivedInstanceVariables{
+    
     // set IV's derived from chain template
     
-    TJBChainTemplate *chainTemplate = realizedChain.chainTemplate;
+    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
     
     self.numberOfRounds = [NSNumber numberWithInt: chainTemplate.numberOfRounds];
     self.numberOfExercises = [NSNumber numberWithInt: chainTemplate.numberOfExercises];
     self.targetsVaryByRound = [NSNumber numberWithBool: chainTemplate.targetsVaryByRound];
     
-    self.name = chainTemplate.name;
+    self.realizedChainUniqueID = self.realizedChain.uniqueID;
     
-    return self;
+}
+
+- (void)registerForRelevantNotifications{
+    
+    // this notification relies on the TJBActiveCircuitGuidance using the same TJBRealizedChain as is stored in this VC
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(realizedChainDidChange)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: self.realizedChain];
+    
+}
+
+#pragma mark - Notification Actions
+
+- (void)realizedChainDidChange{
+    
+    // must re-fetch the realized chain and reload the view in response
+    
+    [[[CoreDataController singleton] moc] refreshObject: self.realizedChain
+                                           mergeChanges: YES];
+    
+    [self setDerivedInstanceVariables];
+    
+    [self.view setNeedsDisplay];
+    
 }
 
 
