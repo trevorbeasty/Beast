@@ -216,11 +216,6 @@
         
         NSString *verticalAppendString;
         
-        if ([self.targetsVaryByRound intValue] == 0)
-        {
-            i = [self.numberOfRounds intValue] - 1;
-        }
-        
         if (i == [self.numberOfRounds intValue] - 1)
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
