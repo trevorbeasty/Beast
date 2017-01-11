@@ -106,8 +106,6 @@
     
     [self setDerivedInstanceVariables];
     
-    [self.view setNeedsDisplay];
-    
 }
 
 
