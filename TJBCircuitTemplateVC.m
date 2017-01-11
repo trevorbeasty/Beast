@@ -534,6 +534,8 @@ static NSString * const defaultValue = @"unselected";
     
     // assign the chain template's attributes
     
+    chainTemplate.numberOfExercises = [self.numberOfExercises intValue];
+    chainTemplate.numberOfRounds = [self.numberOfRounds intValue];
     chainTemplate.dateCreated = [NSDate date];
     chainTemplate.identifier = @"placeholder identifier";
     chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];

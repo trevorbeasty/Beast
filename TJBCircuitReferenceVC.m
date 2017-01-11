@@ -61,22 +61,8 @@
     
     // set IV's derived from chain template
     
-    NSNumber *numberOfRounds;
-    
-    if (chainTemplate.targetingWeight == YES){
-        TJBWeightArray *weightArray = chainTemplate.weightArrays[0];
-        numberOfRounds = [NSNumber numberWithUnsignedLong: [weightArray.numbers count]];
-    } else if (chainTemplate.targetingReps == YES){
-        TJBRepsArray *repsArray = chainTemplate.repsArrays[0];
-        numberOfRounds = [NSNumber numberWithUnsignedLong: [repsArray.numbers count]];
-    } else if (chainTemplate.targetingRestTime == YES){
-        TJBTargetRestTimeArray *restArray = chainTemplate.targetRestTimeArrays[0];
-        numberOfRounds = [NSNumber numberWithUnsignedLong: [restArray.numbers count]];
-    }
-    
-    self.numberOfRounds = numberOfRounds;
-    
-    self.numberOfExercises = [NSNumber numberWithUnsignedLong: chainTemplate.exercises.count];
+    self.numberOfRounds = [NSNumber numberWithInt: chainTemplate.numberOfRounds];
+    self.numberOfExercises = [NSNumber numberWithInt: chainTemplate.numberOfExercises];
     
     self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
     self.targetingReps = [NSNumber numberWithBool: chainTemplate.targetingReps];

@@ -72,6 +72,8 @@
 		0BA8AD0A1E26757900EE10C2 /* TJBCircuitActiveUpdatingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD091E26757900EE10C2 /* TJBCircuitActiveUpdatingVC.m */; };
 		0BA8AD0E1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD0C1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.m */; };
 		0BA8AD0F1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8AD0D1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.xib */; };
+		0BA8AD131E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD111E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.m */; };
+		0BA8AD141E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8AD121E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -182,6 +184,9 @@
 		0BA8AD0B1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitActiveUpdatingContainerVC.h; sourceTree = "<group>"; };
 		0BA8AD0C1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitActiveUpdatingContainerVC.m; sourceTree = "<group>"; };
 		0BA8AD0D1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitActiveUpdatingContainerVC.xib; sourceTree = "<group>"; };
+		0BA8AD101E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitActiveUpdatingExerciseComp.h; sourceTree = "<group>"; };
+		0BA8AD111E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitActiveUpdatingExerciseComp.m; sourceTree = "<group>"; };
+		0BA8AD121E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitActiveUpdatingExerciseComp.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,6 +507,9 @@
 			children = (
 				0BA8AD081E26757900EE10C2 /* TJBCircuitActiveUpdatingVC.h */,
 				0BA8AD091E26757900EE10C2 /* TJBCircuitActiveUpdatingVC.m */,
+				0BA8AD101E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.h */,
+				0BA8AD111E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.m */,
+				0BA8AD121E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib */,
 				0BA8AD0B1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.h */,
 				0BA8AD0C1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.m */,
 				0BA8AD0D1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.xib */,
@@ -574,6 +582,7 @@
 				0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */,
 				0B843CCB1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
+				0BA8AD141E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib in Resources */,
 				0B843C9F1DFDB3460093F057 /* RealizedSetPersonalRecordVC.xib in Resources */,
 				0B843CD51E0C984D0093F057 /* TJBInSetVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
@@ -610,6 +619,7 @@
 				0B517BC61DF77C20009981F9 /* ViewController.m in Sources */,
 				0B843C941DFB80640093F057 /* TJBRealizedSetHistoryByDay.m in Sources */,
 				0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */,
+				0BA8AD131E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */,
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,
