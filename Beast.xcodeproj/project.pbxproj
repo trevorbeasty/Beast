@@ -76,6 +76,7 @@
 		0BA8AD141E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8AD121E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib */; };
 		0BA8AD181E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD161E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.m */; };
 		0BA8AD191E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8AD171E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.xib */; };
+		0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -192,6 +193,8 @@
 		0BA8AD151E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitActiveUpdatingRowComp.h; sourceTree = "<group>"; };
 		0BA8AD161E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitActiveUpdatingRowComp.m; sourceTree = "<group>"; };
 		0BA8AD171E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitActiveUpdatingRowComp.xib; sourceTree = "<group>"; };
+		0BA8AD1C1E26B4F900EE10C2 /* TJBAssortedUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBAssortedUtilities.h; sourceTree = "<group>"; };
+		0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBAssortedUtilities.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,10 +223,11 @@
 			name = Singletons;
 			sourceTree = "<group>";
 		};
-		0B1616D11E080E1E001C8F45 /* For Testing */ = {
+		0B1616D11E080E1E001C8F45 /* General */ = {
 			isa = PBXGroup;
 			children = (
-				0BA8ACEA1E259AF100EE10C2 /* New Group */,
+				0BA8AD1C1E26B4F900EE10C2 /* TJBAssortedUtilities.h */,
+				0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */,
 				0B1616CE1E06D72F001C8F45 /* TJBGlobalParameters.h */,
 				0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */,
 				0B1616D21E080E6F001C8F45 /* TJBExerciseSelectionScene.h */,
@@ -234,7 +238,7 @@
 				0B843C891DFADBED0093F057 /* TJBNewExerciseCreationVC.xib */,
 				0B843CD01E0C98230093F057 /* In Set Scene */,
 			);
-			name = "For Testing";
+			name = General;
 			sourceTree = "<group>";
 		};
 		0B1616D71E0819BD001C8F45 /* Template Configuratioin Scene */ = {
@@ -295,7 +299,7 @@
 		0B517BB21DF77C20009981F9 = {
 			isa = PBXGroup;
 			children = (
-				0B1616D11E080E1E001C8F45 /* For Testing */,
+				0B1616D11E080E1E001C8F45 /* General */,
 				0B1616CC1E04D1AC001C8F45 /* Singletons */,
 				0B517BD91DF88641009981F9 /* View Controllers */,
 				0B517BD81DF77CB6009981F9 /* Model */,
@@ -479,13 +483,6 @@
 			name = "Circuit Template";
 			sourceTree = "<group>";
 		};
-		0BA8ACEA1E259AF100EE10C2 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "New Group";
-			sourceTree = "<group>";
-		};
 		0BA8ACF71E26562300EE10C2 /* Circuit Reference */ = {
 			isa = PBXGroup;
 			children = (
@@ -665,6 +662,7 @@
 				0B86FB831E257FA8000D1B5F /* TJBCircuitTemplateExerciseComp.m in Sources */,
 				0B843CBA1E0030D80093F057 /* CircuitDesignExerciseComponent.m in Sources */,
 				0B1616D01E06D72F001C8F45 /* TJBGlobalParameters.m in Sources */,
+				0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */,
 				0B843CC51E02D34A0093F057 /* CircuitDesignRowComponent.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B843C9E1DFDB3460093F057 /* RealizedSetPersonalRecordVC.m in Sources */,

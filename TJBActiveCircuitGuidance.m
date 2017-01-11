@@ -27,6 +27,10 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
+// Utility
+
+#import "TJBAssortedUtilities.h"
+
 @interface TJBActiveCircuitGuidance ()
 
 // active IV's
@@ -625,10 +629,6 @@ static NSString * const defaultValue = @"default value";
     
     chain.setEndDateArrays[exerciseIndex].dates[roundIndex].value = self.impliedEndDate;
     
-    // first incomplete exercise and round indices
-    
-    
-    
     // save the managed object context to persist progress made so far
     
     [[CoreDataController singleton] saveContext];
@@ -666,6 +666,11 @@ static NSString * const defaultValue = @"default value";
         self.activeExerciseIndex = [NSNumber numberWithInt: [self.activeExerciseIndex intValue] + 1];
         
     }
+    
+    // update the first incomplete round and exercise properties of the realized chain
+    
+    self.realizedChain.firstIncompleteRoundIndex = [self.activeRoundIndex intValue];
+    self.realizedChain.firstIncompleteExerciseIndex = [self.activeExerciseIndex intValue];
     
     TJBChainTemplate *chainTemplate = self.chainTemplate;
     
