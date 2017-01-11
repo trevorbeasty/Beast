@@ -108,7 +108,8 @@
     UIButton *button = self.selectedExerciseButton;
     
     button.backgroundColor = [UIColor whiteColor];
-    [button setTintColor: [UIColor blackColor]];
+    [button setTitleColor: [UIColor blackColor]
+                 forState: UIControlStateNormal];
     
     // selected exercise button layer
     
