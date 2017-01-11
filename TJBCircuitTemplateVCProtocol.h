@@ -11,6 +11,7 @@
 #import "TJBNumberSelectionVC.h"
 
 @class  TJBCircuitTemplateRowComponent;
+@class TJBChainTemplate;
 
 #import "TJBCircuitTemplateRowComponentProtocol.h"
 
@@ -21,5 +22,9 @@
 - (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button;
 
 - (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
+
+- (BOOL)allUserSelectionsMade;
+
+- (TJBChainTemplate *)createAndSaveChainTemplate;
 
 @end

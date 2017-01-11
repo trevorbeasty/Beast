@@ -10,6 +10,10 @@
 
 #import "TJBCircuitTemplateVC.h"
 
+#import "TJBCircuitTemplateVCProtocol.h"
+
+#import "TJBChainTemplate+CoreDataProperties.h"
+
 @interface TJBCircuitTemplateContainerVC ()
 
 // IBOutlet
@@ -32,6 +36,9 @@
 @property (nonatomic, strong) NSNumber *numberOfRounds;
 @property (nonatomic, strong) NSString *name;
 
+// delegate
+
+@property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *circuitTemplateDelegate;
 
 @end
 
@@ -71,12 +78,6 @@
     
     // create a TJBCircuitTemplateVC with the dimensions of the containerView
     
-//    float viewHeightAsFloat = self.containerView.bounds.size.height;
-//    float viewWidthAsFloat = self.containerView.bounds.size.width;
-//    
-//    NSNumber *viewHeight = [NSNumber numberWithFloat: viewHeightAsFloat];
-//    NSNumber *viewWidth = [NSNumber numberWithFloat: viewWidthAsFloat];
-    
     CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
     
     // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
@@ -94,6 +95,7 @@
                                                                                 name: self.name
                                                                           viewHeight: viewHeight
                                                                            viewWidth: viewWidth];
+    self.circuitTemplateDelegate = vc;
     
     [self addChildViewController: vc];
     
@@ -150,9 +152,60 @@
 
 #pragma mark - Button Actions
 
-- (IBAction)didPressLaunchCircuit:(id)sender {
-    NSLog(@"didPressLaunchCircuit");
+- (void)alertUserInputIncomplete{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"User Input Error"
+                                                                   message: @"Please make selections for all active fields"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                     style: UIAlertActionStyleDefault
+                                                   handler: nil];
+    [alert addAction: action];
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
+    
 }
+
+- (IBAction)didPressLaunchCircuit:(id)sender{
+    
+    BOOL requisiteUserInputCollected = [self.circuitTemplateDelegate allUserSelectionsMade];
+    
+    if (requisiteUserInputCollected){
+        
+        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateDelegate createAndSaveChainTemplate];
+        
+        // alert
+        
+        NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
+                             savedChainTemplate.name];
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Saved"
+                                                                       message: message
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+            
+            NSLog(@"present the circuit mode active tab bar controller");
+        };
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: alertBlock];
+        [alert addAction: action];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+    } else{
+        
+    [self alertUserInputIncomplete];
+        
+    }
+    
+}
+    
 
 - (void)didPressX{
     
@@ -162,45 +215,43 @@
 }
 
 - (void)didPressAdd{
-    NSLog(@"didPressAdd");
+    
+    BOOL requisiteUserInputCollected = [self.circuitTemplateDelegate allUserSelectionsMade];
+    
+    if (requisiteUserInputCollected){
+        
+        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateDelegate createAndSaveChainTemplate];
+        
+        NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
+                             savedChainTemplate.name];
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Saved"
+                                                                       message: message
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+            
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+            
+        };
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: alertBlock];
+        [alert addAction: action];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+    } else{
+        
+        [self alertUserInputIncomplete];
+        
+    }
 }
 
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

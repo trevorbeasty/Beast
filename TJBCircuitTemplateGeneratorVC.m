@@ -713,58 +713,9 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (BOOL)allSelectionsMade{
-    BOOL allWeightSelectionsMade;
-    BOOL allRepsSelectionsMade;
-    BOOL allRestSelectionsMade;
-    BOOL allExerciseSelectionsMade;
-    
-    // if it's not being targeted, set its value to true
-    if ([self.targetingWeight intValue] == 1)
-    {
-        allWeightSelectionsMade = ![self dataStructureContainsDefaultValue: self.weightData];
-    }
-    else
-    {
-        allWeightSelectionsMade = YES;
-    }
-    
-    if ([self.targetingReps intValue] == 1)
-    {
-        allRepsSelectionsMade = ![self dataStructureContainsDefaultValue: self.repsData];
-    }
-    else
-    {
-        allRepsSelectionsMade = YES;
-    }
-    
-    if ([self.targetingRest intValue] == 1)
-    {
-        allRestSelectionsMade = ![self dataStructureContainsDefaultValue: self.restData];
-    }
-    else
-    {
-        allRestSelectionsMade = YES;
-    }
-    
-    allExerciseSelectionsMade = ![self.exerciseData containsObject: defaultValue];
-        
-    return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade && allExerciseSelectionsMade;
-}
 
-- (BOOL)dataStructureContainsDefaultValue:(NSArray *)dataStructure{
-    int iterationLimit = [self.numberOfExercises intValue];
-    
-    for (int i = 0; i < iterationLimit; i++)
-    {
-        if ([dataStructure[i] containsObject: defaultValue])
-        {
-            return YES;
-        }
-    }
-    
-    return NO;
-}
+
+
 
 #pragma mark - <TJBCircuitTemplateUserInputDelegate>
 
@@ -1012,6 +963,60 @@ static NSString * const defaultValue = @"unselected";
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     
     [super decodeRestorableStateWithCoder: coder];
+}
+
+- (BOOL)allSelectionsMade{
+    
+    BOOL allWeightSelectionsMade;
+    BOOL allRepsSelectionsMade;
+    BOOL allRestSelectionsMade;
+    BOOL allExerciseSelectionsMade;
+    
+    // if it's not being targeted, set its value to true
+    if ([self.targetingWeight intValue] == 1)
+    {
+        allWeightSelectionsMade = ![self dataStructureContainsDefaultValue: self.weightData];
+    }
+    else
+    {
+        allWeightSelectionsMade = YES;
+    }
+    
+    if ([self.targetingReps intValue] == 1)
+    {
+        allRepsSelectionsMade = ![self dataStructureContainsDefaultValue: self.repsData];
+    }
+    else
+    {
+        allRepsSelectionsMade = YES;
+    }
+    
+    if ([self.targetingRest intValue] == 1)
+    {
+        allRestSelectionsMade = ![self dataStructureContainsDefaultValue: self.restData];
+    }
+    else
+    {
+        allRestSelectionsMade = YES;
+    }
+    
+    allExerciseSelectionsMade = ![self.exerciseData containsObject: defaultValue];
+    
+    return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade && allExerciseSelectionsMade;
+}
+
+- (BOOL)dataStructureContainsDefaultValue:(NSArray *)dataStructure{
+    int iterationLimit = [self.numberOfExercises intValue];
+    
+    for (int i = 0; i < iterationLimit; i++)
+    {
+        if ([dataStructure[i] containsObject: defaultValue])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 

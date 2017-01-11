@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TJBCircuitTemplateVCProtocol.h"
 
-
-@interface TJBCircuitTemplateVC : UIViewController
+@interface TJBCircuitTemplateVC : UIViewController <TJBCircuitTemplateVCProtocol>
 
 - (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth;
 

@@ -13,9 +13,6 @@
 
 #import "TJBAestheticsController.h"
 
-//#import "TJBCircuitTemplateUserInputDelegate.h"
-#import "TJBCircuitTemplateVCProtocol.h"
-
 #import "TJBNumberSelectionVC.h"
 
 #import "TJBStopwatch.h"
@@ -24,7 +21,7 @@
 
 #import "TJBExerciseSelectionScene.h"
 
-@interface TJBCircuitTemplateVC () <TJBCircuitTemplateVCProtocol>
+@interface TJBCircuitTemplateVC ()
 
 // core
 
@@ -39,15 +36,18 @@
 @property (nonatomic, strong) NSNumber *viewWidth;
 
 // keeps track of its children rows so that it can updated their values during workouts to show active progress
+
 @property (nonatomic, strong) NSMutableArray<NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *> *childRowControllers;
 
 // used by TemplateType for creating TJBChainTemplate managed object
+
 @property (nonatomic, strong) NSMutableArray *weightData;
 @property (nonatomic, strong) NSMutableArray *repsData;
 @property (nonatomic, strong) NSMutableArray *restData;
 @property (nonatomic, strong) NSMutableArray *exerciseData;
 
-// view
+// for views
+
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @end
@@ -185,6 +185,9 @@ static NSString * const defaultValue = @"unselected";
     CGFloat componentToComponentSpacing = 16;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
+    // there is something wrong with my math in calculating contentSize.height
+    // I have included an error term for now
+    CGFloat error = 16;
     
     BOOL targetsVaryByRound = [self.targetsVaryByRound boolValue] == YES;
     
@@ -198,7 +201,7 @@ static NSString * const defaultValue = @"unselected";
     }
     
     int numberOfComponents = [self.numberOfExercises intValue];
-    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1);
+    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + error;
     
     scrollView.contentSize = CGSizeMake([self.viewWidth floatValue], scrollContentHeight);
     [self.view addSubview: scrollView];
@@ -282,7 +285,7 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-#pragma mark - <TJBCircuitTemplateUserInputDelegate>
+#pragma mark - <TJBCircuitTemplateVCProtocol>
 
 - (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
     
@@ -426,11 +429,218 @@ static NSString * const defaultValue = @"unselected";
     [array addObject: rowController];
 }
 
+- (BOOL)allUserSelectionsMade{
+    
+    // if targets do not vary by round, the single entry for all rounds must be duplicated in order for the algorithm to work
+    
+    if ([self.targetsVaryByRound intValue] == 0){
+        
+        [self duplicateEntries];
+        
+    }
+    
+    // evaluates if the inidividual data elements have all selections made, and then evaluates them in aggregate
+    
+    BOOL allWeightSelectionsMade;
+    BOOL allRepsSelectionsMade;
+    BOOL allRestSelectionsMade;
+    BOOL allExerciseSelectionsMade;
+    
+    // if it's not being targeted, set its value to true
+    if ([self.targetingWeight intValue] == 1)
+    {
+        allWeightSelectionsMade = ![self dataStructureContainsDefaultValue: self.weightData];
+    }
+    else
+    {
+        allWeightSelectionsMade = YES;
+    }
+    
+    if ([self.targetingReps intValue] == 1)
+    {
+        allRepsSelectionsMade = ![self dataStructureContainsDefaultValue: self.repsData];
+    }
+    else
+    {
+        allRepsSelectionsMade = YES;
+    }
+    
+    if ([self.targetingRest intValue] == 1)
+    {
+        allRestSelectionsMade = ![self dataStructureContainsDefaultValue: self.restData];
+    }
+    else
+    {
+        allRestSelectionsMade = YES;
+    }
+    
+    allExerciseSelectionsMade = ![self.exerciseData containsObject: defaultValue];
+    
+    return allWeightSelectionsMade && allRepsSelectionsMade && allRestSelectionsMade && allExerciseSelectionsMade;
+}
 
+- (void)duplicateEntries{
+    NSArray *dataArrays = @[
+                            self.weightData,
+                            self.repsData,
+                            self.restData];
+    
+    for (int i = 0; i < [dataArrays count]; i++)
+    {
+        for (int j = 0; j < [self.numberOfExercises intValue]; j++)
+        {
+            if ([dataArrays[i][j][0] class] == [NSString class])
+            {
+                continue;
+            }
+            else
+            {
+                NSNumber *numberToDuplicate = dataArrays[i][j][0];
+                
+                for (int k = 1; k < [self.numberOfRounds intValue]; k++)
+                {
+                    dataArrays[i][j][k] = numberToDuplicate;
+                    
+                    
+                }
+            }
+        }
+    }
+}
 
+- (BOOL)dataStructureContainsDefaultValue:(NSArray *)dataStructure{
+    int iterationLimit = [self.numberOfExercises intValue];
+    
+    for (int i = 0; i < iterationLimit; i++)
+    {
+        if ([dataStructure[i] containsObject: defaultValue])
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
+#pragma mark - Core Data
 
+- (TJBChainTemplate *)createAndSaveChainTemplate{
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
+    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
+                                                                    inManagedObjectContext: moc];
+    
+    // assign the chain template's attributes
+    
+    chainTemplate.dateCreated = [NSDate date];
+    chainTemplate.identifier = @"placeholder identifier";
+    chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
+    chainTemplate.name = self.name;
+    chainTemplate.targetingWeight = [self.targetingWeight intValue];
+    chainTemplate.targetingReps = [self.targetingReps intValue];
+    chainTemplate.targetingRestTime = [self.targetingRest intValue];
+    chainTemplate.targetsVaryByRound = [self.targetsVaryByRound intValue];
+    
+    // chain template relationships
+    int exerciseLimit = [self.numberOfExercises intValue];
+    
+    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
+    
+    for (int i = 0; i < [self.numberOfExercises intValue]; i++)
+    {
+        // add the current exercise to the mutable ordered set
+        TJBExercise *exercise = self.exerciseData[i];
+        [exercises addObject: exercise];
+    }
+    
+    chainTemplate.exercises = exercises;
+    
+    if ([self.targetingWeight intValue] == 1)
+    {
+        NSMutableArray *weightArrays = [[NSMutableArray alloc] init];
+        for (int i = 0; i < exerciseLimit; i++)
+        {
+            TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+                                                                        inManagedObjectContext: moc];
+            [weightArrays addObject: weightArray];
+        }
+        
+        chainTemplate.weightArrays = [self copyCollectionOfArraysFromData: self.weightData
+                                                             numberArrays: weightArrays];
+    }
+    
+    if ([self.targetingReps intValue] == 1)
+    {
+        NSMutableArray *repsArrays = [[NSMutableArray alloc] init];
+        for (int i = 0; i < exerciseLimit; i++)
+        {
+            TJBWeightArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
+                                                                      inManagedObjectContext: moc];
+            [repsArrays addObject: repsArray];
+        }
+        
+        chainTemplate.repsArrays = [self copyCollectionOfArraysFromData: self.repsData
+                                                           numberArrays: repsArrays];
+    }
+    
+    if ([self.targetingRest intValue] == 1)
+    {
+        NSMutableArray *restArrays = [[NSMutableArray alloc] init];
+        for (int i = 0; i < exerciseLimit; i++)
+        {
+            TJBWeightArray *restArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
+                                                                      inManagedObjectContext: moc];
+            [restArrays addObject: restArray];
+        }
+        
+        chainTemplate.targetRestTimeArrays = [self copyCollectionOfArraysFromData: self.restData
+                                                                     numberArrays: restArrays];
+    }
+    
+    [[CoreDataController singleton] saveContext];
+    
+    return chainTemplate;
+}
 
+- (NSMutableOrderedSet *)copyCollectionOfArraysFromData:(NSArray<NSArray *> *)data numberArrays:(NSArray<TJBNumberArray *> *)numberArrays{
+    NSMutableOrderedSet *collector = [[NSMutableOrderedSet alloc] init];
+    
+    int exerciseLimit = [self.numberOfExercises intValue];
+    
+    for (int i = 0; i < exerciseLimit; i++)
+    {
+        numberArrays[i].numbers = [self copySingleArrayFromData: data[i]];
+        [collector addObject: numberArrays[i]];
+    }
+    
+    return collector;
+}
+
+- (NSMutableOrderedSet *)copySingleArrayFromData:(NSArray *)dataArray;{
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    // create NumberTypeArrayComponents and give them to the appropriate ordered mutable set
+    int roundsLimit = [self.numberOfRounds intValue];
+    
+    NSMutableOrderedSet *collector = [[NSMutableOrderedSet alloc] init];
+    
+    for (int i = 0; i < roundsLimit ; i++)
+    {
+        
+        
+        TJBNumberTypeArrayComp *numberComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+                                                                                inManagedObjectContext: moc];
+        
+        numberComponent.value = [dataArray[i] floatValue];
+        numberComponent.isDefaultObject = NO;
+        
+        [collector addObject: numberComponent];
+    }
+    
+    return collector;
+}
 
 
 
