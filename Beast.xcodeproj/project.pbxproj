@@ -152,6 +152,8 @@
 		0BA8ACEB1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateContainerVC.h; sourceTree = "<group>"; };
 		0BA8ACEC1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitTemplateContainerVC.m; sourceTree = "<group>"; };
 		0BA8ACED1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitTemplateContainerVC.xib; sourceTree = "<group>"; };
+		0BA8ACF01E25BC5300EE10C2 /* TJBCircuitTemplateVCProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateVCProtocol.h; sourceTree = "<group>"; };
+		0BA8ACF11E25C00500EE10C2 /* TJBCircuitTemplateRowComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateRowComponentProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -422,11 +424,13 @@
 		0B86FB7D1E256D4A000D1B5F /* Circuit Template */ = {
 			isa = PBXGroup;
 			children = (
+				0BA8ACF01E25BC5300EE10C2 /* TJBCircuitTemplateVCProtocol.h */,
 				0B86FB7E1E257310000D1B5F /* TJBCircuitTemplateVC.h */,
 				0B86FB7F1E257310000D1B5F /* TJBCircuitTemplateVC.m */,
 				0B86FB811E257FA8000D1B5F /* TJBCircuitTemplateExerciseComp.h */,
 				0B86FB821E257FA8000D1B5F /* TJBCircuitTemplateExerciseComp.m */,
 				0B86FB841E258032000D1B5F /* TJBCircuitTemplateExerciseComp.xib */,
+				0BA8ACF11E25C00500EE10C2 /* TJBCircuitTemplateRowComponentProtocol.h */,
 				0B86FB861E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.h */,
 				0B86FB871E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.m */,
 				0B86FB881E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.xib */,

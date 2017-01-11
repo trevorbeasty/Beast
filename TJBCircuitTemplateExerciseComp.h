@@ -10,12 +10,12 @@
 
 // delegate methods
 
-#import "TJBCircuitTemplateUserInputDelegate.h"
+#import "TJBCircuitTemplateVCProtocol.h"
 
 @class  TJBCircuitTemplateVC;
 
 @interface TJBCircuitTemplateExerciseComp : UIViewController
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateUserInputDelegate> *)masterController;
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController;
 
 @end

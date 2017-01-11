@@ -28,7 +28,7 @@
 @property (nonatomic, strong) NSNumber *targetingRest;
 @property (nonatomic, strong) NSNumber *targetsVaryByRound;
 @property (nonatomic, strong) NSNumber *chainNumber;
-@property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateUserInputDelegate> *masterController;
+@property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 
 // IBOutlets
 
@@ -47,7 +47,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateUserInputDelegate> *)masterController{
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
     
     self = [super init];
     
@@ -220,9 +220,7 @@
 
 - (IBAction)didPressSelectExercise:(id)sender{
     
-
-        
-        [self.masterController didPressExerciseButton: self.selectedExerciseButton
+    [self.masterController didPressExerciseButton: self.selectedExerciseButton
                                               inChain: self.chainNumber];
     
 }

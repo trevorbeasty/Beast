@@ -8,7 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TJBGlobalParameters.h"
+//#import "TJBGlobalParameters.h"
+
+typedef enum {
+    WeightType,
+    RepsType,
+    RestType
+} NumberType;
 
 typedef void(^CancelBlock)(void);
 typedef void(^NumberSelectedBlock)(NSNumber *);

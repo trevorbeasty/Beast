@@ -8,13 +8,15 @@
 
 #import "TJBCircuitTemplateRowComponent.h"
 
+//#import "TJBCircuitTemplateRowComponentProtocol.h"
+
 #import "TJBCircuitTemplateVC.h"
 
 #import "TJBAestheticsController.h"
 
 #import "TJBStopwatch.h"
 
-@interface TJBCircuitTemplateRowComponent () 
+@interface TJBCircuitTemplateRowComponent ()
 
 // core
 
@@ -40,7 +42,7 @@
 
 // delegate
 
-@property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateUserInputDelegate> *masterController;
+@property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 
 @end
 
@@ -48,7 +50,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateUserInputDelegate> *)masterController chainNumber:(NSNumber *)chainNumber{
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController chainNumber:(NSNumber *)chainNumber{
     
     self = [super init];
     
@@ -161,7 +163,7 @@
                                                         button: self.restButton];
 }
 
-#pragma mark - <RowComponentActiveUpdatingProtocol>
+#pragma mark - <TJBCircuitTemplateRowComponentProtocol>
 
 - (void)updateLabelWithNumberType:(NumberType)numberType value:(double)value{
     

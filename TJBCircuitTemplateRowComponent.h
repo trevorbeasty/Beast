@@ -10,12 +10,12 @@
 
 @class TJBCircuitTemplateVC;
 
-#import "TJBCircuitTemplateUserInputDelegate.h"
+#import "TJBCircuitTemplateVCProtocol.h"
 
-#import "RowComponentActiveUpdatingProtocol.h"
+#import "TJBCircuitTemplateRowComponentProtocol.h"
 
-@interface TJBCircuitTemplateRowComponent : UIViewController <RowComponentActiveUpdatingProtocol>
+@interface TJBCircuitTemplateRowComponent : UIViewController <TJBCircuitTemplateRowComponentProtocol>
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateUserInputDelegate> *)masterController chainNumber:(NSNumber *)chainNumber;
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController chainNumber:(NSNumber *)chainNumber;
 
 @end

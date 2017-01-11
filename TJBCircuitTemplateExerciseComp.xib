@@ -73,9 +73,12 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VS1-DP-des">
                     <rect key="frame" x="112" y="0.0" width="458" height="30"/>
                     <state key="normal" title="Select Exercise"/>
+                    <connections>
+                        <action selector="didPressSelectExercise:" destination="-1" eventType="touchUpInside" id="Xz3-YH-Boo"/>
+                    </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="pBe-jn-GNt" firstAttribute="height" secondItem="gxo-K0-x5k" secondAttribute="height" id="4JU-Zb-6uW"/>
                 <constraint firstItem="gxo-K0-x5k" firstAttribute="top" secondItem="fg9-xK-QdE" secondAttribute="bottom" constant="2" id="6Td-2Y-zJJ"/>

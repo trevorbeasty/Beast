@@ -13,7 +13,8 @@
 
 #import "TJBAestheticsController.h"
 
-#import "TJBCircuitTemplateUserInputDelegate.h"
+//#import "TJBCircuitTemplateUserInputDelegate.h"
+#import "TJBCircuitTemplateVCProtocol.h"
 
 #import "TJBNumberSelectionVC.h"
 
@@ -23,7 +24,7 @@
 
 #import "TJBExerciseSelectionScene.h"
 
-@interface TJBCircuitTemplateVC () <TJBCircuitTemplateUserInputDelegate>
+@interface TJBCircuitTemplateVC () <TJBCircuitTemplateVCProtocol>
 
 // core
 
@@ -38,7 +39,7 @@
 @property (nonatomic, strong) NSNumber *viewWidth;
 
 // keeps track of its children rows so that it can updated their values during workouts to show active progress
-@property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *> *childRowControllers;
 
 // used by TemplateType for creating TJBChainTemplate managed object
 @property (nonatomic, strong) NSMutableArray *weightData;
@@ -97,15 +98,15 @@ static NSString * const defaultValue = @"unselected";
     float viewWidth = [self.viewWidth floatValue];
     float viewHeight = [self.viewHeight floatValue];
     UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
-    view.backgroundColor = [UIColor grayColor];
+    view.backgroundColor = [UIColor whiteColor];
     self.view = view;
 }
 
 - (void)viewDidLoad{
 
-//    [self createSkeletonChainTemplate];
+    [self createSkeletonChainTemplate];
     
-//    [self createSkeletonArrayForChildRowControllers];
+    [self createSkeletonArrayForChildRowControllers];
     
 //    [self addBackgroundView];
     
@@ -382,9 +383,9 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
+    
     NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
                        [chainNumber intValue]];
-    
     TJBCircuitTemplateVC * __weak weakSelf = self;
     
     void (^callback)(TJBExercise *) = ^(TJBExercise *exercise)
@@ -411,59 +412,18 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber{
+    
     int index = [chainNumber intValue] - 1;
     self.exerciseData[index] = exercise;
 }
 
-- (void)addChildRowController:(CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+    
     NSMutableArray *array = self.childRowControllers[exerciseIndex];
     [array addObject: rowController];
 }
 
-- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex date:(NSDate *)date setDateType:(SetDateType)setDateType{
-//    CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent;
-    
-//    if (numberType == RestType){
-//        NSMutableArray *array;
-//        
-//        if (setDateType == SetBeginDate){
-//            array = self.setBeginDates[exerciseIndex];
-//        } else if (setDateType == SetEndDate){
-//            array = self.setEndDates[exerciseIndex];
-//        }
-//        
-//        [array addObject: date];
-//        
-//        BOOL isFirstExerciseInFirstRound = exerciseIndex == 0 && roundIndex == 0;
-//        if (!isFirstExerciseInFirstRound){
-//            
-//            NSDate *laterDate = date;
-//            NSDate *earlierDate;
-//            
-//            if (setDateType == SetBeginDate){
-//                // should calculate the rest between sets here
-//                // will need to use multiple indexes because the end of set 1 is held at an index one less than the beginning of set 2
-//                
-//                if (exerciseIndex == 0){
-//                    int maxExerciseIndex = [self.numberOfExercises intValue] - 1;
-//                    earlierDate = self.setEndDates[maxExerciseIndex][roundIndex - 1];
-//                    rowComponent = self.childRowControllers[maxExerciseIndex][roundIndex - 1];
-//                } else{
-//                    earlierDate = self.setEndDates[exerciseIndex - 1][roundIndex];
-//                    rowComponent = self.childRowControllers[exerciseIndex - 1][roundIndex];
-//                }
-//                
-//                float timeDifferenceAsFloat = [laterDate timeIntervalSinceDate: earlierDate];
-//                [rowComponent updateLabelWithNumberType: RestType
-//                                                  value: timeDifferenceAsFloat];
-//            }
-//        }
-//    } else{
-//        CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent = self.childRowControllers[exerciseIndex][roundIndex];
-//        [rowComponent updateLabelWithNumberType: numberType
-//                                          value: number];
-//    }
-}
+
 
 
 

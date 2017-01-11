@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TJBGlobalParameters.h"
+
+#import "TJBNumberSelectionVC.h"
 
 @protocol RowComponentActiveUpdatingProtocol <NSObject>
 

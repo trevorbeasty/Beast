@@ -8,11 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
-    WeightType,
-    RepsType,
-    RestType
-} NumberType;
+
 
 @interface TJBGlobalParameters : NSObject
 
