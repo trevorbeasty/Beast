@@ -415,7 +415,9 @@ static NSString * const defaultValue = @"default value";
     // recursive if tree
     
     if(!self.selectedTimeDelay){
+        
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            
             self.selectedTimeDelay = number;
             
             // calculate the implied begin date and add store it
@@ -425,11 +427,6 @@ static NSString * const defaultValue = @"default value";
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             [self didPressBeginSet];
-            
-            // circuit template generator
-            
-            NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
-            
  
         };
         
@@ -499,18 +496,10 @@ static NSString * const defaultValue = @"default value";
                 [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.restLabel];
             }
             
-            // circuit template generator
-            
-            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
-                [self.circuitTemplateGenerator userDidSelectNumber: 0
-                                                    withNumberType: RestType
-                                                  forExerciseIndex: exerciseIndex
-                                                     forRoundIndex: roundIndex
-                                                              date: self.impliedEndDate
-                                                       setDateType: SetEndDate];
-            }
+
             
             // recursive
+            
             [self didPressBeginSet];
         };
         
@@ -534,16 +523,6 @@ static NSString * const defaultValue = @"default value";
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
             
-            // circuit template generator
-            
-            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
-                [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
-                                                    withNumberType: WeightType
-                                                  forExerciseIndex: exerciseIndex
-                                                     forRoundIndex: roundIndex
-                                                              date: nil
-                                                       setDateType: SetDateNullType];
-            }
             
             [self didPressBeginSet];
         };
@@ -568,16 +547,6 @@ static NSString * const defaultValue = @"default value";
             TJBNumberTypeArrayComp *arrayComp = self.realizedChain.repsArrays[exerciseIndex].numbers[roundIndex];
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
-            
-            // circuit template generator
-            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
-                [self.circuitTemplateGenerator userDidSelectNumber: [number doubleValue]
-                                                    withNumberType: RepsType
-                                                  forExerciseIndex: exerciseIndex
-                                                     forRoundIndex: roundIndex
-                                                              date: nil
-                                                       setDateType: SetDateNullType];
-            }
             
             [self didPressBeginSet];
         };
@@ -838,9 +807,7 @@ static NSString * const defaultValue = @"default value";
     
     [coder encodeObject: self.realizedChain.uniqueID
                  forKey: @"realizedChainUniqueID"];
-    
-    [coder encodeObject: self.circuitTemplateGenerator
-                 forKey: @"circuitTemplateGenerator"];
+
     
     // user selection
     
@@ -905,8 +872,7 @@ static NSString * const defaultValue = @"default value";
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     
     [super decodeRestorableStateWithCoder: coder];
-    
-    self.circuitTemplateGenerator = [coder decodeObjectForKey: @"circuitTemplateGenerator"];
+
     
     // elapsed time in background state
     

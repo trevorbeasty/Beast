@@ -68,10 +68,6 @@
     
     self.numberOfRounds = [NSNumber numberWithInt: chainTemplate.numberOfRounds];
     self.numberOfExercises = [NSNumber numberWithInt: chainTemplate.numberOfExercises];
-    
-//    self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
-//    self.targetingReps = [NSNumber numberWithBool: chainTemplate.targetingReps];
-//    self.targetingRest = [NSNumber numberWithBool: chainTemplate.targetingRestTime];
     self.targetsVaryByRound = [NSNumber numberWithBool: chainTemplate.targetsVaryByRound];
     
     self.name = chainTemplate.name;
@@ -143,8 +139,6 @@
     CGRect scrollViewSubviewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], scrollContentHeight);
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
-    
-    
     
     // row components
     

@@ -186,6 +186,7 @@
                          completion: nil];
         
     } else{
+        
         NSNumber *targetingWeight = [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex];
         NSNumber *targetingReps = [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex];
         NSNumber *targetingRest = [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex];

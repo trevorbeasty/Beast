@@ -7,6 +7,8 @@
     </entity>
     <entity name="Chain" representedClassName="TJBChain" syncable="YES" codeGenerationType="class">
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="numberOfExercises" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="numberOfRounds" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="exercises" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chains" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="repsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsArray" inverseName="chain" inverseEntity="RepsArray" syncable="YES"/>
@@ -15,8 +17,6 @@
     <entity name="ChainTemplate" representedClassName="TJBChainTemplate" parentEntity="Chain" syncable="YES" codeGenerationType="class">
         <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="numberOfExercises" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="numberOfRounds" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingReps" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingRestTime" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingWeight" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -96,8 +96,8 @@
     </entity>
     <elements>
         <element name="BeginDateComp" positionX="250" positionY="-477" width="128" height="88"/>
-        <element name="Chain" positionX="-693" positionY="-324" width="128" height="120"/>
-        <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="210"/>
+        <element name="Chain" positionX="-693" positionY="-324" width="128" height="150"/>
+        <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="180"/>
         <element name="EndDateComp" positionX="-936" positionY="-477" width="128" height="88"/>
         <element name="Exercise" positionX="-155" positionY="-63" width="128" height="105"/>
         <element name="ExerciseCategory" positionX="-396" positionY="-486" width="128" height="73"/>

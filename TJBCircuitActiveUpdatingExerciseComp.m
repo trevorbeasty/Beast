@@ -184,7 +184,7 @@
         NSNumber *setLength;
         
 //        BOOL pastMaxRoundIndex = i > [self.maxRoundIndexToFill intValue];
-        BOOL atMaxRoundIndex = i = [self.maxRoundIndexToFill intValue];
+        BOOL atMaxRoundIndex = i == [self.maxRoundIndexToFill intValue];
         BOOL atLessThanMaxRoundIndex = i < [self.maxRoundIndexToFill intValue];
         BOOL pastMaxExeriseIndex = [self.chainNumber intValue] - 1 > [self.maxExerciseIndexToFill intValue];
         

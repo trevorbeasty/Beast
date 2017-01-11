@@ -40,13 +40,19 @@
     TJBActiveCircuitGuidance *activeGuidance = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                                 realizedChainSkeletonFromChainTemplate: realizedChainSkeleton];
     
+    [activeGuidance.tabBarItem setTitle: @"Guide"];
+    
     // circuit reference container VC
     
     TJBCircuitReferenceContainerVC *circuitReference = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
     
+    [circuitReference.tabBarItem setTitle: @"Goals"];
+    
     // circuit active updating container VC
     
-    TJBCircuitActiveUpdatingContainerVC *circuitActiveUpdating = [[TJBCircuitActiveUpdatingContainerVC alloc] initWithRealizedChain: nil];
+    TJBCircuitActiveUpdatingContainerVC *circuitActiveUpdating = [[TJBCircuitActiveUpdatingContainerVC alloc] initWithRealizedChain: realizedChainSkeleton];
+    
+    [circuitActiveUpdating.tabBarItem setTitle: @"Progress"];
     
     // tab bar controller
     
@@ -59,7 +65,7 @@
     return self;
 }
 
-- (void)configureCommonAttributes{
+- (void)setRestorationProperties{
     
     // for restoration
     
@@ -67,8 +73,8 @@
     self.restorationIdentifier = @"TJBCircuitModeTBC";
     
     // general
-    
-    self.tabBar.translucent = NO;
+//    
+//    self.tabBar.translucent = NO;
 }
 
 

@@ -150,17 +150,17 @@
     
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-    TJBCircuitReferenceContainerVC *vc = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
-    
-//    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: chainTemplate];
+//    TJBCircuitReferenceContainerVC *vc = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
 //    
-//    [self presentViewController: tbc
+//    [self presentViewController: vc
 //                       animated: YES
 //                     completion: nil];
+    
+    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: chainTemplate];
+    
+    [self presentViewController: tbc
+                       animated: YES
+                     completion: nil];
 }
 
 #pragma mark - Button Actions
