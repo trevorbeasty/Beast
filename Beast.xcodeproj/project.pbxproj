@@ -61,6 +61,10 @@
 		0BA8ACE91E22709700EE10C2 /* TJBCircuitModeTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */; };
 		0BA8ACEE1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACEC1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m */; };
 		0BA8ACEF1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8ACED1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.xib */; };
+		0BA8ACF51E26561C00EE10C2 /* TJBCircuitReferenceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACF31E26561C00EE10C2 /* TJBCircuitReferenceVC.m */; };
+		0BA8ACF61E26561C00EE10C2 /* TJBCircuitReferenceVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8ACF41E26561C00EE10C2 /* TJBCircuitReferenceVC.xib */; };
+		0BA8ACFB1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACF91E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.m */; };
+		0BA8ACFC1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8ACFA1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,6 +158,12 @@
 		0BA8ACED1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitTemplateContainerVC.xib; sourceTree = "<group>"; };
 		0BA8ACF01E25BC5300EE10C2 /* TJBCircuitTemplateVCProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateVCProtocol.h; sourceTree = "<group>"; };
 		0BA8ACF11E25C00500EE10C2 /* TJBCircuitTemplateRowComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateRowComponentProtocol.h; sourceTree = "<group>"; };
+		0BA8ACF21E26561C00EE10C2 /* TJBCircuitReferenceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitReferenceVC.h; sourceTree = "<group>"; };
+		0BA8ACF31E26561C00EE10C2 /* TJBCircuitReferenceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitReferenceVC.m; sourceTree = "<group>"; };
+		0BA8ACF41E26561C00EE10C2 /* TJBCircuitReferenceVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitReferenceVC.xib; sourceTree = "<group>"; };
+		0BA8ACF81E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitReferenceExerciseComp.h; sourceTree = "<group>"; };
+		0BA8ACF91E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitReferenceExerciseComp.m; sourceTree = "<group>"; };
+		0BA8ACFA1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitReferenceExerciseComp.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,16 +219,17 @@
 			name = "Template Configuratioin Scene";
 			sourceTree = "<group>";
 		};
-		0B1616D81E0819D2001C8F45 /* Circuit Template Generator */ = {
+		0B1616D81E0819D2001C8F45 /* Circuit Mode */ = {
 			isa = PBXGroup;
 			children = (
+				0BA8ACF71E26562300EE10C2 /* Circuit Reference */,
 				0B86FB7D1E256D4A000D1B5F /* Circuit Template */,
 				0B843CC71E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.h */,
 				0B843CC81E0410F70093F057 /* TJBCircuitTemplateGeneratorVC.m */,
 				0B843CCA1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib */,
 				0B1616CD1E06D408001C8F45 /* TJBCircuitTemplateUserInputDelegate.h */,
 			);
-			name = "Circuit Template Generator";
+			name = "Circuit Mode";
 			sourceTree = "<group>";
 		};
 		0B1616D91E0819E1001C8F45 /* Exercise Component */ = {
@@ -359,7 +370,7 @@
 				0B86FB6E1E116360000D1B5F /* New or Existing Selection  */,
 				0B1616DA1E0819EE001C8F45 /* Row Component */,
 				0B1616D91E0819E1001C8F45 /* Exercise Component */,
-				0B1616D81E0819D2001C8F45 /* Circuit Template Generator */,
+				0B1616D81E0819D2001C8F45 /* Circuit Mode */,
 				0B1616D71E0819BD001C8F45 /* Template Configuratioin Scene */,
 			);
 			name = "Circuit Mode";
@@ -448,6 +459,19 @@
 			name = "New Group";
 			sourceTree = "<group>";
 		};
+		0BA8ACF71E26562300EE10C2 /* Circuit Reference */ = {
+			isa = PBXGroup;
+			children = (
+				0BA8ACF21E26561C00EE10C2 /* TJBCircuitReferenceVC.h */,
+				0BA8ACF31E26561C00EE10C2 /* TJBCircuitReferenceVC.m */,
+				0BA8ACF41E26561C00EE10C2 /* TJBCircuitReferenceVC.xib */,
+				0BA8ACF81E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.h */,
+				0BA8ACF91E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.m */,
+				0BA8ACFA1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib */,
+			);
+			name = "Circuit Reference";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -508,6 +532,7 @@
 			files = (
 				0B843CAB1DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib in Resources */,
 				0B86FB8A1E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.xib in Resources */,
+				0BA8ACFC1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib in Resources */,
 				0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */,
 				0B843CCB1E0412060093F057 /* TJBCircuitTemplateGeneratorVC.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
@@ -527,6 +552,7 @@
 				0B2619A41E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.xib in Resources */,
 				0B86FB7C1E217326000D1B5F /* TJBBasicCollectionViewCell.xib in Resources */,
 				0B86FB851E258032000D1B5F /* TJBCircuitTemplateExerciseComp.xib in Resources */,
+				0BA8ACF61E26561C00EE10C2 /* TJBCircuitReferenceVC.xib in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
 				0B843C8B1DFADBED0093F057 /* TJBNewExerciseCreationVC.xib in Resources */,
 			);
@@ -552,6 +578,7 @@
 				0B86FB891E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.m in Sources */,
 				0B843C991DFCAB470093F057 /* RealizedSetHistoryCell.m in Sources */,
 				0BA8ACE91E22709700EE10C2 /* TJBCircuitModeTBC.m in Sources */,
+				0BA8ACF51E26561C00EE10C2 /* TJBCircuitReferenceVC.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */,
 				0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */,
@@ -570,6 +597,7 @@
 				0B517BDD1DF8869C009981F9 /* TJBNumberSelectionVC.m in Sources */,
 				0B1616D51E080E6F001C8F45 /* TJBExerciseSelectionScene.m in Sources */,
 				0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */,
+				0BA8ACFB1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
