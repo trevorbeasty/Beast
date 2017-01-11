@@ -27,7 +27,7 @@
 
 #import "TJBCircuitTemplateGeneratorVC.h"
 
-@interface TJBActiveCircuitGuidance () <UIViewControllerRestoration>
+@interface TJBActiveCircuitGuidance ()
 
 // active IV's
 
@@ -117,6 +117,7 @@ static NSString * const defaultValue = @"default value";
         
         self.restorationBlock();
         self.restorationBlock = nil;
+        
     }
     
 }
@@ -395,19 +396,16 @@ static NSString * const defaultValue = @"default value";
 
 #pragma mark - Button Actions
 
-- (BOOL)setCompletedButtonWasNotPressed{
-    
-    return [self.setCompletedButtonPressed boolValue] == NO || !self.setCompletedButtonPressed;
-}
 
 -(void)didPressBeginSet{
+    
     CancelBlock cancelBlock = ^{
         [self setUserSelectedValuesToNil];
         [self dismissViewControllerAnimated: NO
                                  completion: nil];
     };
     
-    // used in following statements
+    // these int's are used in following statements
     
     int exerciseIndex = [self.activeExerciseIndex intValue];
     int roundIndex = [self.activeRoundIndex intValue];
@@ -420,7 +418,7 @@ static NSString * const defaultValue = @"default value";
             
             self.selectedTimeDelay = number;
             
-            // calculate the implied begin date and add store it
+            // calculate the implied begin date and store it
             
             self.impliedBeginDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
             
@@ -438,16 +436,22 @@ static NSString * const defaultValue = @"default value";
                                     numberSelectedBlock: numberSelectedBlock
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    } else if ([self setCompletedButtonWasNotPressed]){
+        
+    } else if ( [self.setCompletedButtonPressed boolValue] == NO || !self.setCompletedButtonPressed){
         
         void(^block)(int) = ^(int timeInSeconds){
+            
             self.setCompletedButtonPressed = [NSNumber numberWithBool: YES];
+            
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
+            
             [self didPressBeginSet];
+            
         };
         
         // the existence of secondaryTimerFromStateRestoration indicates the app entered the background scene from the InSetVC and the timer should be updated accordingly
+        
         // object must be destroyed after first use to allow for normal logic flow to resume
         
         TJBInSetVC *vc;
@@ -474,6 +478,7 @@ static NSString * const defaultValue = @"default value";
     }else if (!self.selectedTimeLag){
         
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            
             self.selectedTimeLag = number;
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
@@ -485,19 +490,23 @@ static NSString * const defaultValue = @"default value";
             // stopwatch
             
             self.activeTargetRestTime = [NSNumber numberWithDouble: self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value];
+            
             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+            
             int restTimeAccountingForLag = [self.activeTargetRestTime doubleValue] - [number intValue];
+            
             self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: restTimeAccountingForLag];
+            
             [stopwatch setPrimaryStopWatchToTimeInSeconds: restTimeAccountingForLag
                                   withForwardIncrementing: NO];
             
-            if (_restLabelAddedAsStopwatchObserver == NO){
+            if ( [self.restLabelAddedAsStopwatchObserver boolValue] == NO || !self.restLabelAddedAsStopwatchObserver){
                 
                 [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.restLabel];
+                self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
+                
             }
-            
-
-            
+        
             // recursive
             
             [self didPressBeginSet];
@@ -511,20 +520,26 @@ static NSString * const defaultValue = @"default value";
                                     numberSelectedBlock: numberSelectedBlock
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
-    else if (!self.selectedWeight){
+        
+    }else if (!self.selectedWeight){
+        
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            
             self.selectedWeight = number;
+            
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             
             // core data
+            
             TJBNumberTypeArrayComp *arrayComp = self.realizedChain.weightArrays[exerciseIndex].numbers[roundIndex];
+            
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
             
             
             [self didPressBeginSet];
+            
         };
         
         
@@ -536,19 +551,25 @@ static NSString * const defaultValue = @"default value";
                                     numberSelectedBlock: numberSelectedBlock
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
-    else if (!self.selectedReps){
+        
+    }else if (!self.selectedReps){
+        
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            
             self.selectedReps = number;
+            
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             
             // core data
+            
             TJBNumberTypeArrayComp *arrayComp = self.realizedChain.repsArrays[exerciseIndex].numbers[roundIndex];
+            
             arrayComp.value = [number floatValue];
             arrayComp.isDefaultObject = NO;
             
             [self didPressBeginSet];
+            
         };
         
         
@@ -566,8 +587,11 @@ static NSString * const defaultValue = @"default value";
         // order dependent - addSelectedValues must be called before incrementController
         
         [self addSelectedValuesToRealizedChainObject];
+        
         [self incrementControllerAndUpdateViews];
+        
         [self setUserSelectedValuesToNil];
+        
     }
 }
 
@@ -581,20 +605,32 @@ static NSString * const defaultValue = @"default value";
     int exerciseIndex = [self.activeExerciseIndex intValue];
     int roundIndex = [self.activeRoundIndex intValue];
     
+    // weight
+    
     TJBNumberTypeArrayComp *weight = chain.weightArrays[exerciseIndex].numbers[roundIndex];
+    
     weight.value = [self.selectedWeight floatValue];
     weight.isDefaultObject = NO;
     
+    // reps
+    
     TJBNumberTypeArrayComp *reps = chain.repsArrays[exerciseIndex].numbers[roundIndex];
+    
     reps.value = [self.selectedReps floatValue];
     reps.isDefaultObject = NO;
     
     // begin and end set dates
     
     chain.setBegindateArrays[exerciseIndex].dates[roundIndex].value = self.impliedBeginDate;
+    
     chain.setEndDateArrays[exerciseIndex].dates[roundIndex].value = self.impliedEndDate;
     
+    // first incomplete exercise and round indices
+    
+    
+    
     // save the managed object context to persist progress made so far
+    
     [[CoreDataController singleton] saveContext];
 }
 
@@ -612,6 +648,7 @@ static NSString * const defaultValue = @"default value";
             
             NSLog(@"reached end of circuit");
             abort();
+            
         } else{
             
             self.activeRoundIndex = [NSNumber numberWithInt: [self.activeRoundIndex intValue] + 1];
@@ -620,12 +657,14 @@ static NSString * const defaultValue = @"default value";
             NSString *roundText = [NSString stringWithFormat: @"Round %d/%d",
                                    [self.activeRoundIndex intValue] + 1,
                                    [self.numberOfRounds intValue]];
+            
             self.roundColumnLabel.text = roundText;
         }
         
     } else{
 
         self.activeExerciseIndex = [NSNumber numberWithInt: [self.activeExerciseIndex intValue] + 1];
+        
     }
     
     TJBChainTemplate *chainTemplate = self.chainTemplate;
@@ -726,201 +765,201 @@ static NSString * const defaultValue = @"default value";
     self.selectedReps = nil;
 }
 
-#pragma mark - <UIViewControllerRestoration>
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    
-    TJBActiveCircuitGuidance * vc = [[TJBActiveCircuitGuidance alloc] init];
-    
-    vc.activeExerciseIndex = [coder decodeObjectForKey: @"activeExerciseIndex"];
-    vc.activeRoundIndex = [coder decodeObjectForKey: @"activeRoundIndex"];
-    vc.previousExerciseIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
-    vc.previousRoundIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
-    vc.activeTargetWeight = [coder decodeObjectForKey: @"activeTargetWeight"];
-    vc.activeTargetReps = [coder decodeObjectForKey: @"activeTargetReps"];
-    vc.activeTargetRestTime = [coder decodeObjectForKey: @"activeTargetRestTime"];
-    
-    // derived IV's
-    
-    vc.numberOfExercises = [coder decodeObjectForKey: @"numberOfExercises"];
-    vc.numberOfRounds = [coder decodeObjectForKey: @"numberOfRounds"];
-    
-    // core
-    
-    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
-    vc.chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
-    
-    NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
-    vc.realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
-    
-    // state restoration
-    
-    [vc setRestorationProperties];
-    
-    // user selection
-    
-    vc.selectedTimeDelay = [coder decodeObjectForKey: @"selectedTimeDelay"];
-    vc.impliedBeginDate = [coder decodeObjectForKey: @"impliedBeginDate"];
-    vc.setCompletedButtonPressed = [coder decodeObjectForKey: @"setCompletedButtonPressed"];
-    vc.selectedTimeLag = [coder decodeObjectForKey: @"selectedTimeLag"];
-    vc.impliedEndDate = [coder decodeObjectForKey: @"impliedEndDate"];
-    vc.selectedWeight = [coder decodeObjectForKey: @"selectedWeight"];
-    vc.selectedReps = [coder decodeObjectForKey: @"selectedReps"];
-    
-    [vc setRestorationProperties];
-    
-    return vc;
-}
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super encodeRestorableStateWithCoder: coder];
-    
-    // active IV's
-    
-    [coder encodeObject: self.activeExerciseIndex
-                 forKey: @"activeExerciseIndex"];
-    [coder encodeObject: self.activeRoundIndex
-                 forKey: @"activeRoundIndex"];
-    [coder encodeObject: self.previousExerciseIndex
-                 forKey: @"previousExerciseIndex"];
-    [coder encodeObject: self.previousRoundIndex
-                 forKey: @"previousRoundIndex"];
-    [coder encodeObject: self.activeTargetWeight
-                 forKey: @"activeTargetWeight"];
-    [coder encodeObject: self.activeTargetReps
-                 forKey: @"activeTargetReps"];
-    [coder encodeObject: self.activeTargetRestTime
-                 forKey: @"activeTargetRestTime"];
-    
-    // derived IV's
-    
-    [coder encodeObject: self.numberOfExercises
-                 forKey: @"numberOfExercises"];
-    [coder encodeObject: self.numberOfRounds
-                 forKey: @"numberOfRounds"];
-    
-    // core
-    
-    [coder encodeObject: self.chainTemplate.uniqueID
-                 forKey: @"chainTemplateUniqueID"];
-    
-    [coder encodeObject: self.realizedChain.uniqueID
-                 forKey: @"realizedChainUniqueID"];
-
-    
-    // user selection
-    
-    if (self.selectedTimeDelay){
-        [coder encodeObject: self.selectedTimeDelay
-                     forKey: @"selectedTimeDelay"];
-        [coder encodeObject: self.impliedBeginDate
-                     forKey: @"impliedBeginDate"];
-    }
-    
-    if (self.setCompletedButtonPressed){
-        [coder encodeObject: self.setCompletedButtonPressed
-                     forKey: @"setCompletedButtonPressed"];
-    }
-    
-    if (self.selectedTimeLag){
-        [coder encodeObject: self.selectedTimeLag
-                     forKey: @"selectedTimeLag"];
-        [coder encodeObject: self.impliedEndDate
-                     forKey: @"impliedEndDate"];
-    }
-    
-    if (self.selectedWeight){
-        [coder encodeObject: self.selectedWeight
-                     forKey: @"selectedWeight"];
-    }
-    
-    if (self.selectedReps){
-        [coder encodeObject: self.selectedReps
-                     forKey: @"selectedReps"];
-    }
-    
-    //// timer
-    
-    // the primary stopwatch holds the value of the timer for this VC's view
-    // the primary timer's value is significant throughout the entire selection process and should thus always be saved
-    
-    int primaryTimerValue = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
-    
-    [coder encodeInt: primaryTimerValue
-              forKey: @"primaryTimerValue"];
-    
-    // the secondary timer is only pertinent if the InSetVC is currently being displayed
-    
-    BOOL userIsInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
-    
-    if (userIsInSet){
-        
-        int secondaryTimerValue = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
-        
-        [coder encodeInt: secondaryTimerValue
-                  forKey: @"secondaryTimerValue"];
-    }
-    
-    // date - used to determine elapsed time in background state
-    
-    [coder encodeObject: [NSDate date]
-                 forKey: @"enteredBackgroundDate"];
-    
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super decodeRestorableStateWithCoder: coder];
-
-    
-    // elapsed time in background state
-    
-    NSDate *enteredForegroundDate = [NSDate date];
-    NSDate *enteredBackgroundDate = [coder decodeObjectForKey: @"enteredBackgroundDate"];
-    
-    int elapsedTimeInBackgroundState = [enteredForegroundDate timeIntervalSinceDate: enteredBackgroundDate];
-    
-    // kick off the user selection process if the user is mid-selection
-    // if any of the user selection properties exist, the user must be mid-selection
-    
-    if (self.selectedTimeDelay){
-        
-        __weak TJBActiveCircuitGuidance *weakSelf = self;
-        
-        self.restorationBlock = ^{
-            [weakSelf didPressBeginSet];
-        };
-    }
-    
-    // timer
-    
-    // primary
-    
-    int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
-    primaryTimerValue -= elapsedTimeInBackgroundState;
-        
-    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-    
-    [stopwatch addPrimaryStopwatchObserver: self.restLabel];
-    self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
-        
-    self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
-    [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
-                              withForwardIncrementing: NO];
-    
-    // secondary
-    
-    BOOL userWasInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
-    
-    if (userWasInSet){
-        
-        int secondaryTimerValue = [coder decodeIntForKey: @"secondaryTimerValue"];
-        secondaryTimerValue += elapsedTimeInBackgroundState;
-        self.secondaryTimerFromStateRestoration  = [NSNumber numberWithInt: secondaryTimerValue];
-    }
-    
-}
+//#pragma mark - <UIViewControllerRestoration>
+//
+//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+//    
+//    TJBActiveCircuitGuidance * vc = [[TJBActiveCircuitGuidance alloc] init];
+//    
+//    vc.activeExerciseIndex = [coder decodeObjectForKey: @"activeExerciseIndex"];
+//    vc.activeRoundIndex = [coder decodeObjectForKey: @"activeRoundIndex"];
+//    vc.previousExerciseIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
+//    vc.previousRoundIndex = [coder decodeObjectForKey: @"previousRoundIndex"];
+//    vc.activeTargetWeight = [coder decodeObjectForKey: @"activeTargetWeight"];
+//    vc.activeTargetReps = [coder decodeObjectForKey: @"activeTargetReps"];
+//    vc.activeTargetRestTime = [coder decodeObjectForKey: @"activeTargetRestTime"];
+//    
+//    // derived IV's
+//    
+//    vc.numberOfExercises = [coder decodeObjectForKey: @"numberOfExercises"];
+//    vc.numberOfRounds = [coder decodeObjectForKey: @"numberOfRounds"];
+//    
+//    // core
+//    
+//    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
+//    vc.chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
+//    
+//    NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
+//    vc.realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
+//    
+//    // state restoration
+//    
+//    [vc setRestorationProperties];
+//    
+//    // user selection
+//    
+//    vc.selectedTimeDelay = [coder decodeObjectForKey: @"selectedTimeDelay"];
+//    vc.impliedBeginDate = [coder decodeObjectForKey: @"impliedBeginDate"];
+//    vc.setCompletedButtonPressed = [coder decodeObjectForKey: @"setCompletedButtonPressed"];
+//    vc.selectedTimeLag = [coder decodeObjectForKey: @"selectedTimeLag"];
+//    vc.impliedEndDate = [coder decodeObjectForKey: @"impliedEndDate"];
+//    vc.selectedWeight = [coder decodeObjectForKey: @"selectedWeight"];
+//    vc.selectedReps = [coder decodeObjectForKey: @"selectedReps"];
+//    
+//    [vc setRestorationProperties];
+//    
+//    return vc;
+//}
+//
+//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    [super encodeRestorableStateWithCoder: coder];
+//    
+//    // active IV's
+//    
+//    [coder encodeObject: self.activeExerciseIndex
+//                 forKey: @"activeExerciseIndex"];
+//    [coder encodeObject: self.activeRoundIndex
+//                 forKey: @"activeRoundIndex"];
+//    [coder encodeObject: self.previousExerciseIndex
+//                 forKey: @"previousExerciseIndex"];
+//    [coder encodeObject: self.previousRoundIndex
+//                 forKey: @"previousRoundIndex"];
+//    [coder encodeObject: self.activeTargetWeight
+//                 forKey: @"activeTargetWeight"];
+//    [coder encodeObject: self.activeTargetReps
+//                 forKey: @"activeTargetReps"];
+//    [coder encodeObject: self.activeTargetRestTime
+//                 forKey: @"activeTargetRestTime"];
+//    
+//    // derived IV's
+//    
+//    [coder encodeObject: self.numberOfExercises
+//                 forKey: @"numberOfExercises"];
+//    [coder encodeObject: self.numberOfRounds
+//                 forKey: @"numberOfRounds"];
+//    
+//    // core
+//    
+//    [coder encodeObject: self.chainTemplate.uniqueID
+//                 forKey: @"chainTemplateUniqueID"];
+//    
+//    [coder encodeObject: self.realizedChain.uniqueID
+//                 forKey: @"realizedChainUniqueID"];
+//
+//    
+//    // user selection
+//    
+//    if (self.selectedTimeDelay){
+//        [coder encodeObject: self.selectedTimeDelay
+//                     forKey: @"selectedTimeDelay"];
+//        [coder encodeObject: self.impliedBeginDate
+//                     forKey: @"impliedBeginDate"];
+//    }
+//    
+//    if (self.setCompletedButtonPressed){
+//        [coder encodeObject: self.setCompletedButtonPressed
+//                     forKey: @"setCompletedButtonPressed"];
+//    }
+//    
+//    if (self.selectedTimeLag){
+//        [coder encodeObject: self.selectedTimeLag
+//                     forKey: @"selectedTimeLag"];
+//        [coder encodeObject: self.impliedEndDate
+//                     forKey: @"impliedEndDate"];
+//    }
+//    
+//    if (self.selectedWeight){
+//        [coder encodeObject: self.selectedWeight
+//                     forKey: @"selectedWeight"];
+//    }
+//    
+//    if (self.selectedReps){
+//        [coder encodeObject: self.selectedReps
+//                     forKey: @"selectedReps"];
+//    }
+//    
+//    //// timer
+//    
+//    // the primary stopwatch holds the value of the timer for this VC's view
+//    // the primary timer's value is significant throughout the entire selection process and should thus always be saved
+//    
+//    int primaryTimerValue = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
+//    
+//    [coder encodeInt: primaryTimerValue
+//              forKey: @"primaryTimerValue"];
+//    
+//    // the secondary timer is only pertinent if the InSetVC is currently being displayed
+//    
+//    BOOL userIsInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
+//    
+//    if (userIsInSet){
+//        
+//        int secondaryTimerValue = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
+//        
+//        [coder encodeInt: secondaryTimerValue
+//                  forKey: @"secondaryTimerValue"];
+//    }
+//    
+//    // date - used to determine elapsed time in background state
+//    
+//    [coder encodeObject: [NSDate date]
+//                 forKey: @"enteredBackgroundDate"];
+//    
+//}
+//
+//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    [super decodeRestorableStateWithCoder: coder];
+//
+//    
+//    // elapsed time in background state
+//    
+//    NSDate *enteredForegroundDate = [NSDate date];
+//    NSDate *enteredBackgroundDate = [coder decodeObjectForKey: @"enteredBackgroundDate"];
+//    
+//    int elapsedTimeInBackgroundState = [enteredForegroundDate timeIntervalSinceDate: enteredBackgroundDate];
+//    
+//    // kick off the user selection process if the user is mid-selection
+//    // if any of the user selection properties exist, the user must be mid-selection
+//    
+//    if (self.selectedTimeDelay){
+//        
+//        __weak TJBActiveCircuitGuidance *weakSelf = self;
+//        
+//        self.restorationBlock = ^{
+//            [weakSelf didPressBeginSet];
+//        };
+//    }
+//    
+//    // timer
+//    
+//    // primary
+//    
+//    int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
+//    primaryTimerValue -= elapsedTimeInBackgroundState;
+//        
+//    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+//    
+//    [stopwatch addPrimaryStopwatchObserver: self.restLabel];
+//    self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
+//        
+//    self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
+//    [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
+//                              withForwardIncrementing: NO];
+//    
+//    // secondary
+//    
+//    BOOL userWasInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
+//    
+//    if (userWasInSet){
+//        
+//        int secondaryTimerValue = [coder decodeIntForKey: @"secondaryTimerValue"];
+//        secondaryTimerValue += elapsedTimeInBackgroundState;
+//        self.secondaryTimerFromStateRestoration  = [NSNumber numberWithInt: secondaryTimerValue];
+//    }
+//    
+//}
 
 
 
