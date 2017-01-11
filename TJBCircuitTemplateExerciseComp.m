@@ -10,6 +10,10 @@
 
 #import "TJBCircuitTemplateVC.h"
 
+#import "TJBCircuitTemplateRowComponent.h"
+
+
+
 // aesthetics
 
 #import "TJBAestheticsController.h"
@@ -136,16 +140,13 @@
     
     for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++){
         
-        CircuitDesignRowComponent *rowVC = [[CircuitDesignRowComponent alloc] initWithTargetingWeight: self.targetingWeight
-                                                                                        targetingReps: self.targetingReps
-                                                                                        targetingRest: self.targetingRest
-                                                                                   targetsVaryByRound: self.targetsVaryByRound
-                                                                                          roundNumber: [NSNumber numberWithInt: i + 1]
-                                                                                     masterController: self.masterController
-                                                                                          chainNumber: self.chainNumber
-                                                                                    supportsUserInput: _supportsUserInput
-                                                                                        chainTemplate: self.chainTemplate
-                                                                         valuesPopulatedDuringWorkout: _valuesPopulatedDuringWorkout];
+        TJBCircuitTemplateRowComponent *rowVC = [[TJBCircuitTemplateRowComponent alloc] initWithTargetingWeight: self.targetingWeight
+                                                                                                  targetingReps: self.targetingReps
+                                                                                                  targetingRest: self.targetingRest
+                                                                                             targetsVaryByRound: self.targetsVaryByRound
+                                                                                                    roundNumber: [NSNumber numberWithInt: i + 1]
+                                                                                               masterController: self.masterController
+                                                                                                    chainNumber: self.chainNumber];
         
         // add the newly created row component to the master controller's child collection
         
@@ -169,7 +170,7 @@
         
         NSString *verticalAppendString;
         
-        if ([self.targetsVaryByRound intValue] == 0 && _supportsUserInput == YES)
+        if ([self.targetsVaryByRound intValue] == 0)
         {
             i = [self.numberOfRounds intValue] - 1;
         }
@@ -209,7 +210,7 @@
     
     [self.view addConstraints: verticalLayoutConstraints];
     
-    for (CircuitDesignRowComponent *child in self.childViewControllers)
+    for (TJBCircuitTemplateRowComponent *child in self.childViewControllers)
     {
         [child didMoveToParentViewController: self];
     }
@@ -219,11 +220,11 @@
 
 - (IBAction)didPressSelectExercise:(id)sender{
     
-    if (_supportsUserInput == YES){
+
         
         [self.masterController didPressExerciseButton: self.selectedExerciseButton
                                               inChain: self.chainNumber];
-    }
+    
 }
 
 @end

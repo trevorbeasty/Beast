@@ -8,12 +8,22 @@
 
 #import "TJBCircuitTemplateVC.h"
 
-#import "CircuitDesignRowComponent.h"
-#import "CircuitDesignExerciseComponent.h"
+#import "TJBCircuitTemplateExerciseComp.h"
+#import "TJBCircuitTemplateRowComponent.h"
 
 #import "TJBAestheticsController.h"
 
-@interface TJBCircuitTemplateVC ()
+#import "TJBCircuitTemplateUserInputDelegate.h"
+
+#import "TJBNumberSelectionVC.h"
+
+#import "TJBStopwatch.h"
+
+#import "CoreDataController.h"
+
+#import "TJBExerciseSelectionScene.h"
+
+@interface TJBCircuitTemplateVC () <TJBCircuitTemplateUserInputDelegate>
 
 // core
 
@@ -25,6 +35,7 @@
 @property (nonatomic, strong) NSNumber *numberOfRounds;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSNumber *viewHeight;
+@property (nonatomic, strong) NSNumber *viewWidth;
 
 // keeps track of its children rows so that it can updated their values during workouts to show active progress
 @property (nonatomic, strong) NSMutableArray<NSMutableArray <CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *> *> *childRowControllers;
@@ -46,7 +57,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Instantiation
 
-- (instancetype)initTemplateTypeWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name viewHeight:(NSNumber *)viewHeight{
+- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth{
     
     // call to super
     
@@ -62,6 +73,7 @@ static NSString * const defaultValue = @"unselected";
     self.numberOfRounds = numberOfRounds;
     self.name = name;
     self.viewHeight = viewHeight;
+    self.viewWidth = viewWidth;
     
     // for restoration
     
@@ -82,21 +94,22 @@ static NSString * const defaultValue = @"unselected";
     
     // this must be called when creating the view programatically
     
-    float viewWidth = [[UIScreen mainScreen] bounds].size.width;
+    float viewWidth = [self.viewWidth floatValue];
     float viewHeight = [self.viewHeight floatValue];
-    UIView *containerView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth, viewHeight)];
-    self.view = containerView;
+    UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
+    view.backgroundColor = [UIColor grayColor];
+    self.view = view;
 }
 
 - (void)viewDidLoad{
 
-    [self createSkeletonChainTemplate];
+//    [self createSkeletonChainTemplate];
     
-    [self createSkeletonArrayForChildRowControllers];
+//    [self createSkeletonArrayForChildRowControllers];
     
-    [self addBackgroundView];
+//    [self addBackgroundView];
     
-    [self createScrollView];
+    [self createChildViewControllersAndLayoutViews];
 }
 
 - (void)addBackgroundView{
@@ -153,12 +166,14 @@ static NSString * const defaultValue = @"unselected";
     return arrayToReturn;
 }
 
-- (void)createScrollView{
+- (void)createChildViewControllersAndLayoutViews{
     
     // scroll view
     
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    CGFloat screenWidth = screenBounds.size.width;
+    CGRect scrollViewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], [self.viewHeight floatValue]);
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: scrollViewFrame];
+    
+    // determine height of scroll view content size
     
     CGFloat rowHeight = 30;
     CGFloat componentToComponentSpacing = 16;
@@ -177,12 +192,14 @@ static NSString * const defaultValue = @"unselected";
     }
     
     int numberOfComponents = [self.numberOfExercises intValue];
-    CGFloat scrollContentViewHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1);
+    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1);
     
-    UIView *scrollContentView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, screenWidth, scrollContentViewHeight)];
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: self.view.bounds];
-    [scrollView addSubview: scrollContentView];
-    scrollView.contentSize = scrollContentView.frame.size;
+    scrollView.contentSize = CGSizeMake([self.viewWidth floatValue], scrollContentHeight);
+    [self.view addSubview: scrollView];
+    
+    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], scrollContentHeight);
+    UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
+    [scrollView addSubview: scrollViewSubview];
     
     // constraint mapping
     
@@ -195,28 +212,20 @@ static NSString * const defaultValue = @"unselected";
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
         
-//        NSString *exerciseName = @"placeholder";
-//            
-//            exerciseName = self.chainTemplate.exercises[i].name;
-        
-        CircuitDesignExerciseComponent *vc = [[CircuitDesignExerciseComponent alloc] initWithNumberOfRounds: self.numberOfRounds
+        TJBCircuitTemplateExerciseComp *vc = [[TJBCircuitTemplateExerciseComp alloc] initWithNumberOfRounds: self.numberOfRounds
                                                                                             targetingWeight: self.targetingWeight
                                                                                               targetingReps: self.targetingReps
                                                                                               targetingRest: self.targetingRest
                                                                                          targetsVaryByRound: self.targetsVaryByRound
                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
-                                                                                               exerciseName: nil
-                                                                                           masterController: nil
-                                                                                          supportsUserInput: YES
-                                                                                              chainTemplate: nil
-                                                                               valuesPopulatedDuringWorkout: NO];
+                                                                                           masterController: self];
         
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
         
         [self addChildViewController: vc];
         
-        [scrollContentView addSubview: vc.view];
+        [scrollViewSubview addSubview: vc.view];
         
         NSString *dynamicComponentName = [NSString stringWithFormat: @"exerciseComponent%d",
                                           i];
@@ -253,7 +262,7 @@ static NSString * const defaultValue = @"unselected";
                                                                                        metrics: nil
                                                                                          views: self.constraintMapping];
         
-        [scrollSubview addConstraints: horizontalLayoutConstraints];
+        [scrollViewSubview addConstraints: horizontalLayoutConstraints];
     }
     
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
@@ -261,13 +270,202 @@ static NSString * const defaultValue = @"unselected";
                                                                                  metrics: nil
                                                                                    views: self.constraintMapping];
     
-    [scrollSubview addConstraints: verticalLayoutConstraints];
+    [scrollViewSubview addConstraints: verticalLayoutConstraints];
     
-    for (CircuitDesignExerciseComponent *child in self.childViewControllers){
+    for (TJBCircuitTemplateExerciseComp *child in self.childViewControllers){
         
         [child didMoveToParentViewController: self];
     }
 }
+
+#pragma mark - <TJBCircuitTemplateUserInputDelegate>
+
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
+    
+    TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType
+                                                                                          numberMultiple: numberMultiple
+                                                                                             numberLimit: numberLimit
+                                                                                                   title: title
+                                                                                             cancelBlock: cancelBlock
+                                                                                     numberSelectedBlock: numberSelectedBlock];
+    
+    
+    numberSelectionVC.modalTransitionStyle = transitionStyle;
+    
+    [self presentViewController: numberSelectionVC
+                       animated: animated
+                     completion: nil];
+}
+
+// this is the delegate method for templates; I will need to separate out the delegate methods
+
+- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button{
+    __weak TJBCircuitTemplateVC *weakSelf = self;
+    
+    CancelBlock cancelBlock = ^{
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+    };
+    
+    void (^buttonAlterationBlock)(void) = ^{
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
+    };
+    
+    int indexOne = [chainNumber intValue] - 1;
+    int indexTwo = [roundNumber intValue] - 1;
+    
+    if (type == WeightType)
+    {
+        
+        NumberSelectedBlock block = ^(NSNumber *number){
+            [button setTitle: [number stringValue]
+                    forState: UIControlStateNormal];
+            buttonAlterationBlock();
+            self.weightData[indexOne][indexTwo] = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: WeightType
+                                         numberMultiple: [NSNumber numberWithDouble: 2.5]
+                                            numberLimit: nil
+                                                  title: @"Select Weight"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: block
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+    }
+    else if (type == RepsType)
+    {
+        NumberSelectedBlock block = ^(NSNumber *number){
+            [button setTitle: [number stringValue]
+                    forState: UIControlStateNormal];
+            buttonAlterationBlock();
+            self.repsData[indexOne][indexTwo] = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: RepsType
+                                         numberMultiple: [NSNumber numberWithDouble: 1.0]
+                                            numberLimit: nil
+                                                  title: @"Select Reps"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: block
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+    }
+    else if (type == RestType)
+    {
+        
+        NumberSelectedBlock block = ^(NSNumber *number){
+            NSString *title = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+            [button setTitle: title
+                    forState: UIControlStateNormal];
+            buttonAlterationBlock();
+            self.restData[indexOne][indexTwo] = number;
+            [self dismissViewControllerAnimated: NO
+                                     completion: nil];
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: RestType
+                                         numberMultiple: [NSNumber numberWithDouble: 5.0]
+                                            numberLimit: nil
+                                                  title: @"Select Rest"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: block
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+    }
+}
+
+- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
+    NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
+                       [chainNumber intValue]];
+    
+    TJBCircuitTemplateVC * __weak weakSelf = self;
+    
+    void (^callback)(TJBExercise *) = ^(TJBExercise *exercise)
+    {
+        [button setTitle: exercise.name
+                forState: UIControlStateNormal];
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
+        
+        [weakSelf didSelectExercise: exercise
+                     forChainNumber: chainNumber];
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+    };
+    
+    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithTitle: title
+                                                                       callbackBlock: callback];
+    
+    [self presentViewController: vc
+                       animated: NO
+                     completion: nil];
+}
+
+- (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber{
+    int index = [chainNumber intValue] - 1;
+    self.exerciseData[index] = exercise;
+}
+
+- (void)addChildRowController:(CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+    NSMutableArray *array = self.childRowControllers[exerciseIndex];
+    [array addObject: rowController];
+}
+
+- (void)userDidSelectNumber:(double)number withNumberType:(NumberType)numberType forExerciseIndex:(int)exerciseIndex forRoundIndex:(int)roundIndex date:(NSDate *)date setDateType:(SetDateType)setDateType{
+//    CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent;
+    
+//    if (numberType == RestType){
+//        NSMutableArray *array;
+//        
+//        if (setDateType == SetBeginDate){
+//            array = self.setBeginDates[exerciseIndex];
+//        } else if (setDateType == SetEndDate){
+//            array = self.setEndDates[exerciseIndex];
+//        }
+//        
+//        [array addObject: date];
+//        
+//        BOOL isFirstExerciseInFirstRound = exerciseIndex == 0 && roundIndex == 0;
+//        if (!isFirstExerciseInFirstRound){
+//            
+//            NSDate *laterDate = date;
+//            NSDate *earlierDate;
+//            
+//            if (setDateType == SetBeginDate){
+//                // should calculate the rest between sets here
+//                // will need to use multiple indexes because the end of set 1 is held at an index one less than the beginning of set 2
+//                
+//                if (exerciseIndex == 0){
+//                    int maxExerciseIndex = [self.numberOfExercises intValue] - 1;
+//                    earlierDate = self.setEndDates[maxExerciseIndex][roundIndex - 1];
+//                    rowComponent = self.childRowControllers[maxExerciseIndex][roundIndex - 1];
+//                } else{
+//                    earlierDate = self.setEndDates[exerciseIndex - 1][roundIndex];
+//                    rowComponent = self.childRowControllers[exerciseIndex - 1][roundIndex];
+//                }
+//                
+//                float timeDifferenceAsFloat = [laterDate timeIntervalSinceDate: earlierDate];
+//                [rowComponent updateLabelWithNumberType: RestType
+//                                                  value: timeDifferenceAsFloat];
+//            }
+//        }
+//    } else{
+//        CircuitDesignRowComponent<RowComponentActiveUpdatingProtocol> *rowComponent = self.childRowControllers[exerciseIndex][roundIndex];
+//        [rowComponent updateLabelWithNumberType: numberType
+//                                          value: number];
+//    }
+}
+
+
 
 
 

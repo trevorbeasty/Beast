@@ -162,6 +162,7 @@
 }
 
 #pragma mark - <RowComponentActiveUpdatingProtocol>
+
 - (void)updateLabelWithNumberType:(NumberType)numberType value:(double)value{
     
     NSString *string = [[NSNumber numberWithDouble: value] stringValue];
