@@ -10,7 +10,9 @@
 
 #import "TJBCircuitDesignVC.h"
 
-#import "TJBCircuitTemplateGeneratorVC.h"
+//#import "TJBCircuitTemplateGeneratorVC.h"
+//#import "TJBCircuitTemplateVC.h"
+#import "TJBCircuitTemplateContainerVC.h"
 
 #import "TJBAestheticsController.h"
 
@@ -191,13 +193,13 @@
         NSNumber *numberOfExercises = [NSNumber numberWithDouble: _numberOfExercises];
         NSNumber *numberOfRounds = [NSNumber numberWithDouble: _numberOfRounds];
         
-        TJBCircuitTemplateGeneratorVC *vc = [[TJBCircuitTemplateGeneratorVC alloc] initTemplateTypeWithTargetingWeight: targetingWeight
-                                                                                                         targetingReps: targetingReps
-                                                                                                         targetingRest: targetingRest
-                                                                                                    targetsVaryByRound: targetsVaryByRound
-                                                                                                     numberOfExercises: numberOfExercises
-                                                                                                        numberOfRounds: numberOfRounds
-                                                                                                                  name: self.nameTextField.text];
+        TJBCircuitTemplateContainerVC *vc = [[TJBCircuitTemplateContainerVC alloc] initWithTargetingWeight: targetingWeight
+                                                                                             targetingReps: targetingReps
+                                                                                             targetingRest: targetingRest
+                                                                                        targetsVaryByRound: targetsVaryByRound
+                                                                                         numberOfExercises: numberOfExercises
+                                                                                            numberOfRounds: numberOfRounds
+                                                                                                      name: self.nameTextField.text];
         
         [self presentViewController: vc
                            animated: YES
