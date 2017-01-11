@@ -346,7 +346,6 @@
 		0B517BD91DF88641009981F9 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0B26199F1E0DC94B006FB2D9 /* Circuit - Active Guidance */,
 				0B843CB21DFF64BD0093F057 /* Circuit Mode */,
 				0B843CAC1DFEF8F40093F057 /* Home Tab Bar VC */,
 				0B843C901DFB7E9C0093F057 /* Realized Set Active Entry */,
@@ -394,8 +393,7 @@
 		0B843CB21DFF64BD0093F057 /* Circuit Mode */ = {
 			isa = PBXGroup;
 			children = (
-				0BA8ACE71E22709700EE10C2 /* TJBCircuitModeTBC.h */,
-				0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */,
+				0BA8AD1A1E2695E100EE10C2 /* Circuit Active Mode */,
 				0B86FB6E1E116360000D1B5F /* New or Existing Selection  */,
 				0B1616DA1E0819EE001C8F45 /* Row Component */,
 				0B1616D91E0819E1001C8F45 /* Exercise Component */,
@@ -523,6 +521,24 @@
 				0BA8AD0D1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.xib */,
 			);
 			name = CircuitActiveUpdating;
+			sourceTree = "<group>";
+		};
+		0BA8AD1A1E2695E100EE10C2 /* Circuit Active Mode */ = {
+			isa = PBXGroup;
+			children = (
+				0B26199F1E0DC94B006FB2D9 /* Circuit - Active Guidance */,
+				0BA8AD1B1E2695F400EE10C2 /* Tab Bar */,
+			);
+			name = "Circuit Active Mode";
+			sourceTree = "<group>";
+		};
+		0BA8AD1B1E2695F400EE10C2 /* Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				0BA8ACE71E22709700EE10C2 /* TJBCircuitModeTBC.h */,
+				0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */,
+			);
+			name = "Tab Bar";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

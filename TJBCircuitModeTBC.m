@@ -8,12 +8,17 @@
 
 #import "TJBCircuitModeTBC.h"
 
-#import "TJBCircuitTemplateGeneratorVC.h"
+// child VC's
+
 #import "TJBActiveCircuitGuidance.h"
+#import "TJBCircuitReferenceContainerVC.h"
+#import "TJBCircuitActiveUpdatingContainerVC.h"
+
+// core data
 
 #import "TJBChainTemplate+CoreDataProperties.h"
 
-@interface TJBCircuitModeTBC () <UIViewControllerRestoration>
+@interface TJBCircuitModeTBC () 
 
 @end
 
@@ -23,39 +28,28 @@
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate{
     
-    // vc with 'active updating chain' type
+    self = [super init];
     
-    TJBCircuitTemplateGeneratorVC *vc3 = [[TJBCircuitTemplateGeneratorVC alloc] initActiveUpdatingTypeWithChainTemplate: chainTemplate];
+    // active circuit guidance VC
     
-    // need to load the view ahead of time so that it can be ammended without the user first directly accessing it
-    [vc3 loadViewIfNeeded];
+    TJBActiveCircuitGuidance *activeGuidance = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
+                                                                              circuitTemplateGenerator: nil];
     
-    // active circuit guidance vc
+    // circuit reference container VC
     
-    TJBActiveCircuitGuidance *vc1 = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
-                                                                   circuitTemplateGenerator: vc3];
+    TJBCircuitReferenceContainerVC *circuitReference = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
     
-    // vc with 'reference chain' type
+    // circuit active updating container VC
     
-    TJBCircuitTemplateGeneratorVC *vc2 = [[TJBCircuitTemplateGeneratorVC alloc] initReferenceTypeWithChainTemplate: chainTemplate];
-    
-    // additional configuration
-    
-    [vc1.tabBarItem setTitle: @"Active"];
-    [vc2.tabBarItem setTitle: @"Targets"];
-    [vc3.tabBarItem setTitle: @"Progress"];
+    TJBCircuitActiveUpdatingContainerVC *circuitActiveUpdating = [[TJBCircuitActiveUpdatingContainerVC alloc] initWithRealizedChain: nil];
     
     // tab bar controller
     
-    self = [super init];
+    [self setViewControllers: @[activeGuidance,
+                                circuitReference,
+                                circuitActiveUpdating]];
     
-    [self setViewControllers: @[vc1,
-                                vc2,
-                                vc3]];
-    
-    // for restoration
-    
-    [self configureCommonAttributes];
+    self.tabBar.translucent = NO;
     
     return self;
 }
@@ -73,59 +67,59 @@
 }
 
 
-#pragma mark - <UIViewControllerRestoration>
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] init];
-    
-    // for restoration
-    
-    [tbc configureCommonAttributes];
-    
-    return tbc;
-}
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super encodeRestorableStateWithCoder: coder];
-    
-    NSArray *children = self.viewControllers;
-    
-    [coder encodeObject: children[0]
-                 forKey: @"vc1"];
-    [coder encodeObject: children[1]
-                 forKey: @"vc2"];
-    [coder encodeObject: children[2]
-                 forKey: @"vc3"];
-    
-    [coder encodeInteger: self.selectedIndex
-                  forKey: @"selectedIndex"];
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [super decodeRestorableStateWithCoder: coder];
-    
-    [self configureCommonAttributes];
-    
-    TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
-    
-    TJBCircuitTemplateGeneratorVC *vc2 = [coder decodeObjectForKey: @"vc2"];
-    
-    TJBCircuitTemplateGeneratorVC *vc3 = [coder decodeObjectForKey: @"vc3"];
-    
-    [vc1.tabBarItem setTitle: @"Active"];
-    [vc2.tabBarItem setTitle: @"Targets"];
-    [vc3.tabBarItem setTitle: @"Progress"];
-    
-    [vc3 loadViewIfNeeded];
-    
-    [self setViewControllers: @[vc1,
-                               vc2,
-                               vc3]];
-    
-    self.selectedIndex = [coder decodeIntegerForKey: @"selectedIndex"];
-}
+//#pragma mark - <UIViewControllerRestoration>
+//
+//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+//    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] init];
+//    
+//    // for restoration
+//    
+//    [tbc configureCommonAttributes];
+//    
+//    return tbc;
+//}
+//
+//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    [super encodeRestorableStateWithCoder: coder];
+//    
+//    NSArray *children = self.viewControllers;
+//    
+//    [coder encodeObject: children[0]
+//                 forKey: @"vc1"];
+//    [coder encodeObject: children[1]
+//                 forKey: @"vc2"];
+//    [coder encodeObject: children[2]
+//                 forKey: @"vc3"];
+//    
+//    [coder encodeInteger: self.selectedIndex
+//                  forKey: @"selectedIndex"];
+//}
+//
+//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    [super decodeRestorableStateWithCoder: coder];
+//    
+//    [self configureCommonAttributes];
+//    
+//    TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
+//    
+//    TJBCircuitTemplateGeneratorVC *vc2 = [coder decodeObjectForKey: @"vc2"];
+//    
+//    TJBCircuitTemplateGeneratorVC *vc3 = [coder decodeObjectForKey: @"vc3"];
+//    
+//    [vc1.tabBarItem setTitle: @"Active"];
+//    [vc2.tabBarItem setTitle: @"Targets"];
+//    [vc3.tabBarItem setTitle: @"Progress"];
+//    
+//    [vc3 loadViewIfNeeded];
+//    
+//    [self setViewControllers: @[vc1,
+//                               vc2,
+//                               vc3]];
+//    
+//    self.selectedIndex = [coder decodeIntegerForKey: @"selectedIndex"];
+//}
 
 
 
