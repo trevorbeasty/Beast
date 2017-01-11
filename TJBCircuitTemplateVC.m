@@ -100,6 +100,7 @@ static NSString * const defaultValue = @"unselected";
     UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
     view.backgroundColor = [UIColor whiteColor];
     self.view = view;
+    
 }
 
 - (void)viewDidLoad{
@@ -169,6 +170,10 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)createChildViewControllersAndLayoutViews{
     
+    // for constraint mapping
+    
+    self.constraintMapping = [[NSMutableDictionary alloc] init];
+    
     // scroll view
     
     CGRect scrollViewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], [self.viewHeight floatValue]);
@@ -202,9 +207,7 @@ static NSString * const defaultValue = @"unselected";
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
-    // constraint mapping
-    
-    self.constraintMapping = [[NSMutableDictionary alloc] init];
+
     
     // row components
     

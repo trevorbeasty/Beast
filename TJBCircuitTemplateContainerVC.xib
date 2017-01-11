@@ -19,15 +19,15 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="434" height="747"/>
+            <rect key="frame" x="0.0" y="0.0" width="788" height="743"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddm-83-lU1">
-                    <rect key="frame" x="40" y="116" width="354" height="623"/>
+                    <rect key="frame" x="8" y="116" width="772" height="619"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGq-w9-M2p">
-                    <rect key="frame" x="8" y="68" width="418" height="40"/>
+                    <rect key="frame" x="8" y="68" width="772" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="6X4-5Z-ZaY"/>
                     </constraints>
@@ -37,7 +37,7 @@
                     </connections>
                 </button>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Aw-Ow-fCu">
-                    <rect key="frame" x="0.0" y="20" width="434" height="40"/>
+                    <rect key="frame" x="0.0" y="20" width="788" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="8Rq-bw-UM5"/>
                     </constraints>
@@ -51,16 +51,17 @@
                 <constraint firstItem="1Aw-Ow-fCu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="24a-cU-KLW"/>
                 <constraint firstAttribute="bottom" secondItem="ddm-83-lU1" secondAttribute="bottom" constant="8" id="7l4-eH-7rO"/>
                 <constraint firstItem="DGq-w9-M2p" firstAttribute="top" secondItem="1Aw-Ow-fCu" secondAttribute="bottom" constant="8" id="KPG-b9-Mtl"/>
-                <constraint firstItem="ddm-83-lU1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="Qxi-oF-DUP"/>
+                <constraint firstItem="ddm-83-lU1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Qxi-oF-DUP"/>
                 <constraint firstAttribute="trailing" secondItem="DGq-w9-M2p" secondAttribute="trailing" constant="8" id="Xw6-Q2-EO3"/>
                 <constraint firstAttribute="trailing" secondItem="1Aw-Ow-fCu" secondAttribute="trailing" id="bug-1x-pE3"/>
                 <constraint firstItem="DGq-w9-M2p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="diB-cv-ieU"/>
-                <constraint firstAttribute="trailing" secondItem="ddm-83-lU1" secondAttribute="trailing" constant="40" id="j85-Ti-kXd"/>
+                <constraint firstAttribute="trailing" secondItem="ddm-83-lU1" secondAttribute="trailing" constant="8" id="j85-Ti-kXd"/>
                 <constraint firstItem="ddm-83-lU1" firstAttribute="top" secondItem="DGq-w9-M2p" secondAttribute="bottom" constant="8" id="tFl-ld-dDh"/>
                 <constraint firstItem="1Aw-Ow-fCu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="uA2-gA-hjS"/>
             </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="63" y="94.5"/>
+            <point key="canvasLocation" x="-44" y="110.5"/>
         </view>
     </objects>
 </document>

@@ -71,11 +71,19 @@
     
     // create a TJBCircuitTemplateVC with the dimensions of the containerView
     
-    float viewHeightAsFloat = self.containerView.bounds.size.height;
-    float viewWidthAsFloat = self.containerView.bounds.size.width;
+//    float viewHeightAsFloat = self.containerView.bounds.size.height;
+//    float viewWidthAsFloat = self.containerView.bounds.size.width;
+//    
+//    NSNumber *viewHeight = [NSNumber numberWithFloat: viewHeightAsFloat];
+//    NSNumber *viewWidth = [NSNumber numberWithFloat: viewWidthAsFloat];
     
-    NSNumber *viewHeight = [NSNumber numberWithFloat: viewHeightAsFloat];
-    NSNumber *viewWidth = [NSNumber numberWithFloat: viewWidthAsFloat];
+    CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
+    
+    // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
+    // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
+    
+    NSNumber *viewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 124];
+    NSNumber *viewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
     
     TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithTargetingWeight: self.targetingWeight
                                                                        targetingReps: self.targetingReps
