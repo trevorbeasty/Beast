@@ -16,7 +16,7 @@
 
 // core data
 
-#import "TJBChainTemplate+CoreDataProperties.h"
+#import "CoreDataController.h"
 
 @interface TJBCircuitModeTBC () 
 
@@ -30,10 +30,15 @@
     
     self = [super init];
     
+    // create a skeleton realized chain from the chainTemplate parameter
+    // all tab bar child VC's will be configured using these two objects
+    
+    TJBRealizedChain *realizedChainSkeleton = [[CoreDataController singleton] createAndSaveSkeletonRealizedChainForChainTemplate: chainTemplate];
+    
     // active circuit guidance VC
     
     TJBActiveCircuitGuidance *activeGuidance = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
-                                                                              circuitTemplateGenerator: nil];
+                                                                realizedChainSkeletonFromChainTemplate: realizedChainSkeleton];
     
     // circuit reference container VC
     

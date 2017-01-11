@@ -45,10 +45,18 @@
 @property NSNumber *setCompletedButtonPressed;
 @property NSNumber *restLabelAddedAsStopwatchObserver;
 
+// derived IV's
+
+@property (nonatomic, strong) NSNumber *numberOfExercises;
+@property (nonatomic, strong) NSNumber *numberOfRounds;
+
+// IBAction
 
 - (IBAction)didPressBeginSet;
 
-// UI
+
+// IBOutlet
+
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 
 @property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
@@ -65,14 +73,8 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
-// data
-@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
-
-// derived IV's
-@property (nonatomic, strong) NSNumber *numberOfExercises;
-@property (nonatomic, strong) NSNumber *numberOfRounds;
-
 // user selections
+
 @property (nonatomic, strong) NSNumber *selectedTimeDelay;
 @property (nonatomic, strong) NSDate *impliedBeginDate;
 @property (nonatomic, strong) NSNumber *selectedTimeLag;
@@ -80,11 +82,11 @@
 @property (nonatomic, strong) NSNumber *selectedWeight;
 @property (nonatomic, strong) NSNumber *selectedReps;
 
-// realized chain
+// core data
 
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
-@property (nonatomic, weak) TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *circuitTemplateGenerator;
 
 // state restoration
 
@@ -100,9 +102,13 @@ static NSString * const defaultValue = @"default value";
 #pragma mark - View Cycle
 
 - (void)viewDidLoad{
+    
     [self configureViewData];
+    
     [self addBackgroundImage];
+    
     [self viewAesthetics];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -112,12 +118,15 @@ static NSString * const defaultValue = @"default value";
         self.restorationBlock();
         self.restorationBlock = nil;
     }
+    
 }
 
 - (void)addBackgroundImage{
+    
     [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"FinlandBackSquat"]
                                                                    toRootView: self.view
                                                                  imageOpacity: .45];
+    
 }
 
 - (void)viewAesthetics{
@@ -214,21 +223,20 @@ static NSString * const defaultValue = @"default value";
 
 #pragma mark - Init
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainSkeletonFromChainTemplate:(TJBRealizedChain *)realizedChainSkeleton{
+    
     self = [super init];
     
     // IV's
     
     self.chainTemplate = chainTemplate;
-    self.circuitTemplateGenerator = circuitTemplateGenerator;
+    self.realizedChain = realizedChainSkeleton;
     
     [self setDerivedInstanceVariables];
     
     [self setRestorationProperties];
     
     [self initializeActiveInstanceVariables];
-    
-    [self createSkeletonForRealizedChainObject];
     
     return self;
 }
@@ -379,25 +387,10 @@ static NSString * const defaultValue = @"default value";
 
 
 - (void)setDerivedInstanceVariables{
-    TJBChainTemplate *chainTemplate = self.chainTemplate;
     
-    NSNumber *numberOfExercises = [NSNumber numberWithUnsignedLong: [chainTemplate.exercises count]];
-    self.numberOfExercises = numberOfExercises;
+    self.numberOfExercises = [NSNumber numberWithInt: self.chainTemplate.numberOfExercises];
+    self.numberOfRounds = [NSNumber numberWithInt: self.chainTemplate.numberOfRounds];
     
-    NSNumber *numberOfRounds;
-    
-    if (chainTemplate.targetingWeight == YES){
-        TJBWeightArray *weightArray = chainTemplate.weightArrays[0];
-        numberOfRounds = [NSNumber numberWithUnsignedLong: [weightArray.numbers count]];
-    } else if (chainTemplate.targetingReps == YES){
-        TJBRepsArray *repsArray = chainTemplate.repsArrays[0];
-        numberOfRounds = [NSNumber numberWithUnsignedLong: [repsArray.numbers count]];
-    } else if (chainTemplate.targetingRestTime == YES){
-        TJBTargetRestTimeArray *restArray = chainTemplate.targetRestTimeArrays[0];
-        numberOfRounds = [NSNumber numberWithUnsignedLong: [restArray.numbers count]];
-    }
-
-    self.numberOfRounds = numberOfRounds;
 }
 
 #pragma mark - Button Actions
@@ -437,14 +430,7 @@ static NSString * const defaultValue = @"default value";
             
             NSDate *date = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
             
-            if ([self.circuitTemplateGenerator doesNotSupportUserInputAndIsPopulatingValuesDuringWorkout] == YES){
-                [self.circuitTemplateGenerator userDidSelectNumber: 0
-                                                    withNumberType: RestType
-                                                  forExerciseIndex: exerciseIndex
-                                                     forRoundIndex: roundIndex
-                                                              date: date
-                                                       setDateType: SetBeginDate];
-            }
+ 
         };
         
         [self presentNumberSelectionSceneWithNumberType: RestType

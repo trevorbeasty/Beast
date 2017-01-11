@@ -11,10 +11,10 @@
 #import "TJBCircuitTemplateUserInputDelegate.h"
 
 @class TJBChainTemplate;
-@class TJBCircuitTemplateGeneratorVC;
+@class TJBRealizedChain;
 
 @interface TJBActiveCircuitGuidance : UIViewController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate circuitTemplateGenerator:(TJBCircuitTemplateGeneratorVC<TJBCircuitTemplateUserInputDelegate> *)circuitTemplateGenerator;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainSkeletonFromChainTemplate:(TJBRealizedChain *)realizedChainSkeleton;
 
 @end

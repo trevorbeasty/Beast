@@ -65,6 +65,10 @@ typedef enum{
 
 - (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain;
 
+// chains
+
+- (TJBRealizedChain *)createAndSaveSkeletonRealizedChainForChainTemplate:(TJBChainTemplate *)chainTemplate;
+
 
 
 @end
