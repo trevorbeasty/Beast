@@ -154,16 +154,7 @@
     // I have included an error term for now
     CGFloat error = 16;
     
-    BOOL targetsVaryByRound = [self.targetsVaryByRound boolValue] == YES;
-    
-    if (targetsVaryByRound){
-        
-        componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
-        
-    } else{
-        
-        componentHeight = rowHeight * 3 + componentStyleSpacing;
-    }
+    componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
     
     int numberOfComponents = [self.numberOfExercises intValue];
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + error;
