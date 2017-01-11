@@ -12,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitActiveUpdatingExerciseComp">
             <connections>
                 <outlet property="repsColumnLabel" destination="C9J-Pg-jtd" id="hW4-IO-Ofb"/>
-                <outlet property="restColumnLabel" destination="vxF-lP-Dda" id="Dkr-qD-1e7"/>
+                <outlet property="restColumnLabel" destination="vxF-lP-Dda" id="1JC-LX-R01"/>
                 <outlet property="roundColumnLabel" destination="Uyc-vh-9yC" id="tu8-BG-5bn"/>
                 <outlet property="selectedExerciseButton" destination="ysw-JO-hHj" id="2Uy-Dg-c0k"/>
                 <outlet property="setLengthColumnLabel" destination="Le0-Fe-U2b" id="9b6-mM-cuK"/>

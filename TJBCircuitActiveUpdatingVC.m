@@ -163,7 +163,8 @@
                                                                                                           setBeginDates: self.realizedChain.setBegindateArrays[i].dates
                                                                                                             setEndDates: self.realizedChain.setEndDateArrays[i].dates
                                                                                                  maxExerciseIndexToFill: [NSNumber numberWithInt: self.realizedChain.firstIncompleteExerciseIndex - 1]
-                                                                                                    maxRoundIndexToFill: [NSNumber numberWithInt: self.realizedChain.firstIncompleteRoundIndex - 1]];
+                                                                                                    maxRoundIndexToFill: [NSNumber numberWithInt: self.realizedChain.firstIncompleteRoundIndex - 1]
+                                                                                                      numberOfExercises: self.numberOfExercises];
         
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
