@@ -18,6 +18,8 @@
 
 #import "TJBAestheticsController.h"
 
+#import "TJBCircuitReferenceContainerVC.h"
+
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
@@ -147,11 +149,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: chainTemplate];
+    TJBCircuitReferenceContainerVC *vc = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
     
-    [self presentViewController: tbc
+    [self presentViewController: vc
                        animated: YES
                      completion: nil];
+    
+//    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: chainTemplate];
+//    
+//    [self presentViewController: tbc
+//                       animated: YES
+//                     completion: nil];
 }
 
 #pragma mark - Button Actions

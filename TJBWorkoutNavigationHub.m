@@ -21,7 +21,9 @@
 
 //#import "TJBCircuitTemplateContainerVC.h"
 
-#import "TJBCircuitTemplateVC.h"
+//#import "TJBCircuitTemplateVC.h"
+
+#import "TJBCircuitReferenceVC.h"
 
 
 
@@ -91,21 +93,6 @@
 
 - (IBAction)didPressTest:(id)sender{
     
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    
-    TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithTargetingWeight: [NSNumber numberWithBool: YES]
-                                                                       targetingReps: [NSNumber numberWithBool: YES]
-                                                                       targetingRest: [NSNumber numberWithBool: YES]
-                                                                  targetsVaryByRound: [NSNumber numberWithBool: YES]
-                                                                   numberOfExercises: [NSNumber numberWithInt: 6]
-                                                                      numberOfRounds: [NSNumber numberWithInt: 5]
-                                                                                name: @"test template"
-                                                                          viewHeight: [NSNumber numberWithFloat: size.height]
-                                                                           viewWidth: [NSNumber numberWithFloat: size.width]];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
 }
 
 
