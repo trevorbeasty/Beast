@@ -161,6 +161,30 @@
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
         
+        // only attempt to pass data if the value is being targeted, otherwise pass nil
+        
+        NSOrderedSet <TJBNumberTypeArrayComp *> *weight;
+        NSOrderedSet <TJBNumberTypeArrayComp *> *reps;
+        NSOrderedSet <TJBNumberTypeArrayComp *> *rest;
+        
+        if ([self.targetingWeight boolValue] == YES){
+            weight = self.chainTemplate.weightArrays[i].numbers;
+        } else{
+            weight = nil;
+        }
+        
+        if ([self.targetingReps boolValue] == YES){
+            reps = self.chainTemplate.repsArrays[i].numbers;
+        } else{
+            reps = nil;
+        }
+        
+        if ([self.targetingRest boolValue] == YES){
+            rest = self.chainTemplate.targetRestTimeArrays[i].numbers;
+        } else{
+            rest = nil;
+        }
+        
         TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithNumberOfRounds: self.numberOfRounds
                                                                                               targetingWeight: self.targetingWeight
                                                                                                 targetingReps: self.targetingReps
@@ -168,9 +192,9 @@
                                                                                            targetsVaryByRound: self.targetsVaryByRound
                                                                                                   chainNumber: [NSNumber numberWithInt: i + 1]
                                                                                                      exercise: self.chainTemplate.exercises[i]
-                                                                                                   weightData: self.chainTemplate.weightArrays[i].numbers
-                                                                                                     repsData: self.chainTemplate.repsArrays[i].numbers
-                                                                                                     restData: self.chainTemplate.targetRestTimeArrays[i].numbers];
+                                                                                                   weightData: weight
+                                                                                                     repsData: reps
+                                                                                                     restData: rest];
         
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;

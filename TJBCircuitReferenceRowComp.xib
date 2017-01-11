@@ -1,20 +1,69 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitReferenceRowComp">
             <connections>
-                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="repsButton" destination="6c2-Z5-obk" id="Fo3-PU-UrO"/>
+                <outlet property="restButton" destination="nYM-ew-RaA" id="sAI-OZ-jqJ"/>
+                <outlet property="roundLabel" destination="6kq-NJ-AtE" id="E2K-hk-FGI"/>
+                <outlet property="view" destination="Iof-JU-U3y" id="VnF-nH-fP6"/>
+                <outlet property="weightButton" destination="bui-wy-BVI" id="kDt-Wx-1IM"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Iof-JU-U3y">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bui-wy-BVI">
+                    <rect key="frame" x="94" y="2" width="91.5" height="49"/>
+                    <state key="normal" title="Weight"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6c2-Z5-obk">
+                    <rect key="frame" x="187.5" y="2" width="91.5" height="49"/>
+                    <state key="normal" title="Reps"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYM-ew-RaA">
+                    <rect key="frame" x="281" y="2" width="92" height="49"/>
+                    <state key="normal" title="Rest"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kq-NJ-AtE">
+                    <rect key="frame" x="0.0" y="0.0" width="92" height="53"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="bui-wy-BVI" firstAttribute="top" secondItem="Iof-JU-U3y" secondAttribute="top" constant="2" id="0YZ-HT-5ZS"/>
+                <constraint firstItem="6c2-Z5-obk" firstAttribute="top" secondItem="Iof-JU-U3y" secondAttribute="top" constant="2" id="4zU-h5-d4G"/>
+                <constraint firstAttribute="bottom" secondItem="bui-wy-BVI" secondAttribute="bottom" constant="2" id="BI1-bY-4OU"/>
+                <constraint firstItem="nYM-ew-RaA" firstAttribute="leading" secondItem="6c2-Z5-obk" secondAttribute="trailing" constant="2" id="CDm-8U-7Zn"/>
+                <constraint firstAttribute="bottom" secondItem="6c2-Z5-obk" secondAttribute="bottom" constant="2" id="HRo-GA-044"/>
+                <constraint firstItem="nYM-ew-RaA" firstAttribute="width" secondItem="6kq-NJ-AtE" secondAttribute="width" id="JSn-5v-INl"/>
+                <constraint firstAttribute="bottom" secondItem="nYM-ew-RaA" secondAttribute="bottom" constant="2" id="KWo-mw-D0N"/>
+                <constraint firstAttribute="bottom" secondItem="6kq-NJ-AtE" secondAttribute="bottom" id="MLj-Pm-N4B"/>
+                <constraint firstItem="bui-wy-BVI" firstAttribute="leading" secondItem="6kq-NJ-AtE" secondAttribute="trailing" constant="2" id="OjQ-QU-xMu"/>
+                <constraint firstAttribute="trailing" secondItem="nYM-ew-RaA" secondAttribute="trailing" constant="2" id="Qt7-RO-URV"/>
+                <constraint firstItem="bui-wy-BVI" firstAttribute="width" secondItem="6kq-NJ-AtE" secondAttribute="width" id="TTX-JI-rpf"/>
+                <constraint firstItem="6c2-Z5-obk" firstAttribute="leading" secondItem="bui-wy-BVI" secondAttribute="trailing" constant="2" id="XRU-CK-zb8"/>
+                <constraint firstItem="6c2-Z5-obk" firstAttribute="width" secondItem="6kq-NJ-AtE" secondAttribute="width" id="ftw-nN-4ec"/>
+                <constraint firstItem="6kq-NJ-AtE" firstAttribute="top" secondItem="Iof-JU-U3y" secondAttribute="top" id="maW-v3-UV9"/>
+                <constraint firstItem="nYM-ew-RaA" firstAttribute="top" secondItem="Iof-JU-U3y" secondAttribute="top" constant="2" id="oKq-dE-F9F"/>
+                <constraint firstItem="6kq-NJ-AtE" firstAttribute="leading" secondItem="Iof-JU-U3y" secondAttribute="leading" id="qqu-fH-0p5"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="34.5" y="-252.5"/>
         </view>
     </objects>
 </document>
