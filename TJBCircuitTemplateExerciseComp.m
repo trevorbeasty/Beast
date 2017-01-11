@@ -39,6 +39,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
+
+
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @end
