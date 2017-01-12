@@ -115,16 +115,16 @@ static NSString * const defaultValue = @"default value";
     
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    
-    if (self.restorationBlock){
-        
-        self.restorationBlock();
-        self.restorationBlock = nil;
-        
-    }
-    
-}
+//- (void)viewDidAppear:(BOOL)animated{
+//    
+//    if (self.restorationBlock){
+//        
+//        self.restorationBlock();
+//        self.restorationBlock = nil;
+//        
+//    }
+//    
+//}
 
 - (void)addBackgroundImage{
     
@@ -237,6 +237,8 @@ static NSString * const defaultValue = @"default value";
     self.chainTemplate = chainTemplate;
     self.realizedChain = realizedChainSkeleton;
     
+    // other methods
+    
     [self setDerivedInstanceVariables];
     
     [self setRestorationProperties];
@@ -246,129 +248,129 @@ static NSString * const defaultValue = @"default value";
     return self;
 }
 
-- (void)createSkeletonForRealizedChainObject{
-    // create managed object
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    TJBRealizedChain *realizedChain = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedChain"
-                                                                    inManagedObjectContext: moc];
-    self.realizedChain = realizedChain;
-    
-    // fill managed object with default values for weight, reps, dates
-    // exercises are known
-    // post-mortem is known
-    
-    realizedChain.uniqueID = [[NSUUID UUID] UUIDString];
-    realizedChain.dateCreated = [NSDate date];
-    realizedChain.postMortem = NO;
-    realizedChain.isIncomplete = YES;
-    realizedChain.firstIncompleteRoundIndex = 0;
-    realizedChain.firstIncompleteExerciseIndex = 0;
-    realizedChain.chainTemplate = self.chainTemplate;
-    realizedChain.exercises = self.chainTemplate.exercises;
-    
-    int exerciseLimit = [self.numberOfExercises intValue];
-    int roundLimit = [self.numberOfRounds intValue];
-    
-    // weight
-    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
-    realizedChain.weightArrays = weightArrays;
-    
-    // reps
-    NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
-    realizedChain.repsArrays = repsArrays;
-    
-    // 'set' begin and end dates
-    
-    NSMutableOrderedSet *setBeginDateArrays = [[NSMutableOrderedSet alloc] init];
-    realizedChain.setBegindateArrays = setBeginDateArrays;
-    
-    NSMutableOrderedSet *setEndDateArrays = [[NSMutableOrderedSet alloc] init];
-    realizedChain.setEndDateArrays = setEndDateArrays;
-    
-    for (int i = 0; i < exerciseLimit; i++){
-        
-        // weight
-        
-        TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
-                                                                    inManagedObjectContext: moc];
-        weightArray.chain = realizedChain;
-        
-        [weightArrays addObject: weightArray];
-        NSMutableOrderedSet *weightArrayNumbers = [[NSMutableOrderedSet alloc] init];
-        weightArray.numbers = weightArrayNumbers;
-        
-        // reps
-        
-        TJBRepsArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
-                                                                inManagedObjectContext: moc];
-        repsArray.chain = realizedChain;
-        
-        [repsArrays addObject: repsArray];
-        NSMutableOrderedSet *repsArrayNumbers = [[NSMutableOrderedSet alloc] init];
-        repsArray.numbers = repsArrayNumbers;
-        
-        // set begin dates
-        
-        SetBeginDateArray *setBeginDateArray = [NSEntityDescription insertNewObjectForEntityForName: @"SetBeginDateArray"
-                                                                inManagedObjectContext: moc];
-        setBeginDateArray.realizedChain = realizedChain;
-        
-        [setBeginDateArrays addObject: setBeginDateArray];
-        NSMutableOrderedSet *setBeginDateArrayDates = [[NSMutableOrderedSet alloc] init];
-        setBeginDateArray.dates = setBeginDateArrayDates;
-        
-        // set end dates
-        
-        SetEndDateArray *setEndDateArray = [NSEntityDescription insertNewObjectForEntityForName: @"SetEndDateArray"
-                                                                         inManagedObjectContext: moc];
-        setEndDateArray.realizedChain = realizedChain;
-        
-        [setEndDateArrays addObject: setEndDateArray];
-        NSMutableOrderedSet *setEndDateArrayDates = [[NSMutableOrderedSet alloc] init];
-        setEndDateArray.dates = setEndDateArrayDates;
-
-        for (int j = 0; j < roundLimit; j++){
-            
-            // weight
-            
-            TJBNumberTypeArrayComp *weightNumberTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-                                                                                                   inManagedObjectContext: moc];
-            [weightArrayNumbers addObject: weightNumberTypeArrayComponent];
-            weightNumberTypeArrayComponent.isDefaultObject = YES;
-            weightNumberTypeArrayComponent.owningArray = weightArray;
-            
-            // reps
-            
-            TJBNumberTypeArrayComp *repsNumberTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-                                                                                                 inManagedObjectContext: moc];
-            [repsArrayNumbers addObject: repsNumberTypeArrayComponent];
-            repsNumberTypeArrayComponent.isDefaultObject = YES;
-            repsNumberTypeArrayComponent.owningArray = repsArray;
-            
-            // set begin dates
-            
-            TJBBeginDateComp *beginDateComp = [NSEntityDescription insertNewObjectForEntityForName: @"BeginDateComp"
-                                                                                         inManagedObjectContext: moc];
-            
-            [setBeginDateArrayDates addObject: beginDateComp];
-            
-            beginDateComp.isDefaultObject = YES;
-            beginDateComp.owningArray = setBeginDateArray;
-            
-            // set end dates
-            
-            TJBEndDateComp *endDateComp = [NSEntityDescription insertNewObjectForEntityForName: @"EndDateComp"
-                                                                        inManagedObjectContext: moc];
-            
-            [setEndDateArrayDates addObject: beginDateComp];
-            
-            endDateComp.isDefaultObject = YES;
-            endDateComp.owningArray = setEndDateArray;
-        }
-    }
-    
-    [[CoreDataController singleton] saveContext];
-}
+//- (void)createSkeletonForRealizedChainObject{
+//    // create managed object
+//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+//    TJBRealizedChain *realizedChain = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedChain"
+//                                                                    inManagedObjectContext: moc];
+//    self.realizedChain = realizedChain;
+//    
+//    // fill managed object with default values for weight, reps, dates
+//    // exercises are known
+//    // post-mortem is known
+//    
+//    realizedChain.uniqueID = [[NSUUID UUID] UUIDString];
+//    realizedChain.dateCreated = [NSDate date];
+//    realizedChain.postMortem = NO;
+//    realizedChain.isIncomplete = YES;
+//    realizedChain.firstIncompleteRoundIndex = 0;
+//    realizedChain.firstIncompleteExerciseIndex = 0;
+//    realizedChain.chainTemplate = self.chainTemplate;
+//    realizedChain.exercises = self.chainTemplate.exercises;
+//    
+//    int exerciseLimit = [self.numberOfExercises intValue];
+//    int roundLimit = [self.numberOfRounds intValue];
+//    
+//    // weight
+//    NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
+//    realizedChain.weightArrays = weightArrays;
+//    
+//    // reps
+//    NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
+//    realizedChain.repsArrays = repsArrays;
+//    
+//    // 'set' begin and end dates
+//    
+//    NSMutableOrderedSet *setBeginDateArrays = [[NSMutableOrderedSet alloc] init];
+//    realizedChain.setBegindateArrays = setBeginDateArrays;
+//    
+//    NSMutableOrderedSet *setEndDateArrays = [[NSMutableOrderedSet alloc] init];
+//    realizedChain.setEndDateArrays = setEndDateArrays;
+//    
+//    for (int i = 0; i < exerciseLimit; i++){
+//        
+//        // weight
+//        
+//        TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+//                                                                    inManagedObjectContext: moc];
+//        weightArray.chain = realizedChain;
+//        
+//        [weightArrays addObject: weightArray];
+//        NSMutableOrderedSet *weightArrayNumbers = [[NSMutableOrderedSet alloc] init];
+//        weightArray.numbers = weightArrayNumbers;
+//        
+//        // reps
+//        
+//        TJBRepsArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
+//                                                                inManagedObjectContext: moc];
+//        repsArray.chain = realizedChain;
+//        
+//        [repsArrays addObject: repsArray];
+//        NSMutableOrderedSet *repsArrayNumbers = [[NSMutableOrderedSet alloc] init];
+//        repsArray.numbers = repsArrayNumbers;
+//        
+//        // set begin dates
+//        
+//        SetBeginDateArray *setBeginDateArray = [NSEntityDescription insertNewObjectForEntityForName: @"SetBeginDateArray"
+//                                                                inManagedObjectContext: moc];
+//        setBeginDateArray.realizedChain = realizedChain;
+//        
+//        [setBeginDateArrays addObject: setBeginDateArray];
+//        NSMutableOrderedSet *setBeginDateArrayDates = [[NSMutableOrderedSet alloc] init];
+//        setBeginDateArray.dates = setBeginDateArrayDates;
+//        
+//        // set end dates
+//        
+//        SetEndDateArray *setEndDateArray = [NSEntityDescription insertNewObjectForEntityForName: @"SetEndDateArray"
+//                                                                         inManagedObjectContext: moc];
+//        setEndDateArray.realizedChain = realizedChain;
+//        
+//        [setEndDateArrays addObject: setEndDateArray];
+//        NSMutableOrderedSet *setEndDateArrayDates = [[NSMutableOrderedSet alloc] init];
+//        setEndDateArray.dates = setEndDateArrayDates;
+//
+//        for (int j = 0; j < roundLimit; j++){
+//            
+//            // weight
+//            
+//            TJBNumberTypeArrayComp *weightNumberTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+//                                                                                                   inManagedObjectContext: moc];
+//            [weightArrayNumbers addObject: weightNumberTypeArrayComponent];
+//            weightNumberTypeArrayComponent.isDefaultObject = YES;
+//            weightNumberTypeArrayComponent.owningArray = weightArray;
+//            
+//            // reps
+//            
+//            TJBNumberTypeArrayComp *repsNumberTypeArrayComponent = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+//                                                                                                 inManagedObjectContext: moc];
+//            [repsArrayNumbers addObject: repsNumberTypeArrayComponent];
+//            repsNumberTypeArrayComponent.isDefaultObject = YES;
+//            repsNumberTypeArrayComponent.owningArray = repsArray;
+//            
+//            // set begin dates
+//            
+//            TJBBeginDateComp *beginDateComp = [NSEntityDescription insertNewObjectForEntityForName: @"BeginDateComp"
+//                                                                                         inManagedObjectContext: moc];
+//            
+//            [setBeginDateArrayDates addObject: beginDateComp];
+//            
+//            beginDateComp.isDefaultObject = YES;
+//            beginDateComp.owningArray = setBeginDateArray;
+//            
+//            // set end dates
+//            
+//            TJBEndDateComp *endDateComp = [NSEntityDescription insertNewObjectForEntityForName: @"EndDateComp"
+//                                                                        inManagedObjectContext: moc];
+//            
+//            [setEndDateArrayDates addObject: beginDateComp];
+//            
+//            endDateComp.isDefaultObject = YES;
+//            endDateComp.owningArray = setEndDateArray;
+//        }
+//    }
+//    
+//    [[CoreDataController singleton] saveContext];
+//}
 
 - (void)initializeActiveInstanceVariables{
     self.activeRoundIndex = [NSNumber numberWithInt: 0];

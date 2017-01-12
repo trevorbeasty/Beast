@@ -196,9 +196,9 @@
                                                                                           targetingRest: self.targetingRest
                                                                                      targetsVaryByRound: self.targetsVaryByRound
                                                                                             roundNumber: [NSNumber numberWithInt: i + 1]
-                                                                                             weightData: [NSNumber numberWithInt: self.weightData[i].value]
-                                                                                               repsData: [NSNumber numberWithInt: self.repsData[i].value]
-                                                                                               restData: [NSNumber numberWithInt: self.restData[i].value]];
+                                                                                             weightData: [NSNumber numberWithFloat: self.weightData[i].value]
+                                                                                               repsData: [NSNumber numberWithFloat: self.repsData[i].value]
+                                                                                               restData: [NSNumber numberWithFloat: self.restData[i].value]];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
