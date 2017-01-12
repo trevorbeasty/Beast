@@ -362,9 +362,93 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
 
 //// chain template
 
+- (void)cloneFirstNumberForAllTargetedCategories:(TJBChainTemplate *)chainTemplate{
+    
+    //// this method is intended to be used on chain templates for which targets do not vary by round.  If the category is being targeted, this method clones the single selected value and applies it to all rounds
+    
+    int numberOfRounds = chainTemplate.numberOfRounds;
+    
+    // weight
+    
+    BOOL weightIsTargeted = chainTemplate.targetingWeight;
+    
+    NSOrderedSet <TJBWeightArray *> *weightArrays = chainTemplate.weightArrays;
+    
+    if (weightIsTargeted){
+        
+        for (TJBWeightArray *weightArray in weightArrays){
+            
+            float userSelectedValue = weightArray.numbers[0].value;
+            
+            for (int i = 1; i < numberOfRounds; i++){
+                
+                TJBNumberTypeArrayComp *arrayComp = weightArray.numbers[i];
+                arrayComp.isDefaultObject = NO;
+                arrayComp.value = userSelectedValue;
+                
+            }
+        }
+    }
+    
+    // reps
+    
+    BOOL repsIsTargeted = chainTemplate.targetingReps;
+    
+    NSOrderedSet <TJBRepsArray *> *repsArrays = chainTemplate.repsArrays;
+    
+    if (repsIsTargeted){
+        
+        for (TJBRepsArray *repsArray in repsArrays){
+            
+            float userSelectedValue = repsArray.numbers[0].value;
+            
+            for (int i = 1; i < numberOfRounds; i++){
+                
+                TJBNumberTypeArrayComp *arrayComp = repsArray.numbers[i];
+                arrayComp.isDefaultObject = NO;
+                arrayComp.value = userSelectedValue;
+                
+            }
+        }
+    }
+    
+    // rest
+    
+    BOOL restIsTargeted = chainTemplate.targetingRestTime;
+    
+    NSOrderedSet <TJBTargetRestTimeArray *> *restArrays = chainTemplate.targetRestTimeArrays;
+    
+    if (restIsTargeted){
+        
+        for (TJBTargetRestTimeArray *restArray in restArrays){
+            
+            float userSelectedValue = restArray.numbers[0].value;
+            
+            for (int i = 1; i < numberOfRounds; i++){
+                
+                TJBNumberTypeArrayComp *arrayComp = restArray.numbers[i];
+                arrayComp.isDefaultObject = NO;
+                arrayComp.value = userSelectedValue;
+                
+            }
+        }
+    }
+}
+
+
 - (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate{
     
     //// checks all required categories for default values and returns NO if it finds any.  If a category is not being targeted, do not check it, and vice versa.  Always check exercises
+    
+    // first, check if targets vary by round.  If they do, clone the single user input value for targeted categories
+    
+    BOOL targetsVaryByRound = chainTemplate.targetsVaryByRound;
+    
+    if (!targetsVaryByRound){
+        
+        [self cloneFirstNumberForAllTargetedCategories: chainTemplate];
+        
+    }
     
     // this is reaused throughout
     
@@ -445,8 +529,6 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     // exercises
     
     NSOrderedSet *exercises = chainTemplate.exercises;
-    
-    NSLog(@"exercises in chain template: %@", exercises);
 
     for (TJBExercise *exercise in exercises){
         
