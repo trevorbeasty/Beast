@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="BeginDateComp" representedClassName="TJBBeginDateComp" syncable="YES" codeGenerationType="class">
         <attribute name="isDefaultObject" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -10,7 +10,7 @@
         <attribute name="numberOfExercises" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="numberOfRounds" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <relationship name="exercises" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chains" inverseEntity="Exercise" syncable="YES"/>
+        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chains" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="repsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsArray" inverseName="chain" inverseEntity="RepsArray" syncable="YES"/>
         <relationship name="weightArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WeightArray" inverseName="chain" inverseEntity="WeightArray" syncable="YES"/>
     </entity>

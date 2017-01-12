@@ -36,6 +36,7 @@
 
 
 extern NSString * const ExerciseDataChanged;
+extern NSString * const placeholderExerciseName;
 
 typedef enum{
     ChainTemplateType,

@@ -23,8 +23,8 @@
 
 - (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
-- (BOOL)allUserSelectionsMade;
-
-- (TJBChainTemplate *)createAndSaveChainTemplate;
+//- (BOOL)allUserSelectionsMade;
+//
+//- (TJBChainTemplate *)createAndSaveChainTemplate;
 
 @end
