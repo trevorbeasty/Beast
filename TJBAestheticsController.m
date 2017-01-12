@@ -39,6 +39,7 @@
 #pragma mark - Images
 
 - (void)addFullScreenBackgroundViewWithImage:(UIImage *)image toRootView:(UIView *)rootView imageOpacity:(double)opacity{
+    
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     UIImage *resizedImage = [self imageWithImage: image
                                     scaledToSize: screenSize];

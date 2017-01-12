@@ -10,9 +10,11 @@
 
 #import "TJBCircuitDesignVC.h"
 
-//#import "TJBCircuitTemplateGeneratorVC.h"
-//#import "TJBCircuitTemplateVC.h"
+// circuit template
+
 #import "TJBCircuitTemplateContainerVC.h"
+
+// aesthetics
 
 #import "TJBAestheticsController.h"
 
@@ -79,19 +81,26 @@
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
     [self configureViewDataAndFunctionality];
+    
     [self configureNavigationBar];
+    
     [self viewAesthetics];
+    
     [self addBackgroundImage];
+    
 }
 
 - (void)addBackgroundImage{
+    
     [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
                                                                    toRootView: self.view
                                                                  imageOpacity: .35];
 }
 
 - (void)configureViewDataAndFunctionality{
+    
     if ([self.wasRestored boolValue] == NO){
         _numberOfExercises = 1.0;
         _numberOfRounds = 1.0;
@@ -109,6 +118,7 @@
 }
 
 - (void)configureNavigationBar{
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Design"];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
@@ -173,10 +183,13 @@
 #pragma mark - Button Actions
 
 - (IBAction)didPressLaunchTemplate:(id)sender{
+    
     if ([self.nameTextField.text isEqualToString: @""]){
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Title"
                                                                        message: @"Please enter a title before proceeding"
                                                                 preferredStyle: UIAlertControllerStyleAlert];
+        
         UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
                                                          style: UIAlertActionStyleDefault
                                                        handler: nil];
@@ -201,6 +214,8 @@
                                                                                          numberOfExercises: numberOfExercises
                                                                                             numberOfRounds: numberOfRounds
                                                                                                       name: self.nameTextField.text];
+        
+        
         
         [self presentViewController: vc
                            animated: YES

@@ -14,6 +14,14 @@
 
 #import "TJBChainTemplate+CoreDataProperties.h"
 
+// active guidance tbc
+
+#import "TJBCircuitModeTBC.h"
+
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBCircuitTemplateContainerVC ()
 
 // IBOutlet
@@ -71,7 +79,16 @@
     [self configureContainerView];
     
     [self configureNavigationBar];
+    
+    [self addBackgroundView];
 
+}
+
+- (void)addBackgroundView{
+    
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .35];
 }
 
 - (void)configureContainerView{
@@ -187,7 +204,12 @@
         
         void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
             
-            NSLog(@"present the circuit mode active tab bar controller");
+            TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: savedChainTemplate];
+            
+            [self presentViewController: tbc
+                               animated: YES
+                             completion: nil];
+            
         };
         
         UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"

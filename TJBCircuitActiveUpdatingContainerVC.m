@@ -16,11 +16,16 @@
 
 #import "TJBRealizedChain+CoreDataProperties.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBCircuitActiveUpdatingContainerVC ()
 
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+
 
 // IBOutlet
 
@@ -64,10 +69,18 @@
     
     [self.circuitView addSubview: vc.view];
     
+    [self addBackgroundImage];
+    
     [vc didMoveToParentViewController: self];
 }
 
-
+- (void)addBackgroundImage{
+    
+    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"FinlandBackSquat"]
+                                                                   toRootView: self.view
+                                                                 imageOpacity: .45];
+    
+}
 
 @end
 

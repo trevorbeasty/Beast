@@ -92,7 +92,7 @@
     float viewWidth = [self.viewWidth floatValue];
     float viewHeight = [self.viewHeight floatValue];
     UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
-    view.backgroundColor = [UIColor redColor];
+    view.backgroundColor = [UIColor clearColor];
     self.view = view;
     
 }
@@ -121,14 +121,15 @@
     CGFloat componentToComponentSpacing = 16;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
-    // there is something wrong with my math in calculating contentSize.height
-    // I have included an error term for now
-    CGFloat error = 0;
+
+    // the extra height allows the user to drag the bottom-most exercise further up on the screen
+    
+    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 2.0;
     
     componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
     
     int numberOfComponents = [self.numberOfExercises intValue];
-    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + error;
+    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
     scrollView.contentSize = CGSizeMake([self.viewWidth floatValue], scrollContentHeight);
     [self.view addSubview: scrollView];

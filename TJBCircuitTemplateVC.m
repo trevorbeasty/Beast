@@ -98,7 +98,7 @@ static NSString * const defaultValue = @"unselected";
     float viewWidth = [self.viewWidth floatValue];
     float viewHeight = [self.viewHeight floatValue];
     UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
-    view.backgroundColor = [UIColor whiteColor];
+    view.backgroundColor = [UIColor clearColor];
     self.view = view;
     
 }
@@ -109,19 +109,10 @@ static NSString * const defaultValue = @"unselected";
     
     [self createSkeletonArrayForChildRowControllers];
     
-//    [self addBackgroundView];
-    
     [self createChildViewControllersAndLayoutViews];
 }
 
-- (void)addBackgroundView{
-    
-    // will need to change TJBAestheticsController to account for varying view heights
-    
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
-                                                                       toRootView: self.view
-                                                                     imageOpacity: .35];
-}
+
 
 - (void)createSkeletonArrayForChildRowControllers{
     
@@ -185,9 +176,10 @@ static NSString * const defaultValue = @"unselected";
     CGFloat componentToComponentSpacing = 16;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
-    // there is something wrong with my math in calculating contentSize.height
-    // I have included an error term for now
-    CGFloat error = 16;
+    
+    // the extra height allows the user to drag the bottom-most exercise further up on the screen
+    
+    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 2.0;
     
     BOOL targetsVaryByRound = [self.targetsVaryByRound boolValue] == YES;
     
@@ -201,7 +193,7 @@ static NSString * const defaultValue = @"unselected";
     }
     
     int numberOfComponents = [self.numberOfExercises intValue];
-    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + error;
+    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
     scrollView.contentSize = CGSizeMake([self.viewWidth floatValue], scrollContentHeight);
     [self.view addSubview: scrollView];
