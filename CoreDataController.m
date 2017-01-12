@@ -261,6 +261,8 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     NSOrderedSet *weightArrays = chain.weightArrays;
     NSOrderedSet *repsArrays = chain.repsArrays;
     
+    // exercises continue to exist in their own right
+    
     // weight arrays
     
     for (TJBWeightArray *array in weightArrays){
@@ -287,6 +289,28 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
         }
         
         [_moc deleteObject: array];
+    }
+    
+    //// chain template specific deletions
+    // need to delete target rest time arrays
+    
+    if (chainType == ChainTemplateType){
+        
+        TJBChainTemplate *chainTemplate = (TJBChainTemplate *)chain;
+        
+        NSOrderedSet *restTimeArrays = chainTemplate.targetRestTimeArrays;
+        
+        for (TJBTargetRestTimeArray *array in restTimeArrays){
+            
+            NSOrderedSet *arrayComps = array.numbers;
+            
+            for (TJBNumberTypeArrayComp *comp in arrayComps){
+                
+                [_moc deleteObject: comp];
+            }
+            
+            [_moc deleteObject: array];
+        }
     }
     
     
