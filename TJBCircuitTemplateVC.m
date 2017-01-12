@@ -23,6 +23,10 @@
 
 @interface TJBCircuitTemplateVC ()
 
+// core data
+
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+
 // core
 
 @property (nonatomic, strong) NSNumber *targetingWeight;
@@ -58,7 +62,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth{
+- (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth{
     
     // call to super
     
@@ -66,13 +70,13 @@ static NSString * const defaultValue = @"unselected";
     
     // core
     
-    self.targetingWeight = targetingWeight;
-    self.targetingReps = targetingReps;
-    self.targetingRest = targetingRest;
-    self.targetsVaryByRound = targetsVaryByRound;
-    self.numberOfExercises = numberOfExercises;
-    self.numberOfRounds = numberOfRounds;
-    self.name = name;
+    self.targetingWeight = [NSNumber numberWithBool: skeletonChainTemplate.targetingWeight];
+    self.targetingReps = [NSNumber numberWithBool: skeletonChainTemplate.targetingReps];
+    self.targetingRest = [NSNumber numberWithBool: skeletonChainTemplate.targetingRestTime];
+    self.targetsVaryByRound = [NSNumber numberWithBool: skeletonChainTemplate.targetsVaryByRound];
+    self.numberOfExercises = [NSNumber numberWithInt: skeletonChainTemplate.numberOfExercises];
+    self.numberOfRounds = [NSNumber numberWithInt: skeletonChainTemplate.numberOfRounds];
+    self.name = skeletonChainTemplate.name;
     self.viewHeight = viewHeight;
     self.viewWidth = viewWidth;
     
@@ -105,7 +109,7 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)viewDidLoad{
 
-    [self createSkeletonChainTemplate];
+//    [self createSkeletonChainTemplate];
     
     [self createSkeletonArrayForChildRowControllers];
     
@@ -127,37 +131,37 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (void)createSkeletonChainTemplate{
-    
-    self.weightData = [self createSkeletonDataStructure];
-    self.repsData = [self createSkeletonDataStructure];
-    self.restData = [self createSkeletonDataStructure];
-    
-    NSMutableArray *exerciseData = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < [self.numberOfExercises intValue]; i++){
-        
-        [exerciseData addObject: defaultValue];
-    }
-    
-    self.exerciseData = exerciseData;
-}
-
-- (NSMutableArray *)createSkeletonDataStructure{
-    
-    NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < [self.numberOfExercises intValue]; i++){
-        
-        NSMutableArray *subArray = [[NSMutableArray alloc] init];
-        [arrayToReturn addObject: subArray];
-        
-        for (int j = 0; j < [self.numberOfRounds intValue]; j++)
-            [subArray addObject: defaultValue];
-    }
-    
-    return arrayToReturn;
-}
+//- (void)createSkeletonChainTemplate{
+//    
+//    self.weightData = [self createSkeletonDataStructure];
+//    self.repsData = [self createSkeletonDataStructure];
+//    self.restData = [self createSkeletonDataStructure];
+//    
+//    NSMutableArray *exerciseData = [[NSMutableArray alloc] init];
+//    
+//    for (int i = 0; i < [self.numberOfExercises intValue]; i++){
+//        
+//        [exerciseData addObject: defaultValue];
+//    }
+//    
+//    self.exerciseData = exerciseData;
+//}
+//
+//- (NSMutableArray *)createSkeletonDataStructure{
+//    
+//    NSMutableArray *arrayToReturn = [[NSMutableArray alloc] init];
+//    
+//    for (int i = 0; i < [self.numberOfExercises intValue]; i++){
+//        
+//        NSMutableArray *subArray = [[NSMutableArray alloc] init];
+//        [arrayToReturn addObject: subArray];
+//        
+//        for (int j = 0; j < [self.numberOfRounds intValue]; j++)
+//            [subArray addObject: defaultValue];
+//    }
+//    
+//    return arrayToReturn;
+//}
 
 - (void)createChildViewControllersAndLayoutViews{
     
@@ -529,7 +533,7 @@ static NSString * const defaultValue = @"unselected";
     chainTemplate.numberOfExercises = [self.numberOfExercises intValue];
     chainTemplate.numberOfRounds = [self.numberOfRounds intValue];
     chainTemplate.dateCreated = [NSDate date];
-    chainTemplate.identifier = @"placeholder identifier";
+//    chainTemplate.identifier = @"placeholder identifier";
     chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
     chainTemplate.name = self.name;
     chainTemplate.targetingWeight = [self.targetingWeight intValue];

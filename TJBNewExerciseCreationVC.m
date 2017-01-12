@@ -136,17 +136,35 @@
 }
 
 - (void)addNewExerciseAndClearExerciseTextField{
+    
     CoreDataController *coreDataController = [CoreDataController singleton];
-    TJBExercise *newExercise = [coreDataController exerciseForName: self.exerciseTextField.text];
+    
+    NSString *newExerciseName = self.exerciseTextField.text;
+    NSNumber *wasNewlyCreated = nil;
+    TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
+                                                   wasNewlyCreated: &wasNewlyCreated];
+    
+    // stop the program here if the exercise already existed because it should not have made it this far to begin with if the object already existed
+    
+    BOOL exerciseAlreadyExisted = [wasNewlyCreated boolValue] == NO;
+    
+    if (exerciseAlreadyExisted){
+        
+        abort();
+        
+    }
+    
     newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
     
     // need to use notification center so all affected fetched results controllers can perform fetch and update table views
+    
     [[CoreDataController singleton] saveContext];
     
     [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
                                                         object: nil];
     
     self.exerciseTextField.text = @"";
+    
 }
 
 - (void)didPressDone{

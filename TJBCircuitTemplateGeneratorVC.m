@@ -483,7 +483,7 @@ static NSString * const defaultValue = @"unselected";
     // assign the chain template's attributes
     
     chainTemplate.dateCreated = [NSDate date];
-    chainTemplate.identifier = @"placeholder identifier";
+//    chainTemplate.identifier = @"placeholder identifier";
     chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
     chainTemplate.name = self.name;
     chainTemplate.targetingWeight = [self.targetingWeight intValue];

@@ -15,7 +15,6 @@
         <relationship name="weightArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WeightArray" inverseName="chain" inverseEntity="WeightArray" syncable="YES"/>
     </entity>
     <entity name="ChainTemplate" representedClassName="TJBChainTemplate" parentEntity="Chain" syncable="YES" codeGenerationType="class">
-        <attribute name="identifier" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="targetingReps" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="targetingRestTime" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -97,7 +96,7 @@
     <elements>
         <element name="BeginDateComp" positionX="250" positionY="-477" width="128" height="88"/>
         <element name="Chain" positionX="-693" positionY="-324" width="128" height="150"/>
-        <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="180"/>
+        <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="165"/>
         <element name="EndDateComp" positionX="-936" positionY="-477" width="128" height="88"/>
         <element name="Exercise" positionX="-155" positionY="-63" width="128" height="105"/>
         <element name="ExerciseCategory" positionX="-396" positionY="-486" width="128" height="73"/>

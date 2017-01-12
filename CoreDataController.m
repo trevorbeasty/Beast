@@ -16,6 +16,10 @@
 
 NSString * const ExerciseDataChanged = @"exerciseDataChanged";
 
+// the following string constant is used to create / fetch the placeholder exercise object used in creating chain template skeletons
+
+NSString * const placeholderExerciseName = @"placeholderExercise";
+
 @implementation CoreDataController
 
 #pragma mark - Singleton
@@ -130,8 +134,8 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
 
 #pragma mark - Queries
 
-- (TJBExercise *)exerciseForName:(NSString *)name
-{
+- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated{
+    
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
     fetch.predicate = predicate;
@@ -142,23 +146,32 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
     
     NSUInteger arrayLength = [results count];
     
-    if (arrayLength == 0)
-    {
-        TJBExercise *exercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
+    if (arrayLength == 0){
+        
+        TJBExercise *newExercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
                                                               inManagedObjectContext: self.moc];
         
-        exercise.name = name;
+        newExercise.name = name;
         
-        return exercise;
+        *wasNewlyCreated = [NSNumber numberWithBool: YES];
+        
+        return newExercise;
+        
     }
-    else if (arrayLength == 1)
-    {
-        return results[0];
-    }
-    else
-    {
+    else if (arrayLength == 1){
+        
+        *wasNewlyCreated = [NSNumber numberWithBool: NO];
+        
+        TJBExercise *existingExercise = results[0];
+        
+        return existingExercise;
+        
+    } else {
+        
         abort();
+        
     }
+    
 }
 
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name
@@ -316,6 +329,161 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
     
     NSError *error;
     [_moc save: &error];
+}
+
+#pragma mark - Skeletons
+
+- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound{
+    
+    NSManagedObjectContext *moc = [self moc];
+    
+    // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
+    
+    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
+                                                                    inManagedObjectContext: moc];
+    
+    //// assign the chain template's attributes
+    
+    // pertinent to Chain
+    
+    chainTemplate.numberOfExercises = [numberOfExercises intValue];
+    chainTemplate.numberOfRounds = [numberOfRounds intValue];
+    chainTemplate.dateCreated = [NSDate date];
+    chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
+    
+    // pertinent to ChainTemplate
+    
+    chainTemplate.name = name;
+    chainTemplate.targetingWeight = [targetingWeight boolValue];
+    chainTemplate.targetingReps = [targetingReps boolValue];
+    chainTemplate.targetingRestTime = [targetingRest boolValue];
+    chainTemplate.targetsVaryByRound = [targetsVaryByRound boolValue];
+    
+    //// chain template relationships
+    
+    int exerciseLimit = [numberOfExercises intValue];
+    
+    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
+    
+    // grab placeholder exercise
+    
+    NSNumber *wasNewlyCreated = nil;
+    TJBExercise *placeholderExercise = [self exerciseForName: placeholderExerciseName
+                                             wasNewlyCreated: &wasNewlyCreated];
+    
+    // this may need to be changed eventually
+    // exercises require a category, so I arbitrarily give the placeholder exercise the 'push' category for now
+    
+    if ([wasNewlyCreated boolValue] == YES){
+        
+        placeholderExercise.category = [self exerciseCategoryForName: @"Push"];
+        
+    }
+    
+    for (int i = 0; i < exerciseLimit; i++){
+        
+        // add the placeholder exercise to the mutable ordered set
+        
+        [exercises addObject: placeholderExercise];
+        
+    }
+    
+    chainTemplate.exercises = exercises;
+    
+    // only create placeholder data structures for weight, reps, and rest if they are being targeted
+    
+    // weight
+    
+    if ([targetingWeight boolValue] == YES){
+        
+        NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
+        
+        for (int i = 0; i < exerciseLimit; i++){
+            
+            // create the data structure expected  by core data and assign all pertinent / non-optional property values
+            
+            TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
+                                                                        inManagedObjectContext: moc];
+            weightArray.chain = chainTemplate;
+            weightArray.numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
+            
+            [weightArrays addObject: weightArray];
+            
+        }
+        
+        chainTemplate.weightArrays = weightArrays;
+    }
+    
+    // reps
+    
+    if ([targetingReps boolValue] == YES){
+        
+        NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
+        
+        for (int i = 0; i < exerciseLimit; i++){
+            
+            // create the data structure expected  by core data and assign all pertinent / non-optional property values
+            
+            TJBRepsArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
+                                                                        inManagedObjectContext: moc];
+            repsArray.chain = chainTemplate;
+            repsArray.numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
+            
+            [repsArrays addObject: repsArray];
+            
+        }
+        
+        chainTemplate.repsArrays = repsArrays;
+    }
+    
+    // rest
+    
+    if ([targetingRest boolValue] == YES){
+        
+        NSMutableOrderedSet *restArrays = [[NSMutableOrderedSet alloc] init];
+        
+        for (int i = 0; i < exerciseLimit; i++){
+            
+            // create the data structure expected  by core data and assign all pertinent / non-optional property values
+            
+            TJBTargetRestTimeArray *restArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
+                                                                        inManagedObjectContext: moc];
+            restArray.chainTemplate = chainTemplate;
+            restArray.numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
+            
+            [restArrays addObject: restArray];
+            
+        }
+        
+        chainTemplate.targetRestTimeArrays = restArrays;
+    }
+    
+    // save the newly created skeleton chain template and return it
+    
+    [[CoreDataController singleton] saveContext];
+    
+    return chainTemplate;
+    
+}
+
+- (NSOrderedSet *)defaultNumberArrayNumbersWithNumberOfRounds:(NSNumber *)numberOfRounds{
+    
+    int roundLimit = [numberOfRounds intValue];
+    
+    NSMutableOrderedSet *mor = [[NSMutableOrderedSet alloc] init];
+    
+    for (int i = 0; i < roundLimit; i++){
+        
+        TJBNumberTypeArrayComp *numberTypeArrayComp = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
+                                                                                    inManagedObjectContext: self.moc];
+        numberTypeArrayComp.isDefaultObject = YES;
+        
+        [mor addObject: numberTypeArrayComp];
+        
+    }
+    
+    return mor;
+    
 }
 
 

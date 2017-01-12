@@ -12,6 +12,6 @@
 
 @interface TJBCircuitTemplateVC : UIViewController <TJBCircuitTemplateVCProtocol>
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth;
+- (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth;
 
 @end

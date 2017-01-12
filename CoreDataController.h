@@ -21,6 +21,7 @@
 
 #import "TJBWeightArray+CoreDataProperties.h"
 #import "TJBRepsArray+CoreDataProperties.h"
+#import "TJBTargetRestTimeArray+CoreDataProperties.h"
 #import "TJBNumberArray+CoreDataProperties.h"
 #import "TJBNumberTypeArrayComp+CoreDataClass.h"
 
@@ -49,7 +50,12 @@ typedef enum{
 
 // specific queries
 
-- (TJBExercise *)exerciseForName:(NSString *)name;
+// the following assigns the value of TJBExercise via pass by reference because it also must report whether the object was newly created
+// if newly created, it is the job of the calling class to assign the new exercise a category
+// if a category is not assigned, an error will occur when attemting to save managed object changes
+
+- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated;
+
 - (BOOL)realizedSetExerciseExistsForName:(NSString *)name;
 
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;
@@ -67,8 +73,26 @@ typedef enum{
 
 // chains
 
+- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound;
+
 - (TJBRealizedChain *)createAndSaveSkeletonRealizedChainForChainTemplate:(TJBChainTemplate *)chainTemplate;
 
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

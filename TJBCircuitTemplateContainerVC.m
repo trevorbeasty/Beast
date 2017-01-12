@@ -22,6 +22,10 @@
 
 #import "TJBAestheticsController.h"
 
+// core data
+
+#import "CoreDataController.h"
+
 @interface TJBCircuitTemplateContainerVC ()
 
 // IBOutlet
@@ -42,9 +46,12 @@
 @property (nonatomic, strong) NSNumber *targetsVaryByRound;
 @property (nonatomic, strong) NSNumber *numberOfExercises;
 @property (nonatomic, strong) NSNumber *numberOfRounds;
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *chainTemplateName;
+@property (nonatomic, strong) NSNumber *childViewHeight;
+@property (nonatomic, strong) NSNumber *childViewWidth;
 
-// delegate
+//// delegate
+// so that I can pass it events at some point?
 
 @property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *circuitTemplateDelegate;
 
@@ -66,9 +73,23 @@
     self.targetsVaryByRound = targetsVaryByRound;
     self.numberOfExercises = numberOfExercises;
     self.numberOfRounds = numberOfRounds;
-    self.name = name;
+    self.chainTemplateName = name;
+    
+    [self setViewDimensionPropertiesForUseByChildVC];
 
     return self;
+    
+}
+
+- (void)setViewDimensionPropertiesForUseByChildVC{
+    
+    // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
+    // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
+    
+    CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
+    
+    self.childViewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 124];
+    self.childViewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
     
 }
 
@@ -102,25 +123,18 @@
 
 - (void)configureContainerView{
     
-    // create a TJBCircuitTemplateVC with the dimensions of the containerView
+    TJBChainTemplate *skeletonChainTemplate = [[CoreDataController singleton] createAndSaveSkeletonChainTemplateWithNumberOfExercises: self.numberOfExercises
+                                                                                                                       numberOfRounds: self.numberOfRounds
+                                                                                                                                 name: self.chainTemplateName
+                                                                                                                      targetingWeight: self.targetingWeight
+                                                                                                                        targetingReps: self.targetingReps
+                                                                                                                        targetingRest: self.targetingRest
+                                                                                                                   targetsVaryByRound: self.targetsVaryByRound];
     
-    CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
+    TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithSkeletonChainTemplate: skeletonChainTemplate
+                                                                                viewHeight: self.childViewHeight
+                                                                                 viewWidth: self.childViewWidth];
     
-    // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
-    // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
-    
-    NSNumber *viewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 124];
-    NSNumber *viewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
-    
-    TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithTargetingWeight: self.targetingWeight
-                                                                       targetingReps: self.targetingReps
-                                                                       targetingRest: self.targetingRest
-                                                                  targetsVaryByRound: self.targetsVaryByRound
-                                                                   numberOfExercises: self.numberOfExercises
-                                                                      numberOfRounds: self.numberOfRounds
-                                                                                name: self.name
-                                                                          viewHeight: viewHeight
-                                                                           viewWidth: viewWidth];
     self.circuitTemplateDelegate = vc;
     
     [self addChildViewController: vc];
@@ -153,7 +167,7 @@
     }
     
     NSString *title = [NSString stringWithFormat: @"%@ (%d %@)",
-                       self.name,
+                       self.chainTemplateName,
                        number,
                        word];
     
