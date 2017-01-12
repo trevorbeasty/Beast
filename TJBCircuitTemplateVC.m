@@ -327,7 +327,6 @@ static NSString * const defaultValue = @"unselected";
             
             buttonAlterationBlock();
             
-//            self.weightData[indexOne][indexTwo] = number;
             TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.weightArrays[indexOne].numbers[indexTwo];
             arrayComp.isDefaultObject = NO;
             arrayComp.value = [number floatValue];
@@ -359,7 +358,6 @@ static NSString * const defaultValue = @"unselected";
             
             buttonAlterationBlock();
             
-//            self.repsData[indexOne][indexTwo] = number;
             TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.repsArrays[indexOne].numbers[indexTwo];
             arrayComp.isDefaultObject = NO;
             arrayComp.value = [number floatValue];
@@ -390,7 +388,6 @@ static NSString * const defaultValue = @"unselected";
             
             buttonAlterationBlock();
             
-//            self.restData[indexOne][indexTwo] = number;
             TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.targetRestTimeArrays[indexOne].numbers[indexTwo];
             arrayComp.isDefaultObject = NO;
             arrayComp.value = [number floatValue];
@@ -447,8 +444,6 @@ static NSString * const defaultValue = @"unselected";
     
     int index = [chainNumber intValue] - 1;
     self.selectedExercises[index] = exercise;
-    
-    NSLog(@"chain template has changes: %d", [self.chainTemplate hasChanges]);
     
 }
 

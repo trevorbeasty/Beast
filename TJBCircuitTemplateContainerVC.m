@@ -222,7 +222,9 @@
     
     CoreDataController *coreDataC = [CoreDataController singleton];
     
-    BOOL requisiteUserInputCollected = [coreDataC chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
+    // this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
+    
+    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
     
     if (requisiteUserInputCollected){
         
