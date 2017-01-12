@@ -249,11 +249,14 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     }
 }
 
+#pragma mark - Persistent Store Management
+
 - (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain{
+    
     // must guarantee that all trickle-down managed objects are deleted as well as the chain itself
     // only some objects must be deleted, others should continue to exist in their own right
     
-    // some relationships are common to both chain types
+    // some relationships are common to both chain types, hence the motivation for not separating this method out into two methods
     
     NSOrderedSet *weightArrays = chain.weightArrays;
     NSOrderedSet *repsArrays = chain.repsArrays;
@@ -321,7 +324,6 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
             
             [_moc deleteObject: array];
         }
-        
 
     }
     
@@ -329,6 +331,7 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     
     NSError *error;
     [_moc save: &error];
+    
 }
 
 #pragma mark - Skeletons

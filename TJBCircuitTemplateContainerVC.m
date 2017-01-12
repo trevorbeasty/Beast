@@ -51,9 +51,15 @@
 @property (nonatomic, strong) NSNumber *childViewWidth;
 
 //// delegate
-// so that I can pass it events at some point?
 
-@property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *circuitTemplateDelegate;
+// so that this VC can deal with events requirinig evaluation of the chain template
+// alternatively, I could hold onto the chain template and make sure my version stays up to date (I think it is always up to date by nature of pointers and objects) using notifications
+// may want to keep the VC property around anyways to deal with any events not directly involving the chain template
+
+@property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *circuitTemplateVC;
+
+// this should not create a strong reference cycle because there are no strong references traveling back up hill
+@property (nonatomic, weak) TJBChainTemplate *chainTemplate;
 
 @end
 
@@ -130,12 +136,13 @@
                                                                                                                         targetingReps: self.targetingReps
                                                                                                                         targetingRest: self.targetingRest
                                                                                                                    targetsVaryByRound: self.targetsVaryByRound];
+    self.chainTemplate = skeletonChainTemplate;
     
     TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithSkeletonChainTemplate: skeletonChainTemplate
                                                                                 viewHeight: self.childViewHeight
                                                                                  viewWidth: self.childViewWidth];
     
-    self.circuitTemplateDelegate = vc;
+    self.circuitTemplateVC = vc;
     
     [self addChildViewController: vc];
     
@@ -211,11 +218,11 @@
 
 - (IBAction)didPressLaunchCircuit:(id)sender{
     
-    BOOL requisiteUserInputCollected = [self.circuitTemplateDelegate allUserSelectionsMade];
+    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserSelectionsMade];
     
     if (requisiteUserInputCollected){
         
-        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateDelegate createAndSaveChainTemplate];
+        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateVC createAndSaveChainTemplate];
         
         // alert
         
@@ -255,6 +262,11 @@
 
 - (void)didPressX{
     
+    // delete the chain template from the persistent store
+    
+    [[CoreDataController singleton] deleteChainWithChainType: ChainTemplateType
+                                                       chain: self.chainTemplate];
+    
     [self dismissViewControllerAnimated: NO
                              completion: nil];
     
@@ -262,11 +274,11 @@
 
 - (void)didPressAdd{
     
-    BOOL requisiteUserInputCollected = [self.circuitTemplateDelegate allUserSelectionsMade];
+    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserSelectionsMade];
     
     if (requisiteUserInputCollected){
         
-        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateDelegate createAndSaveChainTemplate];
+        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateVC createAndSaveChainTemplate];
         
         NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
                              savedChainTemplate.name];
