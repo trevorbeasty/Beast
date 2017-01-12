@@ -218,16 +218,25 @@
 
 - (IBAction)didPressLaunchCircuit:(id)sender{
     
-    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserSelectionsMade];
+    CoreDataController *coreDataC = [CoreDataController singleton];
+    
+    BOOL requisiteUserInputCollected = [coreDataC chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
     
     if (requisiteUserInputCollected){
         
-        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateVC createAndSaveChainTemplate];
+        NSManagedObjectContext *moc = [coreDataC moc];
+        
+        if ([moc hasChanges]){
+            
+            NSError *error = nil;
+            [moc save: &error];
+            
+        }
         
         // alert
         
         NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
-                             savedChainTemplate.name];
+                             self.chainTemplate.name];
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Saved"
                                                                        message: message
@@ -235,7 +244,7 @@
         
         void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
             
-            TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: savedChainTemplate];
+            TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: self.chainTemplate];
             
             [self presentViewController: tbc
                                animated: YES
@@ -274,14 +283,23 @@
 
 - (void)didPressAdd{
     
-    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserSelectionsMade];
+    CoreDataController *coreDataC = [CoreDataController singleton];
+    
+    BOOL requisiteUserInputCollected = [coreDataC chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
     
     if (requisiteUserInputCollected){
         
-        TJBChainTemplate *savedChainTemplate = [self.circuitTemplateVC createAndSaveChainTemplate];
+        NSManagedObjectContext *moc = [coreDataC moc];
+        
+        if ([moc hasChanges]){
+            
+            NSError *error = nil;
+            [moc save: &error];
+            
+        }
         
         NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
-                             savedChainTemplate.name];
+                             self.chainTemplate.name];
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Saved"
                                                                        message: message
@@ -302,6 +320,7 @@
         [self presentViewController: alert
                            animated: YES
                          completion: nil];
+        
     } else{
         
         [self alertUserInputIncomplete];

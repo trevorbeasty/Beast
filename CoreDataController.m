@@ -358,7 +358,15 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     
 }
 
-#pragma mark - Skeletons
+#pragma mark - Chains
+
+//// chain template
+
+- (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate{
+    
+    //// checks all required categories for default values and returns NO if it finds any.  If a category is not being targeted, do not check it, and vice versa.  Always check exercises
+    
+}
 
 - (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound{
     
@@ -515,6 +523,7 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     
 }
 
+//// realized chain
 
 - (TJBRealizedChain *)createAndSaveSkeletonRealizedChainForChainTemplate:(TJBChainTemplate *)chainTemplate{
     
