@@ -40,25 +40,15 @@
 
 // core
 
-@property (nonatomic, strong) NSNumber *targetingWeight;
-@property (nonatomic, strong) NSNumber *targetingReps;
-@property (nonatomic, strong) NSNumber *targetingRest;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-@property (nonatomic, strong) NSNumber *numberOfExercises;
-@property (nonatomic, strong) NSNumber *numberOfRounds;
-@property (nonatomic, strong) NSString *chainTemplateName;
 @property (nonatomic, strong) NSNumber *childViewHeight;
 @property (nonatomic, strong) NSNumber *childViewWidth;
 
-//// delegate
-
-// so that this VC can deal with events requirinig evaluation of the chain template
-// alternatively, I could hold onto the chain template and make sure my version stays up to date (I think it is always up to date by nature of pointers and objects) using notifications
-// may want to keep the VC property around anyways to deal with any events not directly involving the chain template
+// circuit template
 
 @property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *circuitTemplateVC;
 
-// this should not create a strong reference cycle because there are no strong references traveling back up hill
+// pertinent chainTemplate
+
 @property (nonatomic, weak) TJBChainTemplate *chainTemplate;
 
 @end
@@ -71,15 +61,18 @@
     
     self = [super init];
     
-    // core
+    // chain template
     
-    self.targetingWeight = targetingWeight;
-    self.targetingReps = targetingReps;
-    self.targetingRest = targetingRest;
-    self.targetsVaryByRound = targetsVaryByRound;
-    self.numberOfExercises = numberOfExercises;
-    self.numberOfRounds = numberOfRounds;
-    self.chainTemplateName = name;
+    TJBChainTemplate *skeletonChainTemplate = [[CoreDataController singleton] createAndSaveSkeletonChainTemplateWithNumberOfExercises: numberOfExercises
+                                                                                                                       numberOfRounds: numberOfRounds
+                                                                                                                                 name: name
+                                                                                                                      targetingWeight: targetingWeight
+                                                                                                                        targetingReps: targetingReps
+                                                                                                                        targetingRest: targetingRest
+                                                                                                                   targetsVaryByRound: targetsVaryByRound];
+    self.chainTemplate = skeletonChainTemplate;
+    
+    // prep for adding child VC
     
     [self setViewDimensionPropertiesForUseByChildVC];
 
@@ -129,18 +122,9 @@
 
 - (void)configureContainerView{
     
-    TJBChainTemplate *skeletonChainTemplate = [[CoreDataController singleton] createAndSaveSkeletonChainTemplateWithNumberOfExercises: self.numberOfExercises
-                                                                                                                       numberOfRounds: self.numberOfRounds
-                                                                                                                                 name: self.chainTemplateName
-                                                                                                                      targetingWeight: self.targetingWeight
-                                                                                                                        targetingReps: self.targetingReps
-                                                                                                                        targetingRest: self.targetingRest
-                                                                                                                   targetsVaryByRound: self.targetsVaryByRound];
-    NSLog(@"in container, chain template has changes: %d", [skeletonChainTemplate hasChanges]);
+    //// create the TJBCircuitTemplateVC
     
-    self.chainTemplate = skeletonChainTemplate;
-    
-    TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithSkeletonChainTemplate: skeletonChainTemplate
+    TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithSkeletonChainTemplate: self.chainTemplate
                                                                                 viewHeight: self.childViewHeight
                                                                                  viewWidth: self.childViewWidth];
     
@@ -163,7 +147,7 @@
     // must evaluate IV's to determine appropriate title for navItem
     
     NSString *word;
-    int number = [self.numberOfRounds intValue];
+    int number = self.chainTemplate.numberOfRounds;
     
     if (number == 1){
         
@@ -176,7 +160,7 @@
     }
     
     NSString *title = [NSString stringWithFormat: @"%@ (%d %@)",
-                       self.chainTemplateName,
+                       self.chainTemplate.name,
                        number,
                        word];
     

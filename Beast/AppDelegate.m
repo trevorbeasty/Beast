@@ -60,35 +60,6 @@
 }
 
 
-
-
-
-
-- (void)applicationDidBecomeActive:(UIApplication *)application{
-    NSLog(@"application did become active");
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application{
-    NSLog(@"application will resign active");
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application{
-    NSLog(@"application did enter background");
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application{
-    NSLog(@"application will enter foreground");
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application{
-    NSLog(@"application will terminate");
-}
-
-- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application{
-    NSLog(@"application did receive memory warning");
-}
-
-
 @end
 
 
