@@ -673,7 +673,15 @@ static NSString * const defaultValue = @"unselected";
 //    return collector;
 //}
 
-
+- (BOOL)allUserInputCollected{
+    
+    // assign the user-selected exercises to the chain template and then use the CoreDataController to evaluate if all user input has been collected
+    
+    self.chainTemplate.exercises = self.selectedExercises;
+    
+    return [[CoreDataController singleton] chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
+    
+}
 
 
 @end

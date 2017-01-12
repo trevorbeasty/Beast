@@ -23,6 +23,6 @@
 
 - (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
-- (BOOL)allInputCollected;
+- (BOOL)allUserInputCollected;
 
 @end
