@@ -366,6 +366,125 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     
     //// checks all required categories for default values and returns NO if it finds any.  If a category is not being targeted, do not check it, and vice versa.  Always check exercises
     
+    // this is reaused throughout
+    
+    NSOrderedSet <TJBNumberTypeArrayComp *> *arrayNumbers;
+    
+    // weight
+    
+    BOOL isTargetingWeight = chainTemplate.targetingWeight;
+    
+    if (isTargetingWeight){
+        
+        NSOrderedSet<TJBWeightArray *> *weightArrays = chainTemplate.weightArrays;
+        
+        for (TJBWeightArray *weightArray in weightArrays){
+            
+            arrayNumbers = weightArray.numbers;
+            
+            BOOL containsDefaultValue = [self defaultObjectFoundInOrderedSet: arrayNumbers];
+            
+            if (containsDefaultValue){
+                
+                NSLog(@"not all weight user input collected");
+                return NO;
+            }
+            
+        }
+        
+    }
+    
+    // reps
+    
+    BOOL isTargetingReps = chainTemplate.targetingReps;
+    
+    if (isTargetingReps){
+        
+        NSOrderedSet<TJBRepsArray *> *repsArrays = chainTemplate.repsArrays;
+        
+        for (TJBRepsArray *repsArray in repsArrays){
+            
+            arrayNumbers = repsArray.numbers;
+            
+            BOOL containsDefaultValue = [self defaultObjectFoundInOrderedSet: arrayNumbers];
+            
+            if (containsDefaultValue){
+                
+                NSLog(@"not all reps user input collected");
+                return NO;
+            }
+            
+        }
+        
+    }
+    
+    // rest
+    
+    BOOL isTargetingRest = chainTemplate.targetingRestTime;
+    
+    if (isTargetingRest){
+        
+        NSOrderedSet<TJBTargetRestTimeArray *> *restArrays = chainTemplate.targetRestTimeArrays;
+        
+        for (TJBTargetRestTimeArray *restArray in restArrays){
+            
+            arrayNumbers = restArray.numbers;
+            
+            BOOL containsDefaultValue = [self defaultObjectFoundInOrderedSet: arrayNumbers];
+            
+            if (containsDefaultValue){
+                
+                NSLog(@"not all rest user input collected");
+                return NO;
+            }
+            
+        }
+        
+    }
+    
+    // exercises
+    
+    NSOrderedSet *exercises = chainTemplate.exercises;
+    
+    NSLog(@"exercises in chain template: %@", exercises);
+
+    for (TJBExercise *exercise in exercises){
+        
+        BOOL exerciseIsDefaultExercise = [exercise.name isEqualToString: placeholderExerciseName];
+        
+        if (exerciseIsDefaultExercise){
+            
+            NSLog(@"not all exercise user input collected");
+            return NO;
+        }
+        
+    }
+    
+    
+    // if control reaches this point, then no default objects have been found
+    
+    return YES;
+}
+
+- (BOOL)defaultObjectFoundInOrderedSet:(NSOrderedSet <TJBNumberTypeArrayComp *> *)set{
+    
+    //// internal method.  Given an NSOrderedSet of NSNumberTypeArrayComponents, this method determines whether any of them are default objects and returns YES if it does.  Otherwise, returns NO
+    
+    for (TJBNumberTypeArrayComp *comp in set){
+        
+        BOOL isDefault = comp.isDefaultObject;
+        
+        if (isDefault){
+            
+            return YES;
+        }
+        
+    }
+    
+    // if control reaches this point, then no default objects have been found
+
+    return NO;
+    
 }
 
 - (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound{

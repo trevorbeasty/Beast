@@ -71,6 +71,8 @@ static NSString * const defaultValue = @"unselected";
     
     // core
     
+    self.chainTemplate = skeletonChainTemplate;
+    
     self.targetingWeight = [NSNumber numberWithBool: skeletonChainTemplate.targetingWeight];
     self.targetingReps = [NSNumber numberWithBool: skeletonChainTemplate.targetingReps];
     self.targetingRest = [NSNumber numberWithBool: skeletonChainTemplate.targetingRestTime];
@@ -93,6 +95,8 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)prepareSelectedExercisesSetForUserInput{
+    
+    //// this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made
     
     NSMutableOrderedSet *set = [[NSMutableOrderedSet alloc] init];
     self.selectedExercises = set;
@@ -303,9 +307,11 @@ static NSString * const defaultValue = @"unselected";
     };
     
     void (^buttonAlterationBlock)(void) = ^{
+        
         button.backgroundColor = [UIColor whiteColor];
         [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
+        
     };
     
     int indexOne = [chainNumber intValue] - 1;
@@ -325,6 +331,10 @@ static NSString * const defaultValue = @"unselected";
             TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.weightArrays[indexOne].numbers[indexTwo];
             arrayComp.isDefaultObject = NO;
             arrayComp.value = [number floatValue];
+            
+            NSLog(@"in circuit template VC, chain template has updates: %d", [self.chainTemplate hasChanges]);
+            
+            [[CoreDataController singleton] saveContext];
             
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
@@ -405,13 +415,16 @@ static NSString * const defaultValue = @"unselected";
     
     NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
                        [chainNumber intValue]];
+    
     TJBCircuitTemplateVC * __weak weakSelf = self;
     
-    void (^callback)(TJBExercise *) = ^(TJBExercise *exercise)
-    {
+    void (^callback)(TJBExercise *) = ^(TJBExercise *exercise){
+        
         [button setTitle: exercise.name
                 forState: UIControlStateNormal];
+        
         button.backgroundColor = [UIColor whiteColor];
+        
         [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
         
@@ -433,8 +446,9 @@ static NSString * const defaultValue = @"unselected";
 - (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber{
     
     int index = [chainNumber intValue] - 1;
-//    self.chainTemplate.exercises[index] = exercise;
     self.selectedExercises[index] = exercise;
+    
+    NSLog(@"chain template has changes: %d", [self.chainTemplate hasChanges]);
     
 }
 
