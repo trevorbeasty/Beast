@@ -25,6 +25,8 @@
     int _numberOfRounds;
 }
 
+//// IBOutlet
+
 @property (weak, nonatomic) IBOutlet UISegmentedControl *targetingWeightSC;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *targetingRepsSC;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *targetingRestSC;
@@ -37,9 +39,8 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
-- (IBAction)didPressLaunchTemplate:(id)sender;
-
 // labels
+
 @property (weak, nonatomic) IBOutlet UIButton *launchTemplateButton;
 @property (weak, nonatomic) IBOutlet UILabel *circuitNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfExercisesLabel;
@@ -50,17 +51,21 @@
 @property (weak, nonatomic) IBOutlet UILabel *targetsVaryByRoundLabel;
 
 // dynamic labels
+
 @property (weak, nonatomic) IBOutlet UILabel *counterNumberOfExercises;
 @property (weak, nonatomic) IBOutlet UILabel *counterNumberOfRounds;
 
 // container views
+
 @property (weak, nonatomic) IBOutlet UIView *backdropView;
 @property (weak, nonatomic) IBOutlet UIView *metaContainerView;
 
-// for encoding and decoding
-@property (nonatomic, strong) NSDictionary *encodingDecodingDictionary;
+// IBAction
+
+- (IBAction)didPressLaunchTemplate:(id)sender;
 
 // for restoration
+
 @property (nonatomic, strong) NSNumber *wasRestored;
 
 @end
@@ -101,7 +106,9 @@
 
 - (void)configureViewDataAndFunctionality{
     
-    if ([self.wasRestored boolValue] == NO){
+    BOOL selfWasRestored = [self.wasRestored boolValue] == YES;
+    
+    if (!selfWasRestored){
         _numberOfExercises = 1.0;
         _numberOfRounds = 1.0;
         
@@ -112,6 +119,7 @@
     [self.numberOfExercisesStepper addTarget: self
                                       action: @selector(didChangeExerciseStepperValue)
                             forControlEvents: UIControlEventValueChanged];
+    
     [self.numberOfRoundsStepper addTarget: self
                                    action: @selector(didChangeRoundsStepperValue)
                          forControlEvents: UIControlEventValueChanged];
@@ -233,27 +241,17 @@
 #pragma mark - <UIViewControllerRestoration>
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
     TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
     vc.wasRestored = [NSNumber numberWithBool: YES];
     return vc;
-}
-
-typedef enum{
-    NumberOfExercises,
-    NumberOfRounds,
-    TargetsWeight,
-    TargetsReps,
-    TargetsRest,
-    TargetsVaryByRound,
-    CircuitName
-} RestorationKeys;
-
-- (void)createEncodingDictionary{
     
 }
 
 // for preserving state
+
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
     [super encodeRestorableStateWithCoder: coder];
     
     [coder encodeInt: _numberOfExercises
@@ -271,9 +269,11 @@ typedef enum{
     
     [coder encodeObject: self.nameTextField.text
                  forKey: @"circuitName"];
+    
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
     [super decodeRestorableStateWithCoder: coder];
     
     _numberOfExercises = [coder decodeIntForKey: @"numberOfExercises"];
@@ -290,6 +290,7 @@ typedef enum{
     self.targetsVaryByRoundSC.selectedSegmentIndex = [coder decodeIntegerForKey: @"targetsVaryByRound"];
     
     self.nameTextField.text = [coder decodeObjectForKey: @"circuitName"];
+    
 }
 
 @end

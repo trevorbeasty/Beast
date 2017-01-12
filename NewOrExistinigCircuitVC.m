@@ -8,24 +8,22 @@
 
 #import "NewOrExistinigCircuitVC.h"
 
+// core data
+
 #import "CoreDataController.h"
 
-#import "TJBCircuitDesignVC.h"
-#import "TJBActiveCircuitGuidance.h"
-#import "TJBCircuitTemplateGeneratorVC.h"
+// VC's to present
 
+#import "TJBCircuitDesignVC.h"
 #import "TJBCircuitModeTBC.h"
+
+// aesthetics
 
 #import "TJBAestheticsController.h"
 
-#import "TJBCircuitReferenceContainerVC.h"
-
-// for experimenting
-
-#import "TJBCircuitReferenceVC.h"
-#import "CoreDataController.h"
-
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
+
+// IBOutlet
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -33,7 +31,7 @@
 
 // for restoration
 
-@property (copy) void (^restorationBlock)(void);
+//@property (copy) void (^restorationBlock)(void);
 
 - (IBAction)didPressCreateNewChain:(id)sender;
 
@@ -47,9 +45,11 @@
 #pragma mark - Instantiation
 
 - (instancetype)init{
+    
     self = [super init];
     
     // for restoration
+    
     self.restorationIdentifier = @"TJBNewOrExistingCircuit";
     self.restorationClass = [NewOrExistinigCircuitVC class];
     
@@ -59,35 +59,36 @@
 #pragma mark - View Cycle
 
 - (void)viewDidLoad{
+    
     [self configureNavigationBar];
+    
     [self fetchCoreDataAndConfigureTableView];
+    
     [self addBackground];
+    
     [self viewAesthetics];
+    
 }
 
-//- (void)viewDidAppear:(BOOL)animated{
-//    
-//    if (self.restorationBlock){
-//        
-//        self.restorationBlock();
-//        self.restorationBlock = nil;
-//    }
-//}
 
 - (void)viewAesthetics{
+    
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.createNewChainButton]
                                                      withOpacity: .85];
     
     self.tableView.layer.opacity = .85;
+    
 }
 
 - (void)addBackground{
+    
     [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
                                                                    toRootView: self.view
                                                                  imageOpacity: .35];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    
     NSError *error = nil;
     [self.frc performFetch: &error];
     [self.tableView reloadData];
@@ -166,18 +167,25 @@
 #pragma mark - Button Actions
 
 - (IBAction)didPressCreateNewChain:(id)sender {
+    
     TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
+    
     [self presentViewController: vc
                        animated: YES
                      completion: nil];
+    
 }
 
 - (void)didPressHomeButton{
+    
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>
+
+// will want to eventually store table view scroll position
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];

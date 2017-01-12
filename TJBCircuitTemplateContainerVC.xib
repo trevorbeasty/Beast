@@ -37,9 +37,9 @@
                     </connections>
                 </button>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Aw-Ow-fCu">
-                    <rect key="frame" x="0.0" y="20" width="505" height="40"/>
+                    <rect key="frame" x="0.0" y="0.0" width="505" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="8Rq-bw-UM5"/>
+                        <constraint firstAttribute="height" constant="60" id="8Rq-bw-UM5"/>
                     </constraints>
                     <items>
                         <navigationItem title="Title" id="OYX-Gf-4zc"/>
@@ -57,7 +57,7 @@
                 <constraint firstItem="DGq-w9-M2p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="diB-cv-ieU"/>
                 <constraint firstAttribute="trailing" secondItem="ddm-83-lU1" secondAttribute="trailing" constant="8" id="j85-Ti-kXd"/>
                 <constraint firstItem="ddm-83-lU1" firstAttribute="top" secondItem="DGq-w9-M2p" secondAttribute="bottom" constant="8" id="tFl-ld-dDh"/>
-                <constraint firstItem="1Aw-Ow-fCu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="uA2-gA-hjS"/>
+                <constraint firstItem="1Aw-Ow-fCu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="uA2-gA-hjS"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

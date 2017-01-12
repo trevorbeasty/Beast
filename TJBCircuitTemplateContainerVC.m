@@ -81,7 +81,16 @@
     [self configureNavigationBar];
     
     [self addBackgroundView];
+    
+    [self configureViewAesthetics];
 
+}
+
+- (void)configureViewAesthetics{
+    
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchCircuitButton]
+                                                     withOpacity: .85];
+    
 }
 
 - (void)addBackgroundView{
@@ -119,6 +128,7 @@
     [self.containerView addSubview: vc.view];
     
     [vc didMoveToParentViewController: self];
+    
 }
 
 - (void)configureNavigationBar{
