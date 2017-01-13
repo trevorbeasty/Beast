@@ -197,15 +197,59 @@
 //    }
 //}
 
-- (void)updateViewsWithUserSelectedWeight:(TJBNumberTypeArrayComp *)weight reps:(TJBNumberTypeArrayComp *)reps rest:(TJBNumberTypeArrayComp *)rest{
+//- (void)updateViewsWithUserSelectedWeight:(TJBNumberTypeArrayComp *)weight reps:(TJBNumberTypeArrayComp *)reps rest:(TJBNumberTypeArrayComp *)rest{
+//    
+//    //// if respective object is not a default, update the corresponding view appropriately
+//    
+//    CoreDataController *cdc = [CoreDataController singleton];
+//    
+//    // weight
+//    
+//    BOOL weightIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: weight];
+//    
+//    if (!weightIsDefaultObject){
+//        
+//        NSString *weightTitle = [[NSNumber numberWithFloat: weight.value] stringValue];
+//        
+//        [self.weightButton setTitle: weightTitle
+//                           forState: UIControlStateNormal];
+//        [self configureButtonWithSelectedAppearance: self.weightButton];
+//        
+//    }
+//    
+//    // reps
+//    
+//    BOOL repsIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: reps];
+//    
+//    if (!repsIsDefaultObject){
+//        
+//        NSString *repsTitle = [[NSNumber numberWithFloat: reps.value] stringValue];
+//        
+//        [self.repsButton setTitle: repsTitle
+//                           forState: UIControlStateNormal];
+//        [self configureButtonWithSelectedAppearance: self.repsButton];
+//        
+//    }
+//    
+//    // rest
+//    
+//    BOOL restIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: rest];
+//    
+//    if (!restIsDefaultObject){
+//        
+//        NSString *restTitle = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: rest.value];
+//        
+//        [self.restButton setTitle: restTitle
+//                         forState: UIControlStateNormal];
+//        [self configureButtonWithSelectedAppearance: self.restButton];
+//        
+//    }
+//    
+//}
+
+- (void)updateWeightViewWithUserSelection:(TJBNumberTypeArrayComp *)weight{
     
-    //// if respective object is not a default, update the corresponding view appropriately
-    
-    CoreDataController *cdc = [CoreDataController singleton];
-    
-    // weight
-    
-    BOOL weightIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: weight];
+    BOOL weightIsDefaultObject = [[CoreDataController singleton] numberTypeArrayCompIsDefaultObject: weight];
     
     if (!weightIsDefaultObject){
         
@@ -217,23 +261,27 @@
         
     }
     
-    // reps
+}
+
+- (void)updateRepsViewWithUserSelection:(TJBNumberTypeArrayComp *)reps{
     
-    BOOL repsIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: reps];
+    BOOL repsIsDefaultObject = [[CoreDataController singleton] numberTypeArrayCompIsDefaultObject: reps];
     
     if (!repsIsDefaultObject){
         
         NSString *repsTitle = [[NSNumber numberWithFloat: reps.value] stringValue];
         
         [self.repsButton setTitle: repsTitle
-                           forState: UIControlStateNormal];
+                         forState: UIControlStateNormal];
         [self configureButtonWithSelectedAppearance: self.repsButton];
         
     }
     
-    // rest
+}
+
+- (void)updateRestViewWithUserSelection:(TJBNumberTypeArrayComp *)rest{
     
-    BOOL restIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: rest];
+    BOOL restIsDefaultObject = [[CoreDataController singleton] numberTypeArrayCompIsDefaultObject: rest];
     
     if (!restIsDefaultObject){
         

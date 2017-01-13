@@ -89,6 +89,10 @@ static NSString * const defaultValue = @"unselected";
     
     [self prepareSelectedExercisesSetForUserInput];
     
+    //
+    
+    [self createSkeletonArrayForChildExeriseAndRowControllers];
+    
     return self;
 }
 
@@ -140,10 +144,6 @@ static NSString * const defaultValue = @"unselected";
 }
 
 - (void)viewDidLoad{
-    
-    // these are order dependent - the skeleton arrays need to exist before they can be populated during subview layout time
-    
-    [self createSkeletonArrayForChildExeriseAndRowControllers];
     
     [self createChildViewControllersAndLayoutViews];
     
@@ -546,16 +546,39 @@ static NSString * const defaultValue = @"unselected";
             
             // row child controllers
             
+            // must evaluate if category is being targeted before sending message
+            
             currentRowComp = self.childRowControllers[i][j];
             
-            currentWeight = chain.weightArrays[i].numbers[j];
-            currentReps = chain.repsArrays[i].numbers[j];
-            currentRest = chain.targetRestTimeArrays[i].numbers[j];
+            // weight
             
-            [currentRowComp updateViewsWithUserSelectedWeight: currentWeight
-                                                         reps: currentReps
-                                                         rest: currentRest];
+            if (chain.targetingWeight){
+                
+                currentWeight = chain.weightArrays[i].numbers[j];
+                
+                [currentRowComp updateWeightViewWithUserSelection: currentWeight];
+                
+            }
             
+            // reps
+            
+            if (chain.targetingReps){
+                
+                currentReps = chain.repsArrays[i].numbers[j];
+                
+                [currentRowComp updateRepsViewWithUserSelection: currentReps];
+                
+            }
+            
+            // rest
+            
+            if (chain.targetingRestTime){
+                
+                currentRest = chain.targetRestTimeArrays[i].numbers[j];
+                
+                [currentRowComp updateRestViewWithUserSelection: currentRest];
+                
+            }
         }
     }
 }

@@ -58,7 +58,7 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
         
         // the category for the placeholder exercise will, arbitrarily, be 'push'
         
-        TJBExerciseCategory *pushCategory = [self exerciseCategoryForName: @"push"];
+        TJBExerciseCategory *pushCategory = [self exerciseCategoryForName: @"Push"];
         
         placeholderExercise.category = pushCategory;
         
