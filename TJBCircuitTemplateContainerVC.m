@@ -280,10 +280,19 @@
 
 - (void)didPressX{
     
-    // delete the chain template from the persistent store
+    // delete the chain template from the persistent store if it is incomplete
     
-    [[CoreDataController singleton] deleteChainWithChainType: ChainTemplateType
-                                                       chain: self.chainTemplate];
+    // must check for completeness of chain template.  If all user selections have been been made but the 'launch circuit' or '+' buttons have not been pressed, its 'isIncomplete' property will not be updated
+    
+    BOOL isComplete = [[CoreDataController singleton] chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
+    self.chainTemplate.isIncomplete = !isComplete;
+    
+    if (self.chainTemplate.isIncomplete){
+        
+        [[CoreDataController singleton] deleteChainWithChainType: ChainTemplateType
+                                                           chain: self.chainTemplate];
+    
+    }
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
