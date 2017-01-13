@@ -55,7 +55,7 @@ typedef enum{
 // if newly created, it is the job of the calling class to assign the new exercise a category
 // if a category is not assigned, an error will occur when attemting to save managed object changes
 
-- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated;
+- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise;
 
 - (BOOL)realizedSetExerciseExistsForName:(NSString *)name;
 

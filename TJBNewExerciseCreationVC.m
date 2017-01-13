@@ -165,7 +165,8 @@
     
     NSNumber *wasNewlyCreated = nil;
     TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
-                                                   wasNewlyCreated: &wasNewlyCreated];
+                                                   wasNewlyCreated: &wasNewlyCreated
+                                       createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
     
     newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
     

@@ -42,36 +42,36 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     self.moc = [self.persistentContainer viewContext];
     
-    [self createPlaceholderExerciseIfNecessary];
+//    [self createPlaceholderExerciseIfNecessary];
     
     return self;
 }
 
-- (void)createPlaceholderExerciseIfNecessary{
-    
-    //// I create the placeholder exercise here so that other classes to not have to ensure completeness of the object graph when using the placeholder exercise
-    
-    NSNumber *wasNewlyCreated = nil;
-    TJBExercise *placeholderExercise = [self exerciseForName: placeholderExerciseName
-                                             wasNewlyCreated: &wasNewlyCreated];
-    
-    if ([wasNewlyCreated boolValue] == YES){
-        
-        // the category for the placeholder exercise will, arbitrarily, be 'push'
-        
-        TJBExerciseCategory *pushCategory = [self exerciseCategoryForName: @"Push"];
-        
-        placeholderExercise.category = pushCategory;
-        
-        [self saveContext];
-        
-    } else{
-        
-        return;
-        
-    }
-    
-}
+//- (void)createPlaceholderExerciseIfNecessary{
+//    
+//    //// I create the placeholder exercise here so that other classes to not have to ensure completeness of the object graph when using the placeholder exercise
+//    
+//    NSNumber *wasNewlyCreated = nil;
+//    TJBExercise *placeholderExercise = [self exerciseForName: placeholderExerciseName
+//                                             wasNewlyCreated: &wasNewlyCreated];
+//    
+//    if ([wasNewlyCreated boolValue] == YES){
+//        
+//        // the category for the placeholder exercise will, arbitrarily, be 'push'
+//        
+//        TJBExerciseCategory *pushCategory = [self exerciseCategoryForName: @"Push"];
+//        
+//        placeholderExercise.category = pushCategory;
+//        
+//        [self saveContext];
+//        
+//    } else{
+//        
+//        return;
+//        
+//    }
+//    
+//}
 
 - (instancetype)init
 {
@@ -179,7 +179,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     }
 }
 
-- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated{
+- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise{
     
     //// returns an exercise with the passed name and indicates whether it was newly created or not
     
@@ -201,6 +201,28 @@ NSString * const placeholderCategoryName = @"Placeholder";
                                                               inManagedObjectContext: self.moc];
         
         newExercise.name = name;
+        
+        // placeholder property
+        
+        BOOL isPlaceholder;
+        
+        if (!createAsPlaceholderExercise || [createAsPlaceholderExercise boolValue] == NO){
+            
+            isPlaceholder = NO;
+            
+        } else if ([createAsPlaceholderExercise boolValue] == YES){
+            
+            isPlaceholder = YES;
+            
+        } else{
+            
+            abort();
+            
+        }
+        
+        newExercise.isPlaceholderExercise = isPlaceholder;
+        
+        // pass by reference
         
         *wasNewlyCreated = [NSNumber numberWithBool: YES];
         
@@ -808,7 +830,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         NSNumber *wasNewlyCreated = nil;
         TJBExercise *exercise = [self exerciseForName: placeholderExerciseDynamicName
-                                      wasNewlyCreated: &wasNewlyCreated];
+                                      wasNewlyCreated: &wasNewlyCreated
+                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
         
         // if it was newly created, give it the placeholder category
         
