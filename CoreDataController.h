@@ -76,6 +76,10 @@ typedef enum{
 
 // chain template
 
+- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate;
+- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate;
+- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate;
+
 - (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound;
 
 - (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate;

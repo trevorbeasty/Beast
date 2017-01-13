@@ -394,9 +394,7 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
 
 //// chain template
 
-- (void)cloneFirstNumberForAllTargetedCategories:(TJBChainTemplate *)chainTemplate{
-    
-    //// this method is intended to be used on chain templates for which targets do not vary by round.  If the category is being targeted, this method clones the single selected value and applies it to all rounds
+- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate{
     
     int numberOfRounds = chainTemplate.numberOfRounds;
     
@@ -422,6 +420,12 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
         }
     }
     
+}
+
+- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate{
+    
+    int numberOfRounds = chainTemplate.numberOfRounds;
+    
     // reps
     
     BOOL repsIsTargeted = chainTemplate.targetingReps;
@@ -444,6 +448,12 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
         }
     }
     
+}
+
+- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate{
+    
+    int numberOfRounds = chainTemplate.numberOfRounds;
+    
     // rest
     
     BOOL restIsTargeted = chainTemplate.targetingRestTime;
@@ -465,7 +475,99 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
             }
         }
     }
+    
 }
+
+- (void)cloneFirstNumberForAllTargetedCategories:(TJBChainTemplate *)chainTemplate{
+    
+    //// this method is intended to be used on chain templates for which targets do not vary by round.  If the category is being targeted, this method clones the single selected value and applies it to all rounds
+    
+    // weight
+    
+    [self cloneFirstNumberForWeight: chainTemplate];
+    
+    // reps
+    
+    [self cloneFirstNumberForReps: chainTemplate];
+    
+    // rest
+    
+    [self cloneFirstNumberForRest: chainTemplate];
+
+}
+
+//- (void)cloneFirstNumberForAllTargetedCategories:(TJBChainTemplate *)chainTemplate{
+//    
+//    //// this method is intended to be used on chain templates for which targets do not vary by round.  If the category is being targeted, this method clones the single selected value and applies it to all rounds
+//    
+//    int numberOfRounds = chainTemplate.numberOfRounds;
+//    
+//    // weight
+//    
+//    BOOL weightIsTargeted = chainTemplate.targetingWeight;
+//    
+//    NSOrderedSet <TJBWeightArray *> *weightArrays = chainTemplate.weightArrays;
+//    
+//    if (weightIsTargeted){
+//        
+//        for (TJBWeightArray *weightArray in weightArrays){
+//            
+//            float userSelectedValue = weightArray.numbers[0].value;
+//            
+//            for (int i = 1; i < numberOfRounds; i++){
+//                
+//                TJBNumberTypeArrayComp *arrayComp = weightArray.numbers[i];
+//                arrayComp.isDefaultObject = NO;
+//                arrayComp.value = userSelectedValue;
+//                
+//            }
+//        }
+//    }
+//    
+//    // reps
+//    
+//    BOOL repsIsTargeted = chainTemplate.targetingReps;
+//    
+//    NSOrderedSet <TJBRepsArray *> *repsArrays = chainTemplate.repsArrays;
+//    
+//    if (repsIsTargeted){
+//        
+//        for (TJBRepsArray *repsArray in repsArrays){
+//            
+//            float userSelectedValue = repsArray.numbers[0].value;
+//            
+//            for (int i = 1; i < numberOfRounds; i++){
+//                
+//                TJBNumberTypeArrayComp *arrayComp = repsArray.numbers[i];
+//                arrayComp.isDefaultObject = NO;
+//                arrayComp.value = userSelectedValue;
+//                
+//            }
+//        }
+//    }
+//    
+//    // rest
+//    
+//    BOOL restIsTargeted = chainTemplate.targetingRestTime;
+//    
+//    NSOrderedSet <TJBTargetRestTimeArray *> *restArrays = chainTemplate.targetRestTimeArrays;
+//    
+//    if (restIsTargeted){
+//        
+//        for (TJBTargetRestTimeArray *restArray in restArrays){
+//            
+//            float userSelectedValue = restArray.numbers[0].value;
+//            
+//            for (int i = 1; i < numberOfRounds; i++){
+//                
+//                TJBNumberTypeArrayComp *arrayComp = restArray.numbers[i];
+//                arrayComp.isDefaultObject = NO;
+//                arrayComp.value = userSelectedValue;
+//                
+//            }
+//        }
+//    }
+//}
 
 
 - (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate{

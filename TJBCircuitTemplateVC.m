@@ -30,7 +30,9 @@
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 @property (nonatomic, strong) NSMutableOrderedSet *selectedExercises;
 
-// core
+//// core
+
+// these are largely for convenience as most are derived from the chain template itself
 
 @property (nonatomic, strong) NSNumber *targetingWeight;
 @property (nonatomic, strong) NSNumber *targetingReps;
@@ -335,6 +337,13 @@ static NSString * const defaultValue = @"unselected";
             arrayComp.isDefaultObject = NO;
             arrayComp.value = [number floatValue];
             
+            // clone the selection if targets do not vary by round
+            
+            if ([self.targetsVaryByRound boolValue] == NO){
+                
+                [[CoreDataController singleton] cloneFirstNumberForWeight: self.chainTemplate];
+            }
+            
             [[CoreDataController singleton] saveContext];
             
             [self dismissViewControllerAnimated: NO
@@ -363,6 +372,13 @@ static NSString * const defaultValue = @"unselected";
             TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.repsArrays[indexOne].numbers[indexTwo];
             arrayComp.isDefaultObject = NO;
             arrayComp.value = [number floatValue];
+            
+            // clone the selection if targets do not vary by round
+            
+            if ([self.targetsVaryByRound boolValue] == NO){
+                
+                [[CoreDataController singleton] cloneFirstNumberForReps: self.chainTemplate];
+            }
             
             [[CoreDataController singleton] saveContext];
             
@@ -395,6 +411,13 @@ static NSString * const defaultValue = @"unselected";
             TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.targetRestTimeArrays[indexOne].numbers[indexTwo];
             arrayComp.isDefaultObject = NO;
             arrayComp.value = [number floatValue];
+            
+            // clone the selection if targets do not vary by round
+            
+            if ([self.targetsVaryByRound boolValue] == NO){
+                
+                [[CoreDataController singleton] cloneFirstNumberForRest: self.chainTemplate];
+            }
             
             [[CoreDataController singleton] saveContext];
             
