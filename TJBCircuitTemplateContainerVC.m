@@ -231,22 +231,11 @@
 
 - (IBAction)didPressLaunchCircuit:(id)sender{
     
-    CoreDataController *coreDataC = [CoreDataController singleton];
-    
     // this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
     
     BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
     
     if (requisiteUserInputCollected){
-        
-        NSManagedObjectContext *moc = [coreDataC moc];
-        
-        if ([moc hasChanges]){
-            
-            NSError *error = nil;
-            [moc save: &error];
-            
-        }
         
         // alert
         
@@ -298,22 +287,11 @@
 
 - (void)didPressAdd{
     
-    CoreDataController *coreDataC = [CoreDataController singleton];
-    
-    // this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
+    //// this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
     
     BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
     
     if (requisiteUserInputCollected){
-        
-        NSManagedObjectContext *moc = [coreDataC moc];
-        
-        if ([moc hasChanges]){
-            
-            NSError *error = nil;
-            [moc save: &error];
-            
-        }
         
         NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
                              self.chainTemplate.name];
