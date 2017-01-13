@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TJBCircuitTemplateUserInputDelegate.h"
+//#import "TJBCircuitTemplateUserInputDelegate.h"
 
 @class TJBChainTemplate;
 @class TJBRealizedChain;
