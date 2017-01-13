@@ -500,6 +500,14 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
+- (void)populateChildVCViewsWithUserSelectedValues{
+    
+    //// for all non-default exercise, weight, reps, and rest objects, populate child VC's with the stored values
+    
+    
+    
+}
+
 
 @end
 

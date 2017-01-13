@@ -347,6 +347,10 @@
     
     [super decodeRestorableStateWithCoder: coder];
     
+    // tell the child VC to populate its views with all user selected input
+    
+    [self.circuitTemplateVC populateChildVCViewsWithUserSelectedValues];
+    
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{

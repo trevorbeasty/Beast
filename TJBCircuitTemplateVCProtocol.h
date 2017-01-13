@@ -25,4 +25,8 @@
 
 - (BOOL)allUserInputCollected;
 
+// for restoration / incomplete chain templates
+
+- (void)populateChildVCViewsWithUserSelectedValues;
+
 @end
