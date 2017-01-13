@@ -27,36 +27,47 @@
 // may want to consider developing some sort of cache for the immediately requisite managed objects so that performence does not suffer
 
 - (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    
     // prevents transition styles from occurring upon state restoration
+    
     [self.window makeKeyAndVisible];
     
     // immediately load the entire core data structure
+    
     [[CoreDataController singleton] persistentContainer];
     
     // core data file path
+    
     NSURL *path = [NSPersistentContainer defaultDirectoryURL];
     NSLog(@"%@", [path absoluteString]);
     
     // root view controller
+    
     TJBWorkoutNavigationHub *wnh = [[TJBWorkoutNavigationHub alloc] init];
     self.window.rootViewController = wnh;
     
     return YES;
+    
 }
 
 
 // the app delegate must opt in to state restoration via the following 2 methods
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder{
+    
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder{
+    
     return YES;
 }
 
 - (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
     // UIKit automatically finds TJBWorkoutNavigation hub as part of its restoration effort (see view controller programming guide)
+    
     return nil;
+    
 }
 
 

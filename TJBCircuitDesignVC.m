@@ -212,8 +212,12 @@
         NSNumber *targetingReps = [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex];
         NSNumber *targetingRest = [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex];
         NSNumber *targetsVaryByRound = [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex];
-        NSNumber *numberOfExercises = [NSNumber numberWithDouble: _numberOfExercises];
-        NSNumber *numberOfRounds = [NSNumber numberWithDouble: _numberOfRounds];
+        NSNumber *numberOfExercises = [NSNumber numberWithInt: _numberOfExercises];
+        NSNumber *numberOfRounds = [NSNumber numberWithInt: _numberOfRounds];
+        
+        NSLog(@"exercises: %@\nrounds: %@",
+              numberOfExercises,
+              numberOfRounds);
         
         TJBCircuitTemplateContainerVC *vc = [[TJBCircuitTemplateContainerVC alloc] initWithTargetingWeight: targetingWeight
                                                                                              targetingReps: targetingReps

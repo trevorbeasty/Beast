@@ -76,6 +76,8 @@ typedef enum{
 
 // chain template
 
+- (NSArray *)placeholderExerciseArrayWithLenght:(int)length;
+
 - (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate;
 - (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate;
 - (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate;

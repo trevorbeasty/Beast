@@ -85,7 +85,7 @@ static NSString * const defaultValue = @"unselected";
     
     [self setRestorationProperties];
     
-    // for core data
+    //// for core data
     
     [self prepareSelectedExercisesSetForUserInput];
     
@@ -100,26 +100,12 @@ static NSString * const defaultValue = @"unselected";
     
     //// this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made when allUserInputCollected is calledr
     
-    NSMutableOrderedSet *set = [[NSMutableOrderedSet alloc] init];
-    self.selectedExercises = set;
+    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLenght: [self.numberOfExercises intValue]];
     
-    int exerciseLimit = [self.numberOfExercises intValue];
+    NSMutableOrderedSet *placeholderExerisesSet = [[NSMutableOrderedSet alloc] initWithArray: placeholderExercisesArray];
     
-    NSNumber *wasNewlyCreated = nil;
-    TJBExercise *exercise = [[CoreDataController singleton] exerciseForName: placeholderExerciseName
-                                                            wasNewlyCreated: &wasNewlyCreated];
+    self.selectedExercises = placeholderExerisesSet;
     
-    NSLog(@"%@ was newly created: %d",
-          exercise.name,
-          [wasNewlyCreated boolValue]);
-    
-    for (int i = 0; i < exerciseLimit ; i++){
-        
-        [set addObject: exercise];
-        
-    }
-    
-    return;
 }
 
 - (void)setRestorationProperties{
@@ -540,6 +526,10 @@ static NSString * const defaultValue = @"unselected";
         currentExerciseComp = self.childExerciseComponentControllers[i];
         currentExercise = chain.exercises[i];
         
+        // need to update this VC's selectedExercises as well as call the exercise components protocol method
+        
+        self.selectedExercises[i] = currentExercise;
+        
         [currentExerciseComp updateViewsWithUserSelectedExercise: currentExercise];
         
         for (int j = 0; j < roundLimit; j++){
@@ -578,6 +568,15 @@ static NSString * const defaultValue = @"unselected";
                 
                 [currentRowComp updateRestViewWithUserSelection: currentRest];
                 
+            }
+            
+            // if targets do not vary by round, there will only be one row controller for each exercise component and this inner for-loop should only be run once
+            
+            BOOL targetsVaryByRound = chain.targetsVaryByRound;
+            
+            if (!targetsVaryByRound){
+                
+                break;
             }
         }
     }

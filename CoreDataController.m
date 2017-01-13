@@ -19,6 +19,7 @@ NSString * const ExerciseDataChanged = @"exerciseDataChanged";
 // the following string constant is used to create / fetch the placeholder exercise object used in creating chain template skeletons
 
 NSString * const placeholderExerciseName = @"placeholderExercise";
+NSString * const placeholderCategoryName = @"Placeholder";
 
 @implementation CoreDataController
 
@@ -656,7 +657,7 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
 
 - (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound{
     
-    //// this method takes all necessary chain parameters as arguments and creates a skelton chain.  If a category is being targeted, it is given default objects for all exercises and rounds.  Default exercise objects are not assigned here
+    //// this method takes all necessary chain parameters as arguments and creates a skelton chain.  If a category is being targeted, it is given default objects for all exercises and rounds.  A set of placeholder exercises is assigned to the exercises relationship
     
     NSManagedObjectContext *moc = [self moc];
     
@@ -685,9 +686,15 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     
     //// chain template relationships
     
-    // the exercie objects will need to be replaced entirely at user input time, which is not possible because TJBChainTemplate's exercise relationship is not mutable after saving.  Thus, will have to create an NSOrderedSet to collect chosen exercises in the VC that manages user selection events
-    
     int exerciseLimit = [numberOfExercises intValue];
+    
+    // exercises
+    
+    NSArray *exercisesArray = [self placeholderExerciseArrayWithLenght: exerciseLimit];
+    
+    NSOrderedSet *exercisesOrderedSet = [[NSOrderedSet alloc] initWithArray: exercisesArray];
+    
+    chainTemplate.exercises = exercisesOrderedSet;
     
     // only create placeholder data structures for weight, reps, and rest if they are being targeted
     
@@ -704,8 +711,8 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
             TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
                                                                         inManagedObjectContext: moc];
             weightArray.chain = chainTemplate;
+//            NSOrderedSet *numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
             weightArray.numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
-            
             [weightArrays addObject: weightArray];
             
         }
@@ -782,6 +789,42 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     }
     
     return mor;
+    
+}
+
+- (NSArray *)placeholderExerciseArrayWithLenght:(int)length{
+    
+    //// create a set of placeholder exercises
+    
+    NSMutableArray *exercises = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < length ; i++){
+        
+        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
+        
+        NSString *placeholderExerciseDynamicName = [NSString stringWithFormat: @"%@%d",
+                                                    placeholderExerciseName,
+                                                    i];
+        
+        NSNumber *wasNewlyCreated = nil;
+        TJBExercise *exercise = [self exerciseForName: placeholderExerciseDynamicName
+                                      wasNewlyCreated: &wasNewlyCreated];
+        
+        // if it was newly created, give it the placeholder category
+        
+        if ([wasNewlyCreated boolValue] == YES){
+            
+            TJBExerciseCategory *placeholderCategory = [self exerciseCategoryForName: placeholderCategoryName];
+            
+            exercise.category = placeholderCategory;
+            
+        }
+        
+        [exercises addObject: exercise];
+        
+    }
+    
+    return exercises;
     
 }
 
