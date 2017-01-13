@@ -26,7 +26,7 @@
 
 #import "CoreDataController.h"
 
-@interface TJBCircuitTemplateContainerVC ()
+@interface TJBCircuitTemplateContainerVC () <UIViewControllerRestoration>
 
 // IBOutlet
 
@@ -57,6 +57,16 @@
 
 #pragma mark - Instantiation
 
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    self = [super init];
+    
+    self.chainTemplate = chainTemplate;
+    
+    return self;
+    
+}
+
 - (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name{
     
     self = [super init];
@@ -71,12 +81,17 @@
                                                                                                                         targetingRest: targetingRest
                                                                                                                    targetsVaryByRound: targetsVaryByRound];
     self.chainTemplate = skeletonChainTemplate;
-    
-    // prep for adding child VC
-    
-    [self setViewDimensionPropertiesForUseByChildVC];
 
     return self;
+    
+}
+
+- (void)setRestorationProperties{
+    
+    //// set the properties necessary for state restoration
+    
+    self.restorationClass = [TJBCircuitTemplateContainerVC class];
+    self.restorationIdentifier = @"TJBCircuitTemplateContainerVC";
     
 }
 
@@ -96,7 +111,19 @@
 
 - (void)viewDidLoad{
     
+    // for restoration
+    
+    [self setRestorationProperties];
+    
+    // prep for adding child VC
+    
+    [self setViewDimensionPropertiesForUseByChildVC];
+    
+    // instantiate the child VC and add its view
+    
     [self configureContainerView];
+    
+    //
     
     [self configureNavigationBar];
     
@@ -318,7 +345,75 @@
     }
 }
 
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    //// the only thing that needs to be done here is to restore the chain template that was being used and call the normal init method.  The decoder will be responsible for kicking off the process that updates all the views to their previous state
+    
+    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
+    
+    // have CoreDataController retrieve the appropriate chain template
+    
+    TJBChainTemplate *chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
+    
+    // create the TJBCircuitTemplateContainerVC and return it
+    
+    TJBCircuitTemplateContainerVC *vc = [[TJBCircuitTemplateContainerVC alloc] initWithChainTemplate: chainTemplate];
+    
+    return vc;
+    
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super decodeRestorableStateWithCoder: coder];
+    
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    //// all that needs to be done here is to record the unique ID of the chain template so that the CoreDataConroller can reload the correct chain template
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    NSString *chainTemplateUniqueID = self.chainTemplate.uniqueID;
+    [coder encodeObject: chainTemplateUniqueID
+                 forKey: @"chainTemplateUniqueID"];
+    
+}
+
+
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

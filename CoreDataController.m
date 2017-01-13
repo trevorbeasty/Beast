@@ -596,37 +596,10 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     chainTemplate.targetsVaryByRound = [targetsVaryByRound boolValue];
     
     //// chain template relationships
+    
     // the exercie objects will need to be replaced entirely at user input time, which is not possible because TJBChainTemplate's exercise relationship is not mutable after saving.  Thus, will have to create an NSOrderedSet to collect chosen exercises in the VC that manages user selection events
     
     int exerciseLimit = [numberOfExercises intValue];
-    
-//    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
-//    
-//    // grab placeholder exercise
-//    
-//    NSNumber *wasNewlyCreated = nil;
-//    TJBExercise *placeholderExercise = [self exerciseForName: placeholderExerciseName
-//                                             wasNewlyCreated: &wasNewlyCreated];
-//    
-//    // this may need to be changed eventually
-//    // exercises require a category, so I arbitrarily give the placeholder exercise the 'push' category for now
-//    // this must be a mutable ordered set because these objects will be entirely replaced during user selection
-//    
-//    if ([wasNewlyCreated boolValue] == YES){
-//        
-//        placeholderExercise.category = [self exerciseCategoryForName: @"Push"];
-//        
-//    }
-//    
-//    for (int i = 0; i < exerciseLimit; i++){
-//        
-//        // add the placeholder exercise to the mutable ordered set
-//        
-//        [exercises addObject: placeholderExercise];
-//        
-//    }
-//    
-//    chainTemplate.exercises = exercises;
     
     // only create placeholder data structures for weight, reps, and rest if they are being targeted
     

@@ -84,54 +84,74 @@
 #pragma mark - Button Actions
 
 - (void)didPressAdd{
+    
     NSString *exerciseString = self.exerciseTextField.text;
+    
     UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
                                                              style: UIAlertActionStyleDefault
                                                            handler: nil];
     
     BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
+    
     if (exerciseExists){
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
                                                                        message: @"This exercise already exists"
                                                                 preferredStyle: UIAlertControllerStyleAlert];
+        
         [alert addAction: continueAction];
+        
         [self presentViewController: alert
                            animated: YES
                          completion: nil];
+        
     } else if([exerciseString isEqualToString: @""]){
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
                                                                        message: @"Exercise entry is blank"
                                                                 preferredStyle: UIAlertControllerStyleAlert];
+        
         [alert addAction: continueAction];
+        
         [self presentViewController: alert
                            animated: YES
                          completion: nil];
+        
     } else{
+        
         NSString *alertMessage = [NSString stringWithFormat: @"Add exercise '%@' for '%@' category?",
                                   exerciseString,
                                   [self selectedCategory]];
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"New Exercise Confirmation"
                                                                        message: alertMessage
                                                                 preferredStyle: UIAlertControllerStyleAlert];
         
+        
         void (^yesBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+            
             __weak TJBNewExerciseCreationVC *weakSelf = self;
+            
             [weakSelf addNewExerciseAndClearExerciseTextField];
+            
         };
         
         UIAlertAction *yesAction = [UIAlertAction actionWithTitle: @"Yes"
                                                             style: UIAlertActionStyleDefault
                                                           handler: yesBlock];
+        
         UIAlertAction *noAction = [UIAlertAction actionWithTitle: @"No"
                                                            style: UIAlertActionStyleDefault
                                                          handler: nil];
         
         [alert addAction: noAction];
+        
         [alert addAction: yesAction];
         
         [self presentViewController: alert
                            animated: YES
                          completion: nil];
+        
     }
 }
 
@@ -141,6 +161,7 @@
     
     NSString *newExerciseName = self.exerciseTextField.text;
     NSNumber *wasNewlyCreated = nil;
+    
     TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
                                                    wasNewlyCreated: &wasNewlyCreated];
     
