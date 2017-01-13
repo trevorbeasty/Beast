@@ -195,6 +195,7 @@
 		0BA8AD171E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitActiveUpdatingRowComp.xib; sourceTree = "<group>"; };
 		0BA8AD1C1E26B4F900EE10C2 /* TJBAssortedUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBAssortedUtilities.h; sourceTree = "<group>"; };
 		0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBAssortedUtilities.m; sourceTree = "<group>"; };
+		0BA8AD221E2928E900EE10C2 /* TJBCircuitTemplateExerciseComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateExerciseComponentProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -466,6 +467,7 @@
 				0BA8ACF01E25BC5300EE10C2 /* TJBCircuitTemplateVCProtocol.h */,
 				0B86FB7E1E257310000D1B5F /* TJBCircuitTemplateVC.h */,
 				0B86FB7F1E257310000D1B5F /* TJBCircuitTemplateVC.m */,
+				0BA8AD221E2928E900EE10C2 /* TJBCircuitTemplateExerciseComponentProtocol.h */,
 				0B86FB811E257FA8000D1B5F /* TJBCircuitTemplateExerciseComp.h */,
 				0B86FB821E257FA8000D1B5F /* TJBCircuitTemplateExerciseComp.m */,
 				0B86FB841E258032000D1B5F /* TJBCircuitTemplateExerciseComp.xib */,

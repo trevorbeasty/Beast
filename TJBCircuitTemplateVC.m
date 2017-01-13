@@ -44,8 +44,9 @@
 @property (nonatomic, strong) NSNumber *viewHeight;
 @property (nonatomic, strong) NSNumber *viewWidth;
 
-// keeps track of its children rows so that it can updated their values during workouts to show active progress
+// keeps track of its children rows and exercise components to facillitate delegate functionality
 
+@property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateExerciseComp *> *childExerciseComponentControllers;
 @property (nonatomic, strong) NSMutableArray<NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *> *childRowControllers;
 
 // for views
@@ -140,14 +141,19 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)viewDidLoad{
     
-    [self createSkeletonArrayForChildRowControllers];
+    // these are order dependent - the skeleton arrays need to exist before they can be populated during subview layout time
+    
+    [self createSkeletonArrayForChildExeriseAndRowControllers];
     
     [self createChildViewControllersAndLayoutViews];
+    
 }
 
 
 
-- (void)createSkeletonArrayForChildRowControllers{
+- (void)createSkeletonArrayForChildExeriseAndRowControllers{
+    
+    // child row controllers
     
     self.childRowControllers = [[NSMutableArray alloc] init];
     
@@ -158,6 +164,11 @@ static NSString * const defaultValue = @"unselected";
         NSMutableArray *array = [[NSMutableArray alloc] init];
         [self.childRowControllers addObject: array];
     }
+    
+    // child exercise controllers
+    
+    self.childExerciseComponentControllers = [[NSMutableArray alloc] init];
+    
 }
 
 - (void)createChildViewControllersAndLayoutViews{
@@ -219,6 +230,10 @@ static NSString * const defaultValue = @"unselected";
                                                                                          targetsVaryByRound: self.targetsVaryByRound
                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
                                                                                            masterController: self];
+        
+        // add the exercise component to the child view controller array
+        
+        [self.childExerciseComponentControllers addObject: vc];
         
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -482,10 +497,11 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
-- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex{
     
     NSMutableArray *array = self.childRowControllers[exerciseIndex];
     [array addObject: rowController];
+    
 }
 
 
@@ -502,10 +518,46 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)populateChildVCViewsWithUserSelectedValues{
     
-    //// for all non-default exercise, weight, reps, and rest objects, populate child VC's with the stored values
+    //// for all non-default exercise, weight, reps, and rest objects, populate child VC's with the stored values.  The class is only responsible for sending each child view it corresponding data objects.  It is the job of the child views to evaluate the passed in data objects and determine whether or not their views should be updated (based on whether the object is a default object or not)
     
+    int exerciseLimit = [self.numberOfExercises intValue];
+    int roundLimit = [self.numberOfRounds intValue];
     
+    TJBCircuitTemplateExerciseComp *currentExerciseComp;
+    TJBCircuitTemplateRowComponent *currentRowComp;
     
+    TJBChainTemplate *chain = self.chainTemplate;
+    
+    TJBExercise *currentExercise;
+    TJBNumberTypeArrayComp *currentWeight;
+    TJBNumberTypeArrayComp *currentReps;
+    TJBNumberTypeArrayComp *currentRest;
+    
+    for (int i = 0; i < exerciseLimit; i++){
+        
+        // exercise child controllers
+        
+        currentExerciseComp = self.childExerciseComponentControllers[i];
+        currentExercise = chain.exercises[i];
+        
+        [currentExerciseComp updateViewsWithUserSelectedExercise: currentExercise];
+        
+        for (int j = 0; j < roundLimit; j++){
+            
+            // row child controllers
+            
+            currentRowComp = self.childRowControllers[i][j];
+            
+            currentWeight = chain.weightArrays[i].numbers[j];
+            currentReps = chain.repsArrays[i].numbers[j];
+            currentRest = chain.targetRestTimeArrays[i].numbers[j];
+            
+            [currentRowComp updateViewsWithUserSelectedWeight: currentWeight
+                                                         reps: currentReps
+                                                         rest: currentRest];
+            
+        }
+    }
 }
 
 

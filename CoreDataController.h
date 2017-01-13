@@ -49,7 +49,7 @@ typedef enum{
 
 + (instancetype)singleton;
 
-// specific queries
+// specific queries and inquiries
 
 // the following assigns the value of TJBExercise via pass by reference because it also must report whether the object was newly created
 // if newly created, it is the job of the calling class to assign the new exercise a category
@@ -87,6 +87,11 @@ typedef enum{
 // realized chain
 
 - (TJBRealizedChain *)createAndSaveSkeletonRealizedChainForChainTemplate:(TJBChainTemplate *)chainTemplate;
+
+// checking if an object is a default object
+
+- (BOOL)exerciseIsDefaultObject:(TJBExercise *)exercise;
+- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp;
 
 
 

@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-// delegate methods
+// protocols
 
+#import "TJBCircuitTemplateExerciseComponentProtocol.h"
 #import "TJBCircuitTemplateVCProtocol.h"
+
 
 @class  TJBCircuitTemplateVC;
 
-@interface TJBCircuitTemplateExerciseComp : UIViewController
+@interface TJBCircuitTemplateExerciseComp : UIViewController <TJBCircuitTemplateExerciseComponentProtocol>
 
 - (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController;
 

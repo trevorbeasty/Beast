@@ -8,11 +8,14 @@
 
 #import "TJBCircuitTemplateExerciseComp.h"
 
-#import "TJBCircuitTemplateVC.h"
+// child and parent VC's
 
+#import "TJBCircuitTemplateVC.h"
 #import "TJBCircuitTemplateRowComponent.h"
 
+// core data
 
+#import "CoreDataController.h"
 
 // aesthetics
 
@@ -153,8 +156,7 @@
         // add the newly created row component to the master controller's child collection
         
         [self.masterController addChildRowController: rowVC
-                                    forExerciseIndex: [self.chainNumber intValue] - 1
-                                          roundIndex: i];
+                                    forExerciseIndex: [self.chainNumber intValue] - 1];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -227,7 +229,63 @@
     
 }
 
+#pragma mark - <TJBCircuitTemplateExerciseComponentProtocol>
+
+- (void)updateViewsWithUserSelectedExercise:(TJBExercise *)exercise{
+    
+    //// evaluate if the exercise is a default object.  If not, update the exercise view with the appropriate name and change the button appearance
+    
+    BOOL isDefaultExercise = [[CoreDataController singleton] exerciseIsDefaultObject: exercise];
+    
+    if (!isDefaultExercise){
+        
+        UIButton *exerciseButton = self.selectedExerciseButton;
+        
+        [exerciseButton setTitle: exercise.name
+                        forState: UIControlStateNormal];
+        [self configureButtonWithSelectedAppearance: exerciseButton];
+        
+    }
+    
+}
+
+- (void)configureButtonWithSelectedAppearance:(UIButton *)button{
+    
+    //// configure the passed in button with the 'selected' appearance
+    
+    button.backgroundColor = [UIColor whiteColor];
+    [button setTitleColor: [UIColor blackColor]
+                 forState: UIControlStateNormal];
+    
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

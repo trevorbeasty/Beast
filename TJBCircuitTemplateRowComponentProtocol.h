@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class TJBNumberTypeArrayComp;
+
 @protocol TJBCircuitTemplateRowComponentProtocol <NSObject>
+
+- (void)updateViewsWithUserSelectedWeight:(TJBNumberTypeArrayComp *)weight reps:(TJBNumberTypeArrayComp *)reps rest:(TJBNumberTypeArrayComp *)rest;
 
 @end
