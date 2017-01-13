@@ -41,7 +41,35 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     
     self.moc = [self.persistentContainer viewContext];
     
+    [self createPlaceholderExerciseIfNecessary];
+    
     return self;
+}
+
+- (void)createPlaceholderExerciseIfNecessary{
+    
+    //// I create the placeholder exercise here so that other classes to not have to ensure completeness of the object graph when using the placeholder exercise
+    
+    NSNumber *wasNewlyCreated = nil;
+    TJBExercise *placeholderExercise = [self exerciseForName: placeholderExerciseName
+                                             wasNewlyCreated: &wasNewlyCreated];
+    
+    if ([wasNewlyCreated boolValue] == YES){
+        
+        // the category for the placeholder exercise will, arbitrarily, be 'push'
+        
+        TJBExerciseCategory *pushCategory = [self exerciseCategoryForName: @"push"];
+        
+        placeholderExercise.category = pushCategory;
+        
+        [self saveContext];
+        
+    } else{
+        
+        return;
+        
+    }
+    
 }
 
 - (instancetype)init
@@ -104,7 +132,9 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     }
 }
 
-#pragma mark - Core Methods
+
+
+#pragma mark - Queries
 
 - (BOOL)realizedSetExerciseExistsForName:(NSString *)name
 {
@@ -132,9 +162,11 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     }
 }
 
-#pragma mark - Queries
-
 - (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated{
+    
+    //// returns an exercise with the passed name and indicates whether it was newly created or not
+    
+    // IMPORTANT - this class does not accept a category as an argument and thus does not assign a category to the created exercise.  Exercises are required to have a category as defined in the core data model.  It is the job of the calling class to assign a category and save the context if the exercise object was newly created
     
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
@@ -529,6 +561,11 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     // exercises
     
     NSOrderedSet *exercises = chainTemplate.exercises;
+    
+    if (!exercises){
+        
+        return NO;
+    }
 
     for (TJBExercise *exercise in exercises){
         
@@ -570,6 +607,8 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
 }
 
 - (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound{
+    
+    //// this method takes all necessary chain parameters as arguments and creates a skelton chain.  If a category is being targeted, it is given default objects for all exercises and rounds.  Default exercise objects are not assigned here
     
     NSManagedObjectContext *moc = [self moc];
     

@@ -157,32 +157,26 @@
 
 - (void)addNewExerciseAndClearExerciseTextField{
     
+    //// add the new exercise leverage CoreDataController methods.  Save the context when done
+    
     CoreDataController *coreDataController = [CoreDataController singleton];
     
     NSString *newExerciseName = self.exerciseTextField.text;
-    NSNumber *wasNewlyCreated = nil;
     
+    NSNumber *wasNewlyCreated = nil;
     TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
                                                    wasNewlyCreated: &wasNewlyCreated];
     
-    // stop the program here if the exercise already existed because it should not have made it this far to begin with if the object already existed
-    
-    BOOL exerciseAlreadyExisted = [wasNewlyCreated boolValue] == NO;
-    
-    if (exerciseAlreadyExisted){
-        
-        abort();
-        
-    }
-    
     newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
-    
-    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
     
     [[CoreDataController singleton] saveContext];
     
+    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
+    
     [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
                                                         object: nil];
+    
+    // clear the exercise text field
     
     self.exerciseTextField.text = @"";
     
@@ -196,24 +190,32 @@
 #pragma  mark - Convenience
 
 - (NSString *)selectedCategory{
+    
     NSString *selectedCategory;
     NSInteger categoryIndex = self.categorySegmentedControl.selectedSegmentIndex;
+    
     switch (categoryIndex){
         case 0:
             selectedCategory = @"Push";
             break;
+            
         case 1:
             selectedCategory = @"Pull";
             break;
+            
         case 2:
             selectedCategory = @"Legs";
             break;
+            
         case 3:
             selectedCategory = @"Other";
             break;
+            
         default:
             break;
+            
     }
+    
     return selectedCategory;
 }
 
