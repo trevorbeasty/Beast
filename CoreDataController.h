@@ -92,7 +92,7 @@ typedef enum{
 
 // checking if an object is a default object
 
-- (BOOL)exerciseIsDefaultObject:(TJBExercise *)exercise;
+- (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise;
 - (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp;
 
 

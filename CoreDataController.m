@@ -137,11 +137,11 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - Queries and Inquiries
 
-- (BOOL)exerciseIsDefaultObject:(TJBExercise *)exercise{
+- (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise{
     
     //// evaluates if the exercise object is a default object.  If so, returns YES
     
-    return [exercise.name isEqualToString: placeholderExerciseName];
+    return exercise.isPlaceholderExercise;
     
 }
 

@@ -235,7 +235,7 @@
     
     //// evaluate if the exercise is a default object.  If not, update the exercise view with the appropriate name and change the button appearance
     
-    BOOL isDefaultExercise = [[CoreDataController singleton] exerciseIsDefaultObject: exercise];
+    BOOL isDefaultExercise = [[CoreDataController singleton] exerciseIsPlaceholderExercise: exercise];
     
     if (!isDefaultExercise){
         
