@@ -237,6 +237,11 @@
     
     if (requisiteUserInputCollected){
         
+        // it has been determined that the chain template is complete, so update its corresponding property and save the context
+        
+        self.chainTemplate.isIncomplete = NO;
+        [[CoreDataController singleton] saveContext];
+        
         // alert
         
         NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
@@ -292,6 +297,13 @@
     BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
     
     if (requisiteUserInputCollected){
+        
+        // it has been determined that the chain template is complete, so update its corresponding property and save the context
+        
+        self.chainTemplate.isIncomplete = NO;
+        [[CoreDataController singleton] saveContext];
+        
+        // alert
         
         NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
                              self.chainTemplate.name];

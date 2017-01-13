@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="BeginDateComp" representedClassName="TJBBeginDateComp" syncable="YES" codeGenerationType="class">
         <attribute name="isDefaultObject" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -7,6 +7,7 @@
     </entity>
     <entity name="Chain" representedClassName="TJBChain" syncable="YES" codeGenerationType="class">
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="isIncomplete" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="numberOfExercises" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="numberOfRounds" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
@@ -50,7 +51,6 @@
     <entity name="RealizedChain" representedClassName="TJBRealizedChain" parentEntity="Chain" syncable="YES" codeGenerationType="class">
         <attribute name="firstIncompleteExerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="firstIncompleteRoundIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="isIncomplete" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="realizedChains" inverseEntity="ChainTemplate" syncable="YES"/>
         <relationship name="realizedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" inverseName="realizedChains" inverseEntity="RealizedWorkout" syncable="YES"/>
@@ -95,14 +95,14 @@
     </entity>
     <elements>
         <element name="BeginDateComp" positionX="250" positionY="-477" width="128" height="88"/>
-        <element name="Chain" positionX="-693" positionY="-324" width="128" height="150"/>
+        <element name="Chain" positionX="-693" positionY="-324" width="128" height="165"/>
         <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="165"/>
         <element name="EndDateComp" positionX="-936" positionY="-477" width="128" height="88"/>
         <element name="Exercise" positionX="-155" positionY="-63" width="128" height="105"/>
         <element name="ExerciseCategory" positionX="-396" positionY="-486" width="128" height="73"/>
         <element name="NumberArray" positionX="90" positionY="375" width="128" height="60"/>
         <element name="NumberTypeArrayComponent" positionX="304" positionY="450" width="128" height="90"/>
-        <element name="RealizedChain" positionX="-945" positionY="-300" width="128" height="163"/>
+        <element name="RealizedChain" positionX="-945" positionY="-300" width="128" height="150"/>
         <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="135"/>
         <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="90"/>
         <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>

@@ -673,6 +673,7 @@ NSString * const placeholderExerciseName = @"placeholderExercise";
     chainTemplate.numberOfRounds = [numberOfRounds intValue];
     chainTemplate.dateCreated = [NSDate date];
     chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
+    chainTemplate.isIncomplete = YES;
     
     // pertinent to ChainTemplate
     
