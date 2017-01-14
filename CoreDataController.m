@@ -393,7 +393,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         // date arrays
         
-        NSOrderedSet *beginDateArrays = realizedChain.setBegindateArrays;
+        NSOrderedSet *beginDateArrays = realizedChain.setBeginDateArrays;
         NSOrderedSet *endDateArrays = realizedChain.setEndDateArrays;
             
         for (SetBeginDateArray *array in beginDateArrays){
@@ -891,7 +891,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     // begin and end dates
     
     NSMutableOrderedSet *setBeginDateArrays = [[NSMutableOrderedSet alloc] init];
-    realizedChain.setBegindateArrays = setBeginDateArrays;
+    realizedChain.setBeginDateArrays = setBeginDateArrays;
     
     NSMutableOrderedSet *setEndDateArrays = [[NSMutableOrderedSet alloc] init];
     realizedChain.setEndDateArrays = setEndDateArrays;

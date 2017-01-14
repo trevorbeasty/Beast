@@ -636,7 +636,7 @@ static NSString * const defaultValue = @"default value";
     
     // begin and end set dates
     
-    chain.setBegindateArrays[exerciseIndex].dates[roundIndex].value = self.impliedBeginDate;
+    chain.setBeginDateArrays[exerciseIndex].dates[roundIndex].value = self.impliedBeginDate;
     
     chain.setEndDateArrays[exerciseIndex].dates[roundIndex].value = self.impliedEndDate;
     

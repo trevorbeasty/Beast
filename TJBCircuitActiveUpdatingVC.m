@@ -24,6 +24,10 @@
 #import "SetBeginDateArray+CoreDataProperties.h"
 #import "SetEndDateArray+CoreDataProperties.h"
 
+// utility
+
+#import "TJBAssortedUtilities.h"
+
 @interface TJBCircuitActiveUpdatingVC ()
 
 // core
@@ -190,6 +194,9 @@
         NSOrderedSet <TJBNumberTypeArrayComp *> *repsData = chain.repsArrays[i].numbers;
         NSOrderedSet <TJBBeginDateComp *> *setBeginDatesData = chain.setBeginDateArrays[i].dates;
         NSOrderedSet <TJBEndDateComp *> *setEndDatesData = chain.setEndDateArrays[i].dates;
+        NSNumber *numberOfExercises = [NSNumber numberWithInt: chain.numberOfExercises];
+        NSOrderedSet <TJBEndDateComp *> *previousExerciseSetEndDatesData = [TJBAssortedUtilities previousExerciseSetEndDatesForRealizedChain: chain
+                                                                                                                    currentExerciseIndex: i];
         
         // create the exercise component
         
@@ -201,8 +208,9 @@
                                                                                                              weightData: weightData
                                                                                                                repsData: repsData
                                                                                                       setBeginDatesData: setBeginDatesData
-                                                                                                        setEndDatesData: setEndDatesData];
-        
+                                                                                                        setEndDatesData: setEndDatesData
+                                                                                        previousExerciseSetEndDatesData: previousExerciseSetEndDatesData
+                                                                                                      numberOfExercises: numberOfExercises];
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
         
