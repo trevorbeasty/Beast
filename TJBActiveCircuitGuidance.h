@@ -15,6 +15,6 @@
 
 @interface TJBActiveCircuitGuidance : UIViewController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainSkeletonFromChainTemplate:(TJBRealizedChain *)realizedChainSkeleton;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChainSkeleton wasRestored:(BOOL)wasRestored;
 
 @end
