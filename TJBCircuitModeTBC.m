@@ -38,7 +38,8 @@
     // active circuit guidance VC
     
     TJBActiveCircuitGuidance *activeGuidance = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
-                                                                realizedChainSkeletonFromChainTemplate: realizedChainSkeleton];
+                                                             realizedChainCorrespondingToChainTemplate: realizedChainSkeleton
+                                                                                           wasRestored: NO];
     
     [activeGuidance.tabBarItem setTitle: @"Guide"];
     
