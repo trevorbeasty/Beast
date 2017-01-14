@@ -231,14 +231,14 @@
 			name = "Template Configuration";
 			sourceTree = "<group>";
 		};
-		0B26199F1E0DC94B006FB2D9 /* Circuit - Active Guidance */ = {
+		0B26199F1E0DC94B006FB2D9 /* Active Guidance */ = {
 			isa = PBXGroup;
 			children = (
 				0B2619A01E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.h */,
 				0B2619A11E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.m */,
 				0B2619A21E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.xib */,
 			);
-			name = "Circuit - Active Guidance";
+			name = "Active Guidance";
 			sourceTree = "<group>";
 		};
 		0B517BB21DF77C20009981F9 = {
@@ -347,7 +347,7 @@
 				0BA8AD071E26753500EE10C2 /* CircuitActiveUpdating */,
 				0BA8AD1B1E2695F400EE10C2 /* Tab Bar */,
 				0B86FB6E1E116360000D1B5F /* New or Existing Selection  */,
-				0B26199F1E0DC94B006FB2D9 /* Circuit - Active Guidance */,
+				0B26199F1E0DC94B006FB2D9 /* Active Guidance */,
 			);
 			name = "Circuit Mode";
 			sourceTree = "<group>";

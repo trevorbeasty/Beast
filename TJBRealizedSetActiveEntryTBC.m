@@ -69,31 +69,40 @@
     TJBRealizedSetActiveEntryTBC *tbc = [[TJBRealizedSetActiveEntryTBC alloc] initWithoutChildViewControllers];
     
     // for restoration
+    
     tbc.restorationIdentifier = @"TJBRealizedSetActiveEntryTBC";
     tbc.restorationClass = [TJBRealizedSetActiveEntryTBC class];
     
     return tbc;
+    
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
     [super encodeRestorableStateWithCoder: coder];
     
     [coder encodeInteger: self.selectedIndex
                   forKey: @"selectedIndex"];
     
     // child VC's
+    
     [coder encodeObject: self.viewControllers[0]
                  forKey: @"vc1"];
+    
     [coder encodeObject: self.viewControllers[1]
                  forKey: @"vc2"];
+    
     [coder encodeObject: self.viewControllers[2]
                  forKey: @"vc3"];
+    
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
     [super decodeRestorableStateWithCoder: coder];
     
     // child VC's
+    
     TJBRealizedSetActiveEntryVC *vc1 = [coder decodeObjectForKey: @"vc1"];
     [vc1.tabBarItem setTitle: @"Active Entry"];
     
@@ -108,9 +117,11 @@
     [self setViewControllers: @[vc1,
                                 vc2,
                                 vc3]];
+    
     self.tabBar.translucent = NO;
     
     self.selectedIndex = [coder decodeIntegerForKey: @"selectedIndex"];
+    
 }
 
 @end

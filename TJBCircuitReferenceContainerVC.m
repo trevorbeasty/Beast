@@ -10,7 +10,7 @@
 
 // core data
 
-#import "TJBChainTemplate+CoreDataProperties.h"
+#import "CoreDataController.h"
 
 // child VC
 
@@ -20,7 +20,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBCircuitReferenceContainerVC ()
+@interface TJBCircuitReferenceContainerVC () <UIViewControllerRestoration>
 
 // IBOutlet
 
@@ -81,8 +81,67 @@
     
 }
 
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    //// this class only requires a chain template as input to populate a thereafter static view.  Thus, this method must simply instantiate the VC with the appropriate chain template
+    
+    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
+    
+    TJBChainTemplate *chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
+    
+    TJBCircuitReferenceContainerVC *vc = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
+    
+    return vc;
+    
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    //// encode the string of the chain template so that it can be retrieved later
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    [coder encodeObject: self.chainTemplate.uniqueID
+                 forKey: @"chainTemplateUniqueID"];
+    
+}
+
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
