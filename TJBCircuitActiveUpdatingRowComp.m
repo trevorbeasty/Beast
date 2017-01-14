@@ -13,7 +13,7 @@
 
 // core
 
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
+@property (nonatomic, strong) NSNumber *chainNumber;
 @property (nonatomic, strong) NSNumber *roundNumber;
 @property (nonatomic, strong) NSNumber *weightData;
 @property (nonatomic, strong) NSNumber *repsData;
@@ -35,11 +35,11 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized{
+- (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized{
     
     self = [super init];
     
-    self.targetsVaryByRound = targetsVaryByRound;
+    self.chainNumber = chainNumber;
     self.roundNumber = roundNumber;
     self.weightData = weightData;
     self.repsData = repsData;

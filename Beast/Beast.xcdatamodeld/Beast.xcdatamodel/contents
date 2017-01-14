@@ -55,7 +55,7 @@
         <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="realizedChains" inverseEntity="ChainTemplate" syncable="YES"/>
         <relationship name="realizedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" inverseName="realizedChains" inverseEntity="RealizedWorkout" syncable="YES"/>
-        <relationship name="setBegindateArrays" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SetBeginDateArray" inverseName="realizedChain" inverseEntity="SetBeginDateArray" syncable="YES"/>
+        <relationship name="setBeginDateArrays" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SetBeginDateArray" inverseName="realizedChain" inverseEntity="SetBeginDateArray" syncable="YES"/>
         <relationship name="setEndDateArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SetEndDateArray" inverseName="realizedChain" inverseEntity="SetEndDateArray" syncable="YES"/>
     </entity>
     <entity name="RealizedSet" representedClassName="TJBRealizedSet" syncable="YES" codeGenerationType="class">
@@ -76,7 +76,7 @@
     </entity>
     <entity name="SetBeginDateArray" representedClassName="SetBeginDateArray" syncable="YES" codeGenerationType="class">
         <relationship name="dates" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="BeginDateComp" inverseName="owningArray" inverseEntity="BeginDateComp" syncable="YES"/>
-        <relationship name="realizedChain" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="setBegindateArrays" inverseEntity="RealizedChain" syncable="YES"/>
+        <relationship name="realizedChain" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="setBeginDateArrays" inverseEntity="RealizedChain" syncable="YES"/>
     </entity>
     <entity name="SetEndDateArray" representedClassName="SetEndDateArray" syncable="YES" codeGenerationType="class">
         <relationship name="dates" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="EndDateComp" inverseName="owningArray" inverseEntity="EndDateComp" syncable="YES"/>

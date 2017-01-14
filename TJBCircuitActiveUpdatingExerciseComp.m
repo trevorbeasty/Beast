@@ -14,10 +14,7 @@
 
 // core data
 
-#import "TJBNumberTypeArrayComp+CoreDataProperties.h"
-#import "TJBExercise+CoreDataProperties.h"
-#import "TJBBeginDateComp+CoreDataProperties.h"
-#import "TJBEndDateComp+CoreDataProperties.h"
+#import "CoreDataController.h"
 
 // aesthetics
 
@@ -25,20 +22,17 @@
 
 @interface TJBCircuitActiveUpdatingExerciseComp ()
 
-
 // core
 
 @property (nonatomic, strong) NSNumber *numberOfRounds;
-@property (nonatomic, strong) NSNumber *numberOfExercises;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
 @property (nonatomic, strong) NSNumber *chainNumber;
 @property (nonatomic, strong) TJBExercise *exercise;
-@property (nonatomic, strong) NSNumber *maxExerciseIndexToFill;
-@property (nonatomic, strong) NSNumber *maxRoundIndexToFill;
+@property (nonatomic, strong) NSNumber *firstIncompleteExerciseIndex;
+@property (nonatomic, strong) NSNumber *firstIncompleteRoundIndex;
 @property (nonatomic, strong) NSOrderedSet <TJBNumberTypeArrayComp *> *weightData;
 @property (nonatomic, strong) NSOrderedSet <TJBNumberTypeArrayComp *> *repsData;
-@property (nonatomic, strong) NSOrderedSet <TJBBeginDateComp *> *setBeginDates;
-@property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *setEndDates;
+@property (nonatomic, strong) NSOrderedSet <TJBBeginDateComp *> *setBeginDatesData;
+@property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *setEndDatesData;
 
 // IBOutlets
 
@@ -59,22 +53,19 @@
 
 @implementation TJBCircuitActiveUpdatingExerciseComp
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData setBeginDates:(NSOrderedSet<TJBBeginDateComp *> *)setBeginDates setEndDates:(NSOrderedSet<TJBEndDateComp *> *)setEndDates maxExerciseIndexToFill:(NSNumber *)maxExerciseIndexToFill maxRoundIndexToFill:(NSNumber *)maxRoundIndexToFill numberOfExercises:(NSNumber *)numberOfExercises{
-    
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet<TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)setEndDatesData{
+
     self = [super init];
     
-    self.numberOfExercises = numberOfExercises;
     self.numberOfRounds = numberOfRounds;
-    self.targetsVaryByRound = targetsVaryByRound;
     self.chainNumber = chainNumber;
     self.exercise = exercise;
     self.weightData = weightData;
     self.repsData = repsData;
-    self.setBeginDates = setBeginDates;
-    self.setEndDates = setEndDates;
-    self.maxExerciseIndexToFill = maxExerciseIndexToFill;
-    self.maxRoundIndexToFill = maxRoundIndexToFill;
-    
+    self.setBeginDatesData = setBeginDatesData;
+    self.setEndDatesData = setEndDatesData;
+    self.firstIncompleteExerciseIndex = firstIncompleteExerciseIndex;
+    self.firstIncompleteRoundIndex = firstIncompleteRoundIndex;
     
     return self;
 }
@@ -142,13 +133,13 @@
     self.titleLabel.text = titleString;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
+    
     [self configureViewAesthetics];
     
     [self configureViewDataAndFunctionality];
     
-    //// major functionality includeing row child VC's and layout constraints
+    //// major functionality including row child VC's and layout constraints
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
@@ -172,67 +163,69 @@
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", thinLineLabel]];
     
+    // used in determining data to pass to row controllers
+    
+    int currentExerciseIndex = [self.chainNumber intValue] - 1;
+    
     for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++){
         
+        //// derive the inputs for creating the row component controller
         
-        // need to check to the completeness of the realized set (via passed in variables) when assigning following NSNumbers
+        NSNumber *roundNumber = [NSNumber numberWithInt: i + 1];
+        NSNumber *chainNumber = self.chainNumber;
         
-        NSNumber *setHasBeeRealized;
-        NSNumber *weight;
-        NSNumber *reps;
-        NSNumber *rest = nil;
-        NSNumber *setLength;
+        // determine if the set has been realized. If so, give parameters appropriate values.  If not, give parameters nil value
         
-//        BOOL pastMaxRoundIndex = i > [self.maxRoundIndexToFill intValue];
-        BOOL atMaxRoundIndex = i == [self.maxRoundIndexToFill intValue];
-        BOOL atLessThanMaxRoundIndex = i < [self.maxRoundIndexToFill intValue];
-        BOOL pastMaxExeriseIndex = [self.chainNumber intValue] - 1 > [self.maxExerciseIndexToFill intValue];
+        NSNumber *weightData;
+        NSNumber *repsData;
+        NSNumber *setLengthData;
+        NSNumber *setHasBeenRealized;
         
-        // need to derive the appropriate rest and set length values if the set has been realized
+        int firstIncompleteExerciseIndex = [self.firstIncompleteExerciseIndex intValue];
+        int firstIncompleteRoundIndex = [self.firstIncompleteRoundIndex intValue];
         
-        if (atLessThanMaxRoundIndex || (atMaxRoundIndex && !pastMaxExeriseIndex) ){
+        BOOL roundIndexIsLessThanFirstIncompleteRoundIndex = i < firstIncompleteRoundIndex;
+        BOOL atFirstIncompleteRound = i == firstIncompleteRoundIndex;
+        BOOL atExerciseIndexLessThanFirstIncompleteExerciseIndex = currentExerciseIndex < firstIncompleteExerciseIndex;
+        
+        BOOL roundHasBeenRealized = (roundIndexIsLessThanFirstIncompleteRoundIndex || (atFirstIncompleteRound && atExerciseIndexLessThanFirstIncompleteExerciseIndex));
+        
+        if (roundHasBeenRealized){
             
-            // derive the value for rest.  This involves two separate indexes and requires some logic to grab the appropriate previous index
+            // the round has been realized, so derive appropriate data values
             
-//            BOOL isFirstExercise = [self.chainNumber intValue] - 1 == 0;
-//            
-//            if (isFirstExercise){
-//                
-//            }
+            weightData = [NSNumber numberWithFloat: self.weightData[i].value];
+            repsData = [NSNumber numberWithFloat: self.repsData[i].value];
             
- 
+            NSDate *setBeginDate = self.setBeginDatesData[i].value;
+            NSDate *setEndDate = self.setEndDatesData[i].value;
+            
+            int setLengthAsInt = [setEndDate timeIntervalSinceDate: setBeginDate];
+            setLengthData = [NSNumber numberWithInt: setLengthAsInt];
             
             
-            // derive the value for set length
             
-            NSDate *earlierSetLengthDate = self.setBeginDates[i].value;
-            NSDate *laterSetLengthDate = self.setEndDates[i].value;
-            int setLengthAsInt = [laterSetLengthDate timeIntervalSinceDate: earlierSetLengthDate];
-            setLength = [NSNumber numberWithInt: setLengthAsInt];
             
-            // other NSNumbers, whose values can be directly grabbed
             
-            setHasBeeRealized = [NSNumber numberWithBool: YES];
-            weight = [NSNumber numberWithFloat: self.weightData[i].value];
-            reps = [NSNumber numberWithFloat: self.repsData[i].value];
-
+    
+            
         } else{
             
-            setHasBeeRealized = [NSNumber numberWithBool: NO];
-            weight = nil;
-            reps = nil;
-            rest = nil;
-            setLength = nil;
+            // assign nil values
             
         }
         
-        TJBCircuitActiveUpdatingRowComp *rowVC = [[TJBCircuitActiveUpdatingRowComp alloc] initWithTargetsVaryByRound: self.targetsVaryByRound
-                                                                                                         roundNumber: [NSNumber numberWithInt: i + 1]
-                                                                                                          weightData: weight
-                                                                                                            repsData: reps
-                                                                                                            restData: rest
-                                                                                                       setLengthData: setLength
-                                                                                                  setHasBeenRealized: setHasBeeRealized];
+
+
+        //// create the row component controller
+        
+        TJBCircuitActiveUpdatingRowComp *rowVC = [[TJBCircuitActiveUpdatingRowComp alloc] initWithRoundNumber:
+                                                                                                  chainNumber:
+                                                                                                   weightData:
+                                                                                                     repsData:
+                                                                                                     restData:
+                                                                                                setLengthData:
+                                                                                           setHasBeenRealized:
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

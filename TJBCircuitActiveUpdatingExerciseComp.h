@@ -17,6 +17,6 @@
 
 @interface TJBCircuitActiveUpdatingExerciseComp : UIViewController
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData setBeginDates:(NSOrderedSet<TJBBeginDateComp *> *)setBeginDates setEndDates:(NSOrderedSet<TJBEndDateComp *> *)setEndDates maxExerciseIndexToFill:(NSNumber *)maxExerciseIndexToFill maxRoundIndexToFill:(NSNumber *)maxRoundIndexToFill numberOfExercises:(NSNumber *)numberOfExercises;
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet <TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet <TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet <TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet <TJBEndDateComp *> *)setEndDatesData;
 
 @end

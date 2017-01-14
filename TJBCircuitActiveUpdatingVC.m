@@ -29,6 +29,7 @@
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+
 @property (nonatomic, strong) NSNumber *viewHeight;
 @property (nonatomic, strong) NSNumber *viewWidth;
 
@@ -36,7 +37,7 @@
 
 @property (nonatomic, strong) NSNumber *numberOfExercises;
 @property (nonatomic, strong) NSNumber *numberOfRounds;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
+
 @property (nonatomic, strong) NSString *realizedChainUniqueID;
 
 @property (nonatomic, strong) NSNumber *firstIncompleteExerciseIndex;
@@ -77,13 +78,14 @@
     
     // set IV's derived from chain template
     
-    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
+    TJBRealizedChain *realizedChain = self.realizedChain;
     
-    self.numberOfRounds = [NSNumber numberWithInt: chainTemplate.numberOfRounds];
-    self.numberOfExercises = [NSNumber numberWithInt: chainTemplate.numberOfExercises];
-    self.targetsVaryByRound = [NSNumber numberWithBool: chainTemplate.targetsVaryByRound];
-    
+    self.numberOfRounds = [NSNumber numberWithInt: realizedChain.numberOfRounds];
+    self.numberOfExercises = [NSNumber numberWithInt: realizedChain.numberOfExercises];
     self.realizedChainUniqueID = self.realizedChain.uniqueID;
+    
+    self.firstIncompleteRoundIndex = [NSNumber numberWithInt: realizedChain.firstIncompleteRoundIndex];
+    self.firstIncompleteExerciseIndex = [NSNumber numberWithInt: realizedChain.firstIncompleteExerciseIndex];
     
 }
 
@@ -174,19 +176,32 @@
     [verticalLayoutConstraintsString setString: @"V:|-"];
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
-    
         
-        TJBCircuitActiveUpdatingExerciseComp *vc = [[TJBCircuitActiveUpdatingExerciseComp alloc] initWithNumberOfRounds: self.numberOfRounds
-                                                                                                     targetsVaryByRound: self.targetsVaryByRound
-                                                                                                            chainNumber: [NSNumber numberWithInt: i + 1]
-                                                                                                               exercise: self.realizedChain.chainTemplate.exercises[i]
-                                                                                                             weightData: self.realizedChain.weightArrays[i].numbers
-                                                                                                               repsData: self.realizedChain.repsArrays[i].numbers
-                                                                                                          setBeginDates: self.realizedChain.setBegindateArrays[i].dates
-                                                                                                            setEndDates: self.realizedChain.setEndDateArrays[i].dates
-                                                                                                 maxExerciseIndexToFill: [NSNumber numberWithInt: self.realizedChain.firstIncompleteExerciseIndex - 1]
-                                                                                                    maxRoundIndexToFill: [NSNumber numberWithInt: self.realizedChain.firstIncompleteRoundIndex - 1]
-                                                                                                      numberOfExercises: self.numberOfExercises];
+        // create the ordered sets with realized chain data and other data that will be fed into the exercise component
+        
+        TJBRealizedChain *chain = self.realizedChain;
+        
+        NSNumber *numberOfRounds = [NSNumber numberWithInt: chain.numberOfRounds];
+        NSNumber *chainNumber = [NSNumber numberWithInt: i + 1];
+        TJBExercise *exercise = chain.exercises[i];
+        NSNumber *firstIncompleteExerciseIndex = [NSNumber numberWithInt: chain.firstIncompleteExerciseIndex];
+        NSNumber *firstIncompleteRoundIndex = [NSNumber numberWithInt: chain.firstIncompleteRoundIndex];
+        NSOrderedSet <TJBNumberTypeArrayComp *> *weightData = chain.weightArrays[i].numbers;
+        NSOrderedSet <TJBNumberTypeArrayComp *> *repsData = chain.repsArrays[i].numbers;
+        NSOrderedSet <TJBBeginDateComp *> *setBeginDatesData = chain.setBeginDateArrays[i].dates;
+        NSOrderedSet <TJBEndDateComp *> *setEndDatesData = chain.setEndDateArrays[i].dates;
+        
+        // create the exercise component
+        
+        TJBCircuitActiveUpdatingExerciseComp *vc = [[TJBCircuitActiveUpdatingExerciseComp alloc] initWithNumberOfRounds: numberOfRounds
+                                                                                                            chainNumber: chainNumber
+                                                                                                               exercise: exercise
+                                                                                           firstIncompleteExerciseIndex: firstIncompleteExerciseIndex
+                                                                                              firstIncompleteRoundIndex: firstIncompleteRoundIndex
+                                                                                                             weightData: weightData
+                                                                                                               repsData: repsData
+                                                                                                      setBeginDatesData: setBeginDatesData
+                                                                                                        setEndDatesData: setEndDatesData];
         
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
