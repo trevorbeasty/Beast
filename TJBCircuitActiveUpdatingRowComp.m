@@ -8,6 +8,10 @@
 
 #import "TJBCircuitActiveUpdatingRowComp.h"
 
+// stopwatch
+
+#import "TJBStopwatch.h"
+
 @interface TJBCircuitActiveUpdatingRowComp ()
 
 
@@ -48,6 +52,7 @@
     self.setHasBeenRealized = setHasBeenRealized;
     
     return self;
+    
 }
 
 
@@ -59,32 +64,78 @@
     [self configureViewAestheticsAndFunctionality];
     
     [self configureViewData];
+    
 }
 
 - (void)configureViewData{
     
     void (^deleteTitle)(UIButton *) = ^(UIButton *button){
+        
         [button setTitle: @""
                 forState: UIControlStateNormal];
+        
     };
     
-    [self.weightButton setTitle: [self.weightData stringValue]
-                       forState: UIControlStateNormal];
+    //// if the set has been realized, update the views with the appropriate information
     
-    [self.repsButton setTitle: [self.repsData stringValue]
-                     forState: UIControlStateNormal];
+    BOOL setHasBeenRealized = [self.setHasBeenRealized boolValue];
     
-    deleteTitle(self.restButton);
-    
-    [self.setLengthButton setTitle: [self.setLengthData stringValue]
-                          forState: UIControlStateNormal];
-    
+    if (setHasBeenRealized) {
+        
+        TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+        
+        // weight
+        
+        [self.weightButton setTitle: [self.weightData stringValue]
+                           forState: UIControlStateNormal];
+        
+        // reps
+        
+        [self.repsButton setTitle: [self.repsData stringValue]
+                         forState: UIControlStateNormal];
+        
+        // rest
+        
+        if (self.restData){
+            
+            NSString *restTitle = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [self.restData intValue]];
+            
+            [self.restButton setTitle: restTitle
+                             forState: UIControlStateNormal];
+            
+        }
+        
+        // set length
+        
+        NSString *setLengthTitle = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [self.setLengthData intValue]];
+        
+        [self.setLengthButton setTitle: setLengthTitle
+                              forState: UIControlStateNormal];
+        
+        
+    } else{
+
+        // delete all button titles
+        
+        NSArray *buttons  = @[self.weightButton,
+                              self.repsButton,
+                              self.restButton,
+                              self.setLengthButton];
+        
+        for (UIButton *button in buttons){
+            
+            deleteTitle(button);
+            
+        }
+        
+    }
 }
 
 - (void)configureViewAestheticsAndFunctionality{
     
-    // round label
+    //// configure the views according to the passed in data.  If rest data is nil, then show an empty string as the button's title
     
+    // round label
 
     self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
     
@@ -98,8 +149,10 @@
     for (UIButton *button in buttons){
         
         button.backgroundColor = [UIColor whiteColor];
+        
         [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
+        
         button.enabled = NO;
         
     }
