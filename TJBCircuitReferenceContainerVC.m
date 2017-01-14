@@ -45,6 +45,15 @@
     return self;
 }
 
+- (void)setRestorationProperties{
+    
+    //// set restoration class and identifier
+    
+    self.restorationClass = [TJBCircuitReferenceContainerVC class];
+    self.restorationIdentifier = @"TJBCircuitReferenceContainerVC";
+    
+}
+
 #pragma  mark - View Life Cycle
 
 - (void)viewDidLoad{

@@ -39,6 +39,9 @@
 @property (nonatomic, strong) NSNumber *targetsVaryByRound;
 @property (nonatomic, strong) NSString *realizedChainUniqueID;
 
+@property (nonatomic, strong) NSNumber *firstIncompleteExerciseIndex;
+@property (nonatomic, strong) NSNumber *firstIncompleteRoundIndex;
+
 // for programmatic layout constraints
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;

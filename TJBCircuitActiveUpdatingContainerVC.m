@@ -14,13 +14,13 @@
 
 // core data
 
-#import "TJBRealizedChain+CoreDataProperties.h"
+#import "CoreDataController.h"
 
 // aesthetics
 
 #import "TJBAestheticsController.h"
 
-@interface TJBCircuitActiveUpdatingContainerVC ()
+@interface TJBCircuitActiveUpdatingContainerVC () <UIViewControllerRestoration>
 
 // core
 
@@ -44,7 +44,20 @@
     
     self.realizedChain = realizedChain;
     
+    // for restoration
+    
+    [self setRestorationProperties];
+    
     return self;
+}
+
+- (void)setRestorationProperties{
+    
+    //// set the restoration identifier and class
+    
+    self.restorationClass = [TJBCircuitActiveUpdatingContainerVC class];
+    self.restorationIdentifier = @"TJBCircuitActiveUpdatingContainerVC";
+    
 }
 
 #pragma  mark - View Life Cycle
@@ -82,7 +95,59 @@
     
 }
 
+#pragma mark - <UIViewControllerRestoration>
+
+//// I should consider leveraging the first incomplete exercise and round properties of the realized chain.  This way the views will be layed out correctly the first time and restoration will only require that I provide the appropriate realized chain
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    //// this method will just create the class with the appropriate realized chain just as in normal, initial instantiation
+    
+    NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
+    
+    TJBRealizedChain *realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
+    
+    TJBCircuitActiveUpdatingContainerVC *vc = [[TJBCircuitActiveUpdatingContainerVC alloc] initWithRealizedChain: realizedChain];
+    
+    return vc;
+    
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    //// just encode the realized chain unique ID
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    [coder encodeObject: self.realizedChain.uniqueID
+                 forKey: @"realizedChainUniqueID"];
+    
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
