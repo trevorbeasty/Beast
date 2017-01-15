@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+// protocol
+
+#import "TJBCircuitActiveUpdatingVCProtocol.h"
+
 // core data
 
 @class TJBRealizedChain;
 
-@interface TJBCircuitActiveUpdatingVC : UIViewController
+@interface TJBCircuitActiveUpdatingVC : UIViewController <TJBCircuitActiveUpdatingVCProtocol>
 
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth;
 

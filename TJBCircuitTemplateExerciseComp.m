@@ -65,6 +65,7 @@
     self.masterController = masterController;
     
     return self;
+    
 }
 
 #pragma mark - View Life Cycle

@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+// protocol
 
-@interface TJBCircuitActiveUpdatingRowComp : UIViewController
+#import "TJBCircuitActiveUpdatingRowCompProtocol.h"
+
+@interface TJBCircuitActiveUpdatingRowComp : UIViewController <TJBCircuitActiveUpdatingRowCompProtocol>
 
 - (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized isFirstExerciseInFirstRound:(NSNumber *)isFirstExerciseInFirstRound;
 

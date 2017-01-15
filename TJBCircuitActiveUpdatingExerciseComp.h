@@ -15,8 +15,13 @@
 @class TJBBeginDateComp;
 @class TJBEndDateComp;
 
+// master controller
+
+#import "TJBCircuitActiveUpdatingVCProtocol.h"
+@class TJBCircuitActiveUpdatingVC;
+
 @interface TJBCircuitActiveUpdatingExerciseComp : UIViewController
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet <TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet <TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet <TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet <TJBEndDateComp *> *)setEndDatesData previousExerciseSetEndDatesData:(NSOrderedSet <TJBEndDateComp *> *)previousExerciseSetEndDatesData numberOfExercises:(NSNumber *)numberOfExercises;
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet <TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet <TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet <TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet <TJBEndDateComp *> *)setEndDatesData previousExerciseSetEndDatesData:(NSOrderedSet <TJBEndDateComp *> *)previousExerciseSetEndDatesData numberOfExercises:(NSNumber *)numberOfExercises masterController:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)masterController;
 
 @end

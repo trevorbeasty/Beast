@@ -8,9 +8,10 @@
 
 #import "TJBCircuitActiveUpdatingVC.h"
 
-// child VC
+// child VC's
 
 #import "TJBCircuitActiveUpdatingExerciseComp.h"
+#import "TJBCircuitActiveUpdatingRowComp.h"
 
 // core data
 
@@ -23,6 +24,10 @@
 #import "TJBTargetRestTimeArray+CoreDataProperties.h"
 #import "SetBeginDateArray+CoreDataProperties.h"
 #import "SetEndDateArray+CoreDataProperties.h"
+
+// protocols
+
+#import "TJBCircuitActiveUpdatingRowCompProtocol.h"
 
 // utility
 
@@ -51,6 +56,10 @@
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
+// keeps track of its children rows and exercise components to facillitate delegate functionality
+
+@property (nonatomic, strong) NSMutableArray<NSMutableArray <TJBCircuitActiveUpdatingRowComp<TJBCircuitActiveUpdatingRowCompProtocol> *> *> *childRowControllers;
+
 @end
 
 @implementation TJBCircuitActiveUpdatingVC
@@ -67,6 +76,10 @@
     self.viewHeight = viewHeight;
     self.viewWidth = viewWidth;
     
+    // instantiate childRowControllers in preparation for adding objects during view layout
+    
+    [self createSkeletonChildRowControllersArray];
+    
     // set derived instance variables
     
     [self setDerivedInstanceVariables];
@@ -76,6 +89,23 @@
     [self registerForRelevantNotifications];
     
     return self;
+}
+
+- (void)createSkeletonChildRowControllersArray{
+    
+    //// create a skeleton array of arrays for childRowControllers so that objects can be added during view layout
+    
+    int exerciseLimit = [self.numberOfExercises intValue];
+    
+    NSMutableArray *metaArray = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < exerciseLimit; i++){
+        
+        NSMutableArray *subArray = [[NSMutableArray alloc] init];
+        
+        [metaArray addObject: subArray];
+        
+    }
 }
 
 - (void)setDerivedInstanceVariables{
@@ -226,7 +256,8 @@
                                                                                                       setBeginDatesData: setBeginDatesData
                                                                                                         setEndDatesData: setEndDatesData
                                                                                         previousExerciseSetEndDatesData: previousExerciseSetEndDatesData
-                                                                                                      numberOfExercises: numberOfExercises];
+                                                                                                      numberOfExercises: numberOfExercises
+                                                                                                       masterController: self];
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -283,6 +314,16 @@
         
         [child didMoveToParentViewController: self];
     }
+}
+
+#pragma mark - <TJBCircuitActiveUpdatingVCProtocol>
+
+- (void)addChildRowController:(TJBCircuitActiveUpdatingRowComp<TJBCircuitActiveUpdatingRowCompProtocol> *)rowController forExerciseIndex:(int)exerciseIndex{
+    
+    //// add the child row controller for specified exercise index.  Row controllers should be passed-in in the correct order so that it is not necessary to specify the round in this method
+    
+    [self.childRowControllers[exerciseIndex] addObject: rowController];
+    
 }
 
 @end

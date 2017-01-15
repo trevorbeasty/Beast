@@ -24,6 +24,15 @@
 
 #import "TJBAssortedUtilities.h"
 
+// master controller
+
+#import "TJBCircuitActiveUpdatingVC.h"
+
+// row VC protocol
+
+#import "TJBCircuitActiveUpdatingRowCompProtocol.h"
+
+
 @interface TJBCircuitActiveUpdatingExerciseComp ()
 
 // core
@@ -39,6 +48,7 @@
 @property (nonatomic, strong) NSOrderedSet <TJBBeginDateComp *> *setBeginDatesData;
 @property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *setEndDatesData;
 @property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *previousExerciseSetEndDatesData;
+@property (nonatomic, strong) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *masterController;
 
 // IBOutlets
 
@@ -59,7 +69,7 @@
 
 @implementation TJBCircuitActiveUpdatingExerciseComp
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet<TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)setEndDatesData previousExerciseSetEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)previousExerciseSetEndDatesData numberOfExercises:(NSNumber *)numberOfExercises{
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet<TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)setEndDatesData previousExerciseSetEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)previousExerciseSetEndDatesData numberOfExercises:(NSNumber *)numberOfExercises masterController:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)masterController{
 
     self = [super init];
     
@@ -74,6 +84,7 @@
     self.firstIncompleteRoundIndex = firstIncompleteRoundIndex;
     self.numberOfExercises = numberOfExercises;
     self.previousExerciseSetEndDatesData = previousExerciseSetEndDatesData;
+    self.masterController = masterController;
     
     return self;
 }
@@ -252,7 +263,7 @@
     
         //// create the row component controller
         
-        TJBCircuitActiveUpdatingRowComp *rowVC = [[TJBCircuitActiveUpdatingRowComp alloc] initWithRoundNumber: roundNumber
+        TJBCircuitActiveUpdatingRowComp <TJBCircuitActiveUpdatingRowCompProtocol> *rowVC = [[TJBCircuitActiveUpdatingRowComp alloc] initWithRoundNumber: roundNumber
                                                                                                   chainNumber: chainNumber
                                                                                                    weightData: weightData
                                                                                                      repsData: repsData
@@ -260,6 +271,15 @@
                                                                                                 setLengthData: setLengthData
                                                                                            setHasBeenRealized: setHasBeenRealized
                                                                                   isFirstExerciseInFirstRound: isFirstExerciseInFirstRound];
+        
+        // use the master controller's protocol to add the just created row controller to its child row controllers property
+        
+        int exerciseIndex = [self.chainNumber intValue] - 1;
+        
+        [self.masterController addChildRowController: rowVC
+                                    forExerciseIndex: exerciseIndex];
+        
+        // view layout
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
