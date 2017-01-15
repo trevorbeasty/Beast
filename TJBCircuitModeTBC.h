@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class TJBChainTemplate;
+@class TJBRealizedChain;
 
 @interface TJBCircuitModeTBC : UITabBarController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+- (instancetype)initWithNewRealizedChainAndChainTemplateFromChainTemplate:(TJBChainTemplate *)chainTemplate;
+
+//- (instancetype)initWithPartiallyCompletedRealizedChain:(TJBRealizedChain *)realizedChain andChainTemplate:(TJBChainTemplate *)chainTemplate;
 
 @end

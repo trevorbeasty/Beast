@@ -18,7 +18,7 @@
 
 #import "CoreDataController.h"
 
-@interface TJBCircuitModeTBC () 
+@interface TJBCircuitModeTBC () <UIViewControllerRestoration>
 
 @end
 
@@ -26,7 +26,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+- (instancetype)initWithNewRealizedChainAndChainTemplateFromChainTemplate:(TJBChainTemplate *)chainTemplate{
     
     self = [super init];
     
@@ -42,7 +42,7 @@
                                                                                            wasRestored: NO];
     
     [activeGuidance.tabBarItem setTitle: @"Guide"];
-    
+     
     // circuit reference container VC
     
     TJBCircuitReferenceContainerVC *circuitReference = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
@@ -61,77 +61,100 @@
                                 circuitReference,
                                 circuitActiveUpdating]];
     
-    self.tabBar.translucent = NO;
+    // tab bar configuration
+    
+    [self setRestorationPropertiesAndConfigureTabBar];
     
     return self;
 }
 
-- (void)setRestorationProperties{
+- (void)setRestorationPropertiesAndConfigureTabBar{
     
     // for restoration
     
     self.restorationClass = [TJBCircuitModeTBC class];
     self.restorationIdentifier = @"TJBCircuitModeTBC";
     
-    // general
-//    
-//    self.tabBar.translucent = NO;
+    // tab bar
+    
+    self.tabBar.translucent = NO;
+    
 }
 
 
-//#pragma mark - <UIViewControllerRestoration>
-//
-//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-//    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] init];
-//    
-//    // for restoration
-//    
-//    [tbc configureCommonAttributes];
-//    
-//    return tbc;
-//}
-//
-//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    [super encodeRestorableStateWithCoder: coder];
-//    
-//    NSArray *children = self.viewControllers;
-//    
-//    [coder encodeObject: children[0]
-//                 forKey: @"vc1"];
-//    [coder encodeObject: children[1]
-//                 forKey: @"vc2"];
-//    [coder encodeObject: children[2]
-//                 forKey: @"vc3"];
-//    
-//    [coder encodeInteger: self.selectedIndex
-//                  forKey: @"selectedIndex"];
-//}
-//
-//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    [super decodeRestorableStateWithCoder: coder];
-//    
-//    [self configureCommonAttributes];
-//    
-//    TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
-//    
-//    TJBCircuitTemplateGeneratorVC *vc2 = [coder decodeObjectForKey: @"vc2"];
-//    
-//    TJBCircuitTemplateGeneratorVC *vc3 = [coder decodeObjectForKey: @"vc3"];
-//    
-//    [vc1.tabBarItem setTitle: @"Active"];
-//    [vc2.tabBarItem setTitle: @"Targets"];
-//    [vc3.tabBarItem setTitle: @"Progress"];
-//    
+#pragma mark - <UIViewControllerRestoration>
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    //// the child VC's will be added in the decode method. Do all else here
+    
+    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] init];
+    
+    // tab bar configuration
+    
+    [tbc setRestorationPropertiesAndConfigureTabBar];
+    
+    return tbc;
+    
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    //// must encode all child VC's and the selected tab bar index
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    // child VC's
+    
+    NSArray *children = self.viewControllers;
+    
+    [coder encodeObject: children[0]
+                 forKey: @"vc1"];
+    
+    [coder encodeObject: children[1]
+                 forKey: @"vc2"];
+    
+    [coder encodeObject: children[2]
+                 forKey: @"vc3"];
+    
+    // selected tab bar index
+    
+    [coder encodeInteger: self.selectedIndex
+                  forKey: @"selectedIndex"];
+    
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    //// must decode all encoded items here
+    
+    [super decodeRestorableStateWithCoder: coder];
+    
+    // child VC's
+    
+    TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
+    
+    TJBCircuitReferenceContainerVC *vc2 = [coder decodeObjectForKey: @"vc2"];
+    
+    TJBCircuitActiveUpdatingContainerVC *vc3 = [coder decodeObjectForKey: @"vc3"];
+    
+    [vc1.tabBarItem setTitle: @"Active"];
+    [vc2.tabBarItem setTitle: @"Targets"];
+    [vc3.tabBarItem setTitle: @"Progress"];
+    
+    // might need to load the view of the third VC so that it can respond appropriately to messages from 'active guidance' as selections are made (if the user never navigates to the third tab before executing sets)
+    
 //    [vc3 loadViewIfNeeded];
-//    
-//    [self setViewControllers: @[vc1,
-//                               vc2,
-//                               vc3]];
-//    
-//    self.selectedIndex = [coder decodeIntegerForKey: @"selectedIndex"];
-//}
+    
+    [self setViewControllers: @[vc1,
+                               vc2,
+                               vc3]];
+    
+    // selected index
+    
+    self.selectedIndex = [coder decodeIntegerForKey: @"selectedIndex"];
+    
+}
 
 
 

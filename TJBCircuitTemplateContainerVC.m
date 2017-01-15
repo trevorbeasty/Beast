@@ -253,7 +253,7 @@
         
         void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
             
-            TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: self.chainTemplate];
+            TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithNewRealizedChainAndChainTemplateFromChainTemplate: self.chainTemplate];
             
             [self presentViewController: tbc
                                animated: YES

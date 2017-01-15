@@ -156,7 +156,7 @@
     
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithChainTemplate: chainTemplate];
+    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithNewRealizedChainAndChainTemplateFromChainTemplate: chainTemplate];
     
     [self presentViewController: tbc
                        animated: YES
