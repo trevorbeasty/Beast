@@ -171,6 +171,22 @@
     }
 }
 
+#pragma mark - <TJBCircuitActiveUpdatingRowCompProtocol>
+
+- (void)updateViewsWithWeight:(NSNumber *)weight reps:(NSNumber *)reps{
+    
+    //// update views with the passed-in parameters
+    
+    [self.weightButton setTitle: [weight stringValue]
+                       forState: UIControlStateNormal];
+    
+    [self.repsButton setTitle: [reps stringValue]
+                     forState: UIControlStateNormal];
+    
+    return;
+    
+}
+
 
 @end
 

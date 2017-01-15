@@ -10,6 +10,6 @@
 
 @protocol TJBCircuitActiveUpdatingRowCompProtocol <NSObject>
 
-
+- (void)updateViewsWithWeight:(NSNumber *)weight reps:(NSNumber *)reps;
 
 @end

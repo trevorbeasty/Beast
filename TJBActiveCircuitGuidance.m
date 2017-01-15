@@ -559,6 +559,8 @@ static NSString * const defaultValue = @"default value";
         
         // order dependent - addSelectedValues must be called before incrementController
         
+        [self sendCompletedSetDetailsToCircuitActiveUpdatingVC];
+        
         [self addSelectedValuesToRealizedChainObject];
         
         [self incrementControllerAndUpdateViews];
@@ -568,6 +570,19 @@ static NSString * const defaultValue = @"default value";
         [self postNotificationThatRealizedSetHasBeenUpdated];
         
     }
+}
+
+- (void)sendCompletedSetDetailsToCircuitActiveUpdatingVC{
+    
+    //// notify the active updating vc of the just-completed set via its protocol
+    
+    [self.circuitActiveUpdatingVC didCompleteSetWithExerciseIndex: [self.activeExerciseIndex intValue]
+                                                       roundIndex: [self.activeRoundIndex intValue]
+                                                           weight: self.selectedWeight
+                                                             reps: self.selectedReps
+                                                     setBeginDate: self.impliedBeginDate
+                                                       setEndDate: self.impliedEndDate];
+    
 }
 
 - (void)postNotificationThatRealizedSetHasBeenUpdated{

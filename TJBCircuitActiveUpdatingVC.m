@@ -76,14 +76,16 @@
     self.viewHeight = viewHeight;
     self.viewWidth = viewWidth;
     
-    // instantiate childRowControllers in preparation for adding objects during view layout
-    
-    [self createSkeletonChildRowControllersArray];
+    //// order dependent - derived instance variables must be set before the skeleton array for childRowControllers is created
     
     // set derived instance variables
     
     [self setDerivedInstanceVariables];
     
+    // instantiate childRowControllers in preparation for adding objects during view layout
+    
+    [self createSkeletonChildRowControllersArray];
+
     // for notifications
     
     [self registerForRelevantNotifications];
@@ -106,6 +108,9 @@
         [metaArray addObject: subArray];
         
     }
+    
+    self.childRowControllers = metaArray;
+    
 }
 
 - (void)setDerivedInstanceVariables{
@@ -180,8 +185,6 @@
 
 
 - (void)viewDidLoad{
-    
-    //    [self addBackgroundView];
     
     [self createChildViewControllersAndLayoutViews];
 }
@@ -323,6 +326,21 @@
     //// add the child row controller for specified exercise index.  Row controllers should be passed-in in the correct order so that it is not necessary to specify the round in this method
     
     [self.childRowControllers[exerciseIndex] addObject: rowController];
+    
+    return;
+    
+}
+
+- (void)didCompleteSetWithExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex weight:(NSNumber *)weight reps:(NSNumber *)reps setBeginDate:(NSDate *)setBeginDate setEndDate:(NSDate *)setEndDate{
+    
+    //// use the protocol method of the appropriate child row controller to update its views
+    
+    TJBCircuitActiveUpdatingRowComp <TJBCircuitActiveUpdatingRowCompProtocol> *rowComp = self.childRowControllers[exerciseIndex][roundIndex];
+    
+    [rowComp updateViewsWithWeight: weight
+                              reps: reps];
+    
+    return;
     
 }
 
