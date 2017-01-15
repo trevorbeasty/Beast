@@ -134,25 +134,27 @@
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     
-    //// must decode all encoded items here
+    //// must decode all encoded items here.  These assignments must mirror what is done in the normal init method
     
     [super decodeRestorableStateWithCoder: coder];
     
     // child VC's
     
+    TJBCircuitActiveUpdatingContainerVC *vc3 = [coder decodeObjectForKey: @"vc3"];
+    
+    // might need to load the view of the third VC so that it can respond appropriately to messages from 'active guidance' as selections are made (if the user never navigates to the third tab before executing sets)
+
+    [vc3 loadViewIfNeeded];
+    
     TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
     
     TJBCircuitReferenceContainerVC *vc2 = [coder decodeObjectForKey: @"vc2"];
     
-    TJBCircuitActiveUpdatingContainerVC *vc3 = [coder decodeObjectForKey: @"vc3"];
+    
     
     [vc1.tabBarItem setTitle: @"Active"];
     [vc2.tabBarItem setTitle: @"Targets"];
     [vc3.tabBarItem setTitle: @"Progress"];
-    
-    // might need to load the view of the third VC so that it can respond appropriately to messages from 'active guidance' as selections are made (if the user never navigates to the third tab before executing sets)
-    
-//    [vc3 loadViewIfNeeded];
     
     [self setViewControllers: @[vc1,
                                vc2,

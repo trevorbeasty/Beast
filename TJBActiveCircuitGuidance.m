@@ -819,7 +819,7 @@ static NSString * const defaultValue = @"default value";
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
     
-    //// encode the active instance variables and the unique identifiers for the chain template and realized chain. Also encode current user selection info if they are in the selection process.  Need to also encode date in order to calculate elapsed time in background state when the app once again becomes active
+    //// encode the active instance variables and the unique identifiers for the chain template and realized chain. Also encode current user selection info if they are in the selection process.  Need to also encode date in order to calculate elapsed time in background state when the app once again becomes active. Also must encode the 'circuitActiveUpdatingVC' property, which must be reassigned in the decode method (after the active updating circuit has already called its class restoration method)
     
     [super encodeRestorableStateWithCoder: coder];
     
@@ -856,9 +856,6 @@ static NSString * const defaultValue = @"default value";
 
     
     //// user selection
-    // do I need to use conditionals in encoding these?
-    
-//    if (self.selectedTimeDelay){
     
         [coder encodeObject: self.selectedTimeDelay
                      forKey: @"selectedTimeDelay"];
@@ -866,16 +863,8 @@ static NSString * const defaultValue = @"default value";
         [coder encodeObject: self.impliedBeginDate
                      forKey: @"impliedBeginDate"];
         
-//    }
-    
-    if (self.setCompletedButtonPressed){
-        
         [coder encodeObject: self.setCompletedButtonPressed
                      forKey: @"setCompletedButtonPressed"];
-        
-    }
-    
-    if (self.selectedTimeLag){
         
         [coder encodeObject: self.selectedTimeLag
                      forKey: @"selectedTimeLag"];
@@ -883,21 +872,11 @@ static NSString * const defaultValue = @"default value";
         [coder encodeObject: self.impliedEndDate
                      forKey: @"impliedEndDate"];
         
-    }
-    
-    if (self.selectedWeight){
-        
         [coder encodeObject: self.selectedWeight
                      forKey: @"selectedWeight"];
         
-    }
-    
-    if (self.selectedReps){
-        
         [coder encodeObject: self.selectedReps
                      forKey: @"selectedReps"];
-        
-    }
     
     //// timer and date
     
@@ -926,6 +905,11 @@ static NSString * const defaultValue = @"default value";
     
     [coder encodeObject: [NSDate date]
                  forKey: @"enteredBackgroundDate"];
+    
+    // active updating circuit
+    
+    [coder encodeObject: self.circuitActiveUpdatingVC
+                 forKey: @"circuitActiveUpdatingVC"];
     
 }
 
@@ -973,6 +957,10 @@ static NSString * const defaultValue = @"default value";
         };
         
     }
+    
+    // active updating circuit
+    
+    self.circuitActiveUpdatingVC = [coder decodeObjectForKey: @"circuitActiveUpdatingVC"];
     
     //// timer
     
