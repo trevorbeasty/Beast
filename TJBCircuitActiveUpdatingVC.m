@@ -17,14 +17,6 @@
 
 #import "CoreDataController.h"
 
-//#import "TJBRealizedChain+CoreDataProperties.h"
-//#import "TJBChainTemplate+CoreDataProperties.h"
-//#import "TJBWeightArray+CoreDataProperties.h"
-//#import "TJBRepsArray+CoreDataProperties.h"
-//#import "TJBTargetRestTimeArray+CoreDataProperties.h"
-//#import "SetBeginDateArray+CoreDataProperties.h"
-//#import "SetEndDateArray+CoreDataProperties.h"
-
 // protocols
 
 #import "TJBCircuitActiveUpdatingRowCompProtocol.h"
