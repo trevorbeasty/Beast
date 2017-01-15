@@ -189,6 +189,7 @@
         NSNumber *restData;
         NSNumber *setLengthData;
         NSNumber *setHasBeenRealized;
+        NSNumber *isFirstExerciseInFirstRound = [NSNumber numberWithBool: i == 0 && ([self.chainNumber intValue] - 1 == 0)];
         
         int firstIncompleteExerciseIndex = [self.firstIncompleteExerciseIndex intValue];
         int firstIncompleteRoundIndex = [self.firstIncompleteRoundIndex intValue];
@@ -257,7 +258,8 @@
                                                                                                      repsData: repsData
                                                                                                      restData: restData
                                                                                                 setLengthData: setLengthData
-                                                                                           setHasBeenRealized: setHasBeenRealized];
+                                                                                           setHasBeenRealized: setHasBeenRealized
+                                                                                  isFirstExerciseInFirstRound: isFirstExerciseInFirstRound];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

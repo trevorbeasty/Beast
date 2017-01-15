@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSNumber *restData;
 @property (nonatomic, strong) NSNumber *setLengthData;
 @property (nonatomic, strong) NSNumber *setHasBeenRealized;
+@property (nonatomic, strong) NSNumber *isFirstExerciseInFirstRound;
 
 // IBOutlet
 
@@ -39,7 +40,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized{
+- (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized isFirstExerciseInFirstRound:(NSNumber *)isFirstExerciseInFirstRound{
     
     self = [super init];
     
@@ -50,6 +51,7 @@
     self.restData = restData;
     self.setLengthData = setLengthData;
     self.setHasBeenRealized = setHasBeenRealized;
+    self.isFirstExerciseInFirstRound = isFirstExerciseInFirstRound;
     
     return self;
     
@@ -96,13 +98,19 @@
         
         // rest
         
-        if (self.restData){
+        BOOL isFirstExerciseInFirstRound = [self.isFirstExerciseInFirstRound boolValue];
+        
+        if (isFirstExerciseInFirstRound){
             
+            deleteTitle(self.restButton);
+            
+        } else if(self.restData){
+    
             NSString *restTitle = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [self.restData intValue]];
-            
+                
             [self.restButton setTitle: restTitle
-                             forState: UIControlStateNormal];
-            
+                                 forState: UIControlStateNormal];
+                
         }
         
         // set length
