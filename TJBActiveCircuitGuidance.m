@@ -633,10 +633,14 @@ static NSString * const defaultValue = @"default value";
         
     }
     
-    // update the first incomplete round and exercise properties of the realized chain
+    // update the first incomplete round and exercise properties of the realized chain and save the context
     
     self.realizedChain.firstIncompleteRoundIndex = [self.activeRoundIndex intValue];
     self.realizedChain.firstIncompleteExerciseIndex = [self.activeExerciseIndex intValue];
+    
+    [[CoreDataController singleton] saveContext];
+    
+    // pull next target values from the chain template
     
     TJBChainTemplate *chainTemplate = self.chainTemplate;
     
@@ -644,17 +648,25 @@ static NSString * const defaultValue = @"default value";
     int roundIndex = [self.activeRoundIndex intValue];
     
     if (chainTemplate.targetingWeight == YES){
+        
         self.activeTargetWeight = [NSNumber numberWithDouble: self.chainTemplate.weightArrays[exerciseIndex].numbers[roundIndex].value];
+        
         self.weightLabel.text = [self.activeTargetWeight stringValue];
+        
     }
 
     if (chainTemplate.targetingReps == YES){
+        
         self.activeTargetReps = [NSNumber numberWithDouble: self.chainTemplate.repsArrays[exerciseIndex].numbers[roundIndex].value];
+        
         self.repsLabel.text = [self.activeTargetReps stringValue];
+        
     }
     
     TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndex];
+    
     self.exerciseLabel.text = exercise.name;
+    
 }
 
 

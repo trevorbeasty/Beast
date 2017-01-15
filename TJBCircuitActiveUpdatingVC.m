@@ -95,6 +95,17 @@
     
 }
 
+- (void)updateDerivedFirstIncompleteTypeRealizedChainProperties{
+    
+    //// update the first incomplete round/exercise derived properties
+    
+    TJBRealizedChain *realizedChain = self.realizedChain;
+    
+    self.firstIncompleteRoundIndex = [NSNumber numberWithInt: realizedChain.firstIncompleteRoundIndex];
+    self.firstIncompleteExerciseIndex = [NSNumber numberWithInt: realizedChain.firstIncompleteExerciseIndex];
+    
+}
+
 - (void)registerForRelevantNotifications{
     
     // this notification relies on the TJBActiveCircuitGuidance using the same TJBRealizedChain as is stored in this VC
@@ -110,12 +121,15 @@
 
 - (void)realizedChainDidChange{
     
-    // must re-fetch the realized chain and reload the view in response
+    // changes made to the realized chain by the 'active guidance' vc are immediately realized here.  All that needs to be done is to update the relevant derived IV's
     
-    [[[CoreDataController singleton] moc] refreshObject: self.realizedChain
-                                           mergeChanges: YES];
+    NSLog(@"first incomplete exercise index: %d\nfirst incomplete round index: %d",
+          self.realizedChain.firstIncompleteExerciseIndex,
+          self.realizedChain.firstIncompleteRoundIndex);
     
-    [self setDerivedInstanceVariables];
+    [self updateDerivedFirstIncompleteTypeRealizedChainProperties];
+    
+    return;
     
 }
 
