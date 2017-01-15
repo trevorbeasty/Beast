@@ -55,9 +55,6 @@
 @property NSNumber *setCompletedButtonPressed;
 @property NSNumber *restLabelAddedAsStopwatchObserver;
 
-// associated VC
-
-@property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *circuitActiveUpdatingVC;
 
 // derived IV's
 
@@ -279,7 +276,6 @@ static NSString * const defaultValue = @"default value";
     self.roundColumnLabel.text = roundText;
     
 }
-
 
 
 #pragma mark - Init
@@ -906,10 +902,10 @@ static NSString * const defaultValue = @"default value";
     [coder encodeObject: [NSDate date]
                  forKey: @"enteredBackgroundDate"];
     
-    // active updating circuit
-    
-    [coder encodeObject: self.circuitActiveUpdatingVC
-                 forKey: @"circuitActiveUpdatingVC"];
+//    // active updating circuit
+//    
+//    [coder encodeObject: self.circuitActiveUpdatingVC
+//                 forKey: @"circuitActiveUpdatingVC"];
     
 }
 
@@ -958,9 +954,9 @@ static NSString * const defaultValue = @"default value";
         
     }
     
-    // active updating circuit
-    
-    self.circuitActiveUpdatingVC = [coder decodeObjectForKey: @"circuitActiveUpdatingVC"];
+//    // active updating circuit
+//    
+//    self.circuitActiveUpdatingVC = [coder decodeObjectForKey: @"circuitActiveUpdatingVC"];
     
     //// timer
     

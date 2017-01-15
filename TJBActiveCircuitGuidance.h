@@ -22,6 +22,13 @@
 
 @interface TJBActiveCircuitGuidance : UIViewController
 
+// associated VC
+// it is in the header because it must be accessed by the TJBCircuitModeTBC during restoration
+
+@property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *circuitActiveUpdatingVC;
+
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain circuitActiveUpdatingVC:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)circuitActiveUpdatingVC wasRestored:(BOOL)wasRestored;
+
+
 
 @end

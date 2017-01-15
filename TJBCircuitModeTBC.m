@@ -148,9 +148,11 @@
     
     TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
     
+    // the TJBCircuitActiveUpdatingVC is not restored, only its container class is.  Thus, the following assignment must be made here as opposed to in 'decode' type methods (a coded reference to a VC that is not restored will not find the original VC upon decoding)
+    
+    vc1.circuitActiveUpdatingVC = vc3.circuitActiveUpdatingVC;
+    
     TJBCircuitReferenceContainerVC *vc2 = [coder decodeObjectForKey: @"vc2"];
-    
-    
     
     [vc1.tabBarItem setTitle: @"Active"];
     [vc2.tabBarItem setTitle: @"Targets"];
