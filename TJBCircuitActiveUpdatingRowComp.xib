@@ -27,10 +27,16 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRs-k6-Cu5">
                     <rect key="frame" x="115" y="2" width="113" height="67"/>
                     <state key="normal" title="Weight"/>
+                    <connections>
+                        <action selector="didPressWeightButton:" destination="-1" eventType="touchUpInside" id="DeB-cB-Q0i"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQi-Bn-4RX">
                     <rect key="frame" x="230" y="2" width="113" height="67"/>
                     <state key="normal" title="Reps"/>
+                    <connections>
+                        <action selector="didPressRepsButton:" destination="-1" eventType="touchUpInside" id="q3Z-Mu-bN8"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8I-fi-HPf">
                     <rect key="frame" x="345" y="2" width="113" height="67"/>

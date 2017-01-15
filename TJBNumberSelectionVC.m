@@ -70,13 +70,7 @@ static NSString * const reuseIdentifier = @"basicCell";
 
 #pragma mark - View Life Cycle
 
-- (void)viewWillAppear:(BOOL)animated{
-    NSLog(@"view will appear");
-}
-
 - (void)viewDidLoad{
-    
-    NSLog(@"view did load");
     
     // collection view
     UINib *nib = [UINib nibWithNibName: @"TJBBasicCollectionViewCell"
@@ -265,77 +259,12 @@ static NSString * const reuseIdentifier = @"basicCell";
 
 #pragma mark - Bar Button Item Actions
 
-- (void)cancel
-{
+- (void)cancel{
+    
     self.cancelBlock();
+    
 }
 
-//#pragma mark - <UIViewControllerRestoration>
-//
-//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-//    return [[TJBNumberSelectionVC alloc] init];
-//}
-//
-//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    [super encodeRestorableStateWithCoder: coder];
-//    
-//    // scroll position
-//    int y = self.collectionView.contentOffset.y;
-//    [coder encodeInt: y
-//              forKey: @"y"];
-// 
-//    // highlighted cell
-//    if (self.highlightedCellPath){
-//        [coder encodeObject: self.highlightedCellPath
-//                     forKey: @"path"];
-//    }
-//
-//    // core attributes (see 'set' method in header)
-//    [coder encodeInt: _numberTypeIdentifier
-//              forKey: @"numberType"];
-//    [coder encodeObject: self.numberMultiple
-//                 forKey: @"numberMultiple"];
-//    [coder encodeObject: self.numberLimit
-//                 forKey: @"numberLimit"];
-//    [coder encodeObject: self.title
-//                 forKey: @"title"];
-//    [coder encodeObject: self.cancelBlock
-//                 forKey: @"cancelBlock"];
-//    [coder encodeObject: self.numberSelectedBlock
-//                 forKey: @"numberSelectionBlock"];
-//    
-//}
-//
-//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    NSLog(@"decode restorable state with coder");
-//    
-//    [super decodeRestorableStateWithCoder: coder];
-//    
-//    // scroll position
-//    int y = [coder decodeIntForKey: @"y"];
-//    self.collectionView.contentOffset = CGPointMake(0, y);
-//    
-//    // highlighted cell
-//    NSIndexPath *path = [coder decodeObjectForKey: @"path"];
-//    TJBBasicCollectionViewCell *cell = (TJBBasicCollectionViewCell *)[self.collectionView cellForItemAtIndexPath: path];
-//    [self configureCellForSelectedState: cell];
-//    
-//    // core attributes
-//    _numberTypeIdentifier = [coder decodeIntForKey: @"numberType"];
-//    self.numberMultiple = [coder decodeObjectForKey: @"numberMultiple"];
-//    NSLog(@"number multiple: %d", [self.numberMultiple intValue]);
-//    self.numberLimit = [coder decodeObjectForKey: @"numberLimit"];
-//    self.title = [coder decodeObjectForKey: @"title"];
-//    self.cancelBlock = [coder decodeObjectForKey: @"cancelBlock"];
-//    self.numberSelectedBlock = [coder decodeObjectForKey: @"numberSelectionBlock"];
-//    
-//    // reload data
-//    [self.collectionView reloadData];
-//}
-
-#pragma mark - <UICollectionViewDelegateFlowLayout>
 
 @end
 

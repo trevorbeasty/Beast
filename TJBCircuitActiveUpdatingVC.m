@@ -431,6 +431,15 @@
     
 }
 
+- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button{
+    
+    //// filter by type. Present the appropriate number selection scene. Store the passed in number in the realized chain, save it, and give the passed-in button the correct title
+    
+
+    
+    
+}
+
 @end
 
 

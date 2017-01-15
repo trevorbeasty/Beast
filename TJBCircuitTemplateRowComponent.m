@@ -78,6 +78,7 @@
 - (void)viewDidLoad{
     
     [self viewAesthetics];
+    
 }
 
 - (void)viewAesthetics{

@@ -34,6 +34,12 @@
 @property (nonatomic, strong) NSNumber *isFirstExerciseInFirstRound;
 @property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *masterController;
 
+// IBAction
+
+- (IBAction)didPressWeightButton:(id)sender;
+- (IBAction)didPressRepsButton:(id)sender;
+
+
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIButton *weightButton;
@@ -266,7 +272,53 @@
 }
 
 
+
+#pragma mark - IBAction
+
+- (IBAction)didPressWeightButton:(id)sender{
+    
+    //// call the master controller's protocol method
+    
+    [self.masterController didPressUserInputButtonWithType: WeightType
+                                               chainNumber: self.chainNumber
+                                               roundNumber: self.roundNumber
+                                                    button: self.weightButton];
+    
+}
+
+- (IBAction)didPressRepsButton:(id)sender{
+    
+    //// call the master controller's protocol method
+    
+    [self.masterController didPressUserInputButtonWithType: RepsType
+                                               chainNumber: self.chainNumber
+                                               roundNumber: self.roundNumber
+                                                    button: self.weightButton];
+    
+}
+
+
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

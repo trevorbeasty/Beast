@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-// core data
+// number selection
 
-//#import "CoreDataController.h"
+#import "TJBNumberSelectionVC.h"
 
 // child VC
 
@@ -31,5 +31,7 @@
 - (void)enableWeightAndRepsButtonsAndGiveEnabledAppearance;
 
 - (void)disableWeightAndRepsButtonsAndGiveDisabledAppearance;
+
+- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button;
 
 @end
