@@ -29,6 +29,9 @@
 
 #import "TJBAssortedUtilities.h"
 
+// delegate
+
+#import "TJBCircuitActiveUpdatingVC.h"
 
 
 
@@ -51,6 +54,10 @@
 
 @property NSNumber *setCompletedButtonPressed;
 @property NSNumber *restLabelAddedAsStopwatchObserver;
+
+// associated VC
+
+@property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *circuitActiveUpdatingVC;
 
 // derived IV's
 
@@ -93,6 +100,10 @@
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+
+// delegate
+
+
 
 
 // state restoration
@@ -273,7 +284,7 @@ static NSString * const defaultValue = @"default value";
 
 #pragma mark - Init
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain wasRestored:(BOOL)wasRestored{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain circuitActiveUpdatingVC:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)circuitActiveUpdatingVC wasRestored:(BOOL)wasRestored{
     
     self = [super init];
     
@@ -281,6 +292,10 @@ static NSString * const defaultValue = @"default value";
     
     self.chainTemplate = chainTemplate;
     self.realizedChain = realizedChain;
+    
+    // associated VC
+    
+    self.circuitActiveUpdatingVC = circuitActiveUpdatingVC;
     
     // other methods
     
@@ -767,6 +782,7 @@ static NSString * const defaultValue = @"default value";
     
     TJBActiveCircuitGuidance * vc = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                   realizedChainCorrespondingToChainTemplate: realizedChain
+                                                                    circuitActiveUpdatingVC: nil
                                                                                 wasRestored: YES];
     
     // decode and assign active variables

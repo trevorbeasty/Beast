@@ -12,8 +12,11 @@
 
 #import "TJBStopwatch.h"
 
-@interface TJBCircuitActiveUpdatingRowComp ()
+// master controller
 
+#import "TJBCircuitActiveUpdatingVC.h"
+
+@interface TJBCircuitActiveUpdatingRowComp ()
 
 // core
 
@@ -25,6 +28,7 @@
 @property (nonatomic, strong) NSNumber *setLengthData;
 @property (nonatomic, strong) NSNumber *setHasBeenRealized;
 @property (nonatomic, strong) NSNumber *isFirstExerciseInFirstRound;
+@property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *masterController;
 
 // IBOutlet
 
@@ -40,7 +44,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized isFirstExerciseInFirstRound:(NSNumber *)isFirstExerciseInFirstRound{
+- (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized isFirstExerciseInFirstRound:(NSNumber *)isFirstExerciseInFirstRound masterController:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)masterController{
     
     self = [super init];
     
@@ -52,6 +56,7 @@
     self.setLengthData = setLengthData;
     self.setHasBeenRealized = setHasBeenRealized;
     self.isFirstExerciseInFirstRound = isFirstExerciseInFirstRound;
+    self.masterController = masterController;
     
     return self;
     

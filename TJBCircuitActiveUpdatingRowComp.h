@@ -12,8 +12,13 @@
 
 #import "TJBCircuitActiveUpdatingRowCompProtocol.h"
 
+// master controller
+
+@class TJBCircuitActiveUpdatingVC;
+#import "TJBCircuitActiveUpdatingVCProtocol.h"
+
 @interface TJBCircuitActiveUpdatingRowComp : UIViewController <TJBCircuitActiveUpdatingRowCompProtocol>
 
-- (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized isFirstExerciseInFirstRound:(NSNumber *)isFirstExerciseInFirstRound;
+- (instancetype)initWithRoundNumber:(NSNumber *)roundNumber chainNumber:(NSNumber *)chainNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData setLengthData:(NSNumber *)setLengthData setHasBeenRealized:(NSNumber *)setHasBeenRealized isFirstExerciseInFirstRound:(NSNumber *)isFirstExerciseInFirstRound masterController:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)masterController;
 
 @end

@@ -13,8 +13,15 @@
 @class TJBChainTemplate;
 @class TJBRealizedChain;
 
+// associated VC
+
+#import "TJBCircuitActiveUpdatingVCProtocol.h"
+@class TJBCircuitActiveUpdatingVC;
+
+
+
 @interface TJBActiveCircuitGuidance : UIViewController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChainSkeleton wasRestored:(BOOL)wasRestored;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain circuitActiveUpdatingVC:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)circuitActiveUpdatingVC wasRestored:(BOOL)wasRestored;
 
 @end

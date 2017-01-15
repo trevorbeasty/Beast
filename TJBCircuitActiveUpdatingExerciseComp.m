@@ -48,7 +48,7 @@
 @property (nonatomic, strong) NSOrderedSet <TJBBeginDateComp *> *setBeginDatesData;
 @property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *setEndDatesData;
 @property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *previousExerciseSetEndDatesData;
-@property (nonatomic, strong) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *masterController;
+@property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *masterController;
 
 // IBOutlets
 
@@ -264,13 +264,14 @@
         //// create the row component controller
         
         TJBCircuitActiveUpdatingRowComp <TJBCircuitActiveUpdatingRowCompProtocol> *rowVC = [[TJBCircuitActiveUpdatingRowComp alloc] initWithRoundNumber: roundNumber
-                                                                                                  chainNumber: chainNumber
-                                                                                                   weightData: weightData
-                                                                                                     repsData: repsData
-                                                                                                     restData: restData
-                                                                                                setLengthData: setLengthData
-                                                                                           setHasBeenRealized: setHasBeenRealized
-                                                                                  isFirstExerciseInFirstRound: isFirstExerciseInFirstRound];
+                                                                                                                                            chainNumber: chainNumber
+                                                                                                                                             weightData: weightData
+                                                                                                                                               repsData: repsData
+                                                                                                                                               restData: restData
+                                                                                                                                          setLengthData: setLengthData
+                                                                                                                                     setHasBeenRealized: setHasBeenRealized
+                                                                                                                            isFirstExerciseInFirstRound: isFirstExerciseInFirstRound
+                                                                                                                                       masterController: self.masterController];
         
         // use the master controller's protocol to add the just created row controller to its child row controllers property
         
@@ -336,6 +337,7 @@
     {
         [child didMoveToParentViewController: self];
     }
+    
 }
 
 @end

@@ -14,6 +14,10 @@
 #import "TJBCircuitReferenceContainerVC.h"
 #import "TJBCircuitActiveUpdatingContainerVC.h"
 
+// protocols
+
+//#import "TJBCircuitActiveUpdatingVCProtocol.h"
+
 // core data
 
 #import "CoreDataController.h"
@@ -35,10 +39,20 @@
     
     TJBRealizedChain *realizedChainSkeleton = [[CoreDataController singleton] createAndSaveSkeletonRealizedChainForChainTemplate: chainTemplate];
     
-    // active circuit guidance VC
+    //// circuit active updating container VC
+    // view must be loaded before 'active guidance' VC is created, otherwise child VC will not have been instantiated and stored as accessible property
+    
+    TJBCircuitActiveUpdatingContainerVC *circuitActiveUpdating = [[TJBCircuitActiveUpdatingContainerVC alloc] initWithRealizedChain: realizedChainSkeleton];
+    
+    [circuitActiveUpdating loadViewIfNeeded];
+    
+    [circuitActiveUpdating.tabBarItem setTitle: @"Progress"];
+    
+    // active circuit guidance VC - must be instantiated after circuit active updating because the latter VC is required as a parameter
     
     TJBActiveCircuitGuidance *activeGuidance = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                              realizedChainCorrespondingToChainTemplate: realizedChainSkeleton
+                                                                               circuitActiveUpdatingVC: circuitActiveUpdating.circuitActiveUpdatingVC
                                                                                            wasRestored: NO];
     
     [activeGuidance.tabBarItem setTitle: @"Guide"];
@@ -48,12 +62,6 @@
     TJBCircuitReferenceContainerVC *circuitReference = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
     
     [circuitReference.tabBarItem setTitle: @"Goals"];
-    
-    // circuit active updating container VC
-    
-    TJBCircuitActiveUpdatingContainerVC *circuitActiveUpdating = [[TJBCircuitActiveUpdatingContainerVC alloc] initWithRealizedChain: realizedChainSkeleton];
-    
-    [circuitActiveUpdating.tabBarItem setTitle: @"Progress"];
     
     // tab bar controller
     

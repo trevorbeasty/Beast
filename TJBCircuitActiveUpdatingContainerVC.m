@@ -78,6 +78,12 @@
                                                                                     viewHeight: viewHeight
                                                                                      viewWidth: viewWidth];
     
+    // assign vc to appropriate property to facillitate delegation of circuit tab bar controller VC's
+    
+    self.circuitActiveUpdatingVC = vc;
+    
+    // layout views
+    
     [self addChildViewController: vc];
     
     [self.circuitView addSubview: vc.view];
