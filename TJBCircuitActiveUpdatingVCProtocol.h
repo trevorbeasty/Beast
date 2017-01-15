@@ -26,4 +26,10 @@
 
 - (void)didCompleteSetWithExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex weight:(NSNumber *)weight reps:(NSNumber *)reps setBeginDate:(NSDate *)setBeginDate setEndDate:(NSDate *)setEndDate;
 
+// for making corrections
+
+- (void)enableWeightAndRepsButtonsAndGiveEnabledAppearance;
+
+- (void)disableWeightAndRepsButtonsAndGiveDisabledAppearance;
+
 @end

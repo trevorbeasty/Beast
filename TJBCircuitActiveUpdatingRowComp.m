@@ -16,6 +16,10 @@
 
 #import "TJBCircuitActiveUpdatingVC.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBCircuitActiveUpdatingRowComp ()
 
 // core
@@ -211,6 +215,53 @@
                           forState: UIControlStateNormal];
     
     return;
+    
+}
+
+//// for making corrections
+
+- (void)enableWeightAndRepsButtonsAndGiveEnabledAppearance{
+    
+    //// give the weight and reps buttons the appropriate enabled appearance and enable them
+    
+    void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
+        
+        [button setTitleColor: [[TJBAestheticsController singleton] buttonTextColor]
+                     forState: UIControlStateNormal];
+        
+        CALayer *layer = button.layer;
+        
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 8.0;
+        layer.opacity = .85;
+        
+    };
+    
+    activeButtonConfiguration(self.weightButton);
+    activeButtonConfiguration(self.repsButton);
+    
+    return;
+    
+}
+
+- (void)disableWeightAndRepsButtonsAndGiveDisabledAppearance{
+    
+    //// disable and give disabled appearance to weight and reps buttons
+    
+    void (^disabledButtonConfiguration)(UIButton *) = ^(UIButton *button){
+        
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
+        
+        button.backgroundColor = [UIColor whiteColor];
+        button.enabled = NO;
+        
+    };
+    
+    disabledButtonConfiguration(self.weightButton);
+    disabledButtonConfiguration(self.repsButton);
     
 }
 

@@ -12,4 +12,10 @@
 
 - (void)updateViewsWithWeight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest setLength:(NSNumber *)setLength;
 
+// for making corrections
+
+- (void)enableWeightAndRepsButtonsAndGiveEnabledAppearance;
+
+- (void)disableWeightAndRepsButtonsAndGiveDisabledAppearance;
+
 @end

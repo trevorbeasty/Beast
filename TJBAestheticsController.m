@@ -72,7 +72,9 @@
 #pragma mark - Action Buttons
 
 - (void)configureButtonsInArray:(NSArray<UIButton *> *)buttons withOpacity:(double)opacity{
+    
     for (UIButton *button in buttons){
+        
         CALayer *layer = button.layer;
         layer.masksToBounds = YES;
         layer.cornerRadius = [[self buttonCornerRadius] intValue];
@@ -84,7 +86,9 @@
         
         UILabel *title = button.titleLabel;
         [title setFont: [self buttonFont]];
+        
     }
+    
 }
 
 - (UIColor *)buttonBackgroundColor{

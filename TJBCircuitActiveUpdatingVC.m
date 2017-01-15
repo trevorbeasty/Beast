@@ -370,6 +370,37 @@
     
 }
 
+//// for making corrections
+
+- (void)enableWeightAndRepsButtonsAndGiveEnabledAppearance{
+    
+    //// pass this message down to the individual row components which will do the heavy lifting.  The message should only be passed to the row controllers whose corresponding set has been realized
+    
+    for (NSArray *array in self.childRowControllers){
+        
+        for (TJBCircuitActiveUpdatingRowComp<TJBCircuitActiveUpdatingRowCompProtocol> *row in array){
+            
+            [row enableWeightAndRepsButtonsAndGiveEnabledAppearance];
+            
+        }
+    }
+}
+
+- (void)disableWeightAndRepsButtonsAndGiveDisabledAppearance{
+    
+    //// pass this message down to the individual row components which will do the heavy lifting
+    
+    for (NSArray *array in self.childRowControllers){
+        
+        for (TJBCircuitActiveUpdatingRowComp<TJBCircuitActiveUpdatingRowCompProtocol> *row in array){
+            
+            [row disableWeightAndRepsButtonsAndGiveDisabledAppearance];
+            
+        }
+    }
+    
+}
+
 @end
 
 

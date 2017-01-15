@@ -5,13 +5,14 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitActiveUpdatingContainerVC">
             <connections>
                 <outlet property="circuitView" destination="G1m-TO-iEJ" id="n4g-XA-b0V"/>
+                <outlet property="makeCorrectionsButton" destination="eWy-Jc-TaP" id="3N8-Bo-0UB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,17 +22,31 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G1m-TO-iEJ">
-                    <rect key="frame" x="8" y="20" width="359" height="639"/>
+                    <rect key="frame" x="8" y="68" width="359" height="591"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eWy-Jc-TaP">
+                    <rect key="frame" x="8" y="20" width="359" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="BqA-ug-29Y"/>
+                    </constraints>
+                    <state key="normal" title="Make Corrections"/>
+                    <connections>
+                        <action selector="didPressMakeCorrectionsButton:" destination="-1" eventType="touchUpInside" id="uZF-bf-qeo"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="eWy-Jc-TaP" secondAttribute="trailing" constant="8" id="Adm-Ro-T4s"/>
                 <constraint firstItem="G1m-TO-iEJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="BJf-rz-jkB"/>
-                <constraint firstItem="G1m-TO-iEJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="EUW-7w-Nni"/>
+                <constraint firstItem="G1m-TO-iEJ" firstAttribute="top" secondItem="eWy-Jc-TaP" secondAttribute="bottom" constant="8" id="UpU-0S-57K"/>
                 <constraint firstAttribute="trailing" secondItem="G1m-TO-iEJ" secondAttribute="trailing" constant="8" id="hBL-RE-bHZ"/>
+                <constraint firstItem="eWy-Jc-TaP" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="klf-2a-bg2"/>
+                <constraint firstItem="eWy-Jc-TaP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="vg2-n9-YHU"/>
                 <constraint firstAttribute="bottom" secondItem="G1m-TO-iEJ" secondAttribute="bottom" constant="8" id="wOo-h7-b43"/>
             </constraints>
+            <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>
     </objects>
 </document>

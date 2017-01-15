@@ -104,39 +104,45 @@
     };
     
         
-        void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
-            button.backgroundColor = [aesthetics buttonBackgroundColor];
-            [button setTitleColor: [aesthetics buttonTextColor]
-                         forState: UIControlStateNormal];
-            CALayer *layer = button.layer;
-            layer.masksToBounds = YES;
-            layer.cornerRadius = 8.0;
-            layer.opacity = .85;
-        };
+    void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
         
-        if ([self.targetingWeight boolValue] == YES){
-            
-            activeButtonConfiguration(self.weightButton);
-        } else{
-            
-            eraseButton(self.weightButton);
-        }
+        button.backgroundColor = [aesthetics buttonBackgroundColor];
+        [button setTitleColor: [aesthetics buttonTextColor]
+                     forState: UIControlStateNormal];
         
-        if ([self.targetingReps boolValue] == YES){
-            
-            activeButtonConfiguration(self.repsButton);
-        } else{
-            
-            eraseButton(self.repsButton);
-        }
+        CALayer *layer = button.layer;
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 8.0;
+        layer.opacity = .85;
         
-        if ([self.targetingRest boolValue] == YES){
+    };
+        
+    if ([self.targetingWeight boolValue] == YES){
             
-            activeButtonConfiguration(self.restButton);
-        } else{
+        activeButtonConfiguration(self.weightButton);
+        
+    } else{
             
-            eraseButton(self.restButton);
-        }
+        eraseButton(self.weightButton);
+    }
+        
+    if ([self.targetingReps boolValue] == YES){
+            
+        activeButtonConfiguration(self.repsButton);
+        
+    } else{
+            
+        eraseButton(self.repsButton);
+    }
+        
+    if ([self.targetingRest boolValue] == YES){
+            
+        activeButtonConfiguration(self.restButton);
+        
+    } else{
+            
+        eraseButton(self.restButton);
+    }
         
     
 }
@@ -172,80 +178,6 @@
 }
 
 #pragma mark - <TJBCircuitTemplateRowComponentProtocol>
-
-//- (void)updateLabelWithNumberType:(NumberType)numberType value:(double)value{
-//    
-//    NSString *string = [[NSNumber numberWithDouble: value] stringValue];
-//    NSString *restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: value];
-//    
-//    switch (numberType) {
-//        case WeightType:
-//            [self.weightButton setTitle: string
-//                               forState: UIControlStateNormal];
-//            break;
-//        case RepsType:
-//            [self.repsButton setTitle: string
-//                             forState: UIControlStateNormal];
-//            break;
-//        case RestType:
-//            [self.restButton setTitle: restString
-//                             forState: UIControlStateNormal];
-//            break;
-//            
-//        default:
-//            break;
-//    }
-//}
-
-//- (void)updateViewsWithUserSelectedWeight:(TJBNumberTypeArrayComp *)weight reps:(TJBNumberTypeArrayComp *)reps rest:(TJBNumberTypeArrayComp *)rest{
-//    
-//    //// if respective object is not a default, update the corresponding view appropriately
-//    
-//    CoreDataController *cdc = [CoreDataController singleton];
-//    
-//    // weight
-//    
-//    BOOL weightIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: weight];
-//    
-//    if (!weightIsDefaultObject){
-//        
-//        NSString *weightTitle = [[NSNumber numberWithFloat: weight.value] stringValue];
-//        
-//        [self.weightButton setTitle: weightTitle
-//                           forState: UIControlStateNormal];
-//        [self configureButtonWithSelectedAppearance: self.weightButton];
-//        
-//    }
-//    
-//    // reps
-//    
-//    BOOL repsIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: reps];
-//    
-//    if (!repsIsDefaultObject){
-//        
-//        NSString *repsTitle = [[NSNumber numberWithFloat: reps.value] stringValue];
-//        
-//        [self.repsButton setTitle: repsTitle
-//                           forState: UIControlStateNormal];
-//        [self configureButtonWithSelectedAppearance: self.repsButton];
-//        
-//    }
-//    
-//    // rest
-//    
-//    BOOL restIsDefaultObject = [cdc numberTypeArrayCompIsDefaultObject: rest];
-//    
-//    if (!restIsDefaultObject){
-//        
-//        NSString *restTitle = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: rest.value];
-//        
-//        [self.restButton setTitle: restTitle
-//                         forState: UIControlStateNormal];
-//        [self configureButtonWithSelectedAppearance: self.restButton];
-//        
-//    }
-//    
-//}
 
 - (void)updateWeightViewWithUserSelection:(TJBNumberTypeArrayComp *)weight{
     

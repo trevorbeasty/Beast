@@ -20,19 +20,39 @@
 
 #import "TJBAestheticsController.h"
 
+typedef enum{
+    
+    MakingCorrectionsActive,
+    MakingCorrectionsInactive
+    
+}MakingCorrectionsState;
+
 @interface TJBCircuitActiveUpdatingContainerVC () <UIViewControllerRestoration>
+
+{
+    // for making corrections
+    
+    MakingCorrectionsState _makingCorrectionsState;
+    
+}
 
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
+// IBAction
+
+- (IBAction)didPressMakeCorrectionsButton:(id)sender;
+
 
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIView *circuitView;
-
+@property (weak, nonatomic) IBOutlet UIButton *makeCorrectionsButton;
 
 @end
+
+
 
 @implementation TJBCircuitActiveUpdatingContainerVC
 
@@ -43,6 +63,10 @@
     self = [super init];
     
     self.realizedChain = realizedChain;
+    
+    // for making corrections.  This VC is created in the MakingCorrectionsInactive state
+    
+    _makingCorrectionsState = MakingCorrectionsInactive;
     
     // for restoration
     
@@ -90,6 +114,8 @@
     
     [self addBackgroundImage];
     
+    [self configureViewAesthetics];
+    
     [vc didMoveToParentViewController: self];
 }
 
@@ -99,6 +125,48 @@
                                                                    toRootView: self.view
                                                                  imageOpacity: .45];
     
+}
+
+- (void)configureViewAesthetics{
+    
+    //// give the button the correct appearance
+    
+    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.makeCorrectionsButton]
+                                                     withOpacity: .85];
+    
+}
+
+
+#pragma mark - IBAction
+
+- (IBAction)didPressMakeCorrectionsButton:(id)sender{
+    
+    //// Execution is state dependent.  If MakingCorrectionsInactive, enable the weight and reps button buttons and change their appearance.  Change the text of the button to 'Done'.  Else, reconfigure normal state and set state variable appropriately
+    
+    if (_makingCorrectionsState == MakingCorrectionsInactive){
+        
+        // call the protocol method of child VC
+        
+        [self.circuitActiveUpdatingVC enableWeightAndRepsButtonsAndGiveEnabledAppearance];
+        
+        // change button appearance and reset state
+        
+        [self.makeCorrectionsButton setTitle: @"Done"
+                                    forState: UIControlStateNormal];
+        
+        _makingCorrectionsState = MakingCorrectionsActive;
+        
+    } else if (_makingCorrectionsState == MakingCorrectionsActive){
+        
+        [self.circuitActiveUpdatingVC disableWeightAndRepsButtonsAndGiveDisabledAppearance];
+        
+        [self.makeCorrectionsButton setTitle: @"Make Corrections"
+                                    forState: UIControlStateNormal];
+        
+        _makingCorrectionsState = MakingCorrectionsInactive;
+        
+    }
+
 }
 
 #pragma mark - <UIViewControllerRestoration>
@@ -129,6 +197,7 @@
                  forKey: @"realizedChainUniqueID"];
     
 }
+
 
 @end
 
