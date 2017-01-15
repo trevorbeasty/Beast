@@ -376,28 +376,58 @@
     
     //// pass this message down to the individual row components which will do the heavy lifting.  The message should only be passed to the row controllers whose corresponding set has been realized
     
-    for (NSArray *array in self.childRowControllers){
+    int firstIncompleteExerciseIndexAsInt = [self.firstIncompleteExerciseIndex intValue];
+    int firstIncompleteRoundIndexAsInt = [self.firstIncompleteRoundIndex intValue];
+    
+    // first deal with all the complete rounds
+    
+    for (int i = 0; i < firstIncompleteRoundIndexAsInt; i++){
         
-        for (TJBCircuitActiveUpdatingRowComp<TJBCircuitActiveUpdatingRowCompProtocol> *row in array){
+        for (NSArray *array in self.childRowControllers){
             
-            [row enableWeightAndRepsButtonsAndGiveEnabledAppearance];
+            [array[i] enableWeightAndRepsButtonsAndGiveEnabledAppearance];
             
         }
+        
     }
+    
+    // then deal with the one partially complete round
+    
+    for (int j = 0; j < firstIncompleteExerciseIndexAsInt; j++){
+        
+        [self.childRowControllers[j][firstIncompleteRoundIndexAsInt] enableWeightAndRepsButtonsAndGiveEnabledAppearance];
+        
+    }
+    
 }
 
 - (void)disableWeightAndRepsButtonsAndGiveDisabledAppearance{
     
-    //// pass this message down to the individual row components which will do the heavy lifting
+    //// pass this message down to the individual row components which will do the heavy lifting.  The message should only be passed to the row controllers whose corresponding set has been realized
     
-    for (NSArray *array in self.childRowControllers){
+    int firstIncompleteExerciseIndexAsInt = [self.firstIncompleteExerciseIndex intValue];
+    int firstIncompleteRoundIndexAsInt = [self.firstIncompleteRoundIndex intValue];
+    
+    // first deal with all the complete rounds
+    
+    for (int i = 0; i < firstIncompleteRoundIndexAsInt; i++){
         
-        for (TJBCircuitActiveUpdatingRowComp<TJBCircuitActiveUpdatingRowCompProtocol> *row in array){
+        for (NSArray *array in self.childRowControllers){
             
-            [row disableWeightAndRepsButtonsAndGiveDisabledAppearance];
+            [array[i] disableWeightAndRepsButtonsAndGiveDisabledAppearance];
             
         }
+        
     }
+    
+    // then deal with the one partially complete round
+    
+    for (int j = 0; j < firstIncompleteExerciseIndexAsInt; j++){
+        
+        [self.childRowControllers[j][firstIncompleteRoundIndexAsInt] disableWeightAndRepsButtonsAndGiveDisabledAppearance];
+        
+    }
+
     
 }
 
