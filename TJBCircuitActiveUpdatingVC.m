@@ -91,6 +91,8 @@
     self.firstIncompleteRoundIndex = [NSNumber numberWithInt: realizedChain.firstIncompleteRoundIndex];
     self.firstIncompleteExerciseIndex = [NSNumber numberWithInt: realizedChain.firstIncompleteExerciseIndex];
     
+    return;
+    
 }
 
 - (void)registerForRelevantNotifications{

@@ -91,6 +91,7 @@
 // core data
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 
@@ -252,7 +253,9 @@ static NSString * const defaultValue = @"default value";
     
     // exercise
     
-    TJBExercise *exercise = self.chainTemplate.exercises[0];
+    int exerciseIndexAsInt = [self.activeExerciseIndex intValue];
+    
+    TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndexAsInt];
     
     self.exerciseLabel.text = exercise.name;
     
@@ -597,6 +600,8 @@ static NSString * const defaultValue = @"default value";
 
 - (void)incrementControllerAndUpdateViews{
     
+    //// this method is also responsible for updating the 'first incomplete' type properties of the realized chain
+    
     self.previousExerciseIndex = self.activeExerciseIndex;
     self.previousRoundIndex = self.activeRoundIndex;
     
@@ -654,6 +659,7 @@ static NSString * const defaultValue = @"default value";
 
 
 - (void)quit{
+    
     // this will only ever be called before the chain has been completed, so no need to check if the set is completed in method body
 
     // present alert controller that gives the option to save or discard progress
@@ -906,6 +912,9 @@ static NSString * const defaultValue = @"default value";
     NSDate *enteredBackgroundDate = [coder decodeObjectForKey: @"enteredBackgroundDate"];
     
     int elapsedTimeInBackgroundState = [enteredForegroundDate timeIntervalSinceDate: enteredBackgroundDate];
+    
+    NSLog(@"time spent in background state in seconds: %d",
+          elapsedTimeInBackgroundState);
     
     // kick off the user selection process if the user is mid-selection
     // this is accomplished by storing this block and executing it in viewDidAppear

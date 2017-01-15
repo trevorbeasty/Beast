@@ -42,6 +42,10 @@
     
     self.chainTemplate = chainTemplate;
     
+    // for restoration
+    
+    [self setRestorationProperties];
+    
     return self;
 }
 
