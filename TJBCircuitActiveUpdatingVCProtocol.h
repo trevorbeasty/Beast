@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+// core data
+
+//#import "CoreDataController.h"
+
 // child VC
 
 @class TJBCircuitActiveUpdatingRowComp;

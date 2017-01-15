@@ -17,13 +17,13 @@
 
 #import "CoreDataController.h"
 
-#import "TJBRealizedChain+CoreDataProperties.h"
-#import "TJBChainTemplate+CoreDataProperties.h"
-#import "TJBWeightArray+CoreDataProperties.h"
-#import "TJBRepsArray+CoreDataProperties.h"
-#import "TJBTargetRestTimeArray+CoreDataProperties.h"
-#import "SetBeginDateArray+CoreDataProperties.h"
-#import "SetEndDateArray+CoreDataProperties.h"
+//#import "TJBRealizedChain+CoreDataProperties.h"
+//#import "TJBChainTemplate+CoreDataProperties.h"
+//#import "TJBWeightArray+CoreDataProperties.h"
+//#import "TJBRepsArray+CoreDataProperties.h"
+//#import "TJBTargetRestTimeArray+CoreDataProperties.h"
+//#import "SetBeginDateArray+CoreDataProperties.h"
+//#import "SetEndDateArray+CoreDataProperties.h"
 
 // protocols
 
@@ -337,19 +337,48 @@
     
     TJBCircuitActiveUpdatingRowComp <TJBCircuitActiveUpdatingRowCompProtocol> *rowComp = self.childRowControllers[exerciseIndex][roundIndex];
     
+    // set length
+    
+    int setLengthAsInt = [setEndDate timeIntervalSinceDate: setBeginDate];
+    NSNumber *setLength = [NSNumber numberWithInt: setLengthAsInt];
+    
+    // rest - nil if first exercise for first round.  Otherwise, find end date of previous set and calculate rest
+    
+    NSNumber *rest = nil;
+        
+    NSNumber *previousRoundIndex = nil;
+    NSNumber *previousExerciseIndex = nil;
+    BOOL previousIndicesExist = [TJBAssortedUtilities previousExerciseAndRoundIndicesForCurrentExerciseIndex: exerciseIndex
+                                                                                           currentRoundIndex: roundIndex
+                                                                                           numberOfExercises: [self.numberOfExercises intValue]
+                                                                                              numberOfRounds: [self.numberOfRounds intValue]
+                                                                                         roundIndexReference: &previousRoundIndex
+                                                                                      exerciseIndexReference: &previousExerciseIndex];
+    
+    if (previousIndicesExist){
+    
+        int previousRoundIndexAsInt = [previousRoundIndex intValue];
+        int previousExerciseIndexAsInt = [previousExerciseIndex intValue];
+        
+        NSDate *previousSetEndDate = self.realizedChain.setEndDateArrays[previousExerciseIndexAsInt].dates[previousRoundIndexAsInt].value;
+        
+        int restAsInt = [setBeginDate timeIntervalSinceDate: previousSetEndDate];
+        rest = [NSNumber numberWithInt: restAsInt];
+    
+    }
+    
+    // call child VC protocol method
+    
     [rowComp updateViewsWithWeight: weight
-                              reps: reps];
+                              reps: reps
+                              rest: rest
+                         setLength: setLength];
     
     return;
     
 }
 
 @end
-
-
-
-
-
 
 
 

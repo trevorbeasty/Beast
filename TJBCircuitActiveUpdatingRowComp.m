@@ -173,15 +173,42 @@
 
 #pragma mark - <TJBCircuitActiveUpdatingRowCompProtocol>
 
-- (void)updateViewsWithWeight:(NSNumber *)weight reps:(NSNumber *)reps{
+- (void)updateViewsWithWeight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest setLength:(NSNumber *)setLength{
     
-    //// update views with the passed-in parameters
+    //// update views with the passed-in parameters.  If the rest parameter is nil, give the rest button a blank title
+    
+    // weight
     
     [self.weightButton setTitle: [weight stringValue]
                        forState: UIControlStateNormal];
     
+    // reps
+    
     [self.repsButton setTitle: [reps stringValue]
                      forState: UIControlStateNormal];
+    
+    // rest
+    
+    if (rest){
+        
+        NSString *restTitle = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [rest intValue]];
+        
+        [self.restButton setTitle: restTitle
+                         forState: UIControlStateNormal];
+        
+    } else{
+        
+        [self.restButton setTitle: @""
+                         forState: UIControlStateNormal];
+        
+    }
+    
+    // set length
+    
+    NSString *setLengthTitle = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [setLength intValue]];
+    
+    [self.setLengthButton setTitle: setLengthTitle
+                          forState: UIControlStateNormal];
     
     return;
     
