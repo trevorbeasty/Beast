@@ -17,6 +17,8 @@
 + (instancetype)singleton;
 
 - (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel;
+- (void)removePrimaryStopwatchObserver:(UILabel *)timerLabel;
+
 - (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel;
 
 - (void)resetPrimaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing;

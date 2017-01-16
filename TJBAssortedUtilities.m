@@ -20,19 +20,13 @@
     int currentRound = [currentRoundIndex intValue];
     
     int maxExercise = [maxExerciseIndex intValue];
-    int maxRound = [maxRoundIndex intValue];
     
     BOOL atMaxExerciseIndex = currentExercise == maxExercise;
-    BOOL atEndOfCircuit = atMaxExerciseIndex && currentRound == maxRound;
     
     NSNumber *exerciseReturnValue;
     NSNumber *roundReturnValue;
-    
-    if (atEndOfCircuit){
-        
-        abort();
-        
-    } else if(atMaxExerciseIndex){
+
+    if(atMaxExerciseIndex){
         
         exerciseReturnValue = [NSNumber numberWithInt: 0];
         *exerciseIndexReference = exerciseReturnValue;
@@ -44,6 +38,8 @@
         
         exerciseReturnValue = [NSNumber numberWithInt: currentExercise + 1];
         *exerciseIndexReference = exerciseReturnValue;
+        
+        *roundIndexReference = currentRoundIndex;
         
     }
 

@@ -102,9 +102,16 @@
 
 #pragma mark - Observers
 
-- (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel
-{
+- (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel{
+    
     [self.primaryTimeObservers addObject: timerLabel];
+    
+}
+
+- (void)removePrimaryStopwatchObserver:(UILabel *)timerLabel{
+    
+    [self.primaryTimeObservers removeObject: timerLabel];
+    
 }
 
 - (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel

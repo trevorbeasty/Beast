@@ -202,78 +202,102 @@ static NSString * const defaultValue = @"default value";
 
 - (void)configureViewData{
     
-    // nav bar
+    //// dynamic views and nav bar will be populated based on whether the realized chain is complete or incomplete
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] init];
-    NSString *title = [NSString stringWithFormat: @"%@",
-                       self.chainTemplate.name];
-    [navItem setTitle: title];
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle: @"Quit"
-                                                                        style: UIBarButtonItemStyleDone
-                                                                       target: self
-                                                                       action: @selector(quit)];
-    [navItem setLeftBarButtonItem: cancelBarButton];
-    [self.navBar setItems: @[navItem]];
-    
-    // dynamic views
-    
-    NSString *notTargetedString = @"not targeted";
-    
-    // weight
-    
-    if (self.chainTemplate.targetingWeight == YES){
+    if (self.realizedChain.isIncomplete){
         
-        self.weightLabel.text = [self.activeTargetWeight stringValue];
+        // nav bar
+        
+        UINavigationItem *navItem = [[UINavigationItem alloc] init];
+        NSString *title = [NSString stringWithFormat: @"%@",
+                           self.chainTemplate.name];
+        [navItem setTitle: title];
+        UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle: @"Quit"
+                                                                            style: UIBarButtonItemStyleDone
+                                                                           target: self
+                                                                           action: @selector(quit)];
+        [navItem setLeftBarButtonItem: cancelBarButton];
+        [self.navBar setItems: @[navItem]];
+        
+        NSString *notTargetedString = @"not targeted";
+        
+        // weight
+        
+        if (self.chainTemplate.targetingWeight == YES){
+            
+            self.weightLabel.text = [self.activeTargetWeight stringValue];
+            
+        } else{
+            
+            self.weightLabel.text = notTargetedString;
+            
+        }
+        
+        // reps
+        
+        if (self.chainTemplate.targetingReps == YES){
+            
+            self.repsLabel.text = [self.activeTargetReps stringValue];
+            
+        } else{
+            
+            self.repsLabel.text = notTargetedString;
+            
+        }
+        
+        // rest
+        
+        // the NSNumber activeTargetRestTime is only created upon state restoration. It is set to nil during normal instantiation because, by definition, there is no rest time before the very first exercise of a chain
+        
+        if (self.activeTargetRestTime){
+            
+            NSString *restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeTargetRestTime intValue]];
+            
+            self.restLabel.text = restString;
+            
+        } else{
+            
+            self.restLabel.text = @"";
+            
+        }
+        
+        // exercise
+        
+        int exerciseIndexAsInt = [self.activeExerciseIndex intValue];
+        
+        TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndexAsInt];
+        
+        self.exerciseLabel.text = exercise.name;
+        
+        // round
+        
+        NSString *roundText = [NSString stringWithFormat: @"Round %d/%d",
+                               [self.activeRoundIndex intValue] + 1,
+                               [self.numberOfRounds intValue]];
+        
+        self.roundColumnLabel.text = roundText;
         
     } else{
         
-        self.weightLabel.text = notTargetedString;
+        [self configureViewsWithCircuitCompletedAppearance];
+        
+        [self configureNavBarWithCircuitCompletedAppearance];
         
     }
-    
-    // reps
- 
-    if (self.chainTemplate.targetingReps == YES){
-        
-        self.repsLabel.text = [self.activeTargetReps stringValue];
-        
-    } else{
-        
-        self.repsLabel.text = notTargetedString;
-        
-    }
-    
-    // rest
 
-    // the NSNumber activeTargetRestTime is only created upon state restoration. It is set to nil during normal instantiation because, by definition, there is no rest time before the very first exercise of a chain
+}
+
+- (void)configureNavBarWithCircuitCompletedAppearance{
     
-    if (self.activeTargetRestTime){
-        
-        NSString *restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeTargetRestTime intValue]];
-        
-        self.restLabel.text = restString;
-        
-    } else{
-        
-        self.restLabel.text = @"";
-        
-    }
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Completed"];
     
-    // exercise
+    UIBarButtonItem *exitBarButton = [[UIBarButtonItem alloc] initWithTitle: @"Exit"
+                                                                      style: UIBarButtonItemStylePlain
+                                                                     target: self
+                                                                     action: @selector(didPressExit)];
+    [navItem setLeftBarButtonItem: exitBarButton];
     
-    int exerciseIndexAsInt = [self.activeExerciseIndex intValue];
-    
-    TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndexAsInt];
-    
-    self.exerciseLabel.text = exercise.name;
-    
-    // round
-    
-    NSString *roundText = [NSString stringWithFormat: @"Round %d/%d",
-                           [self.activeRoundIndex intValue] + 1,
-                           [self.numberOfRounds intValue]];
-    
-    self.roundColumnLabel.text = roundText;
+    [self.navBar setItems: @[navItem]];
     
 }
 
@@ -351,6 +375,15 @@ static NSString * const defaultValue = @"default value";
 }
 
 #pragma mark - Button Actions
+
+- (void)didPressExit{
+    
+    //// can only be called when the circuit is complete.  Simply dismisses the circuit mode tab bar
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+    
+}
 
 - (BOOL)setCompletedButtonWasNotPressed{
     
@@ -559,6 +592,8 @@ static NSString * const defaultValue = @"default value";
         
         [self addSelectedValuesToRealizedChainObject];
         
+        // this method also performs necessary actions at circuit completion
+        
         [self incrementControllerAndUpdateViews];
         
         [self setUserSelectedValuesToNil];
@@ -624,6 +659,37 @@ static NSString * const defaultValue = @"default value";
     
 }
 
+- (void)configureViewsWithCircuitCompletedAppearance{
+    
+    //// give views the circuit completed appearance
+    
+    // button
+    
+    UIButton *button = self.beginSetButton;
+    
+    button.backgroundColor = [UIColor clearColor];
+    
+    [button setTitleColor: [UIColor clearColor]
+                 forState: UIControlStateNormal];
+    
+    button.enabled = NO;
+    
+    // views
+    
+    NSString *emptyString = @"";
+    
+    self.restLabel.text = emptyString;
+    self.exerciseLabel.text = emptyString;
+    self.weightLabel.text = emptyString;
+    self.repsLabel.text = emptyString;
+    self.roundColumnLabel.text = emptyString;
+    
+    // stopwatch - must remove timer label as observer
+    
+    [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.restLabel];
+    
+}
+
 - (void)incrementControllerAndUpdateViews{
     
     //// this method is also responsible for updating the 'first incomplete' type properties of the realized chain
@@ -638,8 +704,49 @@ static NSString * const defaultValue = @"default value";
         
         if (atMaxRoundIndex){
             
-            NSLog(@"reached end of circuit");
-            abort();
+            //// will make proper updates to realized chain, present a message, and put this VC in its chain completed state (turn off begin set button and change views appropriately)
+            
+            // core data - must update all completeness type properties
+            
+            self.realizedChain.isIncomplete = NO;
+            [[CoreDataController singleton] saveContext];
+            
+            NSNumber *nextExerciseIndex = nil;
+            NSNumber *nextRoundIndex = nil;
+            [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: self.activeExerciseIndex
+                                                        currentRoundIndex: self.activeRoundIndex
+                                                         maxExerciseIndex: [NSNumber numberWithInt: [self.numberOfExercises intValue] - 1]
+                                                            maxRoundIndex: [NSNumber numberWithInt: [self.numberOfRounds intValue] - 1]
+                                                   exerciseIndexReference: &nextExerciseIndex
+                                                      roundIndexReference: &nextRoundIndex];
+            
+            self.activeExerciseIndex = nextExerciseIndex;
+            self.activeRoundIndex = nextRoundIndex;
+            
+            // UI
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Completed" message: @"You have completed this circuit. Please make any necessary corrections and then press quit to continue"
+                                                                    preferredStyle: UIAlertControllerStyleAlert];
+            
+            void (^continueAction)(UIAlertAction *) = ^(UIAlertAction *action){
+                
+                __weak TJBActiveCircuitGuidance *weakSelf = self;
+                
+                [weakSelf configureViewsWithCircuitCompletedAppearance];
+                
+                [weakSelf configureNavBarWithCircuitCompletedAppearance];
+                
+            };
+            
+            UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: continueAction];
+            
+            [alert addAction: action];
+            
+            [self presentViewController: alert
+                               animated: YES
+                             completion: nil];
             
         } else{
             
@@ -666,33 +773,39 @@ static NSString * const defaultValue = @"default value";
     
     [[CoreDataController singleton] saveContext];
     
-    // pull next target values from the chain template
+    // if the chain is incomplete, pull the next target values and update the views
     
-    TJBChainTemplate *chainTemplate = self.chainTemplate;
-    
-    int exerciseIndex = [self.activeExerciseIndex intValue];
-    int roundIndex = [self.activeRoundIndex intValue];
-    
-    if (chainTemplate.targetingWeight == YES){
+    if (self.realizedChain.isIncomplete){
         
-        self.activeTargetWeight = [NSNumber numberWithDouble: self.chainTemplate.weightArrays[exerciseIndex].numbers[roundIndex].value];
+        // pull next target values from the chain template
         
-        self.weightLabel.text = [self.activeTargetWeight stringValue];
+        TJBChainTemplate *chainTemplate = self.chainTemplate;
+        
+        int exerciseIndex = [self.activeExerciseIndex intValue];
+        int roundIndex = [self.activeRoundIndex intValue];
+        
+        if (chainTemplate.targetingWeight == YES){
+            
+            self.activeTargetWeight = [NSNumber numberWithDouble: self.chainTemplate.weightArrays[exerciseIndex].numbers[roundIndex].value];
+            
+            self.weightLabel.text = [self.activeTargetWeight stringValue];
+            
+        }
+        
+        if (chainTemplate.targetingReps == YES){
+            
+            self.activeTargetReps = [NSNumber numberWithDouble: self.chainTemplate.repsArrays[exerciseIndex].numbers[roundIndex].value];
+            
+            self.repsLabel.text = [self.activeTargetReps stringValue];
+            
+        }
+        
+        TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndex];
+        
+        self.exerciseLabel.text = exercise.name;
         
     }
 
-    if (chainTemplate.targetingReps == YES){
-        
-        self.activeTargetReps = [NSNumber numberWithDouble: self.chainTemplate.repsArrays[exerciseIndex].numbers[roundIndex].value];
-        
-        self.repsLabel.text = [self.activeTargetReps stringValue];
-        
-    }
-    
-    TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndex];
-    
-    self.exerciseLabel.text = exercise.name;
-    
 }
 
 
@@ -713,11 +826,13 @@ static NSString * const defaultValue = @"default value";
         TJBRealizedChain *chain = self.realizedChain;
         
         self.realizedChain = nil;
+        
         [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
                                                            chain: chain];
-//        [[[CoreDataController singleton] moc] reset];
+        
         [self.tabBarController.presentingViewController dismissViewControllerAnimated: NO
                                                                            completion: nil];
+        
     };
     
     void (^saveHandler)(UIAlertAction *) = ^(UIAlertAction *action){
@@ -746,6 +861,7 @@ static NSString * const defaultValue = @"default value";
     [self presentViewController: alert
                        animated: YES
                      completion: nil];
+    
 }
 
 - (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
@@ -902,11 +1018,6 @@ static NSString * const defaultValue = @"default value";
     [coder encodeObject: [NSDate date]
                  forKey: @"enteredBackgroundDate"];
     
-//    // active updating circuit
-//    
-//    [coder encodeObject: self.circuitActiveUpdatingVC
-//                 forKey: @"circuitActiveUpdatingVC"];
-    
 }
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
@@ -953,10 +1064,6 @@ static NSString * const defaultValue = @"default value";
         };
         
     }
-    
-//    // active updating circuit
-//    
-//    self.circuitActiveUpdatingVC = [coder decodeObjectForKey: @"circuitActiveUpdatingVC"];
     
     //// timer
     
