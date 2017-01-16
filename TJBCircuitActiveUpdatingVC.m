@@ -467,6 +467,9 @@
             
             [self.childRowControllers[exerciseIndex][roundIndex] disableWeightButtonAndGiveDisabledAppearance];
             
+            [weakSelf dismissViewControllerAnimated: NO
+                                         completion: nil];
+            
         };
         
         [self presentNumberSelectionSceneWithNumberType: WeightType
@@ -493,6 +496,9 @@
                     forState: UIControlStateNormal];
             
             [self.childRowControllers[exerciseIndex][roundIndex] disableRepsButtonAndGiveDisabledAppearance];
+            
+            [weakSelf dismissViewControllerAnimated: NO
+                                         completion: nil];
             
         };
         

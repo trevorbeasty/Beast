@@ -21,11 +21,6 @@
 - (void)disableWeightButtonAndGiveDisabledAppearance;
 - (void)disableRepsButtonAndGiveDisabledAppearance;
 
-// might not need
-
-//- (void)updateWeightViewWithUserSelection:(float)weight;
-//
-//- (void)updateRepsViewWithUserSelection:(float)reps;
 
 
 @end

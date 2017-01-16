@@ -232,6 +232,8 @@
     
     void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
         
+        button.enabled = YES;
+        
         button.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
         
         [button setTitleColor: [[TJBAestheticsController singleton] buttonTextColor]
@@ -268,6 +270,7 @@
                      forState: UIControlStateNormal];
         
         button.backgroundColor = [UIColor whiteColor];
+        
         button.enabled = NO;
         
     };
@@ -284,6 +287,7 @@
                      forState: UIControlStateNormal];
         
         button.backgroundColor = [UIColor whiteColor];
+        
         button.enabled = NO;
         
     };
@@ -312,7 +316,7 @@
     [self.masterController didPressUserInputButtonWithType: RepsType
                                                chainNumber: self.chainNumber
                                                roundNumber: self.roundNumber
-                                                    button: self.weightButton];
+                                                    button: self.repsButton];
     
 }
 
