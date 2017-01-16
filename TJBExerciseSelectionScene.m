@@ -83,8 +83,15 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 - (void)createFetchedResultsController
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    
+    NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
+                                                    @"Placeholder"];
+    
+    request.predicate = noPlaceholderExercisesPredicate;
+    
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
+    
     NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
                                                                    ascending: YES];
     [request setSortDescriptors: @[categorySort, nameSort]];

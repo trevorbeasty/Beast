@@ -248,7 +248,9 @@ NSString * const placeholderCategoryName = @"Placeholder";
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name
 {
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
+    
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    
     fetch.predicate = predicate;
     
     NSError *error =  nil;

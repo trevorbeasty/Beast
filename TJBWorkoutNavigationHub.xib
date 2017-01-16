@@ -28,7 +28,7 @@
                         <constraint firstAttribute="height" constant="40" id="a75-rA-RHd"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                    <state key="normal" title="Standalone Set">
+                    <state key="normal" title="Unstructured">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -39,22 +39,11 @@
                     <rect key="frame" x="8" y="572" width="520" height="40"/>
                     <color key="backgroundColor" red="0.41313043090000001" green="0.99707198500000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <state key="normal" title="Circuit / Superset">
+                    <state key="normal" title="Structured">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="didPressCircuitSlashSupersetButton:" destination="-1" eventType="touchUpInside" id="K8N-Ar-l6n"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kWI-Qx-Anm">
-                    <rect key="frame" x="8" y="476" width="520" height="40"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="zhC-WD-W2m"/>
-                    </constraints>
-                    <state key="normal" title="Test"/>
-                    <connections>
-                        <action selector="didPressTest:" destination="-1" eventType="touchUpInside" id="e5T-Y5-boA"/>
                     </connections>
                 </button>
             </subviews>
@@ -64,9 +53,6 @@
                 <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="8" id="5kk-8i-FuJ"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="76L-CH-5BE"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="9ys-lP-Amq"/>
-                <constraint firstItem="dl0-qJ-myg" firstAttribute="top" secondItem="kWI-Qx-Anm" secondAttribute="bottom" constant="8" id="CXD-XO-u5k"/>
-                <constraint firstAttribute="trailing" secondItem="kWI-Qx-Anm" secondAttribute="trailing" constant="8" id="PxJ-BA-sKh"/>
-                <constraint firstItem="kWI-Qx-Anm" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Rk9-bZ-XOI"/>
                 <constraint firstAttribute="bottom" secondItem="5vd-Pz-T1I" secondAttribute="bottom" constant="8" id="bIa-TX-8au"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="8" id="c2o-L5-4Oh"/>
                 <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="8" id="eDm-bO-66p"/>

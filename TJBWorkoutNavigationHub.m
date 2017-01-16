@@ -34,7 +34,6 @@
 
 - (IBAction)didPressStandaloneSetButton:(id)sender;
 - (IBAction)didPressCircuitSlashSupersetButton:(id)sender;
-- (IBAction)didPressTest:(id)sender;
 
 
 
@@ -89,13 +88,6 @@
                        animated: NO
                      completion: nil];
 }
-
-- (IBAction)didPressTest:(id)sender{
-    
-    
-        
-}
-
 
 
 @end
