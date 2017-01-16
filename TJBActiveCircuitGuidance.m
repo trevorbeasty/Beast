@@ -1065,32 +1065,46 @@ static NSString * const defaultValue = @"default value";
         
     }
     
-    //// timer
+    //// timer - should only be added if circuit is incomplete
     
-    // primary
-    
-    int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
-    primaryTimerValue -= elapsedTimeInBackgroundState;
+    if (self.realizedChain.isIncomplete){
         
-    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-    
-    [stopwatch addPrimaryStopwatchObserver: self.restLabel];
-    self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
+        // if this is the very first exercise, the rest label should be blank
         
-    self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
-    [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
-                              withForwardIncrementing: NO];
-    
-    // secondary
-    
-    BOOL userWasInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
-    
-    if (userWasInSet){
+        BOOL isFirstExerciseInFirstRound = [self.activeExerciseIndex intValue] == 0 && [self.activeRoundIndex intValue] == 0;
         
-        int secondaryTimerValue = [coder decodeIntForKey: @"secondaryTimerValue"];
-        secondaryTimerValue += elapsedTimeInBackgroundState;
-        self.secondaryTimerFromStateRestoration  = [NSNumber numberWithInt: secondaryTimerValue];
+        if (!isFirstExerciseInFirstRound){
+            
+            // primary
+            
+            int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
+            primaryTimerValue -= elapsedTimeInBackgroundState;
+            
+            TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+            
+            [stopwatch addPrimaryStopwatchObserver: self.restLabel];
+            self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
+            
+            self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
+            [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
+                                  withForwardIncrementing: NO];
+            
+        }
+        
+        // secondary
+        
+        BOOL userWasInSet = self.selectedTimeDelay && [self setCompletedButtonWasNotPressed];
+        
+        if (userWasInSet){
+            
+            int secondaryTimerValue = [coder decodeIntForKey: @"secondaryTimerValue"];
+            secondaryTimerValue += elapsedTimeInBackgroundState;
+            self.secondaryTimerFromStateRestoration  = [NSNumber numberWithInt: secondaryTimerValue];
+        }
+        
     }
+    
+
     
 }
 

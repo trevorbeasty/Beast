@@ -68,7 +68,9 @@
 #pragma mark - Internal Methods
 
 - (void)updateTimerLabels{
+    
     [self incrementPrimaryElapsedTime];
+    
     [self incrementSecondaryElapsedTime];
     
     for (UILabel *timerLabel in self.primaryTimeObservers)
@@ -111,6 +113,8 @@
 - (void)removePrimaryStopwatchObserver:(UILabel *)timerLabel{
     
     [self.primaryTimeObservers removeObject: timerLabel];
+    
+    return;
     
 }
 
