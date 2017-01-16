@@ -254,7 +254,13 @@
 
 - (void)disableWeightAndRepsButtonsAndGiveDisabledAppearance{
     
-    //// disable and give disabled appearance to weight and reps buttons
+    [self disableWeightButtonAndGiveDisabledAppearance];
+    
+    [self disableRepsButtonAndGiveDisabledAppearance];
+
+}
+
+- (void)disableWeightButtonAndGiveDisabledAppearance{
     
     void (^disabledButtonConfiguration)(UIButton *) = ^(UIButton *button){
         
@@ -267,11 +273,24 @@
     };
     
     disabledButtonConfiguration(self.weightButton);
-    disabledButtonConfiguration(self.repsButton);
     
 }
 
-
+- (void)disableRepsButtonAndGiveDisabledAppearance{
+    
+    void (^disabledButtonConfiguration)(UIButton *) = ^(UIButton *button){
+        
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
+        
+        button.backgroundColor = [UIColor whiteColor];
+        button.enabled = NO;
+        
+    };
+    
+    disabledButtonConfiguration(self.repsButton);
+    
+}
 
 #pragma mark - IBAction
 

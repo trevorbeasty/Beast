@@ -433,10 +433,98 @@
 
 - (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button{
     
-    //// filter by type. Present the appropriate number selection scene. Store the passed in number in the realized chain, save it, and give the passed-in button the correct title
+    // definition of variables used throughout
     
+    __weak TJBCircuitActiveUpdatingVC *weakSelf = self;
+    
+    void (^cancelBlock)(void) = ^{
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+        
+    };
+    
+    int exerciseIndex = [chainNumber intValue] - 1;
+    int roundIndex = [roundNumber intValue] - 1;
+    
+    void (^numberSelectedBlock)(NSNumber *);
+    
+    //// filter by type. Present the appropriate number selection scene. Store the passed in number in the realized chain, save it, and update the button title.  Message the button's row controller to turn the button to the unselected state
+    
+    if (type == WeightType){
+        
+        numberSelectedBlock = ^(NSNumber *number){
+            
+            // store the selected number in the realized chain and save it
+            
+            weakSelf.realizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value = [number floatValue];
+            [[CoreDataController singleton] saveContext];
+            
+            // button
+            
+            [button setTitle: [number stringValue]
+                    forState: UIControlStateNormal];
+            
+            [self.childRowControllers[exerciseIndex][roundIndex] disableWeightButtonAndGiveDisabledAppearance];
+            
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: WeightType
+                                         numberMultiple: [NSNumber numberWithFloat: 2.5]
+                                            numberLimit: nil
+                                                  title: @"Select Weight"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: numberSelectedBlock
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+        
+    } else if (type == RepsType){
+        
+        numberSelectedBlock = ^(NSNumber *number){
+            
+            // store the selected number in the realized chain and save it
+            
+            weakSelf.realizedChain.repsArrays[exerciseIndex].numbers[roundIndex].value = [number floatValue];
+            [[CoreDataController singleton] saveContext];
+            
+            // button
+            
+            [button setTitle: [number stringValue]
+                    forState: UIControlStateNormal];
+            
+            [self.childRowControllers[exerciseIndex][roundIndex] disableRepsButtonAndGiveDisabledAppearance];
+            
+        };
+        
+        [self presentNumberSelectionSceneWithNumberType: RepsType
+                                         numberMultiple: [NSNumber numberWithFloat: 1.0]
+                                            numberLimit: nil
+                                                  title: @"Select Reps"
+                                            cancelBlock: cancelBlock
+                                    numberSelectedBlock: numberSelectedBlock
+                                               animated: YES
+                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+        
+    }
+    
+    
+}
 
+- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
     
+    TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType
+                                                                                          numberMultiple: numberMultiple
+                                                                                             numberLimit: numberLimit
+                                                                                                   title: title
+                                                                                             cancelBlock: cancelBlock
+                                                                                     numberSelectedBlock: numberSelectedBlock];
+    
+    
+    numberSelectionVC.modalTransitionStyle = transitionStyle;
+    
+    [self presentViewController: numberSelectionVC
+                       animated: animated
+                     completion: nil];
     
 }
 
