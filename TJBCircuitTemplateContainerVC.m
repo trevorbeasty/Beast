@@ -49,7 +49,7 @@
 
 // pertinent chainTemplate
 
-@property (nonatomic, weak) TJBChainTemplate *chainTemplate;
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @end
 

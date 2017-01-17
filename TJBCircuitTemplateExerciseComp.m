@@ -31,7 +31,7 @@
 @property (nonatomic, strong) NSNumber *targetingRest;
 @property (nonatomic, strong) NSNumber *targetsVaryByRound;
 @property (nonatomic, strong) NSNumber *chainNumber;
-@property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
+@property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 
 // IBOutlets
 
