@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBWorkoutNavigationHub">
             <connections>
                 <outlet property="circuitSlashSupersetButton" destination="5vd-Pz-T1I" id="Vqe-7b-UO6"/>
+                <outlet property="historyButton" destination="id1-eo-H3I" id="y9m-Tl-CNE"/>
                 <outlet property="standaloneSetButton" destination="dl0-qJ-myg" id="cnm-fM-aCI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -22,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dl0-qJ-myg">
-                    <rect key="frame" x="8" y="524" width="520" height="40"/>
+                    <rect key="frame" x="8" y="476" width="520" height="40"/>
                     <color key="backgroundColor" red="0.31663491707119074" green="1" blue="0.99097504945429948" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="a75-rA-RHd"/>
@@ -36,7 +37,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vd-Pz-T1I">
-                    <rect key="frame" x="8" y="572" width="520" height="40"/>
+                    <rect key="frame" x="8" y="524" width="520" height="40"/>
                     <color key="backgroundColor" red="0.41313043090000001" green="0.99707198500000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                     <state key="normal" title="Structured">
@@ -46,6 +47,16 @@
                         <action selector="didPressCircuitSlashSupersetButton:" destination="-1" eventType="touchUpInside" id="K8N-Ar-l6n"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="id1-eo-H3I">
+                    <rect key="frame" x="8" y="572" width="520" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="lBx-aj-rAh"/>
+                    </constraints>
+                    <state key="normal" title="History"/>
+                    <connections>
+                        <action selector="didPressHistoryButton:" destination="-1" eventType="touchUpInside" id="TMR-SI-asD"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -53,9 +64,12 @@
                 <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="8" id="5kk-8i-FuJ"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="76L-CH-5BE"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="9ys-lP-Amq"/>
-                <constraint firstAttribute="bottom" secondItem="5vd-Pz-T1I" secondAttribute="bottom" constant="8" id="bIa-TX-8au"/>
+                <constraint firstAttribute="trailing" secondItem="id1-eo-H3I" secondAttribute="trailing" constant="8" id="BuD-Jl-8FX"/>
+                <constraint firstItem="id1-eo-H3I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="LXB-5i-VKd"/>
                 <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="8" id="c2o-L5-4Oh"/>
                 <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="8" id="eDm-bO-66p"/>
+                <constraint firstAttribute="bottom" secondItem="id1-eo-H3I" secondAttribute="bottom" constant="8" id="khE-rV-F7Z"/>
+                <constraint firstItem="id1-eo-H3I" firstAttribute="top" secondItem="5vd-Pz-T1I" secondAttribute="bottom" constant="8" id="x4c-SN-qPT"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="114" y="31"/>
