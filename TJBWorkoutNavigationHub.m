@@ -65,6 +65,7 @@
     [self configureBackgroundView];
     
     [self viewAesthetics];
+    
 }
 
 - (void)viewAesthetics{

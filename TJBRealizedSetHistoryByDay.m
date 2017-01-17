@@ -43,14 +43,21 @@
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
     [self configureNavigationBar];
+    
     [self configureFetchedResultsController];
+    
     [self configureTableView];
+    
     [self addBackgroundImage];
+    
     [self viewAesthetics];
+    
 }
 
 - (void)configureNavigationBar{
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Today's Sets"];
     [self.navigationBar setItems: @[navItem]];
     [TJBAestheticsController configureNavigationBar: self.navigationBar];
@@ -70,11 +77,14 @@
 }
 
 - (void)configureFetchedResultsController{
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
+    
     NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"endDate"
                                                                ascending: NO];
     
     // create NSDate objects defining the first and last seconds of today in order to effectively filter the retrieved 'realized set' objects
+    
     NSDate *todayBegin = [[NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian] startOfDayForDate: [NSDate date]];
     
     NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
@@ -100,10 +110,12 @@
     self.frc = frc;
     
     NSError *error = nil;
-    if (![self.frc performFetch: &error])
-    {
+    
+    if (![self.frc performFetch: &error]){
+        
         abort();
     }
+    
 }
 
 - (void)viewAesthetics{

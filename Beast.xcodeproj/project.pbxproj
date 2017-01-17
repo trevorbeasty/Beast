@@ -326,8 +326,7 @@
 		0B843C901DFB7E9C0093F057 /* Single Set Mode */ = {
 			isa = PBXGroup;
 			children = (
-				0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */,
-				0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */,
+				0B870E481E2E5C7000E38C46 /* Tab Bar */,
 				0B843CA61DFED0320093F057 /* SelectedExerciseObserver.h */,
 				0B843CCF1E0C96E20093F057 /* Personal Record Scene */,
 				0B843CCE1E0C96CA0093F057 /* History by Day Scene */,
@@ -445,6 +444,15 @@
 				0B870E451E2E573400E38C46 /* TJBCompleteHistoryVC.xib */,
 			);
 			name = History;
+			sourceTree = "<group>";
+		};
+		0B870E481E2E5C7000E38C46 /* Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */,
+				0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */,
+			);
+			name = "Tab Bar";
 			sourceTree = "<group>";
 		};
 		0BA8ACF71E26562300EE10C2 /* Circuit Reference */ = {

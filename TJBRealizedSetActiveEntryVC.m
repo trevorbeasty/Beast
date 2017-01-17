@@ -138,10 +138,13 @@
 }
 
 - (void)fetchCoreDataAndConfigureTableView{
+    
     // table view reusable cell registration
     // notification center registration as well
+    
     [self.exerciseTableView registerClass: [UITableViewCell class]
                    forCellReuseIdentifier: @"basicCell"];
+    
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(exerciseDataChanged)
                                                  name: ExerciseDataChanged
