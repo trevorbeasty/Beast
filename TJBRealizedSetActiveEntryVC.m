@@ -398,6 +398,7 @@
     else if (_setCompletedButtonPressed == NO)
     {
         void(^block)(int) = ^(int timeInSeconds){
+            
             _setCompletedButtonPressed = YES;
             _timerAtSetCompletion = timeInSeconds;
             [weakSelf dismissViewControllerAnimated: NO

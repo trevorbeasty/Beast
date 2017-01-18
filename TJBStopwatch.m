@@ -64,7 +64,9 @@
     
     self.primaryTimeObservers = [[NSMutableSet alloc] init];
     self.secondaryTimeObservers = [[NSMutableSet alloc] init];
+    
     self.primaryStopwatchObserverVCs = [[NSMutableArray alloc] init];
+    self.secondaryStopwatchObserverVCs = [[NSMutableArray alloc] init];
     
     _primaryStopwatchIsOn = NO;
     _secondaryStopwatchIsOn = NO;
@@ -218,11 +220,7 @@
     
 }
 
-//- (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel{
-//    
-//    [self.primaryTimeObservers addObject: timerLabel];
-//    
-//}
+
 
 - (void)removePrimaryStopwatchObserver:(UILabel *)timerLabel{
     
@@ -232,33 +230,11 @@
     
 }
 
-//- (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel
-//{
-//    [self.secondaryTimeObservers addObject: timerLabel];
-//}
+
 
 #pragma mark - Stopwatch Manipulation
 
-//- (void)resetPrimaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing{
-//    
-//    _primaryElapsedTimeInSeconds = 0;
-//    
-//    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
-//    
-//    self.dateAtLastUpdate = nil;
-//    
-//}
-//
-//- (void)resetSecondaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing
-//{
-//    _secondaryElapsedTimeInSeconds = 0;
-//    _incrementSecondaryElapsedTimeForwards = forwardIncrementing;
-//}
 
-//- (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing{
-//    _primaryElapsedTimeInSeconds = timeInSeconds;
-//    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
-//}
 
 - (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing lastUpdateDate:(NSDate *)lastUpdateDate{
     
