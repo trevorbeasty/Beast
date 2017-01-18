@@ -177,6 +177,7 @@ static NSString * const defaultValue = @"default value";
     NSArray *labels = @[self.exerciseColumnLabel,
                         self.weightColumnLabel,
                         self.repsColumnLabel];
+    
     for (UILabel *label in labels){
         
         label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
@@ -484,6 +485,7 @@ static NSString * const defaultValue = @"default value";
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             
             self.selectedTimeLag = number;
+            
             [self dismissViewControllerAnimated: NO
                                      completion: nil];
             
@@ -517,6 +519,7 @@ static NSString * const defaultValue = @"default value";
             // recursive
             
             [self didPressBeginSet];
+            
         };
         
         [self presentNumberSelectionSceneWithNumberType: RestType
@@ -1000,10 +1003,10 @@ static NSString * const defaultValue = @"default value";
     // the primary stopwatch holds the value of the timer for this VC's view
     // the primary timer's value is significant throughout the entire selection process and should thus always be saved
     
-    int primaryTimerValue = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
+    float primaryTimerValue = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] floatValue];
     
-    [coder encodeInt: primaryTimerValue
-              forKey: @"primaryTimerValue"];
+    [coder encodeFloat: primaryTimerValue
+                forKey: @"primaryTimerValue"];
     
     // the secondary timer is only pertinent if the InSetVC is currently being displayed
     
@@ -1011,17 +1014,17 @@ static NSString * const defaultValue = @"default value";
     
     if (userIsInSet){
         
-        int secondaryTimerValue = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
+        float secondaryTimerValue = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] floatValue];
         
-        [coder encodeInt: secondaryTimerValue
+        [coder encodeFloat: secondaryTimerValue
                   forKey: @"secondaryTimerValue"];
         
     }
     
     // date - used to determine elapsed time in background state
     
-    [coder encodeObject: [NSDate date]
-                 forKey: @"enteredBackgroundDate"];
+    [coder encodeObject: self.lastTimerUpdatedDate
+                 forKey: @"lastTimerUpdatedDate"];
     
 }
 
@@ -1044,16 +1047,6 @@ static NSString * const defaultValue = @"default value";
     self.selectedWeight = [coder decodeObjectForKey: @"selectedWeight"];
     
     self.selectedReps = [coder decodeObjectForKey: @"selectedReps"];
-
-    // elapsed time in background state
-    
-    NSDate *enteredForegroundDate = [NSDate date];
-    NSDate *enteredBackgroundDate = [coder decodeObjectForKey: @"enteredBackgroundDate"];
-    
-    int elapsedTimeInBackgroundState = [enteredForegroundDate timeIntervalSinceDate: enteredBackgroundDate];
-    
-    NSLog(@"time spent in background state in seconds: %d",
-          elapsedTimeInBackgroundState);
     
     // kick off the user selection process if the user is mid-selection
     // this is accomplished by storing this block and executing it in viewDidAppear
@@ -1082,8 +1075,10 @@ static NSString * const defaultValue = @"default value";
             
             // primary
             
-            int primaryTimerValue = [coder decodeIntForKey: @"primaryTimerValue"];
-            primaryTimerValue -= elapsedTimeInBackgroundState;
+            float primaryTimerValue = [coder decodeFloatForKey: @"primaryTimerValue"];
+            
+            NSDate *lastTimerUpdatedDate = [coder decodeObjectForKey: @"lastTimerUpdatedDate"];
+            self.lastTimerUpdatedDate = lastTimerUpdatedDate;
             
             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
             
@@ -1096,7 +1091,7 @@ static NSString * const defaultValue = @"default value";
             
             [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
                                   withForwardIncrementing: NO
-                                           lastUpdateDate: nil];
+                                           lastUpdateDate: lastTimerUpdatedDate];
             
         }
         
@@ -1106,9 +1101,10 @@ static NSString * const defaultValue = @"default value";
         
         if (userWasInSet){
             
-            int secondaryTimerValue = [coder decodeIntForKey: @"secondaryTimerValue"];
-            secondaryTimerValue += elapsedTimeInBackgroundState;
-            self.secondaryTimerFromStateRestoration  = [NSNumber numberWithInt: secondaryTimerValue];
+            float secondaryTimerValue = [coder decodeFloatForKey: @"secondaryTimerValue"];
+            
+            self.secondaryTimerFromStateRestoration  = [NSNumber numberWithFloat: secondaryTimerValue];
+            
         }
         
     }

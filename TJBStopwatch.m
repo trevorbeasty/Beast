@@ -18,6 +18,10 @@
     
     BOOL _incrementPrimaryElapsedTimeForwards;
     BOOL _incrementSecondaryElapsedTimeForwards;
+    
+    BOOL _primaryStopwatchIsOn;
+    BOOL _secondaryStopwatchIsOn;
+    
 }
 
 @property (nonatomic, strong) NSTimer *stopwatch;
@@ -26,7 +30,8 @@
 
 @property (nonatomic, strong) NSMutableArray <UIViewController<TJBStopwatchObserver> *> *primaryStopwatchObserverVCs;
 
-@property (nonatomic, strong) NSDate *dateAtLastUpdate;
+@property (nonatomic, strong) NSDate *dateAtLastPrimaryUpdate;
+@property (nonatomic, strong) NSDate *dateAtLastSecondaryUpdate;
 
 @end
 
@@ -59,8 +64,11 @@
     self.secondaryTimeObservers = [[NSMutableSet alloc] init];
     self.primaryStopwatchObserverVCs = [[NSMutableArray alloc] init];
     
+    _primaryStopwatchIsOn = NO;
+    _secondaryStopwatchIsOn = NO;
+    
     self.stopwatch = [NSTimer scheduledTimerWithTimeInterval: .1
-                                                    target: self
+                                                      target: self
                                                     selector: @selector(updateTimerLabels)
                                                     userInfo: nil
                                                      repeats: YES];
@@ -82,7 +90,17 @@
 
 - (void)updateTimerLabels{
     
-    [self incrementTimers];
+    if (_primaryStopwatchIsOn){
+        
+        [self incrementPrimaryTimer];
+        
+    }
+    
+    if (_secondaryStopwatchIsOn){
+        
+        [self incrementSecondaryTimer];
+        
+    }
     
     for (UILabel *timerLabel in self.primaryTimeObservers){
         
@@ -98,24 +116,24 @@
     
 }
 
-- (void)incrementTimers{
+- (void)incrementPrimaryTimer{
     
     // elapsed time
     
     NSDate *currentDate = [NSDate date];
     float elapsedTime;
     
-    if (!self.dateAtLastUpdate){
+    if (!self.dateAtLastPrimaryUpdate){
         
         elapsedTime = .1;
         
     } else{
         
-        elapsedTime = [currentDate timeIntervalSinceDate: self.dateAtLastUpdate];
+        elapsedTime = [currentDate timeIntervalSinceDate: self.dateAtLastPrimaryUpdate];
         
     }
     
-    // primary timer
+    //  timer
     
     if (_incrementPrimaryElapsedTimeForwards == YES){
         
@@ -127,7 +145,34 @@
         
     }
     
-    // secondary timer
+    self.dateAtLastPrimaryUpdate = currentDate;
+    
+    for (UIViewController<TJBStopwatchObserver> *vc in self.primaryStopwatchObserverVCs){
+        
+        [vc timerDidUpdateWithUpdateDate: currentDate];
+        
+    }
+    
+}
+
+- (void)incrementSecondaryTimer{
+    
+    // elapsed time
+    
+    NSDate *currentDate = [NSDate date];
+    float elapsedTime;
+    
+    if (!self.dateAtLastSecondaryUpdate){
+        
+        elapsedTime = .1;
+        
+    } else{
+        
+        elapsedTime = [currentDate timeIntervalSinceDate: self.dateAtLastSecondaryUpdate];
+        
+    }
+    
+    //  timer
     
     if (_incrementSecondaryElapsedTimeForwards == YES){
         
@@ -139,13 +184,13 @@
         
     }
     
-    self.dateAtLastUpdate = currentDate;
+    self.dateAtLastSecondaryUpdate = currentDate;
     
-    for (UIViewController<TJBStopwatchObserver> *vc in self.primaryStopwatchObserverVCs){
-        
-        [vc timerDidUpdateWithUpdateDate: currentDate];
-        
-    }
+//    for (UIViewController<TJBStopwatchObserver> *vc in self.primaryStopwatchObserverVCs){
+//        
+//        [vc timerDidUpdateWithUpdateDate: currentDate];
+//        
+//    }
     
 }
 
@@ -184,43 +229,60 @@
 
 #pragma mark - Stopwatch Manipulation
 
-- (void)resetPrimaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing{
-    
-    _primaryElapsedTimeInSeconds = 0;
-    
-    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
-    
-    self.dateAtLastUpdate = nil;
-    
-}
+//- (void)resetPrimaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing{
+//    
+//    _primaryElapsedTimeInSeconds = 0;
+//    
+//    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
+//    
+//    self.dateAtLastUpdate = nil;
+//    
+//}
+//
+//- (void)resetSecondaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing
+//{
+//    _secondaryElapsedTimeInSeconds = 0;
+//    _incrementSecondaryElapsedTimeForwards = forwardIncrementing;
+//}
 
-- (void)resetSecondaryStopwatchWithForwardIncrementing:(BOOL)forwardIncrementing
-{
-    _secondaryElapsedTimeInSeconds = 0;
-    _incrementSecondaryElapsedTimeForwards = forwardIncrementing;
-}
+//- (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing{
+//    _primaryElapsedTimeInSeconds = timeInSeconds;
+//    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
+//}
 
-- (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing{
-    _primaryElapsedTimeInSeconds = timeInSeconds;
-    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
-}
-
-- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing{
+- (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing lastUpdateDate:(NSDate *)lastUpdateDate{
+    
+    _secondaryStopwatchIsOn = YES;
+    
     _secondaryElapsedTimeInSeconds = timeInSeconds;
+    
     _incrementSecondaryElapsedTimeForwards = forwardIncrementing;
+    
+    if (lastUpdateDate){
+        
+        self.dateAtLastSecondaryUpdate = lastUpdateDate;
+        
+    }
+    
 }
 
 - (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing lastUpdateDate:(NSDate *)lastUpdateDate{
     
+    _primaryStopwatchIsOn = YES;
+    
     _primaryElapsedTimeInSeconds = timeInSeconds;
     
     _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
     
-    self.dateAtLastUpdate = lastUpdateDate;
+    if (lastUpdateDate){
+        
+        self.dateAtLastPrimaryUpdate = lastUpdateDate;
+        
+    }
+    
     
 }
 
-//- (void)incrementSecondaryStopwatchForwardByNumberOfSeconds:(int)seconds
 
 #pragma mark - Getters
 
