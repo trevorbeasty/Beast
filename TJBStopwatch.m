@@ -6,6 +6,8 @@
 //  Copyright © 2016 Trevor Beasty. All rights reserved.
 //
 
+//// only the primary stopwatch observer keeps track of the update dates.  The primary stopwatch should always be used first and the secondary stopwatch should only be used if the primary stopwatch is already in immediate use.
+
 #import "TJBStopwatch.h"
 
 @interface TJBStopwatch ()

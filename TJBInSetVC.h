@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TJBInSetVC : UIViewController
+@interface TJBInSetVC : UIViewController 
 
 - initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void(^)(int))block exerciseName:(NSString *)exerciseName;
 

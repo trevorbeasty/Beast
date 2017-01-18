@@ -38,8 +38,12 @@
     // stopwatch
     
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay withForwardIncrementing: YES];
+    
+    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay
+                            withForwardIncrementing: YES];
+    
     [stopwatch addSecondaryStopwatchObserver: self.timerLabel];
+    
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
     
     // background
@@ -68,7 +72,9 @@
     self = [super init];
     
     _timeDelay = timeDelay * -1;
+    
     self.didPressSetCompletedBlock = block;
+    
     self.exerciseName = exerciseName;
     
     return self;

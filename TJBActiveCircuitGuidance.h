@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-//#import "TJBCircuitTemplateUserInputDelegate.h"
+// protocol
+
+#import "TJBStopwatchObserver.h"
 
 @class TJBChainTemplate;
 @class TJBRealizedChain;
@@ -16,11 +18,12 @@
 // associated VC
 
 #import "TJBCircuitActiveUpdatingVCProtocol.h"
+
 @class TJBCircuitActiveUpdatingVC;
 
 
 
-@interface TJBActiveCircuitGuidance : UIViewController
+@interface TJBActiveCircuitGuidance : UIViewController <TJBStopwatchObserver>
 
 // associated VC
 // it is in the header because it must be accessed by the TJBCircuitModeTBC during restoration

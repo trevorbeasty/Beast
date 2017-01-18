@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
 // UI buttons
+
 - (IBAction)addNewExercise:(id)sender;
 - (IBAction)didPressBeginNextSet:(id)sender;
 
@@ -38,9 +39,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 
 // core data
+
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
+
 // realized set user input
+
 @property (nonatomic, strong) NSNumber *timeDelay;
 @property (nonatomic, strong) NSNumber *timeLag;
 @property (nonatomic, strong) NSDate *setBeginDate;
@@ -54,7 +58,7 @@
 // timer
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
-@property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
+@property (nonatomic, strong) NSDate *lastTimerUpdateDate;
 
 // navigation bar
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
@@ -403,7 +407,9 @@
             vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.adjustedSecondaryTimerTime intValue] * -1
                            DidPressSetCompletedBlock: block
                                         exerciseName: self.exercise.name];
+            
             self.adjustedSecondaryTimerTime = nil;
+            
         } else{
             
             vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.timeDelay intValue]
@@ -418,13 +424,20 @@
     else if (!self.timeLag)
     {
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            
             weakSelf.timeLag = number;
+            
             weakSelf.setEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
+            
             [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue] * -1
-                                                 withForwardIncrementing: YES];
+                                                 withForwardIncrementing: YES
+                                                          lastUpdateDate: nil];
+            
             [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
+            
             [weakSelf didPressBeginNextSet: nil];
+            
         };
         
         [self presentNumberSelectionSceneWithNumberType: RestType
@@ -614,8 +627,8 @@
     [coder encodeInt: primaryTime
               forKey: @"primaryTime"];
     
-    [coder encodeObject: self.lastPrimaryTimerUpdateDate
-                 forKey: @"lastPrimaryTimerUpdateDate"];
+    [coder encodeObject: self.lastTimerUpdateDate
+                 forKey: @"lastTimerUpdateDate"];
     
     int secondaryTime = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
     
@@ -678,12 +691,12 @@
     
     int primaryTime = [coder decodeIntForKey: @"primaryTime"];
     
-    NSDate *lastPrimaryTimerUpdateDate = [coder decodeObjectForKey: @"lastPrimaryTimerUpdateDate"];
-    self.lastPrimaryTimerUpdateDate = lastPrimaryTimerUpdateDate;
+    NSDate *lastTimerUpdateDate = [coder decodeObjectForKey: @"lastTimerUpdateDate"];
+    self.lastTimerUpdateDate = lastTimerUpdateDate;
     
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: primaryTime
                                          withForwardIncrementing: YES
-                                                  lastUpdateDate: lastPrimaryTimerUpdateDate];
+                                                  lastUpdateDate: lastTimerUpdateDate];
     
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: primaryTime];
     
@@ -719,13 +732,15 @@
     self.weight = [coder decodeObjectForKey: @"weight"];
     self.reps = [coder decodeObjectForKey: @"reps"];
     
-//    // store the time the secondary timer should start at if app entered background state from InSetVC
-//
-//    if (self.timeDelay && _setCompletedButtonPressed == NO){
-//        
-//        int previousValueOfSecondaryTimer = [coder decodeIntForKey: @"secondaryTimer"];
-//        self.adjustedSecondaryTimerTime = [NSNumber numberWithInt: elapsedTimeInSeconds + previousValueOfSecondaryTimer];
-//    }
+    // store the time the secondary timer should start at if app entered background state from InSetVC
+
+    if (self.timeDelay && _setCompletedButtonPressed == NO){
+        
+        int previousValueOfSecondaryTimer = [coder decodeIntForKey: @"secondaryTimer"];
+        
+        self.adjustedSecondaryTimerTime = [NSNumber numberWithInt: previousValueOfSecondaryTimer];
+        
+    }
     
     // kicks off the selection process if user ended mid-selection
     
@@ -734,12 +749,17 @@
         __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
         
         void (^restorationBlock)(void) = ^{
+            
             [weakSelf didPressBeginNextSet: nil];
+            
         };
         
         self.restorationBlock = restorationBlock;
+        
     }
+    
 }
+
 
 #pragma mark - <TJBStopwatchObserver>
 
@@ -747,7 +767,7 @@
     
     //// store the passed in date
     
-    self.lastPrimaryTimerUpdateDate = date;
+    self.lastTimerUpdateDate = date;
     
 }
 

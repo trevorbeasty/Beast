@@ -100,7 +100,9 @@
 
 // delegate
 
+// timer
 
+@property (nonatomic, strong) NSDate *lastTimerUpdatedDate;
 
 
 // state restoration
@@ -500,11 +502,14 @@ static NSString * const defaultValue = @"default value";
             self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: restTimeAccountingForLag];
             
             [stopwatch setPrimaryStopWatchToTimeInSeconds: restTimeAccountingForLag
-                                  withForwardIncrementing: NO];
+                                  withForwardIncrementing: NO
+                                           lastUpdateDate: nil];
             
             if ( [self.restLabelAddedAsStopwatchObserver boolValue] == NO || !self.restLabelAddedAsStopwatchObserver){
                 
-                [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self.restLabel];
+                [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
+                                                       withTimerLabel: self.restLabel];
+                
                 self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
                 
             }
@@ -1082,12 +1087,16 @@ static NSString * const defaultValue = @"default value";
             
             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
             
-            [stopwatch addPrimaryStopwatchObserver: self.restLabel];
+            [stopwatch addPrimaryStopwatchObserver: self
+                                    withTimerLabel: self.restLabel];
+            
             self.restLabelAddedAsStopwatchObserver = [NSNumber numberWithBool: YES];
             
             self.restLabel.text = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: primaryTimerValue];
+            
             [stopwatch setPrimaryStopWatchToTimeInSeconds: primaryTimerValue
-                                  withForwardIncrementing: NO];
+                                  withForwardIncrementing: NO
+                                           lastUpdateDate: nil];
             
         }
         
@@ -1108,7 +1117,13 @@ static NSString * const defaultValue = @"default value";
     
 }
 
+#pragma mark - <TJBStopwatchObserver>
 
+- (void)timerDidUpdateWithUpdateDate:(NSDate *)date{
+    
+    self.lastTimerUpdatedDate = date;
+    
+}
 
 
 
