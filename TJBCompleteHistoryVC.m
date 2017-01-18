@@ -17,6 +17,13 @@
 #import "RealizedChainTableViewCell.h"
 #import "RealizedSetHistoryCell.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
+
+
+
 @interface TJBCompleteHistoryVC () <UITableViewDelegate, UITableViewDataSource>
 
 // IBOutlet
@@ -33,9 +40,12 @@
 
 @end
 
+
+
+
+
+
 @implementation TJBCompleteHistoryVC
-
-
 
 #pragma mark - Init
 
@@ -223,7 +233,7 @@
             
             TJBRealizedChain *realizedChain = interimArray[i];
             
-            currentItemDate = realizedChain.setBeginDateArrays[0].dates[0].value;
+            currentItemDate = realizedChain.dateCreated;
             
         }
         
@@ -283,15 +293,28 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
+    NSLog(@"section count: %d", (int)[self.masterList count]);
+    
     return [self.masterList count];
+    
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    
+    return [NSString stringWithFormat: @"Section %d", (int)section + 1];
     
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return [self.masterList[section] count];
     
+    NSLog(@"%d rows in section %d",
+          (int)[self.masterList[section] count],
+          (int)section);
+    
+    return [self.masterList[section] count];
+   
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -301,7 +324,7 @@
     // date formatter
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     
     // conditionals
@@ -416,6 +439,62 @@
 
 #pragma mark - <UITableViewDelegate>
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    UILabel *label = [[UILabel alloc] init];
+    
+    label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
+    
+    // the section title will be the date
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    
+    NSDate *workoutDay = [self dateForObject: self.masterList[section][0]];
+    
+    label.text = [dateFormatter stringFromDate: workoutDay];
+    
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    // label layer
+    
+    CALayer *labelLayer = label.layer;
+    
+    labelLayer.masksToBounds = YES;
+    labelLayer.cornerRadius = 16;
+    
+    return label;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    return 60;
+    
+}
+
+- (NSDate *)dateForObject:(id)object{
+    
+    //// returns the date created for realized chains and the begin date for realized sets
+    
+    BOOL objectIsRealizedSet = [object isKindOfClass: [TJBRealizedSet class]];
+    
+    if (objectIsRealizedSet){
+        
+        TJBRealizedSet *realizedSet = object;
+        
+        return realizedSet.beginDate;
+        
+    } else{
+        
+        TJBRealizedChain *realizedChain = object;
+        
+        return realizedChain.dateCreated;
+        
+    }
+
+}
 
 
 
@@ -423,3 +502,27 @@
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -189,8 +189,11 @@
 // will want to eventually store table view scroll position
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
     NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
+    
     return vc;
+    
 }
 
 @end
