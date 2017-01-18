@@ -58,7 +58,9 @@
 // timer
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
-@property (nonatomic, strong) NSDate *lastTimerUpdateDate;
+
+@property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
+@property (nonatomic, strong) NSDate *lastSecondaryTimerUpdateDate;
 
 // navigation bar
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
@@ -633,8 +635,8 @@
     [coder encodeFloat: primaryTime
               forKey: @"primaryTime"];
     
-    [coder encodeObject: self.lastTimerUpdateDate
-                 forKey: @"lastTimerUpdateDate"];
+    [coder encodeObject: self.lastPrimaryTimerUpdateDate
+                 forKey: @"lastPrimaryTimerUpdateDate"];
     
     float secondaryTime = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] floatValue];
     
@@ -699,12 +701,12 @@
     
     int primaryTime = [coder decodeFloatForKey: @"primaryTime"];
     
-    NSDate *lastTimerUpdateDate = [coder decodeObjectForKey: @"lastTimerUpdateDate"];
-    self.lastTimerUpdateDate = lastTimerUpdateDate;
+    NSDate *lastPrimaryTimerUpdateDate = [coder decodeObjectForKey: @"lastPrimaryTimerUpdateDate"];
+    self.lastPrimaryTimerUpdateDate = lastPrimaryTimerUpdateDate;
     
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: primaryTime
                                          withForwardIncrementing: YES
-                                                  lastUpdateDate: lastTimerUpdateDate];
+                                                  lastUpdateDate: lastPrimaryTimerUpdateDate];
     
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: primaryTime];
     
@@ -771,11 +773,17 @@
 
 #pragma mark - <TJBStopwatchObserver>
 
-- (void)timerDidUpdateWithUpdateDate:(NSDate *)date{
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
     
     //// store the passed in date
     
-    self.lastTimerUpdateDate = date;
+    self.lastPrimaryTimerUpdateDate = date;
+    
+}
+
+- (void)secondaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
+    
+    self.lastSecondaryTimerUpdateDate = date;
     
 }
 

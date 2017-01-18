@@ -25,10 +25,12 @@
 }
 
 @property (nonatomic, strong) NSTimer *stopwatch;
+
 @property (nonatomic, strong) NSMutableSet *primaryTimeObservers;
 @property (nonatomic, strong) NSMutableSet *secondaryTimeObservers;
 
 @property (nonatomic, strong) NSMutableArray <UIViewController<TJBStopwatchObserver> *> *primaryStopwatchObserverVCs;
+@property (nonatomic, strong) NSMutableArray <UIViewController<TJBStopwatchObserver> *> *secondaryStopwatchObserverVCs;
 
 @property (nonatomic, strong) NSDate *dateAtLastPrimaryUpdate;
 @property (nonatomic, strong) NSDate *dateAtLastSecondaryUpdate;
@@ -94,23 +96,23 @@
         
         [self incrementPrimaryTimer];
         
+        for (UILabel *timerLabel in self.primaryTimeObservers){
+            
+            timerLabel.text = [self minutesAndSecondsStringFromNumberOfSeconds: _primaryElapsedTimeInSeconds];
+            
+        }
+        
     }
     
     if (_secondaryStopwatchIsOn){
         
         [self incrementSecondaryTimer];
         
-    }
-    
-    for (UILabel *timerLabel in self.primaryTimeObservers){
-        
-        timerLabel.text = [self minutesAndSecondsStringFromNumberOfSeconds: _primaryElapsedTimeInSeconds];
-        
-    }
-    
-    for (UILabel *timerLabel in self.secondaryTimeObservers){
-        
-        timerLabel.text = [self minutesAndSecondsStringFromNumberOfSeconds: _secondaryElapsedTimeInSeconds];
+        for (UILabel *timerLabel in self.secondaryTimeObservers){
+            
+            timerLabel.text = [self minutesAndSecondsStringFromNumberOfSeconds: _secondaryElapsedTimeInSeconds];
+            
+        }
         
     }
     
@@ -149,7 +151,7 @@
     
     for (UIViewController<TJBStopwatchObserver> *vc in self.primaryStopwatchObserverVCs){
         
-        [vc timerDidUpdateWithUpdateDate: currentDate];
+        [vc primaryTimerDidUpdateWithUpdateDate: currentDate];
         
     }
     
@@ -186,11 +188,11 @@
     
     self.dateAtLastSecondaryUpdate = currentDate;
     
-//    for (UIViewController<TJBStopwatchObserver> *vc in self.primaryStopwatchObserverVCs){
-//        
-//        [vc timerDidUpdateWithUpdateDate: currentDate];
-//        
-//    }
+    for (UIViewController<TJBStopwatchObserver> *vc in self.secondaryStopwatchObserverVCs){
+        
+        [vc secondaryTimerDidUpdateWithUpdateDate: currentDate];
+        
+    }
     
 }
 
@@ -208,11 +210,19 @@
     
 }
 
-- (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel{
+- (void)addSecondaryStopwatchObserver:(UIViewController<TJBStopwatchObserver> *)viewController withTimerLabel:(UILabel *)timerLabel{
     
-    [self.primaryTimeObservers addObject: timerLabel];
+    [self.secondaryStopwatchObserverVCs addObject: viewController];
+    
+    [self.secondaryTimeObservers addObject: timerLabel];
     
 }
+
+//- (void)addPrimaryStopwatchObserver:(UILabel *)timerLabel{
+//    
+//    [self.primaryTimeObservers addObject: timerLabel];
+//    
+//}
 
 - (void)removePrimaryStopwatchObserver:(UILabel *)timerLabel{
     
@@ -222,10 +232,10 @@
     
 }
 
-- (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel
-{
-    [self.secondaryTimeObservers addObject: timerLabel];
-}
+//- (void)addSecondaryStopwatchObserver:(UILabel *)timerLabel
+//{
+//    [self.secondaryTimeObservers addObject: timerLabel];
+//}
 
 #pragma mark - Stopwatch Manipulation
 

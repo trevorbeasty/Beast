@@ -40,9 +40,11 @@
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
     
     [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay
-                            withForwardIncrementing: YES];
+                            withForwardIncrementing: YES
+                                     lastUpdateDate: nil];
     
-    [stopwatch addSecondaryStopwatchObserver: self.timerLabel];
+    [stopwatch addSecondaryStopwatchObserver: nil
+                              withTimerLabel: self.timerLabel];
     
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
     
