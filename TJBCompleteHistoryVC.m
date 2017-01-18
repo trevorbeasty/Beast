@@ -12,6 +12,11 @@
 
 #import "CoreDataController.h"
 
+// table view cells
+
+#import "RealizedChainTableViewCell.h"
+#import "RealizedSetHistoryCell.h"
+
 @interface TJBCompleteHistoryVC () <UITableViewDelegate, UITableViewDataSource>
 
 // IBOutlet
@@ -29,6 +34,8 @@
 @end
 
 @implementation TJBCompleteHistoryVC
+
+
 
 #pragma mark - Init
 
@@ -195,30 +202,53 @@
     
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
     
-    UITableViewCell *cell = [self.historyTableView dequeueReusableCellWithIdentifier: @"basicCell"];
+    // date formatter
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = NSDateFormatterNoStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    // conditionals
     
     BOOL isRealizedSet = [self.masterList[indexPath.row] isKindOfClass: [TJBRealizedSet class]];
-    
-    NSString *cellTitle;
+//    BOOL isLastExerciseInArray = indexPath.row == [self.masterList count] - 1;
+//    BOOL isLastExerciseInSection;
     
     if (isRealizedSet){
         
         TJBRealizedSet *realizedSet = self.masterList[indexPath.row];
         
-        cellTitle = [NSString stringWithFormat: @"%@ - Realized Set", realizedSet.beginDate];
+        // dequeue the realizedSetCell
+        
+        RealizedSetHistoryCell *cell = [self.historyTableView dequeueReusableCellWithIdentifier: @"realizedSetHistoryCell"];
+        
+        // labels
+        
+        cell.timeLabel.text = [dateFormatter stringFromDate: realizedSet.beginDate];
+        cell.exerciseLabel.text = realizedSet.exercise.name;
+        cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
+        cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
+        cell.restLabel.text = @"";
+        
+        return cell;
         
     } else{
         
         TJBRealizedChain *realizedChain = self.masterList[indexPath.row];
         
-        cellTitle = [NSString stringWithFormat: @"%@ - Realized Chain", realizedChain.dateCreated];
+        // dequeue the realizedSetCell
+        
+        RealizedChainTableViewCell *cell = [self.historyTableView dequeueReusableCellWithIdentifier: @"realizedChainTableViewCell"];
+        
+        // labels
+        
+        cell.dateLabel.text = [dateFormatter stringFromDate: realizedChain.setBeginDateArrays[0].dates[0].value];
+        cell.realizedChainNameLabel.text = realizedChain.chainTemplate.name;
+    
+        return cell;
         
     }
-    
-    cell.textLabel.text = cellTitle;
-    
-    return cell;
-    
+
 }
 
 
@@ -232,12 +262,24 @@
 }
 
 
+
 - (void)configureHistoryTableView{
     
-    //// register the appropriate table view cells with the table view
+    //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
     
     [self.historyTableView registerClass: [UITableViewCell class]
                   forCellReuseIdentifier: @"basicCell"];
+    
+    UINib *realizedSetNib = [UINib nibWithNibName: @"RealizedSetHistoryCell"
+                                bundle: nil];
+    [self.historyTableView registerNib: realizedSetNib
+                forCellReuseIdentifier: @"realizedSetHistoryCell"];
+    
+    UINib *realizedChainNib = [UINib nibWithNibName: @"RealizedChainTableViewCell"
+                                             bundle: nil];
+    
+    [self.historyTableView registerNib: realizedChainNib
+                forCellReuseIdentifier: @"realizedChainTableViewCell"];
     
 }
 

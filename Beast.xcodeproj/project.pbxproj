@@ -52,6 +52,8 @@
 		0B86FB8A1E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB881E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.xib */; };
 		0B870E461E2E573400E38C46 /* TJBCompleteHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B870E441E2E573400E38C46 /* TJBCompleteHistoryVC.m */; };
 		0B870E471E2E573400E38C46 /* TJBCompleteHistoryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B870E451E2E573400E38C46 /* TJBCompleteHistoryVC.xib */; };
+		0B870E4C1E2F9F9C00E38C46 /* RealizedChainTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B870E4A1E2F9F9C00E38C46 /* RealizedChainTableViewCell.m */; };
+		0B870E4D1E2F9F9C00E38C46 /* RealizedChainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B870E4B1E2F9F9C00E38C46 /* RealizedChainTableViewCell.xib */; };
 		0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */; };
 		0BA8ACE91E22709700EE10C2 /* TJBCircuitModeTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACE81E22709700EE10C2 /* TJBCircuitModeTBC.m */; };
 		0BA8ACEE1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8ACEC1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m */; };
@@ -146,6 +148,9 @@
 		0B870E431E2E573400E38C46 /* TJBCompleteHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCompleteHistoryVC.h; sourceTree = "<group>"; };
 		0B870E441E2E573400E38C46 /* TJBCompleteHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCompleteHistoryVC.m; sourceTree = "<group>"; };
 		0B870E451E2E573400E38C46 /* TJBCompleteHistoryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCompleteHistoryVC.xib; sourceTree = "<group>"; };
+		0B870E491E2F9F9C00E38C46 /* RealizedChainTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealizedChainTableViewCell.h; sourceTree = "<group>"; };
+		0B870E4A1E2F9F9C00E38C46 /* RealizedChainTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealizedChainTableViewCell.m; sourceTree = "<group>"; };
+		0B870E4B1E2F9F9C00E38C46 /* RealizedChainTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RealizedChainTableViewCell.xib; sourceTree = "<group>"; };
 		0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryTBC.h; sourceTree = "<group>"; };
 		0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryTBC.m; sourceTree = "<group>"; };
 		0BA8ACE71E22709700EE10C2 /* TJBCircuitModeTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitModeTBC.h; sourceTree = "<group>"; };
@@ -442,6 +447,9 @@
 				0B870E431E2E573400E38C46 /* TJBCompleteHistoryVC.h */,
 				0B870E441E2E573400E38C46 /* TJBCompleteHistoryVC.m */,
 				0B870E451E2E573400E38C46 /* TJBCompleteHistoryVC.xib */,
+				0B870E491E2F9F9C00E38C46 /* RealizedChainTableViewCell.h */,
+				0B870E4A1E2F9F9C00E38C46 /* RealizedChainTableViewCell.m */,
+				0B870E4B1E2F9F9C00E38C46 /* RealizedChainTableViewCell.xib */,
 			);
 			name = History;
 			sourceTree = "<group>";
@@ -590,6 +598,7 @@
 				0BA8ACF61E26561C00EE10C2 /* TJBCircuitReferenceVC.xib in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
 				0B843C8B1DFADBED0093F057 /* TJBNewExerciseCreationVC.xib in Resources */,
+				0B870E4D1E2F9F9C00E38C46 /* RealizedChainTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -627,6 +636,7 @@
 				0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B843C9E1DFDB3460093F057 /* RealizedSetPersonalRecordVC.m in Sources */,
+				0B870E4C1E2F9F9C00E38C46 /* RealizedChainTableViewCell.m in Sources */,
 				0BA8AD0A1E26757900EE10C2 /* TJBCircuitActiveUpdatingVC.m in Sources */,
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,
