@@ -28,7 +28,7 @@
 
 
 
-@interface TJBCompleteHistoryVC () <UITableViewDelegate, UITableViewDataSource>
+@interface TJBCompleteHistoryVC () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 // IBOutlet
 
@@ -67,7 +67,20 @@
     
     [self configureMasterList];
     
+    // for restoration
+    
+    [self setRestorationProperties];
+    
     return self;
+    
+}
+
+- (void)setRestorationProperties{
+    
+    //// for restoration
+    
+    self.restorationClass = [TJBCompleteHistoryVC class];
+    self.restorationIdentifier = @"TJBCompleteHistoryVC";
     
 }
 
@@ -531,7 +544,57 @@
 }
 
 
+#pragma mark - <UIViewControllerRestoration>
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    //// instantiate the VC.  Row selection and scroll position state restoration will be handled in the decode method
+    
+    TJBCompleteHistoryVC *vc = [[TJBCompleteHistoryVC alloc] init];
+    
+    return vc;
+    
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    //// handle the row selection and scroll position
+    
+    // scroll position
+    
+    CGFloat yScrollOffset = [coder decodeFloatForKey: @"tableViewContentOffset"];
+    
+    self.historyTableView.contentOffset = CGPointMake(0, yScrollOffset);
+    
+    // row selection.  If the decoded object exists, programmatically select the row
+    
+    NSIndexPath *selectedRowPath = [coder decodeObjectForKey: @"tableViewSelectedRow"];
+    
+    if (selectedRowPath){
+        
+        [self.historyTableView selectRowAtIndexPath: selectedRowPath
+                                           animated: NO
+                                     scrollPosition: UITableViewScrollPositionNone];
+        
+    }
+    
+    return;
+    
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    //// encode necessary state information.  Need to encode table view position and selection
+    
+    [coder encodeFloat: self.historyTableView.contentOffset.y
+                forKey: @"tableViewContentOffset"];
+    
+    [coder encodeObject: self.historyTableView.indexPathForSelectedRow
+                 forKey: @"tableViewSelectedRow"];
+    
+}
 
 
 

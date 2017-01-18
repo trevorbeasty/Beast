@@ -14,10 +14,9 @@
 
 // core data
 
-#import "TJBRealizedChain+CoreDataProperties.h"
-#import "TJBChainTemplate+CoreDataProperties.h"
+#import "CoreDataController.h"
 
-@interface TJBRealizedChainHistoryVC ()
+@interface TJBRealizedChainHistoryVC () <UIViewControllerRestoration>
 
 // IBOutlet
 
@@ -27,7 +26,7 @@
 // core
 
 @property (nonatomic, strong) TJBCircuitActiveUpdatingContainerVC *childVC;
-@property (nonatomic, copy) NSString *navigationBarTitle;
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 
 @end
@@ -48,21 +47,26 @@
     
     self.childVC = childVC;
     
-    // navigation bar
+    // realized chain
     
-    NSDate *realizedChainDate = realizedChain.dateCreated;
+    self.realizedChain = realizedChain;
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.timeStyle = NSDateFormatterNoStyle;
-    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    // for restoration
     
-    self.navigationBarTitle = [NSString stringWithFormat: @"%@: %@",
-                               [dateFormatter stringFromDate: realizedChainDate],
-                               realizedChain.chainTemplate.name];
+    [self setRestorationProperties];
     
     // return self
     
     return self;
+    
+}
+
+- (void)setRestorationProperties{
+    
+    //// for restoration
+    
+    self.restorationClass = [TJBRealizedChainHistoryVC class];
+    self.restorationIdentifier = @"TJBRealizedChainHistoryVC";
     
 }
 
@@ -80,7 +84,17 @@
     
     //// configure the navigation bar
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.navigationBarTitle];
+    NSDate *realizedChainDate = self.realizedChain.dateCreated;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    
+    NSString *navigationBarTitle = [NSString stringWithFormat: @"%@: %@",
+                                    [dateFormatter stringFromDate: realizedChainDate],
+                                    self.realizedChain.chainTemplate.name];
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: navigationBarTitle];
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
                                                                    style: UIBarButtonItemStyleDone
@@ -121,9 +135,32 @@
 }
 
 
+#pragma mark - <UIViewControllerRestoration>
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    //// simply use the core data controller to get the realized chain and instantiate the VC normally
+    
+    NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
+    
+    TJBRealizedChain *realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
+    
+    TJBRealizedChainHistoryVC *vc = [[TJBRealizedChainHistoryVC alloc] initWithRealizedChain: realizedChain];
+    
+    return vc;
+    
+}
 
-
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
+    
+    //// must encode the realized chain unique ID so the realized chain can be found upon restoration
+    
+    [coder encodeObject: self.realizedChain.uniqueID
+                 forKey: @"realizedChainUniqueID"];
+    
+}
 
 
 
