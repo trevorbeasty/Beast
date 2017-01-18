@@ -14,7 +14,8 @@
 
 // core data
 
-//#import "TJBRealizedChain+CoreDataProperties.h"
+#import "TJBRealizedChain+CoreDataProperties.h"
+#import "TJBChainTemplate+CoreDataProperties.h"
 
 @interface TJBRealizedChainHistoryVC ()
 
@@ -26,6 +27,7 @@
 // core
 
 @property (nonatomic, strong) TJBCircuitActiveUpdatingContainerVC *childVC;
+@property (nonatomic, copy) NSString *navigationBarTitle;
 
 
 @end
@@ -40,9 +42,25 @@
     
     self = [super init];
     
+    // child VC
+    
     TJBCircuitActiveUpdatingContainerVC *childVC = [[TJBCircuitActiveUpdatingContainerVC alloc] initWithRealizedChain: realizedChain];
     
     self.childVC = childVC;
+    
+    // navigation bar
+    
+    NSDate *realizedChainDate = realizedChain.dateCreated;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    
+    self.navigationBarTitle = [NSString stringWithFormat: @"%@: %@",
+                               [dateFormatter stringFromDate: realizedChainDate],
+                               realizedChain.chainTemplate.name];
+    
+    // return self
     
     return self;
     
@@ -52,23 +70,32 @@
 
 - (void)viewDidLoad{
     
-//    //// configure the childVC
-//    
-//    CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
-//    
-//    // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
-//    // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
-//    
-//    NSNumber *viewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 28];
-//    NSNumber *viewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
-//    
-//    TJBCircuitActiveUpdatingVC *vc = [[TJBCircuitActiveUpdatingVC alloc] initWithRealizedChain: self.realizedChain
-//                                                                                    viewHeight: viewHeight
-//                                                                                     viewWidth: viewWidth];
+    [self configureChildVC];
     
-    // assign vc to appropriate property to facillitate delegation of circuit tab bar controller VC's
+    [self configureNavigationBar];
     
-//    self.circuitActiveUpdatingVC = vc;
+}
+
+- (void)configureNavigationBar{
+    
+    //// configure the navigation bar
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.navigationBarTitle];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+                                                                   style: UIBarButtonItemStyleDone
+                                                                  target: self
+                                                                  action: @selector(didPressBack)];
+    
+    [navItem setLeftBarButtonItem: backButton];
+    
+    [self.navBar setItems: @[navItem]];
+    
+}
+
+- (void)configureChildVC{
+    
+    //// configure the childVC
     
     TJBCircuitActiveUpdatingContainerVC *vc = self.childVC;
     
@@ -82,7 +109,16 @@
     
 }
 
+#pragma mark - Button Actions
 
+- (void)didPressBack{
+    
+    //// simply dismiss the VC
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+    
+}
 
 
 
@@ -94,3 +130,33 @@
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

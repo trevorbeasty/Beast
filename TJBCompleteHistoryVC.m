@@ -454,6 +454,8 @@
         
         TJBRealizedChainHistoryVC *vc = [[TJBRealizedChainHistoryVC alloc] initWithRealizedChain: self.masterList[sectionIndex][rowIndex]];
         
+        vc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        
         [self presentViewController: vc
                            animated: YES
                          completion: nil];
