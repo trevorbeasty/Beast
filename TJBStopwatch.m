@@ -59,7 +59,7 @@
     self.secondaryTimeObservers = [[NSMutableSet alloc] init];
     self.primaryStopwatchObserverVCs = [[NSMutableArray alloc] init];
     
-    self.stopwatch = [NSTimer scheduledTimerWithTimeInterval: 1.0
+    self.stopwatch = [NSTimer scheduledTimerWithTimeInterval: .1
                                                     target: self
                                                     selector: @selector(updateTimerLabels)
                                                     userInfo: nil
@@ -107,7 +107,7 @@
     
     if (!self.dateAtLastUpdate){
         
-        elapsedTime = 1.0;
+        elapsedTime = .1;
         
     } else{
         
@@ -229,9 +229,10 @@
     return [NSNumber numberWithInt: _primaryElapsedTimeInSeconds];
 }
 
-- (NSNumber *)secondaryTimeElapsedInSeconds
-{
-    return [NSNumber numberWithInt: _secondaryElapsedTimeInSeconds];
+- (NSNumber *)secondaryTimeElapsedInSeconds{
+    
+    return [NSNumber numberWithFloat: _secondaryElapsedTimeInSeconds];
+    
 }
 
 - (NSString *)primaryTimeElapsedAsString

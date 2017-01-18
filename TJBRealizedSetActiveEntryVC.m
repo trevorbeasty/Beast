@@ -68,7 +68,7 @@
 
 // for restoration
 
-@property (nonatomic, strong) NSNumber *adjustedSecondaryTimerTime;
+@property (nonatomic, strong) NSNumber *restoredSecondaryTimerValue;
 
 // if user is in the middle of making selections when app enters the background state, this block will execute aftert the view loads and then be destroyed so that it is not called again when the view again loads
 
@@ -132,6 +132,8 @@
     
     _whiteoutActive = NO;
     
+    
+    
     [self configureNavigationBar];
     
     [self addAppropriateStopwatchObservers];
@@ -143,6 +145,8 @@
     [self viewAesthetics];
     
 }
+
+
 
 - (void)viewAesthetics{
     
@@ -253,6 +257,8 @@
     
     [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
                                            withTimerLabel: self.timerLabel];
+    
+    self.timerLabel.text = [[TJBStopwatch singleton] primaryTimeElapsedAsString];
     
 }
 
@@ -402,13 +408,13 @@
         
         TJBInSetVC *vc;
         
-        if (self.adjustedSecondaryTimerTime){
+        if (self.restoredSecondaryTimerValue){
             
-            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.adjustedSecondaryTimerTime intValue] * -1
-                           DidPressSetCompletedBlock: block
-                                        exerciseName: self.exercise.name];
+            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.restoredSecondaryTimerValue intValue] * -1
+                             DidPressSetCompletedBlock: block
+                                          exerciseName: self.exercise.name];
             
-            self.adjustedSecondaryTimerTime = nil;
+            self.restoredSecondaryTimerValue = nil;
             
         } else{
             
@@ -622,17 +628,17 @@
     
     // timer
     
-    int primaryTime = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
+    int primaryTime = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] floatValue];
     
-    [coder encodeInt: primaryTime
+    [coder encodeFloat: primaryTime
               forKey: @"primaryTime"];
     
     [coder encodeObject: self.lastTimerUpdateDate
                  forKey: @"lastTimerUpdateDate"];
     
-    int secondaryTime = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
+    float secondaryTime = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] floatValue];
     
-    [coder encodeInt: secondaryTime
+    [coder encodeFloat: secondaryTime
               forKey: @"secondaryTime"];
     
     // table view
@@ -644,8 +650,10 @@
     
     NSIndexPath *path = self.exerciseTableView.indexPathForSelectedRow;
     if (path){
+        
         [coder encodeObject: path
                      forKey: @"path"];
+        
     }
     
     // realized set user selections
@@ -689,7 +697,7 @@
     
     // primary timer
     
-    int primaryTime = [coder decodeIntForKey: @"primaryTime"];
+    int primaryTime = [coder decodeFloatForKey: @"primaryTime"];
     
     NSDate *lastTimerUpdateDate = [coder decodeObjectForKey: @"lastTimerUpdateDate"];
     self.lastTimerUpdateDate = lastTimerUpdateDate;
@@ -736,9 +744,9 @@
 
     if (self.timeDelay && _setCompletedButtonPressed == NO){
         
-        int previousValueOfSecondaryTimer = [coder decodeIntForKey: @"secondaryTimer"];
+        float previousValueOfSecondaryTimer = [coder decodeFloatForKey: @"secondaryTime"];
         
-        self.adjustedSecondaryTimerTime = [NSNumber numberWithInt: previousValueOfSecondaryTimer];
+        self.restoredSecondaryTimerValue = [NSNumber numberWithFloat: previousValueOfSecondaryTimer];
         
     }
     
