@@ -477,7 +477,7 @@ static NSString * const defaultValue = @"default value";
             vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.selectedTimeDelay intValue]
                              DidPressSetCompletedBlock: block
                                           exerciseName: self.chainTemplate.exercises[exerciseIndex].name
-                                   lastTimerUpdateDate: self.lastSecondaryTimerUpdateDate
+                                   lastTimerUpdateDate: nil
                                       masterController: self];
         }
     
