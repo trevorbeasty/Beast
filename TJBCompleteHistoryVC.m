@@ -328,7 +328,7 @@
     // date formatter
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    dateFormatter.dateStyle = NSDateFormatterNoStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     
     // conditionals
@@ -369,7 +369,7 @@
         // labels
         
         cell.dateLabel.text = [dateFormatter stringFromDate: realizedChain.dateCreated];
-        cell.realizedChainNameLabel.text = [NSString stringWithFormat: @"Circuit: %@", realizedChain.chainTemplate.name];
+        cell.realizedChainNameLabel.text = [NSString stringWithFormat: @"Scheme: %@", realizedChain.chainTemplate.name];
     
         return cell;
         

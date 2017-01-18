@@ -97,7 +97,7 @@
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Selection"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Scheme Selection"];
     UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                    style: UIBarButtonItemStyleDone
                                                                   target: self
