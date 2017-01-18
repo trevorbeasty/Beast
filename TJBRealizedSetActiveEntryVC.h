@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SelectedExerciseObserver.h"
+// protocols
 
-@interface TJBRealizedSetActiveEntryVC : UIViewController
+#import "SelectedExerciseObserver.h"
+#import "TJBStopwatchObserver.h"
+
+@interface TJBRealizedSetActiveEntryVC : UIViewController <TJBStopwatchObserver>
 
 @property (nonatomic, weak) UIViewController <SelectedExerciseObserver> *personalRecordVC;
 

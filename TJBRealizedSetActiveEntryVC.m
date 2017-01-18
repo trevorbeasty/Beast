@@ -52,7 +52,9 @@
 @property (nonatomic, strong) UIView *whiteoutView;
 
 // timer
+
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+@property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
 
 // navigation bar
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
@@ -78,11 +80,31 @@
     
     self = [super init];
     
+    [self configureStopwatchWithFreshValues];
+    
+    [self setRestorationProperties];
+    
+    return self;
+    
+}
+
+- (instancetype)initRestoredVC{
+    
+    self = [super init];
+    
+    [self setRestorationProperties];
+    
+    return self;
+
+}
+
+- (void)setRestorationProperties{
+    
     // for restoration
+    
     self.restorationIdentifier = @"TJBRealizedSetActiveEntryVC";
     self.restorationClass = [TJBRealizedSetActiveEntryVC class];
     
-    return self;
 }
 
 #pragma mark - View Life Cycle
@@ -91,50 +113,73 @@
 - (void)viewDidAppear:(BOOL)animated{
     
     if (self.restorationBlock){
+        
         self.restorationBlock();
         
         self.restorationBlock = nil;
+        
     }
+    
 }
 
 - (void)viewDidLoad{
     
     _setCompletedButtonPressed = NO;
+    
     _whiteoutActive = NO;
     
     [self configureNavigationBar];
+    
+    [self addAppropriateStopwatchObservers];
+    
     [self fetchCoreDataAndConfigureTableView];
-    [self configureTimer];
+    
     [self addBackgroundImage];
+    
     [self viewAesthetics];
+    
 }
 
 - (void)viewAesthetics{
+    
     self.exerciseTableView.layer.opacity = .85;
     
     NSArray *buttons = @[self.beginNextSetButton,
                          self.addNewExerciseButton];
+    
     [[TJBAestheticsController singleton] configureButtonsInArray: buttons
                                                      withOpacity: .85];
+    
+    CALayer *layer = self.timerLabel.layer;
+    
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+    layer.opacity = .85;
+    
 }
 
 - (void)addBackgroundImage{
+    
     [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
                                                                    toRootView: self.view
                                                                  imageOpacity: .35];
 }
 
 - (void)configureNavigationBar{
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select an Exercise"];
+    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                       style: UIBarButtonItemStyleDone
                                                                      target: self
                                                                      action: @selector(didPressDone)];
+    
     [navItem setLeftBarButtonItem: barButtonItem];
+    
     self.navItem = navItem;
+    
     [self.navigationBar setItems: @[navItem]];
     
-    [TJBAestheticsController configureNavigationBar: self.navigationBar];
 }
 
 - (void)fetchCoreDataAndConfigureTableView{
@@ -151,6 +196,7 @@
                                                object: nil];
     
     // NSFetchedResultsController
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     
     NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
@@ -160,40 +206,58 @@
     
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
+    
     NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
                                                                    ascending: YES];
+    
     [request setSortDescriptors: @[categorySort, nameSort]];
+    
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
     NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
                                                                           managedObjectContext: moc
                                                                             sectionNameKeyPath: @"category.name"
                                                                                      cacheName: nil];
+    
     frc.delegate = self;
+    
     self.fetchedResultsController = frc;
+    
     NSError *error = nil;
-    if (![self.fetchedResultsController performFetch: &error])
-    {
+    
+    if (![self.fetchedResultsController performFetch: &error]){
+        
         NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
+        
         abort();
+        
     }
+    
 }
 
 - (void)exerciseDataChanged{
+    
     NSError *error = nil;
+    
     [self.fetchedResultsController performFetch: &error];
+    
     [self.exerciseTableView reloadData];
+    
 }
 
-- (void)configureTimer{
-    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-    [stopwatch setPrimaryStopWatchToTimeInSeconds: 0
-                          withForwardIncrementing: YES];
-    [stopwatch addPrimaryStopwatchObserver: self.timerLabel];
+- (void)addAppropriateStopwatchObservers{
     
-    CALayer *layer = self.timerLabel.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
-    layer.opacity = .85;
+    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
+                                           withTimerLabel: self.timerLabel];
+    
+}
+
+- (void)configureStopwatchWithFreshValues{
+    
+    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
+                                         withForwardIncrementing: YES
+                                                  lastUpdateDate: nil];
+    
 }
 
 #pragma mark - <UITableViewDataSource>
@@ -532,9 +596,11 @@
 #pragma mark - <UIViewControllerRestoration>
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    TJBRealizedSetActiveEntryVC *vc = [[TJBRealizedSetActiveEntryVC alloc] init];
+    
+    TJBRealizedSetActiveEntryVC *vc = [[TJBRealizedSetActiveEntryVC alloc] initRestoredVC];
     
     return vc;
+    
 }
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
@@ -542,17 +608,17 @@
     [super encodeRestorableStateWithCoder: coder];
     
     // timer
-    // need to encode current date so time interval can be applied upon app entering foreground
-    // also need to encode value of secondary stopwatch so that it can be incremented upon the app entering the foreground
-    NSDate *date = [NSDate date];
-    [coder encodeObject: date
-                 forKey: @"date"];
     
     int primaryTime = [[[TJBStopwatch singleton] primaryTimeElapsedInSeconds] intValue];
+    
     [coder encodeInt: primaryTime
               forKey: @"primaryTime"];
     
+    [coder encodeObject: self.lastPrimaryTimerUpdateDate
+                 forKey: @"lastPrimaryTimerUpdateDate"];
+    
     int secondaryTime = [[[TJBStopwatch singleton] secondaryTimeElapsedInSeconds] intValue];
+    
     [coder encodeInt: secondaryTime
               forKey: @"secondaryTime"];
     
@@ -606,20 +672,19 @@
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     
-    NSLog(@"decode restorable state");
-    
     [super decodeRestorableStateWithCoder: coder];
     
-    // primary timer (which keeps track of the timer as displayed on
-    
-    NSDate *earlierDate = [coder decodeObjectForKey: @"date"];
-    NSDate *laterDate = [NSDate date];
-    int elapsedTimeInSeconds = [laterDate timeIntervalSinceDate: earlierDate];
+    // primary timer
     
     int primaryTime = [coder decodeIntForKey: @"primaryTime"];
-    primaryTime += elapsedTimeInSeconds;
+    
+    NSDate *lastPrimaryTimerUpdateDate = [coder decodeObjectForKey: @"lastPrimaryTimerUpdateDate"];
+    self.lastPrimaryTimerUpdateDate = lastPrimaryTimerUpdateDate;
+    
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: primaryTime
-                                         withForwardIncrementing: YES];
+                                         withForwardIncrementing: YES
+                                                  lastUpdateDate: lastPrimaryTimerUpdateDate];
+    
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: primaryTime];
     
     // table view
@@ -654,13 +719,13 @@
     self.weight = [coder decodeObjectForKey: @"weight"];
     self.reps = [coder decodeObjectForKey: @"reps"];
     
-    // store the time the secondary timer should start at if app entered background state from InSetVC
-
-    if (self.timeDelay && _setCompletedButtonPressed == NO){
-        
-        int previousValueOfSecondaryTimer = [coder decodeIntForKey: @"secondaryTimer"];
-        self.adjustedSecondaryTimerTime = [NSNumber numberWithInt: elapsedTimeInSeconds + previousValueOfSecondaryTimer];
-    }
+//    // store the time the secondary timer should start at if app entered background state from InSetVC
+//
+//    if (self.timeDelay && _setCompletedButtonPressed == NO){
+//        
+//        int previousValueOfSecondaryTimer = [coder decodeIntForKey: @"secondaryTimer"];
+//        self.adjustedSecondaryTimerTime = [NSNumber numberWithInt: elapsedTimeInSeconds + previousValueOfSecondaryTimer];
+//    }
     
     // kicks off the selection process if user ended mid-selection
     
@@ -674,6 +739,16 @@
         
         self.restorationBlock = restorationBlock;
     }
+}
+
+#pragma mark - <TJBStopwatchObserver>
+
+- (void)timerDidUpdateWithUpdateDate:(NSDate *)date{
+    
+    //// store the passed in date
+    
+    self.lastPrimaryTimerUpdateDate = date;
+    
 }
 
 @end

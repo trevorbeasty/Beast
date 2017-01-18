@@ -156,6 +156,7 @@
 		0B870E551E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedChainHistoryVC.h; sourceTree = "<group>"; };
 		0B870E561E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedChainHistoryVC.m; sourceTree = "<group>"; };
 		0B870E571E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedChainHistoryVC.xib; sourceTree = "<group>"; };
+		0B870E5A1E2FF05E00E38C46 /* TJBStopwatchObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBStopwatchObserver.h; sourceTree = "<group>"; };
 		0BA8ACE41E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryTBC.h; sourceTree = "<group>"; };
 		0BA8ACE51E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryTBC.m; sourceTree = "<group>"; };
 		0BA8ACE71E22709700EE10C2 /* TJBCircuitModeTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitModeTBC.h; sourceTree = "<group>"; };
@@ -211,6 +212,7 @@
 			children = (
 				0B517BC11DF77C20009981F9 /* AppDelegate.h */,
 				0B517BC21DF77C20009981F9 /* AppDelegate.m */,
+				0B870E5A1E2FF05E00E38C46 /* TJBStopwatchObserver.h */,
 				0B843C8D1DFB24C70093F057 /* TJBStopwatch.h */,
 				0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */,
 				0B843C841DFAD0A00093F057 /* CoreDataController.h */,
