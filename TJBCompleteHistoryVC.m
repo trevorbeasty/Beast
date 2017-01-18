@@ -21,6 +21,10 @@
 
 #import "TJBAestheticsController.h"
 
+// realized chain history
+
+#import "TJBRealizedChainHistoryVC.h"
+
 
 
 
@@ -438,6 +442,34 @@
 
 
 #pragma mark - <UITableViewDelegate>
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //// if the selected object is a realized chain, show the chain details.  Else, nothing
+    
+    int sectionIndex = (int)indexPath.section;
+    int rowIndex = (int)indexPath.row;
+    
+    if ([self objectIsRealizedChain: self.masterList[sectionIndex][rowIndex]]){
+        
+        TJBRealizedChainHistoryVC *vc = [[TJBRealizedChainHistoryVC alloc] initWithRealizedChain: self.masterList[sectionIndex][rowIndex]];
+        
+        [self presentViewController: vc
+                           animated: YES
+                         completion: nil];
+        
+    }
+    
+    
+}
+
+- (BOOL)objectIsRealizedChain:(id)object{
+    
+    //// returns YES if the object is a realized chain.  NO, otherwise
+    
+    return [object isKindOfClass: [TJBRealizedChain class]];
+    
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
