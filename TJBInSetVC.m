@@ -15,7 +15,7 @@
 @interface TJBInSetVC ()
 
 {
-    int _timeDelay;
+    float _timeDelay;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
@@ -26,6 +26,8 @@
 
 @property (copy) void(^didPressSetCompletedBlock)(int);
 @property (nonatomic, strong) NSString *exerciseName;
+
+@property (nonatomic, weak) UIViewController<TJBStopwatchObserver> *masterController;
 
 @end
 
@@ -39,14 +41,14 @@
     
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
     
-    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay
-                            withForwardIncrementing: YES
-                                     lastUpdateDate: nil];
+//    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay
+//                            withForwardIncrementing: YES
+//                                     lastUpdateDate: nil];
     
-    [stopwatch addSecondaryStopwatchObserver: nil
+    [stopwatch addSecondaryStopwatchObserver: self.masterController
                               withTimerLabel: self.timerLabel];
     
-    self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
+//    self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
     
     // background
     
@@ -57,6 +59,7 @@
     [self viewAesthetics];
     
     [self configureNavBar];
+    
 }
 
 - (void)viewAesthetics{
@@ -70,7 +73,7 @@
 
 #pragma mark - Instantiation
 
-- (id)initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void (^)(int))block exerciseName:(NSString *)exerciseName{
+- (id)initWithTimeDelay:(float)timeDelay DidPressSetCompletedBlock:(void (^)(int))block exerciseName:(NSString *)exerciseName lastTimerUpdateDate:(NSDate *)lastUpdateDate masterController:(UIViewController<TJBStopwatchObserver> *)masterController{
     self = [super init];
     
     _timeDelay = timeDelay * -1;
@@ -78,6 +81,12 @@
     self.didPressSetCompletedBlock = block;
     
     self.exerciseName = exerciseName;
+    
+    self.masterController = masterController;
+    
+    [[TJBStopwatch singleton] setSecondaryStopWatchToTimeInSeconds: _timeDelay
+                                           withForwardIncrementing: YES
+                                                    lastUpdateDate: lastUpdateDate];
     
     return self;
 }

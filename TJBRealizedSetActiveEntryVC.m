@@ -414,7 +414,9 @@
             
             vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.restoredSecondaryTimerValue intValue] * -1
                              DidPressSetCompletedBlock: block
-                                          exerciseName: self.exercise.name];
+                                          exerciseName: self.exercise.name
+                                   lastTimerUpdateDate: self.lastSecondaryTimerUpdateDate
+                                      masterController: self];
             
             self.restoredSecondaryTimerValue = nil;
             
@@ -422,7 +424,9 @@
             
             vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.timeDelay intValue]
                              DidPressSetCompletedBlock: block
-                                          exerciseName: self.exercise.name];
+                                          exerciseName: self.exercise.name
+                                   lastTimerUpdateDate: nil
+                                      masterController: self];
         }
         
         [self presentViewController: vc
@@ -643,6 +647,9 @@
     [coder encodeFloat: secondaryTime
               forKey: @"secondaryTime"];
     
+    [coder encodeObject: self.lastSecondaryTimerUpdateDate
+                 forKey: @"lastSecondaryTimerUpdateDate"];
+    
     // table view
     
     CGPoint scrollPosition = self.exerciseTableView.contentOffset;
@@ -749,6 +756,8 @@
         float previousValueOfSecondaryTimer = [coder decodeFloatForKey: @"secondaryTime"];
         
         self.restoredSecondaryTimerValue = [NSNumber numberWithFloat: previousValueOfSecondaryTimer];
+        
+        self.lastSecondaryTimerUpdateDate = [coder decodeObjectForKey: @"lastSecondaryTimerUpdateDate"];
         
     }
     

@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+// protocol
+
+#import "TJBStopwatchObserver.h"
+
 @interface TJBInSetVC : UIViewController 
 
-- initWithTimeDelay:(int)timeDelay DidPressSetCompletedBlock:(void(^)(int))block exerciseName:(NSString *)exerciseName;
+- initWithTimeDelay:(float)timeDelay DidPressSetCompletedBlock:(void(^)(int))block exerciseName:(NSString *)exerciseName lastTimerUpdateDate:(NSDate *)lastUpdateDate masterController:(UIViewController<TJBStopwatchObserver> *)masterController;
 
 @end

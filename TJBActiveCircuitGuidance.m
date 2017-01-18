@@ -466,15 +466,19 @@ static NSString * const defaultValue = @"default value";
             
             vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.secondaryTimerFromStateRestoration intValue] * -1
                              DidPressSetCompletedBlock: block
-                                          exerciseName: self.chainTemplate.exercises[exerciseIndex].name];
+                                          exerciseName: self.chainTemplate.exercises[exerciseIndex].name
+                                   lastTimerUpdateDate: self.lastSecondaryTimerUpdateDate
+                                      masterController: self];
             
             self.secondaryTimerFromStateRestoration = nil;
             
         } else{
             
             vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.selectedTimeDelay intValue]
-                                         DidPressSetCompletedBlock: block
-                                                      exerciseName: self.chainTemplate.exercises[exerciseIndex].name];
+                             DidPressSetCompletedBlock: block
+                                          exerciseName: self.chainTemplate.exercises[exerciseIndex].name
+                                   lastTimerUpdateDate: self.lastSecondaryTimerUpdateDate
+                                      masterController: self];
         }
     
         [self presentViewController: vc
@@ -1020,6 +1024,9 @@ static NSString * const defaultValue = @"default value";
         [coder encodeFloat: secondaryTimerValue
                   forKey: @"secondaryTimerValue"];
         
+        [coder encodeObject: self.lastSecondaryTimerUpdateDate
+                     forKey: @"lastSecondaryTimerUpdateDate"];
+        
     }
     
     // date - used to determine elapsed time in background state
@@ -1105,6 +1112,8 @@ static NSString * const defaultValue = @"default value";
             float secondaryTimerValue = [coder decodeFloatForKey: @"secondaryTimerValue"];
             
             self.secondaryTimerFromStateRestoration  = [NSNumber numberWithFloat: secondaryTimerValue];
+            
+            self.lastSecondaryTimerUpdateDate = [coder decodeObjectForKey: @"lastSecondaryTimerUpdateDate"];
             
         }
         
