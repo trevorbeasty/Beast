@@ -174,6 +174,7 @@
     // must evaluate IV's to determine appropriate title for navItem
     
     NSString *word;
+    
     int number = self.chainTemplate.numberOfRounds;
     
     if (number == 1){
@@ -186,10 +187,10 @@
         
     }
     
-    NSString *title = [NSString stringWithFormat: @"%@ (%d %@)",
-                       self.chainTemplate.name,
+    NSString *title = [NSString stringWithFormat: @"(%d %@) %@",
                        number,
-                       word];
+                       word,
+                       self.chainTemplate.name];
     
     [navItem setTitle: title];
     

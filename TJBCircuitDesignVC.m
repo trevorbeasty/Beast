@@ -127,7 +127,7 @@
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Circuit Design"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Scheme Design"];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                    target: self
