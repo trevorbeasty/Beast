@@ -60,7 +60,7 @@
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Today's Sets"];
     [self.navigationBar setItems: @[navItem]];
-    [TJBAestheticsController configureNavigationBar: self.navigationBar];
+//    [TJBAestheticsController configureNavigationBar: self.navigationBar];
 }
 
 - (void)addBackgroundImage{
