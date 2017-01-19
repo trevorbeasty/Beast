@@ -42,39 +42,12 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     self.moc = [self.persistentContainer viewContext];
     
-//    [self createPlaceholderExerciseIfNecessary];
-    
     return self;
 }
 
-//- (void)createPlaceholderExerciseIfNecessary{
-//    
-//    //// I create the placeholder exercise here so that other classes to not have to ensure completeness of the object graph when using the placeholder exercise
-//    
-//    NSNumber *wasNewlyCreated = nil;
-//    TJBExercise *placeholderExercise = [self exerciseForName: placeholderExerciseName
-//                                             wasNewlyCreated: &wasNewlyCreated];
-//    
-//    if ([wasNewlyCreated boolValue] == YES){
-//        
-//        // the category for the placeholder exercise will, arbitrarily, be 'push'
-//        
-//        TJBExerciseCategory *pushCategory = [self exerciseCategoryForName: @"Push"];
-//        
-//        placeholderExercise.category = pushCategory;
-//        
-//        [self saveContext];
-//        
-//    } else{
-//        
-//        return;
-//        
-//    }
-//    
-//}
-
 - (instancetype)init
 {
+    
     @throw [NSException exceptionWithName: @"Singleton"
                                    reason: @"Use +[CoreDataController singleton]"
                                  userInfo: nil];
@@ -82,9 +55,10 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - Retrieving IV's
 
-- (NSManagedObjectContext *)moc
-{
+- (NSManagedObjectContext *)moc{
+    
     return [self.persistentContainer viewContext];
+    
 }
 
 
@@ -642,12 +616,12 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
     for (TJBExercise *exercise in exercises){
         
-        BOOL exerciseIsDefaultExercise = [exercise.name isEqualToString: placeholderExerciseName];
+        BOOL exerciseIsDefaultExercise = [exercise.name containsString: placeholderExerciseName];
         
         if (exerciseIsDefaultExercise){
             
-            NSLog(@"not all exercise user input collected");
             return NO;
+            
         }
         
     }

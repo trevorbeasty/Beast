@@ -382,6 +382,7 @@
     [super encodeRestorableStateWithCoder: coder];
     
     NSString *chainTemplateUniqueID = self.chainTemplate.uniqueID;
+    
     [coder encodeObject: chainTemplateUniqueID
                  forKey: @"chainTemplateUniqueID"];
     
