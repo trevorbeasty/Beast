@@ -63,11 +63,6 @@
     
 }
 
-- (void)registerForExerciseChangeNotification{
-    
-    
-    
-}
 
 - (void)setRestorationProperties{
     
@@ -469,6 +464,11 @@
     TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[indexPath.row];
     
     cell.repsLabel.text = [[repsWeightRecordPair reps] stringValue];
+    
+//    [TJBAestheticsController configureLabelsWithType2Format: @[cell.repsLabel]
+//                                                withOpacity: 1];
+    
+    
     cell.weightLabel.text = [[repsWeightRecordPair weight] stringValue];
     
     // date formatter
@@ -476,7 +476,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    dateFormatter.timeStyle = NSDateFormatterNoStyle;
     
     cell.dateLabel.text = [dateFormatter stringFromDate: repsWeightRecordPair.date];
     

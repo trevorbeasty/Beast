@@ -118,6 +118,8 @@
                             blue: 188.0 / 255.0
                            alpha: 1.0];
 }
+
+
 + (void)configureViewsWithType1Format:(NSArray<UIView *> *)views withOpacity:(double)opacity{
     for(UIView *view in views){
         view.backgroundColor = [[self singleton] labelType1Color];
@@ -128,6 +130,20 @@
         layer.opacity = opacity;
     }
 }
+
++ (void)configureLabelsWithType2Format:(NSArray<UILabel *> *)labels withOpacity:(double)opacity{
+    
+    for(UILabel *label in labels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        
+        [label setTextColor: [UIColor whiteColor]];
+        
+        label.layer.opacity = opacity;
+ 
+    }
+}
+
 
 #pragma mark - Navigation Bar
 

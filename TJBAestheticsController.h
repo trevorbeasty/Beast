@@ -38,4 +38,6 @@
 // labels
 + (void)configureViewsWithType1Format:(NSArray<UIView *> *)views withOpacity:(double)opacity;
 
++ (void)configureLabelsWithType2Format:(NSArray<UILabel *> *)labels withOpacity:(double)opacity;
+
 @end

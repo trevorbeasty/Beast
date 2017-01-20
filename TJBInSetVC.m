@@ -41,14 +41,8 @@
     
     TJBStopwatch *stopwatch = [TJBStopwatch singleton];
     
-//    [stopwatch setSecondaryStopWatchToTimeInSeconds: _timeDelay
-//                            withForwardIncrementing: YES
-//                                     lastUpdateDate: nil];
-    
     [stopwatch addSecondaryStopwatchObserver: self.masterController
                               withTimerLabel: self.timerLabel];
-    
-//    self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: _timeDelay];
     
     // background
     
@@ -63,6 +57,7 @@
 }
 
 - (void)viewAesthetics{
+    
     self.timerLabel.layer.masksToBounds = YES;
     self.timerLabel.layer.cornerRadius = 4;
     self.timerLabel.layer.opacity = .85;
@@ -91,11 +86,16 @@
     return self;
 }
 
+
 - (void)configureNavBar{
+    
     NSString *title = [NSString stringWithFormat: @"In Set: %@",
                        self.exerciseName];
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: title];
+    
     [self.navBar setItems: @[navItem]];
+    
 }
 
 #pragma mark - Button Actions
