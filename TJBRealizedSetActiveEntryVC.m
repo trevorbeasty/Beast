@@ -191,6 +191,10 @@
     
     [self.navigationBar setItems: @[navItem]];
     
+    // nav bar text appearance
+    
+    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
+    
 }
 
 - (void)fetchCoreDataAndConfigureTableView{

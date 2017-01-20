@@ -23,16 +23,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LlE-mx-b03">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="r53-0u-WrW"/>
+                        <constraint firstAttribute="height" constant="60" id="r53-0u-WrW"/>
                     </constraints>
                     <items>
                         <navigationItem title="Title" id="cw0-g1-wvd"/>
                     </items>
                 </navigationBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jzw-Zu-FC5">
-                    <rect key="frame" x="8" y="106" width="359" height="553"/>
+                    <rect key="frame" x="8" y="116" width="359" height="543"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="wL2-K4-dUb"/>
@@ -40,7 +40,7 @@
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Our-RC-T7e" userLabel="columnLabelContainer">
-                    <rect key="frame" x="8" y="58" width="359" height="40"/>
+                    <rect key="frame" x="8" y="68" width="359" height="40"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X06-2s-Otb">
                             <rect key="frame" x="0.0" y="0.0" width="120" height="40"/>

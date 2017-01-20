@@ -60,7 +60,11 @@
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Today's Sets"];
     [self.navigationBar setItems: @[navItem]];
-//    [TJBAestheticsController configureNavigationBar: self.navigationBar];
+
+    // nav bar text appearance
+    
+    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
+    
 }
 
 - (void)addBackgroundImage{

@@ -156,6 +156,10 @@
     
     [self.navBar setItems: @[self.navItem]];
     
+    // nav bar text appearance
+    
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
+    
 }
 
 
