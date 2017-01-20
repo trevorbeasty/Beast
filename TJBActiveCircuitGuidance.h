@@ -18,19 +18,22 @@
 // associated VC
 
 #import "TJBCircuitActiveUpdatingVCProtocol.h"
+#import "SelectedExerciseObserver.h"
 
 @class TJBCircuitActiveUpdatingVC;
+@class RealizedSetPersonalRecordVC;
 
 
 
 @interface TJBActiveCircuitGuidance : UIViewController <TJBStopwatchObserver>
 
-// associated VC
-// it is in the header because it must be accessed by the TJBCircuitModeTBC during restoration
+// associated VC's
+// they are in the header because they must be accessed by the TJBCircuitModeTBC during restoration
 
 @property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *circuitActiveUpdatingVC;
+@property (nonatomic, weak) RealizedSetPersonalRecordVC <SelectedExerciseObserver> *personalRecordsVC;
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain circuitActiveUpdatingVC:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)circuitActiveUpdatingVC wasRestored:(BOOL)wasRestored;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain circuitActiveUpdatingVC:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)circuitActiveUpdatingVC wasRestored:(BOOL)wasRestored personalRecordsVC:(RealizedSetPersonalRecordVC<SelectedExerciseObserver> *)personalRecordsVC;
 
 
 

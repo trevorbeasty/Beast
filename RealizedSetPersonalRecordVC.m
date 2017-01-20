@@ -41,10 +41,6 @@
 
 @property (nonatomic, strong) NSMutableArray<TJBRepsWeightRecordPair *> *repsWeightRecordPairs;
 
-
-
-
-
 // core
 
 @property (nonatomic, strong) TJBExercise *activeExercise;
@@ -64,6 +60,12 @@
     [self instantiateRecordPairsArray];
     
     return self;
+    
+}
+
+- (void)registerForExerciseChangeNotification{
+    
+    
     
 }
 
@@ -172,6 +174,10 @@
     TJBExercise *activeExercise = self.activeExercise;
     
     if (activeExercise){
+        
+        // the recordsPairArray must be cleaned with each new selected exercise.  Instantiating it again achieves this
+        
+        [self instantiateRecordPairsArray];
         
         [self fetchRealizedSets];
         [self fetchRealizedChains];
@@ -408,6 +414,8 @@
     [self.tableView reloadData];
     
 }
+
+
 
 - (void)newSetSubmitted{
     

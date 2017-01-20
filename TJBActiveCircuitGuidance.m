@@ -33,6 +33,10 @@
 
 #import "TJBCircuitActiveUpdatingVC.h"
 
+// peer VC's
+
+#import "RealizedSetPersonalRecordVC.h"
+
 
 
 
@@ -265,11 +269,12 @@ static NSString * const defaultValue = @"default value";
             
         }
         
-        // exercise
+        // exercise - must also inform the personal records VC a new exercise has been selected
         
         int exerciseIndexAsInt = [self.activeExerciseIndex intValue];
-        
         TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndexAsInt];
+        
+        [self.personalRecordsVC didSelectExercise: exercise];
         
         self.exerciseLabel.text = exercise.name;
         
@@ -308,7 +313,7 @@ static NSString * const defaultValue = @"default value";
 
 #pragma mark - Init
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain circuitActiveUpdatingVC:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)circuitActiveUpdatingVC wasRestored:(BOOL)wasRestored{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate realizedChainCorrespondingToChainTemplate:(TJBRealizedChain *)realizedChain circuitActiveUpdatingVC:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)circuitActiveUpdatingVC wasRestored:(BOOL)wasRestored personalRecordsVC:(RealizedSetPersonalRecordVC<SelectedExerciseObserver> *)personalRecordsVC{
     
     self = [super init];
     
@@ -317,9 +322,10 @@ static NSString * const defaultValue = @"default value";
     self.chainTemplate = chainTemplate;
     self.realizedChain = realizedChain;
     
-    // associated VC
+    // associated VC's
     
     self.circuitActiveUpdatingVC = circuitActiveUpdatingVC;
+    self.personalRecordsVC = personalRecordsVC;
     
     // other methods
     
@@ -815,6 +821,10 @@ static NSString * const defaultValue = @"default value";
         
         TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndex];
         
+        // inform the personal records VC that a new exercise has been chosen
+        
+        [self.personalRecordsVC didSelectExercise: exercise];
+        
         self.exerciseLabel.text = exercise.name;
         
     }
@@ -918,12 +928,13 @@ static NSString * const defaultValue = @"default value";
     NSString *realizedChainUniqueID = [coder decodeObjectForKey: @"realizedChainUniqueID"];
     TJBRealizedChain *realizedChain = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
     
-    // instantiate the VC
+    // instantiate the VC - the two peer VC's will be assigned in the tab bar controller
     
     TJBActiveCircuitGuidance * vc = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                   realizedChainCorrespondingToChainTemplate: realizedChain
                                                                     circuitActiveUpdatingVC: nil
-                                                                                wasRestored: YES];
+                                                                                wasRestored: YES
+                                                                          personalRecordsVC: nil];
     
     // decode and assign active variables
     
@@ -1119,7 +1130,11 @@ static NSString * const defaultValue = @"default value";
         
     }
     
-
+    // at this point, the personal records VC view has loaded and its property in this controller has been configured. Its protocol method must now be called to give in the current exercise
+    
+    int exerciseIndex = [self.activeExerciseIndex intValue];
+    
+    [self.personalRecordsVC didSelectExercise: self.chainTemplate.exercises[exerciseIndex]];
     
 }
 

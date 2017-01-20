@@ -13,10 +13,12 @@
 #import "TJBActiveCircuitGuidance.h"
 #import "TJBCircuitReferenceContainerVC.h"
 #import "TJBCircuitActiveUpdatingContainerVC.h"
+#import "RealizedSetPersonalRecordVC.h"
 
 // protocols
 
 //#import "TJBCircuitActiveUpdatingVCProtocol.h"
+#import "SelectedExerciseObserver.h"
 
 // core data
 
@@ -48,12 +50,19 @@
     
     [circuitActiveUpdating.tabBarItem setTitle: @"Progress"];
     
+    // personal records VC
+    
+    RealizedSetPersonalRecordVC *personalRecordsVC = [[RealizedSetPersonalRecordVC alloc] init];
+    
+    [personalRecordsVC.tabBarItem setTitle: @"Records"];
+    
     // active circuit guidance VC - must be instantiated after circuit active updating because the latter VC is required as a parameter
     
     TJBActiveCircuitGuidance *activeGuidance = [[TJBActiveCircuitGuidance alloc] initWithChainTemplate: chainTemplate
                                                              realizedChainCorrespondingToChainTemplate: realizedChainSkeleton
                                                                                circuitActiveUpdatingVC: circuitActiveUpdating.circuitActiveUpdatingVC
-                                                                                           wasRestored: NO];
+                                                                                           wasRestored: NO
+                                                                                     personalRecordsVC: personalRecordsVC];
     
     [activeGuidance.tabBarItem setTitle: @"Guide"];
      
@@ -67,7 +76,8 @@
     
     [self setViewControllers: @[activeGuidance,
                                 circuitReference,
-                                circuitActiveUpdating]];
+                                circuitActiveUpdating,
+                                personalRecordsVC]];
     
     // tab bar configuration
     
@@ -125,6 +135,9 @@
     [coder encodeObject: children[2]
                  forKey: @"vc3"];
     
+    [coder encodeObject: children[3]
+                 forKey: @"vc4"];
+    
     // selected tab bar index
     
     [coder encodeInteger: self.selectedIndex
@@ -142,25 +155,28 @@
     
     TJBCircuitActiveUpdatingContainerVC *vc3 = [coder decodeObjectForKey: @"vc3"];
     
-    // might need to load the view of the third VC so that it can respond appropriately to messages from 'active guidance' as selections are made (if the user never navigates to the third tab before executing sets)
-
-    [vc3 loadViewIfNeeded];
+    // personal records VC
     
+    RealizedSetPersonalRecordVC *vc4 = [coder decodeObjectForKey: @"vc4"];
+
     TJBActiveCircuitGuidance *vc1 = [coder decodeObjectForKey: @"vc1"];
     
     // the TJBCircuitActiveUpdatingVC is not restored, only its container class is.  Thus, the following assignment must be made here as opposed to in 'decode' type methods (a coded reference to a VC that is not restored will not find the original VC upon decoding)
     
     vc1.circuitActiveUpdatingVC = vc3.circuitActiveUpdatingVC;
+    vc1.personalRecordsVC = vc4;
     
     TJBCircuitReferenceContainerVC *vc2 = [coder decodeObjectForKey: @"vc2"];
     
     [vc1.tabBarItem setTitle: @"Active"];
     [vc2.tabBarItem setTitle: @"Targets"];
     [vc3.tabBarItem setTitle: @"Progress"];
+    [vc4.tabBarItem setTitle: @"Records"];
     
     [self setViewControllers: @[vc1,
-                               vc2,
-                               vc3]];
+                                vc2,
+                                vc3,
+                                vc4]];
     
     // selected index
     
