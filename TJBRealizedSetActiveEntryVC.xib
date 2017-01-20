@@ -15,6 +15,7 @@
                 <outlet property="beginNextSetButton" destination="sWv-BT-UWM" id="ZTR-IY-k1Q"/>
                 <outlet property="exerciseTableView" destination="tSH-8D-UsU" id="cgp-No-VAp"/>
                 <outlet property="navigationBar" destination="guv-Qd-dcg" id="7cn-mF-6Tk"/>
+                <outlet property="targetRestLabel" destination="awp-9c-qVg" id="3Kx-bg-u2G"/>
                 <outlet property="timerLabel" destination="sw3-k5-xCu" id="NDE-1K-afg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

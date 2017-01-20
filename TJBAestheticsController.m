@@ -139,7 +139,11 @@
         
         [label setTextColor: [UIColor whiteColor]];
         
-        label.layer.opacity = opacity;
+        CALayer *layer = label.layer;
+        
+        layer.opacity = opacity;
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 8.0;
  
     }
 }

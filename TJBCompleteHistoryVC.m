@@ -358,7 +358,6 @@
         
         // labels
         
-        cell.timeLabel.text = [dateFormatter stringFromDate: realizedSet.beginDate];
         cell.exerciseLabel.text = realizedSet.exercise.name;
         cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
         cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];

@@ -10,7 +10,7 @@
 
 @interface RealizedSetHistoryCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;

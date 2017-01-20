@@ -58,6 +58,7 @@
 // timer
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
 
 @property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
 @property (nonatomic, strong) NSDate *lastSecondaryTimerUpdateDate;
@@ -160,11 +161,11 @@
     [[TJBAestheticsController singleton] configureButtonsInArray: buttons
                                                      withOpacity: .85];
     
-    CALayer *layer = self.timerLabel.layer;
+    NSArray *type2Labels = @[self.timerLabel,
+                             self.targetRestLabel];
     
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
-    layer.opacity = .85;
+    [TJBAestheticsController configureLabelsWithType2Format: type2Labels
+                                                withOpacity: .85];
     
 }
 
@@ -286,25 +287,38 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
+    
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
     cell.textLabel.text = exercise.name;
+    
+    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
+    
     return cell;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+    
     return [sectionInfo name];
+    
 }
 
 #pragma mark - <UITableViewDelegate>
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    
     self.exercise = exercise;
+    
     [self.navItem setTitle: exercise.name];
     
     [self.personalRecordVC didSelectExercise: exercise];
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -318,7 +332,21 @@
     
     label.textAlignment = NSTextAlignmentCenter;
     
+    label.font = [UIFont systemFontOfSize: 20.0];
+    
     return label;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    return 40;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 40;
+    
 }
 
 #pragma mark - Button Actions

@@ -146,40 +146,40 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     RealizedSetHistoryCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"setHistoryCell"];
     
     TJBRealizedSet *realizedSet = [self.frc objectAtIndexPath: indexPath];
     
     // rest leading up to set
+    
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self frc] sections][indexPath.section];
     NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
     
     NSInteger previousSetRowIndex = indexPath.row + 1;
     
-    if ( previousSetRowIndex < numberOfObjects )
-    {
+    if ( previousSetRowIndex < numberOfObjects ){
+        
         NSIndexPath *previousSetPath = [NSIndexPath indexPathForRow: previousSetRowIndex
                                                           inSection: indexPath.section];
+        
         TJBRealizedSet *previousSet = [self.frc objectAtIndexPath: previousSetPath];
         
         int restTimeFromPreviousSet = (int)[realizedSet.beginDate timeIntervalSinceDate: previousSet.endDate];
+        
         NSString *restTimeString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: restTimeFromPreviousSet];
+        
         NSString *fullRestTimeString = [NSString stringWithFormat: @"+ %@",
                                         restTimeString];
+        
         cell.restLabel.text = fullRestTimeString;
+        
     }
-    else
-    {
+    else{
+        
         cell.restLabel.text = @"";
+        
     }
-   
-    
-    // date
-    NSDate *date = realizedSet.beginDate;
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    cell.timeLabel.text = [dateFormatter stringFromDate: date];
     
     // weight
     cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
@@ -191,6 +191,7 @@
     cell.exerciseLabel.text = realizedSet.exercise.name;
     
     return cell;
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>
