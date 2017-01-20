@@ -18,6 +18,8 @@
 
 @interface TJBRealizedSetHistoryByDay () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
+// IBOutlet
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIView *columnLabelSubview;

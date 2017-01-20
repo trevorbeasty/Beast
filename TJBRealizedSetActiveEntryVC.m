@@ -35,6 +35,7 @@
 - (IBAction)addNewExercise:(id)sender;
 - (IBAction)didPressBeginNextSet:(id)sender;
 
+
 @property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 
@@ -58,7 +59,7 @@
 // timer
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
-@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
+@property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 
 @property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
 @property (nonatomic, strong) NSDate *lastSecondaryTimerUpdateDate;
@@ -68,6 +69,10 @@
 // need to keep it around to update the title as exercises are selected
 // should this be a weak property?
 @property (nonatomic, weak) UINavigationItem *navItem;
+
+// IBAction
+
+- (IBAction)didPressTargetRestButton:(id)sender;
 
 // for restoration
 
@@ -135,8 +140,6 @@
     
     _whiteoutActive = NO;
     
-    
-    
     [self configureNavigationBar];
     
     [self addAppropriateStopwatchObservers];
@@ -156,13 +159,13 @@
     self.exerciseTableView.layer.opacity = .85;
     
     NSArray *buttons = @[self.beginNextSetButton,
-                         self.addNewExerciseButton];
+                         self.addNewExerciseButton,
+                         self.targetRestButton];
     
     [[TJBAestheticsController singleton] configureButtonsInArray: buttons
                                                      withOpacity: .85];
     
-    NSArray *type2Labels = @[self.timerLabel,
-                             self.targetRestLabel];
+    NSArray *type2Labels = @[self.timerLabel];
     
     [TJBAestheticsController configureLabelsWithType2Format: type2Labels
                                                 withOpacity: .85];
@@ -354,6 +357,14 @@
 }
 
 #pragma mark - Button Actions
+
+- (IBAction)didPressTargetRestButton:(id)sender {
+    
+    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
+    
+    
+    
+}
 
 - (void)didPressDone{
     [self dismissViewControllerAnimated: NO
@@ -828,6 +839,7 @@
     self.lastSecondaryTimerUpdateDate = date;
     
 }
+
 
 @end
 
