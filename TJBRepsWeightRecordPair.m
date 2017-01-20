@@ -25,6 +25,8 @@
     
     self.weight = nil;
     
+    self.date = nil;
+    
     self.isDefaultObject = [NSNumber numberWithBool: YES];
     
     return self;

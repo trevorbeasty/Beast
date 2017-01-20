@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSNumber *reps;
 @property (nonatomic, strong) NSNumber *weight;
+@property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSNumber *isDefaultObject;
 
 - (instancetype)initDefaultObjectWithReps:(int)reps;

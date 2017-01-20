@@ -30,16 +30,17 @@
 
 //// core data
 
-// two fetches are required - realized chain and realized set.  A property must be kept for each
+// two fetches are required - realized chain and realized set.  The results are stored for each.  Because fetched results are not being directly fed into a table view, NSFetchedResultsController is not used
 
-@property (nonatomic, strong) NSFetchedResultsController *realizedSetsFRC;
+@property (nonatomic, strong) NSArray *realizedSetFetchResults;
 
-@property (nonatomic, strong) NSFetchedResultsController *realizedChainsFRC;
+@property (nonatomic, strong) NSArray *realizedChainFetchResults;
 
 
-// an array of TJBRepsWeightRecordPairs.  Record pairs are always held for reps values of 1 through 12.  New pairs are added as needed
+//// an array of TJBRepsWeightRecordPairs.  Record pairs are always held for reps values of 1 through 12.  New pairs are added as needed
 
 @property (nonatomic, strong) NSMutableArray<TJBRepsWeightRecordPair *> *repsWeightRecordPairs;
+
 
 
 
@@ -77,7 +78,7 @@
 
 - (void)instantiateRecordPairsArray{
     
-    //// prepare the record pairs array for subsequent use.
+    //// prepare the record pairs array and tracker for subsequent use
     
     NSMutableArray *repsWeightRecordPairs = [[NSMutableArray alloc] init];
     self.repsWeightRecordPairs = repsWeightRecordPairs;
@@ -166,120 +167,158 @@
 
 #pragma mark - FRC / Core Data
 
-- (void)fetchAndManipulateCoreDataForActiveExercise{
+- (void)fetchManagedObjectsAndDetermineRecordsForActiveExercise{
     
-    if (self.activeExercise){
+    TJBExercise *activeExercise = self.activeExercise;
+    
+    if (activeExercise){
         
         [self fetchRealizedSets];
-        
         [self fetchRealizedChains];
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
+        for (TJBRealizedSet *realizedSet in activeExercise.realizedSets){
+            
+            NSNumber *weight = [NSNumber numberWithDouble: realizedSet.weight];
+            NSNumber *reps = [NSNumber numberWithDouble: realizedSet.reps];
+            
+            TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: [reps intValue]];
+            
+            // compare the weight of the current realized set to that of the current record to determine what should be done
+            
+            BOOL currentRecordIsDefaultObject = [currentRecordForPrescribedReps.isDefaultObject boolValue];
+            
+            if (!currentRecordIsDefaultObject){
+                
+                BOOL newWeightIsANewRecord = [weight doubleValue] > [currentRecordForPrescribedReps.weight doubleValue];
+                
+                if (newWeightIsANewRecord){
+                    
+                    currentRecordForPrescribedReps.weight = weight;
+                    currentRecordForPrescribedReps.date = realizedSet.beginDate;
+                    currentRecordForPrescribedReps.isDefaultObject = [NSNumber numberWithBool: NO];
+                    
+                }
+                
+            } else{
+                
+                currentRecordForPrescribedReps.weight = weight;
+                currentRecordForPrescribedReps.date = realizedSet.beginDate;
+                currentRecordForPrescribedReps.isDefaultObject = [NSNumber numberWithBool: NO];
+                
+            }
+        }
+    }
+}
+
+- (TJBRepsWeightRecordPair *)repsWeightRecordPairForNumberOfReps:(int)reps{
+    
+    //// returns the TJBRepsWeightRecordPair corresponding to the specified reps
+    
+    // because I always display records for reps 1 through 12, they're positions in the array are known by definition
+    
+    if (reps < 1){
+        
+        abort();
         
     }
     
-
+    BOOL repsWithinStaticRange = reps <= 12;
     
+    if (repsWithinStaticRange){
+        
+        return self.repsWeightRecordPairs[reps - 1];
+        
+    } else{
+        
+        // create the record pair for the new reps number and assign it appropriate values.  Configure the tracker array as well
+        
+        int limit = (int)[self.repsWeightRecordPairs count];
+        NSNumber *extractedPairReps;
+        
+        for (int i = 12; i < limit; i++){
+            
+            extractedPairReps = self.repsWeightRecordPairs[i].reps;
+            int extractedPairRepsAsInt = [extractedPairReps intValue];
+            
+            if (extractedPairRepsAsInt == reps){
+                
+                return self.repsWeightRecordPairs[i];
+                
+            } else if(extractedPairRepsAsInt < reps){
+                
+                continue;
+                
+            } else if(extractedPairRepsAsInt > reps){
+                
+                TJBRepsWeightRecordPair *newPair = [[TJBRepsWeightRecordPair alloc] initDefaultObjectWithReps: reps];
+                
+                [self.repsWeightRecordPairs insertObject: newPair
+                                                 atIndex: i];
+                
+                return newPair;
+                
+            }
+            
+        }
+        
+        // control only reaches this point if the passed-in reps are greater than reps for all records currently held by repsWeightRecordPairs
+        
+        TJBRepsWeightRecordPair *newPair = [[TJBRepsWeightRecordPair alloc] initDefaultObjectWithReps: reps];
+        
+        [self.repsWeightRecordPairs addObject: newPair];
+        
+        return newPair;
+        
+    }
 }
+
+
+
+
 
 - (void)fetchRealizedSets{
     
     //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
     
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
     
-        NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
-                                                                       ascending: YES];
-        NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
-                                                                     ascending: NO];
+    NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
+                                                               ascending: YES];
     
-        [request setSortDescriptors: @[repsSort, weightSort]];
+    NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
+                                                                 ascending: NO];
     
-        NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    NSString *activeExerciseName = self.activeExercise.name;
     
-        NSFetchedResultsController *realizedSetsFRC = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                              managedObjectContext: moc
-                                                                                sectionNameKeyPath: nil
-                                                                                         cacheName: nil];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"exercise.name = %@", activeExerciseName];
     
-        realizedSetsFRC.delegate = nil;
-            
-        self.realizedSetsFRC = realizedSetsFRC;
+    [request setSortDescriptors: @[repsSort, weightSort]];
+    request.predicate = predicate;
+    
+    NSError *error = nil;
+    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
+                                                                                error: &error];
+    self.realizedSetFetchResults = fetchResults;
     
 }
 
 - (void)fetchRealizedChains{
     
+    //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
     
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedChain"];
     
+    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"dateCreated"
+                                                               ascending: NO];
     
-}
-
-
-
-
-- (void)refineFetchedResults{
-//    NSMutableArray *refinedResults = [[NSMutableArray alloc] init];
-//    NSArray *fetchedObjects = self.frc.fetchedObjects;
-//    
-//    int FRCount = (int)[self.frc.fetchedObjects count];
-//    
-//    int currentRepIndex;
-//    int previousRepIndex;
-//    
-//    int currentArrayIndex;
-//    int previousArrayIndex;
-//    
-//    if (FRCount == 0)
-//    {
-//        return;
-//    }
-//    
-//    [refinedResults addObject: fetchedObjects[0]];
-//    
-//    if (FRCount > 1)
-//    {
-//        previousRepIndex = (int)[fetchedObjects[0] reps];
-//        previousArrayIndex = 0;
-//        
-//        currentRepIndex = (int)[fetchedObjects[1] reps];
-//        currentArrayIndex = 1;
-//        
-//        if (currentRepIndex > previousRepIndex)
-//        {
-//            [refinedResults addObject: fetchedObjects[currentArrayIndex]];
-//        }
-//        
-//        for (int generalIndex = 0; generalIndex < FRCount - 2; generalIndex++)
-//        {
-//            previousArrayIndex = currentArrayIndex;
-//            previousRepIndex = currentRepIndex;
-//            
-//            currentArrayIndex++;
-//            currentRepIndex = [fetchedObjects[currentArrayIndex] reps];
-//            
-//            if (currentRepIndex > previousRepIndex)
-//            {
-//                [refinedResults addObject: fetchedObjects[currentArrayIndex]];
-//            }
-//        }
-//    }
-//    
-//    self.refinedFRCResults = [refinedResults copy];
+    [request setSortDescriptors: @[dateSort]];
+    
+    NSError *error = nil;
+    
+    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
+                                                                                error: &error];
+    self.realizedChainFetchResults = fetchResults;
+    
 }
 
 
@@ -292,7 +331,7 @@
     
     self.activeExercise = exercise;
     
-    [self fetchAndManipulateCoreDataForActiveExercise];
+    [self fetchManagedObjectsAndDetermineRecordsForActiveExercise];
     
     [self.tableView reloadData];
     
@@ -302,7 +341,7 @@
     
     //// refetch relevant core data objects. This is done in case the submitted exercise is the same as the active exercise, in which case, there may be a new personal record to show
     
-    [self fetchAndManipulateCoreDataForActiveExercise];
+    [self fetchManagedObjectsAndDetermineRecordsForActiveExercise];
     
     [self.tableView reloadData];
     
@@ -337,7 +376,7 @@
         
     } else{
         
-        return [self.refinedFRCResults count];
+        return [self.repsWeightRecordPairs count];
         
     }
     
@@ -347,21 +386,19 @@
     
     RealizedSetPersonalRecordCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"PRCell"];
     
-    TJBRealizedSet *realizedSet = self.refinedFRCResults[indexPath.row];
-    
-    cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
-    cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
-    
-    // date formatter
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    
-    NSDate *realizedSetStartDate = realizedSet.beginDate;
-    
-    cell.dateLabel.text = [dateFormatter stringFromDate: realizedSetStartDate];
+//    TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[indexPath.row];
+//    
+//    cell.repsLabel.text = [[repsWeightRecordPair reps] stringValue];
+//    cell.weightLabel.text = [[repsWeightRecordPair weight] stringValue];
+//    
+//    // date formatter
+//    
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    
+//    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+//    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+//    
+//    cell.dateLabel.text = [dateFormatter stringFromDate: repsWeightRecordPair.date];
     
     return cell;
     
