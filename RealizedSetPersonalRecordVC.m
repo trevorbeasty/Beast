@@ -165,7 +165,7 @@
 
 
 
-#pragma mark - FRC / Core Data
+#pragma mark - PR List Creation
 
 - (void)fetchManagedObjectsAndDetermineRecordsForActiveExercise{
     
@@ -176,38 +176,110 @@
         [self fetchRealizedSets];
         [self fetchRealizedChains];
 
+        // realized sets
+        
         for (TJBRealizedSet *realizedSet in activeExercise.realizedSets){
             
-            NSNumber *weight = [NSNumber numberWithDouble: realizedSet.weight];
-            NSNumber *reps = [NSNumber numberWithDouble: realizedSet.reps];
-            
-            TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: [reps intValue]];
+            TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: realizedSet.reps];
             
             // compare the weight of the current realized set to that of the current record to determine what should be done
             
-            BOOL currentRecordIsDefaultObject = [currentRecordForPrescribedReps.isDefaultObject boolValue];
+            [self configureRepsWeightRecordPair: currentRecordForPrescribedReps
+                            withCandidateWeight: [NSNumber numberWithDouble: realizedSet.weight]
+                                  candidateDate: realizedSet.beginDate];
             
-            if (!currentRecordIsDefaultObject){
+        }
+        
+        // realized chains
+        
+        for (TJBRealizedChain *realizedChain in activeExercise.chains){
+            
+            if ([realizedChain isKindOfClass: [TJBChainTemplate class]]){
                 
-                BOOL newWeightIsANewRecord = [weight doubleValue] > [currentRecordForPrescribedReps.weight doubleValue];
+                continue;
                 
-                if (newWeightIsANewRecord){
+            }
+            
+            NSArray *exerciseIndices = [self indicesContainingExercise: activeExercise
+                                                      forRealizedChain: realizedChain];
+            
+            int roundLimit = realizedChain.numberOfRounds;
+            
+            for (NSNumber *number in exerciseIndices){
+                
+                int exerciseIndex = [number intValue];
+                
+                for (int i = 0; i < roundLimit; i++){
                     
-                    currentRecordForPrescribedReps.weight = weight;
-                    currentRecordForPrescribedReps.date = realizedSet.beginDate;
-                    currentRecordForPrescribedReps.isDefaultObject = [NSNumber numberWithBool: NO];
+                    BOOL isDefaultEntry = realizedChain.weightArrays[exerciseIndex].numbers[i].isDefaultObject;
                     
+                    if (!isDefaultEntry){
+                        
+                        int reps = (int)realizedChain.repsArrays[exerciseIndex].numbers[i].value;
+                        NSNumber *weight = [NSNumber numberWithDouble: realizedChain.weightArrays[exerciseIndex].numbers[i].value];
+                        NSDate *date = realizedChain.setBeginDateArrays[exerciseIndex].dates[i].value;
+                        
+                        TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: reps];
+                        
+                        [self configureRepsWeightRecordPair: currentRecordForPrescribedReps
+                                        withCandidateWeight: weight
+                                              candidateDate: date];
+                        
+                    }
                 }
-                
-            } else{
-                
-                currentRecordForPrescribedReps.weight = weight;
-                currentRecordForPrescribedReps.date = realizedSet.beginDate;
-                currentRecordForPrescribedReps.isDefaultObject = [NSNumber numberWithBool: NO];
-                
             }
         }
     }
+}
+
+- (void)configureRepsWeightRecordPair:(TJBRepsWeightRecordPair *)recordPair withCandidateWeight:(NSNumber *)weight candidateDate:(NSDate *)date{
+    
+    BOOL currentRecordIsDefaultObject = [recordPair.isDefaultObject boolValue];
+    
+    if (!currentRecordIsDefaultObject){
+        
+        BOOL newWeightIsANewRecord = [weight doubleValue] > [recordPair.weight doubleValue];
+        
+        if (newWeightIsANewRecord){
+            
+            recordPair.weight = weight;
+            recordPair.date = date;
+            recordPair.isDefaultObject = [NSNumber numberWithBool: NO];
+            
+        }
+        
+    } else{
+        
+        recordPair.weight = weight;
+        recordPair.date = date;
+        recordPair.isDefaultObject = [NSNumber numberWithBool: NO];
+        
+    }
+    
+}
+
+- (NSArray<NSNumber *> *)indicesContainingExercise:(TJBExercise *)exercise forRealizedChain:(TJBRealizedChain *)realizedChain{
+    
+    int limit = realizedChain.numberOfExercises;
+    
+    NSMutableArray *collector = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < limit; i++){
+        
+        BOOL currentIndexContainsTargetedExercise = [realizedChain.exercises[i] isEqual: exercise];
+        
+        if (currentIndexContainsTargetedExercise){
+            
+            NSNumber *number = [NSNumber numberWithInt: i];
+            
+            [collector addObject: number];
+            
+        }
+        
+    }
+    
+    return collector;
+    
 }
 
 - (TJBRepsWeightRecordPair *)repsWeightRecordPairForNumberOfReps:(int)reps{
@@ -216,9 +288,9 @@
     
     // because I always display records for reps 1 through 12, they're positions in the array are known by definition
     
-    if (reps < 1){
+    if (reps == 0){
         
-        abort();
+        return nil;
         
     }
     
@@ -386,19 +458,19 @@
     
     RealizedSetPersonalRecordCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"PRCell"];
     
-//    TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[indexPath.row];
-//    
-//    cell.repsLabel.text = [[repsWeightRecordPair reps] stringValue];
-//    cell.weightLabel.text = [[repsWeightRecordPair weight] stringValue];
-//    
-//    // date formatter
-//    
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    
-//    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-//    dateFormatter.timeStyle = NSDateFormatterShortStyle;
-//    
-//    cell.dateLabel.text = [dateFormatter stringFromDate: repsWeightRecordPair.date];
+    TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[indexPath.row];
+    
+    cell.repsLabel.text = [[repsWeightRecordPair reps] stringValue];
+    cell.weightLabel.text = [[repsWeightRecordPair weight] stringValue];
+    
+    // date formatter
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    cell.dateLabel.text = [dateFormatter stringFromDate: repsWeightRecordPair.date];
     
     return cell;
     

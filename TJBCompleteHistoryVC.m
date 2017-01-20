@@ -325,11 +325,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    
-    NSLog(@"%d rows in section %d",
-          (int)[self.masterList[section] count],
-          (int)section);
-    
     return [self.masterList[section] count];
    
 }
