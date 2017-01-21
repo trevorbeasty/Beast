@@ -170,7 +170,7 @@ static NSString * const defaultValue = @"unselected";
     
     // determine height of scroll view content size
     
-    CGFloat rowHeight = 30;
+    CGFloat rowHeight = 40;
     CGFloat componentToComponentSpacing = 16;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
@@ -294,7 +294,7 @@ static NSString * const defaultValue = @"unselected";
     numberSelectionVC.modalTransitionStyle = transitionStyle;
     
     [self presentViewController: numberSelectionVC
-                       animated: animated
+                       animated: NO
                      completion: nil];
     
 }

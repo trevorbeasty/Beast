@@ -88,7 +88,7 @@
     
     if ([self.targetsVaryByRound intValue] == 0)
     {
-        self.roundLabel.text = @"All Rounds";
+        self.roundLabel.text = @"All";
     }
     else
     {

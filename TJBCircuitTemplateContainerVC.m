@@ -210,6 +210,9 @@
     // set the items of the navigation bar
     
     [self.navigationBar setItems: @[navItem]];
+    
+    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+    
 }
 
 #pragma mark - Button Actions

@@ -144,12 +144,9 @@ static NSString * const reuseIdentifier = @"basicCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
     TJBBasicCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: reuseIdentifier
                                                                            forIndexPath: indexPath];
-    
-  
-    
-
     
     NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
     
@@ -171,6 +168,8 @@ static NSString * const reuseIdentifier = @"basicCell";
     [cell.label setTextColor: [aesthetics buttonTextColor]];
     
     cell.layer.opacity = .75;
+    
+    cell.label.font = [UIFont systemFontOfSize: 20.0];
     
     return cell;
 }
