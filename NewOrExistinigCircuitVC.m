@@ -90,8 +90,11 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     NSError *error = nil;
+    
     [self.frc performFetch: &error];
+    
     [self.tableView reloadData];
+    
 
 }
 

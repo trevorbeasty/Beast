@@ -16,14 +16,6 @@
 
 @interface TJBNewExerciseCreationVC () <UITextFieldDelegate>
 
-{
-    
-    // for keyboard management
-    
-    CGRect _activeKeyboardFrame;
-    
-}
-
 // IBOutlets
 
 @property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
@@ -66,14 +58,7 @@
     singleTapGR.delaysTouchesEnded = NO;
     
     [self.view addGestureRecognizer: singleTapGR];
-    
-    // keyboard notification
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(keyboardDidShow:)
-                                                 name: UIKeyboardDidShowNotification
-                                               object: nil];
-    
+
 }
 
 - (void)configureNavigationBar{
@@ -113,12 +98,24 @@
         layer.borderWidth = 1;
         layer.borderColor = [[UIColor blackColor] CGColor];
     }
+    
+    UIFont *categorySelectionFont = [UIFont systemFontOfSize: 20.0];
+    
+    NSDictionary *info = [NSDictionary dictionaryWithObject: categorySelectionFont
+                                                     forKey: NSFontAttributeName];
+    
+    [self.categorySegmentedControl setTitleTextAttributes: info
+                                                 forState: UIControlStateNormal];
 
     // labels
     
     [TJBAestheticsController configureViewsWithType1Format: @[self.exerciseLabel,
                                                               self.categoryLabel]
                                                withOpacity: .85];
+    
+    // text field
+    
+    self.exerciseTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     
 }
 
@@ -135,17 +132,7 @@
 
 - (void)didPressAdd{
     
-    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name.  Always dismiss the keyboard when this method is called
-    
-    // dismiss the keyboard
-    
-    BOOL keyboardIsShowing = [self.exerciseTextField isFirstResponder];
-    
-    if (keyboardIsShowing){
-        
-        [self.exerciseTextField resignFirstResponder];
-        
-    }
+    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
     
     // conditional actions
     
@@ -292,39 +279,24 @@
 
 - (void)didSingleTap:(UIGestureRecognizer *)gr{
     
-    //// if the text field is first responder and the touch was not in the keyboard or text field area, dismiss the keyboard.  Else, nothing
+    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
     
-    BOOL keyboardIsShowing = self.exerciseTextField.isFirstResponder;
+    BOOL keyboardIsShowing = [self.exerciseTextField isFirstResponder];
     
     if (keyboardIsShowing){
         
-        // determine if the touch is outside of the keyboard / text field area
+        [self.exerciseTextField resignFirstResponder];
         
-        CGPoint tapPoint = [gr locationInView: self.view];
-        
-        BOOL touchWithinKeyboardFrame = CGRectContainsPoint( _activeKeyboardFrame, tapPoint);
-        
-        BOOL touchWithinTextFieldFrame = CGRectContainsPoint( self.exerciseTextField.frame, tapPoint);
-        
-        NSLog(@"touch within keyboard: %d \ntouch within text field: %d", touchWithinKeyboardFrame, touchWithinTextFieldFrame);
-        
-        if (!touchWithinKeyboardFrame && !touchWithinTextFieldFrame){
-            
-            [self.exerciseTextField resignFirstResponder];
-            
-        }
     }
 }
 
-- (void)keyboardDidShow:(NSNotification *)notification{
+#pragma mark - <UITextFieldDelegate>
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
-    //// store the keyboards frame for later analysis
+    [self.exerciseTextField resignFirstResponder];
     
-    NSDictionary *info = [notification userInfo];
-    
-    CGRect keyboardFrame = [[info objectForKey: UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    
-    _activeKeyboardFrame = keyboardFrame;
+    return YES;
     
 }
 

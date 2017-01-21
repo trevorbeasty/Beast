@@ -34,16 +34,19 @@
                     </items>
                 </navigationBar>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kqW-hM-k3M">
-                    <rect key="frame" x="8" y="116" width="359" height="30"/>
+                    <rect key="frame" x="8" y="116" width="359" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="cj1-Il-I7z"/>
+                    </constraints>
                     <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="fsX-K1-NL1"/>
                     </connections>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zoZ-VM-c69">
-                    <rect key="frame" x="40" y="162" width="295" height="40"/>
+                    <rect key="frame" x="40" y="172" width="295" height="40"/>
                     <color key="backgroundColor" red="1" green="0.89196020364761353" blue="0.71738725900650024" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="textColor"/>
@@ -59,8 +62,11 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fDg-FP-nuu">
-                    <rect key="frame" x="8" y="210" width="359" height="29"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fDg-FP-nuu">
+                    <rect key="frame" x="8" y="220" width="359" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="s2R-ci-tD4"/>
+                    </constraints>
                     <segments>
                         <segment title="Push"/>
                         <segment title="Pull"/>

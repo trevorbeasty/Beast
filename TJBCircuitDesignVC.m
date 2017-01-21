@@ -18,7 +18,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBCircuitDesignVC () <UIViewControllerRestoration>
+@interface TJBCircuitDesignVC () <UIViewControllerRestoration, UITextFieldDelegate>
 
 {
     int _numberOfExercises;
@@ -183,6 +183,8 @@
     layer.borderWidth = 1;
     layer.borderColor = [[UIColor darkGrayColor] CGColor];
     
+    self.nameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    
     // labels
     
     NSArray *labels = @[self.numberOfExercisesLabel,
@@ -290,6 +292,16 @@
         [self.nameTextField resignFirstResponder];
         
     }
+    
+}
+
+#pragma mark - <UITextFieldDelegate>
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    [self.nameTextField resignFirstResponder];
+    
+    return YES;
     
 }
 
