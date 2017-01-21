@@ -469,10 +469,6 @@
     
     cell.repsLabel.text = [[repsWeightRecordPair reps] stringValue];
     
-//    [TJBAestheticsController configureLabelsWithType2Format: @[cell.repsLabel]
-//                                                withOpacity: 1];
-    
-    
     cell.weightLabel.text = [[repsWeightRecordPair weight] stringValue];
     
     // date formatter

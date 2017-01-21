@@ -37,7 +37,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="ftg-kb-sDb"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Set Completed">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
