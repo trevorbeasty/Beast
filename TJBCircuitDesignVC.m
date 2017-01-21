@@ -137,7 +137,9 @@
 }
 
 - (void)viewAesthetics{
+    
     // meta container view
+    
     self.metaContainerView.backgroundColor = [UIColor whiteColor];
     CALayer *layer;
     layer = self.metaContainerView.layer;
@@ -146,6 +148,7 @@
     layer.opacity = .85;
     
     // text field
+    
     [self.circuitNameLabel setTextColor: [UIColor whiteColor]];
     self.circuitNameLabel.backgroundColor = [UIColor darkGrayColor];
     
@@ -156,18 +159,25 @@
     layer.borderColor = [[UIColor darkGrayColor] CGColor];
     
     // labels
+    
     NSArray *labels = @[self.numberOfExercisesLabel,
                        self.numberOfRoundsLabel,
                        self.targetingWeightLabel,
                        self.targetingRepsLabel,
                        self.targetingRestLabel,
                        self.targetsVaryByRoundLabel];
+    
     for (UILabel *label in labels){
+        
         label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
         label.layer.opacity = .85;
+        label.layer.masksToBounds = YES;
+        label.layer.cornerRadius = 4.0;
+        
     }
     
     // button
+    
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchTemplateButton]
                                                      withOpacity: .85];
 }
