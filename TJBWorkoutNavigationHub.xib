@@ -28,7 +28,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="a75-rA-RHd"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <state key="normal" title="Unstructured">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

@@ -98,12 +98,18 @@
 - (void)configureNavigationBar{
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Scheme Selection"];
+    
     UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                    style: UIBarButtonItemStyleDone
                                                                   target: self
                                                                   action: @selector(didPressHomeButton)];
+    
     [navItem setLeftBarButtonItem: homeButton];
+    
     [self.navBar setItems: @[navItem]];
+    
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+    
 }
 
 - (void)fetchCoreDataAndConfigureTableView{

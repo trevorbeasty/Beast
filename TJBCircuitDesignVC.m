@@ -95,6 +95,26 @@
     
     [self addBackgroundImage];
     
+    [self addTapRecognizerForKeyboardManagement];
+    
+}
+
+- (void)addTapRecognizerForKeyboardManagement{
+    
+    //// self explanatory
+    
+    // tap GR
+    
+    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                  action: @selector(didSingleTap)];
+    
+    singleTapGR.numberOfTapsRequired = 1;
+    singleTapGR.cancelsTouchesInView = NO;
+    singleTapGR.delaysTouchesBegan = NO;
+    singleTapGR.delaysTouchesEnded = NO;
+    
+    [self.view addGestureRecognizer: singleTapGR];
+    
 }
 
 - (void)addBackgroundImage{
@@ -132,8 +152,13 @@
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                    target: self
                                                                                    action: @selector(didPressCancel)];
+    
     [navItem setLeftBarButtonItem: barButtonItem];
+    
     [self.navBar setItems: @[navItem]];
+    
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+    
 }
 
 - (void)viewAesthetics{
@@ -250,6 +275,22 @@
 - (void)didPressCancel{
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+}
+
+#pragma mark - Gesture Recognizer
+
+- (void)didSingleTap{
+    
+    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
+    
+    BOOL keyboardIsShowing = [self.nameTextField isFirstResponder];
+    
+    if (keyboardIsShowing){
+        
+        [self.nameTextField resignFirstResponder];
+        
+    }
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>
