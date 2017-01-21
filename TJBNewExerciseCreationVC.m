@@ -16,16 +16,19 @@
 
 @interface TJBNewExerciseCreationVC () <UITextFieldDelegate>
 
-// exercise text field and segmented control
-//@property (nonatomic, strong) TJBExerciseCategory *exerciseCategory;
+{
+    
+    // for keyboard management
+    
+    CGRect _activeKeyboardFrame;
+    
+}
+
+// IBOutlets
+
 @property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
-
 @property (weak, nonatomic) IBOutlet UISegmentedControl *categorySegmentedControl;
-
-// navigation bar
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-
-// labels
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
 
@@ -35,10 +38,42 @@
 
 #pragma mark - Instantiation
 
-- (void)viewDidLoad{    
+- (void)viewDidLoad{
+    
     [self configureNavigationBar];
+    
     [self viewAesthetics];
+    
     [self configureBackgroundImage];
+    
+    [self addTapGestureRecognizerToViewAndRegisterForKeyboardNotification];
+    
+}
+
+- (void)addTapGestureRecognizerToViewAndRegisterForKeyboardNotification{
+    
+    //// add gesture recognizer to the view.  It will be used to dismiss the keyboard if the touch is not in the keyboard or text field
+    //// also register for the UIKeyboardDidShowNotification so that the frame of the keyboard can be stored for later use in analyzing touches
+    
+    // tap GR
+    
+    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                  action: @selector(didSingleTap:)];
+    
+    singleTapGR.numberOfTapsRequired = 1;
+    singleTapGR.cancelsTouchesInView = NO;
+    singleTapGR.delaysTouchesBegan = NO;
+    singleTapGR.delaysTouchesEnded = NO;
+    
+    [self.view addGestureRecognizer: singleTapGR];
+    
+    // keyboard notification
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(keyboardDidShow:)
+                                                 name: UIKeyboardDidShowNotification
+                                               object: nil];
+    
 }
 
 - (void)configureNavigationBar{
@@ -49,10 +84,12 @@
                                                                                   target: self
                                                                                   action: @selector(didPressDone)];
     [navItem setLeftBarButtonItem: cancelButton];
+    
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
                                                                                target: self
                                                                                action: @selector(didPressAdd)];
     [navItem setRightBarButtonItem: addButton];
+    
     [self.navigationBar setItems: @[navItem]];
     
     [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
@@ -83,14 +120,15 @@
                                                               self.categoryLabel]
                                                withOpacity: .85];
     
-    
-    
 }
 
 - (void)configureBackgroundImage{
+    
     UIImage *image = [UIImage imageNamed: @"chinaCleanAndJerk"];
+    
     [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
                                                                    toRootView: self.view];
+    
 }
 
 #pragma mark - Button Actions
@@ -101,7 +139,13 @@
     
     // dismiss the keyboard
     
-    [self.exerciseTextField resignFirstResponder];
+    BOOL keyboardIsShowing = [self.exerciseTextField isFirstResponder];
+    
+    if (keyboardIsShowing){
+        
+        [self.exerciseTextField resignFirstResponder];
+        
+    }
     
     // conditional actions
     
@@ -204,8 +248,10 @@
 }
 
 - (void)didPressDone{
+    
     [self dismissViewControllerAnimated: YES
                              completion: nil];
+    
 }
 
 #pragma  mark - Convenience
@@ -213,6 +259,7 @@
 - (NSString *)selectedCategory{
     
     NSString *selectedCategory;
+    
     NSInteger categoryIndex = self.categorySegmentedControl.selectedSegmentIndex;
     
     switch (categoryIndex){
@@ -238,9 +285,68 @@
     }
     
     return selectedCategory;
+    
+}
+
+#pragma mark - Gesture Recognizer
+
+- (void)didSingleTap:(UIGestureRecognizer *)gr{
+    
+    //// if the text field is first responder and the touch was not in the keyboard or text field area, dismiss the keyboard.  Else, nothing
+    
+    BOOL keyboardIsShowing = self.exerciseTextField.isFirstResponder;
+    
+    if (keyboardIsShowing){
+        
+        // determine if the touch is outside of the keyboard / text field area
+        
+        CGPoint tapPoint = [gr locationInView: self.view];
+        
+        BOOL touchWithinKeyboardFrame = CGRectContainsPoint( _activeKeyboardFrame, tapPoint);
+        
+        BOOL touchWithinTextFieldFrame = CGRectContainsPoint( self.exerciseTextField.frame, tapPoint);
+        
+        NSLog(@"touch within keyboard: %d \ntouch within text field: %d", touchWithinKeyboardFrame, touchWithinTextFieldFrame);
+        
+        if (!touchWithinKeyboardFrame && !touchWithinTextFieldFrame){
+            
+            [self.exerciseTextField resignFirstResponder];
+            
+        }
+    }
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification{
+    
+    //// store the keyboards frame for later analysis
+    
+    NSDictionary *info = [notification userInfo];
+    
+    CGRect keyboardFrame = [[info objectForKey: UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+    
+    _activeKeyboardFrame = keyboardFrame;
+    
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

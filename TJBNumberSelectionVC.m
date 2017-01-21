@@ -54,10 +54,6 @@ static NSString * const reuseIdentifier = @"basicCell";
 
     self = [super init];
     
-    // for restoration
-//    self.restorationIdentifier = @"TJBNumberSelectionVC";
-//    self.restorationClass = [TJBNumberSelectionVC class];
-    
     _numberTypeIdentifier = numberType;
     self.numberMultiple = numberMultiple;
     self.numberLimit = numberLimit;
@@ -66,6 +62,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     self.numberSelectedBlock = numberSelectedBlock;
     
     return self;
+    
 }
 
 #pragma mark - View Life Cycle
@@ -73,13 +70,16 @@ static NSString * const reuseIdentifier = @"basicCell";
 - (void)viewDidLoad{
     
     // collection view
+    
     UINib *nib = [UINib nibWithNibName: @"TJBBasicCollectionViewCell"
                                 bundle: nil];
     [self.collectionView registerNib: nib
           forCellWithReuseIdentifier: reuseIdentifier];
 
-    // add gesture recognizers to collection view
+    //// add gesture recognizers to collection view
+    
     // tap GR
+    
     UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
                                                                             action: @selector(doubleTap:)];
     tapGR.numberOfTapsRequired = 2;
@@ -90,6 +90,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     [self.collectionView addGestureRecognizer: tapGR];
     
     // pinch GR
+    
     UIPinchGestureRecognizer *pinchGR = [[UIPinchGestureRecognizer alloc] initWithTarget: self
                                                                                   action: @selector(pinch:)];
     pinchGR.cancelsTouchesInView = YES;
@@ -99,8 +100,11 @@ static NSString * const reuseIdentifier = @"basicCell";
     [self.collectionView addGestureRecognizer: pinchGR];
     
     // other methods
+    
     [self addBackgroundView];
+    
     [self configureNavigationBar];
+    
 }
 
 - (void)configureNavigationBar{
@@ -202,14 +206,19 @@ static NSString * const reuseIdentifier = @"basicCell";
 - (void)doubleTap:(UIGestureRecognizer *)gr
 {
     // find the index path of the selected item
+    
     CGPoint touchPoint = [gr locationInView: self.collectionView];
+    
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint: touchPoint];
     
     // apply the numberMultiple to establish the correct selected number
+    
     NSNumber *selectedNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
     
     // pass relevant data to the presenting VC
+    
     self.numberSelectedBlock(selectedNumber);
+    
 }
 
 - (void)pinch:(UIGestureRecognizer *)gr
