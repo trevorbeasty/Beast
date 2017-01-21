@@ -28,7 +28,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="a75-rA-RHd"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Unstructured">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -39,7 +39,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vd-Pz-T1I">
                     <rect key="frame" x="8" y="524" width="520" height="40"/>
                     <color key="backgroundColor" red="0.41313043090000001" green="0.99707198500000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Structured">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -52,6 +52,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="lBx-aj-rAh"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="History"/>
                     <connections>
                         <action selector="didPressHistoryButton:" destination="-1" eventType="touchUpInside" id="TMR-SI-asD"/>
