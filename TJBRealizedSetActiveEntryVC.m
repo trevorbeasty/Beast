@@ -56,13 +56,15 @@
 
 @property (nonatomic, strong) UIView *whiteoutView;
 
-// timer
+// timer and target rest time
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 
 @property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
 @property (nonatomic, strong) NSDate *lastSecondaryTimerUpdateDate;
+
+@property (nonatomic, strong) NSNumber *targetRestTime;
 
 // navigation bar
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
@@ -362,7 +364,37 @@
     
     //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
     
+    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
     
+    void (^cancelBlock)(void) = ^{
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+        
+    };
+    
+    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
+        
+        weakSelf.targetRestTime = selectedNumber;
+        
+        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
+        
+        [weakSelf.targetRestButton setTitle: targetRestString
+                               forState: UIControlStateNormal];
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+        
+    };
+    
+    [self presentNumberSelectionSceneWithNumberType: RestType
+                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
+                                        numberLimit: nil
+                                              title: @"Select Target Rest"
+                                        cancelBlock: cancelBlock
+                                numberSelectedBlock: numberSelectedBlock
+                                           animated: NO
+                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     
 }
 
@@ -568,8 +600,9 @@
     numberSelectionVC.modalTransitionStyle = transitionStyle;
     
     [self presentViewController: numberSelectionVC
-                       animated: animated
+                       animated: NO
                      completion: nil];
+    
 }
 
 - (void)addRealizedSetToCoreData{

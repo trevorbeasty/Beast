@@ -104,13 +104,21 @@ static NSString * const reuseIdentifier = @"basicCell";
 }
 
 - (void)configureNavigationBar{
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.selectionTitle];
+    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                   target: self
                                                                                   action: @selector(cancel)];
+    
     [navItem setLeftBarButtonItem: cancelButton];
     
     [self.navBar setItems: @[navItem]];
+    
+    // nav bar text appearance
+    
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
+    
 }
 
 - (void)addBackgroundView{

@@ -69,6 +69,7 @@
 #pragma mark - Instantiation
 
 - (id)initWithTimeDelay:(float)timeDelay DidPressSetCompletedBlock:(void (^)(int))block exerciseName:(NSString *)exerciseName lastTimerUpdateDate:(NSDate *)lastUpdateDate masterController:(UIViewController<TJBStopwatchObserver> *)masterController{
+    
     self = [super init];
     
     _timeDelay = timeDelay * -1;
@@ -84,17 +85,22 @@
                                                     lastUpdateDate: lastUpdateDate];
     
     return self;
+    
 }
 
 
 - (void)configureNavBar{
     
-    NSString *title = [NSString stringWithFormat: @"In Set: %@",
+    NSString *title = [NSString stringWithFormat: @"%@",
                        self.exerciseName];
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: title];
     
     [self.navBar setItems: @[navItem]];
+    
+    // nav bar text appearance
+    
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
     
 }
 
