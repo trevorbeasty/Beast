@@ -20,30 +20,33 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWf-7D-m4Y">
-                        <rect key="frame" x="124" y="0.0" width="85" height="57.5"/>
+                        <rect key="frame" x="134" y="0.0" width="120" height="57.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOM-Qs-eVP">
-                        <rect key="frame" x="213" y="0.0" width="85" height="57.5"/>
+                        <rect key="frame" x="258" y="0.0" width="60" height="57.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="Tlh-q2-3zs"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9a-Fx-8Yy">
-                        <rect key="frame" x="0.0" y="0.0" width="120" height="57.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="130" height="57.5"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="120" id="nrI-SM-xl7"/>
+                            <constraint firstAttribute="width" constant="130" id="nrI-SM-xl7"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ost-w4-d1z">
-                        <rect key="frame" x="302" y="8" width="100" height="41.5"/>
+                        <rect key="frame" x="322" y="8" width="80" height="41.5"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="100" id="Ip4-ia-KwL"/>
+                            <constraint firstAttribute="width" constant="80" id="Ip4-ia-KwL"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                         <nil key="textColor"/>
@@ -55,7 +58,6 @@
                     <constraint firstItem="v9a-Fx-8Yy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="8wX-gu-CQI"/>
                     <constraint firstItem="Ost-w4-d1z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="EZO-qX-Hrg"/>
                     <constraint firstAttribute="bottom" secondItem="VOM-Qs-eVP" secondAttribute="bottom" id="J0q-ts-7ES"/>
-                    <constraint firstItem="VOM-Qs-eVP" firstAttribute="width" secondItem="RWf-7D-m4Y" secondAttribute="width" id="Pxr-0C-sZG"/>
                     <constraint firstItem="v9a-Fx-8Yy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="RyS-GR-NqG"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Ost-w4-d1z" secondAttribute="trailing" id="Sp8-sY-6vE"/>
                     <constraint firstAttribute="bottom" secondItem="v9a-Fx-8Yy" secondAttribute="bottom" id="TNT-cz-eKC"/>

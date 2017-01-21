@@ -65,7 +65,7 @@
 
     // nav bar text appearance
     
-    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
+    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
     
 }
 

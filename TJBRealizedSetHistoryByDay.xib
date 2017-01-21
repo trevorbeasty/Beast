@@ -43,30 +43,33 @@
                     <rect key="frame" x="8" y="68" width="359" height="40"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X06-2s-Otb">
-                            <rect key="frame" x="0.0" y="0.0" width="120" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="130" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="120" id="CtE-gU-azX"/>
+                                <constraint firstAttribute="width" constant="130" id="CtE-gU-azX"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uLv-kt-OmP">
-                            <rect key="frame" x="124" y="0.0" width="59.5" height="40"/>
+                            <rect key="frame" x="134" y="0.0" width="69" height="40"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="79r-01-Dws">
-                            <rect key="frame" x="187.5" y="0.0" width="59.5" height="40"/>
+                            <rect key="frame" x="207" y="0.0" width="60" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="8K4-d9-Chr"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQO-xP-0lG">
-                            <rect key="frame" x="251" y="0.0" width="100" height="40"/>
+                            <rect key="frame" x="271" y="0.0" width="80" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="100" id="HYT-mz-kr3"/>
+                                <constraint firstAttribute="width" constant="80" id="HYT-mz-kr3"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
@@ -87,7 +90,6 @@
                         <constraint firstItem="dQO-xP-0lG" firstAttribute="top" secondItem="X06-2s-Otb" secondAttribute="top" id="OH6-w2-664"/>
                         <constraint firstItem="79r-01-Dws" firstAttribute="top" secondItem="X06-2s-Otb" secondAttribute="top" id="XcF-sF-cPg"/>
                         <constraint firstAttribute="height" constant="40" id="a7K-js-A7Z"/>
-                        <constraint firstItem="79r-01-Dws" firstAttribute="width" secondItem="uLv-kt-OmP" secondAttribute="width" id="l9a-20-org"/>
                         <constraint firstItem="79r-01-Dws" firstAttribute="leading" secondItem="uLv-kt-OmP" secondAttribute="trailing" constant="4" id="qSc-Gn-ZIV"/>
                         <constraint firstAttribute="bottom" secondItem="X06-2s-Otb" secondAttribute="bottom" id="tGF-P8-P2g"/>
                     </constraints>

@@ -117,7 +117,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     
     // nav bar text appearance
     
-    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
     
 }
 

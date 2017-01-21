@@ -198,7 +198,7 @@
     
     // nav bar text appearance
     
-    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 25.0]}];
+    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
     
 }
 
@@ -341,7 +341,7 @@
     
     label.textAlignment = NSTextAlignmentCenter;
     
-    label.font = [UIFont systemFontOfSize: 20.0];
+    label.font = [UIFont boldSystemFontOfSize: 20.0];
     
     return label;
 }
@@ -817,7 +817,7 @@
     
     // realized set user selections
     
-    _whiteoutActive = [coder decodeObjectForKey: @"whiteoutActive"];
+    _whiteoutActive = [coder decodeBoolForKey: @"whiteoutActive"];
     self.timeDelay = [coder decodeObjectForKey: @"timeDelay"];
     self.setBeginDate = [coder decodeObjectForKey: @"setBeginDate"];
     _setCompletedButtonPressed = [coder decodeBoolForKey: @"setCompletedButtonPressed"];
