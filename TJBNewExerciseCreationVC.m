@@ -42,6 +42,7 @@
 }
 
 - (void)configureNavigationBar{
+    
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Add New Exercise"];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone
@@ -53,12 +54,19 @@
                                                                                action: @selector(didPressAdd)];
     [navItem setRightBarButtonItem: addButton];
     [self.navigationBar setItems: @[navItem]];
+    
+    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+    
 }
 
 - (void)viewAesthetics{
+    
     // exercise text field and category SC
+    
     CALayer *exerciseTextFieldLayer = self.exerciseTextField.layer;
+    
     CALayer *categorySC = self.categorySegmentedControl.layer;
+    
     NSArray *layers = @[exerciseTextFieldLayer,
                         categorySC];
     
@@ -70,9 +78,13 @@
     }
 
     // labels
+    
     [TJBAestheticsController configureViewsWithType1Format: @[self.exerciseLabel,
                                                               self.categoryLabel]
-                                                withOpacity: .85];
+                                               withOpacity: .85];
+    
+    
+    
 }
 
 - (void)configureBackgroundImage{
@@ -84,6 +96,14 @@
 #pragma mark - Button Actions
 
 - (void)didPressAdd{
+    
+    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name.  Always dismiss the keyboard when this method is called
+    
+    // dismiss the keyboard
+    
+    [self.exerciseTextField resignFirstResponder];
+    
+    // conditional actions
     
     NSString *exerciseString = self.exerciseTextField.text;
     
