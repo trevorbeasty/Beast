@@ -410,6 +410,8 @@
     
     [self.navBar setItems: @[navItem]];
     
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+    
 }
 
 
@@ -496,6 +498,8 @@
     
     label.text = [dateFormatter stringFromDate: workoutDay];
     
+    label.font = [UIFont boldSystemFontOfSize: 20.0];
+    
     label.textAlignment = NSTextAlignmentCenter;
     
     // label layer
@@ -511,7 +515,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
-    return 60;
+    return 40;
     
 }
 

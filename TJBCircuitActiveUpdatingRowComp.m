@@ -46,7 +46,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *repsButton;
 @property (weak, nonatomic) IBOutlet UIButton *restButton;
 @property (weak, nonatomic) IBOutlet UILabel *roundLabel;
-@property (weak, nonatomic) IBOutlet UIButton *setLengthButton;
 
 @end
 
@@ -128,12 +127,12 @@
                 
         }
         
-        // set length
-        
-        NSString *setLengthTitle = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [self.setLengthData intValue]];
-        
-        [self.setLengthButton setTitle: setLengthTitle
-                              forState: UIControlStateNormal];
+//        // set length
+//        
+//        NSString *setLengthTitle = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [self.setLengthData intValue]];
+//        
+//        [self.setLengthButton setTitle: setLengthTitle
+//                              forState: UIControlStateNormal];
         
         
     } else{
@@ -142,8 +141,7 @@
         
         NSArray *buttons  = @[self.weightButton,
                               self.repsButton,
-                              self.restButton,
-                              self.setLengthButton];
+                              self.restButton];
         
         for (UIButton *button in buttons){
             
@@ -166,8 +164,7 @@
     
     NSArray *buttons = @[self.weightButton,
                          self.repsButton,
-                         self.restButton,
-                         self.setLengthButton];
+                         self.restButton];
     
     for (UIButton *button in buttons){
         
@@ -213,12 +210,12 @@
         
     }
     
-    // set length
-    
-    NSString *setLengthTitle = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [setLength intValue]];
-    
-    [self.setLengthButton setTitle: setLengthTitle
-                          forState: UIControlStateNormal];
+//    // set length
+//    
+//    NSString *setLengthTitle = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [setLength intValue]];
+//    
+//    [self.setLengthButton setTitle: setLengthTitle
+//                          forState: UIControlStateNormal];
     
     return;
     

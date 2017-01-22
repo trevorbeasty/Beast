@@ -194,7 +194,7 @@
     
     // determine height of scroll view content size
     
-    CGFloat rowHeight = 30;
+    CGFloat rowHeight = 40;
     CGFloat componentToComponentSpacing = 16;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;

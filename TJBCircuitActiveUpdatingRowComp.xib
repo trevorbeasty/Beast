@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,7 +14,6 @@
                 <outlet property="repsButton" destination="LQi-Bn-4RX" id="JQW-Wg-WZd"/>
                 <outlet property="restButton" destination="R8I-fi-HPf" id="AZ3-kG-nYZ"/>
                 <outlet property="roundLabel" destination="Nsg-JM-oxq" id="fZL-jq-slp"/>
-                <outlet property="setLengthButton" destination="nfQ-mg-A3K" id="Bxq-qi-ZJx"/>
                 <outlet property="view" destination="S5T-G5-nfJ" id="bth-ne-rFu"/>
                 <outlet property="weightButton" destination="GRs-k6-Cu5" id="QSf-ft-C4F"/>
             </connections>
@@ -25,50 +24,45 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRs-k6-Cu5">
-                    <rect key="frame" x="115" y="2" width="113" height="67"/>
+                    <rect key="frame" x="144.5" y="2" width="142" height="67"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Weight"/>
                     <connections>
                         <action selector="didPressWeightButton:" destination="-1" eventType="touchUpInside" id="DeB-cB-Q0i"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LQi-Bn-4RX">
-                    <rect key="frame" x="230" y="2" width="113" height="67"/>
+                    <rect key="frame" x="288.5" y="2" width="142.5" height="67"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Reps"/>
                     <connections>
                         <action selector="didPressRepsButton:" destination="-1" eventType="touchUpInside" id="q3Z-Mu-bN8"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R8I-fi-HPf">
-                    <rect key="frame" x="345" y="2" width="113" height="67"/>
+                    <rect key="frame" x="433" y="2" width="142" height="67"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Rest"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nsg-JM-oxq">
-                    <rect key="frame" x="0.0" y="0.0" width="113" height="71"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="0.0" y="0.0" width="142.5" height="71"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nfQ-mg-A3K">
-                    <rect key="frame" x="460" y="2" width="113" height="67"/>
-                    <state key="normal" title="In Set"/>
-                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="LQi-Bn-4RX" secondAttribute="bottom" constant="2" id="9ck-Zx-GSL"/>
-                <constraint firstItem="nfQ-mg-A3K" firstAttribute="top" secondItem="S5T-G5-nfJ" secondAttribute="top" constant="2" id="CNH-Ru-7cy"/>
                 <constraint firstItem="GRs-k6-Cu5" firstAttribute="width" secondItem="Nsg-JM-oxq" secondAttribute="width" id="Cfr-Wq-Bqf"/>
                 <constraint firstAttribute="bottom" secondItem="R8I-fi-HPf" secondAttribute="bottom" constant="2" id="FmN-j6-XFh"/>
                 <constraint firstItem="Nsg-JM-oxq" firstAttribute="top" secondItem="S5T-G5-nfJ" secondAttribute="top" id="Nmw-C1-cbU"/>
-                <constraint firstItem="nfQ-mg-A3K" firstAttribute="width" secondItem="R8I-fi-HPf" secondAttribute="width" id="Ogw-MS-ZNk"/>
                 <constraint firstAttribute="bottom" secondItem="Nsg-JM-oxq" secondAttribute="bottom" id="Th6-bb-u9b"/>
+                <constraint firstAttribute="trailing" secondItem="R8I-fi-HPf" secondAttribute="trailing" id="X52-QC-y8E"/>
                 <constraint firstItem="LQi-Bn-4RX" firstAttribute="top" secondItem="S5T-G5-nfJ" secondAttribute="top" constant="2" id="dCy-Iz-Xna"/>
                 <constraint firstItem="GRs-k6-Cu5" firstAttribute="leading" secondItem="Nsg-JM-oxq" secondAttribute="trailing" constant="2" id="dYj-tD-Yfw"/>
                 <constraint firstItem="R8I-fi-HPf" firstAttribute="leading" secondItem="LQi-Bn-4RX" secondAttribute="trailing" constant="2" id="fIs-zh-Oib"/>
                 <constraint firstItem="R8I-fi-HPf" firstAttribute="width" secondItem="Nsg-JM-oxq" secondAttribute="width" id="kPw-IV-RH6"/>
-                <constraint firstAttribute="bottom" secondItem="nfQ-mg-A3K" secondAttribute="bottom" constant="2" id="laG-zC-3vw"/>
-                <constraint firstItem="nfQ-mg-A3K" firstAttribute="leading" secondItem="R8I-fi-HPf" secondAttribute="trailing" constant="2" id="nkV-NZ-SyJ"/>
-                <constraint firstAttribute="trailing" secondItem="nfQ-mg-A3K" secondAttribute="trailing" constant="2" id="rxV-Tl-NpZ"/>
                 <constraint firstItem="Nsg-JM-oxq" firstAttribute="leading" secondItem="S5T-G5-nfJ" secondAttribute="leading" id="se0-7m-qJF"/>
                 <constraint firstItem="GRs-k6-Cu5" firstAttribute="top" secondItem="S5T-G5-nfJ" secondAttribute="top" constant="2" id="vpi-Oj-vnB"/>
                 <constraint firstItem="R8I-fi-HPf" firstAttribute="top" secondItem="S5T-G5-nfJ" secondAttribute="top" constant="2" id="w9U-3I-12o"/>

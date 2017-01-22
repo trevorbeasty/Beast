@@ -58,7 +58,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
-@property (weak, nonatomic) IBOutlet UILabel *setLengthColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
 
 // for programmatic auto layout constraints
@@ -105,8 +104,7 @@
     NSArray *labelViews = @[self.roundColumnLabel,
                             self.weightColumnLabel,
                             self.repsColumnLabel,
-                            self.restColumnLabel,
-                            self.setLengthColumnLabel];
+                            self.restColumnLabel];
     
     for (UIView *view in labelViews){
         

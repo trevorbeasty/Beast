@@ -456,7 +456,7 @@
 		0B870E421E2E56D500E38C46 /* History */ = {
 			isa = PBXGroup;
 			children = (
-				0B870E4F1E2FCC7A00E38C46 /* Realized Chain Scene */,
+				0B870E4F1E2FCC7A00E38C46 /* Realized Chain */,
 				0B870E4E1E2FCC4200E38C46 /* Complete History */,
 			);
 			name = History;
@@ -484,14 +484,14 @@
 			name = "Complete History";
 			sourceTree = "<group>";
 		};
-		0B870E4F1E2FCC7A00E38C46 /* Realized Chain Scene */ = {
+		0B870E4F1E2FCC7A00E38C46 /* Realized Chain */ = {
 			isa = PBXGroup;
 			children = (
 				0B870E551E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.h */,
 				0B870E561E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.m */,
 				0B870E571E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.xib */,
 			);
-			name = "Realized Chain Scene";
+			name = "Realized Chain";
 			sourceTree = "<group>";
 		};
 		0BA8ACF71E26562300EE10C2 /* Circuit Reference */ = {

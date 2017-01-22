@@ -227,6 +227,8 @@ static NSString * const defaultValue = @"default value";
         [navItem setLeftBarButtonItem: cancelBarButton];
         [self.navBar setItems: @[navItem]];
         
+        [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+        
         NSString *notTargetedString = @"not targeted";
         
         // weight

@@ -154,10 +154,17 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"basicCell"];
+    
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
+    
     cell.textLabel.text = chainTemplate.name;
+    
+    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
+    
     return cell;
+    
 }
 
 #pragma mark - <UITableViewDelegate>

@@ -105,6 +105,8 @@
     
     [self.navBar setItems: @[navItem]];
     
+    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+    
 }
 
 - (void)configureChildVC{

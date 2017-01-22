@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -31,85 +31,86 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JjF-Yr-Z8j">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="Hfz-bq-mee"/>
+                        <constraint firstAttribute="height" constant="60" id="Hfz-bq-mee"/>
                     </constraints>
                     <items>
                         <navigationItem title="Title" id="e80-K4-WEQ"/>
                     </items>
                 </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uez-mL-BWg">
-                    <rect key="frame" x="8" y="58" width="359" height="40"/>
+                    <rect key="frame" x="8" y="68" width="359" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="3FB-mv-vz7"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Begin Set"/>
                     <connections>
                         <action selector="didPressBeginSet" destination="-1" eventType="touchUpInside" id="LWn-6J-W55"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5yD-mZ-8yN" userLabel="containerView">
-                    <rect key="frame" x="8" y="106" width="359" height="156"/>
+                    <rect key="frame" x="8" y="116" width="359" height="206"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="02:34" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F2N-Mr-RrI">
-                            <rect key="frame" x="180.5" y="0.0" width="178.5" height="59.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="180.5" y="0.0" width="178.5" height="79.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round 1/3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiW-eR-SKp">
-                            <rect key="frame" x="0.0" y="0.0" width="178.5" height="60"/>
+                            <rect key="frame" x="0.0" y="0.0" width="178.5" height="80"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="60" id="jhd-Eb-OWc"/>
+                                <constraint firstAttribute="height" constant="80" id="jhd-Eb-OWc"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="30"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6ZE-41-a8c">
-                            <rect key="frame" x="0.0" y="62" width="110" height="30"/>
+                            <rect key="frame" x="0.0" y="82" width="110" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="110" id="6aZ-V3-JLB"/>
-                                <constraint firstAttribute="height" constant="30" id="BaM-QP-r5R"/>
+                                <constraint firstAttribute="height" constant="40" id="BaM-QP-r5R"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q4K-tg-bDz">
-                            <rect key="frame" x="112" y="59.5" width="247" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="112" y="79.5" width="247" height="40"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXC-jG-vQb">
-                            <rect key="frame" x="0.0" y="94" width="110" height="30"/>
+                            <rect key="frame" x="0.0" y="124" width="110" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="30" id="pbc-wt-qwl"/>
+                                <constraint firstAttribute="height" constant="40" id="pbc-wt-qwl"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="155 lbs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t28-V2-pip">
-                            <rect key="frame" x="112" y="91.5" width="247" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="112" y="121.5" width="247" height="40"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lEW-EU-meF">
-                            <rect key="frame" x="0.0" y="126" width="110" height="30"/>
+                            <rect key="frame" x="0.0" y="166" width="110" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="30" id="KOA-La-odk"/>
+                                <constraint firstAttribute="height" constant="40" id="KOA-La-odk"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h96-7F-kq3">
-                            <rect key="frame" x="112" y="123.5" width="247" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <rect key="frame" x="112" y="163.5" width="247" height="40"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -129,7 +130,7 @@
                         <constraint firstAttribute="trailing" secondItem="h96-7F-kq3" secondAttribute="trailing" id="Mye-VS-wHP"/>
                         <constraint firstItem="UiW-eR-SKp" firstAttribute="top" secondItem="5yD-mZ-8yN" secondAttribute="top" id="OVH-6c-Sje"/>
                         <constraint firstItem="F2N-Mr-RrI" firstAttribute="leading" secondItem="UiW-eR-SKp" secondAttribute="trailing" constant="2" id="VBs-dZ-ZON"/>
-                        <constraint firstAttribute="height" constant="156" id="WEX-cx-Zoz"/>
+                        <constraint firstAttribute="height" constant="206" id="WEX-cx-Zoz"/>
                         <constraint firstItem="lEW-EU-meF" firstAttribute="width" secondItem="6ZE-41-a8c" secondAttribute="width" id="a8J-jd-jZa"/>
                         <constraint firstItem="dXC-jG-vQb" firstAttribute="top" secondItem="6ZE-41-a8c" secondAttribute="bottom" constant="2" id="c6k-Wd-HUf"/>
                         <constraint firstAttribute="trailing" secondItem="Q4K-tg-bDz" secondAttribute="trailing" id="cGi-4T-kLX"/>
