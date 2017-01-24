@@ -232,8 +232,8 @@
         NSOrderedSet <TJBBeginDateComp *> *setBeginDatesData = chain.setBeginDateArrays[i].dates;
         NSOrderedSet <TJBEndDateComp *> *setEndDatesData = chain.setEndDateArrays[i].dates;
         NSNumber *numberOfExercises = [NSNumber numberWithInt: chain.numberOfExercises];
-        NSOrderedSet <TJBEndDateComp *> *previousExerciseSetEndDatesData = [TJBAssortedUtilities previousExerciseSetEndDatesForRealizedChain: chain
-                                                                                                                    currentExerciseIndex: i];
+        NSOrderedSet <TJBBeginDateComp *> *nextExerciseSetBeginDatesData = [TJBAssortedUtilities nextExerciseSetBeginDatesForRealizedChain: chain
+                                                                                                                      currentExerciseIndex: i];
         
         // create the exercise component
         
@@ -246,7 +246,7 @@
                                                                                                                repsData: repsData
                                                                                                       setBeginDatesData: setBeginDatesData
                                                                                                         setEndDatesData: setEndDatesData
-                                                                                        previousExerciseSetEndDatesData: previousExerciseSetEndDatesData
+                                                                                          nextExerciseSetBeginDatesData: nextExerciseSetBeginDatesData
                                                                                                       numberOfExercises: numberOfExercises
                                                                                                        masterController: self];
         

@@ -14,18 +14,44 @@
 
 @implementation TJBAssortedUtilities
 
-+ (BOOL)nextIndiceValuesForCurrentExerciseIndex:(NSNumber *)currentExerciseIndex currentRoundIndex:(NSNumber *)currentRoundIndex maxExerciseIndex:(NSNumber *)maxExerciseIndex maxRoundIndex:(NSNumber *)maxRoundIndex exerciseIndexReference:(NSNumber **)exerciseIndexReference roundIndexReference:(NSNumber **)roundIndexReference{
++ (BOOL)indiceWithExerciseIndex:(int)currentExerciseIndex roundIndex:(int)currentRoundIndex isPriorToReferenceExerciseIndex:(int)referenceExerciseIndex referenceRoundIndex:(int)referenceRoundIndex{
+    
+    // return a BOOL indicating if the queried round comes before the reference round
+    
+    if (currentRoundIndex < referenceRoundIndex){
+        
+        return YES;
+        
+    } else if (currentRoundIndex > referenceRoundIndex){
+        
+        return NO;
+        
+    } else if (currentRoundIndex == referenceRoundIndex){
+        
+        if (currentExerciseIndex < referenceExerciseIndex){
+            
+            return YES;
+            
+        } else{
+            
+            return NO;
+            
+        }
+        
+    } else{
+        
+        abort();
+        
+    }
+    
+}
+
++ (BOOL)nextIndiceValuesForCurrentExerciseIndex:(int)currentExerciseIndex currentRoundIndex:(int)currentRoundIndex maxExerciseIndex:(int)maxExerciseIndex maxRoundIndex:(int)maxRoundIndex exerciseIndexReference:(NSNumber *__autoreleasing *)exerciseIndexReference roundIndexReference:(NSNumber *__autoreleasing *)roundIndexReference{
     
     //// returns YES if the next round indices exist and NO otherwise.  Also passes back next round indices if they exist via pass by reference
     
-    int currentExercise = [currentExerciseIndex intValue];
-    int currentRound = [currentRoundIndex intValue];
-    
-    int maxExercise = [maxExerciseIndex intValue];
-    int maxRound = [maxRoundIndex intValue];
-    
-    BOOL atMaxRoundIndex = currentRound == maxRound;
-    BOOL atMaxExerciseIndex = currentExercise == maxExercise;
+    BOOL atMaxRoundIndex = currentRoundIndex == maxRoundIndex;
+    BOOL atMaxExerciseIndex = currentExerciseIndex == maxExerciseIndex;
     
     NSNumber *exerciseReturnValue;
     NSNumber *roundReturnValue;
@@ -40,10 +66,9 @@
         } else{
             
             exerciseReturnValue = [NSNumber numberWithInt: 0];
-            *exerciseIndexReference = exerciseReturnValue;
             
-            roundReturnValue = [NSNumber numberWithInt: currentRound + 1];
-            *roundIndexReference = roundReturnValue;
+            roundReturnValue = [NSNumber numberWithInt: currentRoundIndex + 1];
+            
             
         }
             
@@ -51,12 +76,14 @@
             
     } else{
             
-        exerciseReturnValue = [NSNumber numberWithInt: currentExercise + 1];
-        *exerciseIndexReference = exerciseReturnValue;
-            
-        *roundIndexReference = currentRoundIndex;
+        exerciseReturnValue = [NSNumber numberWithInt: currentExerciseIndex + 1];
+        
+        roundReturnValue = [NSNumber numberWithInt: currentRoundIndex];
             
     }
+    
+    *exerciseIndexReference = exerciseReturnValue;
+    *roundIndexReference = roundReturnValue;
 
     return YES;
     
@@ -114,6 +141,28 @@
     }
     
     return realizedChain.setEndDateArrays[previousExerciseIndex].dates;
+    
+}
+
++ (NSOrderedSet<TJBBeginDateComp *> *)nextExerciseSetBeginDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex{
+    
+    int numberOfExercises = realizedChain.numberOfExercises;
+    
+    BOOL atLastExercise = currentExerciseIndex == numberOfExercises - 1;
+    
+    int nextExerciseIndex;
+    
+    if (atLastExercise){
+        
+        nextExerciseIndex = 0;
+        
+    } else{
+        
+        nextExerciseIndex = currentExerciseIndex + 1;
+        
+    }
+    
+    return realizedChain.setBeginDateArrays[nextExerciseIndex].dates;
     
 }
 

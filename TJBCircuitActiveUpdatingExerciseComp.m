@@ -224,29 +224,33 @@
             int setLengthAsInt = [setEndDate timeIntervalSinceDate: setBeginDate];
             setLengthData = [NSNumber numberWithInt: setLengthAsInt];
             
-            NSNumber *previousRoundIndex = nil;
-            NSNumber *previousExerciseIndex = nil;
-            BOOL previousIndicesExist = [TJBAssortedUtilities previousExerciseAndRoundIndicesForCurrentExerciseIndex: [self.chainNumber intValue] - 1
-                                                                                                   currentRoundIndex: i
-                                                                                                   numberOfExercises: [self.numberOfExercises intValue]
-                                                                                                      numberOfRounds: [self.numberOfRounds intValue]
-                                                                                                 roundIndexReference: &previousRoundIndex
-                                                                                              exerciseIndexReference: &previousExerciseIndex];
+            NSNumber *nextRoundIndex = nil;
+            NSNumber *nextExerciseIndex = nil;
+            BOOL nextIndicesExist = [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: [chainNumber intValue] - 1
+                                                                                    currentRoundIndex: [roundNumber intValue] - 1
+                                                                                     maxExerciseIndex: [self.numberOfExercises intValue] - 1
+                                                                                        maxRoundIndex: [self.numberOfRounds intValue] - 1
+                                                                               exerciseIndexReference: &nextExerciseIndex
+                                                                                  roundIndexReference: &nextRoundIndex];
             
-            if (previousIndicesExist){
+            if (nextIndicesExist){
                 
-                int previousRoundIndexAsInt = [previousRoundIndex intValue];
+                BOOL nextExerciseHasBeenRealized = [TJBAssortedUtilities indiceWithExerciseIndex: [nextExerciseIndex intValue]
+                                                                                      roundIndex: [nextRoundIndex intValue]
+                                                                 isPriorToReferenceExerciseIndex: firstIncompleteExerciseIndex
+                                                                             referenceRoundIndex: firstIncompleteRoundIndex];
                 
-                NSDate *previousSetEndDate = self.previousExerciseSetEndDatesData[previousRoundIndexAsInt].value;
+                if (nextExerciseHasBeenRealized){
+                    
+                    NSDate *nextSetBeginDate = self.nextExerciseSetBeginDatesData[i].value;
+                    
+                    int restDataAsInt = [nextSetBeginDate timeIntervalSinceDate: setEndDate];
+                    
+                    restData = [NSNumber numberWithInt: restDataAsInt];
+                    
+                }
                 
-                int restDataAsInt = [setBeginDate timeIntervalSinceDate: previousSetEndDate];
-                restData = [NSNumber numberWithInt: restDataAsInt];
-                
-            } else{
-                
-                restData = nil;
-                
-            }
+            } 
             
         } else{
             

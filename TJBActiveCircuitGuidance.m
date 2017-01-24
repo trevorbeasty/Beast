@@ -734,10 +734,10 @@ static NSString * const defaultValue = @"default value";
             
             NSNumber *nextExerciseIndex = nil;
             NSNumber *nextRoundIndex = nil;
-            [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: self.activeExerciseIndex
-                                                        currentRoundIndex: self.activeRoundIndex
-                                                         maxExerciseIndex: [NSNumber numberWithInt: [self.numberOfExercises intValue] - 1]
-                                                            maxRoundIndex: [NSNumber numberWithInt: [self.numberOfRounds intValue] - 1]
+            [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: [self.activeExerciseIndex intValue]
+                                                        currentRoundIndex: [self.activeRoundIndex intValue]
+                                                         maxExerciseIndex: [self.numberOfExercises intValue] - 1
+                                                            maxRoundIndex: [self.numberOfRounds intValue] - 1
                                                    exerciseIndexReference: &nextExerciseIndex
                                                       roundIndexReference: &nextRoundIndex];
             

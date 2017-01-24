@@ -112,28 +112,18 @@
         
         // rest
         
-        BOOL isFirstExerciseInFirstRound = [self.isFirstExerciseInFirstRound boolValue];
-        
-        if (isFirstExerciseInFirstRound){
-            
-            deleteTitle(self.restButton);
-            
-        } else if(self.restData){
+        if(self.restData){
     
             NSString *restTitle = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [self.restData intValue]];
                 
             [self.restButton setTitle: restTitle
                                  forState: UIControlStateNormal];
                 
+        } else{
+            
+            deleteTitle(self.restButton);
+            
         }
-        
-//        // set length
-//        
-//        NSString *setLengthTitle = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [self.setLengthData intValue]];
-//        
-//        [self.setLengthButton setTitle: setLengthTitle
-//                              forState: UIControlStateNormal];
-        
         
     } else{
 
