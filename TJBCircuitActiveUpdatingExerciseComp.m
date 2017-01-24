@@ -47,7 +47,7 @@
 @property (nonatomic, strong) NSOrderedSet <TJBNumberTypeArrayComp *> *repsData;
 @property (nonatomic, strong) NSOrderedSet <TJBBeginDateComp *> *setBeginDatesData;
 @property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *setEndDatesData;
-@property (nonatomic, strong) NSOrderedSet <TJBEndDateComp *> *previousExerciseSetEndDatesData;
+@property (nonatomic, strong) NSOrderedSet <TJBBeginDateComp *> *nextExerciseSetBeginDatesData;
 @property (nonatomic, weak) TJBCircuitActiveUpdatingVC <TJBCircuitActiveUpdatingVCProtocol> *masterController;
 
 // IBOutlets
@@ -68,7 +68,7 @@
 
 @implementation TJBCircuitActiveUpdatingExerciseComp
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet<TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)setEndDatesData previousExerciseSetEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)previousExerciseSetEndDatesData numberOfExercises:(NSNumber *)numberOfExercises masterController:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)masterController{
+- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise firstIncompleteExerciseIndex:(NSNumber *)firstIncompleteExerciseIndex firstIncompleteRoundIndex:(NSNumber *)firstIncompleteRoundIndex weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData setBeginDatesData:(NSOrderedSet<TJBBeginDateComp *> *)setBeginDatesData setEndDatesData:(NSOrderedSet<TJBEndDateComp *> *)setEndDatesData nextExerciseSetBeginDatesData:(NSOrderedSet<TJBBeginDateComp *> *)nextExerciseSetBeginDatesData numberOfExercises:(NSNumber *)numberOfExercises masterController:(TJBCircuitActiveUpdatingVC<TJBCircuitActiveUpdatingVCProtocol> *)masterController{
 
     self = [super init];
     
@@ -82,7 +82,7 @@
     self.firstIncompleteExerciseIndex = firstIncompleteExerciseIndex;
     self.firstIncompleteRoundIndex = firstIncompleteRoundIndex;
     self.numberOfExercises = numberOfExercises;
-    self.previousExerciseSetEndDatesData = previousExerciseSetEndDatesData;
+    self.nextExerciseSetBeginDatesData = nextExerciseSetBeginDatesData;
     self.masterController = masterController;
     
     return self;

@@ -14,35 +14,52 @@
 
 @implementation TJBAssortedUtilities
 
-+ (void)nextIndiceValuesForCurrentExerciseIndex:(NSNumber *)currentExerciseIndex currentRoundIndex:(NSNumber *)currentRoundIndex maxExerciseIndex:(NSNumber *)maxExerciseIndex maxRoundIndex:(NSNumber *)maxRoundIndex exerciseIndexReference:(NSNumber *__autoreleasing *)exerciseIndexReference roundIndexReference:(NSNumber *__autoreleasing *)roundIndexReference{
++ (BOOL)nextIndiceValuesForCurrentExerciseIndex:(NSNumber *)currentExerciseIndex currentRoundIndex:(NSNumber *)currentRoundIndex maxExerciseIndex:(NSNumber *)maxExerciseIndex maxRoundIndex:(NSNumber *)maxRoundIndex exerciseIndexReference:(NSNumber **)exerciseIndexReference roundIndexReference:(NSNumber **)roundIndexReference{
+    
+    //// returns YES if the next round indices exist and NO otherwise.  Also passes back next round indices if they exist via pass by reference
     
     int currentExercise = [currentExerciseIndex intValue];
     int currentRound = [currentRoundIndex intValue];
     
     int maxExercise = [maxExerciseIndex intValue];
+    int maxRound = [maxRoundIndex intValue];
     
+    BOOL atMaxRoundIndex = currentRound == maxRound;
     BOOL atMaxExerciseIndex = currentExercise == maxExercise;
     
     NSNumber *exerciseReturnValue;
     NSNumber *roundReturnValue;
+    
 
     if(atMaxExerciseIndex){
         
-        exerciseReturnValue = [NSNumber numberWithInt: 0];
-        *exerciseIndexReference = exerciseReturnValue;
-        
-        roundReturnValue = [NSNumber numberWithInt: currentRound + 1];
-        *roundIndexReference = roundReturnValue;
-        
+        if (atMaxRoundIndex){
+            
+            return NO;
+            
+        } else{
+            
+            exerciseReturnValue = [NSNumber numberWithInt: 0];
+            *exerciseIndexReference = exerciseReturnValue;
+            
+            roundReturnValue = [NSNumber numberWithInt: currentRound + 1];
+            *roundIndexReference = roundReturnValue;
+            
+        }
+            
+
+            
     } else{
-        
+            
         exerciseReturnValue = [NSNumber numberWithInt: currentExercise + 1];
         *exerciseIndexReference = exerciseReturnValue;
-        
+            
         *roundIndexReference = currentRoundIndex;
-        
+            
     }
 
+    return YES;
+    
 }
 
 + (BOOL)previousExerciseAndRoundIndicesForCurrentExerciseIndex:(int)currentExerciseIndex currentRoundIndex:(int)currentRoundIndex numberOfExercises:(int)numberOfExercises numberOfRounds:(int)numberOfRounds roundIndexReference:(NSNumber *__autoreleasing *)roundIndexReference exerciseIndexReference:(NSNumber *__autoreleasing *)exerciseIndexReference{

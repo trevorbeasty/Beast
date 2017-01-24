@@ -376,7 +376,7 @@
         // labels
         
         cell.dateLabel.text = [dateFormatter stringFromDate: realizedChain.dateCreated];
-        cell.realizedChainNameLabel.text = [NSString stringWithFormat: @"Scheme: %@", realizedChain.chainTemplate.name];
+        cell.realizedChainNameLabel.text = [NSString stringWithFormat: @"%@", realizedChain.chainTemplate.name];
     
         return cell;
         

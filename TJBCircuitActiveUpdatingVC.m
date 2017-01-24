@@ -150,10 +150,6 @@
     
     // changes made to the realized chain by the 'active guidance' vc are immediately realized here.  All that needs to be done is to update the relevant derived IV's
     
-    NSLog(@"first incomplete exercise index: %d\nfirst incomplete round index: %d",
-          self.realizedChain.firstIncompleteExerciseIndex,
-          self.realizedChain.firstIncompleteRoundIndex);
-    
     [self updateDerivedFirstIncompleteTypeRealizedChainProperties];
     
     return;
@@ -329,11 +325,6 @@
     
     TJBCircuitActiveUpdatingRowComp <TJBCircuitActiveUpdatingRowCompProtocol> *rowComp = self.childRowControllers[exerciseIndex][roundIndex];
     
-    // set length
-    
-    int setLengthAsInt = [setEndDate timeIntervalSinceDate: setBeginDate];
-    NSNumber *setLength = [NSNumber numberWithInt: setLengthAsInt];
-    
     // rest - nil if first exercise for first round.  Otherwise, find end date of previous set and calculate rest
     
     NSNumber *rest = nil;
@@ -347,6 +338,11 @@
                                                                                          roundIndexReference: &previousRoundIndex
                                                                                       exerciseIndexReference: &previousExerciseIndex];
     
+    // will be assigned if it exists
+    // the rest value must be given to the previous row component to display
+    
+    TJBCircuitActiveUpdatingRowComp<TJBCircuitActiveUpdatingRowCompProtocol> *previousRowComp;
+    
     if (previousIndicesExist){
     
         int previousRoundIndexAsInt = [previousRoundIndex intValue];
@@ -356,15 +352,23 @@
         
         int restAsInt = [setBeginDate timeIntervalSinceDate: previousSetEndDate];
         rest = [NSNumber numberWithInt: restAsInt];
+        
+        previousRowComp = self.childRowControllers[previousExerciseIndexAsInt][previousRoundIndexAsInt];
     
     }
     
     // call child VC protocol method
     
     [rowComp updateViewsWithWeight: weight
-                              reps: reps
-                              rest: rest
-                         setLength: setLength];
+                              reps: reps];
+    
+    // if there is a previous row comp, update its rest value
+    
+    if (previousRowComp){
+        
+        [previousRowComp updateViewsWithRest: rest];
+        
+    }
     
     return;
     
