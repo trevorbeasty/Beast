@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="490" id="KGk-i7-Jjw" customClass="TJBStructureTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="632" height="490"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="632" height="489"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-MC-vYb">
+                        <rect key="frame" x="8" y="38" width="616" height="443.5"/>
+                        <color key="backgroundColor" red="1" green="0.89661400710000005" blue="0.73848710319999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chain Name Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbh-Xg-mqd">
+                        <rect key="frame" x="8" y="8" width="616" height="30"/>
+                        <color key="backgroundColor" red="0.22822172930000001" green="1" blue="0.92768924070000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="mUm-oA-cJE"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="cbh-Xg-mqd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="3hG-95-DkS"/>
+                    <constraint firstItem="cbh-Xg-mqd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="G5a-vf-HdP"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="cbh-Xg-mqd" secondAttribute="trailing" id="KJW-B6-WN3"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="gDn-MC-vYb" secondAttribute="bottom" id="i7W-C7-J7T"/>
+                    <constraint firstItem="gDn-MC-vYb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="iig-u8-K8c"/>
+                    <constraint firstItem="gDn-MC-vYb" firstAttribute="top" secondItem="cbh-Xg-mqd" secondAttribute="bottom" id="jD3-yN-3DN"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="gDn-MC-vYb" secondAttribute="trailing" id="tqa-ct-t9E"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="chainNameLabel" destination="cbh-Xg-mqd" id="zBw-9s-oZ3"/>
+                <outlet property="stackView" destination="gDn-MC-vYb" id="qYn-wX-W0f"/>
+            </connections>
+            <point key="canvasLocation" x="-122" y="277"/>
+        </tableViewCell>
+    </objects>
+</document>

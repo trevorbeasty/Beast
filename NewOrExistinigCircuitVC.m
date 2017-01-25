@@ -21,6 +21,10 @@
 
 #import "TJBAestheticsController.h"
 
+// table view cell
+
+#import "TJBStructureTableViewCell.h"
+
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 // IBOutlet
@@ -115,10 +119,19 @@
     
 }
 
+
 - (void)fetchCoreDataAndConfigureTableView{
+    
     // table view configuration
-    [self.tableView registerClass: [UITableViewCell class]
-           forCellReuseIdentifier: @"basicCell"];
+    
+//    [self.tableView registerClass: [TJBStructureTableViewCell class]
+//           forCellReuseIdentifier: @"detailCell"];
+    
+    UINib *nib = [UINib nibWithNibName: @"TJBStructureTableViewCell"
+                                bundle: nil];
+    
+    [self.tableView registerNib: nib
+         forCellReuseIdentifier: @"detailCell"];
     
     // NSFetchedResultsController
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
@@ -155,13 +168,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"basicCell"];
+    TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"detailCell"];
+    
+//    TJBStructureTableViewCell *cell = [[TJBStructureTableViewCell alloc] init];
     
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
-    cell.textLabel.text = chainTemplate.name;
+    [cell configureWithChainTemplate: chainTemplate];
     
-    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
+//    cell.chainNameLabel.text = chainTemplate.name;
     
     return cell;
     
@@ -178,6 +193,14 @@
     [self presentViewController: tbc
                        animated: YES
                      completion: nil];
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //// will need to dynamically evaluate the corresponding chain template and return the correct height based on number of exercises and desired label dimensions
+    
+    return 100;
     
 }
 

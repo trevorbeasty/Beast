@@ -76,10 +76,12 @@
 }
 
 - (void)configureTableView{
+    
     UINib *nib = [UINib nibWithNibName: @"RealizedSetHistoryCell"
                                 bundle: nil];
     [self.tableView registerNib: nib
          forCellReuseIdentifier: @"setHistoryCell"];
+    
 }
 
 - (void)configureFetchedResultsController{
