@@ -70,7 +70,7 @@
     
     [self configureNavigationBar];
     
-    [self fetchCoreDataAndConfigureTableView];
+//    [self fetchCoreDataAndConfigureTableView];
     
     [self addBackground];
     
@@ -112,7 +112,7 @@
     NSError *error = nil;
     [self.frc performFetch: &error];
     
-    [self configureSortedContentAndReloadTableData];
+    [self fetchCoreDataAndConfigureTableView];
 
 }
 
@@ -183,8 +183,6 @@
     
     self.sortedContent = [[NSMutableArray alloc] init];
     
-    NSMutableArray<TJBChain *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
-    
     NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
     BOOL sortByDateLastExecuted = sortSelection == 0;
     BOOL sortByDateCreated = sortSelection == 1;
@@ -193,9 +191,105 @@
     
     if (sortByDateLastExecuted){
         
-        self.sortedContent = nil;
+        NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
+        
+        // first, remove all chain templates that don't have realized sets
+        
+        NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+        
+        for (TJBChainTemplate *chainTemplate in interimArray){
+            
+            NSOrderedSet *realizedChains = chainTemplate.realizedChains;
+            
+            BOOL noRealizedChains = [realizedChains count] == 0;
+            
+            if (noRealizedChains){
+                
+                [indexSet addIndex: [interimArray indexOfObject: chainTemplate]];
+                
+            }
+            
+        }
+        
+        [interimArray removeObjectsAtIndexes: indexSet];
+        
+        // now, only chain templates with realized chains remain.  Use an NSComparator to order the chain correctly
+        
+        [interimArray sortUsingComparator: ^(TJBChainTemplate *chain1, TJBChainTemplate *chain2){
+            
+            NSDate *date1 = chain1.realizedChains.lastObject.dateCreated;
+            NSDate *date2 = chain2.realizedChains.lastObject.dateCreated;
+            
+            int dateDifference = [date1 timeIntervalSinceDate: date2];
+            BOOL date1IsLater = dateDifference > 0;
+            
+            if (date1IsLater){
+                
+                return NSOrderedAscending;
+                
+            } else{
+                
+                return NSOrderedDescending;
+                
+            }
+            
+        }];
+        
+//        for (TJBChainTemplate *ct in interimArray){
+//            
+//            NSLog(@"%@", ct.realizedChains.lastObject.dateCreated);
+//            
+//        }
+        
+        // now, the remaining chain templates have realized chains and are ordered from most recent to least recent.  The sortedContent structure must now be filled
+        
+        NSInteger limit = [interimArray count];
+        
+        if (limit > 0){
+            
+            NSMutableArray *initialArray = [[NSMutableArray alloc] init];
+            [initialArray addObject: interimArray[0]];
+            [self.sortedContent addObject: initialArray];
+            
+            NSMutableArray *iterativeArray = initialArray;
+            
+            NSDate *referenceDate = interimArray[0].realizedChains.lastObject.dateCreated;
+            NSDate *iterativeDate;
+            
+            for (int i = 1; i < limit; i++){
+                
+                iterativeDate = interimArray[i].realizedChains.lastObject.dateCreated;
+                
+                NSComparisonResult monthCompare = [calendar compareDate: iterativeDate
+                                                                 toDate: referenceDate
+                                                      toUnitGranularity: NSCalendarUnitMonth];
+                
+                if (monthCompare == NSOrderedSame){
+                    
+                    [iterativeArray addObject: interimArray[i]];
+                    
+                } else{
+                    
+                    iterativeArray = [[NSMutableArray alloc] init];
+                    [iterativeArray addObject: interimArray[i]];
+                    
+                    [self.sortedContent addObject: iterativeArray];
+                    
+                }
+                
+                referenceDate = iterativeDate;
+                
+            }
+            
+        } else{
+            
+            self.sortedContent = nil;
+            
+        }
         
     } else if (sortByDateCreated){
+        
+        NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
         
         NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey: @"dateCreated"
                                                              ascending: NO];
@@ -239,6 +333,11 @@
                 referenceDate = iterativeDate;
                 
             }
+            
+        } else{
+            
+            self.sortedContent = nil;
+            
         }
     }
     
@@ -275,7 +374,7 @@
     NSDate *date;
     if (sortByDateLastExecuted){
         
-        date = nil;
+        date = chainTemplate.realizedChains.lastObject.dateCreated;
         
     } else if (sortByDateCreated){
         
@@ -337,7 +436,7 @@
     
     if (sortByDateLastExecuted){
         
-        label.text = @"Nah";
+        label.text = [df stringFromDate: self.sortedContent[section].lastObject.dateCreated];
         
     } else if (sortByDateCreated){
         
