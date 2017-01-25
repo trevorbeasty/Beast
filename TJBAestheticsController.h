@@ -26,6 +26,7 @@
 // assorted colors
 
 @property (nonatomic, strong, readonly) UIColor *color1;
+@property (nonatomic, strong, readonly) UIColor *color2;
 
 + (instancetype)singleton;
 

@@ -18,4 +18,6 @@
 
 - (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate date:(NSDate *)date;
 
+- (void)setOverallColor:(UIColor *)color;
+
 @end

@@ -168,6 +168,15 @@
     
 }
 
+- (UIColor *)color2{
+    
+    return [UIColor colorWithRed: 255.0 / 255.0
+                           green: 107.0 / 255.0
+                            blue: 53.0 / 255.0
+                           alpha: 1.0];
+    
+}
+
 @end
 
 

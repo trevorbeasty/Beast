@@ -31,20 +31,30 @@
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIButton *createNewChainButton;
+
 @property (weak, nonatomic) IBOutlet UILabel *sortByLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 
-// for restoration
+@property (weak, nonatomic) IBOutlet UIButton *launchButton;
+@property (weak, nonatomic) IBOutlet UIButton *modifyButton;
+@property (weak, nonatomic) IBOutlet UIButton *previewButton;
 
-//@property (copy) void (^restorationBlock)(void);
+// IBAction
 
-- (IBAction)didPressCreateNewChain:(id)sender;
+- (IBAction)didPressLaunchButton:(id)sender;
+- (IBAction)didPressPreviewButton:(id)sender;
+- (IBAction)didPressModifyButton:(id)sender;
 
 // core data
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
 @property (nonatomic, strong) NSMutableArray <NSMutableArray <TJBChainTemplate *> *> *sortedContent;
+
+// selection
+
+@property (nonatomic, strong) TJBChainTemplate *selectedChainTemplate;
+@property (nonatomic, strong) NSIndexPath *lastSelectedIndexPath;
+
 
 @end
 
@@ -70,13 +80,11 @@
     
     [self configureNavigationBar];
     
-//    [self fetchCoreDataAndConfigureTableView];
-    
-    [self addBackground];
-    
     [self viewAesthetics];
     
     [self configureSegmentedControl];
+    
+    [self toggleButtonsToOffState];
     
 }
 
@@ -93,10 +101,24 @@
 
 - (void)viewAesthetics{
     
-    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.createNewChainButton]
-                                                     withOpacity: .85];
+    // table view
     
     self.tableView.layer.opacity = .85;
+    
+    // buttons
+    
+    NSArray *buttons = @[self.launchButton,
+                         self.previewButton,
+                         self.modifyButton];
+    
+    for (UIButton *button in buttons){
+        
+        UIColor *color = [[TJBAestheticsController singleton] color2];
+        [button setBackgroundColor: color];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        
+    }
     
 }
 
@@ -118,7 +140,9 @@
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Scheme Selection"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Scheme"];
+    
+    // left button
     
     UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                    style: UIBarButtonItemStyleDone
@@ -126,6 +150,17 @@
                                                                   action: @selector(didPressHomeButton)];
     
     [navItem setLeftBarButtonItem: homeButton];
+    
+    // right button
+    
+    UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle: @"New"
+                                                                  style: UIBarButtonItemStyleDone
+                                                                 target: self
+                                                                 action: @selector(didPressNew)];
+    
+    [navItem setRightBarButtonItem: newButton];
+    
+    // nav bar
     
     [self.navBar setItems: @[navItem]];
     
@@ -235,12 +270,6 @@
             
         }];
         
-//        for (TJBChainTemplate *ct in interimArray){
-//            
-//            NSLog(@"%@", ct.realizedChains.lastObject.dateCreated);
-//            
-//        }
-        
         // now, the remaining chain templates have realized chains and are ordered from most recent to least recent.  The sortedContent structure must now be filled
         
         NSInteger limit = [interimArray count];
@@ -345,6 +374,38 @@
     
 }
 
+#pragma mark - Convenience
+
+- (void)toggleButtonsToOnState{
+    
+    NSArray *buttons = @[self.launchButton,
+                         self.previewButton,
+                         self.modifyButton];
+    
+    for (UIButton *b in buttons){
+        
+        b.enabled = YES;
+        b.layer.opacity = 1;
+        
+    }
+    
+}
+
+- (void)toggleButtonsToOffState{
+    
+    NSArray *buttons = @[self.launchButton,
+                         self.previewButton,
+                         self.modifyButton];
+    
+    for (UIButton *b in buttons){
+        
+        b.enabled = NO;
+        b.layer.opacity = .2;
+        
+    }
+    
+}
+
 #pragma mark - <UITableViewDataSource>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -395,13 +456,34 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
+    
+    // deal with unhighlighting
+    
+    if (self.lastSelectedIndexPath){
+        
+        TJBStructureTableViewCell *lastSelectedCell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+        
+        UIColor *unselectedColor = [[TJBAestheticsController singleton] color1];
+        [lastSelectedCell setOverallColor: unselectedColor];
+        
+    }
+    self.lastSelectedIndexPath = indexPath;
+    
+    // deal with highlighting
+    
+    TJBStructureTableViewCell *currentCell = [self.tableView cellForRowAtIndexPath: indexPath];
+    
+    UIColor *selectedColor = [UIColor redColor];
+    [currentCell setOverallColor: selectedColor];
+    
+    // store the selected chain template and configure the buttons
+    
     TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
     
-    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithNewRealizedChainAndChainTemplateFromChainTemplate: chainTemplate];
-    
-    [self presentViewController: tbc
-                       animated: YES
-                     completion: nil];
+    self.selectedChainTemplate = chainTemplate;
+
+    [self toggleButtonsToOnState];
     
 }
 
@@ -461,7 +543,7 @@
 
 #pragma mark - Button Actions
 
-- (IBAction)didPressCreateNewChain:(id)sender {
+- (void)didPressNew{
     
     TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
     
@@ -484,6 +566,12 @@
     
     [self configureSortedContentAndReloadTableData];
     
+    //
+    
+    [self toggleButtonsToOffState];
+    
+    self.selectedChainTemplate = nil;
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>
@@ -496,6 +584,15 @@
     
     return vc;
     
+}
+
+- (IBAction)didPressLaunchButton:(id)sender {
+}
+
+- (IBAction)didPressPreviewButton:(id)sender {
+}
+
+- (IBAction)didPressModifyButton:(id)sender {
 }
 
 @end

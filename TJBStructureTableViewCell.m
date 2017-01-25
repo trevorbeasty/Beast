@@ -31,6 +31,12 @@
 
 @implementation TJBStructureTableViewCell
 
+- (void)setOverallColor:(UIColor *)color{
+    
+    self.containerView.backgroundColor = color;
+    
+}
+
 - (void)clearExistingEntries{
     
     ////  clear the stack view entries
