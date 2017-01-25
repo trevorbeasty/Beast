@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *chainNameLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
 
 
@@ -46,7 +47,7 @@
     
 }
 
-- (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate{
+- (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate date:(NSDate *)date{
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     
@@ -55,8 +56,18 @@
     // configure the chain name label
     
     self.chainNameLabel.text = chainTemplate.name;
-    [self.chainNameLabel setTextColor: [UIColor whiteColor]];
-    [self.chainNameLabel setFont: [UIFont boldSystemFontOfSize: 20.0]];
+
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"MMM d";
+    self.dateLabel.text = [df stringFromDate: date];
+    
+    NSArray *labels = @[self.chainNameLabel, self.dateLabel];
+    for (UILabel *label in labels){
+        
+        [label setTextColor: [UIColor whiteColor]];
+        [label setFont: [UIFont boldSystemFontOfSize: 20.0]];
+        
+    }
     
     //// configure the stack view.  For every exercise, create a UILabel and configure it before adding it to the stack view
     

@@ -268,7 +268,24 @@
     
     TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
     
-    [cell configureWithChainTemplate: chainTemplate];
+    NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
+    BOOL sortByDateLastExecuted = sortSelection == 0;
+    BOOL sortByDateCreated = sortSelection == 1;
+    
+    NSDate *date;
+    if (sortByDateLastExecuted){
+        
+        date = nil;
+        
+    } else if (sortByDateCreated){
+        
+        date = chainTemplate.dateCreated;
+        
+    }
+    
+    [cell configureWithChainTemplate: chainTemplate
+                                date: date];
+    
     cell.backgroundColor = [UIColor clearColor];
     
     return cell;
@@ -279,7 +296,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
+    TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
     
     TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithNewRealizedChainAndChainTemplateFromChainTemplate: chainTemplate];
     
@@ -311,7 +328,27 @@
     
     UILabel *label = [[UILabel alloc] init];
     
-    label.text = [[NSNumber numberWithInteger: section] stringValue];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"MMMM yyyy";
+    
+    NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
+    BOOL sortByDateLastExecuted = sortSelection == 0;
+    BOOL sortByDateCreated = sortSelection == 1;
+    
+    if (sortByDateLastExecuted){
+        
+        label.text = @"Nah";
+        
+    } else if (sortByDateCreated){
+        
+        label.text = [df stringFromDate: self.sortedContent[section][0].dateCreated];
+        
+    }
+    
+    label.backgroundColor = [UIColor darkGrayColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont boldSystemFontOfSize: 20.0];
+    label.textAlignment = NSTextAlignmentCenter;
     
     return label;
     

@@ -227,8 +227,6 @@
         [scrollViewSubview addConstraints: horizontalLayoutConstraints];
     }
     
-    NSLog(@"%@", verticalLayoutConstraintsString);
-    
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
                                                                                  options: 0
                                                                                  metrics: nil

@@ -34,7 +34,7 @@
                     </items>
                 </navigationBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                    <rect key="frame" x="8" y="116" width="359" height="495"/>
+                    <rect key="frame" x="0.0" y="116" width="375" height="495"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
@@ -47,7 +47,7 @@
                         <constraint firstAttribute="height" constant="40" id="6eH-Bd-V60"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Create New Scheme"/>
+                    <state key="normal" title="New Scheme"/>
                     <connections>
                         <action selector="didPressCreateNewChain:" destination="-1" eventType="touchUpInside" id="HGv-sq-C3s"/>
                     </connections>
@@ -76,7 +76,7 @@
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1u0-fT-gRq"/>
                 <constraint firstItem="5fE-Mz-Ss0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="21p-4R-4sz"/>
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="YLP-je-fi9" secondAttribute="bottom" constant="8" id="DMm-6y-ewo"/>
-                <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" constant="8" id="EgV-fD-Qc4"/>
+                <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" id="EgV-fD-Qc4"/>
                 <constraint firstAttribute="trailing" secondItem="pL5-1h-FKf" secondAttribute="trailing" constant="8" id="EoS-sp-3hB"/>
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="leading" secondItem="5fE-Mz-Ss0" secondAttribute="trailing" constant="4" id="F0q-Gg-ICl"/>
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OoE-xT-0w5"/>
@@ -86,7 +86,7 @@
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="5fE-Mz-Ss0" secondAttribute="top" id="g3J-bZ-kp2"/>
                 <constraint firstItem="Tap-We-N9B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="g3Y-vJ-QVm"/>
                 <constraint firstItem="Tap-We-N9B" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" constant="8" id="jny-Ov-dZE"/>
-                <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="oHD-mb-IQv"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="oHD-mb-IQv"/>
                 <constraint firstAttribute="bottom" secondItem="5fE-Mz-Ss0" secondAttribute="bottom" constant="8" id="uJk-db-CJt"/>
             </constraints>
             <point key="canvasLocation" x="35.5" y="53.5"/>

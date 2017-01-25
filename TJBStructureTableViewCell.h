@@ -16,6 +16,6 @@
 
 - (void)clearExistingEntries;
 
-- (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+- (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate date:(NSDate *)date;
 
 @end
