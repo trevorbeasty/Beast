@@ -18,21 +18,39 @@
 
 @interface TJBStructureTableViewCell ()
 
+// IBOutlet
 
+@property (weak, nonatomic) IBOutlet UILabel *chainNameLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+
 
 
 @end
 
 @implementation TJBStructureTableViewCell
 
+- (void)clearExistingEntries{
+    
+    ////  clear the stack view entries
+    
+    NSArray *views = self.stackView.arrangedSubviews;
+    
+    for (UIView *view in views){
+        
+        [self.stackView removeArrangedSubview: view];
+        [view removeFromSuperview];
+        
+    }
+    
+    
+}
+
 - (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate{
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     
-    // content view color
-    
-    self.contentView.backgroundColor = [[TJBAestheticsController singleton] color1];
+    [self configureViewAesthetics];
     
     // configure the chain name label
     
@@ -46,17 +64,10 @@
     
     for (int i = 0; i < numExercises; i++){
         
-        UILabel *dynamicLabel = [[UILabel alloc] init];
+        UIView *iterativeView = [self exerciseNameSubviewWithNumber: [NSNumber numberWithInt: i + 1]
+                                                               name: chainTemplate.exercises[i].name];
         
-        NSString *labelText = [NSString stringWithFormat: @"%d. %@",
-                               i,
-                               chainTemplate.exercises[i].name];
-        
-        dynamicLabel.text = labelText;
-        [dynamicLabel setTextColor: [UIColor whiteColor]];
-        [dynamicLabel setFont: [UIFont systemFontOfSize: 20.0]];
-        
-        [self.stackView addArrangedSubview: dynamicLabel];
+        [self.stackView addArrangedSubview: iterativeView];
         
     }
     
@@ -66,5 +77,103 @@
     
 }
 
+- (void)configureViewAesthetics{
+    
+    //// configure view aesthetics
+    
+    // colors
+    
+    self.containerView.backgroundColor = [[TJBAestheticsController singleton] color1];
+    self.contentView.backgroundColor = [UIColor clearColor];
+    
+    // shapes
+    
+    CALayer *containerViewLayer = self.containerView.layer;
+    containerViewLayer.masksToBounds = YES;
+    containerViewLayer.cornerRadius = 4;
+    
+}
+
+- (UIView *)exerciseNameSubviewWithNumber:(NSNumber *)number name:(NSString *)name{
+    
+    //// create the exercise name subview, which will have two labels - one for a number and one for a name
+    
+    UIView *view = [[UIView alloc] init];
+    
+    UILabel *numberLabel = [[UILabel alloc] init];
+    UILabel *nameLabel = [[UILabel alloc] init];
+    
+    numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    numberLabel.text = [number stringValue];
+    nameLabel.text = name;
+    
+    [view addSubview: numberLabel];
+    [view addSubview: nameLabel];
+    
+    NSArray *labels = @[numberLabel, nameLabel];
+    for (UILabel *label in labels){
+        
+        [label setTextColor: [UIColor whiteColor]];
+        [label setFont: [UIFont systemFontOfSize: 20.0]];
+        
+    }
+    
+    NSDictionary *constraintMapping = [NSDictionary dictionaryWithObjects: @[numberLabel, nameLabel]
+                                                                  forKeys: @[@"numberLabel", @"nameLabel"]];
+    
+    NSString *horizontal1 = @"H:|-0-[numberLabel(==20)]-4-[nameLabel]-0-|";
+    
+    NSArray *horizontalConstraints1 = [NSLayoutConstraint constraintsWithVisualFormat: horizontal1
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: constraintMapping];
+    
+    NSString *vertical1 = @"V:|-0-[numberLabel]-0-|";
+    NSString *vertical2 = @"V:|-0-[nameLabel]-0-|";
+    
+    NSArray *verticalConstraints1 = [NSLayoutConstraint constraintsWithVisualFormat: vertical1
+                                                                            options: 0
+                                                                            metrics: nil
+                                                                              views: constraintMapping];
+    
+    NSArray *verticalConstraints2 = [NSLayoutConstraint constraintsWithVisualFormat: vertical2
+                                                                            options: 0
+                                                                            metrics: nil
+                                                                              views: constraintMapping];
+    
+    [view addConstraints: horizontalConstraints1];
+    [view addConstraints: verticalConstraints1];
+    [view addConstraints: verticalConstraints2];
+    
+    return view;
+}
+
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

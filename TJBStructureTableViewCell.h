@@ -14,7 +14,7 @@
 
 @interface TJBStructureTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *chainNameLabel;
+- (void)clearExistingEntries;
 
 - (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate;
 

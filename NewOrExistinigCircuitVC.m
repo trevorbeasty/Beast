@@ -170,13 +170,12 @@
     
     TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"detailCell"];
     
-//    TJBStructureTableViewCell *cell = [[TJBStructureTableViewCell alloc] init];
+    [cell clearExistingEntries];
     
     TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
     
     [cell configureWithChainTemplate: chainTemplate];
-    
-//    cell.chainNameLabel.text = chainTemplate.name;
+    cell.backgroundColor = [UIColor clearColor];
     
     return cell;
     
@@ -200,7 +199,17 @@
     
     //// will need to dynamically evaluate the corresponding chain template and return the correct height based on number of exercises and desired label dimensions
     
-    return 100;
+    TJBChainTemplate *chainTemplate = [self.frc objectAtIndexPath: indexPath];
+    
+    int numExercises = chainTemplate.numberOfExercises;
+    int spacing = 16;
+    int chainNameLabelHeight = 30;
+    int componentHeight = 35;
+    int error = 0;
+    
+    int totalHeight = spacing + chainNameLabelHeight + componentHeight * numExercises + error;
+    
+    return totalHeight;
     
 }
 
