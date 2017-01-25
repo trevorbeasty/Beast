@@ -112,6 +112,10 @@
 
     self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
     
+    self.roundLabel.backgroundColor = [UIColor darkGrayColor];
+    self.roundLabel.textColor = [UIColor whiteColor];
+    
+    
     // button appearance
     
     NSArray *buttons = @[self.weightButton,

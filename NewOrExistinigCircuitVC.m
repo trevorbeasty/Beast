@@ -109,6 +109,8 @@
     
     [self toggleButtonsToOffState];
     
+    self.mainContainer.hidden = YES;
+    
 }
 
 - (void)configureSegmentedControl{
@@ -589,6 +591,20 @@
     
     [self configureSortedContentAndReloadTableData];
     
+    // state
+    
+    self.mainContainer.hidden = YES;
+    self.tableView.hidden = NO;
+    _inPreviewMode = NO;
+    
+    if (self.activeCircuitReferenceVC){
+        
+        [self.activeCircuitReferenceVC removeFromParentViewController];
+        [self.activeCircuitReferenceVC.view removeFromSuperview];
+        self.activeCircuitReferenceVC = nil;
+        
+    }
+    
     //
     
     [self toggleButtonsToOffState];
@@ -608,6 +624,7 @@
         
         _inPreviewMode = YES;
         
+        self.mainContainer.hidden = NO;
         self.tableView.hidden = YES;
         
         // create a TJBCircuitReferenceVC with the dimensions of the mainContainer
@@ -640,6 +657,7 @@
         
         // state
         
+        self.mainContainer.hidden = YES;
         _inPreviewMode = NO;
         
         // preview button

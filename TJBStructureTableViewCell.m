@@ -31,16 +31,6 @@
 
 @implementation TJBStructureTableViewCell
 
-//- (instancetype)init{
-//    
-//    self = [super init];
-//    
-//    self.selectionStyle = UITableViewCellSelectionStyleNone;
-//    
-//    return self;
-//    
-//}
-
 - (void)setOverallColor:(UIColor *)color{
     
     self.containerView.backgroundColor = color;

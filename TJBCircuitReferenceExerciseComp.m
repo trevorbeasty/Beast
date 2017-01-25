@@ -82,26 +82,32 @@
     CALayer *viewLayer = self.view.layer;
     viewLayer.masksToBounds = YES;
     viewLayer.cornerRadius = 8.0;
-    viewLayer.opacity = .85;
+    viewLayer.opacity = 1;
+    viewLayer.borderWidth = 1.0;
+    viewLayer.borderColor = [[UIColor darkGrayColor] CGColor];
     
-    // column label views
+    //  labels
     
-    NSArray *labelViews = @[self.roundColumnLabel,
-                            self.weightColumnLabel,
-                            self.repsColumnLabel,
-                            self.restColumnLabel];
+    self.roundColumnLabel.layer.opacity = 1;
+    self.roundColumnLabel.backgroundColor = [UIColor darkGrayColor];
+    self.roundColumnLabel.text = @"";
     
-    for (UIView *view in labelViews){
+    NSArray *labels = @[self.weightColumnLabel,
+                        self.repsColumnLabel,
+                        self.restColumnLabel];
+    
+    for (UILabel *label in labels){
         
-        view.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
-        view.layer.opacity = .85;
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.layer.opacity = 1;
         
     }
     
-    // title label view
+    // title label
     
-    self.titleLabel.backgroundColor = [UIColor darkGrayColor];
-    [self.titleLabel setTextColor: [UIColor whiteColor]];
+    self.titleLabel.backgroundColor = [[TJBAestheticsController singleton] color1];
+    self.titleLabel.textColor = [UIColor whiteColor];
     
     // selected exercise button
     
@@ -129,10 +135,7 @@
     
     // title label
     
-    NSString *titleString = [NSString stringWithFormat: @"Exercise #%d",
-                             [self.chainNumber intValue]];
-    
-    self.titleLabel.text = titleString;
+    self.titleLabel.text = [self.chainNumber stringValue];
 }
 
 - (void)viewDidLoad
@@ -145,16 +148,11 @@
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
-    // labels
-    
-    self.titleLabel.text = [NSString stringWithFormat: @"Exercise #%d",
-                            [self.chainNumber intValue]];
-    
     // row components
     
-    NSString *thinLineLabel = @"thinLineLabel";
-    [self.constraintMapping setObject: self.thinLineLabel
-                               forKey: thinLineLabel];
+    NSString *weightColumnLabel = @"weightColumnLabel";
+    [self.constraintMapping setObject: self.weightColumnLabel
+                               forKey: weightColumnLabel];
     
     NSString *roundColumnLabel = @"roundColumnLabel";
     [self.constraintMapping setObject:self.roundColumnLabel
@@ -163,7 +161,7 @@
     
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", thinLineLabel]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", weightColumnLabel]];
     
     for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++){
         

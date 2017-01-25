@@ -27,6 +27,14 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
+                    <rect key="frame" x="0.0" y="116" width="375" height="495"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
+                        <outlet property="delegate" destination="-1" id="oVB-Jp-xB6"/>
+                    </connections>
+                </tableView>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qe7-Np-Lhw">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                     <constraints>
@@ -99,24 +107,8 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cna-Rm-Pq1" userLabel="mainContainer">
-                    <rect key="frame" x="0.0" y="116" width="375" height="495"/>
-                    <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="495"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
-                                <outlet property="delegate" destination="-1" id="oVB-Jp-xB6"/>
-                            </connections>
-                        </tableView>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="cna-Rm-Pq1" secondAttribute="leading" id="IPi-h1-DCn"/>
-                        <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" id="N41-9Q-HHy"/>
-                        <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="cna-Rm-Pq1" secondAttribute="top" id="g49-Mz-St6"/>
-                        <constraint firstAttribute="bottom" secondItem="YLP-je-fi9" secondAttribute="bottom" id="lGq-wD-fQG"/>
-                    </constraints>
+                    <rect key="frame" x="8" y="116" width="359" height="495"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -129,14 +121,18 @@
                 <constraint firstAttribute="trailing" secondItem="pL5-1h-FKf" secondAttribute="trailing" constant="8" id="EoS-sp-3hB"/>
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="leading" secondItem="5fE-Mz-Ss0" secondAttribute="trailing" constant="4" id="F0q-Gg-ICl"/>
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OoE-xT-0w5"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="bottom" constant="8" id="Tvx-UA-ckk"/>
                 <constraint firstItem="gVq-bE-dqU" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" constant="8" id="WYh-gp-KRH"/>
+                <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="YLP-je-fi9" secondAttribute="bottom" constant="8" id="ZXA-0g-WXt"/>
                 <constraint firstAttribute="trailing" secondItem="gVq-bE-dqU" secondAttribute="trailing" id="ZdY-Wu-6gj"/>
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="bottom" secondItem="5fE-Mz-Ss0" secondAttribute="bottom" id="Zgr-DA-bVd"/>
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="cna-Rm-Pq1" secondAttribute="bottom" constant="8" id="d23-6W-Jcr"/>
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="5fE-Mz-Ss0" secondAttribute="top" id="g3J-bZ-kp2"/>
-                <constraint firstItem="cna-Rm-Pq1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="lsC-Ww-Q4A"/>
+                <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hst-CX-Ps8"/>
+                <constraint firstItem="cna-Rm-Pq1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="lsC-Ww-Q4A"/>
                 <constraint firstAttribute="bottom" secondItem="5fE-Mz-Ss0" secondAttribute="bottom" constant="8" id="uJk-db-CJt"/>
-                <constraint firstAttribute="trailing" secondItem="cna-Rm-Pq1" secondAttribute="trailing" id="ukU-yo-l5B"/>
+                <constraint firstAttribute="trailing" secondItem="cna-Rm-Pq1" secondAttribute="trailing" constant="8" id="ukU-yo-l5B"/>
+                <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" id="vgd-Tb-mdG"/>
             </constraints>
             <point key="canvasLocation" x="35.5" y="53.5"/>
         </view>
