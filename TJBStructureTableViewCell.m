@@ -63,7 +63,11 @@
     
     // configure the chain name label
     
-    self.chainNameLabel.text = chainTemplate.name;
+    NSString *title = [NSString stringWithFormat: @"%@ (%lu)",
+                       chainTemplate.name,
+                       chainTemplate.realizedChains.count];
+    
+    self.chainNameLabel.text = title;
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     df.dateFormat = @"MMM d";

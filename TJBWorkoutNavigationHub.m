@@ -32,15 +32,14 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UIButton *standaloneSetButton;
-@property (weak, nonatomic) IBOutlet UIButton *circuitSlashSupersetButton;
-@property (weak, nonatomic) IBOutlet UIButton *historyButton;
+@property (weak, nonatomic) IBOutlet UIButton *freeformButton;
+@property (weak, nonatomic) IBOutlet UIButton *designedButton;
+
 
 // IBAction
 
-- (IBAction)didPressStandaloneSetButton:(id)sender;
-- (IBAction)didPressCircuitSlashSupersetButton:(id)sender;
-- (IBAction)didPressHistoryButton:(id)sender;
+- (IBAction)didPressFreeformButton:(id)sender;
+- (IBAction)didPressDesignedButton:(id)sender;
 
 @end
 
@@ -62,33 +61,31 @@
 
 - (void)viewDidLoad{
     
-    [self configureBackgroundView];
+    [self configureViewAesthetics];
     
-    [self viewAesthetics];
-    
-}
-
-- (void)viewAesthetics{
-    
-    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.standaloneSetButton,
-                                                                    self.circuitSlashSupersetButton,
-                                                                    self.historyButton]
-                                                     withOpacity: .9];
     
 }
 
-- (void)configureBackgroundView{
+- (void)configureViewAesthetics{
     
-    UIImage *image = [UIImage imageNamed: @"girlOverheadKettlebell"];
+    NSArray *buttons = @[self.freeformButton,
+                         self.designedButton];
     
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: image
-                                                                   toRootView: self.view];
+    for (UIButton *button in buttons){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] color2];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        
+    }
     
 }
+
 
 #pragma mark - Button Actions
 
-- (void)didPressStandaloneSetButton:(id)sender{
+
+- (IBAction)didPressFreeformButton:(id)sender {
     
     TJBRealizedSetActiveEntryTBC *tbc = [[TJBRealizedSetActiveEntryTBC alloc] initWithChildViewControllers];
     
@@ -98,19 +95,12 @@
     
 }
 
-- (void)didPressCircuitSlashSupersetButton:(id)sender{
-    
-    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc]  init];
-    
-    [self presentViewController: vc
-                       animated: NO
-                     completion: nil];
-    
-}
 
-- (IBAction)didPressHistoryButton:(id)sender {
+
+
+- (void)didPressDesignedButton:(id)sender{
     
-    TJBCompleteHistoryVC *vc = [[TJBCompleteHistoryVC alloc] init];
+    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
     
     [self presentViewController: vc
                        animated: YES

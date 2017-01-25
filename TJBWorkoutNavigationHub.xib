@@ -11,9 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBWorkoutNavigationHub">
             <connections>
-                <outlet property="circuitSlashSupersetButton" destination="5vd-Pz-T1I" id="Vqe-7b-UO6"/>
-                <outlet property="historyButton" destination="id1-eo-H3I" id="y9m-Tl-CNE"/>
-                <outlet property="standaloneSetButton" destination="dl0-qJ-myg" id="cnm-fM-aCI"/>
+                <outlet property="designedButton" destination="fEh-Lf-hs5" id="bVj-Na-lb1"/>
+                <outlet property="freeformButton" destination="VJQ-A1-2LI" id="K5E-fb-Btz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,55 +21,55 @@
             <rect key="frame" x="0.0" y="0.0" width="536" height="620"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dl0-qJ-myg">
-                    <rect key="frame" x="8" y="476" width="520" height="40"/>
-                    <color key="backgroundColor" red="0.31663491707119074" green="1" blue="0.99097504945429948" alpha="1" colorSpace="calibratedRGB"/>
+                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="duM-EA-yDh">
+                    <rect key="frame" x="0.0" y="0.0" width="536" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="a75-rA-RHd"/>
+                        <constraint firstAttribute="height" constant="60" id="uHa-ye-rAa"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Unstructured">
-                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="didPressStandaloneSetButton:" destination="-1" eventType="touchUpInside" id="Zmu-vh-hp8"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5vd-Pz-T1I">
-                    <rect key="frame" x="8" y="524" width="520" height="40"/>
-                    <color key="backgroundColor" red="0.41313043090000001" green="0.99707198500000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Structured">
-                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="didPressCircuitSlashSupersetButton:" destination="-1" eventType="touchUpInside" id="K8N-Ar-l6n"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="id1-eo-H3I">
-                    <rect key="frame" x="8" y="572" width="520" height="40"/>
+                    <items>
+                        <navigationItem title="Title" id="YP8-cI-3IM"/>
+                    </items>
+                </navigationBar>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Egg-O8-qpU" userLabel="Button Container">
+                    <rect key="frame" x="0.0" y="68" width="536" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJQ-A1-2LI">
+                            <rect key="frame" x="0.0" y="0.0" width="267" height="40"/>
+                            <state key="normal" title="Freeform Lift"/>
+                            <connections>
+                                <action selector="didPressFreeformButton:" destination="-1" eventType="touchUpInside" id="fjk-lj-fal"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fEh-Lf-hs5">
+                            <rect key="frame" x="269" y="0.0" width="267" height="40"/>
+                            <state key="normal" title="Designed Lift"/>
+                            <connections>
+                                <action selector="didPressDesignedButton:" destination="-1" eventType="touchUpInside" id="Uac-GS-HGx"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="lBx-aj-rAh"/>
+                        <constraint firstItem="VJQ-A1-2LI" firstAttribute="leading" secondItem="Egg-O8-qpU" secondAttribute="leading" id="Cye-sb-8tu"/>
+                        <constraint firstItem="fEh-Lf-hs5" firstAttribute="leading" secondItem="VJQ-A1-2LI" secondAttribute="trailing" constant="2" id="DBj-Sj-NZE"/>
+                        <constraint firstItem="fEh-Lf-hs5" firstAttribute="width" secondItem="VJQ-A1-2LI" secondAttribute="width" id="He8-9U-vAv"/>
+                        <constraint firstAttribute="bottom" secondItem="VJQ-A1-2LI" secondAttribute="bottom" id="Xl8-lE-a2X"/>
+                        <constraint firstItem="fEh-Lf-hs5" firstAttribute="top" secondItem="Egg-O8-qpU" secondAttribute="top" id="aIC-q5-YY7"/>
+                        <constraint firstAttribute="trailing" secondItem="fEh-Lf-hs5" secondAttribute="trailing" id="gId-E7-rqL"/>
+                        <constraint firstItem="VJQ-A1-2LI" firstAttribute="top" secondItem="Egg-O8-qpU" secondAttribute="top" id="k5O-gC-8ep"/>
+                        <constraint firstAttribute="bottom" secondItem="fEh-Lf-hs5" secondAttribute="bottom" id="pTG-NA-ism"/>
+                        <constraint firstAttribute="height" constant="40" id="riI-eF-eF1"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="History"/>
-                    <connections>
-                        <action selector="didPressHistoryButton:" destination="-1" eventType="touchUpInside" id="TMR-SI-asD"/>
-                    </connections>
-                </button>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="dl0-qJ-myg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="4KW-gX-bxx"/>
-                <constraint firstAttribute="trailing" secondItem="5vd-Pz-T1I" secondAttribute="trailing" constant="8" id="5kk-8i-FuJ"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="76L-CH-5BE"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="height" secondItem="dl0-qJ-myg" secondAttribute="height" id="9ys-lP-Amq"/>
-                <constraint firstAttribute="trailing" secondItem="id1-eo-H3I" secondAttribute="trailing" constant="8" id="BuD-Jl-8FX"/>
-                <constraint firstItem="id1-eo-H3I" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="LXB-5i-VKd"/>
-                <constraint firstItem="5vd-Pz-T1I" firstAttribute="top" secondItem="dl0-qJ-myg" secondAttribute="bottom" constant="8" id="c2o-L5-4Oh"/>
-                <constraint firstAttribute="trailing" secondItem="dl0-qJ-myg" secondAttribute="trailing" constant="8" id="eDm-bO-66p"/>
-                <constraint firstAttribute="bottom" secondItem="id1-eo-H3I" secondAttribute="bottom" constant="8" id="khE-rV-F7Z"/>
-                <constraint firstItem="id1-eo-H3I" firstAttribute="top" secondItem="5vd-Pz-T1I" secondAttribute="bottom" constant="8" id="x4c-SN-qPT"/>
+                <constraint firstItem="duM-EA-yDh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="D5R-FO-JBI"/>
+                <constraint firstItem="Egg-O8-qpU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="N5K-iz-IL9"/>
+                <constraint firstAttribute="trailing" secondItem="Egg-O8-qpU" secondAttribute="trailing" id="OxS-iI-fqa"/>
+                <constraint firstItem="duM-EA-yDh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="btY-LA-5Cc"/>
+                <constraint firstAttribute="trailing" secondItem="duM-EA-yDh" secondAttribute="trailing" id="gRA-8S-rbw"/>
+                <constraint firstItem="Egg-O8-qpU" firstAttribute="top" secondItem="duM-EA-yDh" secondAttribute="bottom" constant="8" id="ngV-wt-dc6"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="114" y="31"/>

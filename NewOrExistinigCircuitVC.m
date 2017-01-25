@@ -596,6 +596,8 @@
     self.mainContainer.hidden = YES;
     self.tableView.hidden = NO;
     _inPreviewMode = NO;
+    [self.previewButton setTitle: @"Preview"
+                        forState: UIControlStateNormal];
     
     if (self.activeCircuitReferenceVC){
         
