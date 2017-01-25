@@ -13,6 +13,8 @@
             <connections>
                 <outlet property="createNewChainButton" destination="Tap-We-N9B" id="dvy-Gf-Tgg"/>
                 <outlet property="navBar" destination="Qe7-Np-Lhw" id="3MW-NG-cQD"/>
+                <outlet property="sortByLabel" destination="5fE-Mz-Ss0" id="yEo-FD-E2q"/>
+                <outlet property="sortBySegmentedControl" destination="pL5-1h-FKf" id="TcY-kJ-FWG"/>
                 <outlet property="tableView" destination="YLP-je-fi9" id="baC-bn-5lA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -32,7 +34,7 @@
                     </items>
                 </navigationBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                    <rect key="frame" x="8" y="116" width="359" height="543"/>
+                    <rect key="frame" x="8" y="116" width="359" height="495"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
@@ -50,19 +52,42 @@
                         <action selector="didPressCreateNewChain:" destination="-1" eventType="touchUpInside" id="HGv-sq-C3s"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sort by" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fE-Mz-Ss0">
+                    <rect key="frame" x="8" y="619" width="60" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="7tp-9K-I3r"/>
+                        <constraint firstAttribute="height" constant="40" id="CVG-lF-c75"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pL5-1h-FKf">
+                    <rect key="frame" x="72" y="619" width="295" height="41"/>
+                    <segments>
+                        <segment title="Date Last Executed"/>
+                        <segment title="Date Created"/>
+                    </segments>
+                </segmentedControl>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Qe7-Np-Lhw" secondAttribute="trailing" id="1KY-zU-Eda"/>
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1u0-fT-gRq"/>
+                <constraint firstItem="5fE-Mz-Ss0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="21p-4R-4sz"/>
+                <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="YLP-je-fi9" secondAttribute="bottom" constant="8" id="DMm-6y-ewo"/>
                 <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" constant="8" id="EgV-fD-Qc4"/>
+                <constraint firstAttribute="trailing" secondItem="pL5-1h-FKf" secondAttribute="trailing" constant="8" id="EoS-sp-3hB"/>
+                <constraint firstItem="pL5-1h-FKf" firstAttribute="leading" secondItem="5fE-Mz-Ss0" secondAttribute="trailing" constant="4" id="F0q-Gg-ICl"/>
                 <constraint firstItem="Qe7-Np-Lhw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="OoE-xT-0w5"/>
                 <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="Tap-We-N9B" secondAttribute="bottom" constant="8" id="Qxa-LZ-RJM"/>
                 <constraint firstAttribute="trailing" secondItem="Tap-We-N9B" secondAttribute="trailing" constant="8" id="TTA-0K-vce"/>
-                <constraint firstAttribute="bottom" secondItem="YLP-je-fi9" secondAttribute="bottom" constant="8" id="XhD-YP-Whe"/>
+                <constraint firstItem="pL5-1h-FKf" firstAttribute="bottom" secondItem="5fE-Mz-Ss0" secondAttribute="bottom" id="Zgr-DA-bVd"/>
+                <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="5fE-Mz-Ss0" secondAttribute="top" id="g3J-bZ-kp2"/>
                 <constraint firstItem="Tap-We-N9B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="g3Y-vJ-QVm"/>
                 <constraint firstItem="Tap-We-N9B" firstAttribute="top" secondItem="Qe7-Np-Lhw" secondAttribute="bottom" constant="8" id="jny-Ov-dZE"/>
                 <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="oHD-mb-IQv"/>
+                <constraint firstAttribute="bottom" secondItem="5fE-Mz-Ss0" secondAttribute="bottom" constant="8" id="uJk-db-CJt"/>
             </constraints>
             <point key="canvasLocation" x="35.5" y="53.5"/>
         </view>
