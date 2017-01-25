@@ -12,6 +12,10 @@
 
 #import "CoreDataController.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBStructureTableViewCell ()
 
 
@@ -26,9 +30,15 @@
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     
+    // content view color
+    
+    self.contentView.backgroundColor = [[TJBAestheticsController singleton] color1];
+    
     // configure the chain name label
     
     self.chainNameLabel.text = chainTemplate.name;
+    [self.chainNameLabel setTextColor: [UIColor whiteColor]];
+    [self.chainNameLabel setFont: [UIFont boldSystemFontOfSize: 20.0]];
     
     //// configure the stack view.  For every exercise, create a UILabel and configure it before adding it to the stack view
     
@@ -43,6 +53,8 @@
                                chainTemplate.exercises[i].name];
         
         dynamicLabel.text = labelText;
+        [dynamicLabel setTextColor: [UIColor whiteColor]];
+        [dynamicLabel setFont: [UIFont systemFontOfSize: 20.0]];
         
         [self.stackView addArrangedSubview: dynamicLabel];
         

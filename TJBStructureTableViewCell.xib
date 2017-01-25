@@ -20,12 +20,12 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-MC-vYb">
-                        <rect key="frame" x="8" y="38" width="616" height="443.5"/>
+                        <rect key="frame" x="24" y="38" width="600" height="443.5"/>
                         <color key="backgroundColor" red="1" green="0.89661400710000005" blue="0.73848710319999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chain Name Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbh-Xg-mqd">
                         <rect key="frame" x="8" y="8" width="616" height="30"/>
-                        <color key="backgroundColor" red="0.22822172930000001" green="1" blue="0.92768924070000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="mUm-oA-cJE"/>
                         </constraints>
@@ -34,12 +34,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="cbh-Xg-mqd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="3hG-95-DkS"/>
                     <constraint firstItem="cbh-Xg-mqd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="G5a-vf-HdP"/>
                     <constraint firstAttribute="trailingMargin" secondItem="cbh-Xg-mqd" secondAttribute="trailing" id="KJW-B6-WN3"/>
                     <constraint firstAttribute="bottomMargin" secondItem="gDn-MC-vYb" secondAttribute="bottom" id="i7W-C7-J7T"/>
-                    <constraint firstItem="gDn-MC-vYb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="iig-u8-K8c"/>
+                    <constraint firstItem="gDn-MC-vYb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="16" id="iig-u8-K8c"/>
                     <constraint firstItem="gDn-MC-vYb" firstAttribute="top" secondItem="cbh-Xg-mqd" secondAttribute="bottom" id="jD3-yN-3DN"/>
                     <constraint firstAttribute="trailingMargin" secondItem="gDn-MC-vYb" secondAttribute="trailing" id="tqa-ct-t9E"/>
                 </constraints>

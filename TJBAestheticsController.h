@@ -23,6 +23,10 @@
 // label type 1
 @property (nonatomic, strong, readonly) UIColor *labelType1Color;
 
+// assorted colors
+
+@property (nonatomic, strong, readonly) UIColor *color1;
+
 + (instancetype)singleton;
 
 // background images

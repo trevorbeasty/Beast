@@ -157,6 +157,17 @@
                                   forKey: NSForegroundColorAttributeName];
 }
 
+#pragma mark - Colors
+
+- (UIColor *)color1{
+    
+    return [UIColor colorWithRed: 11.0 / 255.0
+                           green: 223.0 / 255.0
+                            blue: 255.0 / 255.0
+                           alpha: 1.0];
+    
+}
+
 @end
 
 
