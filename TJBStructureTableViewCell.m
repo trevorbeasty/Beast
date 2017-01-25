@@ -31,6 +31,16 @@
 
 @implementation TJBStructureTableViewCell
 
+//- (instancetype)init{
+//    
+//    self = [super init];
+//    
+//    self.selectionStyle = UITableViewCellSelectionStyleNone;
+//    
+//    return self;
+//    
+//}
+
 - (void)setOverallColor:(UIColor *)color{
     
     self.containerView.backgroundColor = color;
@@ -56,6 +66,8 @@
 - (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate date:(NSDate *)date{
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     [self configureViewAesthetics];
     

@@ -17,6 +17,10 @@
 #import "TJBCircuitDesignVC.h"
 #import "TJBCircuitModeTBC.h"
 
+// views
+
+#import "TJBCircuitReferenceVC.h"
+
 // aesthetics
 
 #import "TJBAestheticsController.h"
@@ -25,7 +29,15 @@
 
 #import "TJBStructureTableViewCell.h"
 
+
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
+
+{
+    // user selection flow
+    
+    BOOL _inPreviewMode;
+    
+}
 
 // IBOutlet
 
@@ -38,6 +50,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
 @property (weak, nonatomic) IBOutlet UIButton *modifyButton;
 @property (weak, nonatomic) IBOutlet UIButton *previewButton;
+
+@property (weak, nonatomic) IBOutlet UIView *mainContainer;
 
 // IBAction
 
@@ -54,6 +68,7 @@
 
 @property (nonatomic, strong) TJBChainTemplate *selectedChainTemplate;
 @property (nonatomic, strong) NSIndexPath *lastSelectedIndexPath;
+@property (nonatomic, strong) TJBCircuitReferenceVC *activeCircuitReferenceVC;
 
 
 @end
@@ -72,6 +87,14 @@
     self.restorationClass = [NewOrExistinigCircuitVC class];
     
     return self;
+}
+
+- (void)initializeActiveVariables{
+    
+    //// configure state variables for fresh state
+    
+    _inPreviewMode = NO;
+    
 }
 
 #pragma mark - View Cycle
@@ -122,12 +145,6 @@
     
 }
 
-- (void)addBackground{
-    
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
-                                                                   toRootView: self.view
-                                                                 imageOpacity: .35];
-}
 
 - (void)viewWillAppear:(BOOL)animated{
     
@@ -454,6 +471,12 @@
 
 #pragma mark - <UITableViewDelegate>
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return YES;
+    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
@@ -574,6 +597,73 @@
     
 }
 
+- (IBAction)didPressLaunchButton:(id)sender {
+}
+
+- (IBAction)didPressPreviewButton:(id)sender{
+    
+    if (_inPreviewMode == NO){
+        
+        //// hide the table view and present the chain template in its place.  Update state variables.  Change preview button appearance
+        
+        _inPreviewMode = YES;
+        
+        self.tableView.hidden = YES;
+        
+        // create a TJBCircuitReferenceVC with the dimensions of the mainContainer
+        
+        CGSize containerViewSize = self.mainContainer.frame.size;
+        
+        NSNumber *viewHeight = [NSNumber numberWithFloat: containerViewSize.height];
+        NSNumber *viewWidth = [NSNumber numberWithFloat: containerViewSize.width];
+        
+        TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithChainTemplate: self.selectedChainTemplate
+                                                                       contentViewHeight: viewHeight
+                                                                        contentViewWidth: viewWidth];
+        
+        self.activeCircuitReferenceVC = vc;
+        
+        [self addChildViewController: vc];
+        
+        [self.mainContainer addSubview: vc.view];
+        
+        [vc didMoveToParentViewController: self];
+        
+        // preview button
+        
+        [self.previewButton setTitle: @"List"
+                            forState: UIControlStateNormal];
+        
+    } else if (_inPreviewMode == YES){
+        
+        //// toggle the preview button appearance, update state variables, eliminate the child VC and subview, un-hide the table view
+        
+        // state
+        
+        _inPreviewMode = NO;
+        
+        // preview button
+        
+        [self.previewButton setTitle: @"Preview"
+                            forState: UIControlStateNormal];
+        
+        // child VC and subview
+        
+        [self.activeCircuitReferenceVC removeFromParentViewController];
+        [self.activeCircuitReferenceVC.view removeFromSuperview];
+        self.activeCircuitReferenceVC = nil;
+        
+        // table view
+        
+        self.tableView.hidden = NO;
+        
+    }
+
+}
+
+- (IBAction)didPressModifyButton:(id)sender {
+}
+
 #pragma mark - <UIViewControllerRestoration>
 
 // will want to eventually store table view scroll position
@@ -586,14 +676,7 @@
     
 }
 
-- (IBAction)didPressLaunchButton:(id)sender {
-}
 
-- (IBAction)didPressPreviewButton:(id)sender {
-}
-
-- (IBAction)didPressModifyButton:(id)sender {
-}
 
 @end
 
