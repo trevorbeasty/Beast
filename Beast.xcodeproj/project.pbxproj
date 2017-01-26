@@ -14,6 +14,10 @@
 		0B2619A41E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2619A21E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.xib */; };
 		0B3687DC1E38DB530077290C /* TJBStructureTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3687DA1E38DB530077290C /* TJBStructureTableViewCell.m */; };
 		0B3687DD1E38DB530077290C /* TJBStructureTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3687DB1E38DB530077290C /* TJBStructureTableViewCell.xib */; };
+		0B3687E51E3A29820077290C /* TJBCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3687E41E3A29820077290C /* TJBCircleView.m */; };
+		0B3687E91E3A2A780077290C /* TJBCircleDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */; };
+		0B3687EA1E3A2A780077290C /* TJBCircleDateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */; };
+		0B3687ED1E3A33910077290C /* TJBCircleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3687EC1E3A33910077290C /* TJBCircleButton.m */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BC71DF77C20009981F9 /* Main.storyboard */; };
@@ -93,6 +97,13 @@
 		0B3687D91E38DB530077290C /* TJBStructureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBStructureTableViewCell.h; sourceTree = "<group>"; };
 		0B3687DA1E38DB530077290C /* TJBStructureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBStructureTableViewCell.m; sourceTree = "<group>"; };
 		0B3687DB1E38DB530077290C /* TJBStructureTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBStructureTableViewCell.xib; sourceTree = "<group>"; };
+		0B3687E31E3A29820077290C /* TJBCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircleView.h; sourceTree = "<group>"; };
+		0B3687E41E3A29820077290C /* TJBCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircleView.m; sourceTree = "<group>"; };
+		0B3687E61E3A2A780077290C /* TJBCircleDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircleDateVC.h; sourceTree = "<group>"; };
+		0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircleDateVC.m; sourceTree = "<group>"; };
+		0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircleDateVC.xib; sourceTree = "<group>"; };
+		0B3687EB1E3A33910077290C /* TJBCircleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircleButton.h; sourceTree = "<group>"; };
+		0B3687EC1E3A33910077290C /* TJBCircleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircleButton.m; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -361,6 +372,13 @@
 				0B843CA71DFEF8E50093F057 /* TJBWorkoutNavigationHub.h */,
 				0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */,
 				0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */,
+				0B3687EB1E3A33910077290C /* TJBCircleButton.h */,
+				0B3687EC1E3A33910077290C /* TJBCircleButton.m */,
+				0B3687E31E3A29820077290C /* TJBCircleView.h */,
+				0B3687E41E3A29820077290C /* TJBCircleView.m */,
+				0B3687E61E3A2A780077290C /* TJBCircleDateVC.h */,
+				0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */,
+				0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */,
 			);
 			name = "Home Tab Bar VC";
 			sourceTree = "<group>";
@@ -622,6 +640,7 @@
 				0B843CD51E0C984D0093F057 /* TJBInSetVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
 				0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */,
+				0B3687EA1E3A2A780077290C /* TJBCircleDateVC.xib in Resources */,
 				0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */,
 				0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */,
 				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
@@ -651,6 +670,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */,
+				0B3687E51E3A29820077290C /* TJBCircleView.m in Sources */,
 				0B870E581E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.m in Sources */,
 				0B843CD41E0C984D0093F057 /* TJBInSetVC.m in Sources */,
 				0B843C941DFB80640093F057 /* TJBRealizedSetHistoryByDay.m in Sources */,
@@ -671,6 +691,7 @@
 				0BA8ACF51E26561C00EE10C2 /* TJBCircuitReferenceVC.m in Sources */,
 				0BA8AD001E26636E00EE10C2 /* TJBCircuitReferenceRowComp.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
+				0B3687ED1E3A33910077290C /* TJBCircleButton.m in Sources */,
 				0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */,
 				0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */,
 				0B2619A31E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.m in Sources */,
@@ -688,6 +709,7 @@
 				0BA8AD051E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m in Sources */,
 				0BA8ACEE1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m in Sources */,
 				0B517BDD1DF8869C009981F9 /* TJBNumberSelectionVC.m in Sources */,
+				0B3687E91E3A2A780077290C /* TJBCircleDateVC.m in Sources */,
 				0B1616D51E080E6F001C8F45 /* TJBExerciseSelectionScene.m in Sources */,
 				0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */,
 				0BA8ACFB1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.m in Sources */,

@@ -25,6 +25,10 @@
 
 #import "TJBCompleteHistoryVC.h"
 
+// circle dates
+
+#import "TJBCircleDateVC.h"
+
 
 
 
@@ -34,12 +38,19 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
+@property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
+@property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
+
 
 
 // IBAction
 
 - (IBAction)didPressFreeformButton:(id)sender;
 - (IBAction)didPressDesignedButton:(id)sender;
+
+// circle dates
+
+@property (nonatomic, strong) NSMutableArray <TJBCircleDateVC *> *circleDateChildren;
 
 @end
 
@@ -63,6 +74,64 @@
     
     [self configureViewAesthetics];
     
+    [self configureCircleDates];
+    
+    
+}
+
+//- (void)viewWillAppear:(BOOL)animated{
+//    
+//    for (TJBCircleDateVC *vc in self.circleDateChildren){
+//        
+//        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+//        
+//        float numberOfDateButtons = 5;
+//        float dateButtonSpacing = 8;
+//        CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / numberOfDateButtons;
+//        
+//        CGFloat buttonHeight = 100;
+//        
+//        CGSize buttonSize = CGSizeMake(buttonWidth , buttonHeight);
+//        
+//        [vc configureButtonMaskWithButtonSize: buttonSize];
+//        
+//    }
+//    
+//    
+//}
+
+- (void)configureCircleDates{
+    
+    int limit = 5;
+    
+    self.circleDateChildren = [[NSMutableArray alloc] init];
+    
+            CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    
+            float numberOfDateButtons = 5.0;
+            float dateButtonSpacing = 8.0;
+            CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / numberOfDateButtons;
+    
+            CGFloat buttonHeight = 100;
+    
+            CGSize buttonSize = CGSizeMake(buttonWidth , buttonHeight);
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSString *title = [NSString stringWithFormat: @"%d", i];
+        
+        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: title
+                                                                                    size: buttonSize];
+        
+        [self.circleDateChildren addObject: circleDateVC];
+        
+        [self addChildViewController: circleDateVC];
+        
+        [self.dateStackView addArrangedSubview: circleDateVC.view];
+        
+        [circleDateVC didMoveToParentViewController: self];
+        
+    }
     
 }
 
@@ -110,6 +179,7 @@
 
 
 @end
+
 
 
 

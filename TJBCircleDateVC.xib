@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircleDateVC">
+            <connections>
+                <outlet property="mainButton" destination="SQe-h5-Uhc" id="DH3-KW-FG0"/>
+                <outlet property="view" destination="WED-IR-U8g" id="dWT-11-slK"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="WED-IR-U8g">
+            <rect key="frame" x="0.0" y="0.0" width="91" height="66"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQe-h5-Uhc">
+                    <rect key="frame" x="0.0" y="0.0" width="91" height="66"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="didPressMainButton:" destination="-1" eventType="touchUpInside" id="E9H-6J-zOJ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="SQe-h5-Uhc" firstAttribute="top" secondItem="WED-IR-U8g" secondAttribute="top" id="TA6-iS-oAs"/>
+                <constraint firstItem="SQe-h5-Uhc" firstAttribute="leading" secondItem="WED-IR-U8g" secondAttribute="leading" id="lJL-Mh-ASi"/>
+                <constraint firstAttribute="trailing" secondItem="SQe-h5-Uhc" secondAttribute="trailing" id="vc6-Eu-ffD"/>
+                <constraint firstAttribute="bottom" secondItem="SQe-h5-Uhc" secondAttribute="bottom" id="zah-wU-VeZ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-76.5" y="-310"/>
+        </view>
+    </objects>
+</document>
