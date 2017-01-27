@@ -111,8 +111,11 @@
     
     if (_selectedAppearance){
         
-        self.dayLabel.font = [UIFont boldSystemFontOfSize: 17.0];
-        self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+        [self configureButtonAsSelected];
+        
+    } else{
+        
+        [self configureButtonAsNotSelected];
         
     }
 
@@ -141,6 +144,22 @@
     
     self.mainButton.layer.mask = shapeLayer;
 
+}
+
+#pragma mark - General API
+
+- (void)configureButtonAsSelected{
+    
+    self.dayLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+    self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+    
+}
+
+- (void)configureButtonAsNotSelected{
+    
+    self.dayLabel.font = [UIFont systemFontOfSize: 17.0];
+    self.mainButton.titleLabel.font = [UIFont systemFontOfSize: 17.0];
+    
 }
 
 #pragma mark - IBAction

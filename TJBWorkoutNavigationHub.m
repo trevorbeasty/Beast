@@ -34,6 +34,12 @@
 
 @interface TJBWorkoutNavigationHub ()
 
+{
+    // state
+    
+    int _activeSelectionIndex;
+}
+
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
@@ -85,10 +91,39 @@
     
     [self configureCircleDates];
     
+    [self configureGestureRecognizers];
+    
+}
+
+- (void)configureGestureRecognizers{
+    
+    // left swipe GR
+    
+    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                    action: @selector(didSwipeLeft)];
+    
+    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    leftSwipe.numberOfTouchesRequired = 1;
+    
+    [self.view addGestureRecognizer: leftSwipe];
+    
+    // right swipe GR
+    
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget: self
+                                                                                    action: @selector(didSwipeRight)];
+    
+    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    rightSwipe.numberOfTouchesRequired = 1;
+    
+    [self.view addGestureRecognizer: rightSwipe];
     
 }
 
 - (void)configureCircleDates{
+    
+    // active selection index
+    
+    _activeSelectionIndex = 6;
     
     self.circleDateChildren = [[NSMutableArray alloc] init];
     
@@ -99,7 +134,6 @@
     CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / (float)numberOfDateButtons;
     
     CGFloat buttonHeight = 40;
-//    CGFloat dayLabelHeight = 20;
     float buttonCenterY = buttonHeight / 2.0;
     
     CGPoint center = CGPointMake(buttonWidth / 2.0, buttonCenterY);
@@ -110,7 +144,6 @@
     NSDateComponents *dateComps = [[NSDateComponents alloc] init];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"E";
     
     int dayOffset;
     NSDate *iterativeDate;
@@ -121,16 +154,20 @@
         
         // using the activeDate as the fourth button, configure all buttons with the appropriate date
         
-        dayOffset = -3 + i;
+        dayOffset = -6 + i;
         dateComps.day = dayOffset;
         
         iterativeDate = [calendar dateByAddingComponents: dateComps
                                                   toDate: self.activeDate
                                                  options: 0];
         
+        dateFormatter.dateFormat = @"E";
         NSString *day = [dateFormatter stringFromDate: iterativeDate];
         
-        if (i == 3){
+        dateFormatter.dateFormat = @"d";
+        NSString *buttonTitle = [dateFormatter stringFromDate: iterativeDate];
+        
+        if (i == 6){
             
             selected = YES;
             
@@ -142,9 +179,7 @@
         
         // create the child vc
         
-        NSString *title = [NSString stringWithFormat: @"%d", i + 1];
-        
-        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: title
+        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: buttonTitle
                                                                                 dayTitle: day
                                                                                   radius: buttonWidth / 2.0
                                                                                   center: center
@@ -201,6 +236,75 @@
     [self presentViewController: vc
                        animated: YES
                      completion: nil];
+    
+}
+
+#pragma mark - Gesture Recognizer Actions
+
+- (void)didSwipeLeft{
+    
+    [self incrementActiveDateByNumberOfDaysAndRefreshCircleDates: -1];
+    
+}
+
+- (void)didSwipeRight{
+    
+    [self incrementActiveDateByNumberOfDaysAndRefreshCircleDates: 1];
+    
+}
+
+- (void)incrementActiveDateByNumberOfDaysAndRefreshCircleDates:(int)numberOfDays{
+    
+    // active date
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    BOOL atMaxDate = [calendar isDateInToday: self.activeDate];
+    
+    if (!atMaxDate){
+        
+        NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+        dateComps.day = numberOfDays;
+        
+        NSDate *newDate = [calendar dateByAddingComponents: dateComps
+                                                    toDate: self.activeDate
+                                                   options: 0];
+        
+        self.activeDate = newDate;
+        
+    }
+    
+
+    
+    // active index and date button appearance
+    
+    BOOL atRightExtreme = _activeSelectionIndex == 6 && numberOfDays == 1;
+    BOOL atLeftExtreme = _activeSelectionIndex == 0 && numberOfDays == -1;
+    
+    
+    if (!atRightExtreme && !atLeftExtreme){
+        
+        TJBCircleDateVC *circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
+        [circleDateVC configureButtonAsNotSelected];
+        
+        _activeSelectionIndex += numberOfDays;
+        
+        circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
+        [circleDateVC configureButtonAsSelected];
+        
+    } else if (atLeftExtreme){
+        
+        // give the date buttons new titles
+        
+        // change the selected date button
+        
+    } else if (atRightExtreme && !atMaxDate){
+        
+        
+        
+    }
+    
+
     
 }
 

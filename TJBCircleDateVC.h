@@ -12,5 +12,8 @@
 
 - (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle radius:(float)radius center:(CGPoint)center selectedAppearance:(BOOL)selectedAppearance;
 
+- (void)configureButtonAsSelected;
+- (void)configureButtonAsNotSelected;
+
 
 @end
