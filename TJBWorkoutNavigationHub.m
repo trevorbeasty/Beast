@@ -29,10 +29,19 @@
 
 #import "TJBCircleDateVC.h"
 
+// core data
+
+#import "CoreDataController.h"
+
+// table view cells
+
+#import "RealizedSetHistoryCell.h"
+#import "TJBStructureTableViewCell.h"
 
 
 
-@interface TJBWorkoutNavigationHub ()
+
+@interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate>
 
 {
     // state
@@ -45,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
 @property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 
 
@@ -60,6 +70,12 @@
 // state variables
 
 @property (nonatomic, strong) NSDate *activeDate;
+
+// core data
+
+@property (nonatomic, strong) NSFetchedResultsController *realizedSetFRC;
+@property (nonatomic, strong) NSFetchedResultsController *realizeChainFRC;
+@property (nonatomic, strong) NSMutableArray *masterList;
 
 @end
 
@@ -80,7 +96,167 @@
     
     self.activeDate = [NSDate date];
     
+    // core data
+    
+    [self configureRealizedSetFRC];
+    [self configureRealizedChainFRC];
+    [self configureMasterList];
+    
     return self;
+}
+
+- (void)configureRealizedSetFRC{
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
+    
+    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"beginDate"
+                                                               ascending: NO];
+    
+    [request setSortDescriptors: @[dateSort]];
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
+                                                                          managedObjectContext: moc
+                                                                            sectionNameKeyPath: nil
+                                                                                     cacheName: nil];
+    frc.delegate = nil;
+    
+    self.realizedSetFRC = frc;
+    
+    NSError *error = nil;
+    
+    if (![frc performFetch: &error]){
+        
+        abort();
+        
+    }
+    
+}
+
+
+- (void)configureRealizedChainFRC{
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedChain"];
+    
+    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"dateCreated"
+                                                               ascending: NO];
+    
+    [request setSortDescriptors: @[dateSort]];
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
+                                                                          managedObjectContext: moc
+                                                                            sectionNameKeyPath: nil
+                                                                                     cacheName: nil];
+    frc.delegate = nil;
+    
+    self.realizeChainFRC = frc;
+    
+    NSError *error = nil;
+    
+    if (![frc performFetch: &error]){
+        
+        abort();
+        
+    }
+    
+}
+
+- (void)configureMasterList{
+    
+    //// add the fetched objects of the 2 FRC's to a mutable array and reorder it appropriately.  Then, use the array to create the master list.
+    
+    // create the interim array and sort it such that it holds realized sets and realized chains with set begin dates and chain created dates, respectively, in descending order
+    
+    if (!self.masterList){
+        
+        self.masterList = [[NSMutableArray alloc] init];
+        
+    }
+    
+    NSMutableArray *interimArray = [[NSMutableArray alloc] init];
+    
+    [interimArray addObjectsFromArray: self.realizedSetFRC.fetchedObjects];
+    [interimArray addObjectsFromArray: self.realizeChainFRC.fetchedObjects];
+    
+    [interimArray sortUsingComparator: ^(id obj1, id obj2){
+        
+        NSDate *obj1Date;
+        NSDate *obj2Date;
+        
+        // identify object class type in order to determine the correct key-value path for the date
+        
+        // obj1
+        
+        if ([obj1 isKindOfClass: [TJBRealizedSet class]]){
+            
+            TJBRealizedSet *obj1WithClass = (TJBRealizedSet *)obj1;
+            obj1Date = obj1WithClass.beginDate;
+            
+            
+        } else if([obj1 isKindOfClass: [TJBRealizedChain class]]){
+            
+            TJBRealizedChain *obj1WithClass = (TJBRealizedChain *)obj1;
+            obj1Date = obj1WithClass.dateCreated;
+            
+        }
+        
+        // obj2
+        
+        if ([obj2 isKindOfClass: [TJBRealizedSet class]]){
+            
+            TJBRealizedSet *obj2WithClass = (TJBRealizedSet *)obj2;
+            obj2Date = obj2WithClass.beginDate;
+            
+            
+        } else if([obj2 isKindOfClass: [TJBRealizedChain class]]){
+            
+            TJBRealizedChain *obj2WithClass = (TJBRealizedChain *)obj2;
+            obj2Date = obj2WithClass.dateCreated;
+            
+        }
+        
+        // return the appropriate NSComparisonResult
+        
+        BOOL obj2LaterThanObj1 = [obj2Date timeIntervalSinceDate: obj1Date] > 0;
+        
+        if (obj2LaterThanObj1){
+            
+            return NSOrderedDescending;
+            
+        } else {
+            
+            return  NSOrderedAscending;
+            
+        }
+    }];
+    
+    self.masterList = interimArray;
+    
+}
+
+- (NSDate *)dayBeginDateForObject:(id)object{
+    
+    //// evaluates whether the object is a realized set or realized chain and returns the corresponding day begin date.  For realized sets this in the 'beginDate' and for realized chains this is the 'dateCreated'.  Date created is used as opposed to set begin dates because the former is always going to exist while the latter may not
+    
+    BOOL objectIsRealizedSet = [object isKindOfClass: [TJBRealizedSet class]];
+    
+    if (objectIsRealizedSet){
+        
+        TJBRealizedSet *realizedSet = object;
+        
+        return [[NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian] startOfDayForDate: realizedSet.beginDate];
+        
+    } else{
+        
+        TJBRealizedChain *realizedChain = object;
+        
+        return [[NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian] startOfDayForDate: realizedChain.dateCreated];
+        
+    }
+    
 }
 
 #pragma mark - View Life Cycle
@@ -92,6 +268,26 @@
     [self configureCircleDates];
     
     [self configureGestureRecognizers];
+    
+    [self configureTableView];
+    
+}
+
+- (void)configureTableView{
+    
+    //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
+    
+    UINib *realizedSetNib = [UINib nibWithNibName: @"RealizedSetHistoryCell"
+                                           bundle: nil];
+    
+    [self.tableView registerNib: realizedSetNib
+         forCellReuseIdentifier: @"realizedSetHistoryCell"];
+    
+    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBStructureTableViewCell"
+                                             bundle: nil];
+    
+    [self.tableView registerNib: realizedChainNib
+                forCellReuseIdentifier: @"TJBStructureTableViewCell"];
     
 }
 
@@ -364,6 +560,110 @@
     }
     
 }
+
+#pragma mark - <UITableViewDataSource>
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
+    return 1;
+    
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    return self.masterList.count;
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
+    
+    // date formatter
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateStyle = NSDateFormatterNoStyle;
+    dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    // conditionals
+    
+//    int sectionIndex = (int)indexPath.section;
+    int rowIndex = (int)indexPath.row;
+    
+    BOOL isRealizedSet = [self.masterList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
+    
+    if (isRealizedSet){
+        
+        TJBRealizedSet *realizedSet = self.masterList[rowIndex];
+        
+        // dequeue the realizedSetCell
+        
+        RealizedSetHistoryCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"realizedSetHistoryCell"];
+        
+        [cell configureCellWithExerciseName: realizedSet.exercise.name
+                                     weight: [NSNumber numberWithFloat: realizedSet.weight]
+                                       reps: [NSNumber numberWithFloat: realizedSet.reps]
+                                       rest: nil];
+        
+//        // labels
+//        
+//        cell.exerciseLabel.text = realizedSet.exercise.name;
+//        cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
+//        cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
+//        cell.restLabel.text = @"";
+        
+        return cell;
+        
+    } else{
+        
+        TJBRealizedChain *realizedChain = self.masterList[rowIndex];
+        
+        // dequeue the realizedSetCell
+        
+        TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
+        
+        // labels
+        
+//        cell.dateLabel.text = [dateFormatter stringFromDate: realizedChain.dateCreated];
+//        cell.realizedChainNameLabel.text = [NSString stringWithFormat: @"%@", realizedChain.chainTemplate.name];
+        
+        return cell;
+        
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark - <UITableViewDelegate>
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 50;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @end

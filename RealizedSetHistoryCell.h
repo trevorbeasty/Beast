@@ -16,5 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *restLabel;
 
+- (void)configureCellWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest;
+
 
 @end

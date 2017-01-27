@@ -14,6 +14,7 @@
                 <outlet property="dateStackView" destination="nLU-xK-YUa" id="7YM-su-2js"/>
                 <outlet property="designedButton" destination="fEh-Lf-hs5" id="bVj-Na-lb1"/>
                 <outlet property="freeformButton" destination="VJQ-A1-2LI" id="K5E-fb-Btz"/>
+                <outlet property="tableView" destination="X0R-s4-kMW" id="tw0-LB-chD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -28,7 +29,7 @@
                         <constraint firstAttribute="height" constant="60" id="uHa-ye-rAa"/>
                     </constraints>
                     <items>
-                        <navigationItem title="Title" id="YP8-cI-3IM"/>
+                        <navigationItem title="Workout Log" id="YP8-cI-3IM"/>
                     </items>
                 </navigationBar>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nLU-xK-YUa">
@@ -68,17 +69,29 @@
                         <constraint firstAttribute="height" constant="40" id="riI-eF-eF1"/>
                     </constraints>
                 </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X0R-s4-kMW">
+                    <rect key="frame" x="0.0" y="144" width="536" height="428"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="foT-3N-3Zo"/>
+                        <outlet property="delegate" destination="-1" id="17P-Hg-5VR"/>
+                    </connections>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="nLU-xK-YUa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0GI-6z-Qde"/>
+                <constraint firstItem="X0R-s4-kMW" firstAttribute="top" secondItem="nLU-xK-YUa" secondAttribute="bottom" constant="16" id="3gd-QZ-nyz"/>
                 <constraint firstItem="duM-EA-yDh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="D5R-FO-JBI"/>
                 <constraint firstAttribute="trailing" secondItem="nLU-xK-YUa" secondAttribute="trailing" id="Gbz-7X-X3k"/>
                 <constraint firstItem="Egg-O8-qpU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="N5K-iz-IL9"/>
                 <constraint firstAttribute="bottom" secondItem="Egg-O8-qpU" secondAttribute="bottom" id="NS6-IP-QsA"/>
                 <constraint firstAttribute="trailing" secondItem="Egg-O8-qpU" secondAttribute="trailing" id="OxS-iI-fqa"/>
                 <constraint firstItem="duM-EA-yDh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="btY-LA-5Cc"/>
+                <constraint firstItem="Egg-O8-qpU" firstAttribute="top" secondItem="X0R-s4-kMW" secondAttribute="bottom" constant="8" id="d92-Se-Ho1"/>
+                <constraint firstAttribute="trailing" secondItem="X0R-s4-kMW" secondAttribute="trailing" id="dnL-9V-UKX"/>
                 <constraint firstAttribute="trailing" secondItem="duM-EA-yDh" secondAttribute="trailing" id="gRA-8S-rbw"/>
+                <constraint firstItem="X0R-s4-kMW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rvF-xQ-cIK"/>
                 <constraint firstItem="nLU-xK-YUa" firstAttribute="top" secondItem="duM-EA-yDh" secondAttribute="bottom" constant="8" id="tkW-ep-Mtb"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

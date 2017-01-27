@@ -8,6 +8,25 @@
 
 #import "RealizedSetHistoryCell.h"
 
+// time conversion
+
+#import "TJBStopwatch.h"
+
 @implementation RealizedSetHistoryCell
+
+- (void)configureCellWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest{
+    
+    self.exerciseLabel.text = exerciseName;
+    
+    NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
+    NSString *repsString = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
+    NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [rest intValue]];
+    NSString *restString = [NSString stringWithFormat: @"%@ rest", formattedRest];
+    
+    self.weightLabel.text = weightString;
+    self.repsLabel.text = repsString;
+    self.restLabel.text = restString;
+    
+}
 
 @end
