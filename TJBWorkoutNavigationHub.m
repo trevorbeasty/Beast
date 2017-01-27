@@ -274,8 +274,6 @@
         
     }
     
-
-    
     // active index and date button appearance
     
     BOOL atRightExtreme = _activeSelectionIndex == 6 && numberOfDays == 1;
@@ -284,32 +282,118 @@
     
     if (!atRightExtreme && !atLeftExtreme){
         
-        TJBCircleDateVC *circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
-        [circleDateVC configureButtonAsNotSelected];
-        
-        _activeSelectionIndex += numberOfDays;
-        
-        circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
-        [circleDateVC configureButtonAsSelected];
+        [self configureSelectedAppearanceForDateButtonAtIndex: _activeSelectionIndex + numberOfDays];
         
     } else if (atLeftExtreme){
         
         // give the date buttons new titles
         
+        [self setTitlesAccordingToDate: self.activeDate
+                         isLargestDate: NO];
+        
         // change the selected date button
+        
+        [self configureSelectedAppearanceForDateButtonAtIndex: 6];
         
     } else if (atRightExtreme && !atMaxDate){
         
+        // give the date buttons new titles
         
+        [self setTitlesAccordingToDate: self.activeDate
+                         isLargestDate: YES];
+        
+        // change the selected date button
+        
+        [self configureSelectedAppearanceForDateButtonAtIndex: 0];
         
     }
     
+}
 
+- (void)configureSelectedAppearanceForDateButtonAtIndex:(int)index{
+    
+    TJBCircleDateVC *circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
+    [circleDateVC configureButtonAsNotSelected];
+    
+    _activeSelectionIndex = index;
+    
+    circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
+    [circleDateVC configureButtonAsSelected];
+    
+}
+
+- (void)setTitlesAccordingToDate:(NSDate *)date isLargestDate:(BOOL)isLargestDate{
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+    NSDate *newSmallDate;
+    
+    if (isLargestDate){
+        
+        dateComps.day = 1;
+        newSmallDate = [calendar dateByAddingComponents: dateComps
+                                                 toDate: date
+                                                options: 0];
+        
+    } else{
+        
+        dateComps.day = -13;
+        newSmallDate = [calendar dateByAddingComponents: dateComps
+                                                 toDate: date
+                                                options: 0];
+        
+    }
+    
+    int limit = 7;
+    NSDateFormatter *dayNameDF = [[NSDateFormatter alloc] init];
+    dayNameDF.dateFormat = @"E";
+    NSDateFormatter *dayNumberDF = [[NSDateFormatter alloc] init];
+    dayNumberDF.dateFormat = @"d";
+    
+    for (int i = 0; i < limit; i++){
+        
+        TJBCircleDateVC *activeVC = self.circleDateChildren[i];
+        
+        dateComps.day = i;
+        NSDate *activeDate = [calendar dateByAddingComponents: dateComps
+                                                       toDate: newSmallDate
+                                                      options: 0];
+        
+        NSString *dayName = [dayNameDF stringFromDate: activeDate];
+        NSString *dayNumber = [dayNumberDF stringFromDate: activeDate];
+        [activeVC configureWithDayTitle: dayName
+                            buttonTitle: dayNumber];
+        
+    }
     
 }
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

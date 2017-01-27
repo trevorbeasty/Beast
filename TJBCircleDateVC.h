@@ -15,5 +15,7 @@
 - (void)configureButtonAsSelected;
 - (void)configureButtonAsNotSelected;
 
+- (void)configureWithDayTitle:(NSString *)dayTitle buttonTitle:(NSString *)buttonTitle;
+
 
 @end

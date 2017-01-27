@@ -162,6 +162,14 @@
     
 }
 
+- (void)configureWithDayTitle:(NSString *)dayTitle buttonTitle:(NSString *)buttonTitle{
+    
+    self.dayLabel.text = dayTitle;
+    [self.mainButton setTitle: buttonTitle
+                     forState: UIControlStateNormal];
+    
+}
+
 #pragma mark - IBAction
 
 - (IBAction)didPressMainButton:(id)sender{
