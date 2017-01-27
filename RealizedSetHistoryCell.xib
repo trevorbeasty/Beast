@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -16,60 +16,64 @@
             <rect key="frame" x="0.0" y="0.0" width="565" height="192"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="565" height="191.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="565" height="192"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWf-7D-m4Y">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RWf-7D-m4Y">
                         <rect key="frame" x="32" y="92" width="175" height="91.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v9a-Fx-8Yy">
-                        <rect key="frame" x="8" y="0.0" width="557" height="92"/>
+                        <rect key="frame" x="8" y="0.0" width="57.5" height="92"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ost-w4-d1z">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ost-w4-d1z">
                         <rect key="frame" x="382" y="92" width="175" height="91.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOM-Qs-eVP">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOM-Qs-eVP">
                         <rect key="frame" x="207" y="92" width="175" height="91.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OUl-Dc-acY">
+                        <rect key="frame" x="537" y="4" width="24" height="12"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="RWf-7D-m4Y" firstAttribute="height" secondItem="v9a-Fx-8Yy" secondAttribute="height" id="20p-7C-vvU"/>
-                    <constraint firstAttribute="trailing" secondItem="v9a-Fx-8Yy" secondAttribute="trailing" id="4hs-VX-GEb"/>
                     <constraint firstAttribute="bottomMargin" secondItem="RWf-7D-m4Y" secondAttribute="bottom" id="9n6-3s-nQS"/>
                     <constraint firstItem="Ost-w4-d1z" firstAttribute="leading" secondItem="VOM-Qs-eVP" secondAttribute="trailing" id="DbH-5o-VdW"/>
                     <constraint firstItem="VOM-Qs-eVP" firstAttribute="top" secondItem="RWf-7D-m4Y" secondAttribute="top" id="JJj-Co-1Fo"/>
                     <constraint firstItem="Ost-w4-d1z" firstAttribute="width" secondItem="RWf-7D-m4Y" secondAttribute="width" id="Lpm-Z6-P29"/>
                     <constraint firstItem="Ost-w4-d1z" firstAttribute="top" secondItem="RWf-7D-m4Y" secondAttribute="top" id="LvY-nX-ln3"/>
                     <constraint firstItem="VOM-Qs-eVP" firstAttribute="width" secondItem="RWf-7D-m4Y" secondAttribute="width" id="OTO-El-dgW"/>
-                    <constraint firstItem="RWf-7D-m4Y" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="24" id="Wrc-ci-mtQ"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Ost-w4-d1z" secondAttribute="trailing" id="Yk9-mO-r8d"/>
                     <constraint firstItem="v9a-Fx-8Yy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bQU-pe-oeX"/>
-                    <constraint firstItem="v9a-Fx-8Yy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="cDY-SM-Jev"/>
                     <constraint firstItem="Ost-w4-d1z" firstAttribute="bottom" secondItem="RWf-7D-m4Y" secondAttribute="bottom" id="dqk-jB-gnV"/>
                     <constraint firstItem="VOM-Qs-eVP" firstAttribute="bottom" secondItem="RWf-7D-m4Y" secondAttribute="bottom" id="ehB-BO-bfG"/>
+                    <constraint firstItem="OUl-Dc-acY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="lbx-0Q-88Q"/>
+                    <constraint firstAttribute="trailing" secondItem="OUl-Dc-acY" secondAttribute="trailing" constant="4" id="m5e-cc-Caw"/>
+                    <constraint firstItem="RWf-7D-m4Y" firstAttribute="leading" secondItem="v9a-Fx-8Yy" secondAttribute="leading" constant="24" id="oTL-yh-qxN"/>
+                    <constraint firstItem="v9a-Fx-8Yy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="pxg-De-b7b"/>
                     <constraint firstItem="VOM-Qs-eVP" firstAttribute="leading" secondItem="RWf-7D-m4Y" secondAttribute="trailing" id="qxZ-bs-dGz"/>
                     <constraint firstItem="RWf-7D-m4Y" firstAttribute="top" secondItem="v9a-Fx-8Yy" secondAttribute="bottom" id="wcH-VT-ZaG"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="dateLabel" destination="OUl-Dc-acY" id="CdJ-ze-PlF"/>
                 <outlet property="exerciseLabel" destination="v9a-Fx-8Yy" id="dis-Oy-GkT"/>
                 <outlet property="repsLabel" destination="VOM-Qs-eVP" id="ENk-Ho-7Gg"/>
                 <outlet property="restLabel" destination="Ost-w4-d1z" id="igI-qe-xCM"/>
                 <outlet property="weightLabel" destination="RWf-7D-m4Y" id="Oe1-zG-Zh1"/>
             </connections>
-            <point key="canvasLocation" x="-427" y="-198"/>
+            <point key="canvasLocation" x="-427.5" y="-198"/>
         </tableViewCell>
     </objects>
 </document>

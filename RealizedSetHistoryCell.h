@@ -15,8 +15,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *restLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
-- (void)configureCellWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest;
+- (void)configureCellWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest date:(NSString *)date;
 
 
 @end

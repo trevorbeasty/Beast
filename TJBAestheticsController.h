@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong, readonly) UIColor *color1;
 @property (nonatomic, strong, readonly) UIColor *color2;
+@property (nonatomic, strong, readonly) UIColor *yellowNotebookColor;
 
 + (instancetype)singleton;
 
@@ -46,3 +47,19 @@
 + (void)configureLabelsWithType2Format:(NSArray<UILabel *> *)labels withOpacity:(double)opacity;
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

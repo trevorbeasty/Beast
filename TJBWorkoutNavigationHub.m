@@ -580,16 +580,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
-    
-    // date formatter
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterNoStyle;
-    dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    
     // conditionals
     
-//    int sectionIndex = (int)indexPath.section;
     int rowIndex = (int)indexPath.row;
     
     BOOL isRealizedSet = [self.masterList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
@@ -602,17 +594,18 @@
         
         RealizedSetHistoryCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"realizedSetHistoryCell"];
         
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateStyle = NSDateFormatterNoStyle;
+        dateFormatter.timeStyle = NSDateFormatterShortStyle;
+        NSString *date = [dateFormatter stringFromDate: realizedSet.beginDate];
+        
         [cell configureCellWithExerciseName: realizedSet.exercise.name
                                      weight: [NSNumber numberWithFloat: realizedSet.weight]
                                        reps: [NSNumber numberWithFloat: realizedSet.reps]
-                                       rest: nil];
+                                       rest: nil
+                                       date: date];
         
-//        // labels
-//        
-//        cell.exerciseLabel.text = realizedSet.exercise.name;
-//        cell.weightLabel.text = [[NSNumber numberWithFloat: realizedSet.weight] stringValue];
-//        cell.repsLabel.text = [[NSNumber numberWithFloat: realizedSet.reps] stringValue];
-//        cell.restLabel.text = @"";
+        cell.backgroundColor = [UIColor clearColor];
         
         return cell;
         
@@ -624,10 +617,7 @@
         
         TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
         
-        // labels
-        
-//        cell.dateLabel.text = [dateFormatter stringFromDate: realizedChain.dateCreated];
-//        cell.realizedChainNameLabel.text = [NSString stringWithFormat: @"%@", realizedChain.chainTemplate.name];
+        cell.backgroundColor = [UIColor clearColor];
         
         return cell;
         

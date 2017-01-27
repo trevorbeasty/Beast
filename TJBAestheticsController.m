@@ -177,6 +177,15 @@
     
 }
 
+- (UIColor *)yellowNotebookColor{
+    
+    return [UIColor colorWithRed: 248 / 255.0
+                           green: 255 / 255.0
+                            blue: 178 / 255.0
+                           alpha: 1.0];
+    
+}
+
 @end
 
 

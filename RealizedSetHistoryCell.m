@@ -14,7 +14,7 @@
 
 @implementation RealizedSetHistoryCell
 
-- (void)configureCellWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest{
+- (void)configureCellWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest date:(NSString *)date{
     
     self.exerciseLabel.text = exerciseName;
     
@@ -26,6 +26,7 @@
     self.weightLabel.text = weightString;
     self.repsLabel.text = repsString;
     self.restLabel.text = restString;
+    self.dateLabel.text = date;
     
 }
 
