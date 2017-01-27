@@ -261,7 +261,7 @@
     
     BOOL atMaxDate = [calendar isDateInToday: self.activeDate];
     
-    if (!atMaxDate){
+    if (!(atMaxDate && numberOfDays == 1)){
         
         NSDateComponents *dateComps = [[NSDateComponents alloc] init];
         dateComps.day = numberOfDays;
@@ -289,7 +289,7 @@
         // give the date buttons new titles
         
         [self setTitlesAccordingToDate: self.activeDate
-                         isLargestDate: NO];
+                         isLargestDate: YES];
         
         // change the selected date button
         
@@ -300,7 +300,7 @@
         // give the date buttons new titles
         
         [self setTitlesAccordingToDate: self.activeDate
-                         isLargestDate: YES];
+                         isLargestDate: NO];
         
         // change the selected date button
         
@@ -330,17 +330,14 @@
     
     if (isLargestDate){
         
-        dateComps.day = 1;
+        dateComps.day = -6;
         newSmallDate = [calendar dateByAddingComponents: dateComps
                                                  toDate: date
                                                 options: 0];
         
     } else{
         
-        dateComps.day = -13;
-        newSmallDate = [calendar dateByAddingComponents: dateComps
-                                                 toDate: date
-                                                options: 0];
+        newSmallDate = self.activeDate;
         
     }
     
