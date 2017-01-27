@@ -11,7 +11,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBWorkoutNavigationHub">
             <connections>
-                <outlet property="dateScrollView" destination="p56-OB-zWq" id="ljo-b5-eXB"/>
                 <outlet property="dateStackView" destination="nLU-xK-YUa" id="7YM-su-2js"/>
                 <outlet property="designedButton" destination="fEh-Lf-hs5" id="bVj-Na-lb1"/>
                 <outlet property="freeformButton" destination="VJQ-A1-2LI" id="K5E-fb-Btz"/>
@@ -32,8 +31,14 @@
                         <navigationItem title="Title" id="YP8-cI-3IM"/>
                     </items>
                 </navigationBar>
+                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nLU-xK-YUa">
+                    <rect key="frame" x="0.0" y="68" width="536" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="GX6-dr-fO5"/>
+                    </constraints>
+                </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Egg-O8-qpU" userLabel="Button Container">
-                    <rect key="frame" x="0.0" y="68" width="536" height="40"/>
+                    <rect key="frame" x="0.0" y="580" width="536" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJQ-A1-2LI">
                             <rect key="frame" x="0.0" y="0.0" width="267" height="40"/>
@@ -63,33 +68,18 @@
                         <constraint firstAttribute="height" constant="40" id="riI-eF-eF1"/>
                     </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p56-OB-zWq">
-                    <rect key="frame" x="0.0" y="116" width="536" height="100"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="100" id="bNh-dK-Qww"/>
-                    </constraints>
-                </scrollView>
-                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nLU-xK-YUa">
-                    <rect key="frame" x="0.0" y="256" width="536" height="100"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="100" id="GX6-dr-fO5"/>
-                    </constraints>
-                </stackView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="nLU-xK-YUa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0GI-6z-Qde"/>
-                <constraint firstItem="nLU-xK-YUa" firstAttribute="top" secondItem="p56-OB-zWq" secondAttribute="bottom" constant="40" id="22Q-bl-Smo"/>
-                <constraint firstItem="p56-OB-zWq" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4Rm-e7-URW"/>
                 <constraint firstItem="duM-EA-yDh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="D5R-FO-JBI"/>
-                <constraint firstItem="p56-OB-zWq" firstAttribute="top" secondItem="Egg-O8-qpU" secondAttribute="bottom" constant="8" id="DAg-8U-rEI"/>
                 <constraint firstAttribute="trailing" secondItem="nLU-xK-YUa" secondAttribute="trailing" id="Gbz-7X-X3k"/>
                 <constraint firstItem="Egg-O8-qpU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="N5K-iz-IL9"/>
+                <constraint firstAttribute="bottom" secondItem="Egg-O8-qpU" secondAttribute="bottom" id="NS6-IP-QsA"/>
                 <constraint firstAttribute="trailing" secondItem="Egg-O8-qpU" secondAttribute="trailing" id="OxS-iI-fqa"/>
-                <constraint firstAttribute="trailing" secondItem="p56-OB-zWq" secondAttribute="trailing" id="Vag-zN-1fN"/>
                 <constraint firstItem="duM-EA-yDh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="btY-LA-5Cc"/>
                 <constraint firstAttribute="trailing" secondItem="duM-EA-yDh" secondAttribute="trailing" id="gRA-8S-rbw"/>
-                <constraint firstItem="Egg-O8-qpU" firstAttribute="top" secondItem="duM-EA-yDh" secondAttribute="bottom" constant="8" id="ngV-wt-dc6"/>
+                <constraint firstItem="nLU-xK-YUa" firstAttribute="top" secondItem="duM-EA-yDh" secondAttribute="bottom" constant="8" id="tkW-ep-Mtb"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="114" y="31"/>

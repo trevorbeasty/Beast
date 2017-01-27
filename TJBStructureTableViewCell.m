@@ -63,9 +63,9 @@
     
     // configure the chain name label
     
-    NSString *title = [NSString stringWithFormat: @"%@ (%lu)",
+    NSString *title = [NSString stringWithFormat: @"%@ (%d)",
                        chainTemplate.name,
-                       chainTemplate.realizedChains.count];
+                       (int)chainTemplate.realizedChains.count];
     
     self.chainNameLabel.text = title;
 

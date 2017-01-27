@@ -15,8 +15,8 @@
 @interface TJBCircleDateVC ()
 
 {
-    
-    CGSize _buttonSize;
+    float _radius;
+    CGPoint _center;
 }
 
 // IBOutlet
@@ -38,14 +38,15 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle size:(CGSize)size{
+- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle radius:(float)radius center:(CGPoint)center{
     
     self = [super init];
     
     if (self){
         
         self.mainButtonTitle = mainButtonTitle;
-        _buttonSize = size;
+        _radius = radius;
+        _center = center;
         
     }
     
@@ -57,34 +58,54 @@
 
 - (void)viewDidLoad{
     
-    [self.mainButton setTitle: self.mainButtonTitle
-                     forState: UIControlStateNormal];
+    
     
     [self configureViewAesthetics];
     
     
 }
 
+- (void)addCircularBorder{
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter: _center
+                                                        radius: _radius - 1.0
+                                                    startAngle: 0
+                                                      endAngle: 2 * M_PI
+                                                     clockwise: YES];
+    
+    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    
+    shapeLayer.path = path.CGPath;
+    shapeLayer.fillColor = nil;
+    shapeLayer.borderWidth = 2.0;
+    shapeLayer.strokeColor = [[TJBAestheticsController singleton] color1].CGColor;
+    
+    [self.mainButton.layer addSublayer: shapeLayer];
+    
+}
+
 - (void)configureViewAesthetics{
     
-    self.mainButton.backgroundColor = [[TJBAestheticsController singleton] color1];
+    self.mainButton.backgroundColor = [UIColor whiteColor];
+    
+    [self.mainButton setTitle: self.mainButtonTitle
+                     forState: UIControlStateNormal];
+    
+    [self.mainButton setTitleColor: [[TJBAestheticsController singleton] color1]
+                          forState: UIControlStateNormal];
     
     [self configureButtonMask];
     
-    
+    [self addCircularBorder];
     
 }
 
 - (void)configureButtonMask{
     
     // establish the bezier path
-    
-    CGPoint center = CGPointMake(_buttonSize.width / 2.0,  _buttonSize.height / 2.0);
-    
-    CGFloat radius = MIN(_buttonSize.width, _buttonSize.height);
-    
-    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter: center
-                                                        radius: radius
+
+    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter: _center
+                                                        radius: _radius
                                                     startAngle: 0
                                                       endAngle: 2 * M_PI
                                                      clockwise: YES];
@@ -94,13 +115,12 @@
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     
     shapeLayer.path = path.CGPath;
-    shapeLayer.strokeColor = [UIColor grayColor].CGColor;
+    
     
     // button
     
     self.mainButton.layer.mask = shapeLayer;
 
-    
 }
 
 #pragma mark - IBAction

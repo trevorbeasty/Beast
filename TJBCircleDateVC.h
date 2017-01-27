@@ -10,8 +10,7 @@
 
 @interface TJBCircleDateVC : UIViewController
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle size:(CGSize)size;
+- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle radius:(float)radius center:(CGPoint)center;
 
-//- (void)configureButtonMaskWithButtonSize:(CGSize)buttonSize;
 
 @end

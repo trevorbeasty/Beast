@@ -79,49 +79,31 @@
     
 }
 
-//- (void)viewWillAppear:(BOOL)animated{
-//    
-//    for (TJBCircleDateVC *vc in self.circleDateChildren){
-//        
-//        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-//        
-//        float numberOfDateButtons = 5;
-//        float dateButtonSpacing = 8;
-//        CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / numberOfDateButtons;
-//        
-//        CGFloat buttonHeight = 100;
-//        
-//        CGSize buttonSize = CGSizeMake(buttonWidth , buttonHeight);
-//        
-//        [vc configureButtonMaskWithButtonSize: buttonSize];
-//        
-//    }
-//    
-//    
-//}
-
 - (void)configureCircleDates{
     
-    int limit = 5;
+    int limit = 7;
     
     self.circleDateChildren = [[NSMutableArray alloc] init];
     
-            CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     
-            float numberOfDateButtons = 5.0;
-            float dateButtonSpacing = 8.0;
-            CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / numberOfDateButtons;
+    float numberOfDateButtons = 7.0;
+    float dateButtonSpacing = 8.0;
+    CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / numberOfDateButtons;
     
-            CGFloat buttonHeight = 100;
+    CGFloat buttonHeight = 100;
     
-            CGSize buttonSize = CGSizeMake(buttonWidth , buttonHeight);
+    float diameter = MIN(buttonWidth, buttonHeight);
+    
+    CGPoint center = CGPointMake(buttonWidth / 2.0, buttonHeight / 2.0);
     
     for (int i = 0; i < limit; i++){
         
-        NSString *title = [NSString stringWithFormat: @"%d", i];
+        NSString *title = [NSString stringWithFormat: @"%d", i + 1];
         
         TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: title
-                                                                                    size: buttonSize];
+                                                                                  radius: diameter / 2.0
+                                                                                  center: center];
         
         [self.circleDateChildren addObject: circleDateVC];
         
