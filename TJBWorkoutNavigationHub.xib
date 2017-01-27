@@ -32,9 +32,9 @@
                     </items>
                 </navigationBar>
                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nLU-xK-YUa">
-                    <rect key="frame" x="0.0" y="68" width="536" height="100"/>
+                    <rect key="frame" x="0.0" y="68" width="536" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="100" id="GX6-dr-fO5"/>
+                        <constraint firstAttribute="height" constant="60" id="GX6-dr-fO5"/>
                     </constraints>
                 </stackView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Egg-O8-qpU" userLabel="Button Container">

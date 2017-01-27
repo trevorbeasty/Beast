@@ -10,7 +10,7 @@
 
 @interface TJBCircleDateVC : UIViewController
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle radius:(float)radius center:(CGPoint)center;
+- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle radius:(float)radius center:(CGPoint)center selectedAppearance:(BOOL)selectedAppearance;
 
 
 @end

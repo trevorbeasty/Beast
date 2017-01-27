@@ -38,7 +38,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
-@property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
 @property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
 
 
@@ -52,6 +51,10 @@
 
 @property (nonatomic, strong) NSMutableArray <TJBCircleDateVC *> *circleDateChildren;
 
+// state variables
+
+@property (nonatomic, strong) NSDate *activeDate;
+
 @end
 
 @implementation TJBWorkoutNavigationHub
@@ -59,11 +62,17 @@
 #pragma mark - Instantiation
 
 - (instancetype)init{
+    
     self = [super init];
     
     // for restoration
+    
     self.restorationClass = [TJBWorkoutNavigationHub class];
     self.restorationIdentifier = @"TJBWorkoutNavigationHub";
+    
+    // state
+    
+    self.activeDate = [NSDate date];
     
     return self;
 }
@@ -81,29 +90,65 @@
 
 - (void)configureCircleDates{
     
-    int limit = 7;
-    
     self.circleDateChildren = [[NSMutableArray alloc] init];
     
     CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
     
-    float numberOfDateButtons = 7.0;
+    int numberOfDateButtons = 7;
     float dateButtonSpacing = 8.0;
-    CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / numberOfDateButtons;
+    CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / (float)numberOfDateButtons;
     
-    CGFloat buttonHeight = 100;
+    CGFloat buttonHeight = 40;
+//    CGFloat dayLabelHeight = 20;
+    float buttonCenterY = buttonHeight / 2.0;
     
-    float diameter = MIN(buttonWidth, buttonHeight);
+    CGPoint center = CGPointMake(buttonWidth / 2.0, buttonCenterY);
     
-    CGPoint center = CGPointMake(buttonWidth / 2.0, buttonHeight / 2.0);
+    // calendar
     
-    for (int i = 0; i < limit; i++){
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"E";
+    
+    int dayOffset;
+    NSDate *iterativeDate;
+    
+    BOOL selected;
+    
+    for (int i = 0; i < numberOfDateButtons; i++){
+        
+        // using the activeDate as the fourth button, configure all buttons with the appropriate date
+        
+        dayOffset = -3 + i;
+        dateComps.day = dayOffset;
+        
+        iterativeDate = [calendar dateByAddingComponents: dateComps
+                                                  toDate: self.activeDate
+                                                 options: 0];
+        
+        NSString *day = [dateFormatter stringFromDate: iterativeDate];
+        
+        if (i == 3){
+            
+            selected = YES;
+            
+        } else{
+            
+            selected = NO;
+            
+        }
+        
+        // create the child vc
         
         NSString *title = [NSString stringWithFormat: @"%d", i + 1];
         
         TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: title
-                                                                                  radius: diameter / 2.0
-                                                                                  center: center];
+                                                                                dayTitle: day
+                                                                                  radius: buttonWidth / 2.0
+                                                                                  center: center
+                                                                      selectedAppearance: selected];
         
         [self.circleDateChildren addObject: circleDateVC];
         

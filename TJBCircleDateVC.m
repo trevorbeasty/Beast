@@ -17,11 +17,13 @@
 {
     float _radius;
     CGPoint _center;
+    BOOL _selectedAppearance;
 }
 
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIButton *mainButton;
+@property (weak, nonatomic) IBOutlet UILabel *dayLabel;
 
 // IBAction
 
@@ -30,6 +32,9 @@
 // core
 
 @property (nonatomic, strong) NSString *mainButtonTitle;
+@property (nonatomic, strong) NSString *dayTitle;
+
+
 
 
 @end
@@ -38,15 +43,17 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle radius:(float)radius center:(CGPoint)center{
+- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle radius:(float)radius center:(CGPoint)center selectedAppearance:(BOOL)selectedAppearance{
     
     self = [super init];
     
     if (self){
         
         self.mainButtonTitle = mainButtonTitle;
+        self.dayTitle = dayTitle;
         _radius = radius;
         _center = center;
+        _selectedAppearance = selectedAppearance;
         
     }
     
@@ -58,10 +65,7 @@
 
 - (void)viewDidLoad{
     
-    
-    
     [self configureViewAesthetics];
-    
     
 }
 
@@ -86,17 +90,33 @@
 
 - (void)configureViewAesthetics{
     
+    // main button
+        
     self.mainButton.backgroundColor = [UIColor whiteColor];
-    
+        
     [self.mainButton setTitle: self.mainButtonTitle
                      forState: UIControlStateNormal];
-    
+        
     [self.mainButton setTitleColor: [[TJBAestheticsController singleton] color1]
                           forState: UIControlStateNormal];
-    
-    [self configureButtonMask];
-    
+        
+    // day label
+        
+    self.dayLabel.text = self.dayTitle;
+    self.dayLabel.textColor = [[TJBAestheticsController singleton] color1];
+        
+    //
+        
     [self addCircularBorder];
+    
+    if (_selectedAppearance){
+        
+        self.dayLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+        self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+        
+    }
+
+    
     
 }
 
