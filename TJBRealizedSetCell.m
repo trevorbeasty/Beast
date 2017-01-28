@@ -29,6 +29,8 @@
     self.dateLabel.text = date;
     self.numberLabel.text = [number stringValue];
     
+    self.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    
 }
 
 @end

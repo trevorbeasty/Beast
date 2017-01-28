@@ -16,7 +16,13 @@
 
 #import "TJBAestheticsController.h"
 
+// utilites
+
+#import "TJBAssortedUtilities.h"
+
 @interface TJBRealizedChainCell ()
+
+
 
 // IBOutlet
 
@@ -24,6 +30,10 @@
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
+
+// core data
+
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 
 
@@ -51,6 +61,8 @@
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     
+    self.realizedChain = realizedChain;
+    
     TJBChainTemplate *chainTemplate = realizedChain.chainTemplate;
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -60,6 +72,7 @@
     // configure the chain name label
     
     self.numberLabel.text = [number stringValue];
+    self.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
     NSString *title = [NSString stringWithFormat: @"%@",
                        chainTemplate.name];
@@ -77,10 +90,7 @@
     
     for (int i = 0; i < numExercises; i++){
         
-        UILabel *iterativeView = [[UILabel alloc] init];
-        iterativeView.text = chainTemplate.exercises[i].name;
-        iterativeView.font = [UIFont systemFontOfSize: 15.0];
-        iterativeView.textAlignment = NSTextAlignmentLeft;
+        UIView *iterativeView = [self stackViewForExerciseIndex: i];
         
         [self.stackView addArrangedSubview: iterativeView];
         
@@ -98,7 +108,37 @@
     
 }
 
-- (UIView *)exerciseSubviewWithName:(NSString *)name{
+- (UIStackView *)stackViewForExerciseIndex:(int)exerciseIndex{
+    
+    UIStackView *stackView = [[UIStackView alloc] init];
+    stackView.axis = UILayoutConstraintAxisVertical;
+    
+    int roundLimit = self.realizedChain.numberOfRounds;
+    
+    // exercise label
+    
+    UILabel *exerciseLabel = [[UILabel alloc] init];
+    exerciseLabel.text = self.realizedChain.exercises[exerciseIndex].name;
+    exerciseLabel.font = [UIFont systemFontOfSize: 15.0];
+    exerciseLabel.textColor = [UIColor blackColor];
+    exerciseLabel.textAlignment = NSTextAlignmentLeft;
+    
+    [stackView addArrangedSubview: exerciseLabel];
+    
+    for (int i = 0; i < roundLimit; i++){
+        
+        UIView *iterativeView = [self roundSubviewForExerciseIndex: exerciseIndex
+                                                        roundIndex: i];
+        
+        [stackView addArrangedSubview: iterativeView];
+        
+    }
+    
+    return stackView;
+    
+}
+
+- (UIView *)roundSubviewForExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
     
     //// create the exercise name subview, which will have two labels - one for a number and one for a name
     
@@ -106,46 +146,63 @@
     
     UILabel *weightLabel = [[UILabel alloc] init];
     UILabel *repsLabel = [[UILabel alloc] init];
-    UILabel *nameLabel = [[UILabel alloc] init];
+    UILabel *restLabel = [[UILabel alloc] init];
     
-    weightLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    repsLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    BOOL roundHasBeenExecuted = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseIndex
+                                                                   roundIndex: roundIndex
+                                              isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
+                                                          referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
     
-    weightLabel.text = @"135 - 175 lbs";
-    repsLabel.text = @"8 - 12 reps";
-    nameLabel.text = name;
+    if (roundHasBeenExecuted){
+        
+        float weight = self.realizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value;
+        int reps = (int)self.realizedChain.repsArrays[exerciseIndex].numbers[roundIndex].value;
+        
+        NSString *weightString = [NSString stringWithFormat: @"%.01f lbs", weight];
+        NSString *repsString = [NSString stringWithFormat: @"%d reps", reps];
+        
+        
+        weightLabel.text = weightString;
+        repsLabel.text = repsString;
+        restLabel.text = @"+ 00:00 rest";
+        
+    } else{
+        
+        weightLabel.text = @"incomplete";
+        repsLabel.text = @"";
+        restLabel.text = @"";
+        
+    }
     
-    [view addSubview: weightLabel];
-    [view addSubview: repsLabel];
-    [view addSubview: nameLabel];
+
     
     NSArray *labels = @[weightLabel,
-                        repsLabel];
+                        repsLabel,
+                        restLabel];
     
     for (UILabel *label in labels){
         
+        label.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [view addSubview: label];
+        
         [label setTextColor: [UIColor blackColor]];
-        [label setFont: [UIFont systemFontOfSize: 10.0]];
+        [label setFont: [UIFont systemFontOfSize: 15.0]];
         label.textAlignment = NSTextAlignmentLeft;
         
     }
     
-    [weightLabel setTextColor: [UIColor blackColor]];
-    [weightLabel setFont: [UIFont systemFontOfSize: 15.0]];
-    weightLabel.textAlignment = NSTextAlignmentLeft;
+    NSDictionary *constraintMapping = [NSDictionary dictionaryWithObjects: @[weightLabel, repsLabel, restLabel]
+                                                                  forKeys: @[@"weightLabel", @"repsLabel", @"restLabel"]];
     
-    NSDictionary *constraintMapping = [NSDictionary dictionaryWithObjects: @[weightLabel, repsLabel, nameLabel]
-                                                                  forKeys: @[@"weightLabel", @"repsLabel", @"nameLabel"]];
-    
-    NSString *horizontal1 = @"H:|-0-[nameLabel]-4-[weightLabel(==nameLabel)]-4[repsLabel(==nameLabel)-|";
+    NSString *horizontal1 = @"H:|-32-[weightLabel]-0-[repsLabel(==weightLabel)]-0-[restLabel(==weightLabel)]-0-|";
     
     NSArray *horizontalConstraints1 = [NSLayoutConstraint constraintsWithVisualFormat: horizontal1
                                                                               options: 0
                                                                               metrics: nil
                                                                                 views: constraintMapping];
     
-    NSString *vertical1 = @"V:|-0-[nameLabel]-0-|";
+    NSString *vertical1 = @"V:|-0-[restLabel]-0-|";
     NSString *vertical2 = @"V:|-0-[weightLabel]-0-|";
     NSString *vertical3 = @"V:|-0-[repsLabel]-0-|";
     

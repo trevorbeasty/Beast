@@ -677,7 +677,7 @@
         
         float height = [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
         
-        return height;
+        return 200;
         
     }
  

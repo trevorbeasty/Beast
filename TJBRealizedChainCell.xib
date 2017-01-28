@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="511" height="329"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="511" height="329"/>
+                <rect key="frame" x="0.0" y="0.0" width="511" height="328"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CVA-CK-TLK">
@@ -36,7 +36,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q60-wO-p9d">
-                        <rect key="frame" x="48" y="36" width="455" height="284.5"/>
+                        <rect key="frame" x="16" y="36" width="487" height="284.5"/>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Realized Chain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDa-br-hrf">
                         <rect key="frame" x="36" y="8" width="101" height="20"/>
@@ -56,7 +56,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="q60-wO-p9d" secondAttribute="trailing" id="d6i-wv-JLR"/>
                     <constraint firstItem="CDa-br-hrf" firstAttribute="leading" secondItem="7b7-La-MtN" secondAttribute="trailing" constant="4" id="ful-ow-EYf"/>
                     <constraint firstItem="CDa-br-hrf" firstAttribute="top" secondItem="7b7-La-MtN" secondAttribute="top" id="oxO-cs-ftG"/>
-                    <constraint firstItem="q60-wO-p9d" firstAttribute="leading" secondItem="7b7-La-MtN" secondAttribute="leading" constant="32" id="y41-nr-Ln2"/>
+                    <constraint firstItem="q60-wO-p9d" firstAttribute="leading" secondItem="7b7-La-MtN" secondAttribute="leading" id="y41-nr-Ln2"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
