@@ -36,7 +36,7 @@
 // table view cells
 
 #import "TJBRealizedSetCell.h"
-#import "TJBStructureTableViewCell.h"
+#import "TJBRealizedChainCell.h"
 
 
 
@@ -224,11 +224,11 @@
         
         if (obj2LaterThanObj1){
             
-            return NSOrderedDescending;
+            return NSOrderedAscending;
             
         } else {
             
-            return  NSOrderedAscending;
+            return  NSOrderedDescending;
             
         }
     }];
@@ -283,11 +283,11 @@
     [self.tableView registerNib: realizedSetNib
          forCellReuseIdentifier: @"TJBRealizedSetCell"];
     
-    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBStructureTableViewCell"
+    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
                                              bundle: nil];
     
     [self.tableView registerNib: realizedChainNib
-                forCellReuseIdentifier: @"TJBStructureTableViewCell"];
+         forCellReuseIdentifier: @"TJBRealizedChainCell"];
     
 }
 
@@ -590,6 +590,8 @@
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
     // conditionals
     
+    NSNumber *number = [NSNumber numberWithInteger: indexPath.row + 1];
+    
     int rowIndex = (int)indexPath.row;
     
     BOOL isRealizedSet = [self.masterList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
@@ -602,7 +604,7 @@
         
         TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
         
-        NSNumber *number = [NSNumber numberWithInteger: self.masterList.count - indexPath.row];
+        
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateStyle = NSDateFormatterNoStyle;
@@ -626,9 +628,10 @@
         
         // dequeue the realizedSetCell
         
-        TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
+        TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
         
-//        [cell configureWithChainTemplate:  date:<#(NSDate *)#>]
+        [cell configureWithRealizedChain: realizedChain
+                                  number: number];
         
         cell.backgroundColor = [UIColor clearColor];
         
@@ -670,7 +673,7 @@
         
         int totalHeight = spacing + chainNameLabelHeight + componentHeight * numExercises + error;
         
-        return totalHeight;
+        return 100;
         
     }
  

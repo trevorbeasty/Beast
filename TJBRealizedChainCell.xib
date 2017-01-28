@@ -1,19 +1,71 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="TJBRealizedChainCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="329" id="KGk-i7-Jjw" customClass="TJBRealizedChainCell">
+            <rect key="frame" x="0.0" y="0.0" width="511" height="329"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <frame key="frameInset" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="511" height="329"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CVA-CK-TLK">
+                        <rect key="frame" x="480" y="8" width="23" height="12"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7b7-La-MtN">
+                        <rect key="frame" x="16" y="8" width="16" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="16" id="Be0-9m-BVY"/>
+                            <constraint firstAttribute="height" constant="20" id="iwk-Zo-CMq"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q60-wO-p9d">
+                        <rect key="frame" x="48" y="36" width="455" height="284.5"/>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Realized Chain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDa-br-hrf">
+                        <rect key="frame" x="36" y="8" width="101" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="CVA-CK-TLK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="4K4-hY-pXn"/>
+                    <constraint firstItem="q60-wO-p9d" firstAttribute="top" secondItem="7b7-La-MtN" secondAttribute="bottom" constant="8" id="A97-Oe-IEw"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="CVA-CK-TLK" secondAttribute="trailing" id="L3d-Pb-UXn"/>
+                    <constraint firstItem="7b7-La-MtN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="UJR-Vc-fJf"/>
+                    <constraint firstItem="CDa-br-hrf" firstAttribute="bottom" secondItem="7b7-La-MtN" secondAttribute="bottom" id="WEi-UF-rfg"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="q60-wO-p9d" secondAttribute="bottom" id="YSd-b6-629"/>
+                    <constraint firstItem="7b7-La-MtN" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="bFN-H3-FoC"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="q60-wO-p9d" secondAttribute="trailing" id="d6i-wv-JLR"/>
+                    <constraint firstItem="CDa-br-hrf" firstAttribute="leading" secondItem="7b7-La-MtN" secondAttribute="trailing" constant="4" id="ful-ow-EYf"/>
+                    <constraint firstItem="CDa-br-hrf" firstAttribute="top" secondItem="7b7-La-MtN" secondAttribute="top" id="oxO-cs-ftG"/>
+                    <constraint firstItem="q60-wO-p9d" firstAttribute="leading" secondItem="7b7-La-MtN" secondAttribute="leading" constant="32" id="y41-nr-Ln2"/>
+                </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="chainNameLabel" destination="CDa-br-hrf" id="pBK-iB-E6W"/>
+                <outlet property="dateLabel" destination="CVA-CK-TLK" id="vch-QK-lEF"/>
+                <outlet property="numberLabel" destination="7b7-La-MtN" id="NHs-Gb-55I"/>
+                <outlet property="stackView" destination="q60-wO-p9d" id="zrx-C5-78I"/>
+            </connections>
+            <point key="canvasLocation" x="129.5" y="196.5"/>
         </tableViewCell>
     </objects>
 </document>
