@@ -16,21 +16,22 @@
 
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource>
 
+// FRC
+
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-
-@property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
-
-// navigation bar
-
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-@property (nonatomic, strong) UINavigationItem *navItem;
-@property (nonatomic, strong) NSString *navBarTitle;
 
 // callback
 
 @property (copy) void(^callbackBlock)(TJBExercise *);
 
+// IBOutlet
+
 @property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
+@property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
+@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+
+// IBAction
+
 - (IBAction)didPressAddNewExercise:(id)sender;
 
 
@@ -42,22 +43,28 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitle:(NSString *)title callbackBlock:(void (^)(TJBExercise *))block{
+- (instancetype)initWithCallbackBlock:(void (^)(TJBExercise *))block{
+    
     self = [super init];
     
-    self.navBarTitle = title;
     self.callbackBlock = block;
     
     return self;
+    
 }
 
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
     [self configureTableView];
+    
     [self configureNavigationBar];
+    
     [self createFetchedResultsController];
+    
     [self viewAesthetics];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -66,11 +73,9 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     [self.exerciseTableView reloadData];
 }
 
-- (void)configureNavigationBar
-{
-    UINavigationItem *navItem = [[UINavigationItem alloc] init];
+- (void)configureNavigationBar{
     
-    [navItem setTitle: self.navBarTitle];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select Exercise"];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                   target: self
@@ -78,10 +83,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     [navItem setLeftBarButtonItem: cancelButton];
     
     [self.navBar setItems: @[navItem]];
+    
 }
 
-- (void)createFetchedResultsController
-{
+- (void)createFetchedResultsController{
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     
     NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
@@ -111,11 +117,14 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
         abort();
     }
+    
 }
 
 - (void)viewAesthetics{
+    
     [[TJBAestheticsController singleton] configureButtonsInArray: @[self.addNewExerciseButton]
                                                      withOpacity: 1.0];
+    
 }
 
 - (void)configureTableView
@@ -165,14 +174,16 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.callbackBlock(exercise);
+    
 }
 
 #pragma mark - Button Actions
 
-- (void)didPressCancelButton
-{
+- (void)didPressCancelButton{
+    
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+    
 }
 
 - (IBAction)didPressAddNewExercise:(id)sender {
@@ -181,7 +192,27 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                        animated: YES
                      completion: nil];
 }
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

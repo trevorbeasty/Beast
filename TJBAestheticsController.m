@@ -75,17 +75,12 @@
     
     for (UIButton *button in buttons){
         
-        CALayer *layer = button.layer;
-        layer.masksToBounds = YES;
-        layer.cornerRadius = [[self buttonCornerRadius] intValue];
-        layer.opacity = opacity;
-        
-        button.backgroundColor = [self buttonBackgroundColor];
-        [button setTitleColor: [self buttonTextColor]
+        button.backgroundColor = [self color2];
+        [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         
         UILabel *title = button.titleLabel;
-        [title setFont: [self buttonFont]];
+        [title setFont: [UIFont boldSystemFontOfSize: 20.0]];
         
     }
     

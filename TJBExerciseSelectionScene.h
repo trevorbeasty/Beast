@@ -12,6 +12,6 @@
 
 @interface TJBExerciseSelectionScene : UIViewController
 
-- (instancetype)initWithTitle:(NSString *)title callbackBlock:(void(^)(TJBExercise *))block;
+- (instancetype)initWithCallbackBlock:(void(^)(TJBExercise *))block;
 
 @end

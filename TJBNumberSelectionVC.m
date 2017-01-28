@@ -101,8 +101,6 @@ static NSString * const reuseIdentifier = @"basicCell";
     
     // other methods
     
-    [self addBackgroundView];
-    
     [self configureNavigationBar];
     
 }
@@ -125,12 +123,7 @@ static NSString * const reuseIdentifier = @"basicCell";
     
 }
 
-- (void)addBackgroundView{
-    UIImage *image = [UIImage imageNamed: @"pileOfPlates"];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
-    imageView.layer.opacity = .9;
-    self.collectionView.backgroundView = imageView;
-}
+
 
 #pragma mark <UICollectionViewDataSource>
 

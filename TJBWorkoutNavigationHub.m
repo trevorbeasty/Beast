@@ -96,7 +96,22 @@
     [self configureRealizedChainFRC];
     [self configureMasterList];
     
+    [self configureNotifications];
+    
     return self;
+}
+
+- (void)configureNotifications{
+    
+    //// configure managed context notification for updating
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                            selector: @selector(mocDidSave)
+                                                name: NSManagedObjectContextDidSaveNotification
+                                                object: moc];
+    
 }
 
 - (void)configureRealizedSetFRC{
@@ -419,6 +434,19 @@
     
 }
 
+#pragma mark - Core Data
+
+- (void)mocDidSave{
+    
+    //// refresh fetched managed objects and all trickle-down
+    
+    [self configureRealizedSetFRC];
+    [self configureRealizedChainFRC];
+    [self configureMasterList];
+    
+    [self.tableView reloadData];
+}
+
 
 #pragma mark - Button Actions
 
@@ -619,6 +647,8 @@
         // dequeue the realizedSetCell
         
         TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+        
+        [cell clearExistingEntries];
         
         [cell configureWithRealizedChain: realizedChain
                                   number: number];

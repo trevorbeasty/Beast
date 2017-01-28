@@ -440,8 +440,8 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
     
-    NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
-                       [chainNumber intValue]];
+//    NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
+//                       [chainNumber intValue]];
     
     TJBCircuitTemplateVC * __weak weakSelf = self;
     
@@ -462,8 +462,7 @@ static NSString * const defaultValue = @"unselected";
                                      completion: nil];
     };
     
-    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithTitle: title
-                                                                       callbackBlock: callback];
+    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithCallbackBlock: callback];
     
     [self presentViewController: vc
                        animated: NO

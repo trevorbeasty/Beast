@@ -20,7 +20,9 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration>
+#import "TJBExerciseSelectionScene.h"
+
+@interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration, UITableViewDelegate, UITableViewDataSource>
 
 {
     BOOL _setCompletedButtonPressed;
@@ -39,6 +41,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
 @property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
+@property (weak, nonatomic) IBOutlet UILabel *personalRecordsLabel;
+@property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 
 // IBAction
 
@@ -292,81 +296,14 @@
     
 }
 
-//#pragma mark - <UITableViewDataSource>
-//
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-//    return sectionCount;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-//    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-//    return numberOfObjects;
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
-//    
-//    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
-//    
-//    cell.textLabel.text = exercise.name;
-//    
-//    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
-//    
-//    return cell;
-//}
-//
-//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-//    
-//    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-//    
-//    return [sectionInfo name];
-//    
-//}
-//
-//#pragma mark - <UITableViewDelegate>
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
-//    
-//    self.exercise = exercise;
-//    
-//    [self.navItem setTitle: exercise.name];
-//    
-//    [self.personalRecordVC didSelectExercise: exercise];
-//    
-//}
-//
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    
-//    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 40)];
-//    
-//    label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
-//    
-//    label.text = [self tableView: tableView
-//         titleForHeaderInSection: section];
-//    
-//    label.textAlignment = NSTextAlignmentCenter;
-//    
-//    label.font = [UIFont boldSystemFontOfSize: 20.0];
-//    
-//    return label;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//    
-//    return 40;
-//    
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    return 40;
-//    
-//}
+#pragma mark - <UITableViewDataSource>
+
+
+
+
+
+#pragma mark - <UITableViewDelegate>
+
 
 
 
@@ -448,7 +385,28 @@
     
 }
 
-- (IBAction)didPressExerciseButton:(id)sender {
+- (IBAction)didPressExerciseButton:(id)sender{
+    
+    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+    
+    void (^callback)(TJBExercise *) = ^(TJBExercise *selectedExercise){
+        
+        weakSelf.exercise = selectedExercise;
+        
+        [weakSelf.exerciseButton setTitle: selectedExercise.name
+                                 forState: UIControlStateNormal];
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+        
+    };
+    
+    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithCallbackBlock: callback];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
+    
 }
 
 - (void)didPressHome{
@@ -459,11 +417,13 @@
 }
 
 - (IBAction)addNewExercise:(id)sender{
+    
     TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
     
     [self presentViewController: vc
                        animated: YES
                      completion: nil];
+    
 }
 
 - (IBAction)didPressBeginNextSet:(id)sender{
