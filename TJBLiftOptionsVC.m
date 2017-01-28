@@ -8,6 +8,11 @@
 
 #import "TJBLiftOptionsVC.h"
 
+// presented VC's
+
+#import "TJBRealizedSetActiveEntryVC.h"
+#import "TJBCircuitModeTBC.h"
+
 @interface TJBLiftOptionsVC ()
 
 // IBOutlet
@@ -50,10 +55,24 @@
 
 #pragma mark - IBAction
 
-- (IBAction)didPressFreeformButton:(id)sender {
+- (IBAction)didPressFreeformButton:(id)sender{
+    
+    TJBRealizedSetActiveEntryVC *vc = [[TJBRealizedSetActiveEntryVC alloc] init];
+    
+    [self presentViewController: vc
+                       animated: NO
+                     completion: nil];
+    
 }
 
-- (IBAction)didPressDesignedButton:(id)sender {
+- (IBAction)didPressDesignedButton:(id)sender{
+    
+    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] init];
+    
+    [self presentViewController: tbc
+                       animated: NO
+                     completion: nil];  
+    
 }
 
 - (void)didPressHome{

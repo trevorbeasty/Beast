@@ -20,7 +20,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBRealizedSetActiveEntryVC () <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UIViewControllerRestoration>
+@interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration>
 
 {
     BOOL _setCompletedButtonPressed;
@@ -28,15 +28,12 @@
     BOOL _whiteoutActive;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 
 // UI buttons
 
-- (IBAction)addNewExercise:(id)sender;
 - (IBAction)didPressBeginNextSet:(id)sender;
 
 
-@property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 
 // core data
@@ -146,9 +143,7 @@
     
     [self addAppropriateStopwatchObservers];
     
-    [self fetchCoreDataAndConfigureTableView];
-    
-    [self addBackgroundImage];
+//    [self fetchCoreDataAndConfigureTableView];
     
     [self viewAesthetics];
     
@@ -158,102 +153,100 @@
 
 - (void)viewAesthetics{
     
-    self.exerciseTableView.layer.opacity = .85;
+    // buttons
     
     NSArray *buttons = @[self.beginNextSetButton,
-                         self.addNewExerciseButton,
                          self.targetRestButton];
     
-    [[TJBAestheticsController singleton] configureButtonsInArray: buttons
-                                                     withOpacity: .85];
+    for (UIButton *button in buttons){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] color2];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
     
-    NSArray *type2Labels = @[self.timerLabel];
+    // timer
     
-    [TJBAestheticsController configureLabelsWithType2Format: type2Labels
-                                                withOpacity: .85];
+    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
+    self.timerLabel.textColor = [UIColor whiteColor];
+    self.timerLabel.font = [UIFont systemFontOfSize: 20.0];
     
 }
 
-- (void)addBackgroundImage{
-    
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"girlOverheadKettlebell"]
-                                                                   toRootView: self.view
-                                                                 imageOpacity: .35];
-}
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select an Exercise"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform"];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                       style: UIBarButtonItemStyleDone
                                                                      target: self
-                                                                     action: @selector(didPressDone)];
+                                                                     action: @selector(didPressHome)];
     
     [navItem setLeftBarButtonItem: barButtonItem];
     
-    self.navItem = navItem;
-    
     [self.navigationBar setItems: @[navItem]];
     
-    // nav bar text appearance
+    // nav bar text
     
     [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
     
 }
 
-- (void)fetchCoreDataAndConfigureTableView{
-    
-    // table view reusable cell registration
-    // notification center registration as well
-    
-    [self.exerciseTableView registerClass: [UITableViewCell class]
-                   forCellReuseIdentifier: @"basicCell"];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(exerciseDataChanged)
-                                                 name: ExerciseDataChanged
-                                               object: nil];
-    
-    // NSFetchedResultsController
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
-    
-    NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
-                                                    @"Placeholder"];
-    
-    request.predicate = noPlaceholderExercisesPredicate;
-    
-    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
-                                                               ascending: YES];
-    
-    NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
-                                                                   ascending: YES];
-    
-    [request setSortDescriptors: @[categorySort, nameSort]];
-    
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                          managedObjectContext: moc
-                                                                            sectionNameKeyPath: @"category.name"
-                                                                                     cacheName: nil];
-    
-    frc.delegate = self;
-    
-    self.fetchedResultsController = frc;
-    
-    NSError *error = nil;
-    
-    if (![self.fetchedResultsController performFetch: &error]){
-        
-        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
-        
-        abort();
-        
-    }
-    
-}
+//- (void)fetchCoreDataAndConfigureTableView{
+//    
+//    // table view reusable cell registration
+//    // notification center registration as well
+//    
+//    [self.exerciseTableView registerClass: [UITableViewCell class]
+//                   forCellReuseIdentifier: @"basicCell"];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(exerciseDataChanged)
+//                                                 name: ExerciseDataChanged
+//                                               object: nil];
+//    
+//    // NSFetchedResultsController
+//    
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+//    
+//    NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
+//                                                    @"Placeholder"];
+//    
+//    request.predicate = noPlaceholderExercisesPredicate;
+//    
+//    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
+//                                                               ascending: YES];
+//    
+//    NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
+//                                                                   ascending: YES];
+//    
+//    [request setSortDescriptors: @[categorySort, nameSort]];
+//    
+//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+//    
+//    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
+//                                                                          managedObjectContext: moc
+//                                                                            sectionNameKeyPath: @"category.name"
+//                                                                                     cacheName: nil];
+//    
+//    frc.delegate = self;
+//    
+//    self.fetchedResultsController = frc;
+//    
+//    NSError *error = nil;
+//    
+//    if (![self.fetchedResultsController performFetch: &error]){
+//        
+//        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
+//        
+//        abort();
+//        
+//    }
+//    
+//}
 
 - (void)exerciseDataChanged{
     
@@ -261,7 +254,7 @@
     
     [self.fetchedResultsController performFetch: &error];
     
-    [self.exerciseTableView reloadData];
+//    [self.exerciseTableView reloadData];
     
 }
 
@@ -282,81 +275,81 @@
     
 }
 
-#pragma mark - <UITableViewDataSource>
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-    return sectionCount;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-    return numberOfObjects;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
-    
-    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    cell.textLabel.text = exercise.name;
-    
-    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
-    
-    return cell;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-    
-    return [sectionInfo name];
-    
-}
-
-#pragma mark - <UITableViewDelegate>
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
-    
-    self.exercise = exercise;
-    
-    [self.navItem setTitle: exercise.name];
-    
-    [self.personalRecordVC didSelectExercise: exercise];
-    
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    
-    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 40)];
-    
-    label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
-    
-    label.text = [self tableView: tableView
-         titleForHeaderInSection: section];
-    
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    label.font = [UIFont boldSystemFontOfSize: 20.0];
-    
-    return label;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    
-    return 40;
-    
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    return 40;
-    
-}
+//#pragma mark - <UITableViewDataSource>
+//
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+//    return sectionCount;
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+//    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+//    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+//    return numberOfObjects;
+//}
+//
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"basicCell"];
+//    
+//    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+//    
+//    cell.textLabel.text = exercise.name;
+//    
+//    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
+//    
+//    return cell;
+//}
+//
+//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+//    
+//    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+//    
+//    return [sectionInfo name];
+//    
+//}
+//
+//#pragma mark - <UITableViewDelegate>
+//
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+//    
+//    self.exercise = exercise;
+//    
+//    [self.navItem setTitle: exercise.name];
+//    
+//    [self.personalRecordVC didSelectExercise: exercise];
+//    
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    
+//    UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 40)];
+//    
+//    label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
+//    
+//    label.text = [self tableView: tableView
+//         titleForHeaderInSection: section];
+//    
+//    label.textAlignment = NSTextAlignmentCenter;
+//    
+//    label.font = [UIFont boldSystemFontOfSize: 20.0];
+//    
+//    return label;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+//    
+//    return 40;
+//    
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    return 40;
+//    
+//}
 
 
 
@@ -400,9 +393,11 @@
     
 }
 
-- (void)didPressDone{
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
+- (void)didPressHome{
+    
+    [self.presentingViewController.presentingViewController dismissViewControllerAnimated: NO
+                                                                               completion: nil];
+    
 }
 
 - (IBAction)addNewExercise:(id)sender{
@@ -633,7 +628,7 @@
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch: &error];
-    [self.exerciseTableView reloadData];
+//    [self.exerciseTableView reloadData];
     
     [self dismissViewControllerAnimated: YES
                              completion: nil];
@@ -731,18 +726,18 @@
     
     // table view
     
-    CGPoint scrollPosition = self.exerciseTableView.contentOffset;
-    int y = scrollPosition.y;
-    [coder encodeFloat: y
-                forKey: @"scrollYPosition"];
+//    CGPoint scrollPosition = self.exerciseTableView.contentOffset;
+//    int y = scrollPosition.y;
+//    [coder encodeFloat: y
+//                forKey: @"scrollYPosition"];
     
-    NSIndexPath *path = self.exerciseTableView.indexPathForSelectedRow;
-    if (path){
-        
-        [coder encodeObject: path
-                     forKey: @"path"];
-        
-    }
+//    NSIndexPath *path = self.exerciseTableView.indexPathForSelectedRow;
+//    if (path){
+//        
+//        [coder encodeObject: path
+//                     forKey: @"path"];
+    
+//    }
     
     // realized set user selections
     
@@ -798,24 +793,24 @@
     
     // table view
     
-    float y = [coder decodeDoubleForKey: @"scrollYPosition"];
-    self.exerciseTableView.contentOffset = CGPointMake(0, y);
-    
-    NSIndexPath *path = [coder decodeObjectForKey: @"path"];
-    if (path){
-        
-        // artificially make table view selections for state restoration
-        
-        [self.exerciseTableView selectRowAtIndexPath: path
-                                            animated: NO
-                                      scrollPosition: UITableViewScrollPositionNone];
-        [self tableView: self.exerciseTableView didSelectRowAtIndexPath: path];
-        
-        // use the saved path to restore the 'exercise' property
-        
-        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: path];
-        self.exercise = exercise;
-    }
+//    float y = [coder decodeDoubleForKey: @"scrollYPosition"];
+//    self.exerciseTableView.contentOffset = CGPointMake(0, y);
+//    
+//    NSIndexPath *path = [coder decodeObjectForKey: @"path"];
+//    if (path){
+//        
+//        // artificially make table view selections for state restoration
+//        
+//        [self.exerciseTableView selectRowAtIndexPath: path
+//                                            animated: NO
+//                                      scrollPosition: UITableViewScrollPositionNone];
+//        [self tableView: self.exerciseTableView didSelectRowAtIndexPath: path];
+//        
+//        // use the saved path to restore the 'exercise' property
+//        
+//        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: path];
+//        self.exercise = exercise;
+//    }
     
     // realized set user selections
     

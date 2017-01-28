@@ -9,7 +9,7 @@
 #import "TJBRealizedSetActiveEntryTBC.h"
 
 #import "TJBRealizedSetActiveEntryVC.h"
-#import "TJBRealizedSetHistoryByDay.h"
+//#import "TJBRealizedSetHistoryByDay.h"
 #import "RealizedSetPersonalRecordVC.h"
 
 @interface TJBRealizedSetActiveEntryTBC () <UIViewControllerRestoration>
@@ -42,9 +42,6 @@
     // child VC's
     TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
     [vc1.tabBarItem setTitle: @"Active Entry"];
-    
-    TJBRealizedSetHistoryByDay *vc2 = [[TJBRealizedSetHistoryByDay alloc] init];
-    [vc2.tabBarItem setTitle: @"Today's Log"];
 
     RealizedSetPersonalRecordVC *vc3 = [[RealizedSetPersonalRecordVC alloc] init];
     [vc3.tabBarItem setTitle: @"Personal Records"];
@@ -52,7 +49,6 @@
     vc1.personalRecordVC = vc3;
     
     [self setViewControllers: @[vc1,
-                               vc2,
                                 vc3]];
     self.tabBar.translucent = NO;
     
@@ -90,9 +86,6 @@
                  forKey: @"vc1"];
     
     [coder encodeObject: self.viewControllers[1]
-                 forKey: @"vc2"];
-    
-    [coder encodeObject: self.viewControllers[2]
                  forKey: @"vc3"];
     
 }
@@ -106,8 +99,6 @@
     TJBRealizedSetActiveEntryVC *vc1 = [coder decodeObjectForKey: @"vc1"];
     [vc1.tabBarItem setTitle: @"Active Entry"];
     
-    TJBRealizedSetHistoryByDay *vc2 = [coder decodeObjectForKey: @"vc2"];
-    [vc2.tabBarItem setTitle: @"Today's Log"];
     
     RealizedSetPersonalRecordVC *vc3 = [coder decodeObjectForKey: @"vc3"];
     [vc3.tabBarItem setTitle: @"Personal Records"];
@@ -115,7 +106,6 @@
     vc1.personalRecordVC = vc3;
     
     [self setViewControllers: @[vc1,
-                                vc2,
                                 vc3]];
     
     self.tabBar.translucent = NO;
