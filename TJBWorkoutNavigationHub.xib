@@ -12,8 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBWorkoutNavigationHub">
             <connections>
                 <outlet property="dateStackView" destination="nLU-xK-YUa" id="7YM-su-2js"/>
-                <outlet property="designedButton" destination="fEh-Lf-hs5" id="bVj-Na-lb1"/>
-                <outlet property="freeformButton" destination="VJQ-A1-2LI" id="K5E-fb-Btz"/>
+                <outlet property="liftButton" destination="VJQ-A1-2LI" id="Zvh-Us-tds"/>
                 <outlet property="tableView" destination="X0R-s4-kMW" id="tw0-LB-chD"/>
                 <outlet property="tableViewContainer" destination="7nx-Mn-0CS" id="Ae0-4r-EsT"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -34,30 +33,20 @@
                     <rect key="frame" x="0.0" y="684" width="508" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJQ-A1-2LI">
-                            <rect key="frame" x="0.0" y="0.0" width="253" height="40"/>
-                            <state key="normal" title="Freeform Lift"/>
+                            <rect key="frame" x="0.0" y="0.0" width="508" height="40"/>
+                            <color key="backgroundColor" red="0.15243352943505026" green="0.26855285753595498" blue="0.45854466623036649" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Lift"/>
                             <connections>
-                                <action selector="didPressFreeformButton:" destination="-1" eventType="touchUpInside" id="fjk-lj-fal"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fEh-Lf-hs5">
-                            <rect key="frame" x="255" y="0.0" width="253" height="40"/>
-                            <state key="normal" title="Designed Lift"/>
-                            <connections>
-                                <action selector="didPressDesignedButton:" destination="-1" eventType="touchUpInside" id="Uac-GS-HGx"/>
+                                <action selector="didPressLiftButton:" destination="-1" eventType="touchUpInside" id="ul4-ly-j7k"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="VJQ-A1-2LI" firstAttribute="leading" secondItem="Egg-O8-qpU" secondAttribute="leading" id="Cye-sb-8tu"/>
-                        <constraint firstItem="fEh-Lf-hs5" firstAttribute="leading" secondItem="VJQ-A1-2LI" secondAttribute="trailing" constant="2" id="DBj-Sj-NZE"/>
-                        <constraint firstItem="fEh-Lf-hs5" firstAttribute="width" secondItem="VJQ-A1-2LI" secondAttribute="width" id="He8-9U-vAv"/>
+                        <constraint firstAttribute="trailing" secondItem="VJQ-A1-2LI" secondAttribute="trailing" id="K8U-6S-A9y"/>
                         <constraint firstAttribute="bottom" secondItem="VJQ-A1-2LI" secondAttribute="bottom" id="Xl8-lE-a2X"/>
-                        <constraint firstItem="fEh-Lf-hs5" firstAttribute="top" secondItem="Egg-O8-qpU" secondAttribute="top" id="aIC-q5-YY7"/>
-                        <constraint firstAttribute="trailing" secondItem="fEh-Lf-hs5" secondAttribute="trailing" id="gId-E7-rqL"/>
                         <constraint firstItem="VJQ-A1-2LI" firstAttribute="top" secondItem="Egg-O8-qpU" secondAttribute="top" id="k5O-gC-8ep"/>
-                        <constraint firstAttribute="bottom" secondItem="fEh-Lf-hs5" secondAttribute="bottom" id="pTG-NA-ism"/>
                         <constraint firstAttribute="height" constant="40" id="riI-eF-eF1"/>
                     </constraints>
                 </view>

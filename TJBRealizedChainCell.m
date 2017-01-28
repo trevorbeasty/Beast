@@ -235,11 +235,12 @@
     //// must manually configure the inputs as the xib is altered
     
     float numberOfExercises = (float)realizedChain.numberOfExercises;
+    float numberOfRounds = (float)realizedChain.numberOfRounds;
     float titleHeight = 20.0;
     float spacing = 8.0;
     float error = 16.0;
     
-    return (numberOfExercises + 1.0) * titleHeight + spacing + error;
+    return (numberOfExercises * (numberOfRounds + 1.0) + 1.0) * titleHeight + spacing + error;
  
 }
 

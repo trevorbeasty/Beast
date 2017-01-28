@@ -8,18 +8,9 @@
 
 #import "TJBWorkoutNavigationHub.h"
 
-
-#import "TJBCircuitDesignVC.h"
+// aesthetics
 
 #import "TJBAestheticsController.h"
-
-#import "NewOrExistinigCircuitVC.h"
-
-#import "TJBRealizedSetActiveEntryTBC.h"
-
-#import "TJBNumberSelectionVC.h"
-
-#import "TJBCircuitReferenceVC.h"
 
 // history
 
@@ -38,7 +29,9 @@
 #import "TJBRealizedSetCell.h"
 #import "TJBRealizedChainCell.h"
 
+// presented VC's
 
+#import "TJBLiftOptionsVC.h"
 
 
 @interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate>
@@ -51,8 +44,8 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UIButton *freeformButton;
-@property (weak, nonatomic) IBOutlet UIButton *designedButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *liftButton;
 @property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
@@ -61,8 +54,8 @@
 
 // IBAction
 
-- (IBAction)didPressFreeformButton:(id)sender;
-- (IBAction)didPressDesignedButton:(id)sender;
+- (IBAction)didPressLiftButton:(id)sender;
+
 
 // circle dates
 
@@ -413,14 +406,14 @@
 
 - (void)configureViewAesthetics{
     
-    NSArray *buttons = @[self.freeformButton,
-                         self.designedButton];
+    NSArray *buttons = @[self.liftButton];
     
     for (UIButton *button in buttons){
         
         button.backgroundColor = [[TJBAestheticsController singleton] color2];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
     
@@ -429,29 +422,16 @@
 
 #pragma mark - Button Actions
 
-
-- (IBAction)didPressFreeformButton:(id)sender {
+- (IBAction)didPressLiftButton:(id)sender {
     
-    TJBRealizedSetActiveEntryTBC *tbc = [[TJBRealizedSetActiveEntryTBC alloc] initWithChildViewControllers];
-    
-    [self presentViewController: tbc
-                       animated: YES
-                     completion: nil];
-    
-}
-
-
-
-
-- (void)didPressDesignedButton:(id)sender{
-    
-    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
+    TJBLiftOptionsVC *vc = [[TJBLiftOptionsVC alloc] init];
     
     [self presentViewController: vc
-                       animated: YES
+                       animated: NO
                      completion: nil];
     
 }
+
 
 #pragma mark - Gesture Recognizer Actions
 
@@ -666,22 +646,23 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     BOOL isRealizedSet = [self.masterList[indexPath.row] isKindOfClass: [TJBRealizedSet class]];
+//    BOOL isRealizedChain = [self.masterList[indexPath.row] isKindOfClass: [TJBRealizedChain class]];
+//    BOOL isLastEntry = indexPath.row == self.masterList.count - 1;
     
     if (isRealizedSet){
         
         return 60;
         
-    } else{
+    } else {
         
         TJBRealizedChain *realizedChain = self.masterList[indexPath.row];
         
-        float height = [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
-        
-        return 200;
+        return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
         
     }
  
 }
+
 
 
 
