@@ -35,7 +35,7 @@
 
 // table view cells
 
-#import "RealizedSetHistoryCell.h"
+#import "TJBRealizedSetCell.h"
 #import "TJBStructureTableViewCell.h"
 
 
@@ -277,11 +277,11 @@
     
     //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
     
-    UINib *realizedSetNib = [UINib nibWithNibName: @"RealizedSetHistoryCell"
+    UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
                                            bundle: nil];
     
     [self.tableView registerNib: realizedSetNib
-         forCellReuseIdentifier: @"realizedSetHistoryCell"];
+         forCellReuseIdentifier: @"TJBRealizedSetCell"];
     
     UINib *realizedChainNib = [UINib nibWithNibName: @"TJBStructureTableViewCell"
                                              bundle: nil];
@@ -405,6 +405,14 @@
                      forState: UIControlStateNormal];
         
     }
+    
+    // table view shadow
+    
+    CALayer *tableLayer = self.tableView.layer;
+    tableLayer.shadowColor = [UIColor blackColor].CGColor;
+    tableLayer.shadowRadius = 1.0;
+    tableLayer.shadowOpacity = .5;
+    tableLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
     
 }
 
@@ -592,18 +600,21 @@
         
         // dequeue the realizedSetCell
         
-        RealizedSetHistoryCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"realizedSetHistoryCell"];
+        TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
+        
+        NSNumber *number = [NSNumber numberWithInteger: self.masterList.count - indexPath.row];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateStyle = NSDateFormatterNoStyle;
         dateFormatter.timeStyle = NSDateFormatterShortStyle;
         NSString *date = [dateFormatter stringFromDate: realizedSet.beginDate];
         
-        [cell configureCellWithExerciseName: realizedSet.exercise.name
-                                     weight: [NSNumber numberWithFloat: realizedSet.weight]
-                                       reps: [NSNumber numberWithFloat: realizedSet.reps]
-                                       rest: nil
-                                       date: date];
+        [cell configureCellWithExercise: realizedSet.exercise.name
+                                 weight: [NSNumber numberWithFloat: realizedSet.weight]
+                                   reps: [NSNumber numberWithFloat: realizedSet.reps]
+                                   rest: nil
+                                   date: date
+                                 number: number];
         
         cell.backgroundColor = [UIColor clearColor];
         
@@ -616,6 +627,8 @@
         // dequeue the realizedSetCell
         
         TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
+        
+//        [cell configureWithChainTemplate:  date:<#(NSDate *)#>]
         
         cell.backgroundColor = [UIColor clearColor];
         
@@ -639,8 +652,28 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 50;
+    BOOL isRealizedSet = [self.masterList[indexPath.row] isKindOfClass: [TJBRealizedSet class]];
     
+    if (isRealizedSet){
+        
+        return 60;
+        
+    } else{
+        
+        TJBChainTemplate *chainTemplate = self.masterList[indexPath.row];
+        
+        int numExercises = chainTemplate.numberOfExercises;
+        int spacing = 0;
+        int chainNameLabelHeight = 20;
+        int componentHeight = 20;
+        int error = 0;
+        
+        int totalHeight = spacing + chainNameLabelHeight + componentHeight * numExercises + error;
+        
+        return totalHeight;
+        
+    }
+ 
 }
 
 

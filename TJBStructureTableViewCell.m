@@ -77,7 +77,7 @@
     for (UILabel *label in labels){
         
         [label setTextColor: [UIColor whiteColor]];
-        [label setFont: [UIFont boldSystemFontOfSize: 20.0]];
+        [label setFont: [UIFont boldSystemFontOfSize: 15.0]];
         
     }
     
@@ -139,7 +139,7 @@
     for (UILabel *label in labels){
         
         [label setTextColor: [UIColor whiteColor]];
-        [label setFont: [UIFont systemFontOfSize: 20.0]];
+        [label setFont: [UIFont systemFontOfSize: 15.0]];
         
     }
     

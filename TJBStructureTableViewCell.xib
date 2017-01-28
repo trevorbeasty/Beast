@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -20,25 +20,25 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z5c-vB-eTT" userLabel="ContainerView">
-                        <rect key="frame" x="8" y="12" width="616" height="466"/>
+                        <rect key="frame" x="8" y="8" width="616" height="473.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Chain Name Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbh-Xg-mqd">
-                                <rect key="frame" x="8" y="0.0" width="139.5" height="30"/>
+                                <rect key="frame" x="8" y="0.0" width="124.5" height="20"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Uvi-vh-UDC"/>
+                                    <constraint firstAttribute="height" constant="20" id="Uvi-vh-UDC"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-MC-vYb">
-                                <rect key="frame" x="24" y="30" width="592" height="428"/>
+                                <rect key="frame" x="32" y="20" width="584" height="453.5"/>
                                 <color key="backgroundColor" red="1" green="0.89661400710000005" blue="0.73848710319999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOT-uX-gVp">
-                                <rect key="frame" x="147.5" y="0.0" width="460.5" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="589" y="4" width="23" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -47,13 +47,11 @@
                         <constraints>
                             <constraint firstItem="gDn-MC-vYb" firstAttribute="top" secondItem="cbh-Xg-mqd" secondAttribute="bottom" id="2RC-0m-Qme"/>
                             <constraint firstAttribute="trailing" secondItem="gDn-MC-vYb" secondAttribute="trailing" id="4F4-fh-28I"/>
-                            <constraint firstItem="gDn-MC-vYb" firstAttribute="top" secondItem="nOT-uX-gVp" secondAttribute="bottom" id="MFG-VE-7Nx"/>
-                            <constraint firstAttribute="bottom" secondItem="gDn-MC-vYb" secondAttribute="bottom" constant="8" id="ORs-1P-MK9"/>
-                            <constraint firstItem="nOT-uX-gVp" firstAttribute="top" secondItem="Z5c-vB-eTT" secondAttribute="top" id="YO4-Ss-ei1"/>
+                            <constraint firstItem="nOT-uX-gVp" firstAttribute="top" secondItem="Z5c-vB-eTT" secondAttribute="top" constant="4" id="ASc-W4-B5a"/>
+                            <constraint firstAttribute="bottom" secondItem="gDn-MC-vYb" secondAttribute="bottom" id="ORs-1P-MK9"/>
+                            <constraint firstAttribute="trailing" secondItem="nOT-uX-gVp" secondAttribute="trailing" constant="4" id="UEh-99-2Yz"/>
                             <constraint firstItem="cbh-Xg-mqd" firstAttribute="top" secondItem="Z5c-vB-eTT" secondAttribute="top" id="Zxd-6C-W4f"/>
-                            <constraint firstItem="gDn-MC-vYb" firstAttribute="leading" secondItem="Z5c-vB-eTT" secondAttribute="leading" constant="24" id="c20-mb-GMm"/>
-                            <constraint firstItem="nOT-uX-gVp" firstAttribute="leading" secondItem="cbh-Xg-mqd" secondAttribute="trailing" id="igH-aS-jhq"/>
-                            <constraint firstAttribute="trailing" secondItem="nOT-uX-gVp" secondAttribute="trailing" constant="8" id="ngy-fq-hCd"/>
+                            <constraint firstItem="gDn-MC-vYb" firstAttribute="leading" secondItem="Z5c-vB-eTT" secondAttribute="leading" constant="32" id="c20-mb-GMm"/>
                             <constraint firstItem="cbh-Xg-mqd" firstAttribute="leading" secondItem="Z5c-vB-eTT" secondAttribute="leading" constant="8" id="wbQ-zz-j4i"/>
                         </constraints>
                     </view>
@@ -61,8 +59,8 @@
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="Z5c-vB-eTT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Ltq-O2-wdq"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="Z5c-vB-eTT" secondAttribute="bottom" constant="4" id="U4m-7h-eeT"/>
-                    <constraint firstItem="Z5c-vB-eTT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="fTe-8W-BBd"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="Z5c-vB-eTT" secondAttribute="bottom" id="U4m-7h-eeT"/>
+                    <constraint firstItem="Z5c-vB-eTT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="fTe-8W-BBd"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Z5c-vB-eTT" secondAttribute="trailing" id="har-xb-QU1"/>
                 </constraints>
             </tableViewCellContentView>
