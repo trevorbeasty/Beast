@@ -55,6 +55,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
 @property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
 
 
 
@@ -271,6 +272,23 @@
     
     [self configureTableView];
     
+    [self configureTableShadow];
+    
+}
+
+- (void)configureTableShadow{
+    
+    UIView *shadowView = self.tableViewContainer;
+    shadowView.backgroundColor = [UIColor clearColor];
+    shadowView.clipsToBounds = NO;
+    
+    CALayer *shadowLayer = shadowView.layer;
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowColor = [UIColor blackColor].CGColor;
+    shadowLayer.shadowOffset = CGSizeMake(0, 0);
+    shadowLayer.shadowOpacity = .8;
+    shadowLayer.shadowRadius = 5.0;
+    
 }
 
 - (void)configureTableView{
@@ -405,14 +423,6 @@
                      forState: UIControlStateNormal];
         
     }
-    
-    // table view shadow
-    
-    CALayer *tableLayer = self.tableView.layer;
-    tableLayer.shadowColor = [UIColor blackColor].CGColor;
-    tableLayer.shadowRadius = 1.0;
-    tableLayer.shadowOpacity = .5;
-    tableLayer.shadowOffset = CGSizeMake(-8.0, -8.0);
     
 }
 
@@ -663,17 +673,11 @@
         
     } else{
         
-        TJBChainTemplate *chainTemplate = self.masterList[indexPath.row];
+        TJBRealizedChain *realizedChain = self.masterList[indexPath.row];
         
-        int numExercises = chainTemplate.numberOfExercises;
-        int spacing = 0;
-        int chainNameLabelHeight = 20;
-        int componentHeight = 20;
-        int error = 0;
+        float height = [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
         
-        int totalHeight = spacing + chainNameLabelHeight + componentHeight * numExercises + error;
-        
-        return 100;
+        return height;
         
     }
  

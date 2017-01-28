@@ -18,4 +18,6 @@
 
 - (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number;
 
++ (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain;
+
 @end
