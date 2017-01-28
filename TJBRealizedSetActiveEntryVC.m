@@ -28,20 +28,34 @@
     BOOL _whiteoutActive;
 }
 
+// IBOutlet
 
-// UI buttons
+@property (weak, nonatomic) IBOutlet UILabel *timerLabel;
+@property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
+@property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
+@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
+@property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
+@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
+
+// IBAction
 
 - (IBAction)didPressBeginNextSet:(id)sender;
+- (IBAction)didPressTargetRestButton:(id)sender;
+- (IBAction)didPressAlertTimingButton:(id)sender;
+- (IBAction)didPressExerciseButton:(id)sender;
 
 
-@property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
+
 
 // core data
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 
-// realized set user input
+// user input
 
 @property (nonatomic, strong) NSNumber *timeDelay;
 @property (nonatomic, strong) NSNumber *timeLag;
@@ -49,29 +63,30 @@
 @property (nonatomic, strong) NSDate *setEndDate;
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
+
+@property (nonatomic, strong) NSNumber *targetRestTime;
+@property (nonatomic, strong) NSNumber *alertTiming;
 @property (nonatomic, strong) TJBExercise *exercise;
 
-@property (nonatomic, strong) UIView *whiteoutView;
+
 
 // timer and target rest time
 
-@property (weak, nonatomic) IBOutlet UILabel *timerLabel;
-@property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
+@property (nonatomic, strong) UIView *whiteoutView;
 
 @property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
 @property (nonatomic, strong) NSDate *lastSecondaryTimerUpdateDate;
 
-@property (nonatomic, strong) NSNumber *targetRestTime;
+
 
 // navigation bar
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+
 // need to keep it around to update the title as exercises are selected
 // should this be a weak property?
-@property (nonatomic, weak) UINavigationItem *navItem;
 
-// IBAction
 
-- (IBAction)didPressTargetRestButton:(id)sender;
+
+
 
 // for restoration
 
@@ -156,7 +171,9 @@
     // buttons
     
     NSArray *buttons = @[self.beginNextSetButton,
-                         self.targetRestButton];
+                         self.targetRestButton,
+                         self.alertTimingButton,
+                         self.exerciseButton];
     
     for (UIButton *button in buttons){
         
@@ -393,6 +410,47 @@
     
 }
 
+- (IBAction)didPressAlertTimingButton:(id)sender{
+    
+    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
+    
+    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+    
+    void (^cancelBlock)(void) = ^{
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+        
+    };
+    
+    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
+        
+        weakSelf.alertTiming = selectedNumber;
+        
+        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
+        
+        [weakSelf.alertTimingButton setTitle: targetRestString
+                                    forState: UIControlStateNormal];
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+        
+    };
+    
+    [self presentNumberSelectionSceneWithNumberType: RestType
+                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
+                                        numberLimit: nil
+                                              title: @"Select Alert Timing"
+                                        cancelBlock: cancelBlock
+                                numberSelectedBlock: numberSelectedBlock
+                                           animated: NO
+                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+    
+}
+
+- (IBAction)didPressExerciseButton:(id)sender {
+}
+
 - (void)didPressHome{
     
     [self.presentingViewController.presentingViewController dismissViewControllerAnimated: NO
@@ -624,7 +682,7 @@
 
 - (void)didCreateNewExercise:(TJBExercise *)exercise{
     self.exercise = exercise;
-    [self.navItem setTitle: exercise.name];
+//    [self.navItem setTitle: exercise.name];
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch: &error];
