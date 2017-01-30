@@ -109,7 +109,7 @@
     
     [self toggleButtonsToOffState];
     
-    self.mainContainer.hidden = YES;
+    [self fetchCoreDataAndConfigureTableView];
     
 }
 
@@ -128,7 +128,7 @@
     
     // table view
     
-    self.tableView.layer.opacity = .85;
+    self.tableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // buttons
     
@@ -145,16 +145,6 @@
         
     }
     
-}
-
-
-- (void)viewWillAppear:(BOOL)animated{
-    
-    NSError *error = nil;
-    [self.frc performFetch: &error];
-    
-    [self fetchCoreDataAndConfigureTableView];
-
 }
 
 - (void)configureNavigationBar{
@@ -463,7 +453,8 @@
     }
     
     [cell configureWithChainTemplate: chainTemplate
-                                date: date];
+                                date: date
+                              number: [NSNumber numberWithInteger: indexPath.row]];
     
     cell.backgroundColor = [UIColor clearColor];
     
@@ -489,8 +480,8 @@
         
         TJBStructureTableViewCell *lastSelectedCell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
         
-        UIColor *unselectedColor = [[TJBAestheticsController singleton] color1];
-        [lastSelectedCell setOverallColor: unselectedColor];
+//        UIColor *unselectedColor = [[TJBAestheticsController singleton] color1];
+//        [lastSelectedCell setOverallColor: unselectedColor];
         
     }
     self.lastSelectedIndexPath = indexPath;
@@ -499,8 +490,8 @@
     
     TJBStructureTableViewCell *currentCell = [self.tableView cellForRowAtIndexPath: indexPath];
     
-    UIColor *selectedColor = [UIColor redColor];
-    [currentCell setOverallColor: selectedColor];
+//    UIColor *selectedColor = [UIColor redColor];
+//    [currentCell setOverallColor: selectedColor];
     
     // store the selected chain template and configure the buttons
     
@@ -514,19 +505,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    //// will need to dynamically evaluate the corresponding chain template and return the correct height based on number of exercises and desired label dimensions
-    
     TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
-    
-    int numExercises = chainTemplate.numberOfExercises;
-    int spacing = 16;
-    int chainNameLabelHeight = 30;
-    int componentHeight = 35;
-    int error = 0;
-    
-    int totalHeight = spacing + chainNameLabelHeight + componentHeight * numExercises + error;
-    
-    return totalHeight;
+    return [TJBStructureTableViewCell suggestedCellHeightForChainTemplate: chainTemplate];
     
 }
 

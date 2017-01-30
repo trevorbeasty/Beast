@@ -11,7 +11,7 @@
 // presented VC's
 
 #import "TJBRealizedSetActiveEntryVC.h"
-#import "TJBCircuitModeTBC.h"
+#import "NewOrExistinigCircuitVC.h"
 
 @interface TJBLiftOptionsVC ()
 
@@ -67,11 +67,11 @@
 
 - (IBAction)didPressDesignedButton:(id)sender{
     
-    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] init];
+    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
     
-    [self presentViewController: tbc
+    [self presentViewController: vc
                        animated: NO
-                     completion: nil];  
+                     completion: nil];
     
 }
 

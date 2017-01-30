@@ -373,6 +373,7 @@
 		0B78E7C21E3C162800EB216F /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0B78E7DB1E3F746000EB216F /* Chain Template */,
 				0B78E7D51E3F5D0E00EB216F /* Personal Record */,
 				0B78E7C91E3C168500EB216F /* Realized Chain */,
 				0B78E7C81E3C165F00EB216F /* Realized Set */,
@@ -418,6 +419,16 @@
 				0B78E7D81E3F5D3C00EB216F /* TJBPersonalRecordCell.xib */,
 			);
 			name = "Personal Record";
+			sourceTree = "<group>";
+		};
+		0B78E7DB1E3F746000EB216F /* Chain Template */ = {
+			isa = PBXGroup;
+			children = (
+				0B3687D91E38DB530077290C /* TJBStructureTableViewCell.h */,
+				0B3687DA1E38DB530077290C /* TJBStructureTableViewCell.m */,
+				0B3687DB1E38DB530077290C /* TJBStructureTableViewCell.xib */,
+			);
+			name = "Chain Template";
 			sourceTree = "<group>";
 		};
 		0B843C901DFB7E9C0093F057 /* Single Set Mode */ = {
@@ -513,9 +524,6 @@
 				0B86FB6F1E11638E000D1B5F /* NewOrExistinigCircuitVC.h */,
 				0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */,
 				0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */,
-				0B3687D91E38DB530077290C /* TJBStructureTableViewCell.h */,
-				0B3687DA1E38DB530077290C /* TJBStructureTableViewCell.m */,
-				0B3687DB1E38DB530077290C /* TJBStructureTableViewCell.xib */,
 			);
 			name = "New or Existing Selection ";
 			sourceTree = "<group>";

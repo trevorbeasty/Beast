@@ -16,8 +16,8 @@
 
 - (void)clearExistingEntries;
 
-- (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate date:(NSDate *)date;
+- (void)configureWithChainTemplate:(TJBChainTemplate *)chainTemplate date:(NSDate *)date number:(NSNumber *)number;
 
-- (void)setOverallColor:(UIColor *)color;
++ (float)suggestedCellHeightForChainTemplate:(TJBChainTemplate *)chainTemplate;
 
 @end
