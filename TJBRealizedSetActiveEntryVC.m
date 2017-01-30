@@ -26,9 +26,10 @@
 
 #import "TJBRepsWeightRecordPair.h"
 
-// table view cell
+// table view cells
 
-#import "RealizedSetPersonalRecordCell.h"
+#import "TJBPersonalRecordCell.h"
+
 
 @interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration, UITableViewDelegate, UITableViewDataSource>
 
@@ -51,6 +52,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
 @property (weak, nonatomic) IBOutlet UILabel *personalRecordsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
+@property (weak, nonatomic) IBOutlet UIView *shadowView;
 
 // IBAction
 
@@ -175,11 +177,37 @@
     
     [self viewAesthetics];
     
+    [self configureTableShadow];
+    
+    [self configureNotifications];
+    
+}
+
+- (void)configureNotifications{
+    
+    [NSNotificationCenter defaultCenter] addObserver: self
+selector: @selector(<#selector#>) name:<#(nullable NSNotificationName)#> object:<#(nullable id)#>
+    
+}
+
+- (void)configureTableShadow{
+    
+    UIView *shadowView = self.shadowView;
+    shadowView.backgroundColor = [UIColor clearColor];
+    shadowView.clipsToBounds = NO;
+    
+    CALayer *shadowLayer = shadowView.layer;
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowColor = [UIColor blackColor].CGColor;
+    shadowLayer.shadowOffset = CGSizeMake(0, 0);
+    shadowLayer.shadowOpacity = .8;
+    shadowLayer.shadowRadius = 5.0;
+    
 }
 
 - (void)configureTableView{
     
-    UINib *nib = [UINib nibWithNibName: @"RealizedSetPersonalRecordCell"
+    UINib *nib = [UINib nibWithNibName: @"TJBPersonalRecordCell"
                                 bundle: nil];
     
     [self.personalRecordsTableView registerNib: nib
@@ -209,7 +237,11 @@
     
     self.timerLabel.backgroundColor = [UIColor darkGrayColor];
     self.timerLabel.textColor = [UIColor whiteColor];
-    self.timerLabel.font = [UIFont systemFontOfSize: 20.0];
+    self.timerLabel.font = [UIFont systemFontOfSize: 40.0];
+    
+    // table view
+    
+    self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 
@@ -349,22 +381,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    RealizedSetPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
+    TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
     
     TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[indexPath.row];
     
-    cell.repsLabel.text = [[repsWeightRecordPair reps] stringValue];
-    
-    cell.weightLabel.text = [[repsWeightRecordPair weight] stringValue];
-    
-    // date formatter
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-    dateFormatter.timeStyle = NSDateFormatterNoStyle;
-    
-    cell.dateLabel.text = [dateFormatter stringFromDate: repsWeightRecordPair.date];
+    [cell configureWithReps: repsWeightRecordPair.reps
+                     weight: repsWeightRecordPair.weight
+                       date: repsWeightRecordPair.date];
     
     return cell;
     
@@ -374,7 +397,11 @@
 
 #pragma mark - <UITableViewDelegate>
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 60;
+    
+}
 
 
 #pragma mark - Button Actions
