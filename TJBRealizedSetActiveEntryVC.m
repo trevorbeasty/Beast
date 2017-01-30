@@ -125,7 +125,20 @@
     
     [self setRestorationProperties];
     
+    [self configureNotifications];
+    
     return self;
+    
+}
+
+- (void)configureNotifications{
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(coreDataDidUpdate)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: moc];
     
 }
 
@@ -179,16 +192,9 @@
     
     [self configureTableShadow];
     
-    [self configureNotifications];
-    
 }
 
-- (void)configureNotifications{
-    
-    [NSNotificationCenter defaultCenter] addObserver: self
-selector: @selector(<#selector#>) name:<#(nullable NSNotificationName)#> object:<#(nullable id)#>
-    
-}
+
 
 - (void)configureTableShadow{
     
@@ -1067,16 +1073,6 @@ selector: @selector(<#selector#>) name:<#(nullable NSNotificationName)#> object:
     NSMutableArray *repsWeightRecordPairs = [[NSMutableArray alloc] init];
     self.repsWeightRecordPairs = repsWeightRecordPairs;
     
-//    int limit = 12;
-//    
-//    for (int i = 0; i < limit; i++){
-//        
-//        TJBRepsWeightRecordPair *recordPair = [[TJBRepsWeightRecordPair alloc] initDefaultObjectWithReps: i + 1];
-//        
-//        [repsWeightRecordPairs addObject: recordPair];
-//        
-//    }
-    
 }
 
 
@@ -1235,6 +1231,16 @@ selector: @selector(<#selector#>) name:<#(nullable NSNotificationName)#> object:
     }
     
     return collector;
+    
+}
+
+#pragma mark - Core Data
+
+- (void)coreDataDidUpdate{
+    
+    [self fetchManagedObjectsAndDetermineRecordsForActiveExercise];
+    
+    [self.personalRecordsTableView reloadData];
     
 }
 
