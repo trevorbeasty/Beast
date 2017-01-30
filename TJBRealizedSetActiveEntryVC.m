@@ -1040,15 +1040,15 @@
     NSMutableArray *repsWeightRecordPairs = [[NSMutableArray alloc] init];
     self.repsWeightRecordPairs = repsWeightRecordPairs;
     
-    int limit = 12;
-    
-    for (int i = 0; i < limit; i++){
-        
-        TJBRepsWeightRecordPair *recordPair = [[TJBRepsWeightRecordPair alloc] initDefaultObjectWithReps: i + 1];
-        
-        [repsWeightRecordPairs addObject: recordPair];
-        
-    }
+//    int limit = 12;
+//    
+//    for (int i = 0; i < limit; i++){
+//        
+//        TJBRepsWeightRecordPair *recordPair = [[TJBRepsWeightRecordPair alloc] initDefaultObjectWithReps: i + 1];
+//        
+//        [repsWeightRecordPairs addObject: recordPair];
+//        
+//    }
     
 }
 
@@ -1110,20 +1110,21 @@
         
     }
     
-    BOOL repsWithinStaticRange = reps <= 12;
+//    BOOL repsWithinStaticRange = reps <= 12;
+//    
+//    if (repsWithinStaticRange){
+//        
+//        return self.repsWeightRecordPairs[reps - 1];
+//        
+//    }
+//    else{
     
-    if (repsWithinStaticRange){
-        
-        return self.repsWeightRecordPairs[reps - 1];
-        
-    } else{
-        
         // create the record pair for the new reps number and assign it appropriate values.  Configure the tracker array as well
         
         int limit = (int)[self.repsWeightRecordPairs count];
         NSNumber *extractedPairReps;
         
-        for (int i = 12; i < limit; i++){
+        for (int i = 0; i < limit; i++){
             
             extractedPairReps = self.repsWeightRecordPairs[i].reps;
             int extractedPairRepsAsInt = [extractedPairReps intValue];
@@ -1148,16 +1149,16 @@
             }
             
         }
-        
-        // control only reaches this point if the passed-in reps are greater than reps for all records currently held by repsWeightRecordPairs
-        
+    
+        // control only reaches this point if the collection array has length zero because no pairs yet exist
+    
         TJBRepsWeightRecordPair *newPair = [[TJBRepsWeightRecordPair alloc] initDefaultObjectWithReps: reps];
         
         [self.repsWeightRecordPairs addObject: newPair];
         
         return newPair;
-        
-    }
+    
+    
 }
 
 - (void)configureRepsWeightRecordPair:(TJBRepsWeightRecordPair *)recordPair withCandidateWeight:(NSNumber *)weight candidateDate:(NSDate *)date{
