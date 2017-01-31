@@ -469,7 +469,7 @@
                                                                                     size: buttonSize
                                                                    hasSelectedAppearance: isTheActiveDate
                                                                                isEnabled: !iterativeDateGreaterThanToday
-                                                                               isCircled: NO];
+                                                                               isCircled: YES];
         
         
         

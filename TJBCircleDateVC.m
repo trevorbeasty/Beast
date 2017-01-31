@@ -69,11 +69,8 @@
     
     // configure the center property which will be used to create circle effects
     
-    const CGFloat dayLabelHeight = 20.0;
-    const CGFloat spacing = 4.0;
-    
-    _center = CGPointMake(_size.width / 2.0, (_size.height - dayLabelHeight - spacing) / 2.0);
-    _radius = _size.width / 2.0 - 3.0;
+    _center = CGPointMake(_size.width / 2.0, _size.height - 6.0);
+    _radius = 3.0;
     
     [self configureViews];
     
@@ -88,29 +85,29 @@
     }
     
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter: _center
-                                                        radius: _radius - 1.0
+                                                        radius: _radius
                                                     startAngle: 0
                                                       endAngle: 2 * M_PI
                                                      clockwise: YES];
     
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     self.activeShapeLayer = shapeLayer;
-    
     shapeLayer.path = path.CGPath;
-    shapeLayer.fillColor = nil;
     shapeLayer.borderWidth = 2.0;
     
     if (_hasSelectedAppearance){
         
         shapeLayer.strokeColor = [UIColor blackColor].CGColor;
+        shapeLayer.fillColor = [UIColor blackColor].CGColor;
         
     } else{
         
         shapeLayer.strokeColor = [UIColor whiteColor].CGColor;
+        shapeLayer.fillColor = [UIColor whiteColor].CGColor;
         
     }
     
-    [self.mainButton.layer addSublayer: shapeLayer];
+    [self.view.layer addSublayer: shapeLayer];
     
 }
 
