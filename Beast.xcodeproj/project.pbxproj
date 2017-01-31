@@ -16,6 +16,8 @@
 		0B3687DD1E38DB530077290C /* TJBStructureTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3687DB1E38DB530077290C /* TJBStructureTableViewCell.xib */; };
 		0B3687E91E3A2A780077290C /* TJBCircleDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */; };
 		0B3687EA1E3A2A780077290C /* TJBCircleDateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */; };
+		0B36881B1E413D8F0077290C /* TJBWorkoutLogTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3688191E413D8F0077290C /* TJBWorkoutLogTitleCell.m */; };
+		0B36881C1E413D8F0077290C /* TJBWorkoutLogTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B36881A1E413D8F0077290C /* TJBWorkoutLogTitleCell.xib */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BC71DF77C20009981F9 /* Main.storyboard */; };
@@ -107,6 +109,9 @@
 		0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircleDateVC.m; sourceTree = "<group>"; };
 		0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircleDateVC.xib; sourceTree = "<group>"; };
 		0B3688161E4128F60077290C /* TJBDateSelectionMaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBDateSelectionMaster.h; sourceTree = "<group>"; };
+		0B3688181E413D8F0077290C /* TJBWorkoutLogTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBWorkoutLogTitleCell.h; sourceTree = "<group>"; };
+		0B3688191E413D8F0077290C /* TJBWorkoutLogTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBWorkoutLogTitleCell.m; sourceTree = "<group>"; };
+		0B36881A1E413D8F0077290C /* TJBWorkoutLogTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBWorkoutLogTitleCell.xib; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -294,6 +299,16 @@
 			name = "Active Guidance";
 			sourceTree = "<group>";
 		};
+		0B3688171E413D500077290C /* Title Cells */ = {
+			isa = PBXGroup;
+			children = (
+				0B3688181E413D8F0077290C /* TJBWorkoutLogTitleCell.h */,
+				0B3688191E413D8F0077290C /* TJBWorkoutLogTitleCell.m */,
+				0B36881A1E413D8F0077290C /* TJBWorkoutLogTitleCell.xib */,
+			);
+			name = "Title Cells";
+			sourceTree = "<group>";
+		};
 		0B517BB21DF77C20009981F9 = {
 			isa = PBXGroup;
 			children = (
@@ -374,6 +389,7 @@
 		0B78E7C21E3C162800EB216F /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0B3688171E413D500077290C /* Title Cells */,
 				0B78E7DB1E3F746000EB216F /* Chain Template */,
 				0B78E7D51E3F5D0E00EB216F /* Personal Record */,
 				0B78E7C91E3C168500EB216F /* Realized Chain */,
@@ -734,6 +750,7 @@
 				0B78E7CE1E3C16A300EB216F /* TJBRealizedChainCell.xib in Resources */,
 				0B843C8B1DFADBED0093F057 /* TJBNewExerciseCreationVC.xib in Resources */,
 				0B870E591E2FCDB600E38C46 /* TJBRealizedChainHistoryVC.xib in Resources */,
+				0B36881C1E413D8F0077290C /* TJBWorkoutLogTitleCell.xib in Resources */,
 				0B870E4D1E2F9F9C00E38C46 /* RealizedChainTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -783,6 +800,7 @@
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,
 				0B78E7D31E3D31B100EB216F /* TJBLiftOptionsVC.m in Sources */,
 				0B78E7C61E3C165900EB216F /* TJBRealizedSetCell.m in Sources */,
+				0B36881B1E413D8F0077290C /* TJBWorkoutLogTitleCell.m in Sources */,
 				0BA8AD0E1E26765100EE10C2 /* TJBCircuitActiveUpdatingContainerVC.m in Sources */,
 				0BA8AD051E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m in Sources */,
 				0BA8ACEE1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m in Sources */,

@@ -28,6 +28,7 @@
 
 #import "TJBRealizedSetCell.h"
 #import "TJBRealizedChainCell.h"
+#import "TJBWorkoutLogTitleCell.h"
 
 // presented VC's
 
@@ -130,7 +131,7 @@
     [[NSNotificationCenter defaultCenter] addObserver: self
                                             selector: @selector(mocDidSave)
                                                 name: NSManagedObjectContextDidSaveNotification
-                                                object: moc];
+                                               object: moc];
     
 }
 
@@ -336,6 +337,12 @@
     
     [self.tableView registerNib: realizedChainNib
          forCellReuseIdentifier: @"TJBRealizedChainCell"];
+    
+    UINib *titleCellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+                                         bundle: nil];
+    
+    [self.tableView registerNib: titleCellNib
+         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
     
 }
 
@@ -777,24 +784,37 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.dailyList.count;
+    return self.dailyList.count + 1;
     
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
-    // conditionals
+    // if the row index is 0, it is the title cell
     
-    NSNumber *number = [NSNumber numberWithInteger: indexPath.row + 1];
+    if (indexPath.row == 0){
+        
+        TJBWorkoutLogTitleCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        df.dateFormat = @"EEEE, MMMM d, yyyy";
+        cell.dateLabel.text = [df stringFromDate: self.activeDate];
+        cell.backgroundColor = [UIColor clearColor];
+        
+        return cell;
+        
+    }
     
-    int rowIndex = (int)indexPath.row;
+    NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
+    
+    int rowIndex = (int)indexPath.row - 1;
     
     BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
     
     if (isRealizedSet){
         
-        TJBRealizedSet *realizedSet = self.masterList[rowIndex];
+        TJBRealizedSet *realizedSet = self.dailyList[rowIndex];
         
         // dequeue the realizedSetCell
         
@@ -820,7 +840,7 @@
         
     } else{
         
-        TJBRealizedChain *realizedChain = self.masterList[rowIndex];
+        TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
         
         // dequeue the realizedSetCell
         
@@ -853,19 +873,37 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    BOOL isRealizedSet = [self.masterList[indexPath.row] isKindOfClass: [TJBRealizedSet class]];
-    
-    if (isRealizedSet){
+    if (indexPath.row == 0){
         
         return 60;
         
-    } else {
+    } else{
         
-        TJBRealizedChain *realizedChain = self.masterList[indexPath.row];
+        NSInteger adjustedIndex = indexPath.row - 1;
         
-        return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
+        BOOL isRealizedSet = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedSet class]];
+        BOOL isRealizedChain = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedChain class]];
+        
+        
+        if (isRealizedSet){
+            
+            return 60;
+            
+        } else if (isRealizedChain) {
+            
+            TJBRealizedChain *realizedChain = self.masterList[indexPath.row];
+            
+            return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
+            
+        } else{
+            
+            return 10;
+            
+        }
         
     }
+    
+
  
 }
 
