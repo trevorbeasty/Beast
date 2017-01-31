@@ -58,6 +58,8 @@
 // IBAction
 
 - (IBAction)didPressLiftButton:(id)sender;
+- (IBAction)didPressLeftArrow:(id)sender;
+- (IBAction)didPressRightArrow:(id)sender;
 
 
 // circle dates
@@ -68,6 +70,7 @@
 // state variables
 
 @property (nonatomic, strong) NSDate *activeDate;
+@property (nonatomic, strong) NSDate *firstDayOfDateControlMonth;
 
 // core data
 
@@ -91,8 +94,18 @@
     self.restorationIdentifier = @"TJBWorkoutNavigationHub";
     
     // state
+    // set the active date as well of the first day of the month for date control
     
-    self.activeDate = [NSDate date];
+    NSDate *today = [NSDate date];
+    
+    self.activeDate = today;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                              fromDate: today];
+    [dateComps setDay: 1];
+    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
+    
     
     // core data
     
@@ -281,7 +294,7 @@
     
     [self configureViewAesthetics];
     
-    [self arrangeDateControlsToActiveDate];
+    [self configureDateControls];
     
 //    [self configureCircleDates];
     
@@ -350,14 +363,36 @@
     
 }
 
-- (void)arrangeDateControlsToActiveDate{
+- (void)clearTransitoryDateControlObjects{
+    
+    //// must clear the children view controller array as well as remove the stack view from the scroll view
+    
+    if (self.dateStackView){
+        
+        for (TJBCircleDateVC *vc in self.circleDateChildren){
+            
+            [vc willMoveToParentViewController: nil];
+            [vc removeFromParentViewController];
+            
+        }
+        
+        [self.dateStackView removeFromSuperview];
+        self.dateStackView = nil;
+        
+    }
+    
+}
+
+- (void)configureDateControls{
+    
+    //// configures the date controls according to the day stored in firstDayOfDateControlMonth
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     
     //// month title
     
     df.dateFormat = @"MMMM yyyy";
-    NSString *monthTitle = [df stringFromDate: self.activeDate];
+    NSString *monthTitle = [df stringFromDate: self.firstDayOfDateControlMonth];
     self.monthTitle.text = monthTitle;
     
 
@@ -366,10 +401,9 @@
     // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDate *activeDay = self.activeDate;
     NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
                                                 inUnit: NSCalendarUnitMonth
-                                               forDate: activeDay];
+                                               forDate: self.firstDayOfDateControlMonth];
     
     const CGFloat buttonWidth = 40.0;
     const CGFloat buttonSpacing = 8.0;
@@ -395,7 +429,7 @@
     // give the stack view it's content.  All items preceding the for loop are used in the for loop
     
     NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                              fromDate: activeDay];
+                                              fromDate: self.firstDayOfDateControlMonth];
     
     NSDate *iterativeDate;
     
@@ -493,6 +527,38 @@
     [self presentViewController: vc
                        animated: NO
                      completion: nil];
+    
+}
+
+- (IBAction)didPressLeftArrow:(id)sender{
+    
+    [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: NO];
+    
+}
+
+- (IBAction)didPressRightArrow:(id)sender{
+    
+    [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: YES];
+    
+}
+
+- (void)incrementDateControlMonthAndUpdateDateControlsInForwardDirection:(BOOL)inForwardDirection{
+    
+    NSInteger monthDelta;
+    
+    if (inForwardDirection){
+        monthDelta = 1;
+    } else{
+        monthDelta = -1;
+    }
+    
+    NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                              fromDate: self.firstDayOfDateControlMonth];
+    dateComps.month += monthDelta;
+    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
+    
+    [self configureDateControls];
     
 }
 
