@@ -10,7 +10,7 @@
 
 @interface TJBCircleDateVC : UIViewController
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle radius:(float)radius center:(CGPoint)center selectedAppearance:(BOOL)selectedAppearance;
+- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle size:(CGSize)size selectedAppearance:(BOOL)selectedAppearance;
 
 - (void)configureButtonAsSelected;
 - (void)configureButtonAsNotSelected;

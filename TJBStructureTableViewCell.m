@@ -59,7 +59,7 @@
     
     self.chainTemplate = chainTemplate;
     
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
+//    self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     [self configureViewAesthetics];
     

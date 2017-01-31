@@ -46,9 +46,14 @@
 
 
 @property (weak, nonatomic) IBOutlet UIButton *liftButton;
-@property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
+//@property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
+//@property (weak, nonatomic) IBOutlet UITableView *dateSelectionTableView;
+@property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
+@property (weak, nonatomic) IBOutlet UILabel *monthTitle;
+@property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
 
 
 
@@ -59,6 +64,7 @@
 
 // circle dates
 
+@property (nonatomic, strong) UIStackView *dateStackView;
 @property (nonatomic, strong) NSMutableArray <TJBCircleDateVC *> *circleDateChildren;
 
 // state variables
@@ -97,6 +103,9 @@
     [self configureMasterList];
     
     [self configureNotifications];
+    
+    
+
     
     return self;
 }
@@ -274,9 +283,11 @@
     
     [self configureViewAesthetics];
     
-    [self configureCircleDates];
+    [self createStackViewAndAddToScrollView];
     
-    [self configureGestureRecognizers];
+//    [self configureCircleDates];
+    
+//    [self configureGestureRecognizers];
     
     [self configureTableView];
     
@@ -341,81 +352,157 @@
     
 }
 
-- (void)configureCircleDates{
+- (void)createStackViewAndAddToScrollView{
     
-    // active selection index
-    
-    _activeSelectionIndex = 6;
-    
-    self.circleDateChildren = [[NSMutableArray alloc] init];
-    
-    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-    
-    int numberOfDateButtons = 7;
-    float dateButtonSpacing = 8.0;
-    CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / (float)numberOfDateButtons;
-    
-    CGFloat buttonHeight = 40;
-    float buttonCenterY = buttonHeight / 2.0;
-    
-    CGPoint center = CGPointMake(buttonWidth / 2.0, buttonCenterY);
-    
-    // calendar
+    // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+    NSDate *today = [NSDate date];
+    NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
+                                                inUnit: NSCalendarUnitMonth
+                                               forDate: today];
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    const CGFloat buttonWidth = 40.0;
+    const CGFloat buttonSpacing = 8.0;
+    const CGFloat buttonHeight = 60.0;
     
-    int dayOffset;
+    const CGFloat stackViewWidth = buttonWidth * daysInCurrentMonth.length + (daysInCurrentMonth.length - 1) * buttonSpacing;
+    
+    CGRect stackViewRect = CGRectMake(0, 0, stackViewWidth, buttonHeight);
+    
+    // create the stack view with the proper dimensions and also set the content size of the scroll view
+    
+    UIStackView *stackView = [[UIStackView alloc] initWithFrame: stackViewRect];
+    self.dateStackView = stackView;
+    
+    self.dateScrollView.contentSize = stackViewRect.size;
+    
+    // configure the stack view's layout properties
+    
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFillEqually;
+    stackView.spacing = buttonSpacing;
+    
+//    stackView.backgroundColor = [UIColor blackColor];
+    
+    // give the stack view it's content.  All items preceding the for loop are used in the for loop
+    
+    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                              fromDate: today];
+    
     NSDate *iterativeDate;
     
-    BOOL selected;
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
     
-    for (int i = 0; i < numberOfDateButtons; i++){
+    CGSize buttonSize = CGSizeMake(buttonWidth, buttonHeight);
+    
+    for (int i = 0; i < daysInCurrentMonth.length; i++){
         
-        // using the activeDate as the fourth button, configure all buttons with the appropriate date
+        // must get the day of the week from the calendar. The day number is simply the iterator plus one
         
-        dayOffset = -6 + i;
-        dateComps.day = dayOffset;
+        [dateComps setDay: i + 1];
+        iterativeDate = [calendar dateFromComponents: dateComps];
         
-        iterativeDate = [calendar dateByAddingComponents: dateComps
-                                                  toDate: self.activeDate
-                                                 options: 0];
+        df.dateFormat = @"E";
+        NSString *dayTitle = [df stringFromDate: iterativeDate];
         
-        dateFormatter.dateFormat = @"E";
-        NSString *day = [dateFormatter stringFromDate: iterativeDate];
-        
-        dateFormatter.dateFormat = @"d";
-        NSString *buttonTitle = [dateFormatter stringFromDate: iterativeDate];
-        
-        if (i == 6){
-            
-            selected = YES;
-            
-        } else{
-            
-            selected = NO;
-            
-        }
+        df.dateFormat = @"d";
+        NSString *buttonTitle = [df stringFromDate: iterativeDate];
         
         // create the child vc
         
         TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: buttonTitle
-                                                                                dayTitle: day
-                                                                                  radius: buttonWidth / 2.0
-                                                                                  center: center
-                                                                      selectedAppearance: selected];
+                                                                                dayTitle: dayTitle
+                                                                                    size: buttonSize
+                                                                      selectedAppearance: NO];
         
         [self.circleDateChildren addObject: circleDateVC];
         
         [self addChildViewController: circleDateVC];
         
-        [self.dateStackView addArrangedSubview: circleDateVC.view];
+        [stackView addArrangedSubview: circleDateVC.view];
         
         [circleDateVC didMoveToParentViewController: self];
         
     }
+    
+    [self.dateScrollView addSubview: stackView];
+    
+    /////////////////////
+    
+//    // active selection index
+//    
+//    _activeSelectionIndex = 6;
+//    
+//    self.circleDateChildren = [[NSMutableArray alloc] init];
+//    
+//    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+//    
+//    int numberOfDateButtons = 7;
+//    float dateButtonSpacing = 8.0;
+//    CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / (float)numberOfDateButtons;
+//    
+//    CGFloat buttonHeight = 40;
+//    float buttonCenterY = buttonHeight / 2.0;
+//    
+//    CGPoint center = CGPointMake(buttonWidth / 2.0, buttonCenterY);
+//    
+//    // calendar
+//    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+//    
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    
+//    int dayOffset;
+//    NSDate *iterativeDate;
+//    
+//    BOOL selected;
+//    
+//    for (int i = 0; i < numberOfDateButtons; i++){
+//        
+//        // using the activeDate as the fourth button, configure all buttons with the appropriate date
+//        
+//        dayOffset = -6 + i;
+//        dateComps.day = dayOffset;
+//        
+//        iterativeDate = [calendar dateByAddingComponents: dateComps
+//                                                  toDate: self.activeDate
+//                                                 options: 0];
+//        
+//        dateFormatter.dateFormat = @"E";
+//        NSString *day = [dateFormatter stringFromDate: iterativeDate];
+//        
+//        dateFormatter.dateFormat = @"d";
+//        NSString *buttonTitle = [dateFormatter stringFromDate: iterativeDate];
+//        
+//        if (i == 6){
+//            
+//            selected = YES;
+//            
+//        } else{
+//            
+//            selected = NO;
+//            
+//        }
+//        
+//        // create the child vc
+//        
+//        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: buttonTitle
+//                                                                                dayTitle: day
+//                                                                                  radius: buttonWidth / 2.0
+//                                                                                  center: center
+//                                                                      selectedAppearance: selected];
+//        
+//        [self.circleDateChildren addObject: circleDateVC];
+//        
+//        [self addChildViewController: circleDateVC];
+//        
+//        [self.dateStackView addArrangedSubview: circleDateVC.view];
+//        
+//        [circleDateVC didMoveToParentViewController: self];
+//        
+//    }
     
 }
 
@@ -431,6 +518,10 @@
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
+    
+    // scroll view
+    
+    self.dateScrollView.backgroundColor = [UIColor blackColor];
     
 }
 
@@ -592,7 +683,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return 1;
+//    if ([tableView isEqual: self.tableView]){
+    
+        return 1;
+        
+//    } else if ([tableView isEqual: self.dateSelectionTableView]){
+//        
+//        return 1;
+//        
+//    }
     
 }
 

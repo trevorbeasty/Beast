@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -15,7 +15,6 @@
                 <outlet property="mainContainer" destination="cna-Rm-Pq1" id="Tag-5Q-JMD"/>
                 <outlet property="modifyButton" destination="KWr-xh-ldO" id="Vbn-UD-PYQ"/>
                 <outlet property="navBar" destination="Qe7-Np-Lhw" id="3MW-NG-cQD"/>
-                <outlet property="previewButton" destination="Ldo-Pc-mvg" id="bOz-ff-QiS"/>
                 <outlet property="sortBySegmentedControl" destination="pL5-1h-FKf" id="TcY-kJ-FWG"/>
                 <outlet property="tableView" destination="YLP-je-fi9" id="baC-bn-5lA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -69,7 +68,7 @@
                     <rect key="frame" x="0.0" y="627" width="375" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9q-4p-UvJ">
-                            <rect key="frame" x="0.0" y="0.0" width="123.5" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="186.5" height="40"/>
                             <color key="backgroundColor" red="1" green="0.42017299107142858" blue="0.20655691964285713" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Launch">
@@ -79,16 +78,8 @@
                                 <action selector="didPressLaunchButton:" destination="-1" eventType="touchUpInside" id="w58-f3-Add"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ldo-Pc-mvg">
-                            <rect key="frame" x="125.5" y="0.0" width="124" height="40"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                            <state key="normal" title="Preview"/>
-                            <connections>
-                                <action selector="didPressPreviewButton:" destination="-1" eventType="touchUpInside" id="E2X-ay-9L6"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KWr-xh-ldO">
-                            <rect key="frame" x="251.5" y="0.0" width="123.5" height="40"/>
+                            <rect key="frame" x="188.5" y="0.0" width="186.5" height="40"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Modify"/>
                             <connections>
@@ -99,14 +90,10 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="KWr-xh-ldO" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="top" id="45V-Ya-gaA"/>
-                        <constraint firstItem="Ldo-Pc-mvg" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="top" id="BCG-uk-0ct"/>
-                        <constraint firstItem="KWr-xh-ldO" firstAttribute="leading" secondItem="Ldo-Pc-mvg" secondAttribute="trailing" constant="2" id="Je8-Ku-PtY"/>
                         <constraint firstItem="M9q-4p-UvJ" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="top" id="LQf-ae-kmh"/>
                         <constraint firstAttribute="bottom" secondItem="M9q-4p-UvJ" secondAttribute="bottom" id="Rj4-FJ-Dtt"/>
-                        <constraint firstAttribute="bottom" secondItem="Ldo-Pc-mvg" secondAttribute="bottom" id="Yq7-mw-YES"/>
+                        <constraint firstItem="KWr-xh-ldO" firstAttribute="leading" secondItem="M9q-4p-UvJ" secondAttribute="trailing" constant="2" id="doj-QS-CyB"/>
                         <constraint firstAttribute="bottom" secondItem="KWr-xh-ldO" secondAttribute="bottom" id="keb-h3-gPV"/>
-                        <constraint firstItem="Ldo-Pc-mvg" firstAttribute="leading" secondItem="M9q-4p-UvJ" secondAttribute="trailing" constant="2" id="kfr-Q0-y06"/>
-                        <constraint firstItem="Ldo-Pc-mvg" firstAttribute="width" secondItem="M9q-4p-UvJ" secondAttribute="width" id="kwR-bl-Les"/>
                         <constraint firstAttribute="trailing" secondItem="KWr-xh-ldO" secondAttribute="trailing" id="nHO-Bm-XZJ"/>
                         <constraint firstItem="KWr-xh-ldO" firstAttribute="width" secondItem="M9q-4p-UvJ" secondAttribute="width" id="p1M-ha-Hft"/>
                         <constraint firstItem="M9q-4p-UvJ" firstAttribute="leading" secondItem="gVq-bE-dqU" secondAttribute="leading" id="sKw-kL-gJk"/>

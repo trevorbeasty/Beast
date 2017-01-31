@@ -49,14 +49,14 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
 @property (weak, nonatomic) IBOutlet UIButton *modifyButton;
-@property (weak, nonatomic) IBOutlet UIButton *previewButton;
+//@property (weak, nonatomic) IBOutlet UIButton *previewButton;
 
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
 
 // IBAction
 
 - (IBAction)didPressLaunchButton:(id)sender;
-- (IBAction)didPressPreviewButton:(id)sender;
+//- (IBAction)didPressPreviewButton:(id)sender;
 - (IBAction)didPressModifyButton:(id)sender;
 
 // core data
@@ -68,7 +68,7 @@
 
 @property (nonatomic, strong) TJBChainTemplate *selectedChainTemplate;
 @property (nonatomic, strong) NSIndexPath *lastSelectedIndexPath;
-@property (nonatomic, strong) TJBCircuitReferenceVC *activeCircuitReferenceVC;
+//@property (nonatomic, strong) TJBCircuitReferenceVC *activeCircuitReferenceVC;
 
 
 @end
@@ -133,7 +133,6 @@
     // buttons
     
     NSArray *buttons = @[self.launchButton,
-                         self.previewButton,
                          self.modifyButton];
     
     for (UIButton *button in buttons){
@@ -388,7 +387,6 @@
 - (void)toggleButtonsToOnState{
     
     NSArray *buttons = @[self.launchButton,
-                         self.previewButton,
                          self.modifyButton];
     
     for (UIButton *b in buttons){
@@ -403,7 +401,6 @@
 - (void)toggleButtonsToOffState{
     
     NSArray *buttons = @[self.launchButton,
-                         self.previewButton,
                          self.modifyButton];
     
     for (UIButton *b in buttons){
@@ -573,19 +570,19 @@
     
     // state
     
-    self.mainContainer.hidden = YES;
-    self.tableView.hidden = NO;
-    _inPreviewMode = NO;
-    [self.previewButton setTitle: @"Preview"
-                        forState: UIControlStateNormal];
+//    self.mainContainer.hidden = YES;
+//    self.tableView.hidden = NO;
+//    _inPreviewMode = NO;
+//    [self.previewButton setTitle: @"Preview"
+//                        forState: UIControlStateNormal];
     
-    if (self.activeCircuitReferenceVC){
-        
-        [self.activeCircuitReferenceVC removeFromParentViewController];
-        [self.activeCircuitReferenceVC.view removeFromSuperview];
-        self.activeCircuitReferenceVC = nil;
-        
-    }
+//    if (self.activeCircuitReferenceVC){
+//        
+//        [self.activeCircuitReferenceVC removeFromParentViewController];
+//        [self.activeCircuitReferenceVC.view removeFromSuperview];
+//        self.activeCircuitReferenceVC = nil;
+//        
+//    }
     
     //
     
@@ -598,68 +595,68 @@
 - (IBAction)didPressLaunchButton:(id)sender {
 }
 
-- (IBAction)didPressPreviewButton:(id)sender{
-    
-    if (_inPreviewMode == NO){
-        
-        //// hide the table view and present the chain template in its place.  Update state variables.  Change preview button appearance
-        
-        _inPreviewMode = YES;
-        
-        self.mainContainer.hidden = NO;
-        self.tableView.hidden = YES;
-        
-        // create a TJBCircuitReferenceVC with the dimensions of the mainContainer
-        
-        CGSize containerViewSize = self.mainContainer.frame.size;
-        
-        NSNumber *viewHeight = [NSNumber numberWithFloat: containerViewSize.height];
-        NSNumber *viewWidth = [NSNumber numberWithFloat: containerViewSize.width];
-        
-        TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithChainTemplate: self.selectedChainTemplate
-                                                                       contentViewHeight: viewHeight
-                                                                        contentViewWidth: viewWidth];
-        
-        self.activeCircuitReferenceVC = vc;
-        
-        [self addChildViewController: vc];
-        
-        [self.mainContainer addSubview: vc.view];
-        
-        [vc didMoveToParentViewController: self];
-        
-        // preview button
-        
-        [self.previewButton setTitle: @"List"
-                            forState: UIControlStateNormal];
-        
-    } else if (_inPreviewMode == YES){
-        
-        //// toggle the preview button appearance, update state variables, eliminate the child VC and subview, un-hide the table view
-        
-        // state
-        
-        self.mainContainer.hidden = YES;
-        _inPreviewMode = NO;
-        
-        // preview button
-        
-        [self.previewButton setTitle: @"Preview"
-                            forState: UIControlStateNormal];
-        
-        // child VC and subview
-        
-        [self.activeCircuitReferenceVC removeFromParentViewController];
-        [self.activeCircuitReferenceVC.view removeFromSuperview];
-        self.activeCircuitReferenceVC = nil;
-        
-        // table view
-        
-        self.tableView.hidden = NO;
-        
-    }
-
-}
+//- (IBAction)didPressPreviewButton:(id)sender{
+//    
+//    if (_inPreviewMode == NO){
+//        
+//        //// hide the table view and present the chain template in its place.  Update state variables.  Change preview button appearance
+//        
+//        _inPreviewMode = YES;
+//        
+//        self.mainContainer.hidden = NO;
+//        self.tableView.hidden = YES;
+//        
+//        // create a TJBCircuitReferenceVC with the dimensions of the mainContainer
+//        
+//        CGSize containerViewSize = self.mainContainer.frame.size;
+//        
+//        NSNumber *viewHeight = [NSNumber numberWithFloat: containerViewSize.height];
+//        NSNumber *viewWidth = [NSNumber numberWithFloat: containerViewSize.width];
+//        
+//        TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithChainTemplate: self.selectedChainTemplate
+//                                                                       contentViewHeight: viewHeight
+//                                                                        contentViewWidth: viewWidth];
+//        
+//        self.activeCircuitReferenceVC = vc;
+//        
+//        [self addChildViewController: vc];
+//        
+//        [self.mainContainer addSubview: vc.view];
+//        
+//        [vc didMoveToParentViewController: self];
+//        
+//        // preview button
+//        
+//        [self.previewButton setTitle: @"List"
+//                            forState: UIControlStateNormal];
+//        
+//    } else if (_inPreviewMode == YES){
+//        
+//        //// toggle the preview button appearance, update state variables, eliminate the child VC and subview, un-hide the table view
+//        
+//        // state
+//        
+//        self.mainContainer.hidden = YES;
+//        _inPreviewMode = NO;
+//        
+//        // preview button
+//        
+//        [self.previewButton setTitle: @"Preview"
+//                            forState: UIControlStateNormal];
+//        
+//        // child VC and subview
+//        
+//        [self.activeCircuitReferenceVC removeFromParentViewController];
+//        [self.activeCircuitReferenceVC.view removeFromSuperview];
+//        self.activeCircuitReferenceVC = nil;
+//        
+//        // table view
+//        
+//        self.tableView.hidden = NO;
+//        
+//    }
+//
+//}
 
 - (IBAction)didPressModifyButton:(id)sender {
 }

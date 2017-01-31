@@ -16,8 +16,9 @@
 
 {
     float _radius;
-    CGPoint _center;
+    CGSize _size;
     BOOL _selectedAppearance;
+    CGPoint _center;
 }
 
 // IBOutlet
@@ -43,7 +44,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle radius:(float)radius center:(CGPoint)center selectedAppearance:(BOOL)selectedAppearance{
+- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle size:(CGSize)size selectedAppearance:(BOOL)selectedAppearance{
     
     self = [super init];
     
@@ -51,8 +52,7 @@
         
         self.mainButtonTitle = mainButtonTitle;
         self.dayTitle = dayTitle;
-        _radius = radius;
-        _center = center;
+        _size = size;
         _selectedAppearance = selectedAppearance;
         
     }
@@ -65,7 +65,15 @@
 
 - (void)viewDidLoad{
     
-    [self configureViewAesthetics];
+    // configure the center property which will be used to create circle effects
+    
+    const CGFloat dayLabelHeight = 20.0;
+    const CGFloat spacing = 4.0;
+    
+    _center = CGPointMake(_size.width / 2.0, (_size.height - dayLabelHeight - spacing) / 2.0);
+    _radius = _size.width / 2.0 - 3.0;
+    
+    [self configureViews];
     
 }
 
@@ -88,36 +96,33 @@
     
 }
 
-- (void)configureViewAesthetics{
+- (void)configureViews{
     
-    // main button
-        
-    self.mainButton.backgroundColor = [UIColor whiteColor];
-        
+    // appearances
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    self.mainButton.backgroundColor = [UIColor clearColor];
+    [self.mainButton setTitleColor: [UIColor whiteColor]
+                          forState: UIControlStateNormal];
     [self.mainButton setTitle: self.mainButtonTitle
                      forState: UIControlStateNormal];
-        
-    [self.mainButton setTitleColor: [[TJBAestheticsController singleton] color1]
-                          forState: UIControlStateNormal];
-        
-    // day label
+    self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
     self.dayLabel.text = self.dayTitle;
-    self.dayLabel.textColor = [[TJBAestheticsController singleton] color1];
-        
-    //
-        
-    [self addCircularBorder];
+    self.dayLabel.textColor = [UIColor whiteColor];
+    self.dayLabel.backgroundColor = [UIColor clearColor];
+    self.dayLabel.font = [UIFont systemFontOfSize: 15.0];
     
-    if (_selectedAppearance){
-        
-        [self configureButtonAsSelected];
-        
-    } else{
-        
-        [self configureButtonAsNotSelected];
-        
-    }
+//    if (_selectedAppearance){
+//        
+//        [self configureButtonAsSelected];
+//        
+//    } else{
+//        
+//        [self configureButtonAsNotSelected];
+//        
+//    }
 
     
     
