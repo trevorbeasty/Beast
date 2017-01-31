@@ -12,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircleDateVC">
             <connections>
                 <outlet property="dayLabel" destination="eY0-17-2pj" id="gxy-cC-ZHV"/>
-                <outlet property="mainButton" destination="SQe-h5-Uhc" id="DH3-KW-FG0"/>
+                <outlet property="numberLabel" destination="UGq-HU-Hyv" id="XWY-NZ-iuR"/>
                 <outlet property="view" destination="WED-IR-U8g" id="dWT-11-slK"/>
             </connections>
         </placeholder>
@@ -21,13 +21,6 @@
             <rect key="frame" x="0.0" y="0.0" width="177" height="92"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQe-h5-Uhc">
-                    <rect key="frame" x="65.5" y="19" width="46" height="30"/>
-                    <state key="normal" title="Button"/>
-                    <connections>
-                        <action selector="didPressMainButton:" destination="-1" eventType="touchUpInside" id="E9H-6J-zOJ"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eY0-17-2pj">
                     <rect key="frame" x="74" y="4" width="29.5" height="15"/>
                     <constraints>
@@ -37,13 +30,19 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UGq-HU-Hyv">
+                    <rect key="frame" x="78" y="19" width="21.5" height="24"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="eY0-17-2pj" firstAttribute="centerX" secondItem="WED-IR-U8g" secondAttribute="centerX" id="0H1-Ja-CiN"/>
-                <constraint firstItem="SQe-h5-Uhc" firstAttribute="centerX" secondItem="WED-IR-U8g" secondAttribute="centerX" id="7nq-FQ-iUo"/>
+                <constraint firstItem="UGq-HU-Hyv" firstAttribute="centerX" secondItem="WED-IR-U8g" secondAttribute="centerX" id="PRF-YQ-ASC"/>
                 <constraint firstItem="eY0-17-2pj" firstAttribute="top" secondItem="WED-IR-U8g" secondAttribute="top" constant="4" id="bwK-k6-4z5"/>
-                <constraint firstItem="SQe-h5-Uhc" firstAttribute="top" secondItem="eY0-17-2pj" secondAttribute="bottom" id="q7I-Y0-thS"/>
+                <constraint firstItem="UGq-HU-Hyv" firstAttribute="top" secondItem="eY0-17-2pj" secondAttribute="bottom" id="oaq-ny-RzW"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-57.5" y="-325"/>

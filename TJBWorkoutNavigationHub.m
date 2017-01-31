@@ -71,12 +71,14 @@
 
 @property (nonatomic, strong) NSDate *activeDate;
 @property (nonatomic, strong) NSDate *firstDayOfDateControlMonth;
+@property (nonatomic, strong) NSNumber *selectedDateButtonIndex;
 
 // core data
 
 @property (nonatomic, strong) NSFetchedResultsController *realizedSetFRC;
 @property (nonatomic, strong) NSFetchedResultsController *realizeChainFRC;
 @property (nonatomic, strong) NSMutableArray *masterList;
+@property (nonatomic, strong) NSMutableArray *dailyList;
 
 @end
 
@@ -112,11 +114,9 @@
     [self configureRealizedSetFRC];
     [self configureRealizedChainFRC];
     [self configureMasterList];
+    [self deriveDailyList];
     
     [self configureNotifications];
-    
-    
-
     
     return self;
 }
@@ -294,7 +294,7 @@
     
     [self configureViewAesthetics];
     
-    [self configureDateControls];
+    [self configureDateControlsAndSelectToday: YES];
     
 //    [self configureCircleDates];
     
@@ -385,7 +385,7 @@
     
 }
 
-- (void)configureDateControls{
+- (void)configureDateControlsAndSelectToday:(BOOL)shouldSelectToday{
     
     //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
     
@@ -411,7 +411,7 @@
     
     const CGFloat buttonWidth = 60.0;
     const CGFloat buttonSpacing = 0.0;
-    const CGFloat buttonHeight = 60.0;
+    const CGFloat buttonHeight = 52.0;
     
     const CGFloat stackViewWidth = buttonWidth * daysInCurrentMonth.length + (daysInCurrentMonth.length - 1) * buttonSpacing;
     
@@ -443,8 +443,6 @@
     
     NSDate *today = [NSDate date];
     
-    //
-    
     for (int i = 0; i < daysInCurrentMonth.length; i++){
         
         // must get the day of the week from the calendar. The day number is simply the iterator plus one
@@ -456,20 +454,34 @@
         NSString *dayTitle = [df stringFromDate: iterativeDate];
         
         df.dateFormat = @"d";
-        NSString *buttonTitle = [df stringFromDate: iterativeDate];
         
         // create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
         
         BOOL iterativeDateGreaterThanToday = [iterativeDate timeIntervalSinceDate: today] > 0;
-        BOOL isTheActiveDate = [calendar isDate: iterativeDate
-                                inSameDayAsDate: self.activeDate];
+        BOOL isTheActiveDate = NO;
+        
+        if (shouldSelectToday){
+            
+            isTheActiveDate = [calendar isDate: iterativeDate
+                               inSameDayAsDate: self.activeDate];
+            self.selectedDateButtonIndex = [NSNumber numberWithInt: i];
+            
+        }
+        
+        
+
+        BOOL recordExistsForIterativeDate = [self recordExistsForDate: iterativeDate];
+        
+        
     
-        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: buttonTitle
-                                                                                dayTitle: dayTitle
-                                                                                    size: buttonSize
-                                                                   hasSelectedAppearance: isTheActiveDate
-                                                                               isEnabled: !iterativeDateGreaterThanToday
-                                                                               isCircled: YES];
+        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithDayIndex: [NSNumber numberWithInt: i]
+                                                                         dayTitle: dayTitle
+                                                                             size: buttonSize
+                                                            hasSelectedAppearance: isTheActiveDate
+                                                                        isEnabled: !iterativeDateGreaterThanToday
+                                                                        isCircled: recordExistsForIterativeDate
+                                                                 masterController: self
+                                                                  representedDate: [calendar dateFromComponents: dateComps]];
         
         
         
@@ -480,6 +492,50 @@
         [stackView addArrangedSubview: circleDateVC.view];
         
         [circleDateVC didMoveToParentViewController: self];
+        
+    }
+    
+}
+
+- (BOOL)recordExistsForDate:(NSDate *)date{
+    
+    NSInteger limit = self.masterList.count;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSDate *exerciseDate = [self dateForRecordObject: self.masterList[i]];
+        
+        if ([calendar isDate:date inSameDayAsDate:exerciseDate]){
+            
+            return YES;
+            
+        }
+        
+    }
+    
+    return NO;
+    
+}
+
+- (NSDate *)dateForRecordObject:(id)object{
+    
+    //// evaluates whether the object is a realized set or realized chain and returns the corresponding day begin date.  For realized sets this in the 'beginDate' and for realized chains this is the 'dateCreated'.  Date created is used as opposed to set begin dates because the former is always going to exist while the latter may not
+    
+    BOOL objectIsRealizedSet = [object isKindOfClass: [TJBRealizedSet class]];
+    
+    if (objectIsRealizedSet){
+        
+        TJBRealizedSet *realizedSet = object;
+        
+        return realizedSet.beginDate;
+        
+    } else{
+        
+        TJBRealizedChain *realizedChain = object;
+        
+        return realizedChain.dateCreated;
         
     }
     
@@ -548,11 +604,15 @@
 
 - (IBAction)didPressLeftArrow:(id)sender{
     
+    self.selectedDateButtonIndex = nil;
+    
     [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: NO];
     
 }
 
 - (IBAction)didPressRightArrow:(id)sender{
+    
+    self.selectedDateButtonIndex = nil;	
     
     [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: YES];
     
@@ -574,7 +634,7 @@
     dateComps.month += monthDelta;
     self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
     
-    [self configureDateControls];
+    [self configureDateControlsAndSelectToday: NO];
     
 }
 
@@ -710,22 +770,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-//    if ([tableView isEqual: self.tableView]){
-    
-        return 1;
-        
-//    } else if ([tableView isEqual: self.dateSelectionTableView]){
-//        
-//        return 1;
-//        
-//    }
+    return 1;
     
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.masterList.count;
+    return self.dailyList.count;
     
 }
 
@@ -738,7 +790,7 @@
     
     int rowIndex = (int)indexPath.row;
     
-    BOOL isRealizedSet = [self.masterList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
+    BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
     
     if (isRealizedSet){
         
@@ -802,8 +854,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     BOOL isRealizedSet = [self.masterList[indexPath.row] isKindOfClass: [TJBRealizedSet class]];
-//    BOOL isRealizedChain = [self.masterList[indexPath.row] isKindOfClass: [TJBRealizedChain class]];
-//    BOOL isLastEntry = indexPath.row == self.masterList.count - 1;
     
     if (isRealizedSet){
         
@@ -820,12 +870,50 @@
 }
 
 
+#pragma mark - <TJBDateSelectionMaster>
 
+- (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
+    
+    if (self.selectedDateButtonIndex){
+        
+        [self.circleDateChildren[[self.selectedDateButtonIndex intValue]] configureButtonAsNotSelected];
+        
+    }
+    
+    [self.circleDateChildren[[index intValue]] configureButtonAsSelected];
+    
+    self.selectedDateButtonIndex = index;
+    
+    self.activeDate = representedDate;
+    [self deriveDailyList];
+    [self.tableView reloadData];
+    
+}
 
-
-
-
-
+- (void)deriveDailyList{
+    
+    //// creats the dailyList from the masterList based on the active date and updates the table view
+    
+    self.dailyList = [[NSMutableArray alloc] init];
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (NSObject *object in self.masterList){
+        
+        NSDate *objectDate = [self dateForRecordObject: object];
+        
+        BOOL recordIsForActiveDate = [calendar isDate: objectDate
+                                     inSameDayAsDate: self.activeDate];
+        
+        if (recordIsForActiveDate){
+            
+            [self.dailyList addObject: object];
+            
+        }
+        
+    }
+    
+}
 
 
 

@@ -106,6 +106,7 @@
 		0B3687E61E3A2A780077290C /* TJBCircleDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircleDateVC.h; sourceTree = "<group>"; };
 		0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircleDateVC.m; sourceTree = "<group>"; };
 		0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircleDateVC.xib; sourceTree = "<group>"; };
+		0B3688161E4128F60077290C /* TJBDateSelectionMaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBDateSelectionMaster.h; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -452,6 +453,7 @@
 				0B3687E61E3A2A780077290C /* TJBCircleDateVC.h */,
 				0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */,
 				0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */,
+				0B3688161E4128F60077290C /* TJBDateSelectionMaster.h */,
 			);
 			name = "Home Tab Bar VC";
 			sourceTree = "<group>";

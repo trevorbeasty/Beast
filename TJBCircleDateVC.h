@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+// master controller
+
+@class TJBWorkoutNavigationHub;
+#import "TJBDateSelectionMaster.h"
+
 @interface TJBCircleDateVC : UIViewController
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled;
+- (instancetype)initWithDayIndex:(NSNumber *)dayIndex dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled masterController:(TJBWorkoutNavigationHub<TJBDateSelectionMaster> *)masterController representedDate:(NSDate *)representedDate;
 
 - (void)configureButtonAsSelected;
 - (void)configureButtonAsNotSelected;

@@ -12,6 +12,10 @@
 
 #import "TJBAestheticsController.h"
 
+// master controller
+
+#import "TJBWorkoutNavigationHub.h"
+
 @interface TJBCircleDateVC ()
 
 {
@@ -25,18 +29,16 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UIButton *mainButton;
 @property (weak, nonatomic) IBOutlet UILabel *dayLabel;
-
-// IBAction
-
-- (IBAction)didPressMainButton:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *numberLabel;
 
 // core
 
-@property (nonatomic, strong) NSString *mainButtonTitle;
+@property (nonatomic, strong) NSNumber *dayIndex;
 @property (nonatomic, strong) NSString *dayTitle;
 @property (nonatomic, strong) CAShapeLayer *activeShapeLayer;
+@property (nonatomic, weak) TJBWorkoutNavigationHub<TJBDateSelectionMaster> *masterController;
+@property (nonatomic, strong) NSDate *representedDate;
 
 @end
 
@@ -44,18 +46,20 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled{
+- (instancetype)initWithDayIndex:(NSNumber *)dayIndex dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled masterController:(TJBWorkoutNavigationHub<TJBDateSelectionMaster> *)masterController representedDate:(NSDate *)representedDate{
     
     self = [super init];
     
     if (self){
         
-        self.mainButtonTitle = mainButtonTitle;
+        self.dayIndex = dayIndex;
         self.dayTitle = dayTitle;
         _size = size;
         _hasSelectedAppearance = hasSelectedAppearance;
         _isCircled = isCircled;
         _isEnabled = isEnabled;
+        self.masterController = masterController;
+        self.representedDate = representedDate;
         
     }
     
@@ -71,6 +75,17 @@
     
     _center = CGPointMake(_size.width / 2.0, _size.height - 6.0);
     _radius = 3.0;
+    
+    // GR
+    
+    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                            action: @selector(didSelectView)];
+    tapGR.numberOfTouchesRequired = 1;
+    tapGR.numberOfTapsRequired = 1;
+    
+    [self.view addGestureRecognizer: tapGR];
+    
+    //
     
     [self configureViews];
     
@@ -117,12 +132,11 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     
-    self.mainButton.backgroundColor = [UIColor clearColor];
-    [self.mainButton setTitleColor: [UIColor whiteColor]
-                          forState: UIControlStateNormal];
-    [self.mainButton setTitle: self.mainButtonTitle
-                     forState: UIControlStateNormal];
-    self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    self.numberLabel.backgroundColor = [UIColor clearColor];
+    self.numberLabel.textColor = [UIColor whiteColor];
+    NSString *numberTitle = [NSString stringWithFormat: @"%d", [self.dayIndex intValue] + 1];
+    self.numberLabel.text = numberTitle;
+    self.numberLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
     self.dayLabel.text = self.dayTitle;
     self.dayLabel.textColor = [UIColor whiteColor];
@@ -131,9 +145,7 @@
     
     if (!_isEnabled){
         
-        self.mainButton.enabled = NO;
-        
-        self.mainButton.backgroundColor = [UIColor grayColor];
+        self.numberLabel.backgroundColor = [UIColor grayColor];
         self.dayLabel.backgroundColor = [UIColor grayColor];
         self.view.backgroundColor = [UIColor grayColor];
         
@@ -172,7 +184,7 @@
     
     // button
     
-    self.mainButton.layer.mask = shapeLayer;
+    self.numberLabel.layer.mask = shapeLayer;
 
 }
 
@@ -189,9 +201,8 @@
     self.dayLabel.backgroundColor = color;
     self.dayLabel.textColor = [UIColor blackColor];
     
-    self.mainButton.titleLabel.backgroundColor = color;
-    [self.mainButton setTitleColor: [UIColor blackColor]
-                          forState: UIControlStateNormal];
+    self.numberLabel.backgroundColor = color;
+    self.numberLabel.textColor = [UIColor blackColor];
     
     if (_isCircled){
         
@@ -205,16 +216,21 @@
     
     _hasSelectedAppearance = NO;
     
-    UIColor *color = [UIColor blackColor];
+    UIColor *color;
+    
+    if (_isEnabled){
+        color = [UIColor blackColor];
+    } else{
+        color = [UIColor grayColor];
+    }
     
     self.view.backgroundColor = color;
     
     self.dayLabel.backgroundColor = color;
     self.dayLabel.textColor = [UIColor whiteColor];
     
-    self.mainButton.titleLabel.backgroundColor = color;
-    [self.mainButton setTitleColor: [UIColor whiteColor]
-                          forState: UIControlStateNormal];
+    self.numberLabel.backgroundColor = color;
+    self.numberLabel.textColor = [UIColor whiteColor];
     
     if (_isCircled){
         
@@ -227,18 +243,20 @@
 - (void)configureWithDayTitle:(NSString *)dayTitle buttonTitle:(NSString *)buttonTitle{
     
     self.dayLabel.text = dayTitle;
-    [self.mainButton setTitle: buttonTitle
-                     forState: UIControlStateNormal];
+    self.numberLabel.text = buttonTitle;
     
 }
 
-#pragma mark - IBAction
+#pragma mark - Gesture Recognizer
 
-- (IBAction)didPressMainButton:(id)sender{
+- (void)didSelectView{
     
-    NSLog(@"main button pressed");
+    [self.masterController didSelectObjectWithIndex: self.dayIndex
+                                    representedDate: self.representedDate];
     
 }
+
+
 
 
 @end

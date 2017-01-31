@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TJBWorkoutNavigationHub : UIViewController
+// protocols
+
+#import "TJBDateSelectionMaster.h"
+
+@interface TJBWorkoutNavigationHub : UIViewController <TJBDateSelectionMaster>
 
 @end
