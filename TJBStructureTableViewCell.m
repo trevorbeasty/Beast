@@ -148,6 +148,7 @@
     //// create the exercise name subview, which will have two labels - one for a number and one for a name
     
     UIView *view = [[UIView alloc] init];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
     
     UILabel *weightLabel = [[UILabel alloc] init];
     UILabel *repsLabel = [[UILabel alloc] init];

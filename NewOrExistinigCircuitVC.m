@@ -186,7 +186,7 @@
                                 bundle: nil];
     
     [self.tableView registerNib: nib
-         forCellReuseIdentifier: @"detailCell"];
+         forCellReuseIdentifier: @"TJBStructureTableViewCell"];
     
     // NSFetchedResultsController
     
@@ -431,7 +431,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"detailCell"];
+    TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
     
     [cell clearExistingEntries];
     
