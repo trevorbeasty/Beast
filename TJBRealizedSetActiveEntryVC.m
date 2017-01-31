@@ -53,6 +53,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *personalRecordsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
+@property (weak, nonatomic) IBOutlet UILabel *largeStatusLabel;
 
 // IBAction
 
@@ -60,9 +61,6 @@
 - (IBAction)didPressTargetRestButton:(id)sender;
 - (IBAction)didPressAlertTimingButton:(id)sender;
 - (IBAction)didPressExerciseButton:(id)sender;
-
-
-
 
 //// core data
 
@@ -90,12 +88,19 @@
 
 
 
-// timer and target rest time
+//// timer and target rest time
 
 @property (nonatomic, strong) UIView *whiteoutView;
 
 @property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
 @property (nonatomic, strong) NSDate *lastSecondaryTimerUpdateDate;
+
+// for timer recovery
+
+@property (nonatomic, strong) NSDate *timerUpdateDateForRecovery;
+@property (nonatomic, strong) NSNumber *timerValueForRecovery;
+
+
 
 //// an array of TJBRepsWeightRecordPairs.  Record pairs are always held for reps values of 1 through 12.  New pairs are added as needed
 
@@ -533,25 +538,47 @@
     
 }
 
+- (void)recoverTimer{
+    
+    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.timerValueForRecovery intValue]
+                                         withForwardIncrementing: YES
+                                                  lastUpdateDate: self.lastPrimaryTimerUpdateDate];
+    
+}
+
 - (IBAction)didPressBeginNextSet:(id)sender{
+    
+    // record timer information in case recovery is necessary (if the user does not complete their entry)
+    
+    self.timerUpdateDateForRecovery = self.lastPrimaryTimerUpdateDate;
+    self.timerValueForRecovery = [[TJBStopwatch singleton] primaryTimeElapsedInSeconds];
+    
     __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
     
     CancelBlock cancelBlock = ^{
+        
         [weakSelf removeWhiteoutView];
+        
         [weakSelf setRealizedSetParametersToNil];
+        
+        // VC appearance
+        
+        [self.beginNextSetButton setTitle: @"Begin Next Set"
+                                 forState: UIControlStateNormal];
+        self.largeStatusLabel.text = @"Resting";
+        
+        // timer recovery
+        
+        [weakSelf recoverTimer];
+        
+        //
+        
         [weakSelf dismissViewControllerAnimated: NO
                                  completion: nil];
+
     };
     
-    if (_whiteoutActive == NO)
-    {
-        UIView *whiteout = [[UIView alloc] initWithFrame: [self.view bounds]];
-        whiteout.backgroundColor = [UIColor whiteColor];
-        
-        self.whiteoutView = whiteout;
-        [self.view addSubview: whiteout];
-        _whiteoutActive = YES;
-    }
+
     
     if (!self.exercise)
     {
@@ -571,15 +598,29 @@
                            animated: YES
                          completion: nil];
    
-    }
-    else if(!self.timeDelay)
-    {
+    } else if(!self.timeDelay){
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            
             weakSelf.timeDelay = number;
             weakSelf.setBeginDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
+            
+            // change display items accordingly
+            
+            self.largeStatusLabel.text = @"In Set";
+            
+            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue] * -1
+                                                 withForwardIncrementing: YES
+                                                          lastUpdateDate: nil];
+            
+            [self.beginNextSetButton setTitle: @"Set Completed"
+                                     forState: UIControlStateNormal];
+            
+            //
+            
+            
             [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
-            [weakSelf didPressBeginNextSet: nil];
+            
         };
         
         
@@ -591,55 +632,29 @@
                                     numberSelectedBlock: numberSelectedBlock
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
-    else if (_setCompletedButtonPressed == NO)
-    {
-        void(^block)(int) = ^(int timeInSeconds){
-            
-            _setCompletedButtonPressed = YES;
-            _timerAtSetCompletion = timeInSeconds;
-            [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-            [weakSelf didPressBeginNextSet: nil];
-        };
         
-        // if the app was launched with state restoration and the user entered the background state from the InSetVC, adjustedSecondaryTimerTime will exist
-        // if it does exist, that time should be used.  The object should be destroyed after it is used so that it is not used again
+    } else if (_whiteoutActive == NO){
         
-        TJBInSetVC *vc;
+        // whiteout the presenting VC for better appearance during selection process
         
-        if (self.restoredSecondaryTimerValue){
-            
-            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.restoredSecondaryTimerValue intValue] * -1
-                             DidPressSetCompletedBlock: block
-                                          exerciseName: self.exercise.name
-                                   lastTimerUpdateDate: self.lastSecondaryTimerUpdateDate
-                                      masterController: self];
-            
-            self.restoredSecondaryTimerValue = nil;
-            
-        } else{
-            
-            vc = [[TJBInSetVC alloc] initWithTimeDelay: [self.timeDelay intValue]
-                             DidPressSetCompletedBlock: block
-                                          exerciseName: self.exercise.name
-                                   lastTimerUpdateDate: nil
-                                      masterController: self];
-        }
+        UIView *whiteout = [[UIView alloc] initWithFrame: [self.view bounds]];
+        whiteout.backgroundColor = [UIColor whiteColor];
         
-        [self presentViewController: vc
-                           animated: NO
-                         completion: nil];
-    }
-    else if (!self.timeLag)
-    {
+        self.whiteoutView = whiteout;
+        [self.view addSubview: whiteout];
+        _whiteoutActive = YES;
+        
+        [self didPressBeginNextSet: nil];
+        
+    } else if (!self.timeLag){
+        
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             
             weakSelf.timeLag = number;
             
             weakSelf.setEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
             
-            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue] * -1
+            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue]
                                                  withForwardIncrementing: YES
                                                           lastUpdateDate: nil];
             
@@ -649,6 +664,8 @@
             [weakSelf didPressBeginNextSet: nil];
             
         };
+        
+
         
         [self presentNumberSelectionSceneWithNumberType: RestType
                                          numberMultiple: [NSNumber numberWithInt: 5]
@@ -699,6 +716,13 @@
     }
     else
     {
+        // return the VC to its 'resting' appearance
+        
+        [self.beginNextSetButton setTitle: @"Begin Next Set"
+                                 forState: UIControlStateNormal];
+        self.largeStatusLabel.text = @"Resting";
+        
+        //
         [self removeWhiteoutView];
         [self presentSubmittedSetSummary];
     }

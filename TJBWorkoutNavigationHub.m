@@ -891,7 +891,7 @@
             
         } else if (isRealizedChain) {
             
-            TJBRealizedChain *realizedChain = self.masterList[indexPath.row];
+            TJBRealizedChain *realizedChain = self.dailyList[adjustedIndex];
             
             return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
             

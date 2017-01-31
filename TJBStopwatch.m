@@ -256,16 +256,23 @@
     
     _primaryStopwatchIsOn = YES;
     
-    _primaryElapsedTimeInSeconds = timeInSeconds;
-    
-    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
-    
     if (lastUpdateDate){
         
-        self.dateAtLastPrimaryUpdate = lastUpdateDate;
+        NSDate *now = [NSDate date];
+        int elapsedTimeSinceLastUpdate = [now timeIntervalSinceDate: lastUpdateDate];
+        
+        self.dateAtLastPrimaryUpdate = now;
+        
+        _primaryElapsedTimeInSeconds = timeInSeconds + elapsedTimeSinceLastUpdate;
+        
+    } else{
+        
+        _primaryElapsedTimeInSeconds = timeInSeconds;
+        self.dateAtLastPrimaryUpdate = [NSDate date];
         
     }
     
+    _incrementPrimaryElapsedTimeForwards = forwardIncrementing;
     
 }
 
