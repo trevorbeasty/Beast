@@ -381,11 +381,15 @@
         
     }
     
+    self.circleDateChildren = [[NSMutableArray alloc] init];
+    
 }
 
 - (void)configureDateControls{
     
-    //// configures the date controls according to the day stored in firstDayOfDateControlMonth
+    //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
+    
+    [self clearTransitoryDateControlObjects];
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     
@@ -405,8 +409,8 @@
                                                 inUnit: NSCalendarUnitMonth
                                                forDate: self.firstDayOfDateControlMonth];
     
-    const CGFloat buttonWidth = 40.0;
-    const CGFloat buttonSpacing = 8.0;
+    const CGFloat buttonWidth = 60.0;
+    const CGFloat buttonSpacing = 0.0;
     const CGFloat buttonHeight = 60.0;
     
     const CGFloat stackViewWidth = buttonWidth * daysInCurrentMonth.length + (daysInCurrentMonth.length - 1) * buttonSpacing;
@@ -419,6 +423,8 @@
     self.dateStackView = stackView;
     
     self.dateScrollView.contentSize = stackViewRect.size;
+    
+    [self.dateScrollView addSubview: stackView];
     
     // configure the stack view's layout properties
     
@@ -435,6 +441,10 @@
     
     CGSize buttonSize = CGSizeMake(buttonWidth, buttonHeight);
     
+    NSDate *today = [NSDate date];
+    
+    //
+    
     for (int i = 0; i < daysInCurrentMonth.length; i++){
         
         // must get the day of the week from the calendar. The day number is simply the iterator plus one
@@ -448,12 +458,20 @@
         df.dateFormat = @"d";
         NSString *buttonTitle = [df stringFromDate: iterativeDate];
         
-        // create the child vc
+        // create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
         
+        BOOL iterativeDateGreaterThanToday = [iterativeDate timeIntervalSinceDate: today] > 0;
+        BOOL isTheActiveDate = [calendar isDate: iterativeDate
+                                inSameDayAsDate: self.activeDate];
+    
         TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: buttonTitle
                                                                                 dayTitle: dayTitle
                                                                                     size: buttonSize
-                                                                      selectedAppearance: NO];
+                                                                   hasSelectedAppearance: isTheActiveDate
+                                                                               isEnabled: !iterativeDateGreaterThanToday
+                                                                               isCircled: NO];
+        
+        
         
         [self.circleDateChildren addObject: circleDateVC];
         
@@ -464,8 +482,6 @@
         [circleDateVC didMoveToParentViewController: self];
         
     }
-    
-    [self.dateScrollView addSubview: stackView];
     
 }
 

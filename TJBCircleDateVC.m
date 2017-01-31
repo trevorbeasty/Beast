@@ -17,7 +17,9 @@
 {
     float _radius;
     CGSize _size;
-    BOOL _selectedAppearance;
+    BOOL _hasSelectedAppearance;
+    BOOL _isCircled;
+    BOOL _isEnabled;
     CGPoint _center;
 }
 
@@ -34,9 +36,7 @@
 
 @property (nonatomic, strong) NSString *mainButtonTitle;
 @property (nonatomic, strong) NSString *dayTitle;
-
-
-
+@property (nonatomic, strong) CAShapeLayer *activeShapeLayer;
 
 @end
 
@@ -44,7 +44,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle size:(CGSize)size selectedAppearance:(BOOL)selectedAppearance{
+- (instancetype)initWithMainButtonTitle:(NSString *)mainButtonTitle dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled{
     
     self = [super init];
     
@@ -53,7 +53,9 @@
         self.mainButtonTitle = mainButtonTitle;
         self.dayTitle = dayTitle;
         _size = size;
-        _selectedAppearance = selectedAppearance;
+        _hasSelectedAppearance = hasSelectedAppearance;
+        _isCircled = isCircled;
+        _isEnabled = isEnabled;
         
     }
     
@@ -77,7 +79,13 @@
     
 }
 
-- (void)addCircularBorder{
+- (void)drawCircle{
+    
+    if (self.activeShapeLayer){
+        
+        [self.activeShapeLayer removeFromSuperlayer];
+        
+    }
     
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter: _center
                                                         radius: _radius - 1.0
@@ -86,11 +94,21 @@
                                                      clockwise: YES];
     
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+    self.activeShapeLayer = shapeLayer;
     
     shapeLayer.path = path.CGPath;
     shapeLayer.fillColor = nil;
     shapeLayer.borderWidth = 2.0;
-    shapeLayer.strokeColor = [[TJBAestheticsController singleton] color1].CGColor;
+    
+    if (_hasSelectedAppearance){
+        
+        shapeLayer.strokeColor = [UIColor blackColor].CGColor;
+        
+    } else{
+        
+        shapeLayer.strokeColor = [UIColor whiteColor].CGColor;
+        
+    }
     
     [self.mainButton.layer addSublayer: shapeLayer];
     
@@ -114,17 +132,27 @@
     self.dayLabel.backgroundColor = [UIColor clearColor];
     self.dayLabel.font = [UIFont systemFontOfSize: 15.0];
     
-//    if (_selectedAppearance){
-//        
-//        [self configureButtonAsSelected];
-//        
-//    } else{
-//        
-//        [self configureButtonAsNotSelected];
-//        
-//    }
-
+    if (!_isEnabled){
+        
+        self.mainButton.enabled = NO;
+        
+        self.mainButton.backgroundColor = [UIColor grayColor];
+        self.dayLabel.backgroundColor = [UIColor grayColor];
+        self.view.backgroundColor = [UIColor grayColor];
+        
+    }
     
+    if (_hasSelectedAppearance){
+        
+        [self configureButtonAsSelected];
+        
+    }
+    
+    if (_isCircled){
+        
+        [self drawCircle];
+        
+    }
     
 }
 
@@ -155,15 +183,47 @@
 
 - (void)configureButtonAsSelected{
     
-    self.dayLabel.font = [UIFont boldSystemFontOfSize: 17.0];
-    self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 17.0];
+    _hasSelectedAppearance = YES;
+    
+    UIColor *color = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    self.view.backgroundColor = color;
+    
+    self.dayLabel.backgroundColor = color;
+    self.dayLabel.textColor = [UIColor blackColor];
+    
+    self.mainButton.titleLabel.backgroundColor = color;
+    [self.mainButton setTitleColor: [UIColor blackColor]
+                          forState: UIControlStateNormal];
+    
+    if (_isCircled){
+        
+        [self drawCircle];
+        
+    }
     
 }
 
 - (void)configureButtonAsNotSelected{
     
-    self.dayLabel.font = [UIFont systemFontOfSize: 17.0];
-    self.mainButton.titleLabel.font = [UIFont systemFontOfSize: 17.0];
+    _hasSelectedAppearance = NO;
+    
+    UIColor *color = [UIColor blackColor];
+    
+    self.view.backgroundColor = color;
+    
+    self.dayLabel.backgroundColor = color;
+    self.dayLabel.textColor = [UIColor whiteColor];
+    
+    self.mainButton.titleLabel.backgroundColor = color;
+    [self.mainButton setTitleColor: [UIColor whiteColor]
+                          forState: UIControlStateNormal];
+    
+    if (_isCircled){
+        
+        [self drawCircle];
+        
+    }
     
 }
 
@@ -179,7 +239,7 @@
 
 - (IBAction)didPressMainButton:(id)sender{
     
-    
+    NSLog(@"main button pressed");
     
 }
 
