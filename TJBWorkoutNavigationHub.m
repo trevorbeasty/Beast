@@ -46,10 +46,8 @@
 
 
 @property (weak, nonatomic) IBOutlet UIButton *liftButton;
-//@property (weak, nonatomic) IBOutlet UIStackView *dateStackView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
-//@property (weak, nonatomic) IBOutlet UITableView *dateSelectionTableView;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UILabel *monthTitle;
@@ -283,7 +281,7 @@
     
     [self configureViewAesthetics];
     
-    [self createStackViewAndAddToScrollView];
+    [self arrangeDateControlsToActiveDate];
     
 //    [self configureCircleDates];
     
@@ -352,15 +350,26 @@
     
 }
 
-- (void)createStackViewAndAddToScrollView{
+- (void)arrangeDateControlsToActiveDate{
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    
+    //// month title
+    
+    df.dateFormat = @"MMMM yyyy";
+    NSString *monthTitle = [df stringFromDate: self.activeDate];
+    self.monthTitle.text = monthTitle;
+    
+
+    //// stack view and child VC's
     
     // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDate *today = [NSDate date];
+    NSDate *activeDay = self.activeDate;
     NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
                                                 inUnit: NSCalendarUnitMonth
-                                               forDate: today];
+                                               forDate: activeDay];
     
     const CGFloat buttonWidth = 40.0;
     const CGFloat buttonSpacing = 8.0;
@@ -383,16 +392,12 @@
     stackView.distribution = UIStackViewDistributionFillEqually;
     stackView.spacing = buttonSpacing;
     
-//    stackView.backgroundColor = [UIColor blackColor];
-    
     // give the stack view it's content.  All items preceding the for loop are used in the for loop
     
     NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                              fromDate: today];
+                                              fromDate: activeDay];
     
     NSDate *iterativeDate;
-    
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
     
     CGSize buttonSize = CGSizeMake(buttonWidth, buttonHeight);
     
@@ -428,82 +433,6 @@
     
     [self.dateScrollView addSubview: stackView];
     
-    /////////////////////
-    
-//    // active selection index
-//    
-//    _activeSelectionIndex = 6;
-//    
-//    self.circleDateChildren = [[NSMutableArray alloc] init];
-//    
-//    CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
-//    
-//    int numberOfDateButtons = 7;
-//    float dateButtonSpacing = 8.0;
-//    CGFloat buttonWidth = (screenWidth - (numberOfDateButtons - 1) * dateButtonSpacing) / (float)numberOfDateButtons;
-//    
-//    CGFloat buttonHeight = 40;
-//    float buttonCenterY = buttonHeight / 2.0;
-//    
-//    CGPoint center = CGPointMake(buttonWidth / 2.0, buttonCenterY);
-//    
-//    // calendar
-//    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
-//    
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    
-//    int dayOffset;
-//    NSDate *iterativeDate;
-//    
-//    BOOL selected;
-//    
-//    for (int i = 0; i < numberOfDateButtons; i++){
-//        
-//        // using the activeDate as the fourth button, configure all buttons with the appropriate date
-//        
-//        dayOffset = -6 + i;
-//        dateComps.day = dayOffset;
-//        
-//        iterativeDate = [calendar dateByAddingComponents: dateComps
-//                                                  toDate: self.activeDate
-//                                                 options: 0];
-//        
-//        dateFormatter.dateFormat = @"E";
-//        NSString *day = [dateFormatter stringFromDate: iterativeDate];
-//        
-//        dateFormatter.dateFormat = @"d";
-//        NSString *buttonTitle = [dateFormatter stringFromDate: iterativeDate];
-//        
-//        if (i == 6){
-//            
-//            selected = YES;
-//            
-//        } else{
-//            
-//            selected = NO;
-//            
-//        }
-//        
-//        // create the child vc
-//        
-//        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithMainButtonTitle: buttonTitle
-//                                                                                dayTitle: day
-//                                                                                  radius: buttonWidth / 2.0
-//                                                                                  center: center
-//                                                                      selectedAppearance: selected];
-//        
-//        [self.circleDateChildren addObject: circleDateVC];
-//        
-//        [self addChildViewController: circleDateVC];
-//        
-//        [self.dateStackView addArrangedSubview: circleDateVC.view];
-//        
-//        [circleDateVC didMoveToParentViewController: self];
-//        
-//    }
-    
 }
 
 - (void)configureViewAesthetics{
@@ -522,6 +451,22 @@
     // scroll view
     
     self.dateScrollView.backgroundColor = [UIColor blackColor];
+    
+    // month title and arrows
+    
+    self.monthTitle.backgroundColor = [UIColor blackColor];
+    self.monthTitle.textColor = [UIColor whiteColor];
+    self.monthTitle.font = [UIFont boldSystemFontOfSize: 20.0];
+    
+    NSArray *arrowButtons = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *button in arrowButtons){
+        
+        button.backgroundColor = [UIColor blackColor];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize: 40.0];
+        
+    }
     
 }
 
