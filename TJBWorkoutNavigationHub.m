@@ -469,9 +469,16 @@
         
         if (shouldSelectToday){
             
+//            NSLog(@"%@", self.activeDate);
+            
             isTheActiveDate = [calendar isDate: iterativeDate
                                inSameDayAsDate: self.activeDate];
-            self.selectedDateButtonIndex = [NSNumber numberWithInt: i];
+            
+            if (isTheActiveDate){
+                
+                self.selectedDateButtonIndex = [NSNumber numberWithInt: i];
+                
+            }
             
         }
         
@@ -941,7 +948,7 @@
         NSDate *objectDate = [self dateForRecordObject: object];
         
         BOOL recordIsForActiveDate = [calendar isDate: objectDate
-                                     inSameDayAsDate: self.activeDate];
+                                      inSameDayAsDate: self.activeDate];
         
         if (recordIsForActiveDate){
             

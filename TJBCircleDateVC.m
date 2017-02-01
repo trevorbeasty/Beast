@@ -214,6 +214,8 @@
 
 - (void)configureButtonAsNotSelected{
     
+//    NSLog(@"%@\n%d", self.representedDate, [self.dayIndex intValue] );
+    
     _hasSelectedAppearance = NO;
     
     UIColor *color;
@@ -250,6 +252,8 @@
 #pragma mark - Gesture Recognizer
 
 - (void)didSelectView{
+    
+//    NSLog(@"%@\n%d",self.representedDate, [self.dayIndex intValue]);
     
     [self.masterController didSelectObjectWithIndex: self.dayIndex
                                     representedDate: self.representedDate];
