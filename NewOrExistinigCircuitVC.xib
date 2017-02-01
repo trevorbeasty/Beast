@@ -15,8 +15,10 @@
                 <outlet property="mainContainer" destination="cna-Rm-Pq1" id="Tag-5Q-JMD"/>
                 <outlet property="modifyButton" destination="KWr-xh-ldO" id="Vbn-UD-PYQ"/>
                 <outlet property="navBar" destination="Qe7-Np-Lhw" id="3MW-NG-cQD"/>
+                <outlet property="previousMarkButton" destination="X8G-LF-5HS" id="dEF-rf-bdd"/>
                 <outlet property="sortBySegmentedControl" destination="pL5-1h-FKf" id="TcY-kJ-FWG"/>
                 <outlet property="tableView" destination="YLP-je-fi9" id="baC-bn-5lA"/>
+                <outlet property="titleLabel" destination="UjO-CR-yCj" id="HEx-mW-nzW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -26,11 +28,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cna-Rm-Pq1" userLabel="mainContainer">
-                    <rect key="frame" x="16" y="120" width="343" height="443"/>
+                    <rect key="frame" x="16" y="130" width="343" height="433"/>
                     <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="443"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="433"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
                                 <outlet property="delegate" destination="-1" id="oVB-Jp-xB6"/>
@@ -51,7 +55,7 @@
                         <constraint firstAttribute="height" constant="60" id="vwp-82-cbo"/>
                     </constraints>
                     <items>
-                        <navigationItem title="Designed Lift" id="H2u-uh-nl0"/>
+                        <navigationItem title="Designed" id="H2u-uh-nl0"/>
                     </items>
                 </navigationBar>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pL5-1h-FKf">
@@ -68,7 +72,7 @@
                     <rect key="frame" x="0.0" y="627" width="375" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9q-4p-UvJ">
-                            <rect key="frame" x="0.0" y="0.0" width="186.5" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="123.5" height="40"/>
                             <color key="backgroundColor" red="1" green="0.42017299107142858" blue="0.20655691964285713" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Launch">
@@ -79,12 +83,16 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KWr-xh-ldO">
-                            <rect key="frame" x="188.5" y="0.0" width="186.5" height="40"/>
+                            <rect key="frame" x="125.5" y="0.0" width="123.5" height="40"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Modify"/>
                             <connections>
                                 <action selector="didPressModifyButton:" destination="-1" eventType="touchUpInside" id="Roz-e9-9Xz"/>
                             </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8G-LF-5HS">
+                            <rect key="frame" x="251" y="0.0" width="124" height="40"/>
+                            <state key="normal" title="Previous Marks"/>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -92,11 +100,15 @@
                         <constraint firstItem="KWr-xh-ldO" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="top" id="45V-Ya-gaA"/>
                         <constraint firstItem="M9q-4p-UvJ" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="top" id="LQf-ae-kmh"/>
                         <constraint firstAttribute="bottom" secondItem="M9q-4p-UvJ" secondAttribute="bottom" id="Rj4-FJ-Dtt"/>
+                        <constraint firstItem="X8G-LF-5HS" firstAttribute="leading" secondItem="KWr-xh-ldO" secondAttribute="trailing" constant="2" id="SKM-cr-nGK"/>
                         <constraint firstItem="KWr-xh-ldO" firstAttribute="leading" secondItem="M9q-4p-UvJ" secondAttribute="trailing" constant="2" id="doj-QS-CyB"/>
                         <constraint firstAttribute="bottom" secondItem="KWr-xh-ldO" secondAttribute="bottom" id="keb-h3-gPV"/>
-                        <constraint firstAttribute="trailing" secondItem="KWr-xh-ldO" secondAttribute="trailing" id="nHO-Bm-XZJ"/>
+                        <constraint firstAttribute="bottom" secondItem="X8G-LF-5HS" secondAttribute="bottom" id="n6C-a1-JWP"/>
                         <constraint firstItem="KWr-xh-ldO" firstAttribute="width" secondItem="M9q-4p-UvJ" secondAttribute="width" id="p1M-ha-Hft"/>
+                        <constraint firstItem="X8G-LF-5HS" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="top" id="qRh-Bc-vf2"/>
+                        <constraint firstAttribute="trailing" secondItem="X8G-LF-5HS" secondAttribute="trailing" id="qU2-bM-Pzr"/>
                         <constraint firstItem="M9q-4p-UvJ" firstAttribute="leading" secondItem="gVq-bE-dqU" secondAttribute="leading" id="sKw-kL-gJk"/>
+                        <constraint firstItem="X8G-LF-5HS" firstAttribute="width" secondItem="KWr-xh-ldO" secondAttribute="width" id="tql-tj-aTO"/>
                         <constraint firstAttribute="height" constant="40" id="xTx-Y9-7x2"/>
                     </constraints>
                 </view>
@@ -110,11 +122,11 @@
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Existing Schemes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UjO-CR-yCj">
-                    <rect key="frame" x="0.0" y="64" width="375" height="40"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a Scheme and Launch to Begin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UjO-CR-yCj">
+                    <rect key="frame" x="0.0" y="64" width="375" height="50"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="iip-3x-dVH"/>
+                        <constraint firstAttribute="height" constant="50" id="iip-3x-dVH"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

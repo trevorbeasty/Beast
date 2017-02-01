@@ -39,19 +39,8 @@
                         <navigationItem title="Title" id="e80-K4-WEQ"/>
                     </items>
                 </navigationBar>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uez-mL-BWg">
-                    <rect key="frame" x="8" y="68" width="359" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="3FB-mv-vz7"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Begin Set"/>
-                    <connections>
-                        <action selector="didPressBeginSet" destination="-1" eventType="touchUpInside" id="LWn-6J-W55"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5yD-mZ-8yN" userLabel="containerView">
-                    <rect key="frame" x="8" y="116" width="359" height="206"/>
+                    <rect key="frame" x="8" y="76" width="359" height="206"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="02:34" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F2N-Mr-RrI">
                             <rect key="frame" x="180.5" y="0.0" width="178.5" height="79.5"/>
@@ -147,18 +136,29 @@
                         <constraint firstItem="F2N-Mr-RrI" firstAttribute="height" secondItem="UiW-eR-SKp" secondAttribute="height" id="zvx-T5-1Ou"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uez-mL-BWg">
+                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="FqV-k0-I0H"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <state key="normal" title="Begin Set"/>
+                    <connections>
+                        <action selector="didPressBeginSet" destination="-1" eventType="touchUpInside" id="LWn-6J-W55"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="5yD-mZ-8yN" firstAttribute="top" secondItem="Uez-mL-BWg" secondAttribute="bottom" constant="8" id="MAN-Tz-Oil"/>
-                <constraint firstItem="Uez-mL-BWg" firstAttribute="top" secondItem="JjF-Yr-Z8j" secondAttribute="bottom" constant="8" id="NgN-41-LnX"/>
+                <constraint firstAttribute="trailing" secondItem="Uez-mL-BWg" secondAttribute="trailing" id="8bZ-CZ-uio"/>
+                <constraint firstItem="Uez-mL-BWg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="BxR-za-qPV"/>
                 <constraint firstAttribute="trailing" secondItem="5yD-mZ-8yN" secondAttribute="trailing" constant="8" id="Qsa-I3-4aY"/>
-                <constraint firstAttribute="trailing" secondItem="Uez-mL-BWg" secondAttribute="trailing" constant="8" id="bAe-Gx-W89"/>
                 <constraint firstItem="5yD-mZ-8yN" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="bcj-eq-2Ga"/>
-                <constraint firstItem="Uez-mL-BWg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="nf6-Se-12l"/>
                 <constraint firstAttribute="trailing" secondItem="JjF-Yr-Z8j" secondAttribute="trailing" id="sGG-j3-znF"/>
+                <constraint firstAttribute="bottom" secondItem="Uez-mL-BWg" secondAttribute="bottom" id="sQe-3H-G4x"/>
                 <constraint firstItem="JjF-Yr-Z8j" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vq7-xf-scy"/>
                 <constraint firstItem="JjF-Yr-Z8j" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="wAH-0a-2bo"/>
+                <constraint firstItem="5yD-mZ-8yN" firstAttribute="top" secondItem="JjF-Yr-Z8j" secondAttribute="bottom" constant="16" id="zzS-lG-x8S"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>

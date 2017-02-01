@@ -50,8 +50,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
 @property (weak, nonatomic) IBOutlet UIButton *modifyButton;
 //@property (weak, nonatomic) IBOutlet UIButton *previewButton;
+@property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
 
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 // IBAction
 
@@ -133,7 +135,8 @@
     // buttons
     
     NSArray *buttons = @[self.launchButton,
-                         self.modifyButton];
+                         self.modifyButton,
+                         self.previousMarkButton];
     
     for (UIButton *button in buttons){
         
@@ -144,15 +147,19 @@
         
     }
     
+    // title label
+    
+    self.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
 }
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Scheme"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Designed"];
     
     // left button
     
-    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
+    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Options"
                                                                    style: UIBarButtonItemStyleDone
                                                                   target: self
                                                                   action: @selector(didPressHomeButton)];
@@ -528,8 +535,8 @@
         
     }
     
-    label.backgroundColor = [UIColor darkGrayColor];
-    label.textColor = [UIColor whiteColor];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor blackColor];
     label.font = [UIFont boldSystemFontOfSize: 20.0];
     label.textAlignment = NSTextAlignmentCenter;
     
@@ -539,7 +546,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
-    return 40;
+    return 60;
     
 }
 
@@ -593,6 +600,13 @@
 }
 
 - (IBAction)didPressLaunchButton:(id)sender {
+    
+    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithNewRealizedChainAndChainTemplateFromChainTemplate: self.selectedChainTemplate];
+    
+    [self presentViewController: tbc
+                       animated: YES
+                     completion: nil];
+    
 }
 
 //- (IBAction)didPressPreviewButton:(id)sender{
