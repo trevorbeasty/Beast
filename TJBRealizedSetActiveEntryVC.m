@@ -542,7 +542,7 @@
     
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.timerValueForRecovery intValue]
                                          withForwardIncrementing: YES
-                                                  lastUpdateDate: self.lastPrimaryTimerUpdateDate];
+                                                  lastUpdateDate: self.timerUpdateDateForRecovery];
     
 }
 
@@ -550,8 +550,18 @@
     
     // record timer information in case recovery is necessary (if the user does not complete their entry)
     
-    self.timerUpdateDateForRecovery = self.lastPrimaryTimerUpdateDate;
-    self.timerValueForRecovery = [[TJBStopwatch singleton] primaryTimeElapsedInSeconds];
+    if (!self.timerUpdateDateForRecovery){
+        
+        self.timerUpdateDateForRecovery = self.lastPrimaryTimerUpdateDate;
+        
+    }
+    
+    if (!self.timerValueForRecovery){
+        
+        self.timerValueForRecovery = [[TJBStopwatch singleton] primaryTimeElapsedInSeconds];
+        
+    }
+    
     
     __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
     
@@ -559,19 +569,20 @@
         
         [weakSelf removeWhiteoutView];
         
-        [weakSelf setRealizedSetParametersToNil];
-        
         // VC appearance
         
         [self.beginNextSetButton setTitle: @"Begin Next Set"
                                  forState: UIControlStateNormal];
+        
         self.largeStatusLabel.text = @"Resting";
         
         // timer recovery
         
         [weakSelf recoverTimer];
         
-        //
+        // set necessary parameters to nil to maintain functionality of recursive method here
+        
+        [weakSelf setRealizedSetParametersToNil];
         
         [weakSelf dismissViewControllerAnimated: NO
                                  completion: nil];
@@ -827,11 +838,17 @@
 }
 
 - (void)setRealizedSetParametersToNil{
+    
     self.timeDelay = nil;
     _setCompletedButtonPressed = NO;
     self.timeLag = nil;
     self.weight = nil;
     self.reps = nil;
+    
+    
+    self.timerUpdateDateForRecovery = nil;
+    self.timerValueForRecovery = nil;
+    
 }
 
 - (void)confirmSubmission{
