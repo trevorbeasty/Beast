@@ -151,6 +151,19 @@
     
     self.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
+    // container view shadow
+    
+    UIView *shadowView = self.mainContainer;
+    shadowView.backgroundColor = [UIColor clearColor];
+    shadowView.clipsToBounds = NO;
+    
+    CALayer *shadowLayer = shadowView.layer;
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+    shadowLayer.shadowOpacity = 1.0;
+    shadowLayer.shadowRadius = 3.0;
+    
 }
 
 - (void)configureNavigationBar{
@@ -535,9 +548,9 @@
         
     }
     
-    label.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    label.backgroundColor = [UIColor lightGrayColor];
     label.textColor = [UIColor blackColor];
-    label.font = [UIFont boldSystemFontOfSize: 20.0];
+    label.font = [UIFont systemFontOfSize: 20.0];
     label.textAlignment = NSTextAlignmentCenter;
     
     return label;
