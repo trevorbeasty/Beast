@@ -137,7 +137,9 @@
     
     [self toggleButtonsToOffState];
     
-    [self fetchCoreDataAndConfigureTableView];
+    [self fetchCoreData];
+    
+    [self configureTableView];
     
     [self configureDateControlsAndSelectToday: YES];
     
@@ -379,8 +381,7 @@
     
 }
 
-
-- (void)fetchCoreDataAndConfigureTableView{
+- (void)configureTableView{
     
     // table view configuration
     
@@ -389,6 +390,10 @@
     
     [self.tableView registerNib: nib
          forCellReuseIdentifier: @"TJBStructureTableViewCell"];
+    
+}
+
+- (void)fetchCoreData{
     
     // NSFetchedResultsController
     
@@ -419,11 +424,89 @@
     
     // sorted content
     
-    [self configureSortedContentAndReloadTableData];
+    [self configureSortedContentForActiveYear];
+    
+    [self.tableView reloadData];
     
 }
 
-- (void)configureSortedContentAndReloadTableData{
+- (NSMutableArray<TJBChainTemplate *> *)sortArrayByDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)array{
+    
+    // remove all chain templates that don't have realized sets in the active year
+    
+    NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (TJBChainTemplate *chainTemplate in array){
+        
+        NSOrderedSet *realizedChains = chainTemplate.realizedChains;
+        
+        BOOL hasNoRealizedChains = [realizedChains count] == 0;
+        BOOL isInActiveYear = NO;
+        
+        for (int i = 0; i < realizedChains.count; i++){
+            
+            TJBRealizedChain *realizedChain = realizedChains[i];
+            
+            BOOL iterativeRealizedChainInActiveYear = [calendar isDate: realizedChain.dateCreated
+                                                           equalToDate: self.activeDate
+                                                     toUnitGranularity: NSCalendarUnitYear];
+            
+            if (iterativeRealizedChainInActiveYear){
+                isInActiveYear = YES;
+            }
+            
+        }
+        
+        if (hasNoRealizedChains || !isInActiveYear){
+            
+            [indexSet addIndex: [array indexOfObject: chainTemplate]];
+            
+        }
+        
+    }
+    
+    [array removeObjectsAtIndexes: indexSet];
+    
+    // now, only chain templates with realized chains in the active year remain.  Use an NSComparator to order the chain correctly
+    
+    [array sortUsingComparator: ^(TJBChainTemplate *chain1, TJBChainTemplate *chain2){
+        
+        NSDate *date1 = [self largestRealizeChainDateInActiveYearForChainTemplate: chain1];
+        NSDate *date2 = [self largestRealizeChainDateInActiveYearForChainTemplate: chain2];
+        
+        int dateDifference = [date1 timeIntervalSinceDate: date2];
+        BOOL date1IsLater = dateDifference > 0;
+        
+        if (date1IsLater){
+            
+            return NSOrderedAscending;
+            
+        } else{
+            
+            return NSOrderedDescending;
+            
+        }
+        
+    }];
+    
+    return array;
+    
+}
+
+- (NSDate *)largestRealizeChainDateInActiveYearForChainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    
+    
+}
+
+- (NSMutableArray<TJBChainTemplate *> *)sortArrayByDateCreated:(NSMutableArray<TJBChainTemplate *> *)array{
+    
+    return array;
+    
+}
+
+- (void)configureSortedContentForActiveYear{
     
     //// given the fetched results and current sorting selection, derive the sorted content (which will be used to populate the table view)
     
@@ -439,47 +522,7 @@
         
         NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
         
-        // first, remove all chain templates that don't have realized sets
-        
-        NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
-        
-        for (TJBChainTemplate *chainTemplate in interimArray){
-            
-            NSOrderedSet *realizedChains = chainTemplate.realizedChains;
-            
-            BOOL noRealizedChains = [realizedChains count] == 0;
-            
-            if (noRealizedChains){
-                
-                [indexSet addIndex: [interimArray indexOfObject: chainTemplate]];
-                
-            }
-            
-        }
-        
-        [interimArray removeObjectsAtIndexes: indexSet];
-        
-        // now, only chain templates with realized chains remain.  Use an NSComparator to order the chain correctly
-        
-        [interimArray sortUsingComparator: ^(TJBChainTemplate *chain1, TJBChainTemplate *chain2){
-            
-            NSDate *date1 = chain1.realizedChains.lastObject.dateCreated;
-            NSDate *date2 = chain2.realizedChains.lastObject.dateCreated;
-            
-            int dateDifference = [date1 timeIntervalSinceDate: date2];
-            BOOL date1IsLater = dateDifference > 0;
-            
-            if (date1IsLater){
-                
-                return NSOrderedAscending;
-                
-            } else{
-                
-                return NSOrderedDescending;
-                
-            }
-            
-        }];
+        NSMutableArray<TJBChainTemplate *> *sortedChains = [self sortArrayByDateLastExecuted: interimArray];
         
         // now, the remaining chain templates have realized chains and are ordered from most recent to least recent.  The sortedContent structure must now be filled
         
@@ -580,8 +623,6 @@
             
         }
     }
-    
-    [self.tableView reloadData];
     
 }
 
@@ -752,7 +793,8 @@
     
     //// re-sort the content array based upon the new sorting preference
     
-    [self configureSortedContentAndReloadTableData];
+    [self configureSortedContentForActiveYear];
+    [self.tableView reloadData];
     
     [self toggleButtonsToOffState];
     
