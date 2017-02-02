@@ -206,6 +206,8 @@ static NSString * const defaultValue = @"default value";
         [label setTextColor: [UIColor whiteColor]];
         
     }
+    
+
 }
 
 - (void)configureViewData{

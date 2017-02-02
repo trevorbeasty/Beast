@@ -16,6 +16,7 @@
                 <outlet property="beginNextSetButton" destination="sWv-BT-UWM" id="ZTR-IY-k1Q"/>
                 <outlet property="exerciseButton" destination="LEG-Nx-SbA" id="1gc-9F-STT"/>
                 <outlet property="exerciseLabel" destination="npt-ed-bGa" id="U5J-K3-Q7f"/>
+                <outlet property="grayBackdropView" destination="7z5-Lm-Ltj" id="CH2-jC-WXN"/>
                 <outlet property="largeStatusLabel" destination="FUJ-C9-fuN" id="CMW-sc-uLk"/>
                 <outlet property="navigationBar" destination="guv-Qd-dcg" id="7cn-mF-6Tk"/>
                 <outlet property="personalRecordsTableView" destination="v9H-xu-7S6" id="tJO-Mp-0yO"/>

@@ -55,6 +55,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
 @property (weak, nonatomic) IBOutlet UILabel *largeStatusLabel;
+@property (weak, nonatomic) IBOutlet UIView *grayBackdropView;
 
 // IBAction
 
@@ -286,6 +287,23 @@
     // table view
     
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    // give the light gray backdrop rounded corners for the bottom two corners.  Must layout views to update autolayout before calling frame
+    
+    [self.view layoutIfNeeded];
+    
+    CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.grayBackdropView.bounds
+                                               byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
+                                                     cornerRadii: CGSizeMake(4.0, 4.0)];
+    
+    shapeLayer.path = path.CGPath;
+    shapeLayer.frame = self.grayBackdropView.bounds;
+    shapeLayer.fillRule = kCAFillRuleNonZero;
+    shapeLayer.fillColor = [UIColor redColor].CGColor;
+    
+    self.grayBackdropView.layer.mask = shapeLayer;
     
 }
 
