@@ -29,6 +29,7 @@
 // table view cells
 
 #import "TJBPersonalRecordCell.h"
+#import "TJBWorkoutLogTitleCell.h"
 
 
 @interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration, UITableViewDelegate, UITableViewDataSource>
@@ -224,6 +225,12 @@
     [self.personalRecordsTableView registerNib: nib
                         forCellReuseIdentifier: @"PRCell"];
     
+    UINib *nib2 = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+                                bundle: nil];
+    
+    [self.personalRecordsTableView registerNib: nib2
+                        forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
+    
 }
 
 - (void)viewAesthetics{
@@ -373,47 +380,63 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    //// if no exercise has been selected, return 0.  Else, return 1
-    
-    if (!self.exercise){
-        
-        return 0;
-        
-    } else{
-        
-        return 1;
-        
-    }
+    return 1;
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    //// if no exercise has been selected, return 0.  Else, return the count of items in the refined fetched results
+    //// add 1 to account for title cell
     
-    if (!self.exercise){
+    if (!self.repsWeightRecordPairs){
         
-        return 0;
+        return 1;
         
     } else{
         
-        return [self.repsWeightRecordPairs count];
+            return self.repsWeightRecordPairs.count + 1;
         
     }
-    
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
-    
-    TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[indexPath.row];
-    
-    [cell configureWithReps: repsWeightRecordPair.reps
-                     weight: repsWeightRecordPair.weight
-                       date: repsWeightRecordPair.date];
-    
-    return cell;
+    if (indexPath.row == 0){
+        
+        TJBWorkoutLogTitleCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+        
+        if (self.exercise){
+            
+            cell.secondaryLabel.text = self.exercise.name;
+            
+        } else{
+            
+            cell.secondaryLabel.text = @"Select an exercise";
+            
+        }
+        
+        cell.primaryLabel.text = @"Personal Records";
+        
+        cell.backgroundColor = [UIColor clearColor];
+        
+        return cell;
+        
+    } else{
+        
+        NSInteger adjustedRowIndex = indexPath.row - 1;
+        
+        TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
+        
+        TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[adjustedRowIndex];
+        
+        [cell configureWithReps: repsWeightRecordPair.reps
+                         weight: repsWeightRecordPair.weight
+                           date: repsWeightRecordPair.date];
+        
+        return cell;
+        
+    }
     
 }
 

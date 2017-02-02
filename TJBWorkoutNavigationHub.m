@@ -806,7 +806,8 @@
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         df.dateFormat = @"EEEE, MMMM d, yyyy";
-        cell.dateLabel.text = [df stringFromDate: self.activeDate];
+        cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
+        cell.primaryLabel.text = @"My Workout Log";
         cell.backgroundColor = [UIColor clearColor];
         
         return cell;

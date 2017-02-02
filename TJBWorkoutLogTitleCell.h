@@ -10,6 +10,7 @@
 
 @interface TJBWorkoutLogTitleCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *secondaryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *primaryLabel;
 
 @end
