@@ -117,6 +117,7 @@
 		0B36881E1E4352B80077290C /* TJBSchemeSelectionDateComp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBSchemeSelectionDateComp.h; sourceTree = "<group>"; };
 		0B36881F1E4352B80077290C /* TJBSchemeSelectionDateComp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBSchemeSelectionDateComp.m; sourceTree = "<group>"; };
 		0B3688201E4352B80077290C /* TJBSchemeSelectionDateComp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBSchemeSelectionDateComp.xib; sourceTree = "<group>"; };
+		0B3688231E4359280077290C /* TJBSchemeSelectionDateCompDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBSchemeSelectionDateCompDelegate.h; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -550,6 +551,7 @@
 				0B36881E1E4352B80077290C /* TJBSchemeSelectionDateComp.h */,
 				0B36881F1E4352B80077290C /* TJBSchemeSelectionDateComp.m */,
 				0B3688201E4352B80077290C /* TJBSchemeSelectionDateComp.xib */,
+				0B3688231E4359280077290C /* TJBSchemeSelectionDateCompDelegate.h */,
 			);
 			name = "New or Existing Selection ";
 			sourceTree = "<group>";

@@ -29,6 +29,10 @@
 
 #import "TJBStructureTableViewCell.h"
 
+// date control
+
+#import "TJBSchemeSelectionDateComp.h"
+
 
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
@@ -44,22 +48,30 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UILabel *sortByLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
 @property (weak, nonatomic) IBOutlet UIButton *modifyButton;
-//@property (weak, nonatomic) IBOutlet UIButton *previewButton;
+
 @property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
 
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *yearLabel;
+@property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
+@property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
+
 
 // IBAction
 
 - (IBAction)didPressLaunchButton:(id)sender;
-//- (IBAction)didPressPreviewButton:(id)sender;
 - (IBAction)didPressModifyButton:(id)sender;
+
+- (IBAction)didPressLeftArrow:(id)sender;
+- (IBAction)didPressRightArrow:(id)sender;
+
 
 // core data
 
@@ -70,7 +82,16 @@
 
 @property (nonatomic, strong) TJBChainTemplate *selectedChainTemplate;
 @property (nonatomic, strong) NSIndexPath *lastSelectedIndexPath;
-//@property (nonatomic, strong) TJBCircuitReferenceVC *activeCircuitReferenceVC;
+
+// date control
+
+@property (nonatomic, strong) UIStackView *dateStackView;
+@property (nonatomic, strong) NSMutableArray <TJBSchemeSelectionDateComp *> *dateControlObjects;
+
+// state
+
+@property (nonatomic, strong) NSDate *activeDate;
+@property (nonatomic, strong) NSNumber *selectedDateObjectIndex;
 
 
 @end
@@ -82,6 +103,10 @@
 - (instancetype)init{
     
     self = [super init];
+    
+    // state
+    
+    self.activeDate = [NSDate date];
     
     // for restoration
     
@@ -112,6 +137,161 @@
     [self toggleButtonsToOffState];
     
     [self fetchCoreDataAndConfigureTableView];
+    
+    [self configureDateControlsAndSelectToday: YES];
+    
+}
+
+- (void)clearTransitoryDateControlObjects{
+    
+    //// must clear the children view controller array as well as remove the stack view from the scroll view
+    
+    if (self.dateStackView){
+        
+        for (TJBSchemeSelectionDateComp *vc in self.dateControlObjects){
+            
+            [vc willMoveToParentViewController: nil];
+            [vc removeFromParentViewController];
+            
+        }
+        
+        [self.dateStackView removeFromSuperview];
+        self.dateStackView = nil;
+        
+    }
+    
+    self.dateControlObjects = [[NSMutableArray alloc] init];
+    
+}
+
+
+- (void)configureDateControlsAndSelectToday:(BOOL)shouldSelectToday{
+    
+    //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
+    
+    [self clearTransitoryDateControlObjects];
+    
+    // layout views so that the frame property is accurate
+    
+    [self.view layoutIfNeeded];
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    
+    // month string
+    
+//    df.dateFormat = @"MMM";
+//    NSString *monthString = [df stringFromDate: self.firstDayOfDateControlMonth];
+//    self.monthTitle.text = monthTitle;
+    
+    
+    //// stack view and child VC's
+    
+    // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
+    
+
+//    NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
+//                                                inUnit: NSCalendarUnitMonth
+//                                               forDate: self.firstDayOfDateControlMonth];
+    
+    const CGFloat buttonWidth = 60.0;
+    const CGFloat buttonSpacing = 0.0;
+    const CGFloat buttonHeight = self.dateControlScrollView.frame.size.height;
+    
+    const CGFloat stackViewWidth = buttonWidth * 12 + 11 * buttonSpacing;
+    
+    CGRect stackViewRect = CGRectMake(0, 0, stackViewWidth, buttonHeight);
+    
+    // create the stack view with the proper dimensions and also set the content size of the scroll view
+    
+    UIStackView *stackView = [[UIStackView alloc] initWithFrame: stackViewRect];
+    self.dateStackView = stackView;
+    
+    self.dateControlScrollView.contentSize = stackViewRect.size;
+    
+    [self.dateControlScrollView addSubview: stackView];
+    
+    // configure the stack view's layout properties
+    
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFillEqually;
+    stackView.spacing = buttonSpacing;
+    
+    // give the stack view it's content.  All items preceding the for loop are used in the for loop
+    
+    NSDate *activeDate = self.activeDate;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                              fromDate: activeDate];
+    [dateComps setDay: 1];
+    
+    NSDate *iterativeDate;
+    
+    CGSize dateControlSize = CGSizeMake(buttonWidth, buttonHeight);
+    
+    NSDate *today = [NSDate date];
+    
+    for (int i = 0; i < 12; i++){
+        
+        // configure the month
+        
+        [dateComps setMonth: i + 1];
+        iterativeDate = [calendar dateFromComponents: dateComps];
+        
+        NSLog(@"active date: %@", activeDate);
+        
+        df.dateFormat = @"MMM";
+        NSString *monthString = [df stringFromDate: iterativeDate];
+        
+        // create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
+        
+        NSComparisonResult todayMonthCompare = [calendar compareDate: iterativeDate
+                                                         toDate: today
+                                              toUnitGranularity: NSCalendarUnitMonth];
+        
+        BOOL iterativeMonthGreaterThanCurrentMonth = todayMonthCompare == NSOrderedAscending;
+        
+//        NSComparisonResult activeDateMonthCompare = [calendar compareDate: iterativeDate
+//                                                                   toDate: activeDate
+//                                                        toUnitGranularity: NSCalendarUnitMonth];
+        
+        BOOL isTheActiveMonth = NO;
+        
+        if (shouldSelectToday){
+            
+            isTheActiveMonth = todayMonthCompare == NSOrderedSame;
+            
+            if (isTheActiveMonth){
+                
+                self.selectedDateObjectIndex = [NSNumber numberWithInt: i];
+                isTheActiveMonth = YES;
+                
+            }
+            
+        }
+        
+        BOOL recordExistsForIterativeDate = NO;
+        
+        
+        
+        TJBSchemeSelectionDateComp *dateControlObject = [[TJBSchemeSelectionDateComp alloc] initWithMonthString: monthString
+                                                                                           representedDate: iterativeDate
+                                                                                                     index: [NSNumber numberWithInt: i]
+                                                                                                 isEnabled: !iterativeMonthGreaterThanCurrentMonth
+                                                                                                 isCircled: recordExistsForIterativeDate
+                                                                                     hasSelectedAppearance: isTheActiveMonth
+                                                                                                      size: dateControlSize
+                                                                                          masterController: self];
+        
+        [self.dateControlObjects addObject: dateControlObject];
+        
+        [self addChildViewController: dateControlObject];
+        
+        [stackView addArrangedSubview: dateControlObject.view];
+        
+        [dateControlObject didMoveToParentViewController: self];
+        
+    }
     
 }
 
@@ -149,7 +329,7 @@
     
     // title label
     
-    self.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+//    self.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
     // container view shadow
     
@@ -495,7 +675,7 @@
     
     if (self.lastSelectedIndexPath){
         
-        TJBStructureTableViewCell *lastSelectedCell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+//        TJBStructureTableViewCell *lastSelectedCell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
         
 //        UIColor *unselectedColor = [[TJBAestheticsController singleton] color1];
 //        [lastSelectedCell setOverallColor: unselectedColor];
@@ -505,7 +685,7 @@
     
     // deal with highlighting
     
-    TJBStructureTableViewCell *currentCell = [self.tableView cellForRowAtIndexPath: indexPath];
+//    TJBStructureTableViewCell *currentCell = [self.tableView cellForRowAtIndexPath: indexPath];
     
 //    UIColor *selectedColor = [UIColor redColor];
 //    [currentCell setOverallColor: selectedColor];
@@ -686,6 +866,12 @@
 //}
 
 - (IBAction)didPressModifyButton:(id)sender {
+}
+
+- (IBAction)didPressLeftArrow:(id)sender {
+}
+
+- (IBAction)didPressRightArrow:(id)sender {
 }
 
 #pragma mark - <UIViewControllerRestoration>

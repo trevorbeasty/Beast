@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewOrExistinigCircuitVC : UIViewController
+// delegate protocol
+
+#import "TJBSchemeSelectionDateCompDelegate.h"
+
+@interface NewOrExistinigCircuitVC : UIViewController <TJBSchemeSelectionDateCompDelegate>
 
 @end

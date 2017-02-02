@@ -11,14 +11,18 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewOrExistinigCircuitVC">
             <connections>
+                <outlet property="dateControlScrollView" destination="iB7-75-csB" id="Ikp-4J-AuY"/>
                 <outlet property="launchButton" destination="M9q-4p-UvJ" id="1Io-BL-YJx"/>
+                <outlet property="leftArrowButton" destination="tZY-W0-fYd" id="5QH-nU-cw4"/>
                 <outlet property="mainContainer" destination="cna-Rm-Pq1" id="Tag-5Q-JMD"/>
                 <outlet property="modifyButton" destination="KWr-xh-ldO" id="Vbn-UD-PYQ"/>
                 <outlet property="navBar" destination="Qe7-Np-Lhw" id="3MW-NG-cQD"/>
                 <outlet property="previousMarkButton" destination="X8G-LF-5HS" id="dEF-rf-bdd"/>
+                <outlet property="rightArrowButton" destination="muu-Ne-Y0K" id="fY0-rH-Nyj"/>
                 <outlet property="sortBySegmentedControl" destination="pL5-1h-FKf" id="TcY-kJ-FWG"/>
                 <outlet property="tableView" destination="YLP-je-fi9" id="baC-bn-5lA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="yearLabel" destination="yZc-c3-eUK" id="gpZ-IA-MuZ"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -142,10 +146,16 @@
                         <constraint firstAttribute="width" constant="50" id="Wze-gw-h9M"/>
                     </constraints>
                     <state key="normal" title="&gt;"/>
+                    <connections>
+                        <action selector="didPressRightArrow:" destination="-1" eventType="touchUpInside" id="Hsz-oo-Zhx"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZY-W0-fYd">
                     <rect key="frame" x="0.0" y="68" width="50" height="44"/>
                     <state key="normal" title="&lt;"/>
+                    <connections>
+                        <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="46V-Zq-up9"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

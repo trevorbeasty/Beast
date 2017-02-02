@@ -78,12 +78,16 @@
     
     // GR
     
-    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                            action: @selector(didSelectView)];
-    tapGR.numberOfTouchesRequired = 1;
-    tapGR.numberOfTapsRequired = 1;
-    
-    [self.view addGestureRecognizer: tapGR];
+    if (_isEnabled){
+        
+        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                action: @selector(didSelectView)];
+        tapGR.numberOfTouchesRequired = 1;
+        tapGR.numberOfTapsRequired = 1;
+        
+        [self.view addGestureRecognizer: tapGR];
+        
+    }
     
     //
     
@@ -108,7 +112,6 @@
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     self.activeShapeLayer = shapeLayer;
     shapeLayer.path = path.CGPath;
-    shapeLayer.borderWidth = 2.0;
     
     if (_hasSelectedAppearance){
         
