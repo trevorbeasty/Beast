@@ -21,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ab-Eg-kgY">
-                    <rect key="frame" x="131" y="0.0" width="34" height="24"/>
+                    <rect key="frame" x="131" y="4" width="34" height="24"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="textColor"/>
@@ -30,7 +30,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="5ab-Eg-kgY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="YBp-Td-sL9"/>
+                <constraint firstItem="5ab-Eg-kgY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="4" id="YBp-Td-sL9"/>
                 <constraint firstItem="5ab-Eg-kgY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="uRD-c6-LkD"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

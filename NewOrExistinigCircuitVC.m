@@ -94,6 +94,7 @@
 @property (nonatomic, strong) NSNumber *selectedDateObjectIndex;
 
 
+
 @end
 
 @implementation NewOrExistinigCircuitVC
@@ -177,21 +178,9 @@
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     
-    // month string
-    
-//    df.dateFormat = @"MMM";
-//    NSString *monthString = [df stringFromDate: self.firstDayOfDateControlMonth];
-//    self.monthTitle.text = monthTitle;
-    
-    
     //// stack view and child VC's
     
     // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
-    
-
-//    NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
-//                                                inUnit: NSCalendarUnitMonth
-//                                               forDate: self.firstDayOfDateControlMonth];
     
     const CGFloat buttonWidth = 60.0;
     const CGFloat buttonSpacing = 0.0;
@@ -238,8 +227,6 @@
         [dateComps setMonth: i + 1];
         iterativeDate = [calendar dateFromComponents: dateComps];
         
-        NSLog(@"active date: %@", activeDate);
-        
         df.dateFormat = @"MMM";
         NSString *monthString = [df stringFromDate: iterativeDate];
         
@@ -249,7 +236,7 @@
                                                          toDate: today
                                               toUnitGranularity: NSCalendarUnitMonth];
         
-        BOOL iterativeMonthGreaterThanCurrentMonth = todayMonthCompare == NSOrderedAscending;
+        BOOL iterativeMonthGreaterThanCurrentMonth = todayMonthCompare == NSOrderedDescending;
         
 //        NSComparisonResult activeDateMonthCompare = [calendar compareDate: iterativeDate
 //                                                                   toDate: activeDate
@@ -327,10 +314,6 @@
         
     }
     
-    // title label
-    
-//    self.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    
     // container view shadow
     
     UIView *shadowView = self.mainContainer;
@@ -343,6 +326,26 @@
     shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
     shadowLayer.shadowOpacity = 1.0;
     shadowLayer.shadowRadius = 3.0;
+    
+    //// date controls
+    
+    // year label
+    
+    self.yearLabel.backgroundColor = [UIColor darkGrayColor];
+    self.yearLabel.textColor = [UIColor whiteColor];
+    self.yearLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
+    // arrows
+    
+    NSArray *arrows = @[self.rightArrowButton, self.leftArrowButton];
+    for (UIButton *b in arrows){
+        
+        b.backgroundColor = [UIColor darkGrayColor];
+        [b setTitleColor: [UIColor whiteColor]
+                forState: UIControlStateNormal];
+        [b.titleLabel setFont: [UIFont systemFontOfSize: 40.0]];
+        
+    }
     
 }
 
@@ -672,25 +675,8 @@
     //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
     
     // deal with unhighlighting
-    
-    if (self.lastSelectedIndexPath){
-        
-//        TJBStructureTableViewCell *lastSelectedCell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
-        
-//        UIColor *unselectedColor = [[TJBAestheticsController singleton] color1];
-//        [lastSelectedCell setOverallColor: unselectedColor];
-        
-    }
+
     self.lastSelectedIndexPath = indexPath;
-    
-    // deal with highlighting
-    
-//    TJBStructureTableViewCell *currentCell = [self.tableView cellForRowAtIndexPath: indexPath];
-    
-//    UIColor *selectedColor = [UIColor redColor];
-//    [currentCell setOverallColor: selectedColor];
-    
-    // store the selected chain template and configure the buttons
     
     TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
     
@@ -768,24 +754,6 @@
     
     [self configureSortedContentAndReloadTableData];
     
-    // state
-    
-//    self.mainContainer.hidden = YES;
-//    self.tableView.hidden = NO;
-//    _inPreviewMode = NO;
-//    [self.previewButton setTitle: @"Preview"
-//                        forState: UIControlStateNormal];
-    
-//    if (self.activeCircuitReferenceVC){
-//        
-//        [self.activeCircuitReferenceVC removeFromParentViewController];
-//        [self.activeCircuitReferenceVC.view removeFromSuperview];
-//        self.activeCircuitReferenceVC = nil;
-//        
-//    }
-    
-    //
-    
     [self toggleButtonsToOffState];
     
     self.selectedChainTemplate = nil;
@@ -802,76 +770,21 @@
     
 }
 
-//- (IBAction)didPressPreviewButton:(id)sender{
-//    
-//    if (_inPreviewMode == NO){
-//        
-//        //// hide the table view and present the chain template in its place.  Update state variables.  Change preview button appearance
-//        
-//        _inPreviewMode = YES;
-//        
-//        self.mainContainer.hidden = NO;
-//        self.tableView.hidden = YES;
-//        
-//        // create a TJBCircuitReferenceVC with the dimensions of the mainContainer
-//        
-//        CGSize containerViewSize = self.mainContainer.frame.size;
-//        
-//        NSNumber *viewHeight = [NSNumber numberWithFloat: containerViewSize.height];
-//        NSNumber *viewWidth = [NSNumber numberWithFloat: containerViewSize.width];
-//        
-//        TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithChainTemplate: self.selectedChainTemplate
-//                                                                       contentViewHeight: viewHeight
-//                                                                        contentViewWidth: viewWidth];
-//        
-//        self.activeCircuitReferenceVC = vc;
-//        
-//        [self addChildViewController: vc];
-//        
-//        [self.mainContainer addSubview: vc.view];
-//        
-//        [vc didMoveToParentViewController: self];
-//        
-//        // preview button
-//        
-//        [self.previewButton setTitle: @"List"
-//                            forState: UIControlStateNormal];
-//        
-//    } else if (_inPreviewMode == YES){
-//        
-//        //// toggle the preview button appearance, update state variables, eliminate the child VC and subview, un-hide the table view
-//        
-//        // state
-//        
-//        self.mainContainer.hidden = YES;
-//        _inPreviewMode = NO;
-//        
-//        // preview button
-//        
-//        [self.previewButton setTitle: @"Preview"
-//                            forState: UIControlStateNormal];
-//        
-//        // child VC and subview
-//        
-//        [self.activeCircuitReferenceVC removeFromParentViewController];
-//        [self.activeCircuitReferenceVC.view removeFromSuperview];
-//        self.activeCircuitReferenceVC = nil;
-//        
-//        // table view
-//        
-//        self.tableView.hidden = NO;
-//        
-//    }
-//
-//}
+
 
 - (IBAction)didPressModifyButton:(id)sender {
 }
 
-- (IBAction)didPressLeftArrow:(id)sender {
+- (IBAction)didPressLeftArrow:(id)sender{
+    
+    
+    
 }
 
-- (IBAction)didPressRightArrow:(id)sender {
+- (IBAction)didPressRightArrow:(id)sender{
+    
+    
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>
@@ -883,6 +796,22 @@
     NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
     
     return vc;
+    
+}
+
+#pragma mark - <TJBSchemeSelectionDateCompDelegate>
+
+- (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
+    
+    if (self.selectedDateObjectIndex){
+        
+        [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] configureAsNotSelected];
+        
+    }
+    
+    self.selectedDateObjectIndex = index;
+    
+    [self.dateControlObjects[[index intValue]] configureAsSelected];
     
 }
 

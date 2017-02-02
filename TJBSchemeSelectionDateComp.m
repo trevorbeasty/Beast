@@ -164,9 +164,6 @@
 
 - (void)didSelectView{
     
-    NSLog(@"did select %@",
-          self.monthString);
-    
     [self.masterController didSelectObjectWithIndex: self.index
                                     representedDate: self.representedDate];
     
