@@ -13,6 +13,10 @@
 #import "TJBRealizedSetActiveEntryVC.h"
 #import "NewOrExistinigCircuitVC.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBLiftOptionsVC ()
 
 // IBOutlet
@@ -37,11 +41,31 @@
     
     [self configureNavBar];
     
+    [self configureViewAesthetics];
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    NSArray *buttons = @[self.freeformButton,
+                         self.designedButton];
+    
+    for (UIButton *button in buttons){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
+    
 }
 
 - (void)configureNavBar{
     
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
+    
+    navItem.title = @"Lift Options";
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                      style: UIBarButtonItemStyleDone

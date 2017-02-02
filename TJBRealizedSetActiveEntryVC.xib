@@ -33,7 +33,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sw3-k5-xCu">
-                    <rect key="frame" x="187.5" y="64" width="187.5" height="50"/>
+                    <rect key="frame" x="188.5" y="64" width="186.5" height="50"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="GOL-mU-U5a"/>
@@ -48,7 +48,7 @@
                         <constraint firstAttribute="height" constant="60" id="Yls-8H-pNP"/>
                     </constraints>
                     <items>
-                        <navigationItem title="Freeform" id="ihL-Nf-gmB"/>
+                        <navigationItem title="Freeform Lift" id="ihL-Nf-gmB"/>
                     </items>
                 </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWv-BT-UWM">
@@ -138,7 +138,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resting" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUJ-C9-fuN">
-                    <rect key="frame" x="0.0" y="64" width="187.5" height="50"/>
+                    <rect key="frame" x="0.0" y="64" width="186.5" height="50"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="40"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -150,7 +150,7 @@
                 <constraint firstItem="TJM-C8-3Ry" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="2E5-LM-0PP"/>
                 <constraint firstItem="sw3-k5-xCu" firstAttribute="top" secondItem="FUJ-C9-fuN" secondAttribute="top" id="3G7-n0-hRQ"/>
                 <constraint firstItem="b5e-VI-xZ9" firstAttribute="trailing" secondItem="NbM-Kj-fIr" secondAttribute="trailing" id="4U3-Zg-uMU"/>
-                <constraint firstItem="sw3-k5-xCu" firstAttribute="leading" secondItem="FUJ-C9-fuN" secondAttribute="trailing" id="5mi-0v-Ru9"/>
+                <constraint firstItem="sw3-k5-xCu" firstAttribute="leading" secondItem="FUJ-C9-fuN" secondAttribute="trailing" constant="2" id="5mi-0v-Ru9"/>
                 <constraint firstItem="sw3-k5-xCu" firstAttribute="top" secondItem="guv-Qd-dcg" secondAttribute="bottom" constant="4" id="5ul-4C-sQf"/>
                 <constraint firstAttribute="trailing" secondItem="guv-Qd-dcg" secondAttribute="trailing" id="6ci-D2-Qjb"/>
                 <constraint firstItem="NbM-Kj-fIr" firstAttribute="top" secondItem="sw3-k5-xCu" secondAttribute="bottom" constant="4" id="6lT-fq-e2r"/>

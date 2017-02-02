@@ -143,11 +143,15 @@
     self.dayLabel.backgroundColor = [UIColor clearColor];
     self.dayLabel.font = [UIFont systemFontOfSize: 15.0];
     
-    if (!_isEnabled){
+    if (_isEnabled){
         
-        self.numberLabel.backgroundColor = [UIColor grayColor];
-        self.dayLabel.backgroundColor = [UIColor grayColor];
-        self.view.backgroundColor = [UIColor grayColor];
+//        self.numberLabel.backgroundColor = [UIColor darkGrayColor];
+//        self.dayLabel.backgroundColor = [UIColor grayColor];
+        self.view.backgroundColor = [UIColor darkGrayColor];
+        
+    } else{
+        
+        self.view.backgroundColor = [UIColor lightGrayColor];
         
     }
     
@@ -198,10 +202,10 @@
     
     self.view.backgroundColor = color;
     
-    self.dayLabel.backgroundColor = color;
+//    self.dayLabel.backgroundColor = color;
     self.dayLabel.textColor = [UIColor blackColor];
     
-    self.numberLabel.backgroundColor = color;
+//    self.numberLabel.backgroundColor = color;
     self.numberLabel.textColor = [UIColor blackColor];
     
     if (_isCircled){
@@ -221,17 +225,17 @@
     UIColor *color;
     
     if (_isEnabled){
-        color = [UIColor blackColor];
+        color = [UIColor darkGrayColor];
     } else{
-        color = [UIColor grayColor];
+        color = [UIColor lightGrayColor];
     }
     
     self.view.backgroundColor = color;
     
-    self.dayLabel.backgroundColor = color;
+//    self.dayLabel.backgroundColor = color;
     self.dayLabel.textColor = [UIColor whiteColor];
     
-    self.numberLabel.backgroundColor = color;
+//    self.numberLabel.backgroundColor = color;
     self.numberLabel.textColor = [UIColor whiteColor];
     
     if (_isCircled){

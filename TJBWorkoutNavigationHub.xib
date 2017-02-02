@@ -54,6 +54,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="476" height="534"/>
                             <color key="backgroundColor" red="0.97438395692087265" green="1" blue="0.69670033664544329" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="foT-3N-3Zo"/>
                                 <outlet property="delegate" destination="-1" id="17P-Hg-5VR"/>

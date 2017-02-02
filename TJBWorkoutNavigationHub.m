@@ -315,10 +315,10 @@
     
     CALayer *shadowLayer = shadowView.layer;
     shadowLayer.masksToBounds = NO;
-    shadowLayer.shadowColor = [UIColor blackColor].CGColor;
-    shadowLayer.shadowOffset = CGSizeMake(0, 0);
-    shadowLayer.shadowOpacity = .8;
-    shadowLayer.shadowRadius = 5.0;
+    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+    shadowLayer.shadowOpacity = 1.0;
+    shadowLayer.shadowRadius = 3.0;
     
 }
 
@@ -561,7 +561,7 @@
     
     for (UIButton *button in buttons){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] color2];
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
@@ -570,18 +570,18 @@
     
     // scroll view
     
-    self.dateScrollView.backgroundColor = [UIColor blackColor];
+    self.dateScrollView.backgroundColor = [UIColor clearColor];
     
     // month title and arrows
     
-    self.monthTitle.backgroundColor = [UIColor blackColor];
+    self.monthTitle.backgroundColor = [UIColor darkGrayColor];
     self.monthTitle.textColor = [UIColor whiteColor];
     self.monthTitle.font = [UIFont boldSystemFontOfSize: 20.0];
     
     NSArray *arrowButtons = @[self.leftArrowButton, self.rightArrowButton];
     for (UIButton *button in arrowButtons){
         
-        button.backgroundColor = [UIColor blackColor];
+        button.backgroundColor = [UIColor darkGrayColor];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize: 40.0];

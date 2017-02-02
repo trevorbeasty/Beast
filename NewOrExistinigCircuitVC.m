@@ -535,7 +535,7 @@
         
     }
     
-    label.backgroundColor = [UIColor clearColor];
+    label.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     label.textColor = [UIColor blackColor];
     label.font = [UIFont boldSystemFontOfSize: 20.0];
     label.textAlignment = NSTextAlignmentCenter;

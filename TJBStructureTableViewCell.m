@@ -171,7 +171,7 @@
         
     } else{
         
-        weightString = @"no target";
+        weightString = @"X lbs";
         
     }
     
@@ -182,18 +182,19 @@
         
     } else{
         
-        repsString = @"";
+        repsString = @"X reps";
         
     }
     
     if (targetingRest) {
         
         int rest = self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value;
-        restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: rest];
+        NSString *string = [NSString stringWithFormat: @"+%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: rest]];
+        restString = string;
         
     } else{
         
-        restString = @"";
+        restString = @"X rest";
         
     }
         
@@ -264,7 +265,7 @@
     float numberOfRounds = (float)chainTemplate.numberOfRounds;
     float titleHeight = 20.0;
     float spacing = 8.0;
-    float error = 16.0;
+    float error = 0.0;
     
     return (numberOfExercises * (numberOfRounds + 1.0) + 1.0) * titleHeight + spacing + error;
     

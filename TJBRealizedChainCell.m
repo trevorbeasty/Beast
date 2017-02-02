@@ -238,7 +238,7 @@
     float numberOfRounds = (float)realizedChain.numberOfRounds;
     float titleHeight = 20.0;
     float spacing = 8.0;
-    float error = 16.0;
+    float error = 0.0;
     
     return (numberOfExercises * (numberOfRounds + 1.0) + 1.0) * titleHeight + spacing + error;
  

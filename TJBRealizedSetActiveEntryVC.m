@@ -209,10 +209,10 @@
     
     CALayer *shadowLayer = shadowView.layer;
     shadowLayer.masksToBounds = NO;
-    shadowLayer.shadowColor = [UIColor blackColor].CGColor;
-    shadowLayer.shadowOffset = CGSizeMake(0, 0);
-    shadowLayer.shadowOpacity = .8;
-    shadowLayer.shadowRadius = 5.0;
+    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+    shadowLayer.shadowOpacity = 1.0;
+    shadowLayer.shadowRadius = 3.0;
     
 }
 
@@ -237,18 +237,31 @@
     
     for (UIButton *button in buttons){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] color2];
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
+        CALayer *bl = button.layer;
+        bl.masksToBounds = YES;
+        bl.cornerRadius = 4.0;
+        
     }
     
-    // timer
+    // title labels
     
-    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-    self.timerLabel.textColor = [UIColor whiteColor];
-    self.timerLabel.font = [UIFont systemFontOfSize: 40.0];
+    NSArray *titleLabels = @[self.largeStatusLabel,
+                             self.timerLabel];
+    
+    for (UILabel *label in titleLabels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont systemFontOfSize: 40.0];
+        
+    }
+    
+
     
     // table view
     
@@ -261,7 +274,7 @@
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform"];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Home"
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Options"
                                                                       style: UIBarButtonItemStyleDone
                                                                      target: self
                                                                      action: @selector(didPressHome)];
@@ -523,8 +536,8 @@
 
 - (void)didPressHome{
     
-    [self.presentingViewController.presentingViewController dismissViewControllerAnimated: NO
-                                                                               completion: nil];
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
     
 }
 

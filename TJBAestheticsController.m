@@ -181,6 +181,15 @@
     
 }
 
+- (UIColor *)blueButtonColor{
+    
+    return [UIColor colorWithRed: 45.0 / 255.0
+                           green: 156.0 / 255.0
+                            blue: 219.0 / 255.0
+                           alpha: 1.0];
+    
+}
+
 @end
 
 
