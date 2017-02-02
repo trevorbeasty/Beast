@@ -237,8 +237,7 @@
     
     // buttons
     
-    NSArray *buttons = @[self.beginNextSetButton,
-                         self.targetRestButton,
+    NSArray *buttons = @[self.targetRestButton,
                          self.alertTimingButton,
                          self.exerciseButton];
     
@@ -255,6 +254,11 @@
         
     }
     
+    self.beginNextSetButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    [self.beginNextSetButton setTitleColor: [UIColor whiteColor]
+                                  forState: UIControlStateNormal];
+    self.beginNextSetButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
     // title labels
     
     NSArray *titleLabels = @[self.largeStatusLabel,
@@ -268,6 +272,15 @@
         
     }
     
+    // selection row labels
+    
+    NSArray *rowLabels = @[self.targetRestLabel, self.alertTimingLabel, self.exerciseLabel];
+    for (UILabel *label in rowLabels){
+        
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.textColor = [UIColor whiteColor];
+        
+    }
 
     
     // table view
