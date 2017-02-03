@@ -310,7 +310,7 @@
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform Lift"];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Options"
                                                                       style: UIBarButtonItemStyleDone

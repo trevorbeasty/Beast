@@ -336,6 +336,7 @@
         [button setBackgroundColor: color];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
     
@@ -376,7 +377,7 @@
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Designed"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Designed Lift"];
     
     // left button
     
