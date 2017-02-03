@@ -73,9 +73,11 @@
 - (IBAction)didPressRightArrow:(id)sender;
 
 
-// core data
+//// core data
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
+
+// this is the array that feeds the table view. Due to algorithmic considerations, the sortedContent is such that the 0th array is December and the 11th array is January
 @property (nonatomic, strong) NSMutableArray <NSMutableArray <TJBChainTemplate *> *> *sortedContent;
 
 // selection
@@ -129,6 +131,10 @@
 
 - (void)viewDidLoad{
     
+    // must configure date controls before fetching core data so that the selectedDateObjectIndex is not nil
+    
+    [self configureDateControlsAndSelectToday: YES];
+    
     [self configureNavigationBar];
     
     [self viewAesthetics];
@@ -140,8 +146,6 @@
     [self fetchCoreData];
     
     [self configureTableView];
-    
-    [self configureDateControlsAndSelectToday: YES];
     
 }
 
@@ -494,9 +498,119 @@
     
 }
 
+- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)array{
+    
+    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
+    
+    TJBChainTemplate *iterativeChainTemplate;
+    TJBRealizedChain *iterativeRealizedChain;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
+                                                       fromDate: self.activeDate];
+    
+    for (int i = 12 ; i > 0; i--){
+        
+        [iterativeDateComps setMonth: i];
+        
+        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
+        [returnArray addObject: monthArray];
+        
+        for (int j = 0; j < array.count; j++){
+            
+            iterativeChainTemplate = array[j];
+            iterativeRealizedChain = [self largestRealizeChainInActiveYearAndMonthForReferenceDate: [calendar dateFromComponents: iterativeDateComps]
+                                                                                         chainTemplate: iterativeChainTemplate];
+            
+            // nil will be returned if there are no matches for the relevant month and year.  If there is a match, add the chain to the return array
+            // if there is no match, then all subsequent arrays will not contain any matches because the dates are in decreasing order, so break the for loop and continue to the next month
+            
+            if (iterativeRealizedChain){
+                
+                [returnArray[12-i] addObject: iterativeChainTemplate];
+                
+            } else{
+                
+                continue;
+                
+            }
+            
+        }
+        
+    }
+    
+    return returnArray;
+    
+}
+
 - (NSDate *)largestRealizeChainDateInActiveYearForChainTemplate:(TJBChainTemplate *)chainTemplate{
     
+    //// the goal is to get the largest date for the current year so that dates are correctly expressed.  This algorithm relies on the chain template's chains being in chronological order.  This method assumes their is a valid return value.
     
+    NSOrderedSet<TJBRealizedChain *> *realizedChains = chainTemplate.realizedChains;
+    NSInteger limit = realizedChains.count;
+    
+    NSDate *iterativeDate;
+    NSDate *referenceDate = self.activeDate;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSInteger reverseOrder = (limit - 1) - i;
+        TJBRealizedChain *iterativeChain = realizedChains[reverseOrder];
+        iterativeDate = iterativeChain.dateCreated;
+        
+        BOOL iterativeChainInRefYear = [calendar isDate: iterativeDate
+                                            equalToDate: referenceDate
+                                      toUnitGranularity: NSCalendarUnitYear];
+        
+        if (iterativeChainInRefYear){
+            
+            return iterativeDate;
+            
+        }
+        
+    }
+    
+    abort();
+    
+}
+
+- (TJBRealizedChain *)largestRealizeChainInActiveYearAndMonthForReferenceDate:(NSDate *)referenceDate chainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    //// the goal is to get the largest date for the current year so that dates are correctly expressed.  This algorithm relies on the chain template's chains being in chronological order.  This method assumes their is a valid return value.
+    
+    NSOrderedSet<TJBRealizedChain *> *realizedChains = chainTemplate.realizedChains;
+    NSInteger limit = realizedChains.count;
+    
+    NSDate *iterativeDate;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSInteger reverseOrder = (limit - 1) - i;
+        TJBRealizedChain *iterativeChain = realizedChains[reverseOrder];
+        iterativeDate = iterativeChain.dateCreated;
+        
+        BOOL iterativeChainInRefYear = [calendar isDate: iterativeDate
+                                            equalToDate: referenceDate
+                                      toUnitGranularity: NSCalendarUnitYear];
+        
+        BOOL iterativeChainInRefMonth = [calendar isDate: iterativeDate
+                                             equalToDate: referenceDate
+                                       toUnitGranularity: NSCalendarUnitMonth];
+        
+        if (iterativeChainInRefYear && iterativeChainInRefMonth){
+            
+            return iterativeChain;
+            
+        }
+        
+    }
+    
+    return nil;
     
 }
 
@@ -510,7 +624,7 @@
     
     //// given the fetched results and current sorting selection, derive the sorted content (which will be used to populate the table view)
     
-    self.sortedContent = [[NSMutableArray alloc] init];
+    self.sortedContent = nil;
     
     NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
     BOOL sortByDateLastExecuted = sortSelection == 0;
@@ -524,51 +638,53 @@
         
         NSMutableArray<TJBChainTemplate *> *sortedChains = [self sortArrayByDateLastExecuted: interimArray];
         
-        // now, the remaining chain templates have realized chains and are ordered from most recent to least recent.  The sortedContent structure must now be filled
+        self.sortedContent = [self bucketByMonthAccordingToDateLastExecuted: sortedChains];
         
-        NSInteger limit = [interimArray count];
-        
-        if (limit > 0){
-            
-            NSMutableArray *initialArray = [[NSMutableArray alloc] init];
-            [initialArray addObject: interimArray[0]];
-            [self.sortedContent addObject: initialArray];
-            
-            NSMutableArray *iterativeArray = initialArray;
-            
-            NSDate *referenceDate = interimArray[0].realizedChains.lastObject.dateCreated;
-            NSDate *iterativeDate;
-            
-            for (int i = 1; i < limit; i++){
-                
-                iterativeDate = interimArray[i].realizedChains.lastObject.dateCreated;
-                
-                NSComparisonResult monthCompare = [calendar compareDate: iterativeDate
-                                                                 toDate: referenceDate
-                                                      toUnitGranularity: NSCalendarUnitMonth];
-                
-                if (monthCompare == NSOrderedSame){
-                    
-                    [iterativeArray addObject: interimArray[i]];
-                    
-                } else{
-                    
-                    iterativeArray = [[NSMutableArray alloc] init];
-                    [iterativeArray addObject: interimArray[i]];
-                    
-                    [self.sortedContent addObject: iterativeArray];
-                    
-                }
-                
-                referenceDate = iterativeDate;
-                
-            }
-            
-        } else{
-            
-            self.sortedContent = nil;
-            
-        }
+//        // now, the remaining chain templates have realized chains and are ordered from most recent to least recent.  The sortedContent structure must now be filled
+//        
+//        NSInteger limit = [interimArray count];
+//        
+//        if (limit > 0){
+//            
+//            NSMutableArray *initialArray = [[NSMutableArray alloc] init];
+//            [initialArray addObject: interimArray[0]];
+//            [self.sortedContent addObject: initialArray];
+//            
+//            NSMutableArray *iterativeArray = initialArray;
+//            
+//            NSDate *referenceDate = interimArray[0].realizedChains.lastObject.dateCreated;
+//            NSDate *iterativeDate;
+//            
+//            for (int i = 1; i < limit; i++){
+//                
+//                iterativeDate = interimArray[i].realizedChains.lastObject.dateCreated;
+//                
+//                NSComparisonResult monthCompare = [calendar compareDate: iterativeDate
+//                                                                 toDate: referenceDate
+//                                                      toUnitGranularity: NSCalendarUnitMonth];
+//                
+//                if (monthCompare == NSOrderedSame){
+//                    
+//                    [iterativeArray addObject: interimArray[i]];
+//                    
+//                } else{
+//                    
+//                    iterativeArray = [[NSMutableArray alloc] init];
+//                    [iterativeArray addObject: interimArray[i]];
+//                    
+//                    [self.sortedContent addObject: iterativeArray];
+//                    
+//                }
+//                
+//                referenceDate = iterativeDate;
+//                
+//            }
+//            
+//        } else{
+//            
+//            self.sortedContent = nil;
+//            
+//        }
         
     } else if (sortByDateCreated){
         
@@ -656,17 +772,25 @@
     
 }
 
+//#pragma mark - Convenience
+
+
+
 #pragma mark - <UITableViewDataSource>
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-
-    return [self.sortedContent count];
+    
+    return 1;
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
-    return [self.sortedContent[section] count];
+    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+    
+    NSInteger rowCount = self.sortedContent[reversedIndex].count;
+    
+    return rowCount;
     
 }
 
@@ -676,16 +800,19 @@
     
     [cell clearExistingEntries];
     
-    TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
+    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+    
+    TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][indexPath.row];
     
     NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
     BOOL sortByDateLastExecuted = sortSelection == 0;
     BOOL sortByDateCreated = sortSelection == 1;
     
     NSDate *date;
+    
     if (sortByDateLastExecuted){
         
-        date = chainTemplate.realizedChains.lastObject.dateCreated;
+        date = [self largestRealizeChainDateInActiveYearForChainTemplate: chainTemplate];
         
     } else if (sortByDateCreated){
         
@@ -695,7 +822,7 @@
     
     [cell configureWithChainTemplate: chainTemplate
                                 date: date
-                              number: [NSNumber numberWithInteger: indexPath.row]];
+                              number: [NSNumber numberWithInteger: indexPath.row + 1]];
     
     cell.backgroundColor = [UIColor clearColor];
     
@@ -707,68 +834,71 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return YES;
+    return NO;
     
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
-    
-    // deal with unhighlighting
-
-    self.lastSelectedIndexPath = indexPath;
-    
-    TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
-    
-    self.selectedChainTemplate = chainTemplate;
-
-    [self toggleButtonsToOnState];
-    
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
+//    
+//    // deal with unhighlighting
+//
+//    self.lastSelectedIndexPath = indexPath;
+//    
+//    TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
+//    
+//    self.selectedChainTemplate = chainTemplate;
+//
+//    [self toggleButtonsToOnState];
+//    
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
+    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+    
+    TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][indexPath.row];
+    
     return [TJBStructureTableViewCell suggestedCellHeightForChainTemplate: chainTemplate];
     
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    
-    UILabel *label = [[UILabel alloc] init];
-    
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MMMM yyyy";
-    
-    NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
-    BOOL sortByDateLastExecuted = sortSelection == 0;
-    BOOL sortByDateCreated = sortSelection == 1;
-    
-    if (sortByDateLastExecuted){
-        
-        label.text = [df stringFromDate: self.sortedContent[section].lastObject.dateCreated];
-        
-    } else if (sortByDateCreated){
-        
-        label.text = [df stringFromDate: self.sortedContent[section][0].dateCreated];
-        
-    }
-    
-    label.backgroundColor = [UIColor lightGrayColor];
-    label.textColor = [UIColor blackColor];
-    label.font = [UIFont systemFontOfSize: 20.0];
-    label.textAlignment = NSTextAlignmentCenter;
-    
-    return label;
-    
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    
+//    UILabel *label = [[UILabel alloc] init];
+//    
+//    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//    df.dateFormat = @"MMMM yyyy";
+//    
+//    NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
+//    BOOL sortByDateLastExecuted = sortSelection == 0;
+//    BOOL sortByDateCreated = sortSelection == 1;
+//    
+//    if (sortByDateLastExecuted){
+//        
+//        label.text = [df stringFromDate: self.sortedContent[section].lastObject.dateCreated];
+//        
+//    } else if (sortByDateCreated){
+//        
+//        label.text = [df stringFromDate: self.sortedContent[section][0].dateCreated];
+//        
+//    }
+//    
+//    label.backgroundColor = [UIColor lightGrayColor];
+//    label.textColor = [UIColor blackColor];
+//    label.font = [UIFont systemFontOfSize: 20.0];
+//    label.textAlignment = NSTextAlignmentCenter;
+//    
+//    return label;
+//    
+//}
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    
-    return 60;
-    
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+//    
+//    return 60;
+//    
+//}
 
 #pragma mark - Button Actions
 

@@ -70,6 +70,8 @@
                        (int)chainTemplate.realizedChains.count];
     
     self.chainNameLabel.text = title;
+    
+    self.numberLabel.text = [number stringValue];
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     df.dateFormat = @"MMM d";
