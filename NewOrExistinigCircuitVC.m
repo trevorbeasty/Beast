@@ -973,18 +973,44 @@
 
 
 
-- (IBAction)didPressModifyButton:(id)sender {
+- (IBAction)didPressModifyButton:(id)sender{
+    
+    
 }
 
 - (IBAction)didPressLeftArrow:(id)sender{
     
-    
+    [self incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward: NO];
     
 }
 
 - (IBAction)didPressRightArrow:(id)sender{
     
+    [self incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward: YES];
     
+}
+
+- (void)incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
+    
+    int yearDelta;
+    
+    if (incrementDirectionForward){
+        yearDelta = 1;
+    } else{
+        yearDelta = -1;
+    }
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                              fromDate: self.activeDate];
+    
+    dateComps.year += yearDelta;
+    self.activeDate = [calendar dateFromComponents: dateComps];
+    
+    [self configureDateControlsAndSelectToday: NO];
+    [self configureSortedContentForActiveYear];
+    [self drawCircles];
+    [self.tableView reloadData];
     
 }
 
