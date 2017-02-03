@@ -518,6 +518,55 @@
     
 }
 
+- (NSMutableArray<TJBChainTemplate *> *)sortArrayByDateCreated:(NSMutableArray<TJBChainTemplate *> *)array{
+    
+    // remove all chain templates that don't have realized sets in the active year
+    
+    NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (TJBChainTemplate *chainTemplate in array){
+
+        BOOL isInActiveYear = [calendar isDate: chainTemplate.dateCreated
+                                   equalToDate: self.activeDate
+                             toUnitGranularity: NSCalendarUnitYear];
+        
+        if (!isInActiveYear){
+            
+            [indexSet addIndex: [array indexOfObject: chainTemplate]];
+            
+        }
+        
+    }
+    
+    [array removeObjectsAtIndexes: indexSet];
+    
+    // now, only chain templates with realized chains in the active year remain.  Use an NSComparator to order the chain correctly
+    
+    [array sortUsingComparator: ^(TJBChainTemplate *chain1, TJBChainTemplate *chain2){
+        
+        NSDate *date1 = chain1.dateCreated;
+        NSDate *date2 = chain2.dateCreated;
+        
+        int dateDifference = [date1 timeIntervalSinceDate: date2];
+        BOOL date1IsLater = dateDifference > 0;
+        
+        if (date1IsLater){
+            
+            return NSOrderedAscending;
+            
+        } else{
+            
+            return NSOrderedDescending;
+            
+        }
+        
+    }];
+    
+    return array;
+    
+}
+
 - (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)array{
     
     NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
@@ -548,6 +597,62 @@
             // if there is no match, then all subsequent arrays will not contain any matches because the dates are in decreasing order, so break the for loop and continue to the next month
             
             if (iterativeRealizedChain){
+                
+                [returnArray[12-i] addObject: iterativeChainTemplate];
+                
+            } else{
+                
+                arrayTracker = j;
+                break;
+                
+            }
+            
+        }
+        
+    }
+    
+    return returnArray;
+    
+}
+
+- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateCreated:(NSMutableArray<TJBChainTemplate *> *)array{
+    
+    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
+    
+    TJBChainTemplate *iterativeChainTemplate;
+    TJBRealizedChain *iterativeRealizedChain;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
+                                                       fromDate: self.activeDate];
+    
+    NSDate *referenceDate;
+    
+    int arrayTracker = 0;
+    
+    for (int i = 12 ; i > 0; i--){
+        
+        [iterativeDateComps setMonth: i];
+        referenceDate = [calendar dateFromComponents: iterativeDateComps];
+        
+        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
+        [returnArray addObject: monthArray];
+        
+        for (int j = arrayTracker; j < array.count; j++){
+            
+            iterativeChainTemplate = array[j];
+            
+            BOOL iterativeChainInRefYear = [calendar isDate: iterativeChainTemplate.dateCreated
+                                                equalToDate: referenceDate
+                                          toUnitGranularity: NSCalendarUnitYear];
+            
+            BOOL iterativeChainInRefMonth = [calendar isDate: iterativeChainTemplate.dateCreated
+                                                 equalToDate: referenceDate
+                                           toUnitGranularity: NSCalendarUnitMonth];
+            
+            BOOL dateCreatedMatchesMonthAndYear = iterativeChainInRefYear && iterativeChainInRefMonth;
+            
+            if (dateCreatedMatchesMonthAndYear){
                 
                 [returnArray[12-i] addObject: iterativeChainTemplate];
                 
@@ -637,11 +742,6 @@
     
 }
 
-- (NSMutableArray<TJBChainTemplate *> *)sortArrayByDateCreated:(NSMutableArray<TJBChainTemplate *> *)array{
-    
-    return array;
-    
-}
 
 - (void)configureSortedContentForActiveYear{
     
@@ -653,114 +753,20 @@
     BOOL sortByDateLastExecuted = sortSelection == 0;
     BOOL sortByDateCreated = sortSelection == 1;
     
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
     
     if (sortByDateLastExecuted){
-        
-        NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
         
         NSMutableArray<TJBChainTemplate *> *sortedChains = [self sortArrayByDateLastExecuted: interimArray];
         
         self.sortedContent = [self bucketByMonthAccordingToDateLastExecuted: sortedChains];
         
-//        // now, the remaining chain templates have realized chains and are ordered from most recent to least recent.  The sortedContent structure must now be filled
-//        
-//        NSInteger limit = [interimArray count];
-//        
-//        if (limit > 0){
-//            
-//            NSMutableArray *initialArray = [[NSMutableArray alloc] init];
-//            [initialArray addObject: interimArray[0]];
-//            [self.sortedContent addObject: initialArray];
-//            
-//            NSMutableArray *iterativeArray = initialArray;
-//            
-//            NSDate *referenceDate = interimArray[0].realizedChains.lastObject.dateCreated;
-//            NSDate *iterativeDate;
-//            
-//            for (int i = 1; i < limit; i++){
-//                
-//                iterativeDate = interimArray[i].realizedChains.lastObject.dateCreated;
-//                
-//                NSComparisonResult monthCompare = [calendar compareDate: iterativeDate
-//                                                                 toDate: referenceDate
-//                                                      toUnitGranularity: NSCalendarUnitMonth];
-//                
-//                if (monthCompare == NSOrderedSame){
-//                    
-//                    [iterativeArray addObject: interimArray[i]];
-//                    
-//                } else{
-//                    
-//                    iterativeArray = [[NSMutableArray alloc] init];
-//                    [iterativeArray addObject: interimArray[i]];
-//                    
-//                    [self.sortedContent addObject: iterativeArray];
-//                    
-//                }
-//                
-//                referenceDate = iterativeDate;
-//                
-//            }
-//            
-//        } else{
-//            
-//            self.sortedContent = nil;
-//            
-//        }
-        
     } else if (sortByDateCreated){
         
-        NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
+        NSMutableArray<TJBChainTemplate *> *sortedChains = [self sortArrayByDateCreated: interimArray];
         
-        NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey: @"dateCreated"
-                                                             ascending: NO];
+        self.sortedContent = [self bucketByMonthAccordingToDateCreated: sortedChains];
         
-        [interimArray sortUsingDescriptors: @[sd]];
-        
-        NSInteger limit = [interimArray count];
-        
-        if (limit > 0){
-            
-            NSMutableArray *initialArray = [[NSMutableArray alloc] init];
-            [initialArray addObject: interimArray[0]];
-            [self.sortedContent addObject: initialArray];
-            
-            NSMutableArray *iterativeArray = initialArray;
-            
-            NSDate *referenceDate = interimArray[0].dateCreated;
-            NSDate *iterativeDate;
-            
-            for (int i = 1; i < limit; i++){
-                
-                iterativeDate = interimArray[i].dateCreated;
-                
-                NSComparisonResult monthCompare = [calendar compareDate: iterativeDate
-                                                  toDate: referenceDate
-                                       toUnitGranularity: NSCalendarUnitMonth];
-                
-                if (monthCompare == NSOrderedSame){
-                    
-                    [iterativeArray addObject: interimArray[i]];
-                    
-                } else{
-                    
-                    iterativeArray = [[NSMutableArray alloc] init];
-                    [iterativeArray addObject: interimArray[i]];
-                    
-                    [self.sortedContent addObject: iterativeArray];
-                    
-                }
-                
-                referenceDate = iterativeDate;
-                
-            }
-            
-        } else{
-            
-            self.sortedContent = nil;
-            
-        }
     }
     
 }
