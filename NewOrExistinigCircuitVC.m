@@ -188,6 +188,10 @@
             
             [self.dateControlObjects[i] drawCircle];
             
+        } else{
+            
+            [self.dateControlObjects[i] deleteCircle];
+            
         }
         
     }
@@ -205,7 +209,11 @@
     
     [self.view layoutIfNeeded];
     
+    NSDate *activeDate = self.activeDate;
+    
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"YYYY";
+    self.yearLabel.text = [df stringFromDate: activeDate];
     
     //// stack view and child VC's
     
@@ -235,8 +243,6 @@
     stackView.spacing = buttonSpacing;
     
     // give the stack view it's content.  All items preceding the for loop are used in the for loop
-    
-    NSDate *activeDate = self.activeDate;
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
@@ -332,7 +338,7 @@
     
     for (UIButton *button in buttons){
         
-        UIColor *color = [[TJBAestheticsController singleton] color2];
+        UIColor *color = [[TJBAestheticsController singleton] blueButtonColor];
         [button setBackgroundColor: color];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
@@ -620,7 +626,6 @@
     NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
     
     TJBChainTemplate *iterativeChainTemplate;
-    TJBRealizedChain *iterativeRealizedChain;
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
@@ -954,6 +959,7 @@
     
     [self configureSortedContentForActiveYear];
     [self.tableView reloadData];
+    [self drawCircles];
     
     [self toggleButtonsToOffState];
     

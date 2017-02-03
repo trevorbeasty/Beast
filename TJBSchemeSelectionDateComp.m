@@ -143,6 +143,18 @@
     
 }
 
+- (void)deleteCircle{
+    
+    _isCircled = NO;
+    
+    if (self.activeShapeLayer){
+        
+        [self.activeShapeLayer removeFromSuperlayer];
+        
+    }
+    
+}
+
 - (void)configureViews{
     
     // label

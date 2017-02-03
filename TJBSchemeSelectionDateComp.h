@@ -21,5 +21,6 @@
 - (void)configureAsNotSelected;
 
 - (void)drawCircle;
+- (void)deleteCircle;
 
 @end
