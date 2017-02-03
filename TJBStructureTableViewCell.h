@@ -20,4 +20,6 @@
 
 + (float)suggestedCellHeightForChainTemplate:(TJBChainTemplate *)chainTemplate;
 
+
+
 @end

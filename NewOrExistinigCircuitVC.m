@@ -116,6 +116,8 @@
     self.restorationIdentifier = @"TJBNewOrExistingCircuit";
     self.restorationClass = [NewOrExistinigCircuitVC class];
     
+    //
+    
     return self;
 }
 
@@ -131,7 +133,9 @@
 
 - (void)viewDidLoad{
     
-    // must configure date controls before fetching core data so that the selectedDateObjectIndex is not nil
+    // must sort content first so that the date control can easily know which months have content
+    
+    [self configureTableView];
     
     [self configureDateControlsAndSelectToday: YES];
     
@@ -145,7 +149,7 @@
     
     [self fetchCoreData];
     
-    [self configureTableView];
+    [self drawCircles];
     
 }
 
@@ -168,6 +172,25 @@
     }
     
     self.dateControlObjects = [[NSMutableArray alloc] init];
+    
+}
+
+- (void)drawCircles{
+    
+    //// this would ideally be called when creating the date objects, but I am getting strange behavior when I try to sort chainTemplates before configuring the date controls
+    
+    for (int i = 0; i < 12; i++){
+        
+        int reverseIndex = 11 - i;
+        BOOL recordExistsForIterativeMonth = self.sortedContent[reverseIndex].count > 0;
+        
+        if (recordExistsForIterativeMonth){
+            
+            [self.dateControlObjects[i] drawCircle];
+            
+        }
+        
+    }
     
 }
 
@@ -263,15 +286,11 @@
             
         }
         
-        BOOL recordExistsForIterativeDate = NO;
-        
-        
-        
         TJBSchemeSelectionDateComp *dateControlObject = [[TJBSchemeSelectionDateComp alloc] initWithMonthString: monthString
                                                                                            representedDate: iterativeDate
                                                                                                      index: [NSNumber numberWithInt: i]
                                                                                                  isEnabled: !iterativeMonthGreaterThanCurrentMonth
-                                                                                                 isCircled: recordExistsForIterativeDate
+                                                                                                      isCircled: NO
                                                                                      hasSelectedAppearance: isTheActiveMonth
                                                                                                       size: dateControlSize
                                                                                           masterController: self];
@@ -509,6 +528,8 @@
     NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
                                                        fromDate: self.activeDate];
     
+    int arrayTracker = 0;
+    
     for (int i = 12 ; i > 0; i--){
         
         [iterativeDateComps setMonth: i];
@@ -516,7 +537,7 @@
         NSMutableArray *monthArray = [[NSMutableArray alloc] init];
         [returnArray addObject: monthArray];
         
-        for (int j = 0; j < array.count; j++){
+        for (int j = arrayTracker; j < array.count; j++){
             
             iterativeChainTemplate = array[j];
             iterativeRealizedChain = [self largestRealizeChainInActiveYearAndMonthForReferenceDate: [calendar dateFromComponents: iterativeDateComps]
@@ -531,7 +552,8 @@
                 
             } else{
                 
-                continue;
+                arrayTracker = j;
+                break;
                 
             }
             
@@ -982,6 +1004,7 @@
     }
     
     self.selectedDateObjectIndex = index;
+    [self.tableView reloadData];
     
     [self.dateControlObjects[[index intValue]] configureAsSelected];
     

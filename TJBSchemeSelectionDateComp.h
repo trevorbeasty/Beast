@@ -20,4 +20,6 @@
 - (void)configureAsSelected;
 - (void)configureAsNotSelected;
 
+- (void)drawCircle;
+
 @end

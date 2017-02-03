@@ -102,6 +102,8 @@
 
 - (void)drawCircle{
     
+    _isCircled = YES;
+    
     // if a previous circle exists, remove it
     
     if (self.activeShapeLayer){
@@ -173,12 +175,22 @@
 
 - (void)configureAsSelected{
     
+    _hasSelectedAppearance = YES;
+    
     self.monthLabel.textColor = [UIColor blackColor];
     self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    if (_isCircled){
+        
+        [self drawCircle];
+        
+    }
     
 }
 
 - (void)configureAsNotSelected{
+    
+    _hasSelectedAppearance = NO;
     
     if (!_isEnabled){
         
@@ -189,6 +201,12 @@
         
         self.monthLabel.textColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor darkGrayColor];
+        
+    }
+    
+    if (_isCircled){
+        
+        [self drawCircle];
         
     }
     
