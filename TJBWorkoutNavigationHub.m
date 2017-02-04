@@ -29,6 +29,7 @@
 #import "TJBRealizedSetCell.h"
 #import "TJBRealizedChainCell.h"
 #import "TJBWorkoutLogTitleCell.h"
+#import "TJBNoDataCell.h"
 
 // presented VC's
 
@@ -343,6 +344,12 @@
     
     [self.tableView registerNib: titleCellNib
          forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
+    
+    UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
+                                       bundle: nil];
+    
+    [self.tableView registerNib: noDataCell
+         forCellReuseIdentifier: @"TJBNoDataCell"];
     
 }
 
@@ -791,7 +798,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.dailyList.count + 1;
+    if (self.dailyList.count == 0){
+        
+        return 2;
+        
+    } else{
+        
+        return self.dailyList.count + 1;
+        
+    }
     
 }
 
@@ -812,59 +827,71 @@
         
         return cell;
         
-    }
-    
-    NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
-    
-    int rowIndex = (int)indexPath.row - 1;
-    
-    BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
-    
-    if (isRealizedSet){
-        
-        TJBRealizedSet *realizedSet = self.dailyList[rowIndex];
-        
-        // dequeue the realizedSetCell
-        
-        TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
-        
-        
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateStyle = NSDateFormatterNoStyle;
-        dateFormatter.timeStyle = NSDateFormatterShortStyle;
-        NSString *date = [dateFormatter stringFromDate: realizedSet.beginDate];
-        
-        [cell configureCellWithExercise: realizedSet.exercise.name
-                                 weight: [NSNumber numberWithFloat: realizedSet.weight]
-                                   reps: [NSNumber numberWithFloat: realizedSet.reps]
-                                   rest: nil
-                                   date: date
-                                 number: number];
-        
-        cell.backgroundColor = [UIColor clearColor];
-        
-        return cell;
-        
     } else{
         
-        TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
-        
-        // dequeue the realizedSetCell
-        
-        TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-        
-        [cell clearExistingEntries];
-        
-        [cell configureWithRealizedChain: realizedChain
-                                  number: number];
-        
-        cell.backgroundColor = [UIColor clearColor];
-        
-        return cell;
-        
+        if (self.dailyList.count == 0){
+            
+            TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+            
+            cell.mainLabel.text = @"No Entries";
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
+            
+        } else{
+            
+            NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
+            
+            int rowIndex = (int)indexPath.row - 1;
+            
+            BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
+            
+            if (isRealizedSet){
+                
+                TJBRealizedSet *realizedSet = self.dailyList[rowIndex];
+                
+                // dequeue the realizedSetCell
+                
+                TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
+                
+                
+                
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                dateFormatter.dateStyle = NSDateFormatterNoStyle;
+                dateFormatter.timeStyle = NSDateFormatterShortStyle;
+                NSString *date = [dateFormatter stringFromDate: realizedSet.beginDate];
+                
+                [cell configureCellWithExercise: realizedSet.exercise.name
+                                         weight: [NSNumber numberWithFloat: realizedSet.weight]
+                                           reps: [NSNumber numberWithFloat: realizedSet.reps]
+                                           rest: nil
+                                           date: date
+                                         number: number];
+                
+                cell.backgroundColor = [UIColor clearColor];
+                
+                return cell;
+                
+            } else{
+                
+                TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
+                
+                // dequeue the realizedSetCell
+                
+                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+                
+                [cell clearExistingEntries];
+                
+                [cell configureWithRealizedChain: realizedChain
+                                          number: number];
+                
+                cell.backgroundColor = [UIColor clearColor];
+                
+                return cell;
+                
+            }
+        }
     }
-    
 }
 
 
@@ -881,38 +908,45 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    CGFloat titleHeight = 60.0;
+    
     if (indexPath.row == 0){
         
-        return 60;
+        return titleHeight;
         
     } else{
         
-        NSInteger adjustedIndex = indexPath.row - 1;
-        
-        BOOL isRealizedSet = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedSet class]];
-        BOOL isRealizedChain = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedChain class]];
-        
-        
-        if (isRealizedSet){
+        if (self.dailyList.count == 0){
             
-            return 60;
+            [self.view layoutIfNeeded];
             
-        } else if (isRealizedChain) {
-            
-            TJBRealizedChain *realizedChain = self.dailyList[adjustedIndex];
-            
-            return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
+            return self.tableView.frame.size.height - titleHeight;
             
         } else{
             
-            return 10;
+            NSInteger adjustedIndex = indexPath.row - 1;
             
+            BOOL isRealizedSet = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedSet class]];
+            BOOL isRealizedChain = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedChain class]];
+            
+            
+            if (isRealizedSet){
+                
+                return 60;
+                
+            } else if (isRealizedChain) {
+                
+                TJBRealizedChain *realizedChain = self.dailyList[adjustedIndex];
+                
+                return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
+                
+            } else{
+                
+                return 10;
+                
+            }
         }
-        
     }
-    
-
- 
 }
 
 
