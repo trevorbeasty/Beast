@@ -127,7 +127,7 @@
     
     [self configureNavigationBar];
     
-    [self addBackgroundView];
+//    [self addBackgroundView];
     
     [self configureViewAesthetics];
 
@@ -135,8 +135,12 @@
 
 - (void)configureViewAesthetics{
     
-    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchCircuitButton]
-                                                     withOpacity: .85];
+    self.launchCircuitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    [self.launchCircuitButton setTitleColor: [UIColor whiteColor]
+                                   forState: UIControlStateNormal];
+    self.launchCircuitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 

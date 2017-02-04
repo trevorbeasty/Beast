@@ -88,8 +88,7 @@
     
     for (UIView *view in labelViews){
         
-        view.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
-        view.layer.opacity = .85;
+        view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
     }
     
@@ -102,7 +101,7 @@
     
     UIButton *button = self.selectedExerciseButton;
         
-    button.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
+    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
     [button setTitleColor: color
                  forState: UIControlStateNormal];
@@ -113,7 +112,6 @@
     CALayer *layer = button.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8;
-    layer.opacity = .85;
 }
 
 - (void)viewDidLoad

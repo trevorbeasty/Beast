@@ -107,14 +107,13 @@
         
     void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
         
-        button.backgroundColor = [aesthetics buttonBackgroundColor];
-        [button setTitleColor: [aesthetics buttonTextColor]
+        button.backgroundColor = [aesthetics blueButtonColor];
+        [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         
         CALayer *layer = button.layer;
         layer.masksToBounds = YES;
         layer.cornerRadius = 8.0;
-        layer.opacity = .85;
         
     };
         

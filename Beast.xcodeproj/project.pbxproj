@@ -37,6 +37,10 @@
 		0B78E7DA1E3F5D3C00EB216F /* TJBPersonalRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7D81E3F5D3C00EB216F /* TJBPersonalRecordCell.xib */; };
 		0B78E7E01E454DE400EB216F /* TJBNoDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7DE1E454DE400EB216F /* TJBNoDataCell.m */; };
 		0B78E7E11E454DE400EB216F /* TJBNoDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7DF1E454DE400EB216F /* TJBNoDataCell.xib */; };
+		0B78E7E61E462B6300EB216F /* TJBWeightRepsSelectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7E41E462B6300EB216F /* TJBWeightRepsSelectionVC.m */; };
+		0B78E7E71E462B6300EB216F /* TJBWeightRepsSelectionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7E51E462B6300EB216F /* TJBWeightRepsSelectionVC.xib */; };
+		0B78E7EC1E462F8500EB216F /* TJBWeightRepsSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7EA1E462F8500EB216F /* TJBWeightRepsSelectionCell.m */; };
+		0B78E7ED1E462F8500EB216F /* TJBWeightRepsSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7EB1E462F8500EB216F /* TJBWeightRepsSelectionCell.xib */; };
 		0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */; };
 		0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */; };
 		0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C851DFAD0A00093F057 /* CoreDataController.m */; };
@@ -146,6 +150,12 @@
 		0B78E7DD1E454DE400EB216F /* TJBNoDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNoDataCell.h; sourceTree = "<group>"; };
 		0B78E7DE1E454DE400EB216F /* TJBNoDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNoDataCell.m; sourceTree = "<group>"; };
 		0B78E7DF1E454DE400EB216F /* TJBNoDataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBNoDataCell.xib; sourceTree = "<group>"; };
+		0B78E7E31E462B6300EB216F /* TJBWeightRepsSelectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBWeightRepsSelectionVC.h; sourceTree = "<group>"; };
+		0B78E7E41E462B6300EB216F /* TJBWeightRepsSelectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBWeightRepsSelectionVC.m; sourceTree = "<group>"; };
+		0B78E7E51E462B6300EB216F /* TJBWeightRepsSelectionVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBWeightRepsSelectionVC.xib; sourceTree = "<group>"; };
+		0B78E7E91E462F8500EB216F /* TJBWeightRepsSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBWeightRepsSelectionCell.h; sourceTree = "<group>"; };
+		0B78E7EA1E462F8500EB216F /* TJBWeightRepsSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBWeightRepsSelectionCell.m; sourceTree = "<group>"; };
+		0B78E7EB1E462F8500EB216F /* TJBWeightRepsSelectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBWeightRepsSelectionCell.xib; sourceTree = "<group>"; };
 		0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryVC.h; sourceTree = "<group>"; };
 		0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryVC.m; sourceTree = "<group>"; };
 		0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedSetActiveEntryVC.xib; sourceTree = "<group>"; };
@@ -337,7 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				0B36881D1E42A6D20077290C /* Old */,
-				0B78E7C21E3C162800EB216F /* Table View Cells */,
+				0B78E7C21E3C162800EB216F /* Cells */,
 				0B1616D11E080E1E001C8F45 /* General */,
 				0B1616CC1E04D1AC001C8F45 /* Singletons */,
 				0B517BD91DF88641009981F9 /* View Controllers */,
@@ -399,19 +409,19 @@
 		0B517BDA1DF88651009981F9 /* NumberSelection */ = {
 			isa = PBXGroup;
 			children = (
+				0B78E7EE1E46301000EB216F /* Weight Reps Selection */,
 				0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */,
 				0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */,
 				0B86FB741E2129C4000D1B5F /* TJBNumberSelectionVC.xib */,
-				0B86FB781E217326000D1B5F /* TJBBasicCollectionViewCell.h */,
-				0B86FB791E217326000D1B5F /* TJBBasicCollectionViewCell.m */,
-				0B86FB7A1E217326000D1B5F /* TJBBasicCollectionViewCell.xib */,
 			);
 			name = NumberSelection;
 			sourceTree = "<group>";
 		};
-		0B78E7C21E3C162800EB216F /* Table View Cells */ = {
+		0B78E7C21E3C162800EB216F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0B78E7E81E462F5000EB216F /* Number Selection Cell - advanced */,
+				0B78E7E21E46292E00EB216F /* Number Selection Cell - basic */,
 				0B78E7DC1E454DB200EB216F /* No Data */,
 				0B3688171E413D500077290C /* Title Cells */,
 				0B78E7DB1E3F746000EB216F /* Chain Template */,
@@ -419,7 +429,7 @@
 				0B78E7C91E3C168500EB216F /* Realized Chain */,
 				0B78E7C81E3C165F00EB216F /* Realized Set */,
 			);
-			name = "Table View Cells";
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		0B78E7C81E3C165F00EB216F /* Realized Set */ = {
@@ -480,6 +490,36 @@
 				0B78E7DF1E454DE400EB216F /* TJBNoDataCell.xib */,
 			);
 			name = "No Data";
+			sourceTree = "<group>";
+		};
+		0B78E7E21E46292E00EB216F /* Number Selection Cell - basic */ = {
+			isa = PBXGroup;
+			children = (
+				0B86FB781E217326000D1B5F /* TJBBasicCollectionViewCell.h */,
+				0B86FB791E217326000D1B5F /* TJBBasicCollectionViewCell.m */,
+				0B86FB7A1E217326000D1B5F /* TJBBasicCollectionViewCell.xib */,
+			);
+			name = "Number Selection Cell - basic";
+			sourceTree = "<group>";
+		};
+		0B78E7E81E462F5000EB216F /* Number Selection Cell - advanced */ = {
+			isa = PBXGroup;
+			children = (
+				0B78E7E91E462F8500EB216F /* TJBWeightRepsSelectionCell.h */,
+				0B78E7EA1E462F8500EB216F /* TJBWeightRepsSelectionCell.m */,
+				0B78E7EB1E462F8500EB216F /* TJBWeightRepsSelectionCell.xib */,
+			);
+			name = "Number Selection Cell - advanced";
+			sourceTree = "<group>";
+		};
+		0B78E7EE1E46301000EB216F /* Weight Reps Selection */ = {
+			isa = PBXGroup;
+			children = (
+				0B78E7E31E462B6300EB216F /* TJBWeightRepsSelectionVC.h */,
+				0B78E7E41E462B6300EB216F /* TJBWeightRepsSelectionVC.m */,
+				0B78E7E51E462B6300EB216F /* TJBWeightRepsSelectionVC.xib */,
+			);
+			name = "Weight Reps Selection";
 			sourceTree = "<group>";
 		};
 		0B843C901DFB7E9C0093F057 /* Freeform Lift */ = {
@@ -747,10 +787,12 @@
 				0B78E7D41E3D31B100EB216F /* TJBLiftOptionsVC.xib in Resources */,
 				0BA8ACFC1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib in Resources */,
 				0BA8AD061E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib in Resources */,
+				0B78E7E71E462B6300EB216F /* TJBWeightRepsSelectionVC.xib in Resources */,
 				0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
 				0BA8AD141E267DA900EE10C2 /* TJBCircuitActiveUpdatingExerciseComp.xib in Resources */,
 				0B843C9F1DFDB3460093F057 /* RealizedSetPersonalRecordVC.xib in Resources */,
+				0B78E7ED1E462F8500EB216F /* TJBWeightRepsSelectionCell.xib in Resources */,
 				0B870E471E2E573400E38C46 /* TJBCompleteHistoryVC.xib in Resources */,
 				0B843CD51E0C984D0093F057 /* TJBInSetVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
@@ -802,6 +844,7 @@
 				0B78E7CD1E3C16A300EB216F /* TJBRealizedChainCell.m in Sources */,
 				0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */,
 				0B870E5D1E31008900E38C46 /* TJBRepsWeightRecordPair.m in Sources */,
+				0B78E7E61E462B6300EB216F /* TJBWeightRepsSelectionVC.m in Sources */,
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,
 				0BA8AD181E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.m in Sources */,
 				0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */,
@@ -813,6 +856,7 @@
 				0B3687DC1E38DB530077290C /* TJBStructureTableViewCell.m in Sources */,
 				0BA8ACF51E26561C00EE10C2 /* TJBCircuitReferenceVC.m in Sources */,
 				0BA8AD001E26636E00EE10C2 /* TJBCircuitReferenceRowComp.m in Sources */,
+				0B78E7EC1E462F8500EB216F /* TJBWeightRepsSelectionCell.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0B843CA31DFDB5B00093F057 /* RealizedSetPersonalRecordCell.m in Sources */,
 				0B843C8A1DFADBED0093F057 /* TJBNewExerciseCreationVC.m in Sources */,

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -23,19 +23,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddm-83-lU1">
-                    <rect key="frame" x="8" y="116" width="489" height="593"/>
+                    <rect key="frame" x="8" y="68" width="489" height="601"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGq-w9-M2p">
-                    <rect key="frame" x="8" y="68" width="489" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="6X4-5Z-ZaY"/>
-                    </constraints>
-                    <state key="normal" title="Launch"/>
-                    <connections>
-                        <action selector="didPressLaunchCircuit:" destination="-1" eventType="touchUpInside" id="xqO-57-4ri"/>
-                    </connections>
-                </button>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Aw-Ow-fCu">
                     <rect key="frame" x="0.0" y="0.0" width="505" height="60"/>
                     <constraints>
@@ -45,19 +35,29 @@
                         <navigationItem title="Title" id="OYX-Gf-4zc"/>
                     </items>
                 </navigationBar>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGq-w9-M2p">
+                    <rect key="frame" x="0.0" y="677" width="505" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="G96-k3-Q8O"/>
+                    </constraints>
+                    <state key="normal" title="Launch"/>
+                    <connections>
+                        <action selector="didPressLaunchCircuit:" destination="-1" eventType="touchUpInside" id="xqO-57-4ri"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="1Aw-Ow-fCu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="24a-cU-KLW"/>
-                <constraint firstAttribute="bottom" secondItem="ddm-83-lU1" secondAttribute="bottom" constant="8" id="7l4-eH-7rO"/>
-                <constraint firstItem="DGq-w9-M2p" firstAttribute="top" secondItem="1Aw-Ow-fCu" secondAttribute="bottom" constant="8" id="KPG-b9-Mtl"/>
+                <constraint firstItem="DGq-w9-M2p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2FO-6G-ZYv"/>
+                <constraint firstItem="ddm-83-lU1" firstAttribute="top" secondItem="1Aw-Ow-fCu" secondAttribute="bottom" constant="8" id="NPk-7d-Mip"/>
                 <constraint firstItem="ddm-83-lU1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Qxi-oF-DUP"/>
-                <constraint firstAttribute="trailing" secondItem="DGq-w9-M2p" secondAttribute="trailing" constant="8" id="Xw6-Q2-EO3"/>
+                <constraint firstItem="DGq-w9-M2p" firstAttribute="top" secondItem="ddm-83-lU1" secondAttribute="bottom" constant="8" id="S7S-Lq-kxP"/>
                 <constraint firstAttribute="trailing" secondItem="1Aw-Ow-fCu" secondAttribute="trailing" id="bug-1x-pE3"/>
-                <constraint firstItem="DGq-w9-M2p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="diB-cv-ieU"/>
                 <constraint firstAttribute="trailing" secondItem="ddm-83-lU1" secondAttribute="trailing" constant="8" id="j85-Ti-kXd"/>
-                <constraint firstItem="ddm-83-lU1" firstAttribute="top" secondItem="DGq-w9-M2p" secondAttribute="bottom" constant="8" id="tFl-ld-dDh"/>
                 <constraint firstItem="1Aw-Ow-fCu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="uA2-gA-hjS"/>
+                <constraint firstAttribute="trailing" secondItem="DGq-w9-M2p" secondAttribute="trailing" id="vB3-KJ-8db"/>
+                <constraint firstAttribute="bottom" secondItem="DGq-w9-M2p" secondAttribute="bottom" id="x1Y-uR-75U"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
