@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hf4-4q-MAz">
-                    <rect key="frame" x="0.0" y="64" width="375" height="100.5"/>
+                    <rect key="frame" x="0.0" y="60" width="375" height="100.5"/>
                     <color key="backgroundColor" red="0.17465768257991349" green="0.61088359685504745" blue="0.85943571891191706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <state key="normal" title="Freeform"/>
                     <connections>
@@ -31,7 +31,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tI8-wo-CeW">
-                    <rect key="frame" x="0.0" y="168.5" width="375" height="100"/>
+                    <rect key="frame" x="0.0" y="164.5" width="375" height="100"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="lfH-xO-dAi"/>
                     </constraints>
@@ -60,7 +60,7 @@
                 <constraint firstAttribute="trailing" secondItem="hf4-4q-MAz" secondAttribute="trailing" id="fy2-L5-fMA"/>
                 <constraint firstItem="NPN-KW-7La" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gcD-lJ-39F"/>
                 <constraint firstItem="tI8-wo-CeW" firstAttribute="top" secondItem="hf4-4q-MAz" secondAttribute="bottom" constant="4" id="igc-eg-6CZ"/>
-                <constraint firstItem="hf4-4q-MAz" firstAttribute="top" secondItem="NPN-KW-7La" secondAttribute="bottom" constant="4" id="ixh-fr-rVu"/>
+                <constraint firstItem="hf4-4q-MAz" firstAttribute="top" secondItem="NPN-KW-7La" secondAttribute="bottom" id="ixh-fr-rVu"/>
                 <constraint firstAttribute="trailing" secondItem="tI8-wo-CeW" secondAttribute="trailing" id="lqd-8h-QBO"/>
             </constraints>
             <point key="canvasLocation" x="35.5" y="53.5"/>

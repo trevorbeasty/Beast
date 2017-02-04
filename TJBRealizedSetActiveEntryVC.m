@@ -30,6 +30,7 @@
 
 #import "TJBPersonalRecordCell.h"
 #import "TJBWorkoutLogTitleCell.h"
+#import "TJBNoDataCell.h"
 
 
 @interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration, UITableViewDelegate, UITableViewDataSource>
@@ -232,6 +233,12 @@
     [self.personalRecordsTableView registerNib: nib2
                         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
     
+    UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
+                                 bundle: nil];
+    
+    [self.personalRecordsTableView registerNib: noDataCell
+                        forCellReuseIdentifier: @"TJBNoDataCell"];
+    
 }
 
 - (void)viewAesthetics{
@@ -419,13 +426,13 @@
     
     //// add 1 to account for title cell
     
-    if (!self.repsWeightRecordPairs){
+    if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0){
         
-        return 1;
+        return 2;
         
     } else{
         
-            return self.repsWeightRecordPairs.count + 1;
+        return self.repsWeightRecordPairs.count + 1;
         
     }
 
@@ -455,18 +462,32 @@
         
     } else{
         
-        NSInteger adjustedRowIndex = indexPath.row - 1;
+        if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0){
+            
+            TJBNoDataCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+            
+            cell.mainLabel.text = @"No Records";
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
+            
+        } else{
+            
+            NSInteger adjustedRowIndex = indexPath.row - 1;
+            
+            TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
+            
+            TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[adjustedRowIndex];
+            
+            [cell configureWithReps: repsWeightRecordPair.reps
+                             weight: repsWeightRecordPair.weight
+                               date: repsWeightRecordPair.date];
+            
+            return cell;
+            
+        }
         
-        TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
-        
-        TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[adjustedRowIndex];
-        
-        [cell configureWithReps: repsWeightRecordPair.reps
-                         weight: repsWeightRecordPair.weight
-                           date: repsWeightRecordPair.date];
-        
-        return cell;
-        
+
     }
     
 }
@@ -477,8 +498,26 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 60;
+    CGFloat titleHeight = 60.0;
     
+    if (indexPath.row == 0){
+        
+        return titleHeight;
+        
+    } else{
+        
+        if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count ==0){
+            
+            [self.view layoutIfNeeded];
+            
+            return self.personalRecordsTableView.frame.size.height - titleHeight;
+            
+        } else{
+            
+                return 60;
+            
+        }
+    }
 }
 
 
