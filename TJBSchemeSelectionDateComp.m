@@ -73,11 +73,11 @@
 
 - (void)viewDidLoad{
     
-    if (_isEnabled){
+  
         
-        [self configureGestureRecognizer];
+    [self configureGestureRecognizer];
         
-    }
+    
     
     if (_isCircled){
         
@@ -178,8 +178,7 @@
 
 - (void)didSelectView{
     
-    [self.masterController didSelectObjectWithIndex: self.index
-                                    representedDate: self.representedDate];
+    [self.masterController didSelectObjectWithIndex: self.index];
     
 }
 

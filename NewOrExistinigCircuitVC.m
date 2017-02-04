@@ -29,6 +29,7 @@
 
 #import "TJBStructureTableViewCell.h"
 #import "TJBWorkoutLogTitleCell.h"
+#import "TJBNoDataCell.h"
 
 // date control
 
@@ -427,6 +428,12 @@
     
     [self.tableView registerNib: nib2
          forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
+    
+    UINib *nib3 = [UINib nibWithNibName: @"TJBNoDataCell"
+                                 bundle: nil];
+    
+    [self.tableView registerNib: nib3
+         forCellReuseIdentifier: @"TJBNoDataCell"];
     
 }
 
@@ -831,7 +838,15 @@
     
     NSInteger rowCount = self.sortedContent[reversedIndex].count;
     
-    return rowCount + 1;
+    if (rowCount == 0){
+        
+        return 2;
+        
+    } else{
+        
+        return rowCount + 1;
+        
+    }
     
 }
 
@@ -867,39 +882,54 @@
         
     } else{
         
-        TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
-        
-        [cell clearExistingEntries];
-        
         int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+        NSInteger chainCount = self.sortedContent[reversedIndex].count;
         
-        NSInteger adjustedRowIndex = indexPath.row - 1;
-        
-        TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][adjustedRowIndex];
-        
-        NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
-        BOOL sortByDateLastExecuted = sortSelection == 0;
-        BOOL sortByDateCreated = sortSelection == 1;
-        
-        NSDate *date;
-        
-        if (sortByDateLastExecuted){
+        if (chainCount == 0){
             
-            date = [self largestRealizeChainDateInActiveYearForChainTemplate: chainTemplate];
+            TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
             
-        } else if (sortByDateCreated){
+            cell.mainLabel.text = @"No Schemes";
             
-            date = chainTemplate.dateCreated;
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
+            
+        } else{
+            
+            TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
+            
+            [cell clearExistingEntries];
+            
+            NSInteger adjustedRowIndex = indexPath.row - 1;
+            
+            TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][adjustedRowIndex];
+            
+            NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
+            BOOL sortByDateLastExecuted = sortSelection == 0;
+            BOOL sortByDateCreated = sortSelection == 1;
+            
+            NSDate *date;
+            
+            if (sortByDateLastExecuted){
+                
+                date = [self largestRealizeChainDateInActiveYearForChainTemplate: chainTemplate];
+                
+            } else if (sortByDateCreated){
+                
+                date = chainTemplate.dateCreated;
+                
+            }
+            
+            [cell configureWithChainTemplate: chainTemplate
+                                        date: date
+                                      number: [NSNumber numberWithInteger: indexPath.row]];
+            
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
             
         }
-        
-        [cell configureWithChainTemplate: chainTemplate
-                                    date: date
-                                  number: [NSNumber numberWithInteger: indexPath.row + 1]];
-        
-        cell.backgroundColor = [UIColor clearColor];
-        
-        return cell;
         
     }
     
@@ -931,17 +961,31 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    CGFloat titleHeight = 60.0;
+    
     if (indexPath.row == 0){
         
-        return 60;
+        return titleHeight;
         
     } else{
         
         int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
         
-        TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][indexPath.row -1];
+        NSInteger chainCount = self.sortedContent[reversedIndex].count;
         
-        return [TJBStructureTableViewCell suggestedCellHeightForChainTemplate: chainTemplate];
+        if (chainCount == 0){
+            
+            [self.view layoutIfNeeded];
+            
+            return self.tableView.frame.size.height - titleHeight;
+            
+        } else{
+            
+            TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][indexPath.row -1];
+            
+            return [TJBStructureTableViewCell suggestedCellHeightForChainTemplate: chainTemplate];
+            
+        }
         
     }
     
@@ -1067,6 +1111,8 @@
     [self drawCircles];
     [self.tableView reloadData];
     
+    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>
@@ -1083,7 +1129,7 @@
 
 #pragma mark - <TJBSchemeSelectionDateCompDelegate>
 
-- (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
+- (void)didSelectObjectWithIndex:(NSNumber *)index{
     
     if (self.selectedDateObjectIndex){
         

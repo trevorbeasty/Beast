@@ -35,6 +35,8 @@
 		0B78E7D41E3D31B100EB216F /* TJBLiftOptionsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7D21E3D31B100EB216F /* TJBLiftOptionsVC.xib */; };
 		0B78E7D91E3F5D3C00EB216F /* TJBPersonalRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7D71E3F5D3C00EB216F /* TJBPersonalRecordCell.m */; };
 		0B78E7DA1E3F5D3C00EB216F /* TJBPersonalRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7D81E3F5D3C00EB216F /* TJBPersonalRecordCell.xib */; };
+		0B78E7E01E454DE400EB216F /* TJBNoDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7DE1E454DE400EB216F /* TJBNoDataCell.m */; };
+		0B78E7E11E454DE400EB216F /* TJBNoDataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7DF1E454DE400EB216F /* TJBNoDataCell.xib */; };
 		0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */; };
 		0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */; };
 		0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C851DFAD0A00093F057 /* CoreDataController.m */; };
@@ -141,6 +143,9 @@
 		0B78E7D61E3F5D3C00EB216F /* TJBPersonalRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBPersonalRecordCell.h; sourceTree = "<group>"; };
 		0B78E7D71E3F5D3C00EB216F /* TJBPersonalRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBPersonalRecordCell.m; sourceTree = "<group>"; };
 		0B78E7D81E3F5D3C00EB216F /* TJBPersonalRecordCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBPersonalRecordCell.xib; sourceTree = "<group>"; };
+		0B78E7DD1E454DE400EB216F /* TJBNoDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNoDataCell.h; sourceTree = "<group>"; };
+		0B78E7DE1E454DE400EB216F /* TJBNoDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNoDataCell.m; sourceTree = "<group>"; };
+		0B78E7DF1E454DE400EB216F /* TJBNoDataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBNoDataCell.xib; sourceTree = "<group>"; };
 		0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryVC.h; sourceTree = "<group>"; };
 		0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryVC.m; sourceTree = "<group>"; };
 		0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedSetActiveEntryVC.xib; sourceTree = "<group>"; };
@@ -407,6 +412,7 @@
 		0B78E7C21E3C162800EB216F /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0B78E7DC1E454DB200EB216F /* No Data */,
 				0B3688171E413D500077290C /* Title Cells */,
 				0B78E7DB1E3F746000EB216F /* Chain Template */,
 				0B78E7D51E3F5D0E00EB216F /* Personal Record */,
@@ -464,6 +470,16 @@
 				0B3687DB1E38DB530077290C /* TJBStructureTableViewCell.xib */,
 			);
 			name = "Chain Template";
+			sourceTree = "<group>";
+		};
+		0B78E7DC1E454DB200EB216F /* No Data */ = {
+			isa = PBXGroup;
+			children = (
+				0B78E7DD1E454DE400EB216F /* TJBNoDataCell.h */,
+				0B78E7DE1E454DE400EB216F /* TJBNoDataCell.m */,
+				0B78E7DF1E454DE400EB216F /* TJBNoDataCell.xib */,
+			);
+			name = "No Data";
 			sourceTree = "<group>";
 		};
 		0B843C901DFB7E9C0093F057 /* Freeform Lift */ = {
@@ -739,6 +755,7 @@
 				0B843CD51E0C984D0093F057 /* TJBInSetVC.xib in Resources */,
 				0B843C9A1DFCAB470093F057 /* RealizedSetHistoryCell.xib in Resources */,
 				0B78E7DA1E3F5D3C00EB216F /* TJBPersonalRecordCell.xib in Resources */,
+				0B78E7E11E454DE400EB216F /* TJBNoDataCell.xib in Resources */,
 				0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */,
 				0B3687EA1E3A2A780077290C /* TJBCircleDateVC.xib in Resources */,
 				0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */,
@@ -804,6 +821,7 @@
 				0B86FB831E257FA8000D1B5F /* TJBCircuitTemplateExerciseComp.m in Sources */,
 				0B1616D01E06D72F001C8F45 /* TJBGlobalParameters.m in Sources */,
 				0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */,
+				0B78E7E01E454DE400EB216F /* TJBNoDataCell.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B843C9E1DFDB3460093F057 /* RealizedSetPersonalRecordVC.m in Sources */,
 				0B870E4C1E2F9F9C00E38C46 /* RealizedChainTableViewCell.m in Sources */,

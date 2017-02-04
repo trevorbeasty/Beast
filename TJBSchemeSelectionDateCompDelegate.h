@@ -10,6 +10,6 @@
 
 @protocol TJBSchemeSelectionDateCompDelegate <NSObject>
 
-- (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate;
+- (void)didSelectObjectWithIndex:(NSNumber *)index;
 
 @end
