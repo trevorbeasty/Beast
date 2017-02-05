@@ -14,6 +14,7 @@
                 <outlet property="designedButton" destination="tI8-wo-CeW" id="jSi-pM-ndf"/>
                 <outlet property="freeformButton" destination="hf4-4q-MAz" id="aoA-4q-wH6"/>
                 <outlet property="navBar" destination="NPN-KW-7La" id="Fhn-6P-MYw"/>
+                <outlet property="testButton" destination="CGg-bA-t7g" id="hV3-jh-ocV"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -49,16 +50,29 @@
                         <navigationItem id="Pp3-8Y-ba2"/>
                     </items>
                 </navigationBar>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGg-bA-t7g">
+                    <rect key="frame" x="0.0" y="268.5" width="375" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="3Nx-z8-Qsx"/>
+                    </constraints>
+                    <state key="normal" title="Test"/>
+                    <connections>
+                        <action selector="didPressTestButton:" destination="-1" eventType="touchUpInside" id="2xU-kP-inn"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="CGg-bA-t7g" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CbM-Be-hAn"/>
                 <constraint firstAttribute="trailing" secondItem="NPN-KW-7La" secondAttribute="trailing" id="CjM-65-LU4"/>
                 <constraint firstItem="NPN-KW-7La" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="T1T-oI-hAb"/>
+                <constraint firstItem="CGg-bA-t7g" firstAttribute="top" secondItem="tI8-wo-CeW" secondAttribute="bottom" constant="4" id="Xp2-09-OBZ"/>
                 <constraint firstItem="hf4-4q-MAz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bGE-OQ-aAd"/>
                 <constraint firstItem="tI8-wo-CeW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="duz-Mo-hyg"/>
                 <constraint firstItem="tI8-wo-CeW" firstAttribute="height" secondItem="hf4-4q-MAz" secondAttribute="height" id="eJI-A8-N69"/>
                 <constraint firstAttribute="trailing" secondItem="hf4-4q-MAz" secondAttribute="trailing" id="fy2-L5-fMA"/>
                 <constraint firstItem="NPN-KW-7La" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gcD-lJ-39F"/>
+                <constraint firstAttribute="trailing" secondItem="CGg-bA-t7g" secondAttribute="trailing" id="i8s-jF-4TJ"/>
                 <constraint firstItem="tI8-wo-CeW" firstAttribute="top" secondItem="hf4-4q-MAz" secondAttribute="bottom" constant="4" id="igc-eg-6CZ"/>
                 <constraint firstItem="hf4-4q-MAz" firstAttribute="top" secondItem="NPN-KW-7La" secondAttribute="bottom" id="ixh-fr-rVu"/>
                 <constraint firstAttribute="trailing" secondItem="tI8-wo-CeW" secondAttribute="trailing" id="lqd-8h-QBO"/>

@@ -8,7 +8,15 @@
 
 #import "TJBWeightRepsSelectionVC.h"
 
-@interface TJBWeightRepsSelectionVC () <UICollectionViewDelegate, UICollectionViewDataSource>
+// cells
+
+#import "TJBWeightRepsSelectionCell.h"
+
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
+@interface TJBWeightRepsSelectionVC () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 // IBOutlet
 
@@ -37,6 +45,16 @@
     [super viewDidLoad];
     
     [self configureCollectionViews];
+    
+    [self configureViewAesthetics];
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    // segmented controls
+    
+    self.weightSegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
     
 }
 
@@ -74,64 +92,103 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBBasicCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: reuseIdentifier
-                                                                                 forIndexPath: indexPath];
-    
-    NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
-    
-    if (_numberTypeIdentifier == RestType)
-    {
-        cell.label.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber intValue]];
+    if ([collectionView isEqual: self.weightCollectionView]){
+        
+        TJBWeightRepsSelectionCell *weightCell = [self.weightCollectionView dequeueReusableCellWithReuseIdentifier: @"TJBWeightRepsSelectionCell"
+                                                                                                      forIndexPath: indexPath];
+        NSNumber *weightNumber = [NSNumber numberWithFloat: indexPath.row * 2.5];
+        
+        weightCell.numberLabel.text = [weightNumber stringValue];
+        weightCell.backgroundColor = [UIColor whiteColor];
+        
+        return weightCell;
+        
+    } else{
+        
+        TJBWeightRepsSelectionCell *repsCell = [self.repsCollectionView dequeueReusableCellWithReuseIdentifier: @"TJBWeightRepsSelectionCell"
+                                                                                                      forIndexPath: indexPath];
+        NSNumber *repNumber = [NSNumber numberWithFloat: indexPath.row];
+        
+        repsCell.numberLabel.text = [repNumber stringValue];
+        repsCell.backgroundColor = [UIColor whiteColor];
+        
+        return repsCell;
+        
     }
-    else
-    {
-        cell.label.text = [cellNumber stringValue];
-    }
-    
-    cell.label.layer.masksToBounds = YES;
-    cell.label.layer.cornerRadius = 8.0;
-    cell.backgroundColor = [UIColor clearColor];
-    
-    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
-    cell.label.backgroundColor = [aesthetics buttonBackgroundColor];
-    [cell.label setTextColor: [aesthetics buttonTextColor]];
-    
-    cell.layer.opacity = .75;
-    
-    cell.label.font = [UIFont systemFontOfSize: 20.0];
-    
-    return cell;
 }
 
 #pragma mark <UICollectionViewDelegate>
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+
+#pragma mark - <UICollectionViewDelegateFlowLayout>
+
+static CGFloat const spacing = 8.0;
+static float const numberOfCellsPerRow = 2;
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     
-    // if there is a previously selected cell, change its attributes accordingly
-    if (self.lastSelectedCell){
-        self.lastSelectedCell.layer.opacity = .75;
-        self.lastSelectedCell.label.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
+    return spacing;
+    
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    
+    return UIEdgeInsetsMake(spacing, 0, 0, 0);
+    
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    
+    return spacing;
+    
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutIfNeeded];
+    
+    if ([collectionView isEqual: self.weightCollectionView]){
+        
+        CGFloat weightCollectionWidth = self.weightCollectionView.frame.size.width;
+        
+        CGFloat cellWidth = (weightCollectionWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
+        
+        return CGSizeMake(cellWidth, cellWidth);
+        
+    } else{
+        
+        CGFloat repsCollectionWidth = self.repsCollectionView.frame.size.width;
+        
+        CGFloat cellWidth = (repsCollectionWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
+        
+        return CGSizeMake(cellWidth, cellWidth);
+        
     }
     
-    // for state restoration of currently highlighted cell
-    self.highlightedCellPath = indexPath;
-    
-    // change the attributes of the newly selected cell
-    TJBBasicCollectionViewCell *selectedCell = (TJBBasicCollectionViewCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
-    [self configureCellForSelectedState: selectedCell];
-    
-    // update the lastSelectedCell property to point to the newly selected cell
-    self.lastSelectedCell = selectedCell;
-    
 }
-
-- (void)configureCellForSelectedState:(TJBBasicCollectionViewCell *)cell{
-    
-    cell.layer.opacity = 1;
-    cell.label.backgroundColor = [UIColor redColor];
-    
-}
-
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

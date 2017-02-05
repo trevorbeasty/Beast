@@ -17,6 +17,10 @@
 
 #import "TJBAestheticsController.h"
 
+// test
+
+#import "TJBWeightRepsSelectionVC.h"
+
 @interface TJBLiftOptionsVC ()
 
 // IBOutlet
@@ -24,11 +28,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (weak, nonatomic) IBOutlet UIButton *testButton;
 
 // IBAction
 
 - (IBAction)didPressFreeformButton:(id)sender;
 - (IBAction)didPressDesignedButton:(id)sender;
+- (IBAction)didPressTestButton:(id)sender;
 
 
 @end
@@ -48,7 +54,8 @@
 - (void)configureViewAesthetics{
     
     NSArray *buttons = @[self.freeformButton,
-                         self.designedButton];
+                         self.designedButton,
+                         self.testButton];
     
     for (UIButton *button in buttons){
         
@@ -97,6 +104,16 @@
     
     [self presentViewController: vc
                        animated: NO
+                     completion: nil];
+    
+}
+
+- (IBAction)didPressTestButton:(id)sender{
+    
+    TJBWeightRepsSelectionVC *vc = [[TJBWeightRepsSelectionVC alloc] init];
+    
+    [self presentViewController: vc
+                       animated: YES
                      completion: nil];
     
 }
