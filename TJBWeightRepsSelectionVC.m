@@ -401,13 +401,26 @@ static float const numberOfCellsPerRow = 2;
 
 - (void)didPressCancel{
     
-    [self cancelBlock];
+    self.cancelBlock();
     
 }
 
 - (void)didPressDone{
     
+    if ([self requisiteUserInputCollected]){
+        
+        NSNumber *weight = [NSNumber numberWithFloat: self.weightSelectedCellIndexPath.row * [self weightMultiplier]];
+        NSNumber *reps = [NSNumber numberWithFloat: self.repsSelectedCellIndexPath.row * [self repsMultiplier]];
+        
+        self.numberSelectedBlock(weight, reps);
+        
+    }
     
+}
+
+- (BOOL)requisiteUserInputCollected{
+    
+    return self.weightSelectedCellIndexPath && self.repsSelectedCellIndexPath;
     
 }
 

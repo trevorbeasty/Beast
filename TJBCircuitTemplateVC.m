@@ -327,7 +327,7 @@ static NSString * const defaultValue = @"unselected";
     
     if (type == WeightType){
         
-        NumberSelectedBlock block = ^(NSNumber *number){
+        NumberSelectedBlockSingle block = ^(NSNumber *number){
             
             [button setTitle: [number stringValue]
                     forState: UIControlStateNormal];
@@ -363,7 +363,7 @@ static NSString * const defaultValue = @"unselected";
     }
     else if (type == RepsType){
         
-        NumberSelectedBlock block = ^(NSNumber *number){
+        NumberSelectedBlockSingle block = ^(NSNumber *number){
             
             [button setTitle: [number stringValue]
                     forState: UIControlStateNormal];
@@ -400,7 +400,7 @@ static NSString * const defaultValue = @"unselected";
     else if (type == RestType)
     {
         
-        NumberSelectedBlock block = ^(NSNumber *number){
+        NumberSelectedBlockSingle block = ^(NSNumber *number){
             
             NSString *title = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
             

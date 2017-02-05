@@ -704,7 +704,6 @@
         
     }
     
-    
     __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
     
     CancelBlock cancelBlock = ^{
@@ -727,11 +726,9 @@
         [weakSelf setRealizedSetParametersToNil];
         
         [weakSelf dismissViewControllerAnimated: NO
-                                 completion: nil];
+                                     completion: nil];
 
     };
-    
-
     
     if (!self.exercise){
         
@@ -755,7 +752,7 @@
         
         if (self.setStartTimeSegmentedControl.selectedSegmentIndex == 1){
             
-            NumberSelectedBlockDouble numberSelectedBlock = ^(NSNumber *weight, NSNumber *reps){
+            NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
                 
                 weakSelf.timeDelay = number;
                 weakSelf.setBeginDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
@@ -813,7 +810,7 @@
         
         if (self.setEndTimeSegmentedControl.selectedSegmentIndex == 1){
             
-            NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+            NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
                 
                 weakSelf.timeLag = number;
                 
@@ -851,46 +848,29 @@
         
     } else if (!self.weight){
         
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+        NumberSelectedBlockDouble numberSelectedBlock = ^(NSNumber *weight, NSNumber *reps){
             
-            weakSelf.weight = number;
+            weakSelf.weight = weight;
+            weakSelf.reps = reps;
+            
             [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
+            
             [weakSelf didPressBeginNextSet: nil];
             
         };
         
+        NSString *title = [NSString stringWithFormat: @"%@", self.exercise.name];
         
-        [self presentNumberSelectionSceneWithNumberType: WeightType
-                                         numberMultiple: [NSNumber numberWithFloat: 2.5]
-                                            numberLimit: nil
-                                                  title: @"Select Weight"
-                                            cancelBlock: cancelBlock
-                                    numberSelectedBlock: numberSelectedBlock
-                                               animated: YES
-                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
-//    else if (!self.reps)
-//    {
-//        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
-//            weakSelf.reps = number;
-//            [weakSelf dismissViewControllerAnimated: NO
-//                                     completion: nil];
-//            [weakSelf didPressBeginNextSet: nil];
-//        };
-//        
-//        
-//        [self presentNumberSelectionSceneWithNumberType: RepsType
-//                                         numberMultiple: [NSNumber numberWithInt: 1]
-//                                            numberLimit: nil
-//                                                  title: @"Select Reps"
-//                                            cancelBlock: cancelBlock
-//                                    numberSelectedBlock: numberSelectedBlock
-//                                               animated: YES
-//                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-//    }
-    else
-    {
+        TJBWeightRepsSelectionVC *vc = [[TJBWeightRepsSelectionVC alloc] initWithTitle: title
+                                                                           cancelBlock: cancelBlock
+                                                                   numberSelectedBlock: numberSelectedBlock];
+        [self presentViewController: vc
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        
         // return the VC to its 'resting' appearance
         
         [self.beginNextSetButton setTitle: @"Begin Next Set"
@@ -898,8 +878,10 @@
         self.largeStatusLabel.text = @"Resting";
         
         //
+        
         [self removeWhiteoutView];
         [self presentSubmittedSetSummary];
+        
     }
 }
 

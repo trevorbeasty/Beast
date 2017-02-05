@@ -430,7 +430,7 @@ static NSString * const defaultValue = @"default value";
     
     if(!self.selectedTimeDelay){
         
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+        NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
             
             self.selectedTimeDelay = number;
             
@@ -497,7 +497,7 @@ static NSString * const defaultValue = @"default value";
         
     }else if (!self.selectedTimeLag){
         
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+        NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
             
             self.selectedTimeLag = number;
             
@@ -548,7 +548,7 @@ static NSString * const defaultValue = @"default value";
         
     }else if (!self.selectedWeight){
         
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+        NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
             
             self.selectedWeight = number;
             
@@ -579,7 +579,7 @@ static NSString * const defaultValue = @"default value";
         
     }else if (!self.selectedReps){
         
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+        NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
             
             self.selectedReps = number;
             
