@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *weightSegmentedControl;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *repsSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIView *collectionViewContainer;
 
 // state
 
@@ -48,13 +49,38 @@
     
     [self configureViewAesthetics];
     
+    [self configureSegmentedControl];
+    
 }
+
+- (void)configureSegmentedControl{
+    
+    [self.weightSegmentedControl addTarget: self
+                                    action: @selector(weightSCValueChanged)
+                          forControlEvents: UIControlEventValueChanged];
+    
+    [self.repsSegmentedControl addTarget: self
+                                  action: @selector(repsSCValueChanged)
+                        forControlEvents: UIControlEventValueChanged];
+    
+    self.weightSegmentedControl.selectedSegmentIndex = 1;
+    
+    self.repsSegmentedControl.selectedSegmentIndex = 1;
+    
+}
+
 
 - (void)configureViewAesthetics{
     
     // segmented controls
     
-    self.weightSegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+    self.weightSegmentedControl.tintColor = [UIColor whiteColor];
+    
+    self.repsSegmentedControl.tintColor = [UIColor whiteColor];
+    
+    // collection view container
+    
+    self.collectionViewContainer.backgroundColor = [UIColor whiteColor];
     
 }
 
@@ -96,10 +122,18 @@
         
         TJBWeightRepsSelectionCell *weightCell = [self.weightCollectionView dequeueReusableCellWithReuseIdentifier: @"TJBWeightRepsSelectionCell"
                                                                                                       forIndexPath: indexPath];
-        NSNumber *weightNumber = [NSNumber numberWithFloat: indexPath.row * 2.5];
+        
+        NSNumber *weightNumber = [NSNumber numberWithFloat: indexPath.row * [self weightMultiplier]];
         
         weightCell.numberLabel.text = [weightNumber stringValue];
-        weightCell.backgroundColor = [UIColor whiteColor];
+        weightCell.numberLabel.textColor = [UIColor whiteColor];
+        weightCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        weightCell.typeLabel.text = @"";
+        weightCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+        weightCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        
+        weightCell.layer.masksToBounds = YES;
+        weightCell.layer.cornerRadius = 4.0;
         
         return weightCell;
         
@@ -107,14 +141,76 @@
         
         TJBWeightRepsSelectionCell *repsCell = [self.repsCollectionView dequeueReusableCellWithReuseIdentifier: @"TJBWeightRepsSelectionCell"
                                                                                                       forIndexPath: indexPath];
-        NSNumber *repNumber = [NSNumber numberWithFloat: indexPath.row];
         
-        repsCell.numberLabel.text = [repNumber stringValue];
-        repsCell.backgroundColor = [UIColor whiteColor];
+        NSNumber *repsNumber = [NSNumber numberWithFloat: indexPath.row * [self repsMultiplier]];
+        
+        repsCell.numberLabel.text = [repsNumber stringValue];
+        repsCell.numberLabel.textColor = [UIColor whiteColor];
+        repsCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        repsCell.typeLabel.text = @"";
+        repsCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+        repsCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        
+        repsCell.layer.masksToBounds = YES;
+        repsCell.layer.cornerRadius = 4.0;
         
         return repsCell;
         
     }
+}
+
+- (float)weightMultiplier{
+    
+    NSInteger weightSCIndex = self.weightSegmentedControl.selectedSegmentIndex;
+    
+    float returnValue;
+    
+    switch (weightSCIndex) {
+            
+        case 0:
+            returnValue = 1.0;
+            break;
+            
+        case 1:
+            returnValue = 2.5;
+            break;
+            
+        case 2:
+            returnValue = 5.0;
+            break;
+            
+        default:
+            break;
+            
+    }
+    
+    return returnValue;
+    
+}
+
+- (float)repsMultiplier{
+    
+    NSInteger repsSCIndex = self.repsSegmentedControl.selectedSegmentIndex;
+    
+    float returnValue;
+    
+    switch (repsSCIndex) {
+            
+        case 0:
+            returnValue = 0.5;
+            break;
+            
+        case 1:
+            returnValue = 1.0;
+            break;
+            
+        default:
+            break;
+            
+    }
+    
+    return returnValue;
+    
 }
 
 #pragma mark <UICollectionViewDelegate>
@@ -123,7 +219,7 @@
 #pragma mark - <UICollectionViewDelegateFlowLayout>
 
 static CGFloat const spacing = 8.0;
-static float const numberOfCellsPerRow = 2;
+static float const numberOfCellsPerRow = 3;
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     
@@ -133,7 +229,7 @@ static float const numberOfCellsPerRow = 2;
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
-    return UIEdgeInsetsMake(spacing, 0, 0, 0);
+    return UIEdgeInsetsMake(spacing, spacing, 0, spacing);
     
 }
 
@@ -151,7 +247,7 @@ static float const numberOfCellsPerRow = 2;
         
         CGFloat weightCollectionWidth = self.weightCollectionView.frame.size.width;
         
-        CGFloat cellWidth = (weightCollectionWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
+        CGFloat cellWidth = (weightCollectionWidth - (numberOfCellsPerRow -1) * spacing - 2 * spacing) / numberOfCellsPerRow;
         
         return CGSizeMake(cellWidth, cellWidth);
         
@@ -159,11 +255,25 @@ static float const numberOfCellsPerRow = 2;
         
         CGFloat repsCollectionWidth = self.repsCollectionView.frame.size.width;
         
-        CGFloat cellWidth = (repsCollectionWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
+        CGFloat cellWidth = (repsCollectionWidth - (numberOfCellsPerRow -1) * spacing - 2 * spacing) / numberOfCellsPerRow;
         
         return CGSizeMake(cellWidth, cellWidth);
         
     }
+    
+}
+
+#pragma mark - Segmented Control
+
+- (void)weightSCValueChanged{
+    
+    [self.weightCollectionView reloadData];
+    
+}
+
+- (void)repsSCValueChanged{
+    
+    [self.repsCollectionView reloadData];
     
 }
 
