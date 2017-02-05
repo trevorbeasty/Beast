@@ -36,10 +36,30 @@
 
 // callback
 
+@property (nonatomic, copy) CancelBlock cancelBlock;
+@property (nonatomic, copy) NumberSelectedBlock numberSelectedBlock;
+
+// core
+
+@property (nonatomic, strong) NSString *navBarTitle;
 
 @end
 
 @implementation TJBWeightRepsSelectionVC
+
+#pragma mark - Instantiation
+
+- (instancetype)initWithTitle:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlock)numberSelectedBlock{
+    
+    self = [super init];
+    
+    self.navBarTitle = title;
+    self.cancelBlock = cancelBlock;
+    self.numberSelectedBlock = numberSelectedBlock;
+    
+    return self;
+    
+}
 
 #pragma mark - View Life Cycle
 
@@ -52,6 +72,30 @@
     [self configureViewAesthetics];
     
     [self configureSegmentedControl];
+    
+    [self configureNavigationBar];
+    
+}
+
+- (void)configureNavigationBar{
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.navBarTitle];
+    
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle: @"Done"
+                                                                    style: UIBarButtonItemStyleDone
+                                                                   target: self
+                                                                   action: @selector(didPressDone)];
+    
+    [navItem setRightBarButtonItem: rightButton];
+    
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle: @"Cancel"
+                                                                   style: UIBarButtonItemStyleDone
+                                                                  target: self
+                                                                  action: @selector(didPressCancel)];
+    
+    [navItem setLeftBarButtonItem: leftButton];
+    
+    [self.navBar setItems: @[navItem]];
     
 }
 
@@ -350,6 +394,20 @@ static float const numberOfCellsPerRow = 3;
     
     self.repsSelectedCellIndexPath = nil;
     self.repsSelectedValueLabel.text = @"select";
+    
+}
+
+#pragma mark - Button Actions
+
+- (void)didPressCancel{
+    
+    [self cancelBlock];
+    
+}
+
+- (void)didPressDone{
+    
+    
     
 }
 
