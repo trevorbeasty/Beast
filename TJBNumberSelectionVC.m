@@ -50,7 +50,7 @@ static NSString * const reuseIdentifier = @"basicCell";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void (^)(void))cancelBlock numberSelectedBlock:(void (^)(NSNumber *))numberSelectedBlock{
+- (instancetype)initWithNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlockSingle)numberSelectedBlock{
 
     self = [super init];
     

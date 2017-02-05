@@ -10,17 +10,21 @@
 
 #import "TJBRealizedSet+CoreDataProperties.h"
 
-#import "TJBNumberSelectionVC.h"
+
 #import "TJBNewExerciseCreationVC.h"
-#import "TJBInSetVC.h"
+//#import "TJBInSetVC.h"
+
+// stopwatch
 
 #import "TJBStopWatch.h"
 
+// core data
+
 #import "CoreDataController.h"
 
-#import "TJBAestheticsController.h"
+// aesthetics
 
-#import "TJBExerciseSelectionScene.h"
+#import "TJBAestheticsController.h"
 
 // personal records
 
@@ -32,13 +36,23 @@
 #import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
 
+// selection vc's
+
+#import "TJBExerciseSelectionScene.h"
+#import "TJBNumberSelectionVC.h"
+#import "TJBWeightRepsSelectionVC.h"
+
 
 @interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration, UITableViewDelegate, UITableViewDataSource>
 
 {
+    
+    // user input
+    
     BOOL _setCompletedButtonPressed;
     int _timerAtSetCompletion;
     BOOL _whiteoutActive;
+    
 }
 
 // IBOutlet
@@ -719,8 +733,8 @@
     
 
     
-    if (!self.exercise)
-    {
+    if (!self.exercise){
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"No Exercise Selected"
                                                                        message: @"Please select an exercise before submitting a completed set"
                                                                 preferredStyle: UIAlertControllerStyleAlert];
@@ -738,39 +752,49 @@
                          completion: nil];
    
     } else if(!self.timeDelay){
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
-            
-            weakSelf.timeDelay = number;
-            weakSelf.setBeginDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
-            
-            // change display items accordingly
-            
-            self.largeStatusLabel.text = @"In Set";
-            
-            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue] * -1
-                                                 withForwardIncrementing: YES
-                                                          lastUpdateDate: nil];
-            
-            [self.beginNextSetButton setTitle: @"Set Completed"
-                                     forState: UIControlStateNormal];
-            
-            //
-            
-            
-            [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-            
-        };
         
+        if (self.setStartTimeSegmentedControl.selectedSegmentIndex == 1){
+            
+            NumberSelectedBlockDouble numberSelectedBlock = ^(NSNumber *weight, NSNumber *reps){
+                
+                weakSelf.timeDelay = number;
+                weakSelf.setBeginDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue]];
+                
+                // change display items accordingly
+                
+                self.largeStatusLabel.text = @"In Set";
+                
+                [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue] * -1
+                                                     withForwardIncrementing: YES
+                                                              lastUpdateDate: nil];
+                
+                [self.beginNextSetButton setTitle: @"Set Completed"
+                                         forState: UIControlStateNormal];
+                
+                [weakSelf dismissViewControllerAnimated: NO
+                                             completion: nil];
+                
+            };
+            
+            
+            [self presentNumberSelectionSceneWithNumberType: RestType
+                                             numberMultiple: [NSNumber numberWithInt: 5]
+                                                numberLimit: nil
+                                                      title: @"Select Delay"
+                                                cancelBlock: cancelBlock
+                                        numberSelectedBlock: numberSelectedBlock
+                                                   animated: YES
+                                       modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+            
+        } else{
+            
+            self.timeDelay = [NSNumber numberWithInt: 0];
+            
+            [self didPressBeginNextSet: nil];
+            
+        }
         
-        [self presentNumberSelectionSceneWithNumberType: RestType
-                                         numberMultiple: [NSNumber numberWithInt: 5]
-                                            numberLimit: nil
-                                                  title: @"Select Delay"
-                                            cancelBlock: cancelBlock
-                                    numberSelectedBlock: numberSelectedBlock
-                                               animated: YES
-                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+
         
     } else if (_whiteoutActive == NO){
         
@@ -787,41 +811,53 @@
         
     } else if (!self.timeLag){
         
+        if (self.setEndTimeSegmentedControl.selectedSegmentIndex == 1){
+            
+            NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+                
+                weakSelf.timeLag = number;
+                
+                weakSelf.setEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
+                
+                [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue]
+                                                     withForwardIncrementing: YES
+                                                              lastUpdateDate: nil];
+                
+                [weakSelf dismissViewControllerAnimated: NO
+                                             completion: nil];
+                
+                [weakSelf didPressBeginNextSet: nil];
+                
+            };
+            
+            
+            
+            [self presentNumberSelectionSceneWithNumberType: RestType
+                                             numberMultiple: [NSNumber numberWithInt: 5]
+                                                numberLimit: nil
+                                                      title: @"Select Lag"
+                                                cancelBlock: cancelBlock
+                                        numberSelectedBlock: numberSelectedBlock
+                                                   animated: YES
+                                       modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+            
+        } else{
+            
+            self.timeLag = [NSNumber numberWithInt: 0];
+            
+            [self didPressBeginNextSet: nil];
+            
+        }
+        
+    } else if (!self.weight){
+        
         NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             
-            weakSelf.timeLag = number;
-            
-            weakSelf.setEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
-            
-            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue]
-                                                 withForwardIncrementing: YES
-                                                          lastUpdateDate: nil];
-            
-            [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-            
-            [weakSelf didPressBeginNextSet: nil];
-            
-        };
-        
-
-        
-        [self presentNumberSelectionSceneWithNumberType: RestType
-                                         numberMultiple: [NSNumber numberWithInt: 5]
-                                            numberLimit: nil
-                                                  title: @"Select Lag"
-                                            cancelBlock: cancelBlock
-                                    numberSelectedBlock: numberSelectedBlock
-                                               animated: YES
-                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
-    else if (!self.weight)
-    {
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
             weakSelf.weight = number;
             [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
             [weakSelf didPressBeginNextSet: nil];
+            
         };
         
         
@@ -834,25 +870,25 @@
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    else if (!self.reps)
-    {
-        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
-            weakSelf.reps = number;
-            [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-            [weakSelf didPressBeginNextSet: nil];
-        };
-        
-        
-        [self presentNumberSelectionSceneWithNumberType: RepsType
-                                         numberMultiple: [NSNumber numberWithInt: 1]
-                                            numberLimit: nil
-                                                  title: @"Select Reps"
-                                            cancelBlock: cancelBlock
-                                    numberSelectedBlock: numberSelectedBlock
-                                               animated: YES
-                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
+//    else if (!self.reps)
+//    {
+//        NumberSelectedBlock numberSelectedBlock = ^(NSNumber *number){
+//            weakSelf.reps = number;
+//            [weakSelf dismissViewControllerAnimated: NO
+//                                     completion: nil];
+//            [weakSelf didPressBeginNextSet: nil];
+//        };
+//        
+//        
+//        [self presentNumberSelectionSceneWithNumberType: RepsType
+//                                         numberMultiple: [NSNumber numberWithInt: 1]
+//                                            numberLimit: nil
+//                                                  title: @"Select Reps"
+//                                            cancelBlock: cancelBlock
+//                                    numberSelectedBlock: numberSelectedBlock
+//                                               animated: YES
+//                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+//    }
     else
     {
         // return the VC to its 'resting' appearance

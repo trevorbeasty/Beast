@@ -17,10 +17,10 @@ typedef enum {
 } NumberType;
 
 typedef void(^CancelBlock)(void);
-typedef void(^NumberSelectedBlock)(NSNumber *);
+typedef void(^NumberSelectedBlockSingle)(NSNumber *);
 
 @interface TJBNumberSelectionVC: UIViewController
 
-- (instancetype)initWithNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock;
+- (instancetype)initWithNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlockSingle)numberSelectedBlock;
 
 @end

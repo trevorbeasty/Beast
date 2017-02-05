@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef void(^CancelBlock)(void);
-typedef void(^NumberSelectedBlock)(NSNumber *, NSNumber *);
+typedef void(^NumberSelectedBlockDouble)(NSNumber *, NSNumber *);
 
 @interface TJBWeightRepsSelectionVC : UIViewController
 
-- (instancetype)initWithTitle:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlock)numberSelectedBlock;
+- (instancetype)initWithTitle:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlockDouble)numberSelectedBlock;
 
 @end

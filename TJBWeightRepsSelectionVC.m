@@ -37,7 +37,7 @@
 // callback
 
 @property (nonatomic, copy) CancelBlock cancelBlock;
-@property (nonatomic, copy) NumberSelectedBlock numberSelectedBlock;
+@property (nonatomic, copy) NumberSelectedBlockDouble numberSelectedBlock;
 
 // core
 
@@ -49,7 +49,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitle:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlock)numberSelectedBlock{
+- (instancetype)initWithTitle:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlockDouble)numberSelectedBlock{
     
     self = [super init];
     
