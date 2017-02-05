@@ -409,10 +409,8 @@
 		0B517BDA1DF88651009981F9 /* NumberSelection */ = {
 			isa = PBXGroup;
 			children = (
+				0B78E7EF1E4781CB00EB216F /* Single Number Selection */,
 				0B78E7EE1E46301000EB216F /* Weight Reps Selection */,
-				0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */,
-				0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */,
-				0B86FB741E2129C4000D1B5F /* TJBNumberSelectionVC.xib */,
 			);
 			name = NumberSelection;
 			sourceTree = "<group>";
@@ -520,6 +518,16 @@
 				0B78E7E51E462B6300EB216F /* TJBWeightRepsSelectionVC.xib */,
 			);
 			name = "Weight Reps Selection";
+			sourceTree = "<group>";
+		};
+		0B78E7EF1E4781CB00EB216F /* Single Number Selection */ = {
+			isa = PBXGroup;
+			children = (
+				0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */,
+				0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */,
+				0B86FB741E2129C4000D1B5F /* TJBNumberSelectionVC.xib */,
+			);
+			name = "Single Number Selection";
 			sourceTree = "<group>";
 		};
 		0B843C901DFB7E9C0093F057 /* Freeform Lift */ = {

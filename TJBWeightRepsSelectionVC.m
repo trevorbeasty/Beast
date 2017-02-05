@@ -333,7 +333,7 @@
 #pragma mark - <UICollectionViewDelegateFlowLayout>
 
 static CGFloat const spacing = 8.0;
-static float const numberOfCellsPerRow = 3;
+static float const numberOfCellsPerRow = 2;
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     

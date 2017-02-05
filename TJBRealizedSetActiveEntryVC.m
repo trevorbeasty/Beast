@@ -52,11 +52,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
 @property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
-@property (weak, nonatomic) IBOutlet UILabel *personalRecordsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
 @property (weak, nonatomic) IBOutlet UILabel *largeStatusLabel;
 @property (weak, nonatomic) IBOutlet UIView *grayBackdropView;
+@property (weak, nonatomic) IBOutlet UILabel *setStartTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *setEndTimeLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *setStartTimeSegmentedControl;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *setEndTimeSegmentedControl;
 
 // IBAction
 
@@ -74,6 +77,11 @@
 @property (nonatomic, strong) NSArray *realizedSetFetchResults;
 @property (nonatomic, strong) NSArray *realizedChainFetchResults;
 
+// an array of TJBRepsWeightRecordPairs.  Record pairs are always held for reps values of 1 through 12.  New pairs are added as needed
+
+@property (nonatomic, strong) NSMutableArray<TJBRepsWeightRecordPair *> *repsWeightRecordPairs;
+
+
 ////
 
 // user input
@@ -89,8 +97,6 @@
 @property (nonatomic, strong) NSNumber *alertTiming;
 @property (nonatomic, strong) TJBExercise *exercise;
 
-
-
 //// timer and target rest time
 
 @property (nonatomic, strong) UIView *whiteoutView;
@@ -103,13 +109,7 @@
 @property (nonatomic, strong) NSDate *timerUpdateDateForRecovery;
 @property (nonatomic, strong) NSNumber *timerValueForRecovery;
 
-
-
-//// an array of TJBRepsWeightRecordPairs.  Record pairs are always held for reps values of 1 through 12.  New pairs are added as needed
-
-@property (nonatomic, strong) NSMutableArray<TJBRepsWeightRecordPair *> *repsWeightRecordPairs;
-
-
+////
 
 // for restoration
 
@@ -282,7 +282,12 @@
     
     // selection row labels
     
-    NSArray *rowLabels = @[self.targetRestLabel, self.alertTimingLabel, self.exerciseLabel];
+    NSArray *rowLabels = @[self.targetRestLabel,
+                           self.alertTimingLabel,
+                           self.exerciseLabel,
+                           self.setStartTimeLabel,
+                           self.setEndTimeLabel];
+    
     for (UILabel *label in rowLabels){
         
         label.font = [UIFont boldSystemFontOfSize: 20.0];
@@ -303,7 +308,7 @@
     
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.grayBackdropView.bounds
                                                byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
-                                                     cornerRadii: CGSizeMake(4.0, 4.0)];
+                                                     cornerRadii: CGSizeMake(8.0, 8.0)];
     
     shapeLayer.path = path.CGPath;
     shapeLayer.frame = self.grayBackdropView.bounds;
@@ -311,6 +316,19 @@
     shapeLayer.fillColor = [UIColor redColor].CGColor;
     
     self.grayBackdropView.layer.mask = shapeLayer;
+    
+    // segmented controls
+    
+    NSArray *segmentedControls = @[self.setEndTimeSegmentedControl, self.setStartTimeSegmentedControl];
+    for (UISegmentedControl *sc in segmentedControls){
+        
+        sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+        NSDictionary *textDict = [[NSDictionary alloc] initWithObjects: @[[UIColor whiteColor]]
+                                                               forKeys: @[NSForegroundColorAttributeName]];
+        [sc setTitleTextAttributes: textDict
+                          forState: UIControlStateNormal];
+        
+    }
     
 }
 
