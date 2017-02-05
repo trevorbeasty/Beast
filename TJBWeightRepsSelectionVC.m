@@ -26,11 +26,13 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *weightSegmentedControl;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *repsSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *collectionViewContainer;
+@property (weak, nonatomic) IBOutlet UILabel *weightSelectedValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *repsSelectedValueLabel;
 
 // state
 
-@property (nonatomic, strong) NSNumber *weightSelectedCellIndex;
-@property (nonatomic, strong) NSNumber *repsSelectedCellIndex;
+@property (nonatomic, strong) NSIndexPath *weightSelectedCellIndexPath;
+@property (nonatomic, strong) NSIndexPath *repsSelectedCellIndexPath;
 
 // callback
 
@@ -130,7 +132,20 @@
         weightCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
         weightCell.typeLabel.text = @"";
         weightCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+        
+        // the following is done so that a cell remains highlighted if it is selected, scrolled off-screen, and then scrolled back on-screen
+        
         weightCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        
+        if (self.weightSelectedCellIndexPath){
+            
+            if (self.weightSelectedCellIndexPath.row == indexPath.row){
+                
+                weightCell.backgroundColor = [UIColor redColor];
+                
+            }
+            
+        } 
         
         weightCell.layer.masksToBounds = YES;
         weightCell.layer.cornerRadius = 4.0;
@@ -149,7 +164,18 @@
         repsCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
         repsCell.typeLabel.text = @"";
         repsCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+        
         repsCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        
+        if (self.repsSelectedCellIndexPath){
+            
+            if (self.repsSelectedCellIndexPath.row == indexPath.row){
+                
+                repsCell.backgroundColor = [UIColor redColor];
+                
+            }
+            
+        }
         
         repsCell.layer.masksToBounds = YES;
         repsCell.layer.cornerRadius = 4.0;
@@ -215,6 +241,50 @@
 
 #pragma mark <UICollectionViewDelegate>
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if ([collectionView isEqual: self.weightCollectionView]){
+        
+        if (self.weightSelectedCellIndexPath){
+            
+            TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.weightCollectionView cellForItemAtIndexPath: self.weightSelectedCellIndexPath];
+            
+            previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+            
+        }
+        
+        self.weightSelectedCellIndexPath = indexPath;
+        
+        TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.weightCollectionView cellForItemAtIndexPath: indexPath];
+        
+        currentCell.backgroundColor = [UIColor redColor];
+        
+        NSNumber *weight = [NSNumber numberWithFloat: indexPath.row * [self weightMultiplier]];
+        self.weightSelectedValueLabel.text = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
+        
+    } else{
+        
+        if (self.repsSelectedCellIndexPath){
+            
+            TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.repsCollectionView cellForItemAtIndexPath: self.repsSelectedCellIndexPath];
+            
+            previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+            
+        }
+        
+        self.repsSelectedCellIndexPath = indexPath;
+        
+        TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.repsCollectionView cellForItemAtIndexPath: indexPath];
+        
+        currentCell.backgroundColor = [UIColor redColor];
+        
+        NSNumber *reps = [NSNumber numberWithFloat: indexPath.row * [self repsMultiplier]];
+        self.repsSelectedValueLabel.text = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
+        
+    }
+    
+}
+
 
 #pragma mark - <UICollectionViewDelegateFlowLayout>
 
@@ -269,11 +339,17 @@ static float const numberOfCellsPerRow = 3;
     
     [self.weightCollectionView reloadData];
     
+    self.weightSelectedCellIndexPath = nil;
+    self.weightSelectedValueLabel.text = @"select";
+    
 }
 
 - (void)repsSCValueChanged{
     
     [self.repsCollectionView reloadData];
+    
+    self.repsSelectedCellIndexPath = nil;
+    self.repsSelectedValueLabel.text = @"select";
     
 }
 
