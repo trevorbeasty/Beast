@@ -323,8 +323,12 @@
     for (UISegmentedControl *sc in segmentedControls){
         
         sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
-        NSDictionary *textDict = [[NSDictionary alloc] initWithObjects: @[[UIColor whiteColor]]
-                                                               forKeys: @[NSForegroundColorAttributeName]];
+        sc.backgroundColor = [UIColor whiteColor];
+        
+        sc.layer.masksToBounds = YES;
+        sc.layer.cornerRadius = 4.0;
+        NSDictionary *textDict = [[NSDictionary alloc] initWithObjects: @[[UIFont boldSystemFontOfSize: 12.0]]
+                                                               forKeys: @[NSFontAttributeName]];
         [sc setTitleTextAttributes: textDict
                           forState: UIControlStateNormal];
         
