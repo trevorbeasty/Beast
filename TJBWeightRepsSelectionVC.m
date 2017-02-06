@@ -115,6 +115,9 @@
     
     self.repsSegmentedControl.selectedSegmentIndex = 1;
     
+    [self.weightCollectionView reloadData];
+    [self.repsCollectionView reloadData];
+    
 }
 
 

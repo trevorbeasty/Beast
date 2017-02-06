@@ -48,14 +48,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t8X-gE-Cpi">
-                    <rect key="frame" x="196.5" y="64" width="170.5" height="30"/>
+                    <rect key="frame" x="197" y="64" width="170" height="30"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="l41-YA-PUS">
-                    <rect key="frame" x="8" y="619" width="170.5" height="41"/>
+                    <rect key="frame" x="8" y="619" width="170" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="AQi-hF-xXM"/>
                     </constraints>
@@ -66,14 +66,14 @@
                     </segments>
                 </segmentedControl>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iwf-i4-0Nw">
-                    <rect key="frame" x="196.5" y="619" width="170.5" height="41"/>
+                    <rect key="frame" x="197" y="619" width="170" height="41"/>
                     <segments>
                         <segment title="0.5"/>
                         <segment title="1"/>
                     </segments>
                 </segmentedControl>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8w-6H-I3L">
-                    <rect key="frame" x="8" y="64" width="170.5" height="30"/>
+                    <rect key="frame" x="8" y="64" width="170" height="30"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="btj-5Z-Ika"/>
@@ -83,7 +83,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="select" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqd-bG-zir">
-                    <rect key="frame" x="8" y="94" width="170.5" height="20"/>
+                    <rect key="frame" x="8" y="94" width="170" height="20"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="CHJ-DB-FxJ"/>
@@ -93,14 +93,14 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="select" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAV-Bn-215">
-                    <rect key="frame" x="196.5" y="94" width="170.5" height="20"/>
+                    <rect key="frame" x="197" y="94" width="170" height="20"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="HnF-gb-8PT">
-                    <rect key="frame" x="8" y="122" width="170.5" height="489"/>
+                    <rect key="frame" x="8" y="122" width="170" height="489"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vib-K0-I1B">
                         <size key="itemSize" width="50" height="50"/>
@@ -114,7 +114,7 @@
                     </connections>
                 </collectionView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kFb-NO-8Ye">
-                    <rect key="frame" x="196.5" y="122" width="170.5" height="489"/>
+                    <rect key="frame" x="197" y="122" width="170" height="489"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YGx-n0-qjn">
                         <size key="itemSize" width="75" height="75"/>
@@ -136,7 +136,6 @@
                 <constraint firstItem="oAV-Bn-215" firstAttribute="trailing" secondItem="t8X-gE-Cpi" secondAttribute="trailing" id="6Qx-Iq-hBX"/>
                 <constraint firstAttribute="bottom" secondItem="ml2-ch-CMR" secondAttribute="bottom" id="6s8-Kh-Zdo"/>
                 <constraint firstItem="l41-YA-PUS" firstAttribute="trailing" secondItem="f8w-6H-I3L" secondAttribute="trailing" id="6zf-XE-L5h"/>
-                <constraint firstItem="t8X-gE-Cpi" firstAttribute="leading" secondItem="f8w-6H-I3L" secondAttribute="trailing" constant="18" id="9jY-Oa-O3L"/>
                 <constraint firstItem="t8X-gE-Cpi" firstAttribute="top" secondItem="f8w-6H-I3L" secondAttribute="top" id="9wr-On-oeq"/>
                 <constraint firstItem="oAV-Bn-215" firstAttribute="leading" secondItem="t8X-gE-Cpi" secondAttribute="leading" id="C89-06-t1c"/>
                 <constraint firstItem="HnF-gb-8PT" firstAttribute="trailing" secondItem="f8w-6H-I3L" secondAttribute="trailing" id="Chu-Ek-puc"/>
@@ -147,6 +146,7 @@
                 <constraint firstItem="iwf-i4-0Nw" firstAttribute="top" secondItem="l41-YA-PUS" secondAttribute="top" id="IeJ-Be-5BA"/>
                 <constraint firstItem="HoV-yh-QG0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Im4-Cb-WIW"/>
                 <constraint firstItem="oAV-Bn-215" firstAttribute="top" secondItem="hqd-bG-zir" secondAttribute="top" id="Lhq-Lj-Z9Q"/>
+                <constraint firstItem="ml2-ch-CMR" firstAttribute="leading" secondItem="f8w-6H-I3L" secondAttribute="trailing" constant="8" id="Ogh-uc-O9i"/>
                 <constraint firstItem="HnF-gb-8PT" firstAttribute="leading" secondItem="f8w-6H-I3L" secondAttribute="leading" id="QTY-Cg-Aag"/>
                 <constraint firstItem="kFb-NO-8Ye" firstAttribute="leading" secondItem="t8X-gE-Cpi" secondAttribute="leading" id="QsT-nD-Tad"/>
                 <constraint firstItem="t8X-gE-Cpi" firstAttribute="bottom" secondItem="f8w-6H-I3L" secondAttribute="bottom" id="TCt-o4-08f"/>

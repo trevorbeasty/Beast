@@ -216,9 +216,31 @@
     
     [self configureTableShadow];
     
+    [self configureStartingDisplayValues];
+    
+    [self configureSegmentedControls];
+    
 }
 
+- (void)configureSegmentedControls{
+    
+    [self.trackSetLengthSegmentedControl addTarget: self
+                                            action: @selector(trackSetLengthSCValueChanged)
+                                  forControlEvents: UIControlEventValueChanged];
+    
+}
 
+- (void)configureStartingDisplayValues{
+    
+    if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 0){
+        
+        self.largeStatusLabel.text = @"";
+        [self.beginNextSetButton setTitle: @"Set Completed"
+                                 forState: UIControlStateNormal];
+        
+    }
+    
+}
 
 - (void)configureTableShadow{
     
@@ -234,6 +256,8 @@
     shadowLayer.shadowRadius = 3.0;
     
 }
+
+
 
 - (void)configureTableView{
     
@@ -565,6 +589,24 @@
 
 #pragma mark - Button Actions
 
+- (void)trackSetLengthSCValueChanged{
+    
+    if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 0){
+        
+        self.largeStatusLabel.text = @"";
+        [self.beginNextSetButton setTitle: @"Set Completed"
+                                 forState: UIControlStateNormal];
+        
+    } else{
+        
+        self.largeStatusLabel.text = @"Resting";
+        [self.beginNextSetButton setTitle: @"Begin Next Set"
+                                 forState: UIControlStateNormal];
+        
+    }
+    
+}
+
 - (IBAction)didPressTargetRestButton:(id)sender {
     
     //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
@@ -717,11 +759,14 @@
         [weakSelf removeWhiteoutView];
         
         // VC appearance
-        
-        [self.beginNextSetButton setTitle: @"Begin Next Set"
-                                 forState: UIControlStateNormal];
-        
-        self.largeStatusLabel.text = @"Resting";
+    
+        if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1){
+            
+            self.largeStatusLabel.text = @"Resting";
+            
+            [self.beginNextSetButton setTitle: @"Begin Next Set"
+                                     forState: UIControlStateNormal];
+        }
         
         // timer recovery
         
@@ -739,7 +784,7 @@
     if (!self.exercise){
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"No Exercise Selected"
-                                                                       message: @"Please select an exercise before submitting a completed set"
+                                                                       message: @"Please select an exercise"
                                                                 preferredStyle: UIAlertControllerStyleAlert];
         
         UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
@@ -754,9 +799,9 @@
                            animated: YES
                          completion: nil];
    
-    } else if(!self.timeDelay){
+    } else if (!self.timeDelay){
         
-        if (self.setStartTimeSegmentedControl.selectedSegmentIndex == 1){
+        if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1 && self.setStartTimeSegmentedControl.selectedSegmentIndex == 1){
             
             NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
                 
@@ -777,8 +822,9 @@
                 [weakSelf dismissViewControllerAnimated: NO
                                              completion: nil];
                 
+//                [self didPressBeginNextSet: nil];
+                
             };
-            
             
             [self presentNumberSelectionSceneWithNumberType: RestType
                                              numberMultiple: [NSNumber numberWithInt: 5]
@@ -789,9 +835,10 @@
                                                    animated: YES
                                        modalTransitionStyle: UIModalTransitionStyleCoverVertical];
             
-        } else{
+        } else if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1 && self.setStartTimeSegmentedControl.selectedSegmentIndex == 0){
             
             self.timeDelay = [NSNumber numberWithInt: 0];
+            self.setBeginDate = [NSDate date];
             
             // change display items accordingly
             
@@ -804,22 +851,16 @@
             [self.beginNextSetButton setTitle: @"Set Completed"
                                      forState: UIControlStateNormal];
             
+//            [self didPressBeginNextSet: nil];
+            
+        } else{
+            
+            self.timeDelay = [NSNumber numberWithInt: 0];
+            self.setBeginDate = nil;
+            
+            [self didPressBeginNextSet: nil];
+            
         }
-        
-
-        
-    } else if (_whiteoutActive == NO){
-        
-        // whiteout the presenting VC for better appearance during selection process
-        
-        UIView *whiteout = [[UIView alloc] initWithFrame: [self.view bounds]];
-        whiteout.backgroundColor = [UIColor whiteColor];
-        
-        self.whiteoutView = whiteout;
-        [self.view addSubview: whiteout];
-        _whiteoutActive = YES;
-        
-        [self didPressBeginNextSet: nil];
         
     } else if (!self.timeLag){
         
@@ -828,7 +869,6 @@
             NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
                 
                 weakSelf.timeLag = number;
-                
                 weakSelf.setEndDate = [NSDate dateWithTimeIntervalSinceNow: [number intValue] * -1];
                 
                 [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue]
@@ -855,9 +895,17 @@
             
         } else{
             
-            self.timeLag = [NSNumber numberWithInt: 0];
+            weakSelf.timeLag = [NSNumber numberWithInt: 0];
+            weakSelf.setEndDate = [NSDate date];
+                
+            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
+                                                 withForwardIncrementing: YES
+                                                          lastUpdateDate: nil];
+                
+//            [weakSelf dismissViewControllerAnimated: NO
+//                                         completion: nil];
             
-            [self didPressBeginNextSet: nil];
+            [weakSelf didPressBeginNextSet: nil];
             
         }
         
