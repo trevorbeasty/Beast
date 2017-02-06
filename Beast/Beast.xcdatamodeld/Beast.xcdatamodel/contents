@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="BeginDateComp" representedClassName="TJBBeginDateComp" syncable="YES" codeGenerationType="class">
         <attribute name="isDefaultObject" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -59,9 +59,13 @@
         <relationship name="setEndDateArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SetEndDateArray" inverseName="realizedChain" inverseEntity="SetEndDateArray" syncable="YES"/>
     </entity>
     <entity name="RealizedSet" representedClassName="TJBRealizedSet" syncable="YES" codeGenerationType="class">
-        <attribute name="beginDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="endDate" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="beginDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="exactBeginDate" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="exactEndDate" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recordedBeginDate" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recordedEndDate" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="reps" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="weight" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="realizedSets" inverseEntity="Exercise" syncable="YES"/>
@@ -104,7 +108,7 @@
         <element name="NumberArray" positionX="90" positionY="375" width="128" height="60"/>
         <element name="NumberTypeArrayComponent" positionX="304" positionY="450" width="128" height="90"/>
         <element name="RealizedChain" positionX="-945" positionY="-300" width="128" height="150"/>
-        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="135"/>
+        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="195"/>
         <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="90"/>
         <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>
         <element name="SetBeginDateArray" positionX="-549" positionY="-444" width="128" height="73"/>

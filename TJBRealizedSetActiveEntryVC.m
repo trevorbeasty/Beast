@@ -74,6 +74,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *setEndTimeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *setStartTimeSegmentedControl;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *setEndTimeSegmentedControl;
+@property (weak, nonatomic) IBOutlet UILabel *trackSetLengthLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *trackSetLengthSegmentedControl;
 
 // IBAction
 
@@ -300,7 +302,8 @@
                            self.alertTimingLabel,
                            self.exerciseLabel,
                            self.setStartTimeLabel,
-                           self.setEndTimeLabel];
+                           self.setEndTimeLabel,
+                           self.trackSetLengthLabel];
     
     for (UILabel *label in rowLabels){
         
@@ -330,10 +333,13 @@
     shapeLayer.fillColor = [UIColor redColor].CGColor;
     
     self.grayBackdropView.layer.mask = shapeLayer;
+
     
     // segmented controls
     
-    NSArray *segmentedControls = @[self.setEndTimeSegmentedControl, self.setStartTimeSegmentedControl];
+    NSArray *segmentedControls = @[self.setEndTimeSegmentedControl,
+                                   self.setStartTimeSegmentedControl,
+                                   self.trackSetLengthSegmentedControl];
     for (UISegmentedControl *sc in segmentedControls){
         
         sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
@@ -502,7 +508,7 @@
             
             TJBNoDataCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
             
-            cell.mainLabel.text = @"No Records";
+            cell.mainLabel.text = @"No Personal Records";
             cell.backgroundColor = [UIColor clearColor];
             
             return cell;
@@ -787,7 +793,16 @@
             
             self.timeDelay = [NSNumber numberWithInt: 0];
             
-            [self didPressBeginNextSet: nil];
+            // change display items accordingly
+            
+            self.largeStatusLabel.text = @"In Set";
+            
+            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: -5
+                                                 withForwardIncrementing: YES
+                                                          lastUpdateDate: nil];
+            
+            [self.beginNextSetButton setTitle: @"Set Completed"
+                                     forState: UIControlStateNormal];
             
         }
         

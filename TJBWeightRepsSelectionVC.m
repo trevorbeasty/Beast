@@ -28,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIView *collectionViewContainer;
 @property (weak, nonatomic) IBOutlet UILabel *weightSelectedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsSelectedValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weightLabel;
+@property (weak, nonatomic) IBOutlet UILabel *repsLabel;
 
 // state
 
@@ -120,13 +122,96 @@
     
     // segmented controls
     
-    self.weightSegmentedControl.tintColor = [UIColor whiteColor];
+    self.weightSegmentedControl.tintColor = [UIColor darkGrayColor];
     
-    self.repsSegmentedControl.tintColor = [UIColor whiteColor];
+    self.repsSegmentedControl.tintColor = [UIColor darkGrayColor];
     
     // collection view container
     
     self.collectionViewContainer.backgroundColor = [UIColor whiteColor];
+    
+    // rounded corners for top labels
+    
+    [self.view layoutIfNeeded];
+    
+//    NSArray *topCornersCurved = @[self.weightLabel, self.repsLabel];
+//    
+//    for (UILabel *label in topCornersCurved){
+//        
+//        CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
+//        
+//        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: label.bounds
+//                                                   byRoundingCorners: (UIRectCornerTopLeft | UIRectCornerTopRight)
+//                                                         cornerRadii: CGSizeMake(2.0, 2.0)];
+//        
+//        shapeLayer.path = path.CGPath;
+//        shapeLayer.frame = label.bounds;
+//        shapeLayer.fillRule = kCAFillRuleNonZero;
+//        shapeLayer.fillColor = [UIColor redColor].CGColor;
+//        
+//        label.layer.mask = shapeLayer;
+//        
+//    }
+//    
+//    NSArray *bottomCornersCurved = @[self.weightSelectedValueLabel, self.repsSelectedValueLabel];
+//    
+//    for (UILabel *label in bottomCornersCurved){
+//        
+//        CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
+//        
+//        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: label.bounds
+//                                                   byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
+//                                                         cornerRadii: CGSizeMake(2.0, 2.0)];
+//        
+//        shapeLayer.path = path.CGPath;
+//        shapeLayer.frame = label.bounds;
+//        shapeLayer.fillRule = kCAFillRuleNonZero;
+//        shapeLayer.fillColor = [UIColor redColor].CGColor;
+//        
+//        label.layer.mask = shapeLayer;
+//        
+//    }
+    
+//    // shadows for top labels
+//    
+//    NSArray *topItems = @[self.weightLabel, self.repsLabel];
+//    NSArray *bottomItems = @[sef.weightSelectedValueLabel, self.repsSelectedValueLabel];
+//    
+//    for (int i = 0; i < topItems.count; i++){
+//        
+//        UIView *shadowView = ;
+//        shadowView.clipsToBounds = NO;
+//        
+//        CALayer *shadowLayer = shadowView.layer;
+//        shadowLayer.masksToBounds = NO;
+//        shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+//        shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+//        shadowLayer.shadowOpacity = 1.0;
+//        shadowLayer.shadowRadius = 3.0;
+//        
+//    }
+    
+
+
+    
+//     segmented controls
+    
+//    NSArray *segmentedControls = @[self.weightSegmentedControl,
+//                                   self.repsSegmentedControl];
+//    
+//    for (UISegmentedControl *sc in segmentedControls){
+//        
+//        sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+//        sc.backgroundColor = [UIColor whiteColor];
+//        
+//        sc.layer.masksToBounds = YES;
+//        sc.layer.cornerRadius = 4.0;
+//        NSDictionary *textDict = [[NSDictionary alloc] initWithObjects: @[[UIFont boldSystemFontOfSize: 12.0]]
+//                                                               forKeys: @[NSFontAttributeName]];
+//        [sc setTitleTextAttributes: textDict
+//                          forState: UIControlStateNormal];
+//        
+//    }
     
 }
 
@@ -343,7 +428,7 @@ static float const numberOfCellsPerRow = 2;
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
-    return UIEdgeInsetsMake(spacing, spacing, 0, spacing);
+    return UIEdgeInsetsMake(0, 0, 0, 0);
     
 }
 
@@ -361,7 +446,7 @@ static float const numberOfCellsPerRow = 2;
         
         CGFloat weightCollectionWidth = self.weightCollectionView.frame.size.width;
         
-        CGFloat cellWidth = (weightCollectionWidth - (numberOfCellsPerRow -1) * spacing - 2 * spacing) / numberOfCellsPerRow;
+        CGFloat cellWidth = (weightCollectionWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
         
         return CGSizeMake(cellWidth, cellWidth);
         
@@ -369,7 +454,7 @@ static float const numberOfCellsPerRow = 2;
         
         CGFloat repsCollectionWidth = self.repsCollectionView.frame.size.width;
         
-        CGFloat cellWidth = (repsCollectionWidth - (numberOfCellsPerRow -1) * spacing - 2 * spacing) / numberOfCellsPerRow;
+        CGFloat cellWidth = (repsCollectionWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
         
         return CGSizeMake(cellWidth, cellWidth);
         
