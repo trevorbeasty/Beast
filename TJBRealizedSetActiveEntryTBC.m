@@ -46,7 +46,7 @@
     RealizedSetPersonalRecordVC *vc3 = [[RealizedSetPersonalRecordVC alloc] init];
     [vc3.tabBarItem setTitle: @"Personal Records"];
     
-    vc1.personalRecordVC = vc3;
+//    vc1.personalRecordVC = vc3;
     
     [self setViewControllers: @[vc1,
                                 vc3]];
@@ -103,7 +103,7 @@
     RealizedSetPersonalRecordVC *vc3 = [coder decodeObjectForKey: @"vc3"];
     [vc3.tabBarItem setTitle: @"Personal Records"];
     
-    vc1.personalRecordVC = vc3;
+//    vc1.personalRecordVC = vc3;
     
     [self setViewControllers: @[vc1,
                                 vc3]];

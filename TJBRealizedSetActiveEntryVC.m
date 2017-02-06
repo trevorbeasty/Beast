@@ -844,7 +844,7 @@
             
             self.largeStatusLabel.text = @"In Set";
             
-            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: -5
+            [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
                                                  withForwardIncrementing: YES
                                                           lastUpdateDate: nil];
             
@@ -885,7 +885,7 @@
             
             
             [self presentNumberSelectionSceneWithNumberType: RestType
-                                             numberMultiple: [NSNumber numberWithInt: 5]
+                                             numberMultiple: [NSNumber numberWithInt: 0]
                                                 numberLimit: nil
                                                       title: @"Select Lag"
                                                 cancelBlock: cancelBlock
@@ -942,7 +942,7 @@
         
         //
         
-        [self removeWhiteoutView];
+//        [self removeWhiteoutView];
         [self presentSubmittedSetSummary];
         
     }
@@ -972,13 +972,56 @@
 }
 
 - (void)addRealizedSetToCoreData{
+    
     BOOL postMortem = FALSE;
+    
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
     TJBRealizedSet *realizedSet = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
                                                                 inManagedObjectContext: moc];
     
-    realizedSet.beginDate = self.setBeginDate;
+    // begin and end dates are optional and may not be recorded depending on the user's advanced settings.  BOOLs are non-optional and indicate user selections active during creation of the realized set
+    
+    // set begin date and associated BOOLs
+    
+    if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1){
+        
+        realizedSet.beginDate = self.setBeginDate;
+        realizedSet.recordedBeginDate = YES;
+    
+    } else{
+        
+        realizedSet.recordedBeginDate = NO;
+        
+    }
+    
+    if (self.setStartTimeSegmentedControl.selectedSegmentIndex == 1){
+        
+        realizedSet.exactBeginDate = YES;
+        
+    } else{
+        
+        realizedSet.exactBeginDate = NO;
+        
+    }
+    
+    // set end date and associated BOOLs
+    
+    realizedSet.recordedEndDate = YES;
     realizedSet.endDate = self.setEndDate;
+    
+    if (self.setEndTimeSegmentedControl.selectedSegmentIndex == 1){
+        
+        realizedSet.exactEndDate = YES;
+        
+    } else{
+        
+        realizedSet.exactEndDate = NO;
+        
+    }
+    
+    // other
+    
     realizedSet.postMortem = postMortem;
     realizedSet.weight = [self.weight floatValue];
     realizedSet.reps = [self.reps floatValue];
@@ -986,7 +1029,8 @@
     
     [[CoreDataController singleton] saveContext];
     
-    [self.personalRecordVC newSetSubmitted];
+//    [self.personalRecordVC newSetSubmitted];
+    
 }
 
 #pragma mark - <NewExerciseCreationDelegate>
@@ -1002,7 +1046,7 @@
     [self dismissViewControllerAnimated: YES
                              completion: nil];
     
-    [self.personalRecordVC didSelectExercise: exercise];
+//    [self.personalRecordVC didSelectExercise: exercise];
 }
 
 #pragma mark - Notification to User
