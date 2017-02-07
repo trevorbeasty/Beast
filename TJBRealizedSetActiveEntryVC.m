@@ -77,6 +77,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *trackSetLengthLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *trackSetLengthSegmentedControl;
 
+
+
 // IBAction
 
 - (IBAction)didPressBeginNextSet:(id)sender;
@@ -389,7 +391,7 @@
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform Lift"];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Options"
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Back"
                                                                       style: UIBarButtonItemStyleDone
                                                                      target: self
                                                                      action: @selector(didPressHome)];
