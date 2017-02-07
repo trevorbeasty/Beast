@@ -18,7 +18,7 @@
 
 @interface TJBWeightRepsSelectionVC () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-// IBOutlet
+// view objects
 
 @property (weak, nonatomic) IBOutlet UICollectionView *weightCollectionView;
 @property (weak, nonatomic) IBOutlet UICollectionView *repsCollectionView;
@@ -30,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *repsSelectedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
+
+@property (nonatomic, weak) UIBarButtonItem *submitButton;
 
 // state
 
@@ -87,6 +89,9 @@
                                                                     style: UIBarButtonItemStyleDone
                                                                    target: self
                                                                    action: @selector(didPressDone)];
+    
+    self.submitButton = rightButton;
+    rightButton.enabled = NO;
     
     [navItem setRightBarButtonItem: rightButton];
     
@@ -415,6 +420,12 @@
         
     }
     
+    if (self.weightSelectedCellIndexPath && self.repsSelectedCellIndexPath){
+        
+        self.submitButton.enabled = YES;
+        
+    }
+    
 }
 
 
@@ -474,6 +485,8 @@ static float const numberOfCellsPerRow = 2;
     self.weightSelectedCellIndexPath = nil;
     self.weightSelectedValueLabel.text = @"select";
     
+    self.submitButton.enabled = NO;
+    
 }
 
 - (void)repsSCValueChanged{
@@ -482,6 +495,8 @@ static float const numberOfCellsPerRow = 2;
     
     self.repsSelectedCellIndexPath = nil;
     self.repsSelectedValueLabel.text = @"select";
+    
+    self.submitButton.enabled = NO;
     
 }
 

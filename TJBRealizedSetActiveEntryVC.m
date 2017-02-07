@@ -710,7 +710,7 @@
         
         [weakSelf.personalRecordsTableView reloadData];
         
-        [weakSelf dismissViewControllerAnimated: NO
+        [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
         
     };
@@ -730,15 +730,15 @@
     
 }
 
-- (IBAction)addNewExercise:(id)sender{
-    
-    TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
-    
-}
+//- (IBAction)addNewExercise:(id)sender{
+//    
+//    TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
+//    
+//    [self presentViewController: vc
+//                       animated: YES
+//                     completion: nil];
+//    
+//}
 
 - (void)recoverTimer{
     

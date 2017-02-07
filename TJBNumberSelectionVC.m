@@ -33,7 +33,7 @@
 @property (copy) void (^numberSelectedBlock)(NSNumber *);
 @property (nonatomic, strong) NSString *selectionTitle;
 
-// IBOutlets
+// view objects
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -41,9 +41,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *selectedValueLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *multiplierSegmentedControl;
 
+@property (nonatomic, weak) UIBarButtonItem *submitButton;
+
 // state
 
 @property (nonatomic, strong) NSIndexPath *selectedCellIndexPath;
+
 
 @end
 
@@ -188,6 +191,9 @@ static NSString * const reuseIdentifier = @"cell";
                                                                     target: self
                                                                     action: @selector(didPressSubmit)];
     
+    self.submitButton = submitButton;
+    submitButton.enabled = NO;
+    
     [navItem setRightBarButtonItem: submitButton];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
@@ -325,6 +331,8 @@ static NSString * const reuseIdentifier = @"cell";
 #pragma mark <UICollectionViewDelegate>
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    self.submitButton.enabled = YES;
         
     if (self.selectedCellIndexPath){
             
@@ -453,6 +461,8 @@ static NSString * const reuseIdentifier = @"cell";
 }
 
 - (void)scValueDidChange{
+    
+    self.submitButton.enabled = NO;
     
     self.selectedCellIndexPath = nil;
     
