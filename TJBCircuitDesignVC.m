@@ -93,8 +93,6 @@
     
     [self viewAesthetics];
     
-    [self addBackgroundImage];
-    
     [self addTapRecognizerForKeyboardManagement];
     
 }
@@ -117,12 +115,6 @@
     
 }
 
-- (void)addBackgroundImage{
-    
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
-                                                                   toRootView: self.view
-                                                                 imageOpacity: .35];
-}
 
 - (void)configureViewDataAndFunctionality{
     

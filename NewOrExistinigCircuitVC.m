@@ -389,7 +389,7 @@
     
     // left button
     
-    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Options"
+    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
                                                                    style: UIBarButtonItemStyleDone
                                                                   target: self
                                                                   action: @selector(didPressHomeButton)];

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -44,19 +44,8 @@
                         <constraint firstAttribute="height" constant="60" id="tge-f9-VjA"/>
                     </constraints>
                 </navigationBar>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QT3-p7-8xe">
-                    <rect key="frame" x="8" y="68" width="359" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="KXC-Rg-adV"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Continue"/>
-                    <connections>
-                        <action selector="didPressLaunchTemplate:" destination="-1" eventType="touchUpInside" id="ZUU-OF-99s"/>
-                    </connections>
-                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tAG-E2-H69" userLabel="metaContainerView">
-                    <rect key="frame" x="8" y="124" width="359" height="380"/>
+                    <rect key="frame" x="8" y="120" width="359" height="380"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Targets Vary by Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeJ-Hf-eAl">
                             <rect key="frame" x="4" y="324" width="210" height="40"/>
@@ -245,16 +234,27 @@
                         <constraint firstItem="xeJ-Hf-eAl" firstAttribute="trailing" secondItem="YWb-8n-PBn" secondAttribute="trailing" id="z4n-2H-cgF"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QT3-p7-8xe">
+                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="KXC-Rg-adV"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <state key="normal" title="Continue"/>
+                    <connections>
+                        <action selector="didPressLaunchTemplate:" destination="-1" eventType="touchUpInside" id="ZUU-OF-99s"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="KlX-IA-G5h" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="CjO-M8-kyx"/>
                 <constraint firstItem="tAG-E2-H69" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="FIl-ga-qG8"/>
-                <constraint firstItem="tAG-E2-H69" firstAttribute="top" secondItem="QT3-p7-8xe" secondAttribute="bottom" constant="16" id="Fd7-Bj-Xc6"/>
-                <constraint firstItem="QT3-p7-8xe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="UDi-lZ-oxX"/>
-                <constraint firstItem="QT3-p7-8xe" firstAttribute="top" secondItem="KlX-IA-G5h" secondAttribute="bottom" constant="8" id="VZJ-9r-UY5"/>
+                <constraint firstItem="tAG-E2-H69" firstAttribute="top" secondItem="KlX-IA-G5h" secondAttribute="bottom" constant="60" id="HRR-5T-dOP"/>
+                <constraint firstItem="QT3-p7-8xe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HcU-vQ-g3G"/>
                 <constraint firstItem="KlX-IA-G5h" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Vk8-Xs-OGQ"/>
-                <constraint firstAttribute="trailing" secondItem="QT3-p7-8xe" secondAttribute="trailing" constant="8" id="eYX-WU-Afh"/>
+                <constraint firstAttribute="bottom" secondItem="QT3-p7-8xe" secondAttribute="bottom" id="kiF-ky-UNg"/>
+                <constraint firstAttribute="trailing" secondItem="QT3-p7-8xe" secondAttribute="trailing" id="sMD-W0-Yu0"/>
                 <constraint firstAttribute="trailing" secondItem="tAG-E2-H69" secondAttribute="trailing" constant="8" id="u9d-ZU-IC9"/>
                 <constraint firstAttribute="trailing" secondItem="KlX-IA-G5h" secondAttribute="trailing" id="vCr-R8-qB3"/>
             </constraints>
