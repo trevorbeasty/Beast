@@ -821,9 +821,7 @@
                 
                 [weakSelf dismissViewControllerAnimated: NO
                                              completion: nil];
-                
-//                [self didPressBeginNextSet: nil];
-                
+        
             };
             
             [self presentNumberSelectionSceneWithNumberType: RestType
@@ -850,8 +848,6 @@
             
             [self.beginNextSetButton setTitle: @"Set Completed"
                                      forState: UIControlStateNormal];
-            
-//            [self didPressBeginNextSet: nil];
             
         } else{
             
@@ -895,15 +891,12 @@
             
         } else{
             
-            weakSelf.timeLag = [NSNumber numberWithInt: 0];
-            weakSelf.setEndDate = [NSDate date];
+            self.timeLag = [NSNumber numberWithInt: 0];
+            self.setEndDate = [NSDate date];
                 
             [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
                                                  withForwardIncrementing: YES
                                                           lastUpdateDate: nil];
-                
-//            [weakSelf dismissViewControllerAnimated: NO
-//                                         completion: nil];
             
             [weakSelf didPressBeginNextSet: nil];
             
@@ -934,15 +927,24 @@
         
     } else{
         
-        // return the VC to its 'resting' appearance
+        // give the VC the appropriate appearance according to selected advanced settings
         
-        [self.beginNextSetButton setTitle: @"Begin Next Set"
-                                 forState: UIControlStateNormal];
-        self.largeStatusLabel.text = @"Resting";
-        
-        //
-        
-//        [self removeWhiteoutView];
+        if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1){
+            
+            [self.beginNextSetButton setTitle: @"Begin Next Set"
+                                     forState: UIControlStateNormal];
+            
+            self.largeStatusLabel.text = @"Resting";
+            
+        } else{
+            
+            [self.beginNextSetButton setTitle: @"Set Completed"
+                                     forState: UIControlStateNormal];
+            
+            self.largeStatusLabel.text = @"";
+            
+        }
+
         [self presentSubmittedSetSummary];
         
     }

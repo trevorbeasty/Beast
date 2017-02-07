@@ -140,7 +140,7 @@
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
     
-    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"beginDate"
+    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"endDate"
                                                                ascending: NO];
     
     [request setSortDescriptors: @[dateSort]];
@@ -162,6 +162,8 @@
         abort();
         
     }
+    
+    return;
     
 }
 
@@ -224,7 +226,7 @@
         if ([obj1 isKindOfClass: [TJBRealizedSet class]]){
             
             TJBRealizedSet *obj1WithClass = (TJBRealizedSet *)obj1;
-            obj1Date = obj1WithClass.beginDate;
+            obj1Date = obj1WithClass.endDate;
             
             
         } else if([obj1 isKindOfClass: [TJBRealizedChain class]]){
@@ -550,7 +552,7 @@
         
         TJBRealizedSet *realizedSet = object;
         
-        return realizedSet.beginDate;
+        return realizedSet.endDate;
         
     } else{
         
