@@ -51,6 +51,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *selectedValueLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *multiplierSegmentedControl;
 
+// state
+
+@property (nonatomic, strong) NSIndexPath *selectedCellIndexPath;
+
 @end
 
 static NSString * const reuseIdentifier = @"cell";
@@ -81,6 +85,10 @@ static NSString * const reuseIdentifier = @"cell";
     [self configureCollectionView];
     
     [self configureViewAesthetics];
+    
+    [self configureSegmentedControlOptions];
+    
+    [self configureDisplay];
 
 //    //// add gesture recognizers to collection view
 //    
@@ -111,11 +119,37 @@ static NSString * const reuseIdentifier = @"cell";
     
 }
 
+- (void)configureDisplay{
+    
+    switch (_numberTypeIdentifier) {
+        case WeightType:
+            self.typeLabel.text = @"Weight";
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
 - (void)configureSegmentedControlOptions{
     
     if (_numberTypeIdentifier == WeightType){
         
+        [self.multiplierSegmentedControl removeAllSegments];
         
+        NSArray *segmentNumbers = @[[NSNumber numberWithDouble: 1.0],
+                                    [NSNumber numberWithDouble: 2.5],
+                                    [NSNumber numberWithDouble: 5.0]];
+        
+        for (NSNumber *number in segmentNumbers){
+            
+            [self.multiplierSegmentedControl insertSegmentWithTitle: [number stringValue]
+                                                            atIndex: [segmentNumbers indexOfObject: number]
+                                                           animated: NO];
+        }
+        
+        self.multiplierSegmentedControl.selectedSegmentIndex = 1;
         
     }
     
@@ -123,7 +157,7 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureViewAesthetics{
     
-    self.multiplierSegmentedControl.tintColor = [UIColor whiteColor];
+    self.multiplierSegmentedControl.tintColor = [UIColor darkGrayColor];
     
 }
 
@@ -145,7 +179,7 @@ static NSString * const reuseIdentifier = @"cell";
                                                                     target: self
                                                                     action: @selector(didPressSubmit)];
     
-    [self.navigationItem setRightBarButtonItem: submitButton];
+    [navItem setRightBarButtonItem: submitButton];
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                   target: self
@@ -171,7 +205,7 @@ static NSString * const reuseIdentifier = @"cell";
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return 500;
+    return 1000;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -179,57 +213,82 @@ static NSString * const reuseIdentifier = @"cell";
     TJBWeightRepsSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: reuseIdentifier
                                                                                  forIndexPath: indexPath];
     
-//    NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.item * [self.numberMultiple floatValue]];
+    NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.row * [self multiplierValue]];
     
-    if (_numberTypeIdentifier == RestType)
-    {
-        cell.label.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber intValue]];
-    }
-    else
-    {
-        cell.label.text = [cellNumber stringValue];
-    }
+    cell.numberLabel.text = [cellNumber stringValue];
+    cell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    cell.numberLabel.textColor = [UIColor whiteColor];
+    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    cell.typeLabel.text = @"";
+    cell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
     
-    cell.label.layer.masksToBounds = YES;
-    cell.label.layer.cornerRadius = 8.0;
-    cell.backgroundColor = [UIColor clearColor];
-    
-    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
-    cell.label.backgroundColor = [aesthetics buttonBackgroundColor];
-    [cell.label setTextColor: [aesthetics buttonTextColor]];
-    
-    cell.layer.opacity = .75;
-    
-    cell.label.font = [UIFont systemFontOfSize: 20.0];
+    cell.layer.masksToBounds = YES;
+    cell.layer.cornerRadius = 4.0;
     
     return cell;
+    
+}
+
+- (float)multiplierValue{
+    
+    float returnValue;
+    
+    if (_numberTypeIdentifier == WeightType){
+        
+        NSInteger index = self.multiplierSegmentedControl.selectedSegmentIndex;
+        
+        switch (index) {
+            case 0:
+            returnValue = 1.0;
+                break;
+            
+            case 1:
+            returnValue = 2.5;
+                break;
+            
+            case 2:
+            returnValue = 5.0;
+                break;
+            
+            default:
+                break;
+        }
+        
+    }
+    
+    return returnValue;
+    
 }
 
 #pragma mark <UICollectionViewDelegate>
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    // if there is a previously selected cell, change its attributes accordingly
-    if (self.lastSelectedCell){
-        self.lastSelectedCell.layer.opacity = .75;
-        self.lastSelectedCell.label.backgroundColor = [[TJBAestheticsController singleton] buttonBackgroundColor];
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+        
+    if (self.selectedCellIndexPath){
+            
+        TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.collectionView cellForItemAtIndexPath: self.selectedCellIndexPath];
+            
+        previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+            
+    }
+        
+    self.selectedCellIndexPath = indexPath;
+        
+    TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
+        
+    currentCell.backgroundColor = [UIColor redColor];
+        
+    NSNumber *number = [NSNumber numberWithFloat: indexPath.row * [self multiplierValue]];
+    
+    if (_numberTypeIdentifier == WeightType){
+        
+        self.selectedValueLabel.text = [NSString stringWithFormat: @"%@ lbs", [number stringValue]];
+        
     }
     
-    // for state restoration of currently highlighted cell
-    self.highlightedCellPath = indexPath;
-    
-    // change the attributes of the newly selected cell
-    TJBBasicCollectionViewCell *selectedCell = (TJBBasicCollectionViewCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
-    [self configureCellForSelectedState: selectedCell];
-    
-    // update the lastSelectedCell property to point to the newly selected cell
-    self.lastSelectedCell = selectedCell;
 }
 
-- (void)configureCellForSelectedState:(TJBBasicCollectionViewCell *)cell{
-    cell.layer.opacity = 1;
-    cell.label.backgroundColor = [UIColor redColor];
-}
+
 
 //#pragma mark - Gesture Recognizer Actions
 //
