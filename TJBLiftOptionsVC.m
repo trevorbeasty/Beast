@@ -19,7 +19,7 @@
 
 // test
 
-#import "TJBWeightRepsSelectionVC.h"
+#import "TJBNumberSelectionVC.h"
 
 @interface TJBLiftOptionsVC ()
 
@@ -110,9 +110,14 @@
 
 - (IBAction)didPressTestButton:(id)sender{
     
-    TJBWeightRepsSelectionVC *vc = [[TJBWeightRepsSelectionVC alloc] init];
+    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: WeightType
+                                                                           numberMultiple: [NSNumber numberWithFloat: 2.5]
+                                                                              numberLimit: nil
+                                                                                    title: @"Bench"
+                                                                              cancelBlock: nil
+                                                                      numberSelectedBlock: nil];
     
-    [self presentViewController: vc
+    [self presentViewController:vc
                        animated: YES
                      completion: nil];
     

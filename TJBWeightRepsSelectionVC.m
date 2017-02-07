@@ -83,7 +83,7 @@
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.navBarTitle];
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle: @"Done"
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle: @"Submit"
                                                                     style: UIBarButtonItemStyleDone
                                                                    target: self
                                                                    action: @selector(didPressDone)];

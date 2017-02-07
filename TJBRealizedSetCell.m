@@ -22,12 +22,13 @@
     NSString *repsString = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
     NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [rest intValue]];
     NSString *restString = [NSString stringWithFormat: @"+%@ rest", formattedRest];
+    NSString *numberString = [NSString stringWithFormat: @"%@.", [number stringValue]];
     
     self.weightLabel.text = weightString;
     self.repsLabel.text = repsString;
     self.restLabel.text = restString;
     self.dateLabel.text = date;
-    self.numberLabel.text = [number stringValue];
+    self.numberLabel.text = numberString;
     
     self.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
