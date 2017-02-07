@@ -34,7 +34,7 @@
                     </items>
                 </navigationBar>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1Oc-G7-0rK">
-                    <rect key="frame" x="8" y="122" width="359" height="489"/>
+                    <rect key="frame" x="16" y="122" width="343" height="489"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dNT-u7-CQX">
                         <size key="itemSize" width="75" height="75"/>
@@ -48,7 +48,7 @@
                     </connections>
                 </collectionView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rEh-oE-LxM">
-                    <rect key="frame" x="8" y="64" width="359" height="30"/>
+                    <rect key="frame" x="16" y="64" width="343" height="30"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="PNO-JW-sYa"/>
@@ -58,7 +58,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="select" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ADM-aI-uRp">
-                    <rect key="frame" x="8" y="94" width="359" height="20"/>
+                    <rect key="frame" x="16" y="94" width="343" height="20"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="9qn-9W-gnq"/>
@@ -68,7 +68,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jxZ-1K-Udv">
-                    <rect key="frame" x="8" y="619" width="359" height="41"/>
+                    <rect key="frame" x="16" y="619" width="343" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="7dd-QB-uTV"/>
                     </constraints>
@@ -82,7 +82,7 @@
             <constraints>
                 <constraint firstItem="jxZ-1K-Udv" firstAttribute="leading" secondItem="rEh-oE-LxM" secondAttribute="leading" id="6O0-GM-iFu"/>
                 <constraint firstItem="rEh-oE-LxM" firstAttribute="top" secondItem="QU0-hE-6Qc" secondAttribute="bottom" constant="4" id="8YW-G3-p7G"/>
-                <constraint firstItem="rEh-oE-LxM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="8vV-rN-clE"/>
+                <constraint firstItem="rEh-oE-LxM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="8vV-rN-clE"/>
                 <constraint firstItem="1Oc-G7-0rK" firstAttribute="leading" secondItem="rEh-oE-LxM" secondAttribute="leading" id="KGy-I6-iu2"/>
                 <constraint firstItem="QU0-hE-6Qc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="KvW-Ly-k5H"/>
                 <constraint firstItem="ADM-aI-uRp" firstAttribute="trailing" secondItem="rEh-oE-LxM" secondAttribute="trailing" id="LeS-O4-kHI"/>
@@ -91,7 +91,7 @@
                 <constraint firstItem="ADM-aI-uRp" firstAttribute="top" secondItem="rEh-oE-LxM" secondAttribute="bottom" id="Ple-Us-jLv"/>
                 <constraint firstItem="jxZ-1K-Udv" firstAttribute="top" secondItem="1Oc-G7-0rK" secondAttribute="bottom" constant="8" id="RRw-Nl-g6X"/>
                 <constraint firstAttribute="trailing" secondItem="QU0-hE-6Qc" secondAttribute="trailing" id="Vdb-d9-kcg"/>
-                <constraint firstAttribute="trailing" secondItem="rEh-oE-LxM" secondAttribute="trailing" constant="8" id="aQ9-5n-UoN"/>
+                <constraint firstAttribute="trailing" secondItem="rEh-oE-LxM" secondAttribute="trailing" constant="16" id="aQ9-5n-UoN"/>
                 <constraint firstItem="1Oc-G7-0rK" firstAttribute="trailing" secondItem="rEh-oE-LxM" secondAttribute="trailing" id="kKy-4p-z7R"/>
                 <constraint firstItem="1Oc-G7-0rK" firstAttribute="top" secondItem="ADM-aI-uRp" secondAttribute="bottom" constant="8" id="l8Y-sq-yCg"/>
                 <constraint firstItem="ADM-aI-uRp" firstAttribute="leading" secondItem="rEh-oE-LxM" secondAttribute="leading" id="vtG-9l-hLu"/>

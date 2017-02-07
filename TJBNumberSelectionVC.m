@@ -68,8 +68,6 @@ static NSString * const reuseIdentifier = @"cell";
     self = [super init];
     
     _numberTypeIdentifier = numberType;
-//    self.numberMultiple = numberMultiple;
-//    self.numberLimit = numberLimit;
     self.selectionTitle = title;
     self.cancelBlock = cancelBlock;
     self.numberSelectedBlock = numberSelectedBlock;
@@ -86,34 +84,9 @@ static NSString * const reuseIdentifier = @"cell";
     
     [self configureViewAesthetics];
     
-    [self configureSegmentedControlOptions];
+    [self configureSegmentedControl];
     
     [self configureDisplay];
-
-//    //// add gesture recognizers to collection view
-//    
-//    // tap GR
-//    
-//    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
-//                                                                            action: @selector(doubleTap:)];
-//    tapGR.numberOfTapsRequired = 2;
-//    tapGR.cancelsTouchesInView = NO;
-//    tapGR.delaysTouchesBegan = NO;
-//    tapGR.delaysTouchesEnded = NO;
-//    
-//    [self.collectionView addGestureRecognizer: tapGR];
-//    
-//    // pinch GR
-//    
-//    UIPinchGestureRecognizer *pinchGR = [[UIPinchGestureRecognizer alloc] initWithTarget: self
-//                                                                                  action: @selector(pinch:)];
-//    pinchGR.cancelsTouchesInView = YES;
-//    pinchGR.delaysTouchesBegan = NO;
-//    pinchGR.delaysTouchesEnded = NO;
-//    
-//    [self.collectionView addGestureRecognizer: pinchGR];
-    
-    // other methods
     
     [self configureNavigationBar];
     
@@ -126,15 +99,23 @@ static NSString * const reuseIdentifier = @"cell";
             self.typeLabel.text = @"Weight";
             break;
             
+        case RestType:
+            self.typeLabel.text = @"Time";
+            break;
+            
+        case RepsType:
+            self.typeLabel.text = @"Reps";
+            break;
+            
         default:
             break;
     }
     
 }
 
-- (void)configureSegmentedControlOptions{
+- (void)configureSegmentedControl{
     
-    if (_numberTypeIdentifier == WeightType){
+    if (_numberTypeIdentifier == WeightType || _numberTypeIdentifier == RestType){
         
         [self.multiplierSegmentedControl removeAllSegments];
         
@@ -151,7 +132,27 @@ static NSString * const reuseIdentifier = @"cell";
         
         self.multiplierSegmentedControl.selectedSegmentIndex = 1;
         
+    } else{
+        
+        [self.multiplierSegmentedControl removeAllSegments];
+        
+        NSArray *segmentNumbers = @[[NSNumber numberWithDouble: 0.5],
+                                    [NSNumber numberWithDouble: 1.0]];
+        
+        for (NSNumber *number in segmentNumbers){
+            
+            [self.multiplierSegmentedControl insertSegmentWithTitle: [number stringValue]
+                                                            atIndex: [segmentNumbers indexOfObject: number]
+                                                           animated: NO];
+        }
+        
+        self.multiplierSegmentedControl.selectedSegmentIndex = 1;
+        
     }
+    
+    [self.multiplierSegmentedControl addTarget: self
+                                        action: @selector(scValueDidChange)
+                              forControlEvents: UIControlEventValueChanged];
     
 }
 
@@ -165,6 +166,7 @@ static NSString * const reuseIdentifier = @"cell";
     
     UINib *nib = [UINib nibWithNibName: @"TJBWeightRepsSelectionCell"
                                 bundle: nil];
+    
     [self.collectionView registerNib: nib
           forCellWithReuseIdentifier: reuseIdentifier];
     
@@ -215,8 +217,19 @@ static NSString * const reuseIdentifier = @"cell";
     
     NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.row * [self multiplierValue]];
     
-    cell.numberLabel.text = [cellNumber stringValue];
     cell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    
+    if (self.selectedCellIndexPath){
+        
+        if (self.selectedCellIndexPath.row == indexPath.row){
+            
+            cell.backgroundColor = [UIColor redColor];
+            
+        }
+        
+    }
+    
+    cell.numberLabel.text = [cellNumber stringValue];
     cell.numberLabel.textColor = [UIColor whiteColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     cell.typeLabel.text = @"";
@@ -232,24 +245,38 @@ static NSString * const reuseIdentifier = @"cell";
 - (float)multiplierValue{
     
     float returnValue;
+    NSInteger index = self.multiplierSegmentedControl.selectedSegmentIndex;
     
-    if (_numberTypeIdentifier == WeightType){
-        
-        NSInteger index = self.multiplierSegmentedControl.selectedSegmentIndex;
+    if (_numberTypeIdentifier == WeightType || _numberTypeIdentifier == RestType){
         
         switch (index) {
             case 0:
-            returnValue = 1.0;
+                returnValue = 1.0;
                 break;
             
             case 1:
-            returnValue = 2.5;
+                returnValue = 2.5;
                 break;
             
             case 2:
-            returnValue = 5.0;
+                returnValue = 5.0;
                 break;
             
+            default:
+                break;
+        }
+        
+    } else{
+        
+        switch (index) {
+            case 0:
+                returnValue = 0.5;
+                break;
+                
+            case 1:
+                returnValue = 1.0;
+                break;
+                
             default:
                 break;
         }
@@ -363,7 +390,7 @@ static NSString * const reuseIdentifier = @"cell";
 //    } 
 //}
 
-#pragma mark - Bar Button Item Actions
+#pragma mark - Actions
 
 - (void)cancel{
     
@@ -373,9 +400,60 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)didPressSubmit{
     
+    if (self.selectedCellIndexPath){
+        
+        NSNumber *selectedNumber = [NSNumber numberWithFloat: self.selectedCellIndexPath.row * [self multiplierValue]];
+        
+        self.numberSelectedBlock(selectedNumber);
+        
+    }
+}
+
+- (void)scValueDidChange{
     
+    self.selectedCellIndexPath = nil;
+    
+    [self.collectionView reloadData];
+    
+    self.selectedValueLabel.text = @"select";
     
 }
+
+#pragma mark - <UICollectionViewDelegateFlowLayout>
+
+static CGFloat const spacing = 8.0;
+static float const numberOfCellsPerRow = 4;
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
+    
+    return spacing;
+    
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
+    
+    return UIEdgeInsetsMake(0, 0, 0, 0);
+    
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
+    
+    return spacing;
+    
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutIfNeeded];
+        
+    CGFloat collectionViewWidth = self.collectionView.frame.size.width;
+        
+    CGFloat cellWidth = (collectionViewWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
+        
+    return CGSizeMake(cellWidth, cellWidth);
+    
+}
+
 
 
 @end
