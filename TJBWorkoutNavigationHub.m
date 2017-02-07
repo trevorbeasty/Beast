@@ -608,6 +608,7 @@
     [self configureRealizedSetFRC];
     [self configureRealizedChainFRC];
     [self configureMasterList];
+    [self deriveDailyList];
     
     [self.tableView reloadData];
 }

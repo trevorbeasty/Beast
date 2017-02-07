@@ -283,9 +283,7 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
     
-    TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType
-                                                                                          numberMultiple: numberMultiple
-                                                                                             numberLimit: numberLimit
+    TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType                                                        
                                                                                                    title: title
                                                                                              cancelBlock: cancelBlock
                                                                                      numberSelectedBlock: numberSelectedBlock];

@@ -111,8 +111,6 @@
 - (IBAction)didPressTestButton:(id)sender{
     
     TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: WeightType
-                                                                           numberMultiple: [NSNumber numberWithFloat: 2.5]
-                                                                              numberLimit: nil
                                                                                     title: @"Bench"
                                                                               cancelBlock: nil
                                                                       numberSelectedBlock: nil];

@@ -894,8 +894,6 @@ static NSString * const defaultValue = @"default value";
 - (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
     
     TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType
-                                                                                          numberMultiple: numberMultiple
-                                                                                             numberLimit: numberLimit
                                                                                                    title: title
                                                                                              cancelBlock: cancelBlock
                                                                                      numberSelectedBlock: numberSelectedBlock];

@@ -21,27 +21,17 @@
 #import "TJBAestheticsController.h"
 
 @interface TJBNumberSelectionVC () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
-// core variables set in init methods
+
 {
+    // state
+    
     NumberType _numberTypeIdentifier;
+    
 }
 
-// core variables set in init methods
-//@property (nonatomic, strong) NSNumber *numberMultiple;
-//@property (nonatomic, strong) NSNumber *numberLimit;
 @property (copy) void (^cancelBlock)(void);
 @property (copy) void (^numberSelectedBlock)(NSNumber *);
 @property (nonatomic, strong) NSString *selectionTitle;
-
-//// for cell color control in response to selection
-//// should this be a strong or weak property?
-//@property (nonatomic, weak) TJBBasicCollectionViewCell *lastSelectedCell;
-//// for state restoration
-//@property (nonatomic, strong) NSIndexPath *highlightedCellPath;
-//
-//// for aiding the pinch GR
-//@property CGPoint lastPinchTouchOne;
-//@property CGPoint lastPinchTouchTwo;
 
 // IBOutlets
 
@@ -63,7 +53,7 @@ static NSString * const reuseIdentifier = @"cell";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberTypeIdentifier:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlockSingle)numberSelectedBlock{
+- (instancetype)initWithNumberTypeIdentifier:(NumberType)numberType title:(NSString *)title cancelBlock:(CancelBlock)cancelBlock numberSelectedBlock:(NumberSelectedBlockSingle)numberSelectedBlock{
 
     self = [super init];
     
@@ -115,7 +105,7 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureSegmentedControl{
     
-    if (_numberTypeIdentifier == WeightType || _numberTypeIdentifier == RestType){
+    if (_numberTypeIdentifier == WeightType){
         
         [self.multiplierSegmentedControl removeAllSegments];
         
@@ -132,12 +122,29 @@ static NSString * const reuseIdentifier = @"cell";
         
         self.multiplierSegmentedControl.selectedSegmentIndex = 1;
         
-    } else{
+    } else if (_numberTypeIdentifier == RepsType){
         
         [self.multiplierSegmentedControl removeAllSegments];
         
         NSArray *segmentNumbers = @[[NSNumber numberWithDouble: 0.5],
                                     [NSNumber numberWithDouble: 1.0]];
+        
+        for (NSNumber *number in segmentNumbers){
+            
+            [self.multiplierSegmentedControl insertSegmentWithTitle: [number stringValue]
+                                                            atIndex: [segmentNumbers indexOfObject: number]
+                                                           animated: NO];
+        }
+        
+        self.multiplierSegmentedControl.selectedSegmentIndex = 1;
+        
+    } else{
+        
+        [self.multiplierSegmentedControl removeAllSegments];
+        
+        NSArray *segmentNumbers = @[[NSNumber numberWithDouble: 1.0],
+                                    [NSNumber numberWithDouble: 5.0],
+                                    [NSNumber numberWithDouble: 10.0]];
         
         for (NSNumber *number in segmentNumbers){
             
@@ -229,7 +236,16 @@ static NSString * const reuseIdentifier = @"cell";
         
     }
     
-    cell.numberLabel.text = [cellNumber stringValue];
+    if (_numberTypeIdentifier == RestType){
+        
+        cell.numberLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber floatValue]];
+        
+    } else{
+        
+        cell.numberLabel.text = [cellNumber stringValue];
+        
+    }
+    
     cell.numberLabel.textColor = [UIColor whiteColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     cell.typeLabel.text = @"";
@@ -247,7 +263,7 @@ static NSString * const reuseIdentifier = @"cell";
     float returnValue;
     NSInteger index = self.multiplierSegmentedControl.selectedSegmentIndex;
     
-    if (_numberTypeIdentifier == WeightType || _numberTypeIdentifier == RestType){
+    if (_numberTypeIdentifier == WeightType){
         
         switch (index) {
             case 0:
@@ -266,7 +282,7 @@ static NSString * const reuseIdentifier = @"cell";
                 break;
         }
         
-    } else{
+    } else if (_numberTypeIdentifier == RepsType){
         
         switch (index) {
             case 0:
@@ -275,6 +291,25 @@ static NSString * const reuseIdentifier = @"cell";
                 
             case 1:
                 returnValue = 1.0;
+                break;
+                
+            default:
+                break;
+        }
+        
+    } else{
+        
+        switch (index) {
+            case 0:
+                returnValue = 1.0;
+                break;
+                
+            case 1:
+                returnValue = 5.0;
+                break;
+                
+            case 2:
+                returnValue = 10.0;
                 break;
                 
             default:
@@ -310,6 +345,14 @@ static NSString * const reuseIdentifier = @"cell";
     if (_numberTypeIdentifier == WeightType){
         
         self.selectedValueLabel.text = [NSString stringWithFormat: @"%@ lbs", [number stringValue]];
+        
+    } else if (_numberTypeIdentifier == RestType){
+        
+        self.selectedValueLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+        
+    } else{
+        
+        self.selectedValueLabel.text = [NSString stringWithFormat: @"%@ reps", [number stringValue]];
         
     }
     
