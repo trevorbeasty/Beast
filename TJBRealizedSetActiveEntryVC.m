@@ -228,6 +228,10 @@
                                             action: @selector(trackSetLengthSCValueChanged)
                                   forControlEvents: UIControlEventValueChanged];
     
+    // because the 'track set length' control starts in the NO position, the 'set begin timing' control must be disabled - set begin times are not recorded when 'track set length' is no, so it would make no sense to allow for options to further specify how to record the set start time
+    
+    self.setStartTimeSegmentedControl.enabled = NO;
+    
 }
 
 - (void)configureStartingDisplayValues{
@@ -597,11 +601,19 @@
         [self.beginNextSetButton setTitle: @"Set Completed"
                                  forState: UIControlStateNormal];
         
+        // disable other segmented control as follows logically
+        
+        self.setStartTimeSegmentedControl.enabled = NO;
+        
     } else{
         
         self.largeStatusLabel.text = @"Resting";
         [self.beginNextSetButton setTitle: @"Begin Next Set"
                                  forState: UIControlStateNormal];
+        
+        // enable other segmented control as follows logically
+        
+        self.setStartTimeSegmentedControl.enabled = YES;
         
     }
     
@@ -756,6 +768,8 @@
     
     CancelBlock cancelBlock = ^{
         
+        [weakSelf enableAllSegmentedControls];
+        
         [weakSelf removeWhiteoutView];
         
         // VC appearance
@@ -801,6 +815,8 @@
    
     } else if (!self.timeDelay){
         
+        [self disableAllSegmentedControls];
+        
         if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1 && self.setStartTimeSegmentedControl.selectedSegmentIndex == 1){
             
             NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
@@ -819,7 +835,7 @@
                 [self.beginNextSetButton setTitle: @"Set Completed"
                                          forState: UIControlStateNormal];
                 
-                [weakSelf dismissViewControllerAnimated: NO
+                [weakSelf dismissViewControllerAnimated: YES
                                              completion: nil];
         
             };
@@ -871,7 +887,7 @@
                                                      withForwardIncrementing: YES
                                                               lastUpdateDate: nil];
                 
-                [weakSelf dismissViewControllerAnimated: NO
+                [weakSelf dismissViewControllerAnimated: YES
                                              completion: nil];
                 
                 [weakSelf didPressBeginNextSet: nil];
@@ -881,7 +897,7 @@
             
             
             [self presentNumberSelectionSceneWithNumberType: RestType
-                                             numberMultiple: [NSNumber numberWithInt: 0]
+                                             numberMultiple: [NSNumber numberWithInt: 5]
                                                 numberLimit: nil
                                                       title: @"Select Lag"
                                                 cancelBlock: cancelBlock
@@ -909,7 +925,7 @@
             weakSelf.weight = weight;
             weakSelf.reps = reps;
             
-            [weakSelf dismissViewControllerAnimated: NO
+            [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
             
             [weakSelf didPressBeginNextSet: nil];
@@ -947,6 +963,8 @@
 
         [self presentSubmittedSetSummary];
         
+        [self enableAllSegmentedControls];
+        
     }
 }
 
@@ -968,7 +986,7 @@
     numberSelectionVC.modalTransitionStyle = transitionStyle;
     
     [self presentViewController: numberSelectionVC
-                       animated: NO
+                       animated: YES
                      completion: nil];
     
 }
@@ -1316,7 +1334,7 @@
             
             [self configureRepsWeightRecordPair: currentRecordForPrescribedReps
                             withCandidateWeight: [NSNumber numberWithDouble: realizedSet.weight]
-                                  candidateDate: realizedSet.beginDate];
+                                  candidateDate: realizedSet.endDate];
             
         }
         
@@ -1537,6 +1555,36 @@
     [self fetchManagedObjectsAndDetermineRecordsForActiveExercise];
     
     [self.personalRecordsTableView reloadData];
+    
+}
+
+#pragma mark - Convenience
+
+- (void)disableAllSegmentedControls{
+    
+    NSArray *segmentedControls = @[self.trackSetLengthSegmentedControl,
+                                   self.setStartTimeSegmentedControl,
+                                   self.setEndTimeSegmentedControl];
+    
+    for (UISegmentedControl *sc in segmentedControls){
+        
+        sc.enabled = NO;
+        
+    }
+    
+}
+
+- (void)enableAllSegmentedControls{
+    
+    NSArray *segmentedControls = @[self.trackSetLengthSegmentedControl,
+                                   self.setStartTimeSegmentedControl,
+                                   self.setEndTimeSegmentedControl];
+    
+    for (UISegmentedControl *sc in segmentedControls){
+        
+        sc.enabled = YES;
+        
+    }
     
 }
 
