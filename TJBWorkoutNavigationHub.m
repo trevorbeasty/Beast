@@ -335,7 +335,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
         if (previousCompleted == YES){
             
             [weakSelf scrollToOffset: secondPosition
-                   animationDuration: 4.0
+                   animationDuration: .4
                  subsequentAnimation: nil];
             
         }
@@ -345,7 +345,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     // animation call
     
     [self scrollToOffset: firstPosition
-       animationDuration: 4.0
+       animationDuration: 1.0
      subsequentAnimation: secondAnimation];
     
 }
@@ -471,7 +471,6 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     NSString *monthTitle = [df stringFromDate: self.firstDayOfDateControlMonth];
     self.monthTitle.text = monthTitle;
     
-
     //// stack view and child VC's
     
     // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
