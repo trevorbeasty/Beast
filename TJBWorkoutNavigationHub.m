@@ -309,11 +309,12 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     //// animation calculations
     
-    // max scroll distance
+    // first position
     
-    CGFloat scrollDistance = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+    CGFloat scrollOffsetX = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+    CGPoint firstPosition = CGPointMake(scrollOffsetX, 0);
     
-    // current date object position
+    // second position
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSInteger day = [calendar component: NSCalendarUnitDay
@@ -337,9 +338,11 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     };
     
-    [self scrollToRightWithDistance: scrollDistance
-                  animationDuration: 1.0
-                subsequentAnimation: secondAnimation];
+    // animation call
+    
+    [self scrollToOffset: firstPosition
+       animationDuration: 1.0
+     subsequentAnimation: secondAnimation];
     
 }
 
@@ -1047,15 +1050,15 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 #pragma mark - Animations and Date SV Calcs
 
-- (void)scrollToRightWithDistance:(CGFloat)distance animationDuration:(NSTimeInterval)animationDuration subsequentAnimation:(AnimationCompletionBlock)subsequentAnimation{
+- (void)scrollToOffset:(CGPoint)offset animationDuration:(NSTimeInterval)animationDuration subsequentAnimation:(AnimationCompletionBlock)subsequentAnimation{
     
-    CGPoint currentOffset = self.dateScrollView.contentOffset;
-    CGPoint newOffset = CGPointMake(currentOffset.x + distance, currentOffset.y);
+//    CGPoint currentOffset = self.dateScrollView.contentOffset;
+//    CGPoint newOffset = CGPointMake(currentOffset.x + distance, currentOffset.y);
     
     [UIView animateWithDuration: animationDuration
                      animations: ^{
         
-                         [self.dateScrollView setContentOffset: newOffset];
+                         [self.dateScrollView setContentOffset: offset];
                          
                      }
                      completion: subsequentAnimation];
