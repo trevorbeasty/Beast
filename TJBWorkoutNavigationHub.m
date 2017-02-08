@@ -69,7 +69,7 @@
 @property (nonatomic, strong) UIStackView *dateStackView;
 @property (nonatomic, strong) NSMutableArray <TJBCircleDateVC *> *circleDateChildren;
 
-// state variables
+// state
 
 @property (nonatomic, strong) NSDate *activeDate;
 @property (nonatomic, strong) NSDate *firstDayOfDateControlMonth;
@@ -83,6 +83,17 @@
 @property (nonatomic, strong) NSMutableArray *dailyList;
 
 @end
+
+// button specification constants
+
+static const CGFloat buttonWidth = 60.0;
+static const CGFloat buttonSpacing = 0.0;
+static const CGFloat buttonHeight = 52.0;
+
+// animation
+
+typedef void (^AnimationBlock)(void);
+typedef void (^AnimationCompletionBlock)(BOOL);
 
 @implementation TJBWorkoutNavigationHub
 
@@ -294,15 +305,39 @@
 
 #pragma mark - View Life Cycle
 
+- (void)viewDidAppear:(BOOL)animated{
+    
+//    [self.view layoutIfNeeded];
+    
+    CGFloat scrollDistance = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+    
+//    CGPoint startingContentOffset = self.dateScrollView.contentOffset;
+    
+    __weak TJBWorkoutNavigationHub *weakSelf = self;
+    
+    AnimationCompletionBlock secondAnimation = ^(BOOL previousCompleted){
+        
+        if (previousCompleted == YES){
+            
+            [weakSelf scrollToRightWithDistance: -scrollDistance
+                              animationDuration: 1.0
+                            subsequentAnimation: nil];
+            
+        }
+    
+    };
+    
+    [self scrollToRightWithDistance: scrollDistance
+                  animationDuration: 1.0
+                subsequentAnimation: secondAnimation];
+    
+}
+
 - (void)viewDidLoad{
     
     [self configureViewAesthetics];
     
     [self configureDateControlsAndSelectToday: YES];
-    
-//    [self configureCircleDates];
-    
-//    [self configureGestureRecognizers];
     
     [self configureTableView];
     
@@ -401,6 +436,10 @@
     
 }
 
+
+
+
+
 - (void)configureDateControlsAndSelectToday:(BOOL)shouldSelectToday{
     
     //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
@@ -425,11 +464,9 @@
                                                 inUnit: NSCalendarUnitMonth
                                                forDate: self.firstDayOfDateControlMonth];
     
-    const CGFloat buttonWidth = 60.0;
-    const CGFloat buttonSpacing = 0.0;
-    const CGFloat buttonHeight = 52.0;
+
     
-    const CGFloat stackViewWidth = buttonWidth * daysInCurrentMonth.length + (daysInCurrentMonth.length - 1) * buttonSpacing;
+    const CGFloat stackViewWidth = [self dateSVWidthGivenButtonSpecifications];
     
     CGRect stackViewRect = CGRectMake(0, 0, stackViewWidth, buttonHeight);
     
@@ -998,7 +1035,33 @@
     
 }
 
+#pragma mark - Animations and Date SV Calcs
 
+- (void)scrollToRightWithDistance:(CGFloat)distance animationDuration:(NSTimeInterval)animationDuration subsequentAnimation:(AnimationCompletionBlock)subsequentAnimation{
+    
+    CGPoint currentOffset = self.dateScrollView.contentOffset;
+    CGPoint newOffset = CGPointMake(currentOffset.x + distance, currentOffset.y);
+    
+    [UIView animateWithDuration: animationDuration
+                     animations: ^{
+        
+                         [self.dateScrollView setContentOffset: newOffset];
+                         
+                     }
+                     completion: subsequentAnimation];
+    
+}
+
+- (CGFloat)dateSVWidthGivenButtonSpecifications{
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
+                                                inUnit: NSCalendarUnitMonth
+                                               forDate: self.firstDayOfDateControlMonth];
+    
+    return buttonWidth * daysInCurrentMonth.length + (daysInCurrentMonth.length - 1) * buttonSpacing;
+    
+}
 
 
 
