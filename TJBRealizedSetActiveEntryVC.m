@@ -53,6 +53,10 @@
     int _timerAtSetCompletion;
     BOOL _whiteoutActive;
     
+    // state
+    
+    BOOL _advancedOptionsActive;
+    
 }
 
 // IBOutlet
@@ -76,7 +80,9 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *setEndTimeSegmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *trackSetLengthLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *trackSetLengthSegmentedControl;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonsContainerConstraint;
+@property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
+@property (weak, nonatomic) IBOutlet UIButton *advancedOptionsButton;
 
 
 // IBAction
@@ -85,6 +91,8 @@
 - (IBAction)didPressTargetRestButton:(id)sender;
 - (IBAction)didPressAlertTimingButton:(id)sender;
 - (IBAction)didPressExerciseButton:(id)sender;
+- (IBAction)didPressAdvancedOptions:(id)sender;
+
 
 //// core data
 
@@ -221,6 +229,20 @@
     [self configureStartingDisplayValues];
     
     [self configureSegmentedControls];
+    
+    [self configureButtonControlStartingState];
+    
+}
+
+- (void)configureButtonControlStartingState{
+    
+    [self.view insertSubview: self.titleLabelsContainer
+                belowSubview: self.navigationBar];
+    
+    [self.view insertSubview: self.grayBackdropView
+                belowSubview: self.titleLabelsContainer];
+    
+    self.buttonsContainerConstraint.constant = -102;
     
 }
 
@@ -722,6 +744,22 @@
     [self presentViewController: vc
                        animated: YES
                      completion: nil];
+    
+}
+
+- (IBAction)didPressAdvancedOptions:(id)sender{
+    
+    if (_advancedOptionsActive == YES){
+        
+        [self toggleButtonControlsToDefaultDisplay];
+        
+    } else{
+        
+        [self toggleButtonControlsToAdvancedDisplay];
+        
+    }
+    
+    
     
 }
 
@@ -1585,6 +1623,50 @@
         sc.enabled = YES;
         
     }
+    
+}
+
+#pragma mark - Animation
+
+- (void)toggleButtonControlsToAdvancedDisplay{
+    
+    [UIView animateWithDuration: .4
+                     animations: ^{
+                         
+                         self.buttonsContainerConstraint.constant = 0;
+                         
+                         CGRect currentFrame = self.grayBackdropView.frame;
+                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + 102, currentFrame.size.width, currentFrame.size.height);
+                         self.grayBackdropView.frame = newFrame;
+                         
+                         CGRect currentTVFrame = self.personalRecordsTableView.frame;
+                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + 102, currentTVFrame.size.width, currentTVFrame.size.height - 102);
+                         self.personalRecordsTableView.frame = newTVFrame;
+                         
+                     }];
+    
+    _advancedOptionsActive = YES;
+    
+}
+
+- (void)toggleButtonControlsToDefaultDisplay{
+    
+    [UIView animateWithDuration: .4
+                     animations: ^{
+                         
+                         self.buttonsContainerConstraint.constant = -102;
+                         
+                         CGRect currentFrame = self.grayBackdropView.frame;
+                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - 102, currentFrame.size.width, currentFrame.size.height);
+                         self.grayBackdropView.frame = newFrame;
+                         
+                         CGRect currentTVFrame = self.personalRecordsTableView.frame;
+                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - 102, currentTVFrame.size.width, currentTVFrame.size.height + 102);
+                         self.personalRecordsTableView.frame = newTVFrame;
+                         
+                     }];
+    
+    _advancedOptionsActive = NO;
     
 }
 
