@@ -307,12 +307,22 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 - (void)viewDidAppear:(BOOL)animated{
     
-//    [self.view layoutIfNeeded];
+    //// animation calculations
+    
+    // max scroll distance
     
     CGFloat scrollDistance = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
     
-//    CGPoint startingContentOffset = self.dateScrollView.contentOffset;
+    // current date object position
     
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSInteger day = [calendar component: NSCalendarUnitDay
+                               fromDate: self.activeDate];
+    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
+    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x;
+    CGFloat secondScrollDistance =
+
+    ////
     __weak TJBWorkoutNavigationHub *weakSelf = self;
     
     AnimationCompletionBlock secondAnimation = ^(BOOL previousCompleted){
