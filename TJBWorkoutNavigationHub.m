@@ -311,8 +311,8 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     // first position
     
-    CGFloat scrollOffsetX = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
-    CGPoint firstPosition = CGPointMake(scrollOffsetX, 0);
+    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+    CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
     
     // second position
     
@@ -320,19 +320,23 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     NSInteger day = [calendar component: NSCalendarUnitDay
                                fromDate: self.activeDate];
     TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
-    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x;
-    CGFloat secondScrollDistance =
+    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
+    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
+    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
 
     ////
+    
+    // second animation definition
+    
     __weak TJBWorkoutNavigationHub *weakSelf = self;
     
     AnimationCompletionBlock secondAnimation = ^(BOOL previousCompleted){
         
         if (previousCompleted == YES){
             
-            [weakSelf scrollToRightWithDistance: -scrollDistance
-                              animationDuration: 1.0
-                            subsequentAnimation: nil];
+            [weakSelf scrollToOffset: secondPosition
+                   animationDuration: 4.0
+                 subsequentAnimation: nil];
             
         }
     
@@ -341,7 +345,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     // animation call
     
     [self scrollToOffset: firstPosition
-       animationDuration: 1.0
+       animationDuration: 4.0
      subsequentAnimation: secondAnimation];
     
 }
@@ -1051,9 +1055,6 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 #pragma mark - Animations and Date SV Calcs
 
 - (void)scrollToOffset:(CGPoint)offset animationDuration:(NSTimeInterval)animationDuration subsequentAnimation:(AnimationCompletionBlock)subsequentAnimation{
-    
-//    CGPoint currentOffset = self.dateScrollView.contentOffset;
-//    CGPoint newOffset = CGPointMake(currentOffset.x + distance, currentOffset.y);
     
     [UIView animateWithDuration: animationDuration
                      animations: ^{
