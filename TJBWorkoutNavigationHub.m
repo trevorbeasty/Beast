@@ -685,6 +685,18 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: NO];
     
+    // animation
+    
+    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
+    float maxAnimationTime = 1.0;
+    
+    CGFloat newXPosition = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+    CGPoint newPosition = CGPointMake(newXPosition, 0);
+    
+    [self scrollToOffset: newPosition
+       animationDuration: maxAnimationTime * (1.0 - offsetXPositionAsPercent)
+     subsequentAnimation: nil];
+    
 }
 
 - (IBAction)didPressRightArrow:(id)sender{
@@ -692,6 +704,17 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     self.selectedDateButtonIndex = nil;	
     
     [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: YES];
+    
+    // animation
+    
+    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
+    float maxAnimationTime = 1.0;
+    
+    CGPoint newPosition = CGPointMake(0, 0);
+    
+    [self scrollToOffset: newPosition
+       animationDuration: maxAnimationTime * offsetXPositionAsPercent
+     subsequentAnimation: nil];
     
 }
 
@@ -1076,7 +1099,14 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
 }
 
-
+- (float)scrollViewXOffsetAsFractionOfContentView{
+    
+    CGFloat xPosition = self.dateScrollView.contentOffset.x;
+    CGFloat xRange = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+    
+    return xPosition / xRange;
+    
+}
 
 
 
