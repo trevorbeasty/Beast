@@ -1646,6 +1646,8 @@
                      }];
     
     _advancedOptionsActive = YES;
+    [self.advancedOptionsButton setTitle: @"- Advanced Options"
+                                forState: UIControlStateNormal];
     
 }
 
@@ -1667,6 +1669,8 @@
                      }];
     
     _advancedOptionsActive = NO;
+    [self.advancedOptionsButton setTitle: @"+ Advanced Options"
+                                forState: UIControlStateNormal];
     
 }
 
