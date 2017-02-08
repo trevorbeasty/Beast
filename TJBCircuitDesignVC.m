@@ -153,29 +153,72 @@
     
 }
 
+- (void)configureShadowView{
+    
+    [self.view layoutIfNeeded];
+    
+    UIView *shadowView = [[UIView alloc] initWithFrame: self.metaContainerView.frame];
+    [self.view insertSubview: shadowView
+                belowSubview: self.metaContainerView];
+    
+    shadowView.backgroundColor = [UIColor whiteColor];
+    shadowView.clipsToBounds = NO;
+    
+    CALayer *shadowLayer = shadowView.layer;
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowColor = [UIColor whiteColor].CGColor;
+    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+    shadowLayer.shadowOpacity = 1.0;
+    shadowLayer.shadowRadius = 3.0;
+    
+}
+
 - (void)viewAesthetics{
     
-    // meta container view
+    [self configureShadowView];
     
-    self.metaContainerView.backgroundColor = [UIColor whiteColor];
-    CALayer *layer;
-    layer = self.metaContainerView.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8.0;
-    layer.opacity = .85;
+    self.view.backgroundColor = [UIColor lightGrayColor];
+    
+    // control container view
+    
+//    CALayer *containerLayer;
+//    containerLayer = self.metaContainerView.layer;
+//    containerLayer.masksToBounds = YES;
+//    containerLayer.cornerRadius = 4.0;
     
     // text field
     
-    [self.circuitNameLabel setTextColor: [UIColor whiteColor]];
-    self.circuitNameLabel.backgroundColor = [UIColor darkGrayColor];
+    [self.circuitNameLabel setTextColor: [UIColor darkGrayColor]];
+    self.circuitNameLabel.backgroundColor = [UIColor whiteColor];
     
-    layer = self.nameTextField.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
-    layer.borderWidth = 1;
-    layer.borderColor = [[UIColor darkGrayColor] CGColor];
+    CALayer *tfLayer = self.circuitNameLabel.layer;
+    tfLayer = self.nameTextField.layer;
+    tfLayer.masksToBounds = YES;
+    tfLayer.cornerRadius = 8;
+    tfLayer.borderWidth = 1;
+    tfLayer.borderColor = [[UIColor darkGrayColor] CGColor];
     
     self.nameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    
+    // SC's and steppers
+    
+    NSArray *steppers = @[self.numberOfExercisesStepper,
+                          self.numberOfRoundsStepper];
+    for (UIStepper *s in steppers){
+        
+        s.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+        
+    }
+    
+    NSArray *segmentedControls = @[self.targetingWeightSC,
+                                   self.targetingRepsSC,
+                                   self.targetingRestSC,
+                                   self.targetsVaryByRoundSC];
+    for (UISegmentedControl *sc in segmentedControls){
+        
+        sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+        
+    }
     
     // labels
     
@@ -188,17 +231,21 @@
     
     for (UILabel *label in labels){
         
-        label.backgroundColor = [[TJBAestheticsController singleton] labelType1Color];
-        label.layer.opacity = .85;
-        label.layer.masksToBounds = YES;
-        label.layer.cornerRadius = 4.0;
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.textColor = [UIColor whiteColor];
         
     }
     
     // button
     
-    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.launchTemplateButton]
-                                                     withOpacity: .85];
+    self.launchTemplateButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    
+    [self.launchTemplateButton setTitleColor: [UIColor whiteColor]
+                                    forState: UIControlStateNormal];
+    
+    self.launchTemplateButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
 }
 
 #pragma mark - Stepper Methods

@@ -335,7 +335,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
         if (previousCompleted == YES){
             
             [weakSelf scrollToOffset: secondPosition
-                   animationDuration: .4
+                   animationDuration: 1.0
                  subsequentAnimation: nil];
             
         }
