@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -31,10 +31,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cna-Rm-Pq1" userLabel="mainContainer">
-                    <rect key="frame" x="16" y="166" width="343" height="405"/>
+                    <rect key="frame" x="16" y="172" width="343" height="399"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="405"/>
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="399"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -116,22 +116,22 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZc-c3-eUK">
-                    <rect key="frame" x="52" y="60" width="271" height="44"/>
+                    <rect key="frame" x="52" y="60" width="271" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="saU-C2-ESb"/>
+                        <constraint firstAttribute="height" constant="50" id="saU-C2-ESb"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iB7-75-csB">
-                    <rect key="frame" x="0.0" y="106" width="375" height="44"/>
+                    <rect key="frame" x="0.0" y="112" width="375" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="4LT-BY-vzZ"/>
                     </constraints>
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muu-Ne-Y0K">
-                    <rect key="frame" x="325" y="60" width="50" height="44"/>
+                    <rect key="frame" x="325" y="60" width="50" height="50"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="50" id="Wze-gw-h9M"/>
                     </constraints>
@@ -141,7 +141,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZY-W0-fYd">
-                    <rect key="frame" x="0.0" y="60" width="50" height="44"/>
+                    <rect key="frame" x="0.0" y="60" width="50" height="50"/>
                     <state key="normal" title="&lt;"/>
                     <connections>
                         <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="46V-Zq-up9"/>

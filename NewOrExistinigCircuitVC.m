@@ -807,7 +807,8 @@
 - (void)toggleButtonsToOnState{
     
     NSArray *buttons = @[self.launchButton,
-                         self.modifyButton];
+                         self.modifyButton,
+                         self.previousMarkButton];
     
     for (UIButton *b in buttons){
         
@@ -1089,6 +1090,8 @@
 
 - (void)segmentedControlValueChanged{
     
+    [self configureSelectionAsNil];
+    
     //// re-sort the content array based upon the new sorting preference
     
     [self configureSortedContentForActiveYear];
@@ -1130,7 +1133,23 @@
     
 }
 
+- (void)configureSelectionAsNil{
+    
+    // get rid of the border on the last selected cell and change state variables for selection
+    
+    self.selectedChainTemplate = nil;
+    [self toggleButtonsToOffState];
+    
+    TJBStructureTableViewCell *cell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+    cell.layer.borderWidth = 0.0;
+    
+}
+
 - (void)incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
+    
+    [self configureSelectionAsNil];
+    
+    //
     
     int yearDelta;
     
