@@ -181,6 +181,8 @@
     
     // control container view
     
+    self.metaContainerView.backgroundColor = [UIColor whiteColor];
+    
 //    CALayer *containerLayer;
 //    containerLayer = self.metaContainerView.layer;
 //    containerLayer.masksToBounds = YES;
