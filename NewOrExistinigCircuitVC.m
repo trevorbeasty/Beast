@@ -909,6 +909,8 @@
             
             TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
             
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
             [cell clearExistingEntries];
             
             NSInteger adjustedRowIndex = indexPath.row - 1;
@@ -949,25 +951,54 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return NO;
+    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+    NSInteger chainCount = self.sortedContent[reversedIndex].count;
+    
+    if (indexPath.row == 0 || chainCount == 0){
+        
+        return NO;
+        
+    } else{
+        
+        return YES;
+        
+    }
     
 }
 
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
-//    
-//    // deal with unhighlighting
-//
-//    self.lastSelectedIndexPath = indexPath;
-//    
-//    TJBChainTemplate *chainTemplate = self.sortedContent[indexPath.section][indexPath.row];
-//    
-//    self.selectedChainTemplate = chainTemplate;
-//
-//    [self toggleButtonsToOnState];
-//    
-//}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
+    
+    // deal with unhighlighting
+
+    TJBStructureTableViewCell *lastSelectedCell = [tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+    
+    lastSelectedCell.backgroundColor = [UIColor clearColor];
+    lastSelectedCell.layer.borderWidth = 0.0;
+    
+    self.lastSelectedIndexPath = indexPath;
+    
+    // highlight the new cell
+    
+    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+    
+    TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][indexPath.row - 1];
+    
+    self.selectedChainTemplate = chainTemplate;
+    
+    // add blue border to selected cell
+    
+    TJBStructureTableViewCell *selectedCell = [tableView cellForRowAtIndexPath: indexPath];
+    
+    selectedCell.backgroundColor = [UIColor whiteColor];
+    
+    selectedCell.layer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
+    selectedCell.layer.borderWidth = 4.0;
+    
+    [self toggleButtonsToOnState];
+    
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     

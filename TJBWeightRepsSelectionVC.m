@@ -85,7 +85,7 @@
     
     UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.navBarTitle];
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle: @"Submit"
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle: @"OK"
                                                                     style: UIBarButtonItemStyleDone
                                                                    target: self
                                                                    action: @selector(didPressDone)];
@@ -142,25 +142,25 @@
     
     [self.view layoutIfNeeded];
     
-//    NSArray *topCornersCurved = @[self.weightLabel, self.repsLabel];
-//    
-//    for (UILabel *label in topCornersCurved){
-//        
-//        CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
-//        
-//        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: label.bounds
-//                                                   byRoundingCorners: (UIRectCornerTopLeft | UIRectCornerTopRight)
-//                                                         cornerRadii: CGSizeMake(2.0, 2.0)];
-//        
-//        shapeLayer.path = path.CGPath;
-//        shapeLayer.frame = label.bounds;
-//        shapeLayer.fillRule = kCAFillRuleNonZero;
-//        shapeLayer.fillColor = [UIColor redColor].CGColor;
-//        
-//        label.layer.mask = shapeLayer;
-//        
-//    }
-//    
+    NSArray *topCornersCurved = @[self.weightLabel, self.repsLabel];
+    
+    for (UILabel *label in topCornersCurved){
+        
+        CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
+        
+        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: label.bounds
+                                                   byRoundingCorners: (UIRectCornerTopLeft | UIRectCornerTopRight)
+                                                         cornerRadii: CGSizeMake(4.0, 4.0)];
+        
+        shapeLayer.path = path.CGPath;
+        shapeLayer.frame = label.bounds;
+        shapeLayer.fillRule = kCAFillRuleNonZero;
+        shapeLayer.fillColor = [UIColor redColor].CGColor;
+        
+        label.layer.mask = shapeLayer;
+        
+    }
+//
 //    NSArray *bottomCornersCurved = @[self.weightSelectedValueLabel, self.repsSelectedValueLabel];
 //    
 //    for (UILabel *label in bottomCornersCurved){
@@ -442,7 +442,7 @@ static float const numberOfCellsPerRow = 2;
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
-    return UIEdgeInsetsMake(0, 0, 0, 0);
+    return UIEdgeInsetsMake(8, 0, 8, 0);
     
 }
 
