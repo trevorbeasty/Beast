@@ -49,7 +49,7 @@
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pft-8q-xDf">
                     <rect key="frame" x="0.0" y="0.0" width="40" height="53"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="O89-ej-x7T"/>
                     </constraints>
@@ -58,7 +58,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="37A-oI-VXy" firstAttribute="leading" secondItem="IGM-i9-enY" secondAttribute="trailing" constant="2" id="5sv-Dt-gRX"/>
                 <constraint firstAttribute="bottom" secondItem="37A-oI-VXy" secondAttribute="bottom" constant="2" id="6WP-Ax-Tno"/>

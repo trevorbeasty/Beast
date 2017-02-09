@@ -100,6 +100,8 @@
         self.roundLabel.text = [NSString stringWithFormat: @"%d", [self.roundNumber intValue]];
     }
     
+    self.roundLabel.backgroundColor = [UIColor darkGrayColor];
+    
     // button appearance
     
     void (^eraseButton)(UIButton *) = ^(UIButton *button){

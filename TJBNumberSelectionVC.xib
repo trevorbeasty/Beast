@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -34,7 +34,7 @@
                     </items>
                 </navigationBar>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1Oc-G7-0rK">
-                    <rect key="frame" x="16" y="122" width="343" height="489"/>
+                    <rect key="frame" x="16" y="114" width="343" height="505"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dNT-u7-CQX">
                         <size key="itemSize" width="75" height="75"/>
@@ -89,11 +89,11 @@
                 <constraint firstItem="jxZ-1K-Udv" firstAttribute="trailing" secondItem="rEh-oE-LxM" secondAttribute="trailing" id="MAJ-X5-Xmq"/>
                 <constraint firstAttribute="bottom" secondItem="jxZ-1K-Udv" secondAttribute="bottom" constant="8" id="PQH-PZ-rbj"/>
                 <constraint firstItem="ADM-aI-uRp" firstAttribute="top" secondItem="rEh-oE-LxM" secondAttribute="bottom" id="Ple-Us-jLv"/>
-                <constraint firstItem="jxZ-1K-Udv" firstAttribute="top" secondItem="1Oc-G7-0rK" secondAttribute="bottom" constant="8" id="RRw-Nl-g6X"/>
+                <constraint firstItem="jxZ-1K-Udv" firstAttribute="top" secondItem="1Oc-G7-0rK" secondAttribute="bottom" id="RRw-Nl-g6X"/>
                 <constraint firstAttribute="trailing" secondItem="QU0-hE-6Qc" secondAttribute="trailing" id="Vdb-d9-kcg"/>
                 <constraint firstAttribute="trailing" secondItem="rEh-oE-LxM" secondAttribute="trailing" constant="16" id="aQ9-5n-UoN"/>
                 <constraint firstItem="1Oc-G7-0rK" firstAttribute="trailing" secondItem="rEh-oE-LxM" secondAttribute="trailing" id="kKy-4p-z7R"/>
-                <constraint firstItem="1Oc-G7-0rK" firstAttribute="top" secondItem="ADM-aI-uRp" secondAttribute="bottom" constant="8" id="l8Y-sq-yCg"/>
+                <constraint firstItem="1Oc-G7-0rK" firstAttribute="top" secondItem="ADM-aI-uRp" secondAttribute="bottom" id="l8Y-sq-yCg"/>
                 <constraint firstItem="ADM-aI-uRp" firstAttribute="leading" secondItem="rEh-oE-LxM" secondAttribute="leading" id="vtG-9l-hLu"/>
                 <constraint firstItem="QU0-hE-6Qc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="z3M-Ga-kxQ"/>
             </constraints>

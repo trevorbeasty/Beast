@@ -87,7 +87,7 @@
     
     for (UILabel *l in labels){
         
-        l.backgroundColor = [UIColor clearColor];
+        l.backgroundColor = [UIColor darkGrayColor];
         l.textColor = [UIColor whiteColor];
         l.font = [UIFont boldSystemFontOfSize: 20.0];
         
