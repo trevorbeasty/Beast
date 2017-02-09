@@ -328,6 +328,10 @@
 
 - (void)viewAesthetics{
     
+    // filter
+    
+    self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+    
     // table view
     
     self.tableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
@@ -809,7 +813,8 @@
 - (void)toggleButtonsToOffState{
     
     NSArray *buttons = @[self.launchButton,
-                         self.modifyButton];
+                         self.modifyButton,
+                         self.previousMarkButton];
     
     for (UIButton *b in buttons){
         
@@ -819,9 +824,6 @@
     }
     
 }
-
-//#pragma mark - Convenience
-
 
 
 #pragma mark - <UITableViewDataSource>

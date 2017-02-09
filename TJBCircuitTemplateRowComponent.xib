@@ -24,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IGM-i9-enY">
-                    <rect key="frame" x="94" y="2" width="91.5" height="49"/>
+                    <rect key="frame" x="42" y="2" width="109" height="49"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Weight"/>
                     <connections>
@@ -32,7 +32,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37A-oI-VXy">
-                    <rect key="frame" x="187.5" y="2" width="91.5" height="49"/>
+                    <rect key="frame" x="153" y="2" width="109" height="49"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Reps"/>
                     <connections>
@@ -40,7 +40,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Am-M0-e8R">
-                    <rect key="frame" x="281" y="2" width="92" height="49"/>
+                    <rect key="frame" x="264" y="2" width="109" height="49"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Rest"/>
                     <connections>
@@ -48,29 +48,32 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pft-8q-xDf">
-                    <rect key="frame" x="0.0" y="0.0" width="92" height="53"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <nil key="textColor"/>
+                    <rect key="frame" x="0.0" y="0.0" width="40" height="53"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="O89-ej-x7T"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="0Am-M0-e8R" firstAttribute="width" secondItem="pft-8q-xDf" secondAttribute="width" id="4F7-iS-BW8"/>
                 <constraint firstItem="37A-oI-VXy" firstAttribute="leading" secondItem="IGM-i9-enY" secondAttribute="trailing" constant="2" id="5sv-Dt-gRX"/>
                 <constraint firstAttribute="bottom" secondItem="37A-oI-VXy" secondAttribute="bottom" constant="2" id="6WP-Ax-Tno"/>
                 <constraint firstAttribute="bottom" secondItem="IGM-i9-enY" secondAttribute="bottom" constant="2" id="BIl-69-yQ3"/>
                 <constraint firstItem="pft-8q-xDf" firstAttribute="top" secondItem="ugm-x0-HGE" secondAttribute="top" id="BJ8-sb-O0V"/>
                 <constraint firstAttribute="trailing" secondItem="0Am-M0-e8R" secondAttribute="trailing" constant="2" id="Fws-5w-cwb"/>
                 <constraint firstAttribute="bottom" secondItem="pft-8q-xDf" secondAttribute="bottom" id="KcB-Qs-WhL"/>
-                <constraint firstItem="37A-oI-VXy" firstAttribute="width" secondItem="pft-8q-xDf" secondAttribute="width" id="Xzk-Yo-bto"/>
+                <constraint firstItem="0Am-M0-e8R" firstAttribute="width" secondItem="IGM-i9-enY" secondAttribute="width" id="QuK-L4-n6e"/>
+                <constraint firstItem="37A-oI-VXy" firstAttribute="width" secondItem="IGM-i9-enY" secondAttribute="width" id="byW-gv-pgG"/>
                 <constraint firstItem="0Am-M0-e8R" firstAttribute="leading" secondItem="37A-oI-VXy" secondAttribute="trailing" constant="2" id="dab-HV-V5b"/>
                 <constraint firstAttribute="bottom" secondItem="0Am-M0-e8R" secondAttribute="bottom" constant="2" id="hDI-qG-s38"/>
                 <constraint firstItem="0Am-M0-e8R" firstAttribute="top" secondItem="ugm-x0-HGE" secondAttribute="top" constant="2" id="meS-kL-8kW"/>
                 <constraint firstItem="pft-8q-xDf" firstAttribute="leading" secondItem="ugm-x0-HGE" secondAttribute="leading" id="osq-QR-hUi"/>
                 <constraint firstItem="IGM-i9-enY" firstAttribute="leading" secondItem="pft-8q-xDf" secondAttribute="trailing" constant="2" id="r6g-T6-RNE"/>
                 <constraint firstItem="IGM-i9-enY" firstAttribute="top" secondItem="ugm-x0-HGE" secondAttribute="top" constant="2" id="r7q-2Y-Azi"/>
-                <constraint firstItem="IGM-i9-enY" firstAttribute="width" secondItem="pft-8q-xDf" secondAttribute="width" id="rNK-d9-nhs"/>
                 <constraint firstItem="37A-oI-VXy" firstAttribute="top" secondItem="ugm-x0-HGE" secondAttribute="top" constant="2" id="xIF-am-Ws9"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

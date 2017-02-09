@@ -234,11 +234,11 @@
     
     if ([self.nameTextField.text isEqualToString: @""]){
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Title"
-                                                                       message: @"Please enter a title before proceeding"
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"No Title"
+                                                                       message: @"Please enter a title"
                                                                 preferredStyle: UIAlertControllerStyleAlert];
         
-        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"OK"
                                                          style: UIAlertActionStyleDefault
                                                        handler: nil];
         [alert addAction: action];
@@ -254,10 +254,6 @@
         NSNumber *targetsVaryByRound = [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex];
         NSNumber *numberOfExercises = [NSNumber numberWithInt: _numberOfExercises];
         NSNumber *numberOfRounds = [NSNumber numberWithInt: _numberOfRounds];
-        
-        NSLog(@"exercises: %@\nrounds: %@",
-              numberOfExercises,
-              numberOfRounds);
         
         TJBCircuitTemplateContainerVC *vc = [[TJBCircuitTemplateContainerVC alloc] initWithTargetingWeight: targetingWeight
                                                                                              targetingReps: targetingReps

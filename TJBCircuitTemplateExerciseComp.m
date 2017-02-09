@@ -77,18 +77,19 @@
     CALayer *viewLayer = self.view.layer;
     viewLayer.masksToBounds = YES;
     viewLayer.cornerRadius = 8.0;
-    viewLayer.opacity = .85;
     
     // column label views
     
-    NSArray *labelViews = @[self.roundColumnLabel,
+    NSArray *labels = @[self.roundColumnLabel,
                             self.weightColumnLabel,
                             self.repsColumnLabel,
                             self.restColumnLabel];
     
-    for (UIView *view in labelViews){
+    for (UILabel *l in labels){
         
-        view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        l.backgroundColor = [UIColor clearColor];
+        l.textColor = [UIColor whiteColor];
+        l.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
     
@@ -124,7 +125,7 @@
     
     // labels
     
-    self.titleLabel.text = [NSString stringWithFormat: @"Exercise #%d",
+    self.titleLabel.text = [NSString stringWithFormat: @"Exercise %d",
                             [self.chainNumber intValue]];
     
     // row components
@@ -140,7 +141,7 @@
     
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", thinLineLabel]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", thinLineLabel]];
     
     for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++){
         

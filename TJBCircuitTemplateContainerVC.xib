@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -14,6 +14,7 @@
                 <outlet property="containerView" destination="ddm-83-lU1" id="zmL-Qx-OVD"/>
                 <outlet property="launchCircuitButton" destination="DGq-w9-M2p" id="iFK-NN-gOb"/>
                 <outlet property="navigationBar" destination="1Aw-Ow-fCu" id="TC6-2U-r6J"/>
+                <outlet property="titleLabel" destination="tNV-kd-5n4" id="aHR-qe-hAf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -23,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddm-83-lU1">
-                    <rect key="frame" x="8" y="68" width="489" height="601"/>
+                    <rect key="frame" x="8" y="100" width="489" height="577"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Aw-Ow-fCu">
@@ -45,15 +46,28 @@
                         <action selector="didPressLaunchCircuit:" destination="-1" eventType="touchUpInside" id="xqO-57-4ri"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tNV-kd-5n4">
+                    <rect key="frame" x="0.0" y="60" width="505" height="40"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="2Rm-v6-cM3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="1Aw-Ow-fCu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="24a-cU-KLW"/>
                 <constraint firstItem="DGq-w9-M2p" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2FO-6G-ZYv"/>
-                <constraint firstItem="ddm-83-lU1" firstAttribute="top" secondItem="1Aw-Ow-fCu" secondAttribute="bottom" constant="8" id="NPk-7d-Mip"/>
+                <constraint firstItem="ddm-83-lU1" firstAttribute="top" secondItem="tNV-kd-5n4" secondAttribute="bottom" id="9vH-7d-QkM"/>
+                <constraint firstItem="tNV-kd-5n4" firstAttribute="top" secondItem="1Aw-Ow-fCu" secondAttribute="bottom" id="JvG-ro-6er"/>
                 <constraint firstItem="ddm-83-lU1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Qxi-oF-DUP"/>
-                <constraint firstItem="DGq-w9-M2p" firstAttribute="top" secondItem="ddm-83-lU1" secondAttribute="bottom" constant="8" id="S7S-Lq-kxP"/>
+                <constraint firstItem="DGq-w9-M2p" firstAttribute="top" secondItem="ddm-83-lU1" secondAttribute="bottom" id="S7S-Lq-kxP"/>
+                <constraint firstAttribute="trailing" secondItem="tNV-kd-5n4" secondAttribute="trailing" id="Yab-oY-1kL"/>
                 <constraint firstAttribute="trailing" secondItem="1Aw-Ow-fCu" secondAttribute="trailing" id="bug-1x-pE3"/>
+                <constraint firstItem="tNV-kd-5n4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ccR-up-wEv"/>
                 <constraint firstAttribute="trailing" secondItem="ddm-83-lU1" secondAttribute="trailing" constant="8" id="j85-Ti-kXd"/>
                 <constraint firstItem="1Aw-Ow-fCu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="uA2-gA-hjS"/>
                 <constraint firstAttribute="trailing" secondItem="DGq-w9-M2p" secondAttribute="trailing" id="vB3-KJ-8db"/>

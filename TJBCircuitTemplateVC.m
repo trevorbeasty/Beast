@@ -205,7 +205,7 @@ static NSString * const defaultValue = @"unselected";
     // row components
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: @"V:|-"];
+    [verticalLayoutConstraintsString setString: @"V:|-8-"];
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
         
@@ -216,6 +216,8 @@ static NSString * const defaultValue = @"unselected";
                                                                                          targetsVaryByRound: self.targetsVaryByRound
                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
                                                                                            masterController: self];
+        
+        vc.view.backgroundColor = [UIColor lightGrayColor];
         
         // add the exercise component to the child view controller array
         

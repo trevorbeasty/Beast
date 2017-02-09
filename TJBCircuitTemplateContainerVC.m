@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 // IBAction
 
@@ -95,17 +96,7 @@
     
 }
 
-- (void)setViewDimensionPropertiesForUseByChildVC{
-    
-    // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
-    // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
-    
-    CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
-    
-    self.childViewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 124];
-    self.childViewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
-    
-}
+
 
 #pragma mark - View Life Cycle
 
@@ -133,6 +124,21 @@
 
 }
 
+- (void)setViewDimensionPropertiesForUseByChildVC{
+    
+    // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
+    // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
+    
+    CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
+    
+    NSNumber *viewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 140];
+    NSNumber *viewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
+    
+    self.childViewHeight = viewHeight;
+    self.childViewWidth = viewWidth;
+    
+}
+
 - (void)configureViewAesthetics{
     
     self.launchCircuitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
@@ -140,7 +146,9 @@
                                    forState: UIControlStateNormal];
     self.launchCircuitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    self.titleLabel.text = self.chainTemplate.name;
     
 }
 
@@ -177,24 +185,21 @@
     
     // must evaluate IV's to determine appropriate title for navItem
     
-    NSString *word;
+//    NSString *word;
+//    
+//    int number = self.chainTemplate.numberOfRounds;
+//    
+//    if (number == 1){
+//        
+//        word = @"round";
+//        
+//    } else{
+//        
+//        word = @"rounds";
+//        
+//    }
     
-    int number = self.chainTemplate.numberOfRounds;
-    
-    if (number == 1){
-        
-        word = @"round";
-        
-    } else{
-        
-        word = @"rounds";
-        
-    }
-    
-    NSString *title = [NSString stringWithFormat: @"(%d %@) %@",
-                       number,
-                       word,
-                       self.chainTemplate.name];
+    NSString *title = @"New Routine";
     
     [navItem setTitle: title];
     

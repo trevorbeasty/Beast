@@ -82,7 +82,12 @@
 }
 
 - (void)viewAesthetics{
+    
     TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
+    
+    // background
+    
+    self.view.backgroundColor = [UIColor clearColor];
     
     // round label
     
@@ -92,13 +97,13 @@
     }
     else
     {
-        self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
+        self.roundLabel.text = [NSString stringWithFormat: @"%d", [self.roundNumber intValue]];
     }
     
     // button appearance
     
     void (^eraseButton)(UIButton *) = ^(UIButton *button){
-        button.backgroundColor = [UIColor whiteColor];
+        button.backgroundColor = [UIColor clearColor];
         [button setTitle: @""
                 forState: UIControlStateNormal];
         button.enabled = NO;

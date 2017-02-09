@@ -215,7 +215,6 @@
                 <constraint firstAttribute="trailing" secondItem="eea-YQ-KJP" secondAttribute="trailing" id="C3z-HO-vhq"/>
                 <constraint firstAttribute="trailing" secondItem="OU9-dn-Yhq" secondAttribute="trailing" constant="4" id="Dc9-tL-EeH"/>
                 <constraint firstAttribute="trailing" secondItem="KlX-IA-G5h" secondAttribute="trailing" id="DcN-OH-qSL"/>
-                <constraint firstItem="4CG-sV-kZ2" firstAttribute="top" secondItem="COH-yO-Hzj" secondAttribute="bottom" constant="2" id="EZZ-fL-kWQ"/>
                 <constraint firstAttribute="trailing" secondItem="COH-yO-Hzj" secondAttribute="trailing" id="Esa-gr-f32"/>
                 <constraint firstItem="zQT-nR-z0Q" firstAttribute="top" secondItem="9OV-d4-mzw" secondAttribute="bottom" constant="4" id="G7m-z8-hgC"/>
                 <constraint firstItem="xM7-Vr-foH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GFn-pF-83g"/>
