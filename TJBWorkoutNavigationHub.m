@@ -305,14 +305,21 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 #pragma mark - View Life Cycle
 
-- (void)viewDidAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
+    
+    // select today
+    
+    [self configureDateControlsAndSelectToday: YES];
     
     //// animation calculations
+    
+    [self.view layoutIfNeeded];
     
     // first position
     
     CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
     CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
+    self.dateScrollView.contentOffset = firstPosition;
     
     // second position
     
@@ -323,30 +330,17 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
     CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
     CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
-
-    ////
     
-    // second animation definition
+    //
     
-    __weak TJBWorkoutNavigationHub *weakSelf = self;
-    
-    AnimationCompletionBlock secondAnimation = ^(BOOL previousCompleted){
-        
-        if (previousCompleted == YES){
-            
-            [weakSelf scrollToOffset: secondPosition
-                   animationDuration: 1.0
-                 subsequentAnimation: nil];
-            
-        }
-    
-    };
+    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
+    float maxAnimationTime = 1.0;
     
     // animation call
     
-    [self scrollToOffset: firstPosition
-       animationDuration: 1.0
-     subsequentAnimation: secondAnimation];
+    [self scrollToOffset: secondPosition
+       animationDuration: maxAnimationTime * percentScrollViewWidth
+     subsequentAnimation: nil];
     
 }
 
@@ -354,7 +348,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     [self configureViewAesthetics];
     
-    [self configureDateControlsAndSelectToday: YES];
+//    [self configureDateControlsAndSelectToday: YES];
     
     [self configureTableView];
     
@@ -687,15 +681,15 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     // animation
     
-    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
-    float maxAnimationTime = 1.0;
-    
-    CGFloat newXPosition = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
-    CGPoint newPosition = CGPointMake(newXPosition, 0);
-    
-    [self scrollToOffset: newPosition
-       animationDuration: maxAnimationTime * (1.0 - offsetXPositionAsPercent)
-     subsequentAnimation: nil];
+//    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
+//    float maxAnimationTime = 1.0;
+//    
+//    CGFloat newXPosition = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+//    CGPoint newPosition = CGPointMake(newXPosition, 0);
+//    
+//    [self scrollToOffset: newPosition
+//       animationDuration: maxAnimationTime * (1.0 - offsetXPositionAsPercent)
+//     subsequentAnimation: nil];
     
 }
 
@@ -707,14 +701,14 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     // animation
     
-    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
-    float maxAnimationTime = 1.0;
-    
-    CGPoint newPosition = CGPointMake(0, 0);
-    
-    [self scrollToOffset: newPosition
-       animationDuration: maxAnimationTime * offsetXPositionAsPercent
-     subsequentAnimation: nil];
+//    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
+//    float maxAnimationTime = 1.0;
+//    
+//    CGPoint newPosition = CGPointMake(0, 0);
+//    
+//    [self scrollToOffset: newPosition
+//       animationDuration: maxAnimationTime * offsetXPositionAsPercent
+//     subsequentAnimation: nil];
     
 }
 
@@ -898,9 +892,24 @@ typedef void (^AnimationCompletionBlock)(BOOL);
         
         TJBWorkoutLogTitleCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
         
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        df.dateFormat = @"EEEE, MMMM d, yyyy";
-        cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
+        
+        
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+        BOOL isToday = [calendar isDate: self.activeDate
+                        inSameDayAsDate: [NSDate date]];
+        
+        if (isToday){
+            
+            cell.secondaryLabel.text = @"Today";
+            
+        } else{
+            
+            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+            df.dateFormat = @"EEEE, MMMM d, yyyy";
+            cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
+            
+        }
+        
         cell.primaryLabel.text = @"My Workout Log";
         cell.backgroundColor = [UIColor clearColor];
         
