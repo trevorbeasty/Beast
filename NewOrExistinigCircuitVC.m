@@ -385,7 +385,7 @@
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Designed Lift"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"My Routines"];
     
     // left button
     
@@ -858,9 +858,9 @@
         
         NSString *primaryText;
         if (self.sortBySegmentedControl.selectedSegmentIndex == 0){
-            primaryText = @"My Schemes by Date Last Executed";
+            primaryText = @"Routines by Date Last Executed";
         } else{
-            primaryText = @"My Schemes by Date Created";
+            primaryText = @"Routines by Date Created";
         }
         
         NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
@@ -889,7 +889,7 @@
             
             TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
             
-            cell.mainLabel.text = @"No Schemes";
+            cell.mainLabel.text = @"No Routines";
             
             cell.backgroundColor = [UIColor clearColor];
             

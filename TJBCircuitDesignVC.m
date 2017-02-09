@@ -55,11 +55,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *counterNumberOfExercises;
 @property (weak, nonatomic) IBOutlet UILabel *counterNumberOfRounds;
 
-// container views
-
-@property (weak, nonatomic) IBOutlet UIView *backdropView;
-@property (weak, nonatomic) IBOutlet UIView *metaContainerView;
-
 // IBAction
 
 - (IBAction)didPressLaunchTemplate:(id)sender;
@@ -139,7 +134,7 @@
 
 - (void)configureNavigationBar{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Scheme Design"];
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"New Routine"];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
                                                                                    target: self
@@ -153,45 +148,11 @@
     
 }
 
-- (void)configureShadowView{
-    
-    [self.view layoutIfNeeded];
-    
-    UIView *shadowView = [[UIView alloc] initWithFrame: self.metaContainerView.frame];
-    [self.view insertSubview: shadowView
-                belowSubview: self.metaContainerView];
-    
-    shadowView.backgroundColor = [UIColor whiteColor];
-    shadowView.clipsToBounds = NO;
-    
-    CALayer *shadowLayer = shadowView.layer;
-    shadowLayer.masksToBounds = NO;
-    shadowLayer.shadowColor = [UIColor whiteColor].CGColor;
-    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
-    shadowLayer.shadowOpacity = 1.0;
-    shadowLayer.shadowRadius = 3.0;
-    
-}
+
 
 - (void)viewAesthetics{
     
-    [self configureShadowView];
-    
-    self.view.backgroundColor = [UIColor lightGrayColor];
-    
-    // control container view
-    
-    self.metaContainerView.backgroundColor = [UIColor whiteColor];
-    
-//    CALayer *containerLayer;
-//    containerLayer = self.metaContainerView.layer;
-//    containerLayer.masksToBounds = YES;
-//    containerLayer.cornerRadius = 4.0;
-    
     // text field
-    
-    [self.circuitNameLabel setTextColor: [UIColor darkGrayColor]];
-    self.circuitNameLabel.backgroundColor = [UIColor whiteColor];
     
     CALayer *tfLayer = self.circuitNameLabel.layer;
     tfLayer = self.nameTextField.layer;
@@ -206,6 +167,7 @@
     
     NSArray *steppers = @[self.numberOfExercisesStepper,
                           self.numberOfRoundsStepper];
+    
     for (UIStepper *s in steppers){
         
         s.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
@@ -216,6 +178,7 @@
                                    self.targetingRepsSC,
                                    self.targetingRestSC,
                                    self.targetsVaryByRoundSC];
+    
     for (UISegmentedControl *sc in segmentedControls){
         
         sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
@@ -233,13 +196,12 @@
     
     for (UILabel *label in labels){
         
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        label.textColor = [UIColor whiteColor];
+        label.layer.masksToBounds = YES;
+        label.layer.cornerRadius = 4.0;
         
     }
     
-    // button
+    // buttonr
     
     self.launchTemplateButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     

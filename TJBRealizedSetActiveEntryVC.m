@@ -665,7 +665,7 @@
         [weakSelf.targetRestButton setTitle: targetRestString
                                forState: UIControlStateNormal];
         
-        [weakSelf dismissViewControllerAnimated: NO
+        [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
         
     };
@@ -703,7 +703,7 @@
         [weakSelf.alertTimingButton setTitle: targetRestString
                                     forState: UIControlStateNormal];
         
-        [weakSelf dismissViewControllerAnimated: NO
+        [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
         
     };
