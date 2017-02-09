@@ -83,8 +83,8 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VS1-DP-des">
                     <rect key="frame" x="122" y="0.0" width="448" height="48"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Select Exercise"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                    <state key="normal" title="Exercise"/>
                     <connections>
                         <action selector="didPressSelectExercise:" destination="-1" eventType="touchUpInside" id="Xz3-YH-Boo"/>
                     </connections>

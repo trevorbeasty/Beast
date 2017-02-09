@@ -117,6 +117,7 @@
         button.backgroundColor = [aesthetics blueButtonColor];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
         
         CALayer *layer = button.layer;
         layer.masksToBounds = YES;

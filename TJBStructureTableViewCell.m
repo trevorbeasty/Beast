@@ -125,6 +125,7 @@
     }
     
     self.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.chainNameLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
 }
 

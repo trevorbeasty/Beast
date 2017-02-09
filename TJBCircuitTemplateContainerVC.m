@@ -34,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *roundsLabel;
 
 // IBAction
 
@@ -102,23 +103,13 @@
 
 - (void)viewDidLoad{
     
-    // for restoration
-    
     [self setRestorationProperties];
-    
-    // prep for adding child VC
     
     [self setViewDimensionPropertiesForUseByChildVC];
     
-    // instantiate the child VC and add its view
-    
     [self configureContainerView];
     
-    //
-    
     [self configureNavigationBar];
-    
-//    [self addBackgroundView];
     
     [self configureViewAesthetics];
 
@@ -131,7 +122,7 @@
     
     CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
     
-    NSNumber *viewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 140];
+    NSNumber *viewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 150];
     NSNumber *viewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
     
     self.childViewHeight = viewHeight;
@@ -148,15 +139,35 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
+    // title labels
+    
     self.titleLabel.text = self.chainTemplate.name;
+    self.titleLabel.backgroundColor = [UIColor darkGrayColor];
     
-}
-
-- (void)addBackgroundView{
+    NSString *word;
     
-    [[TJBAestheticsController singleton] addFullScreenBackgroundViewWithImage: [UIImage imageNamed: @"weightRack"]
-                                                                   toRootView: self.view
-                                                                 imageOpacity: .35];
+    int number = self.chainTemplate.numberOfRounds;
+    
+    if (number == 1){
+    
+        word = @"round";
+    
+    } else{
+    
+        word = @"rounds";
+            
+    }
+    
+    NSString *roundsText = [NSString stringWithFormat: @"%d %@",
+                            self.chainTemplate.numberOfRounds,
+                            word];
+    
+    self.roundsLabel.text = roundsText;
+    self.roundsLabel.backgroundColor = [UIColor darkGrayColor];
+    
+    
+    
+    
 }
 
 - (void)configureContainerView{
@@ -182,22 +193,6 @@
     // create the navigation item
     
     UINavigationItem *navItem = [[UINavigationItem alloc] init];
-    
-    // must evaluate IV's to determine appropriate title for navItem
-    
-//    NSString *word;
-//    
-//    int number = self.chainTemplate.numberOfRounds;
-//    
-//    if (number == 1){
-//        
-//        word = @"round";
-//        
-//    } else{
-//        
-//        word = @"rounds";
-//        
-//    }
     
     NSString *title = @"New Routine";
     

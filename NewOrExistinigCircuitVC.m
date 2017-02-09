@@ -153,6 +153,18 @@
     
     [self drawCircles];
     
+    [self configureNotifications];
+    
+}
+
+- (void)configureNotifications{
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(fetchCoreData)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: [[CoreDataController singleton] moc]];
+    
+    
 }
 
 - (void)clearTransitoryDateControlObjects{
@@ -274,10 +286,6 @@
                                               toUnitGranularity: NSCalendarUnitMonth];
         
         BOOL iterativeMonthGreaterThanCurrentMonth = todayMonthCompare == NSOrderedDescending;
-        
-//        NSComparisonResult activeDateMonthCompare = [calendar compareDate: iterativeDate
-//                                                                   toDate: activeDate
-//                                                        toUnitGranularity: NSCalendarUnitMonth];
         
         BOOL isTheActiveMonth = NO;
         
