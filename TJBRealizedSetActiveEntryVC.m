@@ -242,7 +242,7 @@
     [self.view insertSubview: self.grayBackdropView
                 belowSubview: self.titleLabelsContainer];
     
-    self.buttonsContainerConstraint.constant = -102;
+    self.buttonsContainerConstraint.constant = -1 * slidingHeight;
     
 }
 

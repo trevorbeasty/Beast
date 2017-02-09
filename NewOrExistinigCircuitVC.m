@@ -914,9 +914,18 @@
             
         } else{
             
+            BOOL isSelectedCell = NO;
+            
+            if (self.lastSelectedIndexPath){
+                
+                isSelectedCell = self.lastSelectedIndexPath.row == indexPath.row;
+                
+            }
+            
             TJBStructureTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.layer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
             
             [cell clearExistingEntries];
             
@@ -944,7 +953,19 @@
                                         date: date
                                       number: [NSNumber numberWithInteger: indexPath.row]];
             
-            cell.backgroundColor = [UIColor clearColor];
+            // configure border width and background color according to whether or not the cell is selected
+            
+            if (isSelectedCell){
+                
+                cell.backgroundColor = [UIColor whiteColor];
+                cell.layer.borderWidth = 4.0;
+                
+            } else{
+                
+                cell.backgroundColor = [UIColor clearColor];
+                cell.layer.borderWidth = 0.0;
+                
+            }
             
             return cell;
             
@@ -1000,7 +1021,6 @@
     
     selectedCell.backgroundColor = [UIColor whiteColor];
     
-    selectedCell.layer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
     selectedCell.layer.borderWidth = 4.0;
     
     [self toggleButtonsToOnState];
@@ -1039,41 +1059,6 @@
     
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    
-//    UILabel *label = [[UILabel alloc] init];
-//    
-//    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//    df.dateFormat = @"MMMM yyyy";
-//    
-//    NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
-//    BOOL sortByDateLastExecuted = sortSelection == 0;
-//    BOOL sortByDateCreated = sortSelection == 1;
-//    
-//    if (sortByDateLastExecuted){
-//        
-//        label.text = [df stringFromDate: self.sortedContent[section].lastObject.dateCreated];
-//        
-//    } else if (sortByDateCreated){
-//        
-//        label.text = [df stringFromDate: self.sortedContent[section][0].dateCreated];
-//        
-//    }
-//    
-//    label.backgroundColor = [UIColor lightGrayColor];
-//    label.textColor = [UIColor blackColor];
-//    label.font = [UIFont systemFontOfSize: 20.0];
-//    label.textAlignment = NSTextAlignmentCenter;
-//    
-//    return label;
-//    
-//}
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//    
-//    return 60;
-//    
-//}
 
 #pragma mark - Button Actions
 
@@ -1149,6 +1134,7 @@
     TJBStructureTableViewCell *cell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
     cell.layer.borderWidth = 0.0;
     cell.backgroundColor = [UIColor clearColor];
+    self.lastSelectedIndexPath = nil;
     
 }
 
