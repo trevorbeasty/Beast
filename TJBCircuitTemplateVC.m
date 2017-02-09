@@ -316,8 +316,8 @@ static NSString * const defaultValue = @"unselected";
     
     void (^buttonAlterationBlock)(void) = ^{
         
-        button.backgroundColor = [UIColor whiteColor];
-        [button setTitleColor: [UIColor blackColor]
+        button.backgroundColor = [UIColor clearColor];
+        [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         
     };
@@ -440,9 +440,6 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
     
-//    NSString *title = [NSString stringWithFormat: @"Chain Element #%d",
-//                       [chainNumber intValue]];
-    
     TJBCircuitTemplateVC * __weak weakSelf = self;
     
     void (^callback)(TJBExercise *) = ^(TJBExercise *exercise){
@@ -450,9 +447,9 @@ static NSString * const defaultValue = @"unselected";
         [button setTitle: exercise.name
                 forState: UIControlStateNormal];
         
-        button.backgroundColor = [UIColor whiteColor];
+        button.backgroundColor = [UIColor clearColor];
         
-        [button setTitleColor: [UIColor blackColor]
+        [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         
         [weakSelf didSelectExercise: exercise

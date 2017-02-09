@@ -243,6 +243,7 @@
         
         [exerciseButton setTitle: exercise.name
                         forState: UIControlStateNormal];
+        
         [self configureButtonWithSelectedAppearance: exerciseButton];
         
     }
@@ -253,8 +254,9 @@
     
     //// configure the passed in button with the 'selected' appearance
     
-    button.backgroundColor = [UIColor whiteColor];
-    [button setTitleColor: [UIColor blackColor]
+    button.backgroundColor = [UIColor clearColor];
+    
+    [button setTitleColor: [UIColor whiteColor]
                  forState: UIControlStateNormal];
     
 }
