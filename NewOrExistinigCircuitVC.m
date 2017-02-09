@@ -15,7 +15,7 @@
 // VC's to present
 
 #import "TJBCircuitDesignVC.h"
-#import "TJBCircuitModeTBC.h"
+#import "TJBActiveRoutineGuidanceVC.h"
 
 // views
 
@@ -1097,11 +1097,21 @@
 
 - (IBAction)didPressLaunchButton:(id)sender {
     
-    TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithNewRealizedChainAndChainTemplateFromChainTemplate: self.selectedChainTemplate];
+    if (self.selectedChainTemplate){
+        
+        TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
+        
+        [self presentViewController: vc
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        
+        NSLog(@"no chain template selected");
+        
+    }
     
-    [self presentViewController: tbc
-                       animated: YES
-                     completion: nil];
+    
     
 }
 
