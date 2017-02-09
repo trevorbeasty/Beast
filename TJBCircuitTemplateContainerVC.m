@@ -223,8 +223,8 @@
 
 - (void)alertUserInputIncomplete{
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"User Input Error"
-                                                                   message: @"Please make selections for all active fields"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"All Selections Not Made"
+                                                                   message: @"Please make all selections"
                                                             preferredStyle: UIAlertControllerStyleAlert];
     
     UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"

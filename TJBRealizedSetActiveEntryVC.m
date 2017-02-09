@@ -1001,7 +1001,8 @@
             
         }
 
-        [self presentSubmittedSetSummary];
+//        [self presentSubmittedSetSummary];
+        [self confirmSubmission];
         
         [self enableAllSegmentedControls];
         
@@ -1628,6 +1629,8 @@
 
 #pragma mark - Animation
 
+static CGFloat const slidingHeight = 103;
+
 - (void)toggleButtonControlsToAdvancedDisplay{
     
     [UIView animateWithDuration: .4
@@ -1636,11 +1639,11 @@
                          self.buttonsContainerConstraint.constant = 0;
                          
                          CGRect currentFrame = self.grayBackdropView.frame;
-                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + 102, currentFrame.size.width, currentFrame.size.height);
+                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + slidingHeight, currentFrame.size.width, currentFrame.size.height);
                          self.grayBackdropView.frame = newFrame;
                          
                          CGRect currentTVFrame = self.personalRecordsTableView.frame;
-                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + 102, currentTVFrame.size.width, currentTVFrame.size.height - 102);
+                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + slidingHeight, currentTVFrame.size.width, currentTVFrame.size.height - slidingHeight);
                          self.personalRecordsTableView.frame = newTVFrame;
                          
                      }];
@@ -1656,14 +1659,14 @@
     [UIView animateWithDuration: .4
                      animations: ^{
                          
-                         self.buttonsContainerConstraint.constant = -102;
+                         self.buttonsContainerConstraint.constant = -1 * slidingHeight;
                          
                          CGRect currentFrame = self.grayBackdropView.frame;
-                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - 102, currentFrame.size.width, currentFrame.size.height);
+                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - slidingHeight, currentFrame.size.width, currentFrame.size.height);
                          self.grayBackdropView.frame = newFrame;
                          
                          CGRect currentTVFrame = self.personalRecordsTableView.frame;
-                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - 102, currentTVFrame.size.width, currentTVFrame.size.height + 102);
+                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - slidingHeight, currentTVFrame.size.width, currentTVFrame.size.height + slidingHeight);
                          self.personalRecordsTableView.frame = newTVFrame;
                          
                      }];

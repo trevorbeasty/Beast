@@ -133,6 +133,12 @@
 
 #pragma mark - View Cycle
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [self configureSelectionAsNil];
+    
+}
+
 - (void)viewDidLoad{
     
     // must sort content first so that the date control can easily know which months have content
@@ -1142,6 +1148,7 @@
     
     TJBStructureTableViewCell *cell = [self.tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
     cell.layer.borderWidth = 0.0;
+    cell.backgroundColor = [UIColor clearColor];
     
 }
 
@@ -1190,6 +1197,8 @@
 #pragma mark - <TJBSchemeSelectionDateCompDelegate>
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
+    
+    [self configureSelectionAsNil];
     
     if (self.selectedDateObjectIndex){
         

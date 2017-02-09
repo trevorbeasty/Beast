@@ -17,9 +17,6 @@
 
 #import "TJBAestheticsController.h"
 
-// test
-
-#import "TJBNumberSelectionVC.h"
 
 @interface TJBLiftOptionsVC ()
 
@@ -28,13 +25,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-@property (weak, nonatomic) IBOutlet UIButton *testButton;
 
 // IBAction
 
 - (IBAction)didPressFreeformButton:(id)sender;
 - (IBAction)didPressDesignedButton:(id)sender;
-- (IBAction)didPressTestButton:(id)sender;
 
 
 @end
@@ -54,8 +49,7 @@
 - (void)configureViewAesthetics{
     
     NSArray *buttons = @[self.freeformButton,
-                         self.designedButton,
-                         self.testButton];
+                         self.designedButton];
     
     for (UIButton *button in buttons){
         
@@ -63,6 +57,9 @@
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = 4.0;
         
     }
     
@@ -108,18 +105,18 @@
     
 }
 
-- (IBAction)didPressTestButton:(id)sender{
-    
-    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: WeightType
-                                                                                    title: @"Bench"
-                                                                              cancelBlock: nil
-                                                                      numberSelectedBlock: nil];
-    
-    [self presentViewController:vc
-                       animated: YES
-                     completion: nil];
-    
-}
+//- (IBAction)didPressTestButton:(id)sender{
+//    
+//    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: WeightType
+//                                                                                    title: @"Bench"
+//                                                                              cancelBlock: nil
+//                                                                      numberSelectedBlock: nil];
+//    
+//    [self presentViewController:vc
+//                       animated: YES
+//                     completion: nil];
+//    
+//}
 
 - (void)didPressHome{
     
