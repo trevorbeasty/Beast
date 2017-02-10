@@ -12,6 +12,10 @@
 
 #import "TJBActiveRoutineGuidancePreviousEntryCell.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBActiveRoutineExerciseItemVC () <UITableViewDelegate, UITableViewDataSource>
 
 // IBOutlet
@@ -76,11 +80,17 @@ static NSString * previousEntryCellID = @"previousEntryCell";
 
 - (void)configureTableView{
     
+    // functionality
+    
     UINib *previousEntryCell = [UINib nibWithNibName: @"TJBActiveRoutineGuidancePreviousEntryCell"
                                               bundle: nil];
     
     [self.previousEntriesTableView registerNib: previousEntryCell
                         forCellReuseIdentifier: previousEntryCellID];
+    
+    // aesthetics
+    
+    self.previousEntriesTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 
@@ -108,7 +118,12 @@ static NSString * previousEntryCellID = @"previousEntryCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    TJBActiveRoutineGuidancePreviousEntryCell *cell = [self.previousEntriesTableView dequeueReusableCellWithIdentifier: previousEntryCellID];
     
+    cell.backgroundColor = [UIColor clearColor];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
     
 }
 
