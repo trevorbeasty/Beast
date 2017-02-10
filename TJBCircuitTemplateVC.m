@@ -398,7 +398,7 @@ static NSString * const defaultValue = @"unselected";
                                                animated: YES
                                    modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    else if (type == RestType)
+    else if (type == TargetRestType)
     {
         
         NumberSelectedBlockSingle block = ^(NSNumber *number){
@@ -428,7 +428,7 @@ static NSString * const defaultValue = @"unselected";
             
         };
         
-        [self presentNumberSelectionSceneWithNumberType: RestType
+        [self presentNumberSelectionSceneWithNumberType: TargetRestType
                                          numberMultiple: [NSNumber numberWithDouble: 5.0]
                                             numberLimit: nil
                                                   title: @"Select Rest"

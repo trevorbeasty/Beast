@@ -670,7 +670,7 @@
         
     };
     
-    [self presentNumberSelectionSceneWithNumberType: RestType
+    [self presentNumberSelectionSceneWithNumberType: TargetRestType
                                      numberMultiple: [NSNumber numberWithDouble: 5.0]
                                         numberLimit: nil
                                               title: @"Select Target Rest"
@@ -708,7 +708,7 @@
         
     };
     
-    [self presentNumberSelectionSceneWithNumberType: RestType
+    [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
                                      numberMultiple: [NSNumber numberWithDouble: 5.0]
                                         numberLimit: nil
                                               title: @"Select Alert Timing"
@@ -880,7 +880,7 @@
         
             };
             
-            [self presentNumberSelectionSceneWithNumberType: RestType
+            [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
                                              numberMultiple: [NSNumber numberWithInt: 5]
                                                 numberLimit: nil
                                                       title: @"Select Delay"
@@ -936,7 +936,7 @@
             
             
             
-            [self presentNumberSelectionSceneWithNumberType: RestType
+            [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
                                              numberMultiple: [NSNumber numberWithInt: 5]
                                                 numberLimit: nil
                                                       title: @"Select Lag"

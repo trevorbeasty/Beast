@@ -444,7 +444,7 @@ static NSString * const defaultValue = @"default value";
  
         };
         
-        [self presentNumberSelectionSceneWithNumberType: RestType
+        [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
                                          numberMultiple: [NSNumber numberWithInt: 5]
                                             numberLimit: nil
                                                   title: @"Select Delay"
@@ -537,7 +537,7 @@ static NSString * const defaultValue = @"default value";
             
         };
         
-        [self presentNumberSelectionSceneWithNumberType: RestType
+        [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
                                          numberMultiple: [NSNumber numberWithInt: 5]
                                             numberLimit: nil
                                                   title: @"Select Lag"

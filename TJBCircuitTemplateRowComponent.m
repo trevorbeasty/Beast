@@ -179,7 +179,7 @@
 - (IBAction)didPressRestButton:(id)sender{
     
     
-        [self.masterController didPressUserInputButtonWithType: RestType
+        [self.masterController didPressUserInputButtonWithType: TargetRestType
                                                    chainNumber: self.chainNumber
                                                    roundNumber: self.roundNumber
                                                         button: self.restButton];

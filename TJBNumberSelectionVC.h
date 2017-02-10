@@ -13,7 +13,8 @@
 typedef enum {
     WeightType,
     RepsType,
-    RestType
+    TargetRestType,
+    TimeIntervalSelection
 } NumberType;
 
 typedef void(^CancelBlock)(void);

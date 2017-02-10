@@ -92,7 +92,11 @@ static NSString * const reuseIdentifier = @"cell";
             self.typeLabel.text = @"Weight";
             break;
             
-        case RestType:
+        case TargetRestType:
+            self.typeLabel.text = @"Rest";
+            break;
+            
+        case TimeIntervalSelection:
             self.typeLabel.text = @"Time";
             break;
             
@@ -233,7 +237,16 @@ static NSString * const reuseIdentifier = @"cell";
     TJBWeightRepsSelectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier: reuseIdentifier
                                                                                  forIndexPath: indexPath];
     
-    NSNumber *cellNumber = [NSNumber numberWithFloat: indexPath.row * [self multiplierValue]];
+    NSNumber *cellNumber;
+    if (_numberTypeIdentifier == TargetRestType){
+        
+        cellNumber = [NSNumber numberWithFloat: (indexPath.row - 1) * [self multiplierValue] + 30.0];
+        
+    } else{
+        
+        cellNumber = [NSNumber numberWithFloat: indexPath.row * [self multiplierValue]];
+        
+    }
     
     cell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     
@@ -247,7 +260,21 @@ static NSString * const reuseIdentifier = @"cell";
         
     }
     
-    if (_numberTypeIdentifier == RestType){
+    if (_numberTypeIdentifier == TargetRestType){
+        
+        // if it is the first cell, give it the string 'no rest' representation
+        
+        if (indexPath.row == 0){
+            
+            cell.numberLabel.text = @"Go Immediately Into Next Set";
+            
+        } else{
+            
+            cell.numberLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber floatValue]];
+            
+        }
+
+    } else if (_numberTypeIdentifier == TimeIntervalSelection){
         
         cell.numberLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [cellNumber floatValue]];
         
@@ -352,16 +379,37 @@ static NSString * const reuseIdentifier = @"cell";
     TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
         
     currentCell.backgroundColor = [UIColor redColor];
+    
+    NSNumber *number;
+    if (_numberTypeIdentifier == TargetRestType){
         
-    NSNumber *number = [NSNumber numberWithFloat: indexPath.row * [self multiplierValue]];
+        number = [NSNumber numberWithFloat: (indexPath.row - 1) * [self multiplierValue] + 30.0];
+        
+    } else{
+        
+        number = [NSNumber numberWithFloat: indexPath.row * [self multiplierValue]];
+        
+    }
     
     if (_numberTypeIdentifier == WeightType){
         
         self.selectedValueLabel.text = [NSString stringWithFormat: @"%@ lbs", [number stringValue]];
         
-    } else if (_numberTypeIdentifier == RestType){
+    } else if (_numberTypeIdentifier == TimeIntervalSelection){
         
         self.selectedValueLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+        
+    } else if (_numberTypeIdentifier == TargetRestType){
+        
+        if (indexPath.row == 0){
+            
+            self.selectedValueLabel.text = @"Go Immediately Into the Next Set";
+            
+        } else{
+            
+            self.selectedValueLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+            
+        }
         
     } else{
         
@@ -384,7 +432,17 @@ static NSString * const reuseIdentifier = @"cell";
     
     if (self.selectedCellIndexPath){
         
-        NSNumber *selectedNumber = [NSNumber numberWithFloat: self.selectedCellIndexPath.row * [self multiplierValue]];
+        NSNumber *selectedNumber;
+        
+        if (_numberTypeIdentifier == TargetRestType){
+            
+            selectedNumber = [NSNumber numberWithFloat: (self.selectedCellIndexPath.row - 1) * [self multiplierValue] + 30.0];
+            
+        } else{
+            
+            selectedNumber = [NSNumber numberWithFloat: self.selectedCellIndexPath.row * [self multiplierValue]];
+            
+        }
         
         self.numberSelectedBlock(selectedNumber);
         
@@ -430,12 +488,24 @@ static float const numberOfCellsPerRow = 4;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     [self.view layoutIfNeeded];
-        
+    
+    // the rest options will have a 'no rest' option and will otherwise begin with a minimum value of 30 seconds.  This is done because the app experience is poor if the user does not have enough time to enter their realized set info
+    
     CGFloat collectionViewWidth = self.collectionView.frame.size.width;
-        
+    
     CGFloat cellWidth = (collectionViewWidth - (numberOfCellsPerRow -1) * spacing) / numberOfCellsPerRow;
+    
+    if (_numberTypeIdentifier == TargetRestType && indexPath.row == 0){
         
-    return CGSizeMake(cellWidth, cellWidth);
+        return CGSizeMake(collectionViewWidth, cellWidth / 2.0);
+        
+    } else{
+        
+        return CGSizeMake(cellWidth, cellWidth);
+        
+    }
+        
+
     
 }
 
