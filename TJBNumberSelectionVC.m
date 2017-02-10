@@ -436,7 +436,15 @@ static NSString * const reuseIdentifier = @"cell";
         
         if (_numberTypeIdentifier == TargetRestType){
             
-            selectedNumber = [NSNumber numberWithFloat: (self.selectedCellIndexPath.row - 1) * [self multiplierValue] + 30.0];
+            if (self.selectedCellIndexPath.row == 0){
+                
+                selectedNumber = [NSNumber numberWithInt: 0];
+                
+            } else{
+                
+                selectedNumber = [NSNumber numberWithFloat: (self.selectedCellIndexPath.row - 1) * [self multiplierValue] + 30.0];
+                
+            }
             
         } else{
             
