@@ -24,6 +24,8 @@
 		0B3688291E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */; };
 		0B3688311E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */; };
 		0B3688321E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */; };
+		0B3688371E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3688351E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m */; };
+		0B3688381E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688361E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BC71DF77C20009981F9 /* Main.storyboard */; };
@@ -134,6 +136,9 @@
 		0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveRoutineExerciseItemVC.h; sourceTree = "<group>"; };
 		0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveRoutineExerciseItemVC.m; sourceTree = "<group>"; };
 		0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveRoutineExerciseItemVC.xib; sourceTree = "<group>"; };
+		0B3688341E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveRoutineGuidancePreviousEntryCell.h; sourceTree = "<group>"; };
+		0B3688351E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveRoutineGuidancePreviousEntryCell.m; sourceTree = "<group>"; };
+		0B3688361E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveRoutineGuidancePreviousEntryCell.xib; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -370,11 +375,22 @@
 		0B36882B1E4DF6560077290C /* Supplemental VC's */ = {
 			isa = PBXGroup;
 			children = (
+				0B3688331E4E01CA0077290C /* Cell */,
 				0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */,
 				0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */,
 				0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */,
 			);
 			name = "Supplemental VC's";
+			sourceTree = "<group>";
+		};
+		0B3688331E4E01CA0077290C /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				0B3688341E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.h */,
+				0B3688351E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m */,
+				0B3688361E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib */,
+			);
+			name = Cell;
 			sourceTree = "<group>";
 		};
 		0B517BB21DF77C20009981F9 = {
@@ -844,6 +860,7 @@
 				0B78E7D41E3D31B100EB216F /* TJBLiftOptionsVC.xib in Resources */,
 				0BA8ACFC1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib in Resources */,
 				0BA8AD061E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib in Resources */,
+				0B3688381E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib in Resources */,
 				0B78E7E71E462B6300EB216F /* TJBWeightRepsSelectionVC.xib in Resources */,
 				0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
@@ -905,6 +922,7 @@
 				0B78E7E61E462B6300EB216F /* TJBWeightRepsSelectionVC.m in Sources */,
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,
 				0BA8AD181E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.m in Sources */,
+				0B3688371E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m in Sources */,
 				0B3688311E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m in Sources */,
 				0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */,
 				0B3688211E4352B80077290C /* TJBSchemeSelectionDateComp.m in Sources */,

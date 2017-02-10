@@ -8,6 +8,10 @@
 
 #import "TJBActiveRoutineExerciseItemVC.h"
 
+// table view cell
+
+#import "TJBActiveRoutineGuidancePreviousEntryCell.h"
+
 @interface TJBActiveRoutineExerciseItemVC () <UITableViewDelegate, UITableViewDataSource>
 
 // IBOutlet
@@ -50,6 +54,8 @@
     
     [self configureViewData];
     
+    [self configureTableView];
+    
 }
 
 - (void)configureViewData{
@@ -66,6 +72,18 @@
     
 }
 
+static NSString * previousEntryCellID = @"previousEntryCell";
+
+- (void)configureTableView{
+    
+    UINib *previousEntryCell = [UINib nibWithNibName: @"TJBActiveRoutineGuidancePreviousEntryCell"
+                                              bundle: nil];
+    
+    [self.previousEntriesTableView registerNib: previousEntryCell
+                        forCellReuseIdentifier: previousEntryCellID];
+    
+}
+
 #pragma mark - <UITableViewDelegate>
 
 
@@ -75,13 +93,50 @@
 
 #pragma mark - <UITableViewDataSource>
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
+    return 1;
+    
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    return self.previousEntries.count;
+    
+}
 
 
-
-
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    
+}
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
