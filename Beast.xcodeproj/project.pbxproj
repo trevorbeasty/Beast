@@ -22,6 +22,8 @@
 		0B3688221E4352B80077290C /* TJBSchemeSelectionDateComp.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688201E4352B80077290C /* TJBSchemeSelectionDateComp.xib */; };
 		0B3688281E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3688261E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m */; };
 		0B3688291E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */; };
+		0B3688311E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */; };
+		0B3688321E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BC71DF77C20009981F9 /* Main.storyboard */; };
@@ -129,6 +131,9 @@
 		0B3688251E4D10E60077290C /* TJBActiveRoutineGuidanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveRoutineGuidanceVC.h; sourceTree = "<group>"; };
 		0B3688261E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveRoutineGuidanceVC.m; sourceTree = "<group>"; };
 		0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveRoutineGuidanceVC.xib; sourceTree = "<group>"; };
+		0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveRoutineExerciseItemVC.h; sourceTree = "<group>"; };
+		0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveRoutineExerciseItemVC.m; sourceTree = "<group>"; };
+		0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveRoutineExerciseItemVC.xib; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -344,6 +349,7 @@
 		0B3688241E4D10BD0077290C /* New */ = {
 			isa = PBXGroup;
 			children = (
+				0B36882B1E4DF6560077290C /* Supplemental VC's */,
 				0B3688251E4D10E60077290C /* TJBActiveRoutineGuidanceVC.h */,
 				0B3688261E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m */,
 				0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */,
@@ -359,6 +365,16 @@
 				0B2619A21E0EAB30006FB2D9 /* TJBActiveCircuitGuidance.xib */,
 			);
 			name = Old;
+			sourceTree = "<group>";
+		};
+		0B36882B1E4DF6560077290C /* Supplemental VC's */ = {
+			isa = PBXGroup;
+			children = (
+				0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */,
+				0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */,
+				0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */,
+			);
+			name = "Supplemental VC's";
 			sourceTree = "<group>";
 		};
 		0B517BB21DF77C20009981F9 = {
@@ -824,6 +840,7 @@
 				0B843CAB1DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib in Resources */,
 				0B86FB8A1E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.xib in Resources */,
 				0BA8AD191E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.xib in Resources */,
+				0B3688321E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib in Resources */,
 				0B78E7D41E3D31B100EB216F /* TJBLiftOptionsVC.xib in Resources */,
 				0BA8ACFC1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib in Resources */,
 				0BA8AD061E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib in Resources */,
@@ -888,6 +905,7 @@
 				0B78E7E61E462B6300EB216F /* TJBWeightRepsSelectionVC.m in Sources */,
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,
 				0BA8AD181E2686A200EE10C2 /* TJBCircuitActiveUpdatingRowComp.m in Sources */,
+				0B3688311E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m in Sources */,
 				0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */,
 				0B3688211E4352B80077290C /* TJBSchemeSelectionDateComp.m in Sources */,
 				0B86FB801E257310000D1B5F /* TJBCircuitTemplateVC.m in Sources */,
