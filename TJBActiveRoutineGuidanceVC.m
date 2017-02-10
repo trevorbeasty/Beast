@@ -86,7 +86,7 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     //// create the master view and give it the appropriate frame. Set the scroll view's content area according to the masterFrame's size
     
     CGFloat width = self.view.frame.size.width;
-    CGFloat height = 1200.0;
+    CGFloat height = 1000.0;
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];

@@ -82,7 +82,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Jcv-SU-ArZ">
-                    <rect key="frame" x="64" y="114" width="661" height="354"/>
+                    <rect key="frame" x="64" y="114" width="661" height="322"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -144,7 +144,7 @@
                 <constraint firstItem="DJh-zC-K1t" firstAttribute="top" secondItem="oy1-94-oRo" secondAttribute="bottom" constant="8" id="qra-xI-PrK"/>
                 <constraint firstItem="ntA-GQ-BPr" firstAttribute="top" secondItem="DJh-zC-K1t" secondAttribute="top" id="r7S-hO-AEs"/>
                 <constraint firstItem="Jcv-SU-ArZ" firstAttribute="top" secondItem="B3m-rD-qu8" secondAttribute="bottom" constant="4" id="xos-qw-3Hd"/>
-                <constraint firstItem="2tI-zc-ff9" firstAttribute="top" secondItem="Jcv-SU-ArZ" secondAttribute="bottom" constant="8" id="zTl-yS-L1y"/>
+                <constraint firstItem="2tI-zc-ff9" firstAttribute="top" secondItem="Jcv-SU-ArZ" secondAttribute="bottom" constant="40" id="zTl-yS-L1y"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-134.5" y="310"/>
