@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *targetWeightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetRepsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *previousEntriesTableView;
+@property (weak, nonatomic) IBOutlet UILabel *roundCornerLabel;
+@property (weak, nonatomic) IBOutlet UILabel *thenLabel;
 
 // core
 
@@ -54,11 +56,68 @@
     
 }
 
+#pragma mark - View Life Cycle
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    
+    
+}
+
 - (void)viewDidLoad{
     
     [self configureViewData];
     
     [self configureTableView];
+    
+    [self configureViewAesthetics];
+    
+}
+
+- (void)curveCorners{
+    
+    [self.view layoutIfNeeded];
+    
+    // title label
+    
+    CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.roundCornerLabel.bounds
+                                               byRoundingCorners: (UIRectCornerBottomRight)
+                                                     cornerRadii: CGSizeMake(4.0, 4.0)];
+    
+    shapeLayer.path = path.CGPath;
+    shapeLayer.frame = self.roundCornerLabel.bounds;
+    shapeLayer.fillRule = kCAFillRuleNonZero;
+    shapeLayer.fillColor = [UIColor redColor].CGColor;
+    
+    self.roundCornerLabel.layer.mask = shapeLayer;
+    
+    // next... label
+    
+    CAShapeLayer *thenLabelShapeLayer = [[CAShapeLayer alloc] init];
+    
+    UIBezierPath *thenLabelPath = [UIBezierPath bezierPathWithRoundedRect: self.thenLabel.bounds
+                                                        byRoundingCorners: (UIRectCornerTopRight)
+                                                              cornerRadii: CGSizeMake(4.0, 4.0)];
+    
+    thenLabelShapeLayer.path = thenLabelPath.CGPath;
+    thenLabelShapeLayer.frame = self.thenLabel.bounds;
+    thenLabelShapeLayer.fillRule = kCAFillRuleNonZero;
+    thenLabelShapeLayer.fillColor = [UIColor redColor].CGColor;
+    
+    self.thenLabel.layer.mask = thenLabelShapeLayer;
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    [self curveCorners];
+    
+    // table view curved corners
+    
+    self.previousEntriesTableView.layer.masksToBounds = YES;
+    self.previousEntriesTableView.layer.cornerRadius = 4.0;
     
 }
 

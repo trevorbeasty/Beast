@@ -86,7 +86,7 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     //// create the master view and give it the appropriate frame. Set the scroll view's content area according to the masterFrame's size
     
     CGFloat width = self.view.frame.size.width;
-    CGFloat height = 800.0;
+    CGFloat height = 1200.0;
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
@@ -96,44 +96,50 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     
     self.scrollContentView = masterView;
     
-    //// create the 'next up' label and pin it to the top of the master view
-    
-    // label creation and text configuration
-    
-    UILabel *nextUpLabel = [[UILabel alloc] init];
-    nextUpLabel.text = @"Next Up";
-    nextUpLabel.backgroundColor = [UIColor darkGrayColor];
-    nextUpLabel.textColor = [UIColor whiteColor];
-    nextUpLabel.font = [UIFont boldSystemFontOfSize: 30.0];
-    nextUpLabel.textAlignment = NSTextAlignmentCenter;
-    nextUpLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    self.nextUpLabel = nextUpLabel;
-    
-    // constraints
-    
-    [self.constraintMapping setObject: nextUpLabel
-                               forKey: nextUpLabelKey];
-    [masterView addSubview: nextUpLabel];
-    
-    NSArray *nextUpLabelHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[nextUpLabel]-0-|"
-                                                                       options: 0
-                                                                       metrics: nil
-                                                                         views: self.constraintMapping];
-    NSArray *nextUpLabelVerC = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-0-[nextUpLabel(==50)]"
-                                                                       options: 0
-                                                                       metrics: nil
-                                                                         views: self.constraintMapping];
-    
-    [masterView addConstraints: nextUpLabelHorC];
-    [masterView addConstraints: nextUpLabelVerC];
+//    //// create the 'next up' label and pin it to the top of the master view
+//    
+//    // label creation and text configuration
+//    
+//    UILabel *nextUpLabel = [[UILabel alloc] init];
+//    nextUpLabel.text = @"Next Up";
+//    nextUpLabel.backgroundColor = [UIColor darkGrayColor];
+//    nextUpLabel.textColor = [UIColor whiteColor];
+//    nextUpLabel.font = [UIFont boldSystemFontOfSize: 30.0];
+//    nextUpLabel.textAlignment = NSTextAlignmentCenter;
+//    nextUpLabel.translatesAutoresizingMaskIntoConstraints = NO;
+//    
+//    self.nextUpLabel = nextUpLabel;
+//    
+//    // constraints
+//    
+//    // the following string will have to be appended dynamically for vertical layout constraints
+//    
+////    NSMutableString *vertC = [NSMutableString stringWithCapacity: 1000];
+//    
+//    [self.constraintMapping setObject: nextUpLabel
+//                               forKey: nextUpLabelKey];
+//    [masterView addSubview: nextUpLabel];
+//    
+//    NSArray *nextUpLabelHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[nextUpLabel]-0-|"
+//                                                                       options: 0
+//                                                                       metrics: nil
+//                                                                         views: self.constraintMapping];
+//    
+////    [vertC appendString: @"V:|-0-[nextUpLabel(==50)]-0-"];
+//    NSArray *nextUpLabelVerC = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-0-[nextUpLabel(==50)]"
+//                                                                       options: 0
+//                                                                       metrics: nil
+//                                                                         views: self.constraintMapping];
+//    
+//    [masterView addConstraints: nextUpLabelHorC];
+//    [masterView addConstraints: nextUpLabelVerC];
     
     //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
     
     UIStackView *guidanceStackView = [[UIStackView alloc] init];
     guidanceStackView.axis = UILayoutConstraintAxisVertical;
     guidanceStackView.distribution = UIStackViewDistributionFillEqually;
-    guidanceStackView.alignment = UIStackViewDistributionFillEqually;
+    guidanceStackView.alignment = UIStackViewDistributionFill;
     guidanceStackView.spacing = 0;
     
     guidanceStackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -158,7 +164,11 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     
     // add views to the guidance stack view
     
+//    NSString *previousCompID;
+    
     for (int i = 0; i < 3; i++){
+        
+//        [self.view layoutIfNeeded];
         
         TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: [NSNumber numberWithInt: 1]
                                                                                                   targetExerciseName: @"Bench Press"
