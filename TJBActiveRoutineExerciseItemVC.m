@@ -84,7 +84,7 @@
     
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.roundCornerLabel.bounds
                                                byRoundingCorners: (UIRectCornerBottomRight)
-                                                     cornerRadii: CGSizeMake(4.0, 4.0)];
+                                                     cornerRadii: CGSizeMake(8.0, 8.0)];
     
     shapeLayer.path = path.CGPath;
     shapeLayer.frame = self.roundCornerLabel.bounds;
@@ -99,7 +99,7 @@
     
     UIBezierPath *thenLabelPath = [UIBezierPath bezierPathWithRoundedRect: self.thenLabel.bounds
                                                         byRoundingCorners: (UIRectCornerTopRight)
-                                                              cornerRadii: CGSizeMake(4.0, 4.0)];
+                                                              cornerRadii: CGSizeMake(8.0, 8.0)];
     
     thenLabelShapeLayer.path = thenLabelPath.CGPath;
     thenLabelShapeLayer.frame = self.thenLabel.bounds;

@@ -8,12 +8,17 @@
 
 #import "AppDelegate.h"
 
-#import "TJBExerciseCategory+CoreDataProperties.h"
-#import "TJBExercise+CoreDataProperties.h"
+//#import "TJBExerciseCategory+CoreDataProperties.h"
+//#import "TJBExercise+CoreDataProperties.h"
 
-#import "TJBWorkoutNavigationHub.h"
+// core data
 
 #import "CoreDataController.h"
+
+// root view controller
+
+#import "TJBLiftOptionsVC.h"
+
 
 @interface AppDelegate ()
 
@@ -43,8 +48,8 @@
     
     // root view controller
     
-    TJBWorkoutNavigationHub *wnh = [[TJBWorkoutNavigationHub alloc] init];
-    self.window.rootViewController = wnh;
+    TJBLiftOptionsVC *vc = [[TJBLiftOptionsVC alloc] init];
+    self.window.rootViewController = vc;
     
     return YES;
     

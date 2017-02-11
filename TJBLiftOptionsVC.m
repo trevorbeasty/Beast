@@ -10,6 +10,7 @@
 
 // presented VC's
 
+#import "TJBWorkoutNavigationHub.h"
 #import "TJBRealizedSetActiveEntryVC.h"
 #import "NewOrExistinigCircuitVC.h"
 
@@ -75,6 +76,7 @@
                                                                      style: UIBarButtonItemStyleDone
                                                                     target: self
                                                                     action: @selector(didPressHome)];
+    cancelButton.enabled = NO;
     [navItem setLeftBarButtonItem: cancelButton];
     
     [self.navBar setItems: @[navItem]];
@@ -87,9 +89,24 @@
 
 - (IBAction)didPressFreeformButton:(id)sender{
     
-    TJBRealizedSetActiveEntryVC *vc = [[TJBRealizedSetActiveEntryVC alloc] init];
+//    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform Lift"];
     
-    [self presentViewController: vc
+    TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
+    vc1.tabBarItem.title = @"Active";
+    
+    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
+    vc2.tabBarItem.title = @"Workout Log";
+    
+    
+    UITabBarController *tbc = [[UITabBarController alloc] init];
+    [tbc setViewControllers: @[vc1, vc2]];
+    tbc.tabBar.translucent = NO;
+    tbc.navigationItem.title = @"Freeform Lift";
+    
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+    navC.navigationBar.translucent = NO;
+    
+    [self presentViewController: navC
                        animated: NO
                      completion: nil];
     
@@ -97,9 +114,17 @@
 
 - (IBAction)didPressDesignedButton:(id)sender{
     
-    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
+    NewOrExistinigCircuitVC *vc1 = [[NewOrExistinigCircuitVC alloc] init];
+    vc1.tabBarItem.title = @"Active";
     
-    [self presentViewController: vc
+    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
+    vc2.tabBarItem.title = @"Workout Log";
+    
+    UITabBarController *tbc = [[UITabBarController alloc] init];
+    [tbc setViewControllers: @[vc1, vc2]];
+    tbc.tabBar.translucent = NO;
+    
+    [self presentViewController: tbc
                        animated: NO
                      completion: nil];
     

@@ -13,7 +13,6 @@
             <connections>
                 <outlet property="dateScrollView" destination="kfu-Yd-6by" id="NLu-hQ-Iig"/>
                 <outlet property="leftArrowButton" destination="Xyd-rd-xY1" id="Mcv-NY-SCb"/>
-                <outlet property="liftButton" destination="VJQ-A1-2LI" id="Zvh-Us-tds"/>
                 <outlet property="monthTitle" destination="wRK-QI-22E" id="dqm-bf-fxx"/>
                 <outlet property="rightArrowButton" destination="t4e-f8-R8O" id="dCP-e8-tVz"/>
                 <outlet property="tableView" destination="X0R-s4-kMW" id="tw0-LB-chD"/>
@@ -26,32 +25,11 @@
             <rect key="frame" x="0.0" y="0.0" width="508" height="724"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Egg-O8-qpU" userLabel="Button Container">
-                    <rect key="frame" x="0.0" y="684" width="508" height="40"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VJQ-A1-2LI">
-                            <rect key="frame" x="0.0" y="0.0" width="508" height="40"/>
-                            <color key="backgroundColor" red="0.15243352943505026" green="0.26855285753595498" blue="0.45854466623036649" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" title="Lift"/>
-                            <connections>
-                                <action selector="didPressLiftButton:" destination="-1" eventType="touchUpInside" id="ul4-ly-j7k"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="VJQ-A1-2LI" firstAttribute="leading" secondItem="Egg-O8-qpU" secondAttribute="leading" id="Cye-sb-8tu"/>
-                        <constraint firstAttribute="trailing" secondItem="VJQ-A1-2LI" secondAttribute="trailing" id="K8U-6S-A9y"/>
-                        <constraint firstAttribute="bottom" secondItem="VJQ-A1-2LI" secondAttribute="bottom" id="Xl8-lE-a2X"/>
-                        <constraint firstItem="VJQ-A1-2LI" firstAttribute="top" secondItem="Egg-O8-qpU" secondAttribute="top" id="k5O-gC-8ep"/>
-                        <constraint firstAttribute="height" constant="40" id="riI-eF-eF1"/>
-                    </constraints>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7nx-Mn-0CS" userLabel="TableView Container">
-                    <rect key="frame" x="16" y="140" width="476" height="528"/>
+                    <rect key="frame" x="16" y="140" width="476" height="568"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X0R-s4-kMW">
-                            <rect key="frame" x="0.0" y="0.0" width="476" height="528"/>
+                            <rect key="frame" x="0.0" y="0.0" width="476" height="568"/>
                             <color key="backgroundColor" red="0.97438395692087265" green="1" blue="0.69670033664544329" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -112,13 +90,10 @@
                 <constraint firstItem="t4e-f8-R8O" firstAttribute="leading" secondItem="wRK-QI-22E" secondAttribute="trailing" constant="2" id="0ty-yj-6hV"/>
                 <constraint firstItem="wRK-QI-22E" firstAttribute="top" secondItem="Xyd-rd-xY1" secondAttribute="top" id="1cR-wX-hFA"/>
                 <constraint firstAttribute="trailing" secondItem="7nx-Mn-0CS" secondAttribute="trailing" constant="16" id="BVL-fO-7d8"/>
-                <constraint firstItem="Egg-O8-qpU" firstAttribute="top" secondItem="7nx-Mn-0CS" secondAttribute="bottom" constant="16" id="C5y-tk-ywN"/>
+                <constraint firstAttribute="bottom" secondItem="7nx-Mn-0CS" secondAttribute="bottom" constant="16" id="FGy-3n-9nc"/>
                 <constraint firstItem="7nx-Mn-0CS" firstAttribute="top" secondItem="kfu-Yd-6by" secondAttribute="bottom" constant="16" id="Fka-zo-b8L"/>
                 <constraint firstItem="wRK-QI-22E" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="KOb-be-sP5"/>
-                <constraint firstItem="Egg-O8-qpU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="N5K-iz-IL9"/>
-                <constraint firstAttribute="bottom" secondItem="Egg-O8-qpU" secondAttribute="bottom" id="NS6-IP-QsA"/>
                 <constraint firstItem="Xyd-rd-xY1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Oif-n9-tzK"/>
-                <constraint firstAttribute="trailing" secondItem="Egg-O8-qpU" secondAttribute="trailing" id="OxS-iI-fqa"/>
                 <constraint firstAttribute="trailing" secondItem="kfu-Yd-6by" secondAttribute="trailing" id="PZB-fH-vxf"/>
                 <constraint firstItem="kfu-Yd-6by" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Rr7-k3-gaF"/>
                 <constraint firstItem="7nx-Mn-0CS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="VJJ-aM-9Zz"/>

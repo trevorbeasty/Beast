@@ -24,8 +24,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *timerTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
-
-
+@property (weak, nonatomic) IBOutlet UILabel *nextUpDetailLabel;
+@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
 // IBAction
 
@@ -42,6 +42,11 @@
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
+// state
+
+@property (nonatomic, strong) NSNumber *activeRoundIndex;
+@property (nonatomic, strong) NSNumber *activeExerciseIndex;
+
 @end
 
 @implementation TJBActiveRoutineGuidanceVC
@@ -54,6 +59,11 @@
     
     self.chainTemplate = chainTemplate;
     
+    // because it is a fresh routine, give it active round and exercise indices of 0
+    
+    self.activeRoundIndex = [NSNumber numberWithInt: 0];
+    self.activeExerciseIndex = [NSNumber numberWithInt: 0];
+    
     return self;
     
 }
@@ -62,10 +72,47 @@
 
 - (void)viewDidLoad{
     
+    // prep
+    
+    [self.view layoutIfNeeded];
+    
+    //
+    
+    [self configureViewAesthetics];
+    
     // get the scrollContentView and make it a subview of the scroll view
     
     [self.contentScrollView addSubview: [self scrollContentView]];
     
+    
+}
+
+- (void)configureNavigationBar{
+    
+    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Lift Routine"];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+                                                                   style: UIBarButtonItemStyleDone
+                                                                  target: self
+                                                                  action: @selector(didPressBack)];
+    [navItem setLeftBarButtonItem: backButton];
+    
+    [self.navBar setItems: @[navItem]];
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    // shadow for title objects to create separation
+    
+    CALayer *shadowLayer = self.nextUpDetailLabel.layer;
+    shadowLayer.masksToBounds = NO;
+    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+    shadowLayer.shadowOpacity = 1.0;
+    shadowLayer.shadowRadius = 3.0;
+    
+
     
 }
 
@@ -76,16 +123,12 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
 
 - (UIView *)scrollContentView{
     
-    // prep
-    
-    [self.view layoutIfNeeded];
-    
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     self.exerciseItemChildVCs = [[NSMutableArray alloc] init];
     
     //// create the master view and give it the appropriate frame. Set the scroll view's content area according to the masterFrame's size
     
-    CGFloat width = self.view.frame.size.width;
+    CGFloat width = self.contentScrollView.frame.size.width;
     CGFloat height = 1000.0;
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     
@@ -191,7 +234,14 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
 }
 
 
+#pragma mark - Button Actions
 
+- (void)didPressBack{
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+    
+}
 
 
 

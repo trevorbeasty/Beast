@@ -47,7 +47,7 @@
 // IBOutlet
 
 
-@property (weak, nonatomic) IBOutlet UIButton *liftButton;
+//@property (weak, nonatomic) IBOutlet UIButton *liftButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
@@ -59,7 +59,7 @@
 
 // IBAction
 
-- (IBAction)didPressLiftButton:(id)sender;
+//- (IBAction)didPressLiftButton:(id)sender;
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 
@@ -309,17 +309,40 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     // select today
     
-    [self configureDateControlsAndSelectToday: YES];
-    
     //// animation calculations
     
-    [self.view layoutIfNeeded];
-    
+//    [self.view layoutIfNeeded];
+
     // first position
     
-    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
+    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
     CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
     self.dateScrollView.contentOffset = firstPosition;
+    
+    // second position
+    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    NSInteger day = [calendar component: NSCalendarUnitDay
+//                               fromDate: self.activeDate];
+//    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
+//    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
+//    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
+//    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
+//    
+//    //
+//    
+//    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
+//    float maxAnimationTime = 1.0;
+//    
+//    // animation call
+//    
+//    [self scrollToOffset: secondPosition
+//       animationDuration: maxAnimationTime * percentScrollViewWidth
+//     subsequentAnimation: nil];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
     
     // second position
     
@@ -333,6 +356,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     //
     
+    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
     float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
     float maxAnimationTime = 1.0;
     
@@ -348,7 +372,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     [self configureViewAesthetics];
     
-//    [self configureDateControlsAndSelectToday: YES];
+    [self configureDateControlsAndSelectActiveDate: YES];
     
     [self configureTableView];
     
@@ -451,7 +475,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 
 
-- (void)configureDateControlsAndSelectToday:(BOOL)shouldSelectToday{
+- (void)configureDateControlsAndSelectActiveDate:(BOOL)shouldSelectActiveDate{
     
     //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
     
@@ -523,10 +547,8 @@ typedef void (^AnimationCompletionBlock)(BOOL);
         BOOL iterativeDateGreaterThanToday = [iterativeDate timeIntervalSinceDate: today] > 0;
         BOOL isTheActiveDate = NO;
         
-        if (shouldSelectToday){
-            
-//            NSLog(@"%@", self.activeDate);
-            
+        if (shouldSelectActiveDate){
+
             isTheActiveDate = [calendar isDate: iterativeDate
                                inSameDayAsDate: self.activeDate];
             
@@ -613,16 +635,16 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 - (void)configureViewAesthetics{
     
-    NSArray *buttons = @[self.liftButton];
-    
-    for (UIButton *button in buttons){
-        
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        [button setTitleColor: [UIColor whiteColor]
-                     forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-        
-    }
+//    NSArray *buttons = @[self.liftButton];
+//    
+//    for (UIButton *button in buttons){
+//        
+//        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+//        [button setTitleColor: [UIColor whiteColor]
+//                     forState: UIControlStateNormal];
+//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+//        
+//    }
     
     // scroll view
     
@@ -728,7 +750,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     dateComps.month += monthDelta;
     self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
     
-    [self configureDateControlsAndSelectToday: NO];
+    [self configureDateControlsAndSelectActiveDate: NO];
     
 }
 
