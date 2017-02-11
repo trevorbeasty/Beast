@@ -252,10 +252,10 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 220;
-    float numberOfRestComps = 1.0;
-    CGFloat restCompHeight = 100;
-    CGFloat height = exerciseCompHeight * numberOfExerciseComps + numberOfRestComps * restCompHeight;
+    CGFloat exerciseCompHeight = 330;
+//    float numberOfRestComps = 1.0;
+//    CGFloat restCompHeight = 100;
+    CGFloat height = exerciseCompHeight * (numberOfExerciseComps + 1.0);
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];

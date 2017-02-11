@@ -105,7 +105,7 @@
                     </state>
                 </button>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-cq-CI2">
-                    <rect key="frame" x="0.0" y="174" width="375" height="453"/>
+                    <rect key="frame" x="0.0" y="174" width="375" height="437"/>
                 </scrollView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYO-dB-jtY">
                     <rect key="frame" x="0.0" y="100" width="375" height="30"/>
@@ -136,7 +136,7 @@
                 <constraint firstItem="Lhw-ik-i5Y" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EWE-js-FTj"/>
                 <constraint firstAttribute="trailing" secondItem="2wr-bI-9Cm" secondAttribute="trailing" id="EqI-wy-nTO"/>
                 <constraint firstAttribute="bottom" secondItem="2wr-bI-9Cm" secondAttribute="bottom" id="Eym-t4-M1A"/>
-                <constraint firstItem="2wr-bI-9Cm" firstAttribute="top" secondItem="JEo-cq-CI2" secondAttribute="bottom" id="FQ5-4f-7Fc"/>
+                <constraint firstItem="2wr-bI-9Cm" firstAttribute="top" secondItem="JEo-cq-CI2" secondAttribute="bottom" constant="16" id="FQ5-4f-7Fc"/>
                 <constraint firstItem="MYO-dB-jtY" firstAttribute="top" secondItem="nYI-cm-pnM" secondAttribute="bottom" id="K4H-bo-gOi"/>
                 <constraint firstItem="nYI-cm-pnM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="KUf-5B-Wax"/>
                 <constraint firstAttribute="trailing" secondItem="Lhw-ik-i5Y" secondAttribute="trailing" id="KvX-lG-RPS"/>
