@@ -87,16 +87,17 @@
     
     CALayer *exerciseTextFieldLayer = self.exerciseTextField.layer;
     
-    CALayer *categorySC = self.categorySegmentedControl.layer;
+    self.categorySegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
     
-    NSArray *layers = @[exerciseTextFieldLayer,
-                        categorySC];
+    NSArray *layers = @[exerciseTextFieldLayer];
     
     for (CALayer *layer in layers){
+        
         layer.masksToBounds = YES;
         layer.cornerRadius = 10;
         layer.borderWidth = 1;
-        layer.borderColor = [[UIColor blackColor] CGColor];
+        layer.borderColor = [[UIColor darkGrayColor] CGColor];
+        
     }
     
     UIFont *categorySelectionFont = [UIFont systemFontOfSize: 20.0];
@@ -106,12 +107,6 @@
     
     [self.categorySegmentedControl setTitleTextAttributes: info
                                                  forState: UIControlStateNormal];
-
-    // labels
-    
-    [TJBAestheticsController configureViewsWithType1Format: @[self.exerciseLabel,
-                                                              self.categoryLabel]
-                                               withOpacity: .85];
     
     // text field
     

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -23,16 +23,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zM0-Hh-pvf">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="8W2-tD-mSo"/>
+                        <constraint firstAttribute="height" constant="60" id="8W2-tD-mSo"/>
                     </constraints>
                     <items>
                         <navigationItem title="Select Exercise" id="gsV-X8-sXQ"/>
                     </items>
                 </navigationBar>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
-                    <rect key="frame" x="8" y="58" width="359" height="561"/>
+                    <rect key="frame" x="0.0" y="60" width="375" height="567"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Ejm-bA-dJN"/>
@@ -45,8 +45,9 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="s0G-2g-BSg"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <state key="normal" title="Add New Exercise">
-                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="didPressAddNewExercise:" destination="-1" eventType="touchUpInside" id="gVw-qy-Cql"/>
@@ -55,16 +56,16 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="XIv-ZX-jxj" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" constant="8" id="103-ec-7eC"/>
                 <constraint firstItem="XIv-ZX-jxj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="1CV-dS-vWH"/>
                 <constraint firstItem="zM0-Hh-pvf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8sr-Bu-RCM"/>
                 <constraint firstAttribute="trailing" secondItem="XIv-ZX-jxj" secondAttribute="trailing" id="DkR-WC-v1s"/>
+                <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HyP-W1-zif"/>
                 <constraint firstItem="zM0-Hh-pvf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="QHv-E8-Rgd"/>
+                <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="zM0-Hh-pvf" secondAttribute="bottom" id="Tym-IW-da8"/>
+                <constraint firstItem="XIv-ZX-jxj" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" id="YKt-GX-OjI"/>
                 <constraint firstAttribute="bottom" secondItem="XIv-ZX-jxj" secondAttribute="bottom" id="bOr-bh-thD"/>
-                <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="fL7-nK-Ti9"/>
+                <constraint firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" id="lui-De-FOk"/>
                 <constraint firstAttribute="trailing" secondItem="zM0-Hh-pvf" secondAttribute="trailing" id="mSJ-SM-604"/>
-                <constraint firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" constant="8" id="oEs-fd-HDO"/>
-                <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="zM0-Hh-pvf" secondAttribute="bottom" constant="8" id="vei-eD-HxS"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>

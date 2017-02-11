@@ -122,8 +122,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (void)viewAesthetics{
     
-    [[TJBAestheticsController singleton] configureButtonsInArray: @[self.addNewExerciseButton]
-                                                     withOpacity: 1.0];
+    self.addNewExerciseButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     
 }
 
@@ -157,23 +156,46 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     cell.textLabel.text = exercise.name;
+    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
     
     return cell;
-}
-
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-    return [sectionInfo name];
 }
 
 #pragma mark - <UITableViewDelegate>
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.callbackBlock(exercise);
+    
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor darkGrayColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont boldSystemFontOfSize: 25.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+    label.text = [sectionInfo name];
+    
+    return label;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    
+    return 50;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 40;
     
 }
 
