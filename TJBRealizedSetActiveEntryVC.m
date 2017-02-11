@@ -352,7 +352,6 @@
     
     NSArray *rowLabels = @[self.targetRestLabel,
                            self.alertTimingLabel,
-                           self.exerciseLabel,
                            self.setStartTimeLabel,
                            self.setEndTimeLabel,
                            self.trackSetLengthLabel];
@@ -1629,7 +1628,7 @@
 
 #pragma mark - Animation
 
-static CGFloat const slidingHeight = 103;
+static CGFloat const slidingHeight = 173;
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
@@ -1649,7 +1648,7 @@ static CGFloat const slidingHeight = 103;
                      }];
     
     _advancedOptionsActive = YES;
-    [self.advancedOptionsButton setTitle: @"- Advanced Options"
+    [self.advancedOptionsButton setTitle: @"- advanced options"
                                 forState: UIControlStateNormal];
     
 }
@@ -1672,7 +1671,7 @@ static CGFloat const slidingHeight = 103;
                      }];
     
     _advancedOptionsActive = NO;
-    [self.advancedOptionsButton setTitle: @"+ Advanced Options"
+    [self.advancedOptionsButton setTitle: @"+ advanced options"
                                 forState: UIControlStateNormal];
     
 }
