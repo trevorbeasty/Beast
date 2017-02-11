@@ -16,6 +16,10 @@
 
 #import "TJBActiveRoutineExerciseItemVC.h"
 
+// utilities
+
+#import "TJBAssortedUtilities.h"
+
 @interface TJBActiveRoutineGuidanceVC ()
 
 // IBOutlet
@@ -32,7 +36,7 @@
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
-@property (nonatomic, strong) UIView *scrollContentView;
+@property (nonatomic, strong) UIView *activeScrollContentView;
 @property (nonatomic, strong) UILabel *nextUpLabel;
 @property (nonatomic, strong) UIStackView *guidanceStackView;
 @property (nonatomic, strong) NSMutableArray<TJBActiveRoutineExerciseItemVC *> *exerciseItemChildVCs;
@@ -45,6 +49,9 @@
 
 @property (nonatomic, strong) NSNumber *activeRoundIndex;
 @property (nonatomic, strong) NSNumber *activeExerciseIndex;
+
+@property (nonatomic, strong) NSMutableArray<NSArray *> *activeLiftTargets;
+@property (nonatomic, strong) NSNumber *activeRestTarget;
 
 @end
 
@@ -79,26 +86,25 @@
     
     [self configureViewAesthetics];
     
+    //// state
+    
+    self.activeLiftTargets = [[NSMutableArray alloc] init];
+    self.activeRestTarget = nil;
+    
+    [self deriveStateContent];
+    
     // get the scrollContentView and make it a subview of the scroll view
     
-    [self.contentScrollView addSubview: [self scrollContentView]];
+    if (self.activeScrollContentView){
+        
+        [self.activeScrollContentView removeFromSuperview];
+        self.activeScrollContentView = nil;
+        
+    }
     
+    [self.contentScrollView addSubview: [self scrollContentViewForTargetArrays]];
     
 }
-
-//- (void)configureNavigationBar{
-//    
-//    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Lift Routine"];
-//    
-//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-//                                                                   style: UIBarButtonItemStyleDone
-//                                                                  target: self
-//                                                                  action: @selector(didPressBack)];
-//    [navItem setLeftBarButtonItem: backButton];
-//    
-//    [self.navBar setItems: @[navItem]];
-//    
-//}
 
 - (void)configureViewAesthetics{
     
@@ -111,16 +117,131 @@
     shadowLayer.shadowOpacity = 1.0;
     shadowLayer.shadowRadius = 3.0;
     
-
-    
 }
 
 #pragma mark - Scroll View Content
 
+- (void)deriveStateContent{
+    
+    // based on the active exercise and round index, give the appropriate content to the state target arrays
+    // grab all exercises, beginning with the one corresponding to the active indices, and continuing to grab exercises until the rest is nonzero or the round ends
+    
+    NSArray *targets = [self extractTargetsArrayForActiveIndices];
+    [self.activeLiftTargets addObject: targets];
+    
+    // if the rest is zero, grab the next set of targets.  Otherwise, continue.  Will use recursion.
+    
+    BOOL canForwardIncrementIndices = [self incrementActiveIndicesForward];
+    
+    if (canForwardIncrementIndices){
+        
+        // the fourth index holds an NSNumber with the target rest value
+        
+        if ([targets[3] floatValue] == 0.0){
+            
+            [self deriveStateContent];
+            
+        } else{
+            
+            self.activeRestTarget = targets[3];
+            
+        }
+        
+    } else{
+        
+        return;
+        
+    }
+
+}
+
+- (BOOL)incrementActiveIndicesForward{
+    
+    int exerciseIndex = [self.activeExerciseIndex intValue];
+    int roundIndex = [self.activeRoundIndex intValue];
+    
+    NSNumber *newExerciseIndex = nil;
+    NSNumber *newRoundIndex = nil;
+    
+    BOOL forwardIndicesExist = [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: exerciseIndex
+                                                                           currentRoundIndex: roundIndex
+                                                                            maxExerciseIndex: self.chainTemplate.numberOfExercises - 1
+                                                                               maxRoundIndex: self.chainTemplate.numberOfRounds - 1
+                                                                      exerciseIndexReference: &newExerciseIndex
+                                                                         roundIndexReference: &newRoundIndex];
+    
+    if (forwardIndicesExist){
+        
+        self.activeExerciseIndex = newExerciseIndex;
+        self.activeRoundIndex = newRoundIndex;
+        
+        return YES;
+        
+    } else{
+        
+        return NO;
+        
+    }
+    
+}
+
+- (NSMutableArray *)extractTargetsArrayForActiveIndices{
+    
+    NSMutableArray *targetsCollector = [[NSMutableArray alloc] init];
+    
+    int exerciseIndex = [self.activeExerciseIndex intValue];
+    int roundIndex = [self.activeRoundIndex intValue];
+    
+    float weight;
+    float reps;
+    float rest;
+    
+    [targetsCollector addObject: self.chainTemplate.exercises[exerciseIndex].name];
+    
+    if (self.chainTemplate.targetingWeight){
+        
+        weight = self.chainTemplate.weightArrays[exerciseIndex].numbers[roundIndex].value;
+        
+    } else{
+        
+        weight = 0.0;
+        
+    }
+    
+    if (self.chainTemplate.targetingReps){
+        
+        reps = self.chainTemplate.repsArrays[exerciseIndex].numbers[roundIndex].value;
+        
+    } else{
+        
+        reps = 0.0;
+        
+    }
+    
+    if (self.chainTemplate.targetingRestTime){
+        
+        rest = self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value;
+        
+    } else{
+        
+        // a value of negative one is assigned in this case so that it is nonzero and hence does not conflict with the logic used to determine how many exercise targets to collect
+        
+        rest = -1.0;
+        
+    }
+    
+    [targetsCollector addObject: [NSNumber numberWithFloat: weight]];
+    [targetsCollector addObject: [NSNumber numberWithFloat: reps]];
+    [targetsCollector addObject: [NSNumber numberWithFloat: rest]];
+    
+    return targetsCollector;
+    
+}
+
 static NSString const *nextUpLabelKey = @"nextUpLabel";
 static NSString const *guidanceStackViewKey = @"guidanceStackView";
 
-- (UIView *)scrollContentView{
+- (UIView *)scrollContentViewForTargetArrays{
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     self.exerciseItemChildVCs = [[NSMutableArray alloc] init];
@@ -128,53 +249,18 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     //// create the master view and give it the appropriate frame. Set the scroll view's content area according to the masterFrame's size
     
     CGFloat width = self.contentScrollView.frame.size.width;
-    CGFloat height = 1000.0;
-    CGRect masterFrame = CGRectMake(0, 0, width, height);
+    float numberOfExerciseComps = (float)self.activeLiftTargets.count;
+    CGFloat exerciseCompHeight = 250;
+    float numberOfRestComps = 1.0;
+    CGFloat restCompHeight = 100;
+    CGFloat height = exerciseCompHeight * numberOfExerciseComps + numberOfRestComps * restCompHeight;
     
+    CGRect masterFrame = CGRectMake(0, 0, width, height);
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
     
     UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
     masterView.backgroundColor = [UIColor redColor];
-    
-    self.scrollContentView = masterView;
-    
-//    //// create the 'next up' label and pin it to the top of the master view
-//    
-//    // label creation and text configuration
-//    
-//    UILabel *nextUpLabel = [[UILabel alloc] init];
-//    nextUpLabel.text = @"Next Up";
-//    nextUpLabel.backgroundColor = [UIColor darkGrayColor];
-//    nextUpLabel.textColor = [UIColor whiteColor];
-//    nextUpLabel.font = [UIFont boldSystemFontOfSize: 30.0];
-//    nextUpLabel.textAlignment = NSTextAlignmentCenter;
-//    nextUpLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//    
-//    self.nextUpLabel = nextUpLabel;
-//    
-//    // constraints
-//    
-//    // the following string will have to be appended dynamically for vertical layout constraints
-//    
-////    NSMutableString *vertC = [NSMutableString stringWithCapacity: 1000];
-//    
-//    [self.constraintMapping setObject: nextUpLabel
-//                               forKey: nextUpLabelKey];
-//    [masterView addSubview: nextUpLabel];
-//    
-//    NSArray *nextUpLabelHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[nextUpLabel]-0-|"
-//                                                                       options: 0
-//                                                                       metrics: nil
-//                                                                         views: self.constraintMapping];
-//    
-////    [vertC appendString: @"V:|-0-[nextUpLabel(==50)]-0-"];
-//    NSArray *nextUpLabelVerC = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-0-[nextUpLabel(==50)]"
-//                                                                       options: 0
-//                                                                       metrics: nil
-//                                                                         views: self.constraintMapping];
-//    
-//    [masterView addConstraints: nextUpLabelHorC];
-//    [masterView addConstraints: nextUpLabelVerC];
+    self.activeScrollContentView = masterView;
     
     //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
     
@@ -206,16 +292,37 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     
     // add views to the guidance stack view
     
-//    NSString *previousCompID;
-    
-    for (int i = 0; i < 3; i++){
+    for (int i = 0; i < self.activeLiftTargets.count; i++){
         
-//        [self.view layoutIfNeeded];
+        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 1];
+        NSString *exerciseName = self.activeLiftTargets[i][0];
+        NSString *weight;
+        NSString *reps;
         
-        TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: [NSNumber numberWithInt: 1]
-                                                                                                  targetExerciseName: @"Bench Press"
-                                                                                                        targetWeight: [NSNumber numberWithInt: 205]
-                                                                                                          targetReps: [NSNumber numberWithInt: 8]
+        if (self.chainTemplate.targetingWeight){
+            
+            weight = [self.activeLiftTargets[i][1] stringValue];
+            
+        } else{
+            
+            weight = @"X";
+            
+        }
+        
+        if (self.chainTemplate.targetingReps){
+            
+            reps = [self.activeLiftTargets[i][2] stringValue];
+            
+        } else{
+            
+            reps = @"X";
+            
+        }
+        
+        TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
+                                                                                                  targetExerciseName: exerciseName
+                                                                                                        targetWeight: weight
+                                                                                                          targetReps: reps
                                                                                                      previousEntries: nil];
         [self.exerciseItemChildVCs addObject: exerciseItemVC];
         [self addChildViewController: exerciseItemVC];

@@ -376,7 +376,7 @@
     
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.grayBackdropView.bounds
                                                byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
-                                                     cornerRadii: CGSizeMake(8.0, 8.0)];
+                                                     cornerRadii: CGSizeMake(16.0, 16.0)];
     
     shapeLayer.path = path.CGPath;
     shapeLayer.frame = self.grayBackdropView.bounds;

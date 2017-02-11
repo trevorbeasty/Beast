@@ -10,6 +10,6 @@
 
 @interface TJBActiveRoutineExerciseItemVC : UIViewController
 
-- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber targetExerciseName:(NSString *)targetExerciseName targetWeight:(NSNumber *)targetWeight targetReps:(NSNumber *)targetReps previousEntries:(NSArray *)previousEntries;
+- (instancetype)initWithTitleNumber:(NSString *)titleNumber targetExerciseName:(NSString *)targetExerciseName targetWeight:(NSString *)targetWeight targetReps:(NSString *)targetReps previousEntries:(NSArray *)previousEntries;
 
 @end

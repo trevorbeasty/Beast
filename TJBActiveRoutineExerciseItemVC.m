@@ -29,10 +29,10 @@
 
 // core
 
-@property (nonatomic, strong) NSNumber *titleNumber;
+@property (nonatomic, strong) NSString *titleNumber;
 @property (nonatomic, strong) NSString *targetExerciseName;
-@property (nonatomic, strong) NSNumber *targetWeight;
-@property (nonatomic, strong) NSNumber *targetReps;
+@property (nonatomic, strong) NSString *targetWeight;
+@property (nonatomic, strong) NSString *targetReps;
 @property (nonatomic, strong) NSArray *previousEntries;
 
 
@@ -42,7 +42,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber targetExerciseName:(NSString *)targetExerciseName targetWeight:(NSNumber *)targetWeight targetReps:(NSNumber *)targetReps previousEntries:(NSArray *)previousEntries{
+- (instancetype)initWithTitleNumber:(NSString *)titleNumber targetExerciseName:(NSString *)targetExerciseName targetWeight:(NSString *)targetWeight targetReps:(NSString *)targetReps previousEntries:(NSArray *)previousEntries{
     
     self = [super init];
     
@@ -126,8 +126,8 @@
     // target labels and exercise title
     
     NSString *titleNumberText = [NSString stringWithFormat: @"%d.", [self.titleNumber intValue]];
-    NSString *targetWeightText = [NSString stringWithFormat: @"%@ lbs", [self.targetWeight stringValue]];
-    NSString *targetRepsText = [NSString stringWithFormat: @"%@ reps", [self.targetReps stringValue]];
+    NSString *targetWeightText = [NSString stringWithFormat: @"%@ lbs", self.targetWeight];
+    NSString *targetRepsText = [NSString stringWithFormat: @"%@ reps", self.targetReps];
     
     self.titleNumberLabel.text = titleNumberText;
     self.targetWeightLabel.text = targetWeightText;
