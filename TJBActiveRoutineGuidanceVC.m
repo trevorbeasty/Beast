@@ -15,6 +15,7 @@
 // child VC's
 
 #import "TJBActiveRoutineExerciseItemVC.h"
+#import "TJBActiveRoutineRestItem.h"
 
 // utilities
 
@@ -40,6 +41,7 @@
 @property (nonatomic, strong) UILabel *nextUpLabel;
 @property (nonatomic, strong) UIStackView *guidanceStackView;
 @property (nonatomic, strong) NSMutableArray<TJBActiveRoutineExerciseItemVC *> *exerciseItemChildVCs;
+@property (nonatomic, strong) TJBActiveRoutineRestItem *restItemChildVC;
 
 // scroll content view
 
@@ -250,7 +252,7 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 250;
+    CGFloat exerciseCompHeight = 220;
     float numberOfRestComps = 1.0;
     CGFloat restCompHeight = 100;
     CGFloat height = exerciseCompHeight * numberOfExerciseComps + numberOfRestComps * restCompHeight;
@@ -333,7 +335,17 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
         
     }
     
-    //
+    // add single rest view to stack view
+    
+    NSNumber *titleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 1];
+    TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
+                                                                                      restNumber: self.activeRestTarget];
+    self.restItemChildVC = restItemVC;
+    [self addChildViewController: restItemVC];
+    
+    [guidanceStackView addArrangedSubview: restItemVC.view];
+    
+    [restItemVC didMoveToParentViewController: self];
     
     return masterView;
     

@@ -16,6 +16,7 @@
 
 #import "TJBCircuitDesignVC.h"
 #import "TJBActiveRoutineGuidanceVC.h"
+#import "TJBWorkoutNavigationHub.h"
 
 // views
 
@@ -1099,10 +1100,32 @@
     
     if (self.selectedChainTemplate){
         
-        TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
+        TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
+        vc1.tabBarItem.title = @"Active";
         
-        [self presentViewController: vc
-                           animated: YES
+        TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
+        vc2.tabBarItem.title = @"Workout Log";
+        
+        // tab bar
+        
+        UITabBarController *tbc = [[UITabBarController alloc] init];
+        [tbc setViewControllers: @[vc1, vc2]];
+        tbc.tabBar.translucent = NO;
+        tbc.navigationItem.title = @"Lift Routine";
+        
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+                                                                       style: UIBarButtonItemStyleDone
+                                                                      target: self
+                                                                      action: @selector(didPressHomeButton)];
+        [tbc.navigationItem setLeftBarButtonItem: backButton];
+        
+        // navigation controller
+        
+        UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+        navC.navigationBar.translucent = NO;
+        
+        [self presentViewController: navC
+                           animated: NO
                          completion: nil];
         
     } else{

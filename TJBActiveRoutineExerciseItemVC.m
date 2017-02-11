@@ -24,7 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *targetWeightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetRepsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *previousEntriesTableView;
-@property (weak, nonatomic) IBOutlet UILabel *roundCornerLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *roundCornerLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thenLabel;
 
 // core
@@ -60,7 +60,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     
-    
+    [self curveCorners];
     
 }
 
@@ -76,22 +76,22 @@
 
 - (void)curveCorners{
     
-    [self.view layoutIfNeeded];
+//    [self.view layoutIfNeeded];
     
     // title label
     
     CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
     
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.roundCornerLabel.bounds
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.titleExerciseLabel.bounds
                                                byRoundingCorners: (UIRectCornerBottomRight)
                                                      cornerRadii: CGSizeMake(8.0, 8.0)];
     
     shapeLayer.path = path.CGPath;
-    shapeLayer.frame = self.roundCornerLabel.bounds;
+    shapeLayer.frame = self.titleExerciseLabel.bounds;
     shapeLayer.fillRule = kCAFillRuleNonZero;
     shapeLayer.fillColor = [UIColor redColor].CGColor;
     
-    self.roundCornerLabel.layer.mask = shapeLayer;
+    self.titleExerciseLabel.layer.mask = shapeLayer;
     
     // next... label
     
@@ -112,7 +112,7 @@
 
 - (void)configureViewAesthetics{
     
-    [self curveCorners];
+//    [self curveCorners];
     
     // table view curved corners
     
@@ -130,6 +130,7 @@
     NSString *targetRepsText = [NSString stringWithFormat: @"%@ reps", self.targetReps];
     
     self.titleNumberLabel.text = titleNumberText;
+    self.titleExerciseLabel.text = self.targetExerciseName;
     self.targetWeightLabel.text = targetWeightText;
     self.targetRepsLabel.text = targetRepsText;
     
