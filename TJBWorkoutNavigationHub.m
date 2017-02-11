@@ -358,7 +358,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     
     CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
     float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
-    float maxAnimationTime = 1.0;
+    float maxAnimationTime = .5;
     
     // animation call
     

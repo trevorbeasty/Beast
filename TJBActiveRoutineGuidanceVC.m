@@ -25,7 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
 @property (weak, nonatomic) IBOutlet UILabel *nextUpDetailLabel;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
 // IBAction
 
@@ -87,19 +86,19 @@
     
 }
 
-- (void)configureNavigationBar{
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Lift Routine"];
-    
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-                                                                   style: UIBarButtonItemStyleDone
-                                                                  target: self
-                                                                  action: @selector(didPressBack)];
-    [navItem setLeftBarButtonItem: backButton];
-    
-    [self.navBar setItems: @[navItem]];
-    
-}
+//- (void)configureNavigationBar{
+//    
+//    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Lift Routine"];
+//    
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+//                                                                   style: UIBarButtonItemStyleDone
+//                                                                  target: self
+//                                                                  action: @selector(didPressBack)];
+//    [navItem setLeftBarButtonItem: backButton];
+//    
+//    [self.navBar setItems: @[navItem]];
+//    
+//}
 
 - (void)configureViewAesthetics{
     

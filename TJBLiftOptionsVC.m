@@ -75,7 +75,7 @@
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
                                                                      style: UIBarButtonItemStyleDone
                                                                     target: self
-                                                                    action: @selector(didPressHome)];
+                                                                    action: @selector(didPressBack)];
     cancelButton.enabled = NO;
     [navItem setLeftBarButtonItem: cancelButton];
     
@@ -89,7 +89,7 @@
 
 - (IBAction)didPressFreeformButton:(id)sender{
     
-//    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform Lift"];
+    // tab bar vc's
     
     TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
     vc1.tabBarItem.title = @"Active";
@@ -97,11 +97,20 @@
     TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
     vc2.tabBarItem.title = @"Workout Log";
     
+    // tab bar controller
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
     [tbc setViewControllers: @[vc1, vc2]];
     tbc.tabBar.translucent = NO;
     tbc.navigationItem.title = @"Freeform Lift";
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+                                                                   style: UIBarButtonItemStyleDone
+                                                                  target: self
+                                                                  action: @selector(didPressBack)];
+    [tbc.navigationItem setLeftBarButtonItem: backButton];
+    
+    // navigation controller
     
     UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
     navC.navigationBar.translucent = NO;
@@ -114,17 +123,39 @@
 
 - (IBAction)didPressDesignedButton:(id)sender{
     
+    // tab bar vc's
+    
     NewOrExistinigCircuitVC *vc1 = [[NewOrExistinigCircuitVC alloc] init];
-    vc1.tabBarItem.title = @"Active";
+    vc1.tabBarItem.title = @"Selection";
     
     TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
     vc2.tabBarItem.title = @"Workout Log";
     
+    // tab bar
+    
     UITabBarController *tbc = [[UITabBarController alloc] init];
     [tbc setViewControllers: @[vc1, vc2]];
     tbc.tabBar.translucent = NO;
+    tbc.navigationItem.title = @"My Routines";
     
-    [self presentViewController: tbc
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+                                                                   style: UIBarButtonItemStyleDone
+                                                                  target: self
+                                                                  action: @selector(didPressBack)];
+    [tbc.navigationItem setLeftBarButtonItem: backButton];
+    
+    UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle: @"New"
+                                                                  style: UIBarButtonItemStyleDone
+                                                                 target: vc1
+                                                                 action: @selector(didPressNew)];
+    [tbc.navigationItem setRightBarButtonItem: newButton];
+    
+    // navigation controller
+    
+    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+    navC.navigationBar.translucent = NO;
+    
+    [self presentViewController: navC
                        animated: NO
                      completion: nil];
     
@@ -143,7 +174,7 @@
 //    
 //}
 
-- (void)didPressHome{
+- (void)didPressBack{
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];

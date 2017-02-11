@@ -64,7 +64,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
+//@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
@@ -216,7 +216,7 @@
     
     _whiteoutActive = NO;
     
-    [self configureNavigationBar];
+//    [self configureNavigationBar];
     
     [self addAppropriateStopwatchObservers];
     
@@ -236,8 +236,8 @@
 
 - (void)configureButtonControlStartingState{
     
-    [self.view insertSubview: self.titleLabelsContainer
-                belowSubview: self.navigationBar];
+//    [self.view insertSubview: self.titleLabelsContainer
+//                belowSubview: self.navigationBar];
     
     [self.view insertSubview: self.grayBackdropView
                 belowSubview: self.titleLabelsContainer];
@@ -409,24 +409,24 @@
 }
 
 
-- (void)configureNavigationBar{
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform Lift"];
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-                                                                      style: UIBarButtonItemStyleDone
-                                                                     target: self
-                                                                     action: @selector(didPressHome)];
-    
-    [navItem setLeftBarButtonItem: barButtonItem];
-    
-    [self.navigationBar setItems: @[navItem]];
-    
-    // nav bar text
-    
-    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
-    
-}
+//- (void)configureNavigationBar{
+//    
+//    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform Lift"];
+//    
+//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+//                                                                      style: UIBarButtonItemStyleDone
+//                                                                     target: self
+//                                                                     action: @selector(didPressHome)];
+//    
+//    [navItem setLeftBarButtonItem: barButtonItem];
+//    
+//    [self.navigationBar setItems: @[navItem]];
+//    
+//    // nav bar text
+//    
+//    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
+//    
+//}
 
 //- (void)fetchCoreDataAndConfigureTableView{
 //    

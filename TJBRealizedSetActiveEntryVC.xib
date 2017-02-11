@@ -20,7 +20,6 @@
                 <outlet property="exerciseLabel" destination="npt-ed-bGa" id="U5J-K3-Q7f"/>
                 <outlet property="grayBackdropView" destination="7z5-Lm-Ltj" id="CH2-jC-WXN"/>
                 <outlet property="largeStatusLabel" destination="FUJ-C9-fuN" id="CMW-sc-uLk"/>
-                <outlet property="navigationBar" destination="guv-Qd-dcg" id="7cn-mF-6Tk"/>
                 <outlet property="personalRecordsTableView" destination="v9H-xu-7S6" id="tJO-Mp-0yO"/>
                 <outlet property="setEndTimeLabel" destination="1Qr-7T-sdU" id="aIk-Lo-jbg"/>
                 <outlet property="setEndTimeSegmentedControl" destination="F3z-Pc-86n" id="35t-tB-Iqh"/>
@@ -42,7 +41,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="amz-tf-TWd" userLabel="titleLabelsContainer">
-                    <rect key="frame" x="0.0" y="60" width="375" height="50"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Resting" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FUJ-C9-fuN">
                             <rect key="frame" x="0.0" y="0.0" width="186.5" height="50"/>
@@ -72,15 +71,6 @@
                         <constraint firstItem="sw3-k5-xCu" firstAttribute="width" secondItem="FUJ-C9-fuN" secondAttribute="width" id="naK-zL-ANL"/>
                     </constraints>
                 </view>
-                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="guv-Qd-dcg">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="Yls-8H-pNP"/>
-                    </constraints>
-                    <items>
-                        <navigationItem title="Freeform Lift" id="ihL-Nf-gmB"/>
-                    </items>
-                </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWv-BT-UWM">
                     <rect key="frame" x="0.0" y="627" width="375" height="40"/>
                     <constraints>
@@ -93,10 +83,10 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJM-C8-3Ry" userLabel="shadowView">
-                    <rect key="frame" x="16" y="358" width="343" height="253"/>
+                    <rect key="frame" x="16" y="298" width="343" height="313"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="v9H-xu-7S6">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="253"/>
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="313"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -115,7 +105,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7z5-Lm-Ltj" userLabel="Light Gray View">
-                    <rect key="frame" x="0.0" y="110" width="375" height="232"/>
+                    <rect key="frame" x="0.0" y="50" width="375" height="232"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sk4-vL-8nv">
                             <rect key="frame" x="193.5" y="106" width="177.5" height="30"/>
@@ -275,17 +265,14 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="TJM-C8-3Ry" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="2E5-LM-0PP"/>
-                <constraint firstAttribute="trailing" secondItem="guv-Qd-dcg" secondAttribute="trailing" id="6ci-D2-Qjb"/>
                 <constraint firstAttribute="trailing" secondItem="amz-tf-TWd" secondAttribute="trailing" id="76Z-4S-2j9"/>
-                <constraint firstItem="guv-Qd-dcg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="EvT-JL-Ezc"/>
                 <constraint firstItem="sWv-BT-UWM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LQw-LM-MsM"/>
                 <constraint firstAttribute="bottom" secondItem="sWv-BT-UWM" secondAttribute="bottom" id="NWv-0X-MvD"/>
                 <constraint firstAttribute="trailing" secondItem="TJM-C8-3Ry" secondAttribute="trailing" constant="16" id="RUv-nE-pjm"/>
                 <constraint firstItem="sWv-BT-UWM" firstAttribute="top" secondItem="TJM-C8-3Ry" secondAttribute="bottom" constant="16" id="UYm-iP-py4"/>
+                <constraint firstItem="amz-tf-TWd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="YFo-Ot-a2D"/>
                 <constraint firstItem="amz-tf-TWd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cVv-4s-5iC"/>
-                <constraint firstItem="amz-tf-TWd" firstAttribute="top" secondItem="guv-Qd-dcg" secondAttribute="bottom" id="cfn-fw-FKl"/>
                 <constraint firstItem="TJM-C8-3Ry" firstAttribute="top" secondItem="7z5-Lm-Ltj" secondAttribute="bottom" constant="16" id="dcW-9h-izY"/>
-                <constraint firstItem="guv-Qd-dcg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="gmz-Ce-qcK"/>
                 <constraint firstItem="7z5-Lm-Ltj" firstAttribute="top" secondItem="amz-tf-TWd" secondAttribute="bottom" id="i6e-nj-lpC"/>
                 <constraint firstItem="7z5-Lm-Ltj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nXR-5C-7OP"/>
                 <constraint firstAttribute="trailing" secondItem="7z5-Lm-Ltj" secondAttribute="trailing" id="tcU-WG-NXg"/>

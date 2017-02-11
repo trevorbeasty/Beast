@@ -957,7 +957,7 @@
             
             if (isSelectedCell){
                 
-                cell.backgroundColor = [UIColor whiteColor];
+                cell.backgroundColor = [UIColor clearColor];
                 cell.layer.borderWidth = 4.0;
                 
             } else{
@@ -1019,7 +1019,7 @@
     
     TJBStructureTableViewCell *selectedCell = [tableView cellForRowAtIndexPath: indexPath];
     
-    selectedCell.backgroundColor = [UIColor whiteColor];
+    selectedCell.backgroundColor = [UIColor clearColor];
     
     selectedCell.layer.borderWidth = 4.0;
     
