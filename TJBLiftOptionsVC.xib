@@ -23,18 +23,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hf4-4q-MAz">
-                    <rect key="frame" x="16" y="76" width="343" height="279.5"/>
+                    <rect key="frame" x="32" y="92" width="311" height="255.5"/>
                     <color key="backgroundColor" red="0.17465768257991349" green="0.61088359685504745" blue="0.85943571891191706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <state key="normal" title="Freeform"/>
                     <connections>
                         <action selector="didPressFreeformButton:" destination="-1" eventType="touchUpInside" id="x01-In-v0e"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tI8-wo-CeW">
-                    <rect key="frame" x="16" y="371.5" width="343" height="279.5"/>
-                    <state key="normal" title="Routine"/>
-                    <connections>
-                        <action selector="didPressDesignedButton:" destination="-1" eventType="touchUpInside" id="kB5-le-Ywn"/>
                     </connections>
                 </button>
                 <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NPN-KW-7La">
@@ -46,20 +39,27 @@
                         <navigationItem id="Pp3-8Y-ba2"/>
                     </items>
                 </navigationBar>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tI8-wo-CeW">
+                    <rect key="frame" x="32" y="379.5" width="311" height="255.5"/>
+                    <state key="normal" title="Routine"/>
+                    <connections>
+                        <action selector="didPressDesignedButton:" destination="-1" eventType="touchUpInside" id="kB5-le-Ywn"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="tI8-wo-CeW" firstAttribute="height" secondItem="hf4-4q-MAz" secondAttribute="height" id="7Ca-xK-JFh"/>
-                <constraint firstItem="hf4-4q-MAz" firstAttribute="top" secondItem="NPN-KW-7La" secondAttribute="bottom" constant="16" id="9bh-YP-MiN"/>
+                <constraint firstItem="tI8-wo-CeW" firstAttribute="top" secondItem="hf4-4q-MAz" secondAttribute="bottom" constant="32" id="0eG-V9-EuJ"/>
+                <constraint firstItem="tI8-wo-CeW" firstAttribute="height" secondItem="hf4-4q-MAz" secondAttribute="height" id="5VT-sU-yhW"/>
+                <constraint firstAttribute="trailing" secondItem="hf4-4q-MAz" secondAttribute="trailing" constant="32" id="B1j-Y3-09D"/>
                 <constraint firstAttribute="trailing" secondItem="NPN-KW-7La" secondAttribute="trailing" id="CjM-65-LU4"/>
-                <constraint firstItem="tI8-wo-CeW" firstAttribute="top" secondItem="hf4-4q-MAz" secondAttribute="bottom" constant="16" id="DmU-LC-BAq"/>
-                <constraint firstItem="hf4-4q-MAz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="QMC-s1-zkk"/>
+                <constraint firstAttribute="bottom" secondItem="tI8-wo-CeW" secondAttribute="bottom" constant="32" id="JzO-Xj-x0W"/>
                 <constraint firstItem="NPN-KW-7La" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="T1T-oI-hAb"/>
-                <constraint firstAttribute="bottom" secondItem="tI8-wo-CeW" secondAttribute="bottom" constant="16" id="Uit-pb-vCl"/>
-                <constraint firstAttribute="trailing" secondItem="hf4-4q-MAz" secondAttribute="trailing" constant="16" id="b1M-ea-bGc"/>
-                <constraint firstAttribute="trailing" secondItem="tI8-wo-CeW" secondAttribute="trailing" constant="16" id="cFH-io-Q5h"/>
+                <constraint firstAttribute="trailing" secondItem="tI8-wo-CeW" secondAttribute="trailing" constant="32" id="UF2-UY-cwL"/>
+                <constraint firstItem="hf4-4q-MAz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="Xlt-YP-rvS"/>
                 <constraint firstItem="NPN-KW-7La" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gcD-lJ-39F"/>
-                <constraint firstItem="tI8-wo-CeW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="nga-g3-0Vc"/>
+                <constraint firstItem="tI8-wo-CeW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="gx5-cT-KKW"/>
+                <constraint firstItem="hf4-4q-MAz" firstAttribute="top" secondItem="NPN-KW-7La" secondAttribute="bottom" constant="32" id="m8X-SS-g8H"/>
             </constraints>
             <point key="canvasLocation" x="35.5" y="53.5"/>
         </view>

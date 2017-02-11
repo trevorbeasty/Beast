@@ -59,10 +59,42 @@
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
-        button.layer.masksToBounds = YES;
-        button.layer.cornerRadius = 4.0;
+//        button.layer.masksToBounds = YES;
+//        button.layer.cornerRadius = 4.0;
         
     }
+    
+    // shadows
+    
+    [self.view layoutIfNeeded];
+    
+    UIView *freeformShadow = [[UIView alloc] initWithFrame: self.freeformButton.frame];
+    freeformShadow.backgroundColor = [UIColor whiteColor];
+    freeformShadow.clipsToBounds = NO;
+    
+    CALayer *freeformShadowLayer = freeformShadow.layer;
+    freeformShadowLayer.masksToBounds = NO;
+    freeformShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+    freeformShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
+    freeformShadowLayer.shadowOpacity = 1.0;
+    freeformShadowLayer.shadowRadius = 5.0;
+    
+    [self.view insertSubview: freeformShadow
+                belowSubview: self.freeformButton];
+    
+    UIView *routineShadow = [[UIView alloc] initWithFrame: self.designedButton.frame];
+    routineShadow.backgroundColor = [UIColor whiteColor];
+    routineShadow.clipsToBounds = NO;
+    
+    CALayer *routineShadowLayer = routineShadow.layer;
+    routineShadowLayer.masksToBounds = NO;
+    routineShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+    routineShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
+    routineShadowLayer.shadowOpacity = 1.0;
+    routineShadowLayer.shadowRadius = 5.0;
+    
+    [self.view insertSubview: routineShadow
+                belowSubview: self.designedButton];
     
 }
 
