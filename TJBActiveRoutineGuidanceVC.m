@@ -335,6 +335,7 @@
 
 static NSString const *nextUpLabelKey = @"nextUpLabel";
 static NSString const *guidanceStackViewKey = @"guidanceStackView";
+static NSString const *restViewKey = @"restView";
 
 - (UIView *)scrollContentViewForTargetArrays{
     
@@ -346,9 +347,8 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
     CGFloat exerciseCompHeight = 330;
-//    float numberOfRestComps = 1.0;
-//    CGFloat restCompHeight = 100;
-    CGFloat height = exerciseCompHeight * (numberOfExerciseComps + 1.0);
+    CGFloat restCompHeight = 100;
+    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight;
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
@@ -377,7 +377,7 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                                                                              options: 0
                                                                              metrics: nil
                                                                                views: self.constraintMapping];
-    NSArray *guidanceStackViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-0-[guidanceStackView]-0-|"
+    NSArray *guidanceStackViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-0-[guidanceStackView]"
                                                                              options: 0
                                                                              metrics: nil
                                                                                views: self.constraintMapping];
@@ -435,10 +435,34 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
                                                                                       restNumber: self.activeRestTarget
                                                                                marksEndOfRoutine: _isLastExerciseOfRoutine];
+    restItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.restItemChildVC = restItemVC;
     [self addChildViewController: restItemVC];
     
-    [guidanceStackView addArrangedSubview: restItemVC.view];
+    // layout constraints
+    
+    [masterView addSubview: restItemVC.view];
+    
+    [self.constraintMapping setObject: restItemVC.view
+                               forKey: restViewKey];
+    
+    NSArray *restViewHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[restView]-0-|"
+                                                                             options: 0
+                                                                             metrics: nil
+                                                                               views: self.constraintMapping];
+    
+    NSString *verticalString = [NSString stringWithFormat: @"V:[guidanceStackView]-0-[restView(==%d)]-0-|",
+                                (int)restCompHeight];
+    NSArray *restViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalString
+                                                                             options: 0
+                                                                             metrics: nil
+                                                                               views: self.constraintMapping];
+    
+    [masterView addConstraints: restViewHorC];
+    [masterView addConstraints: restViewVerC];
+    
+//    [guidanceStackView addArrangedSubview: restItemVC.view];
     
     [restItemVC didMoveToParentViewController: self];
     
@@ -451,21 +475,27 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
 
 - (void)didPressBack{
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Are you sure you want to exit?"
-                                                                   message: @"A routine cannot be re-entered after exiting"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Are you sure?"
+                                                                   message: @"A routine cannot be resumed after leaving"
                                                             preferredStyle: UIAlertControllerStyleAlert];
     
-    UIAlertAction *stayAction = [UIAlertAction actionWithTitle: @"Stay here"
+    UIAlertAction *stayAction = [UIAlertAction actionWithTitle: @"Stay"
                                                          style: UIAlertActionStyleDefault
                                                        handler: nil];
     [alert addAction: stayAction];
     
     __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-    UIAlertAction *leaveAction = [UIAlertAction actionWithTitle: @"Leave anyway"
+    UIAlertAction *leaveAction = [UIAlertAction actionWithTitle: @"Leave"
                                                           style: UIAlertActionStyleDefault
                                                         handler: ^(UIAlertAction *action){
+                                                            
                                                             [weakSelf dismissViewControllerAnimated: YES
                                                                                          completion: nil];
+                                                            
+                                                            // disassociate with the timer
+                                                            
+                                                            [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
+                                                            
                                                         }];
     [alert addAction: leaveAction];
     
@@ -563,7 +593,7 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                     // configure labels accordingly
                     
                     self.timerTitleLabel.text = @"";
-                    [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerTitleLabel];
+                    [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
                     
                     self.roundTitleLabel.text = @"";
                     

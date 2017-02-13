@@ -230,6 +230,12 @@
     
 }
 
+- (void)removeAllPrimaryStopwatchObservers{
+    
+    self.primaryTimeObservers = nil;
+    
+}
+
 
 
 #pragma mark - Stopwatch Manipulation

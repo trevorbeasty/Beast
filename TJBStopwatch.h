@@ -35,4 +35,6 @@
 - (NSString *)primaryTimeElapsedAsString;
 - (NSString *)secondaryTimeElapsedAsString;
 
+- (void)removeAllPrimaryStopwatchObservers;
+
 @end
