@@ -116,6 +116,12 @@
 
 - (void)viewDidLoad{
     
+    // debugging
+    
+    for (int i = 0; i < 3; i++){
+        NSLog(@"target rest in seconds: %d", (int)self.chainTemplate.targetRestTimeArrays[1].numbers[i].value);
+    }
+    
     // prep
     
     [self.view layoutIfNeeded];
@@ -141,8 +147,30 @@
 
 - (void)configureInitialDisplay{
     
+    //// title labels
+    
     self.roundTitleLabel.text = [NSString stringWithFormat: @"Round 1/%d", self.chainTemplate.numberOfRounds];
     self.timerTitleLabel.text = @"";
+    
+    // detail title label
+    
+    NSString *exercise;
+    NSString *round;
+    if (self.chainTemplate.numberOfRounds ==1){
+        round = @"round";
+    } else{
+        round = @"rounds";
+    }
+    if (self.chainTemplate.numberOfExercises == 1){
+        exercise = @"exercise";
+    } else{
+        exercise = @"exercises";
+    }
+    self.nextUpDetailLabel.text = [NSString stringWithFormat: @"%d %@, %d %@",
+                                   self.chainTemplate.numberOfExercises,
+                                   exercise,
+                                   self.chainTemplate.numberOfRounds,
+                                   round];
     
 }
 
@@ -213,11 +241,7 @@
             
         }
         
-    } else{
-        
-        return;
-        
-    }
+    } 
 
 }
 
@@ -400,10 +424,16 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     }
     
     // add single rest view to stack view
+    // the rest view needs to know if it is the last view.  If so, it will indicate the routine ends instead of showing a rest value.  The active target indices will stop at their max values when all chain values have been pulled.  This is how to tell if the rest item is the last view
+    
+    BOOL roundMatch = [self.activeRoundIndexForTargets intValue] == self.chainTemplate.numberOfRounds - 1;
+    BOOL exerciseMatch = [self.activeExerciseIndexForTargets intValue] == self.chainTemplate.numberOfExercises - 1;
+    BOOL atRoutineEnd = roundMatch && exerciseMatch;
     
     NSNumber *titleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 1];
     TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
-                                                                                      restNumber: self.activeRestTarget];
+                                                                                      restNumber: self.activeRestTarget
+                                                                               marksEndOfRoutine: atRoutineEnd];
     self.restItemChildVC = restItemVC;
     [self addChildViewController: restItemVC];
     
@@ -522,6 +552,10 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                                          }];
                 
             }
+            
+            // save the changes
+            
+            [[CoreDataController singleton] saveContext];
         
         };
     
@@ -552,6 +586,8 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
 
 - (BOOL)incrementActiveChainIndices{
     
+    //// increment the indices and also update the first incomplete indices of the realized chain
+    
     int exerciseIndex = [self.activeExerciseIndexForChain intValue];
     int roundIndex = [self.activeRoundIndexForChain intValue];
     
@@ -565,6 +601,9 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                                                                       exerciseIndexReference: &newExerciseIndex
                                                                          roundIndexReference: &newRoundIndex];
     
+    self.realizedChain.firstIncompleteRoundIndex = [newRoundIndex intValue];
+    self.realizedChain.firstIncompleteExerciseIndex = [newExerciseIndex intValue];
+    
     if (forwardIndicesExist){
         
         self.activeExerciseIndexForChain = newExerciseIndex;
@@ -577,6 +616,8 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
         return NO;
         
     }
+    
+
     
 }
 
