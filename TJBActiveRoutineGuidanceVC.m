@@ -21,7 +21,24 @@
 
 #import "TJBAssortedUtilities.h"
 
-@interface TJBActiveRoutineGuidanceVC ()
+// number selection
+
+#import "TJBWeightRepsSelectionVC.h"
+
+// stopwatch
+
+#import "TJBStopwatch.h"
+#import "TJBStopwatchObserver.h"
+
+@interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
+
+{
+    
+    // state
+    
+    int _selectionIndex;
+    
+}
 
 // IBOutlet
 
@@ -30,12 +47,17 @@
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
 @property (weak, nonatomic) IBOutlet UILabel *nextUpDetailLabel;
+@property (weak, nonatomic) IBOutlet UIButton *setCompletedButton;
 
 // IBAction
+
+@property (weak, nonatomic) IBOutlet UIButton *didPressSetCompleted;
+
 
 // core
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 @property (nonatomic, strong) UIView *activeScrollContentView;
 @property (nonatomic, strong) UILabel *nextUpLabel;
@@ -47,13 +69,20 @@
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
-// state
+//// state
 
-@property (nonatomic, strong) NSNumber *activeRoundIndex;
-@property (nonatomic, strong) NSNumber *activeExerciseIndex;
+@property (nonatomic, strong) NSNumber *activeRoundIndexForTargets;
+@property (nonatomic, strong) NSNumber *activeExerciseIndexForTargets;
+
+@property (nonatomic, strong) NSNumber *activeRoundIndexForChain;
+@property (nonatomic, strong) NSNumber *activeExerciseIndexForChain;
 
 @property (nonatomic, strong) NSMutableArray<NSArray *> *activeLiftTargets;
 @property (nonatomic, strong) NSNumber *activeRestTarget;
+
+// stopwatch state
+
+@property (nonatomic, strong) NSDate *dateForTimerRecovery;
 
 @end
 
@@ -67,10 +96,17 @@
     
     self.chainTemplate = chainTemplate;
     
-    // because it is a fresh routine, give it active round and exercise indices of 0
+    // because it is a fresh routine, give it active round and exercise indices of 0. Also, generate a new, skeleton realized chain
     
-    self.activeRoundIndex = [NSNumber numberWithInt: 0];
-    self.activeExerciseIndex = [NSNumber numberWithInt: 0];
+    self.activeRoundIndexForTargets = [NSNumber numberWithInt: 0];
+    self.activeExerciseIndexForTargets = [NSNumber numberWithInt: 0];
+    
+    self.activeRoundIndexForChain = [NSNumber numberWithInt: 0];
+    self.activeExerciseIndexForChain = [NSNumber numberWithInt: 0];
+    
+    _selectionIndex = 0;
+    
+    self.realizedChain = [[CoreDataController singleton] createAndSaveSkeletonRealizedChainForChainTemplate: chainTemplate];
     
     return self;
     
@@ -87,6 +123,32 @@
     //
     
     [self configureViewAesthetics];
+    
+    [self configureImmediateTargets];
+    
+    [self configureTimer];
+    
+    [self configureInitialDisplay];
+    
+}
+
+- (void)configureTimer{
+    
+    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
+                                           withTimerLabel: self.timerTitleLabel];
+    
+}
+
+- (void)configureInitialDisplay{
+    
+    self.roundTitleLabel.text = [NSString stringWithFormat: @"Round 1/%d", self.chainTemplate.numberOfRounds];
+    self.timerTitleLabel.text = @"";
+    
+}
+
+- (void)configureImmediateTargets{
+    
+    // grab all targets and update the view accordingly
     
     //// state
     
@@ -106,18 +168,20 @@
     
     [self.contentScrollView addSubview: [self scrollContentViewForTargetArrays]];
     
+    self.contentScrollView.contentOffset = CGPointMake(0, 0);
+    
 }
 
 - (void)configureViewAesthetics{
     
     // shadow for title objects to create separation
     
-    CALayer *shadowLayer = self.nextUpDetailLabel.layer;
-    shadowLayer.masksToBounds = NO;
-    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
-    shadowLayer.shadowOpacity = 1.0;
-    shadowLayer.shadowRadius = 3.0;
+//    CALayer *shadowLayer = self.nextUpDetailLabel.layer;
+//    shadowLayer.masksToBounds = NO;
+//    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+//    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+//    shadowLayer.shadowOpacity = 1.0;
+//    shadowLayer.shadowRadius = 3.0;
     
 }
 
@@ -159,8 +223,8 @@
 
 - (BOOL)incrementActiveIndicesForward{
     
-    int exerciseIndex = [self.activeExerciseIndex intValue];
-    int roundIndex = [self.activeRoundIndex intValue];
+    int exerciseIndex = [self.activeExerciseIndexForTargets intValue];
+    int roundIndex = [self.activeRoundIndexForTargets intValue];
     
     NSNumber *newExerciseIndex = nil;
     NSNumber *newRoundIndex = nil;
@@ -174,8 +238,8 @@
     
     if (forwardIndicesExist){
         
-        self.activeExerciseIndex = newExerciseIndex;
-        self.activeRoundIndex = newRoundIndex;
+        self.activeExerciseIndexForTargets = newExerciseIndex;
+        self.activeRoundIndexForTargets = newRoundIndex;
         
         return YES;
         
@@ -191,8 +255,8 @@
     
     NSMutableArray *targetsCollector = [[NSMutableArray alloc] init];
     
-    int exerciseIndex = [self.activeExerciseIndex intValue];
-    int roundIndex = [self.activeRoundIndex intValue];
+    int exerciseIndex = [self.activeExerciseIndexForTargets intValue];
+    int roundIndex = [self.activeRoundIndexForTargets intValue];
     
     float weight;
     float reps;
@@ -361,7 +425,174 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     
 }
 
+- (IBAction)didPressSetCompleted:(UIButton *)didPressSetCompleted{
+    
+    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+    
+    NSInteger selectionsToBeMade = self.activeLiftTargets.count;
+    BOOL isLastLocalSelection = _selectionIndex == selectionsToBeMade - 1;
+    
+//    for (int i = 0; i < selectionsToBeMade; i++){
+    
+        NSString *title = self.activeLiftTargets[_selectionIndex][0];
+        
+        // cancel block
+        
+        void (^cancelBlock)(void) = ^{
+            
+            
+            
+        };
+        
+        // number selected block
+        
+        NumberSelectedBlockDouble selectedBlock = ^(NSNumber *weight, NSNumber *reps){
+            
+            // fill in the realized chain with the selected values
+            // be sure to use the active round indices for 'chain'.  There are two pairs of round indices - one for grabbing targets and one for filling in the realized chain
+            // the skeleton chain template already has the appropriate exercises filled in, so must enter all other info here
+            // for now, I will offer no advanced options for user input.  The end of the second set will be recorded as the time the user presses 'set completed'.  All exercises that are not the last in this local sequence will not have rest times recorded
+            // the timer will be reset upon pressing of the set completed button. It will countdown backwards and should use the target rest value that is already stored as its starting value
+            
+            int exercise = [weakSelf.activeExerciseIndexForChain intValue];
+            int round = [weakSelf.activeRoundIndexForChain intValue];
+            
+            weakSelf.realizedChain.weightArrays[exercise].numbers[round].value = [weight floatValue];
+            weakSelf.realizedChain.repsArrays[exercise].numbers[round].value = [reps floatValue];
+            
+            // set begin dates will always be default objects.  It will vary for set end dates
+            
+            weakSelf.realizedChain.setBeginDateArrays[exercise].dates[round].isDefaultObject = YES;
+            
+            if (isLastLocalSelection){
+                
+                weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].value = [NSDate date];
+                weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = NO;
+                
+            } else{
+                
+                weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = YES;
+                
+            }
+            
+            // increment the chain indices
+            
+            BOOL routineNotCompleted = [self incrementActiveChainIndices];
+            
+            // if the iterator has reached its max value (all selections have been made), refresh the timer and active scroll view content
+            // must check that this is not the very last item in the chain
+            
+            if ([weakSelf allSelectionsMade]){
+                
+                if (routineNotCompleted){
+                    
+                    _selectionIndex = 0;
+                    
+                    // configure the round and timer labels
+                    
+                    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
+                                                         withForwardIncrementing: NO
+                                                                  lastUpdateDate: nil];
+                    
+                    weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"Round %d/%d",
+                                                     [weakSelf.activeRoundIndexForTargets intValue] + 1,
+                                                     weakSelf.chainTemplate.numberOfRounds];
+                    
+                    
+                    [weakSelf configureImmediateTargets];
+                    
+                } else{
+                    
+                    abort();
+                    
+                }
+                
+                [weakSelf dismissViewControllerAnimated: YES
+                                         completion: nil];
+                
+            } else{
+                
+                _selectionIndex++;
+                
+                [weakSelf dismissViewControllerAnimated: YES
+                                         completion: ^{
+                                             
+                                             [weakSelf didPressSetCompleted: nil];
+                                             
+                                         }];
+                
+            }
+        
+        };
+    
+        // number selection vc
+        
+        TJBWeightRepsSelectionVC *selectionVC = [[TJBWeightRepsSelectionVC alloc] initWithTitle: title
+                                                                                    cancelBlock: cancelBlock
+                                                                            numberSelectedBlock: selectedBlock];
+        
+        [self presentViewController: selectionVC
+                           animated: YES
+                         completion: nil];
+        
+//    }
+    
+}
 
+- (BOOL)allSelectionsMade{
+    
+    // if the target and chain indices are equivalent, then all selections have been made
+    
+    BOOL exerciseSame = [self.activeExerciseIndexForTargets intValue] == [self.activeExerciseIndexForChain intValue];
+    BOOL roundSame = [self.activeRoundIndexForTargets intValue] == [self.activeRoundIndexForChain intValue];
+    
+    return exerciseSame && roundSame;
+    
+}
+
+- (BOOL)incrementActiveChainIndices{
+    
+    int exerciseIndex = [self.activeExerciseIndexForChain intValue];
+    int roundIndex = [self.activeRoundIndexForChain intValue];
+    
+    NSNumber *newExerciseIndex = nil;
+    NSNumber *newRoundIndex = nil;
+    
+    BOOL forwardIndicesExist = [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: exerciseIndex
+                                                                           currentRoundIndex: roundIndex
+                                                                            maxExerciseIndex: self.chainTemplate.numberOfExercises - 1
+                                                                               maxRoundIndex: self.chainTemplate.numberOfRounds - 1
+                                                                      exerciseIndexReference: &newExerciseIndex
+                                                                         roundIndexReference: &newRoundIndex];
+    
+    if (forwardIndicesExist){
+        
+        self.activeExerciseIndexForChain = newExerciseIndex;
+        self.activeRoundIndexForChain = newRoundIndex;
+        
+        return YES;
+        
+    } else{
+        
+        return NO;
+        
+    }
+    
+}
+
+#pragma mark - <TJBStopwatchObserver>
+
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
+    
+    self.dateForTimerRecovery = date;
+    
+}
+
+- (void)secondaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
+    
+    
+    
+}
 
 @end
 
