@@ -34,9 +34,13 @@
 
 {
     
-    // state
+    //// state
     
     int _selectionIndex;
+    
+    // used for content view creation / configuration
+    
+    BOOL _isLastExerciseOfRoutine;
     
 }
 
@@ -106,6 +110,8 @@
     
     _selectionIndex = 0;
     
+    _isLastExerciseOfRoutine = NO;
+    
     self.realizedChain = [[CoreDataController singleton] createAndSaveSkeletonRealizedChainForChainTemplate: chainTemplate];
     
     return self;
@@ -115,12 +121,6 @@
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
-    
-    // debugging
-    
-    for (int i = 0; i < 3; i++){
-        NSLog(@"target rest in seconds: %d", (int)self.chainTemplate.targetRestTimeArrays[1].numbers[i].value);
-    }
     
     // prep
     
@@ -229,7 +229,7 @@
     
     if (canForwardIncrementIndices){
         
-        // the fourth index holds an NSNumber with the target rest value
+        // the fourth position holds an NSNumber with the target rest value
         
         if ([targets[3] floatValue] == 0.0){
             
@@ -246,6 +246,9 @@
 }
 
 - (BOOL)incrementActiveIndicesForward{
+    
+    // the utilities method only returns new indices if they are within the bounds of the number of exercises and rounds
+    // I update a variable here that is used to indicate whether the given set is the last for the routine.  This is used in creating the content view
     
     int exerciseIndex = [self.activeExerciseIndexForTargets intValue];
     int roundIndex = [self.activeRoundIndexForTargets intValue];
@@ -264,10 +267,12 @@
         
         self.activeExerciseIndexForTargets = newExerciseIndex;
         self.activeRoundIndexForTargets = newRoundIndex;
-        
+    
         return YES;
         
     } else{
+        
+        _isLastExerciseOfRoutine = YES;
         
         return NO;
         
@@ -424,16 +429,12 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
     }
     
     // add single rest view to stack view
-    // the rest view needs to know if it is the last view.  If so, it will indicate the routine ends instead of showing a rest value.  The active target indices will stop at their max values when all chain values have been pulled.  This is how to tell if the rest item is the last view
-    
-    BOOL roundMatch = [self.activeRoundIndexForTargets intValue] == self.chainTemplate.numberOfRounds - 1;
-    BOOL exerciseMatch = [self.activeExerciseIndexForTargets intValue] == self.chainTemplate.numberOfExercises - 1;
-    BOOL atRoutineEnd = roundMatch && exerciseMatch;
+    // the rest view needs to know if it is the last view.  If so, it will indicate the routine ends instead of showing a rest value.  The active target indices will stop at their max values when all chain values have been pulled.  I keep track of this with a state variable
     
     NSNumber *titleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 1];
     TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
                                                                                       restNumber: self.activeRestTarget
-                                                                               marksEndOfRoutine: atRoutineEnd];
+                                                                               marksEndOfRoutine: _isLastExerciseOfRoutine];
     self.restItemChildVC = restItemVC;
     [self addChildViewController: restItemVC];
     
@@ -505,6 +506,10 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                 
             }
             
+            // save the changes
+            
+            [[CoreDataController singleton] saveContext];
+            
             // increment the chain indices
             
             BOOL routineNotCompleted = [self incrementActiveChainIndices];
@@ -533,7 +538,22 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                     
                 } else{
                     
-                    abort();
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Completed"
+                                                                                   message: @""
+                                                                            preferredStyle: UIAlertControllerStyleAlert];
+                    UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                                     style: UIAlertActionStyleDefault
+                                                                   handler:  ^(UIAlertAction *action){
+                                                                       [weakSelf dismissViewControllerAnimated: YES
+                                                                                                    completion: nil];
+                                                                   }];
+                    [alert addAction: action];
+                    
+                    [self presentViewController: alert
+                                       animated: YES
+                                     completion: nil];
+                    
+                    
                     
                 }
                 
@@ -552,10 +572,6 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                                          }];
                 
             }
-            
-            // save the changes
-            
-            [[CoreDataController singleton] saveContext];
         
         };
     

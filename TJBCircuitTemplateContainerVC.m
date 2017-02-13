@@ -14,9 +14,10 @@
 
 #import "TJBChainTemplate+CoreDataProperties.h"
 
-// active guidance tbc
+// presented VC's
 
-#import "TJBCircuitModeTBC.h"
+#import "TJBWorkoutNavigationHub.h"
+#import "TJBActiveRoutineGuidanceVC.h"
 
 // aesthetics
 
@@ -261,10 +262,32 @@
         
         void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
             
-            TJBCircuitModeTBC *tbc = [[TJBCircuitModeTBC alloc] initWithNewRealizedChainAndChainTemplateFromChainTemplate: self.chainTemplate];
+            TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.chainTemplate];
+            vc1.tabBarItem.title = @"Active";
             
-            [self presentViewController: tbc
-                               animated: YES
+            TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
+            vc2.tabBarItem.title = @"Workout Log";
+            
+            // tab bar
+            
+            UITabBarController *tbc = [[UITabBarController alloc] init];
+            [tbc setViewControllers: @[vc1, vc2]];
+            tbc.tabBar.translucent = NO;
+            tbc.navigationItem.title = @"Lift Routine";
+            
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+                                                                           style: UIBarButtonItemStyleDone
+                                                                          target: vc1
+                                                                          action: @selector(didPressBackButton)];
+            [tbc.navigationItem setLeftBarButtonItem: backButton];
+            
+            // navigation controller
+            
+            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+            navC.navigationBar.translucent = NO;
+            
+            [self presentViewController: navC
+                               animated: NO
                              completion: nil];
             
         };
