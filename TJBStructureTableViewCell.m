@@ -65,22 +65,21 @@
     
     // configure the chain name label
     
-    NSString *recordWord;
+//    NSString *recordWord;
+//    
+//    if (chainTemplate.realizedChains.count == 1){
+//        
+//        recordWord = @"record";
+//        
+//    } else{
+//        
+//        recordWord = @"records";
+//        
+//    }
     
-    if (chainTemplate.realizedChains.count == 1){
-        
-        recordWord = @"record";
-        
-    } else{
-        
-        recordWord = @"records";
-        
-    }
-    
-    NSString *title = [NSString stringWithFormat: @"%@ (%d %@)",
+    NSString *title = [NSString stringWithFormat: @"%@ (%d)",
                        chainTemplate.name,
-                       (int)chainTemplate.realizedChains.count,
-                       recordWord];
+                       (int)chainTemplate.realizedChains.count];
     
     self.chainNameLabel.text = title;
     

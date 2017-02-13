@@ -278,7 +278,7 @@
             UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
                                                                            style: UIBarButtonItemStyleDone
                                                                           target: vc1
-                                                                          action: @selector(didPressBackButton)];
+                                                                          action: @selector(didPressBack)];
             [tbc.navigationItem setLeftBarButtonItem: backButton];
             
             // navigation controller

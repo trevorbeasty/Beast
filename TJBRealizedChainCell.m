@@ -168,7 +168,7 @@
         
     } else{
         
-        weightLabel.text = @"incomplete";
+        weightLabel.text = @"X";
         repsLabel.text = @"";
         restLabel.text = @"";
         

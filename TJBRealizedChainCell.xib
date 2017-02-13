@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="534" height="284"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="534" height="283.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="534" height="283"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CVA-CK-TLK">
@@ -26,9 +26,8 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7b7-La-MtN">
-                        <rect key="frame" x="16" y="8" width="16" height="20"/>
+                        <rect key="frame" x="16" y="8" width="7" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="16" id="Be0-9m-BVY"/>
                             <constraint firstAttribute="height" constant="20" id="iwk-Zo-CMq"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -39,7 +38,7 @@
                         <rect key="frame" x="16" y="36" width="510" height="239.5"/>
                     </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Realized Chain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDa-br-hrf">
-                        <rect key="frame" x="36" y="8" width="101" height="20"/>
+                        <rect key="frame" x="27" y="8" width="101" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>

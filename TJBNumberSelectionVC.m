@@ -403,7 +403,7 @@ static NSString * const reuseIdentifier = @"cell";
         
         if (indexPath.row == 0){
             
-            self.selectedValueLabel.text = @"Go Immediately Into the Next Set";
+            self.selectedValueLabel.text = @"Go Immediately Into Next Set";
             
         } else{
             

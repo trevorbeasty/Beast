@@ -451,8 +451,27 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
 
 - (void)didPressBack{
     
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Are you sure you want to exit?"
+                                                                   message: @"A routine cannot be re-entered after exiting"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    UIAlertAction *stayAction = [UIAlertAction actionWithTitle: @"Stay here"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: nil];
+    [alert addAction: stayAction];
+    
+    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+    UIAlertAction *leaveAction = [UIAlertAction actionWithTitle: @"Leave anyway"
+                                                          style: UIAlertActionStyleDefault
+                                                        handler: ^(UIAlertAction *action){
+                                                            [weakSelf dismissViewControllerAnimated: YES
+                                                                                         completion: nil];
+                                                        }];
+    [alert addAction: leaveAction];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
     
 }
 
@@ -506,13 +525,13 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                 
             }
             
-            // save the changes
-            
-            [[CoreDataController singleton] saveContext];
-            
             // increment the chain indices
             
             BOOL routineNotCompleted = [self incrementActiveChainIndices];
+            
+            // save the changes - this must be done after incrementing because 'incrementActiveChainIndices' is where the 'first incomplete' type properties are updated for the realized chain
+            
+            [[CoreDataController singleton] saveContext];
             
             // if the iterator has reached its max value (all selections have been made), refresh the timer and active scroll view content
             // must check that this is not the very last item in the chain
@@ -536,7 +555,22 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                     
                     [weakSelf configureImmediateTargets];
                     
+                    [weakSelf dismissViewControllerAnimated: YES
+                                                 completion: nil];
+                    
                 } else{
+                    
+                    // configure labels accordingly
+                    
+                    self.timerTitleLabel.text = @"";
+                    [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerTitleLabel];
+                    
+                    self.roundTitleLabel.text = @"";
+                    
+                    // alert and dismissal
+                    
+                    [weakSelf dismissViewControllerAnimated: YES
+                                                 completion: nil];
                     
                     UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Completed"
                                                                                    message: @""
@@ -556,9 +590,6 @@ static NSString const *guidanceStackViewKey = @"guidanceStackView";
                     
                     
                 }
-                
-                [weakSelf dismissViewControllerAnimated: YES
-                                         completion: nil];
                 
             } else{
                 
