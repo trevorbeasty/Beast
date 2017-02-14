@@ -53,10 +53,13 @@
 //@property (weak, nonatomic) IBOutlet UILabel *nextUpDetailLabel;
 @property (weak, nonatomic) IBOutlet UIButton *setCompletedButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitle;
+@property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightBarButtoon;
 
 // IBAction
 
-@property (weak, nonatomic) IBOutlet UIButton *didPressSetCompleted;
+- (IBAction)didPressLeftBarButton:(id)sender;
+- (IBAction)didPressSetCompleted:(id)sender;
 
 
 // core
@@ -209,6 +212,16 @@
         
         label.backgroundColor = [UIColor darkGrayColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
+    
+    NSArray *titleButtons = @[self.leftBarButton, self.rightBarButtoon];
+    for (UIButton *button in titleButtons){
+        
+        button.backgroundColor = [UIColor darkGrayColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
         
     }
     
@@ -483,6 +496,39 @@ static NSString const *restViewKey = @"restView";
 
 #pragma mark - Button Actions
 
+- (IBAction)didPressLeftBarButton:(id)sender{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Are you sure?"
+                                                                   message: @"A routine cannot be resumed after leaving"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    UIAlertAction *stayAction = [UIAlertAction actionWithTitle: @"Stay"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: nil];
+    [alert addAction: stayAction];
+    
+    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+    UIAlertAction *leaveAction = [UIAlertAction actionWithTitle: @"Leave"
+                                                          style: UIAlertActionStyleDefault
+                                                        handler: ^(UIAlertAction *action){
+                                                            
+                                                            [weakSelf dismissViewControllerAnimated: YES
+                                                                                         completion: nil];
+                                                            
+                                                            // disassociate with the timer
+                                                            
+                                                            [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
+                                                            
+                                                        }];
+    [alert addAction: leaveAction];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
+    
+}
+
+
 - (void)didPressBack{
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Are you sure?"
@@ -660,6 +706,8 @@ static NSString const *restViewKey = @"restView";
     
 }
 
+
+
 - (BOOL)allSelectionsMade{
     
     // if the target and chain indices are equivalent, then all selections have been made
@@ -721,6 +769,7 @@ static NSString const *restViewKey = @"restView";
     
     
 }
+
 
 @end
 

@@ -13,8 +13,9 @@
             <connections>
                 <outlet property="alertTimingButton" destination="qiq-bY-nZ4" id="5a6-zS-lUz"/>
                 <outlet property="contentScrollView" destination="JEo-cq-CI2" id="h6H-BW-1Ww"/>
-                <outlet property="didPressSetCompleted" destination="2wr-bI-9Cm" id="1be-4h-1Dx"/>
+                <outlet property="leftBarButton" destination="bDc-Ml-LZQ" id="MCM-Ca-Yse"/>
                 <outlet property="mainTitle" destination="u6G-aj-mW3" id="U3q-nd-DM0"/>
+                <outlet property="rightBarButtoon" destination="ccA-V0-Nlm" id="Mh6-d9-1WX"/>
                 <outlet property="roundTitleLabel" destination="het-MU-C0e" id="o6g-j9-epM"/>
                 <outlet property="setCompletedButton" destination="2wr-bI-9Cm" id="Bnl-VM-abv"/>
                 <outlet property="timerTitleLabel" destination="RxN-sH-h54" id="XW1-fH-EgR"/>
@@ -65,7 +66,7 @@
                             </state>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Squat Row" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u6G-aj-mW3">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                            <rect key="frame" x="102" y="0.0" width="171" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="lsx-We-P2q"/>
@@ -74,23 +75,54 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDc-Ml-LZQ">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="50"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="eqV-tg-5ql"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Back">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="didPressLeftBarButton:" destination="-1" eventType="touchUpInside" id="yHC-pz-upq"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccA-V0-Nlm">
+                            <rect key="frame" x="275" y="0.0" width="100" height="50"/>
+                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="cVB-he-f7R"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="het-MU-C0e" firstAttribute="leading" secondItem="nYI-cm-pnM" secondAttribute="leading" id="0o4-v5-FRJ"/>
-                        <constraint firstItem="u6G-aj-mW3" firstAttribute="leading" secondItem="nYI-cm-pnM" secondAttribute="leading" id="72x-yX-hAs"/>
+                        <constraint firstItem="ccA-V0-Nlm" firstAttribute="leading" secondItem="u6G-aj-mW3" secondAttribute="trailing" constant="2" id="2sK-dq-jCs"/>
+                        <constraint firstItem="RxN-sH-h54" firstAttribute="top" secondItem="ccA-V0-Nlm" secondAttribute="bottom" constant="2" id="3CJ-Su-CeT"/>
+                        <constraint firstItem="bDc-Ml-LZQ" firstAttribute="leading" secondItem="nYI-cm-pnM" secondAttribute="leading" id="7DH-YX-mgP"/>
+                        <constraint firstAttribute="trailing" secondItem="ccA-V0-Nlm" secondAttribute="trailing" id="DcF-cb-wHJ"/>
+                        <constraint firstItem="ccA-V0-Nlm" firstAttribute="top" secondItem="nYI-cm-pnM" secondAttribute="top" id="DeF-Q9-3yF"/>
                         <constraint firstItem="qiq-bY-nZ4" firstAttribute="top" secondItem="Ecc-St-VSz" secondAttribute="top" id="Iya-Ty-uxd"/>
                         <constraint firstItem="RxN-sH-h54" firstAttribute="width" secondItem="het-MU-C0e" secondAttribute="width" id="J3t-mv-sXK"/>
+                        <constraint firstItem="u6G-aj-mW3" firstAttribute="leading" secondItem="bDc-Ml-LZQ" secondAttribute="trailing" constant="2" id="JJY-I9-6l4"/>
                         <constraint firstItem="RxN-sH-h54" firstAttribute="bottom" secondItem="het-MU-C0e" secondAttribute="bottom" id="Jkl-Qx-ylA"/>
                         <constraint firstItem="u6G-aj-mW3" firstAttribute="top" secondItem="nYI-cm-pnM" secondAttribute="top" id="KZC-8T-p6R"/>
                         <constraint firstItem="qiq-bY-nZ4" firstAttribute="width" secondItem="Ecc-St-VSz" secondAttribute="width" id="RBg-hj-oKM"/>
                         <constraint firstAttribute="height" constant="140" id="XSN-6l-eqy"/>
                         <constraint firstItem="RxN-sH-h54" firstAttribute="top" secondItem="het-MU-C0e" secondAttribute="top" id="bi1-dy-tVR"/>
+                        <constraint firstItem="bDc-Ml-LZQ" firstAttribute="top" secondItem="nYI-cm-pnM" secondAttribute="top" id="dkm-QL-fK0"/>
                         <constraint firstItem="RxN-sH-h54" firstAttribute="leading" secondItem="het-MU-C0e" secondAttribute="trailing" constant="2" id="fhk-pz-EwQ"/>
                         <constraint firstItem="Ecc-St-VSz" firstAttribute="leading" secondItem="nYI-cm-pnM" secondAttribute="leading" constant="4" id="gvJ-pI-KoQ"/>
+                        <constraint firstItem="het-MU-C0e" firstAttribute="top" secondItem="bDc-Ml-LZQ" secondAttribute="bottom" constant="2" id="h18-PC-v4r"/>
                         <constraint firstItem="qiq-bY-nZ4" firstAttribute="bottom" secondItem="Ecc-St-VSz" secondAttribute="bottom" id="j6i-eh-lXf"/>
                         <constraint firstItem="het-MU-C0e" firstAttribute="top" secondItem="u6G-aj-mW3" secondAttribute="bottom" constant="2" id="kVn-SQ-GIh"/>
-                        <constraint firstAttribute="trailing" secondItem="u6G-aj-mW3" secondAttribute="trailing" id="ma6-wz-1Kb"/>
                         <constraint firstItem="Ecc-St-VSz" firstAttribute="top" secondItem="het-MU-C0e" secondAttribute="bottom" constant="4" id="nXO-Dn-9XB"/>
                         <constraint firstItem="qiq-bY-nZ4" firstAttribute="leading" secondItem="Ecc-St-VSz" secondAttribute="trailing" constant="12" id="oBL-aS-up2"/>
                         <constraint firstAttribute="trailing" secondItem="qiq-bY-nZ4" secondAttribute="trailing" constant="4" id="u8d-ST-fpf"/>
@@ -108,7 +140,7 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="didPressSetCompleted:" destination="-1" eventType="touchUpInside" id="PuK-iA-Dc5"/>
+                        <action selector="didPressSetCompleted:" destination="-1" eventType="touchUpInside" id="seR-Pk-bew"/>
                     </connections>
                 </button>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-cq-CI2">

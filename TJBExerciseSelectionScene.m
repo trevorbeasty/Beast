@@ -14,7 +14,7 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource>
+@interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 {
     
@@ -47,12 +47,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
 @property (weak, nonatomic) IBOutlet UIView *exerciseAdditionContainer;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UIButton *addAndSelectButton;
 
 // IBAction
 
 - (IBAction)didPressAddNewExercise:(id)sender;
 - (IBAction)didPressLeftBarButton:(id)sender;
 - (IBAction)didPressAddButton:(id)sender;
+- (IBAction)didPressAddAndSelect:(id)sender;
 
 
 @end
@@ -92,6 +94,27 @@ static CGFloat const controlHeight = 250.0;
     [self viewAesthetics];
     
     [self configureInitialControlPosition];
+    
+    [self addTapGestureRecognizerToViewForKeyboardNotification];
+    
+}
+
+- (void)addTapGestureRecognizerToViewForKeyboardNotification{
+    
+    //// add gesture recognizer to the view.  It will be used to dismiss the keyboard if the touch is not in the keyboard or text field
+    //// also register for the UIKeyboardDidShowNotification so that the frame of the keyboard can be stored for later use in analyzing touches
+    
+    // tap GR
+    
+    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                                  action: @selector(didSingleTap:)];
+    
+    singleTapGR.numberOfTapsRequired = 1;
+    singleTapGR.cancelsTouchesInView = NO;
+    singleTapGR.delaysTouchesBegan = NO;
+    singleTapGR.delaysTouchesEnded = NO;
+    
+    [self.view addGestureRecognizer: singleTapGR];
     
 }
 
@@ -167,7 +190,11 @@ static CGFloat const controlHeight = 250.0;
 
 - (void)viewAesthetics{
     
+    // new exercise buttons
+    
     self.addNewExerciseButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    
+    // labels
     
     NSArray *exerciseAdditionLabels = @[self.exerciseLabel, self.categoryLabel];
     for (UILabel *label in exerciseAdditionLabels){
@@ -178,14 +205,33 @@ static CGFloat const controlHeight = 250.0;
         
     }
     
+    // category segmented control
+    
     self.categorySegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
     
-    self.addButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    self.addButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    [self.addButton setTitleColor: [UIColor whiteColor]
-                         forState: UIControlStateNormal];
-    self.addButton.layer.masksToBounds = YES;
-    self.addButton.layer.cornerRadius = 8.0;
+    UIFont *categorySelectionFont = [UIFont boldSystemFontOfSize: 15.0];
+    
+    NSDictionary *info = [NSDictionary dictionaryWithObject: categorySelectionFont
+                                                     forKey: NSFontAttributeName];
+    
+    [self.categorySegmentedControl setTitleTextAttributes: info
+                                                 forState: UIControlStateNormal];
+    
+    // add buttons
+    
+    NSArray *addButtons = @[self.addButton, self.addAndSelectButton];
+    for (UIButton *button in addButtons){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        [button setTitleColor: [UIColor whiteColor]
+                             forState: UIControlStateNormal];
+        
+    }
+    
+    // exercise text field
+    
+    self.exerciseTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     
     CALayer *layer = self.exerciseTextField.layer;
     layer.masksToBounds = YES;
@@ -315,8 +361,125 @@ static CGFloat const controlHeight = 250.0;
 
 - (IBAction)didPressAddButton:(id)sender{
     
-
+    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
     
+    // conditional actions
+    
+    NSString *exerciseString = self.exerciseTextField.text;
+    
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: nil];
+    
+    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
+    
+    if (exerciseExists){
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"This exercise already exists"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        [alert addAction: continueAction];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else if([exerciseString isEqualToString: @""]){
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"Exercise entry is blank"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        [alert addAction: continueAction];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        
+        [self addNewExerciseAndClearExerciseTextField];
+        
+    }
+    
+}
+
+- (TJBExercise *)addNewExerciseAndClearExerciseTextField{
+    
+    //// add the new exercise leverage CoreDataController methods.  Save the context when done
+    
+    CoreDataController *coreDataController = [CoreDataController singleton];
+    
+    NSString *newExerciseName = self.exerciseTextField.text;
+    
+    NSNumber *wasNewlyCreated = nil;
+    TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
+                                                   wasNewlyCreated: &wasNewlyCreated
+                                       createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
+    
+    newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
+    
+    [[CoreDataController singleton] saveContext];
+    
+    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
+                                                        object: nil];
+    
+    // clear the exercise text field
+    
+    self.exerciseTextField.text = @"";
+    
+    return newExercise;
+    
+}
+
+- (IBAction)didPressAddAndSelect:(id)sender {
+    
+    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
+    
+    // conditional actions
+    
+    NSString *exerciseString = self.exerciseTextField.text;
+    
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: nil];
+    
+    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
+    
+    if (exerciseExists){
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"This exercise already exists"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        [alert addAction: continueAction];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else if([exerciseString isEqualToString: @""]){
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"Exercise entry is blank"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        [alert addAction: continueAction];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        
+        TJBExercise *exercise = [self addNewExerciseAndClearExerciseTextField];
+        
+        self.callbackBlock(exercise);
+        
+    }
 }
 
 #pragma mark - Animation
@@ -381,6 +544,65 @@ static CGFloat const controlHeight = 250.0;
                                 forState: UIControlStateNormal];
     
 //    self.exerciseAdditionContainer.hidden = YES;
+    
+}
+
+#pragma  mark - Convenience
+
+- (NSString *)selectedCategory{
+    
+    NSString *selectedCategory;
+    
+    NSInteger categoryIndex = self.categorySegmentedControl.selectedSegmentIndex;
+    
+    switch (categoryIndex){
+        case 0:
+            selectedCategory = @"Push";
+            break;
+            
+        case 1:
+            selectedCategory = @"Pull";
+            break;
+            
+        case 2:
+            selectedCategory = @"Legs";
+            break;
+            
+        case 3:
+            selectedCategory = @"Other";
+            break;
+            
+        default:
+            break;
+            
+    }
+    
+    return selectedCategory;
+    
+}
+
+#pragma mark - Gesture Recognizer
+
+- (void)didSingleTap:(UIGestureRecognizer *)gr{
+    
+    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
+    
+    BOOL keyboardIsShowing = [self.exerciseTextField isFirstResponder];
+    
+    if (keyboardIsShowing){
+        
+        [self.exerciseTextField resignFirstResponder];
+        
+    }
+}
+
+#pragma mark - <UITextFieldDelegate>
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    [self.exerciseTextField resignFirstResponder];
+    
+    return YES;
     
 }
 
