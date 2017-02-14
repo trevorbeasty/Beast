@@ -48,7 +48,6 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
@@ -65,6 +64,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 
 // IBAction
@@ -74,6 +74,7 @@
 
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
+- (IBAction)didPressBackButton:(id)sender;
 
 
 //// core data
@@ -147,8 +148,6 @@
     [self configureTableView];
     
     [self configureDateControlsAndSelectToday: YES];
-    
-    [self configureNavigationBar];
     
     [self viewAesthetics];
     
@@ -388,7 +387,7 @@
     self.yearLabel.textColor = [UIColor whiteColor];
     self.yearLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
-    // arrows
+    // arrows and back button
     
     NSArray *arrows = @[self.rightArrowButton, self.leftArrowButton];
     for (UIButton *b in arrows){
@@ -400,37 +399,13 @@
         
     }
     
+    self.backButton.backgroundColor = [UIColor darkGrayColor];
+    [self.backButton setTitleColor: [UIColor whiteColor]
+                          forState: UIControlStateNormal];
+    self.backButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
 }
 
-- (void)configureNavigationBar{
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"My Routines"];
-    
-    // left button
-    
-    UIBarButtonItem *homeButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-                                                                   style: UIBarButtonItemStyleDone
-                                                                  target: self
-                                                                  action: @selector(didPressHomeButton)];
-    
-    [navItem setLeftBarButtonItem: homeButton];
-    
-    // right button
-    
-    UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle: @"New"
-                                                                  style: UIBarButtonItemStyleDone
-                                                                 target: self
-                                                                 action: @selector(didPressNew)];
-    
-    [navItem setRightBarButtonItem: newButton];
-    
-    // nav bar
-    
-    [self.navBar setItems: @[navItem]];
-    
-    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
-    
-}
 
 - (void)configureTableView{
     
@@ -1073,7 +1048,7 @@
     
 }
 
-- (void)didPressHomeButton{
+- (IBAction)didPressBackButton:(id)sender{
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
@@ -1156,6 +1131,8 @@
     [self incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward: YES];
     
 }
+
+
 
 - (void)configureSelectionAsNil{
     

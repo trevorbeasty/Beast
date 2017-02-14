@@ -168,26 +168,26 @@
     UITabBarController *tbc = [[UITabBarController alloc] init];
     [tbc setViewControllers: @[vc1, vc2]];
     tbc.tabBar.translucent = NO;
-    tbc.navigationItem.title = @"My Routines";
+//    tbc.navigationItem.title = @"My Routines";
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-                                                                   style: UIBarButtonItemStyleDone
-                                                                  target: self
-                                                                  action: @selector(didPressBack)];
-    [tbc.navigationItem setLeftBarButtonItem: backButton];
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+//                                                                   style: UIBarButtonItemStyleDone
+//                                                                  target: self
+//                                                                  action: @selector(didPressBack)];
+//    [tbc.navigationItem setLeftBarButtonItem: backButton];
     
-    UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle: @"New"
-                                                                  style: UIBarButtonItemStyleDone
-                                                                 target: vc1
-                                                                 action: @selector(didPressNew)];
-    [tbc.navigationItem setRightBarButtonItem: newButton];
-    
-    // navigation controller
-    
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-    navC.navigationBar.translucent = NO;
-    
-    [self presentViewController: navC
+//    UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle: @"New"
+//                                                                  style: UIBarButtonItemStyleDone
+//                                                                 target: vc1
+//                                                                 action: @selector(didPressNew)];
+//    [tbc.navigationItem setRightBarButtonItem: newButton];
+//    
+//    // navigation controller
+//    
+//    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+//    navC.navigationBar.translucent = NO;
+//    
+    [self presentViewController: tbc
                        animated: NO
                      completion: nil];
     
