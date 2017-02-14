@@ -33,13 +33,16 @@
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roundsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *rightTitleButton;
 
 // IBAction
 
 - (IBAction)didPressLaunchCircuit:(id)sender;
+- (IBAction)didPressBack:(id)sender;
 
 // core
 
@@ -110,8 +113,6 @@
     
     [self configureContainerView];
     
-    [self configureNavigationBar];
-    
     [self configureViewAesthetics];
 
 }
@@ -133,6 +134,31 @@
 
 - (void)configureViewAesthetics{
     
+    // title bar
+    
+    NSArray *titleButtons = @[self.backButton, self.rightTitleButton];
+    for (UIButton *button in titleButtons){
+        
+        button.backgroundColor = [UIColor darkGrayColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        
+    }
+    
+    NSArray *titleLabels = @[self.mainTitleLabel, self.roundsLabel, self.titleLabel];
+    for (UILabel *label in titleLabels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
+    
+    self.roundsLabel.font = [UIFont systemFontOfSize:15.0];
+    
+    // launch button
+    
     self.launchCircuitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     [self.launchCircuitButton setTitleColor: [UIColor whiteColor]
                                    forState: UIControlStateNormal];
@@ -140,15 +166,12 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    // title labels
+    // title labels text
     
     self.titleLabel.text = self.chainTemplate.name;
-    self.titleLabel.backgroundColor = [UIColor darkGrayColor];
     
     NSString *word;
-    
     int number = self.chainTemplate.numberOfRounds;
-    
     if (number == 1){
     
         word = @"round";
@@ -159,15 +182,21 @@
             
     }
     
-    NSString *roundsText = [NSString stringWithFormat: @"%d %@",
+    NSString *exerciseWord;
+    int exerciseNumber = self.chainTemplate.numberOfExercises;
+    if (exerciseNumber == 1){
+        exerciseWord = @"exercise";
+    } else{
+        exerciseWord = @"exercises";
+    }
+    
+    NSString *roundsText = [NSString stringWithFormat: @"%d %@, %d %@",
+                            self.chainTemplate.numberOfExercises,
+                            exerciseWord,
                             self.chainTemplate.numberOfRounds,
                             word];
     
     self.roundsLabel.text = roundsText;
-    self.roundsLabel.backgroundColor = [UIColor darkGrayColor];
-    
-    
-    
     
 }
 
@@ -189,36 +218,7 @@
     
 }
 
-- (void)configureNavigationBar{
-    
-    // create the navigation item
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] init];
-    
-    NSString *title = @"New Routine";
-    
-    [navItem setTitle: title];
-    
-    // add a navigation bar button as well
-    
-        
-    UIBarButtonItem *xBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemStop
-                                                                                target: self
-                                                                                action: @selector(didPressX)];
-    [navItem setLeftBarButtonItem: xBarButton];
-    
-    UIBarButtonItem *goBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd
-                                                                                 target: self
-                                                                                 action: @selector(didPressAdd)];
-    [navItem setRightBarButtonItem: goBarButton];
-    
-    // set the items of the navigation bar
-    
-    [self.navigationBar setItems: @[navItem]];
-    
-    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
-    
-}
+
 
 #pragma mark - Button Actions
 
@@ -305,6 +305,13 @@
     [self alertUserInputIncomplete];
         
     }
+    
+}
+
+- (IBAction)didPressBack:(id)sender{
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
     
 }
     

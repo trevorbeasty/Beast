@@ -36,8 +36,12 @@
 @property (weak, nonatomic) IBOutlet UIStepper *numberOfRoundsStepper;
 
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *rightTitleButton;
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 
 // labels
 
@@ -58,6 +62,8 @@
 // IBAction
 
 - (IBAction)didPressLaunchTemplate:(id)sender;
+- (IBAction)didPressBack:(id)sender;
+
 
 // for restoration
 
@@ -83,8 +89,6 @@
 - (void)viewDidLoad{
     
     [self configureViewDataAndFunctionality];
-    
-    [self configureNavigationBar];
     
     [self viewAesthetics];
     
@@ -132,25 +136,27 @@
                          forControlEvents: UIControlEventValueChanged];
 }
 
-- (void)configureNavigationBar{
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"New Routine"];
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-                                                                                   target: self
-                                                                                   action: @selector(didPressCancel)];
-    
-    [navItem setLeftBarButtonItem: barButtonItem];
-    
-    [self.navBar setItems: @[navItem]];
-    
-    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
-    
-}
+
 
 
 
 - (void)viewAesthetics{
+    
+    // title bar
+    
+    NSArray *titleButtons = @[self.backButton, self.rightTitleButton];
+    for (UIButton *button in titleButtons){
+        
+        button.backgroundColor = [UIColor darkGrayColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        
+    }
+    
+    self.mainTitleLabel.backgroundColor = [UIColor darkGrayColor];
+    self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    self.mainTitleLabel.textColor = [UIColor whiteColor];
     
     // text field
     
@@ -198,10 +204,26 @@
         
         label.layer.masksToBounds = YES;
         label.layer.cornerRadius = 4.0;
+        label.backgroundColor = [UIColor lightGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
     
-    // buttonr
+    // large labels
+    
+    NSArray *largeLabels = @[self.circuitNameLabel,
+                            self.numberOfLabel,
+                            self.targetsLabel];
+    for (UILabel *label in largeLabels){
+        
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor darkGrayColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
+    
+    // buttons
     
     self.launchTemplateButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     
@@ -272,6 +294,15 @@
     
 
 }
+
+- (IBAction)didPressBack:(id)sender {
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+    
+}
+
+
 
 - (void)didPressCancel{
     [self dismissViewControllerAnimated: NO

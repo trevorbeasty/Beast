@@ -14,6 +14,5 @@
 
 @interface NewOrExistinigCircuitVC : UIViewController <TJBSchemeSelectionDateCompDelegate>
 
-- (void)didPressNew;
 
 @end

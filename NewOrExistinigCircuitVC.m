@@ -1046,15 +1046,6 @@
 
 #pragma mark - Button Actions
 
-- (void)didPressNew{
-    
-    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
-    
-}
 
 - (IBAction)didPressBackButton:(id)sender{
     
@@ -1066,20 +1057,10 @@
 - (IBAction)didPressRightNewButton:(id)sender{
     
     TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
-//    __weak NewOrExistinigCircuitVC *weakSelf = self;
-    
-//    [self dismissViewControllerAnimated: YES
-//                             completion: ^{
-//                                 
-//                                 [weakSelf.presentingViewController presentViewController: vc
-//                                                                                 animated: YES
-//                                                                               completion: nil];
-//                                 
-//                             }];
     
     [self.presentingViewController presentViewController: vc
-                                                animated: NO
-                                              completion: nil];
+                                        animated: NO
+                                      completion: nil];
 
     
 }
