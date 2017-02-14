@@ -84,6 +84,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *advancedOptionsButton;
 @property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonControlsVerticalConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
+
 
 
 
@@ -94,6 +96,7 @@
 - (IBAction)didPressAlertTimingButton:(id)sender;
 - (IBAction)didPressExerciseButton:(id)sender;
 - (IBAction)didPressAdvancedOptions:(id)sender;
+- (IBAction)didPressLeftBarButton:(id)sender;
 
 
 //// core data
@@ -312,7 +315,7 @@
 
 - (void)viewAesthetics{
     
-    // buttons
+    //// buttons
     
     NSArray *buttons = @[self.targetRestButton,
                          self.alertTimingButton,
@@ -336,7 +339,13 @@
                                   forState: UIControlStateNormal];
     self.beginNextSetButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
-    // title labels
+    // advanced options button
+    
+    self.advancedOptionsButton.titleLabel.font = [UIFont systemFontOfSize: 15.0];
+    [self.advancedOptionsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                                     forState: UIControlStateNormal];
+    
+    // title labels and title buttons
     
     NSArray *titleLabels = @[self.largeStatusLabel,
                              self.timerLabel,
@@ -349,6 +358,19 @@
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
+    
+    NSArray *titleButtons = @[self.leftBarButton,
+                              self.advancedOptionsButton];
+    for (UIButton *button in titleButtons){
+        
+        button.backgroundColor = [UIColor darkGrayColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        
+    }
+    
+    self.advancedOptionsButton.titleLabel.font = [UIFont boldSystemFontOfSize: 30.0];
     
     // selection row labels
     
@@ -365,7 +387,7 @@
         
     }
     
-    self.exerciseLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.exerciseLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     self.exerciseLabel.textColor = [UIColor darkGrayColor];
 
     
@@ -375,20 +397,20 @@
     
     // give the light gray backdrop rounded corners for the bottom two corners.  Must layout views to update autolayout before calling frame
     
-    [self.view layoutIfNeeded];
-    
-    CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
-    
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.grayBackdropView.bounds
-                                               byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
-                                                     cornerRadii: CGSizeMake(16.0, 16.0)];
-    
-    shapeLayer.path = path.CGPath;
-    shapeLayer.frame = self.grayBackdropView.bounds;
-    shapeLayer.fillRule = kCAFillRuleNonZero;
-    shapeLayer.fillColor = [UIColor redColor].CGColor;
-    
-    self.grayBackdropView.layer.mask = shapeLayer;
+//    [self.view layoutIfNeeded];
+//    
+//    CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
+//    
+//    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.grayBackdropView.bounds
+//                                               byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
+//                                                     cornerRadii: CGSizeMake(16.0, 16.0)];
+//    
+//    shapeLayer.path = path.CGPath;
+//    shapeLayer.frame = self.grayBackdropView.bounds;
+//    shapeLayer.fillRule = kCAFillRuleNonZero;
+//    shapeLayer.fillColor = [UIColor redColor].CGColor;
+//    
+//    self.grayBackdropView.layer.mask = shapeLayer;
 
     
     // segmented controls
@@ -764,6 +786,13 @@
     }
     
     
+    
+}
+
+- (IBAction)didPressLeftBarButton:(id)sender{
+    
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
     
 }
 
@@ -1644,8 +1673,7 @@ static CGFloat const slidingHeight = 173.0;
                          
                          NSArray *views = @[self.grayBackdropView,
                                             self.exerciseLabel,
-                                            self.exerciseButton,
-                                            self.advancedOptionsButton];
+                                            self.exerciseButton];
                          
                          for (UIView *view in views){
                              
@@ -1662,7 +1690,7 @@ static CGFloat const slidingHeight = 173.0;
                      }];
     
     _advancedOptionsActive = YES;
-    [self.advancedOptionsButton setTitle: @"- advanced options"
+    [self.advancedOptionsButton setTitle: @"-"
                                 forState: UIControlStateNormal];
 //    self.grayBackdropView.hidden = NO;
     
@@ -1678,8 +1706,7 @@ static CGFloat const slidingHeight = 173.0;
                          
                          NSArray *views = @[self.grayBackdropView,
                                             self.exerciseLabel,
-                                            self.exerciseButton,
-                                            self.advancedOptionsButton];
+                                            self.exerciseButton];
                          
                          for (UIView *view in views){
                              
@@ -1696,7 +1723,7 @@ static CGFloat const slidingHeight = 173.0;
                      }];
     
     _advancedOptionsActive = NO;
-    [self.advancedOptionsButton setTitle: @"+ advanced options"
+    [self.advancedOptionsButton setTitle: @"+"
                                 forState: UIControlStateNormal];
 //    self.grayBackdropView.hidden = YES;
     
