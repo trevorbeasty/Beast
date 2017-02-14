@@ -175,9 +175,9 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
     UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [UIColor darkGrayColor];
+    label.backgroundColor = [UIColor lightGrayColor];
     label.textColor = [UIColor whiteColor];
-    label.font = [UIFont boldSystemFontOfSize: 25.0];
+    label.font = [UIFont boldSystemFontOfSize: 20.0];
     label.textAlignment = NSTextAlignmentCenter;
     
     id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
@@ -195,7 +195,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 40;
+    return 60;
     
 }
 

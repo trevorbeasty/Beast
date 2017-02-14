@@ -12,7 +12,16 @@
 
 - (void)configureWithReps:(NSNumber *)reps weight:(NSNumber *)weight date:(NSDate *)date{
     
-    self.repsLabel.text = [reps stringValue];
+    NSString *repsWord;
+    if ([reps intValue] == 1){
+        repsWord = @"rep";
+    } else{
+        repsWord = @"reps";
+    }
+    NSString *repsText = [NSString stringWithFormat: @"%@ %@",
+                          [reps stringValue],
+                          repsWord];
+    self.repsLabel.text = repsText;
     
     NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
     self.weightLabel.text = weightString;
