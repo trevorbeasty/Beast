@@ -54,11 +54,12 @@
 
 - (void)viewDidLoad{
     
-    self.restTitleLabel.layer.masksToBounds = YES;
-    self.restTitleLabel.layer.cornerRadius = 4.0;
+//    self.restTitleLabel.layer.masksToBounds = YES;
+//    self.restTitleLabel.layer.cornerRadius = 4.0;
     
-    self.restTitleLabel.backgroundColor = [UIColor darkGrayColor];
+    self.restTitleLabel.backgroundColor = [UIColor clearColor];
     self.restTitleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    self.restTitleLabel.textColor = [UIColor darkGrayColor];
     
     if (_marksEndOfRoutine){
         

@@ -38,7 +38,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7aE-Pc-F0b" userLabel="containerView">
-                    <rect key="frame" x="8" y="40" width="531" height="258"/>
+                    <rect key="frame" x="8" y="40" width="531" height="250"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="target lbs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJh-zC-K1t">
                             <rect key="frame" x="177.5" y="0.0" width="177" height="30"/>
@@ -85,7 +85,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Jcv-SU-ArZ">
-                            <rect key="frame" x="0.0" y="62" width="531.5" height="196"/>
+                            <rect key="frame" x="0.0" y="62" width="531.5" height="188"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <connections>
@@ -125,7 +125,7 @@
                 <constraint firstAttribute="trailing" secondItem="oy1-94-oRo" secondAttribute="trailing" constant="16" id="0Rb-aL-tQS"/>
                 <constraint firstAttribute="trailing" secondItem="7aE-Pc-F0b" secondAttribute="trailing" constant="8" id="75H-um-K40"/>
                 <constraint firstItem="oy1-94-oRo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="C1b-5s-ZDv"/>
-                <constraint firstAttribute="bottom" secondItem="7aE-Pc-F0b" secondAttribute="bottom" constant="8" id="iTC-Q7-wHc"/>
+                <constraint firstAttribute="bottom" secondItem="7aE-Pc-F0b" secondAttribute="bottom" constant="16" id="iTC-Q7-wHc"/>
                 <constraint firstItem="7aE-Pc-F0b" firstAttribute="top" secondItem="oy1-94-oRo" secondAttribute="bottom" id="qGA-Pc-QFG"/>
                 <constraint firstItem="oy1-94-oRo" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="s25-SW-iBh"/>
                 <constraint firstItem="7aE-Pc-F0b" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="yv2-hc-r8d"/>

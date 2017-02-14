@@ -369,7 +369,7 @@ static NSString const *restViewKey = @"restView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 330;
+    CGFloat exerciseCompHeight = 200;
     CGFloat restCompHeight = 100;
     CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight;
     
