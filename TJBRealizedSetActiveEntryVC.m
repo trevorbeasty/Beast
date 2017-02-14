@@ -80,10 +80,11 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *setEndTimeSegmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *trackSetLengthLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *trackSetLengthSegmentedControl;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonsContainerConstraint;
 @property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
 @property (weak, nonatomic) IBOutlet UIButton *advancedOptionsButton;
 @property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonControlsVerticalConstraint;
+
 
 
 // IBAction
@@ -237,13 +238,12 @@
 
 - (void)configureButtonControlStartingState{
     
-//    [self.view insertSubview: self.titleLabelsContainer
-//                belowSubview: self.navigationBar];
-    
     [self.view insertSubview: self.grayBackdropView
                 belowSubview: self.titleLabelsContainer];
     
-    self.buttonsContainerConstraint.constant = -1 * slidingHeight;
+    self.buttonControlsVerticalConstraint.constant = -1 * slidingHeight;
+    
+//    self.grayBackdropView.hidden = YES;
     
 }
 
@@ -1633,18 +1633,27 @@
 
 #pragma mark - Animation
 
-static CGFloat const slidingHeight = 173;
+static CGFloat const slidingHeight = 173.0;
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
     [UIView animateWithDuration: .4
                      animations: ^{
                          
-                         self.buttonsContainerConstraint.constant = 0;
+                         self.buttonControlsVerticalConstraint.constant = 0;
                          
-                         CGRect currentFrame = self.grayBackdropView.frame;
-                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + slidingHeight, currentFrame.size.width, currentFrame.size.height);
-                         self.grayBackdropView.frame = newFrame;
+                         NSArray *views = @[self.grayBackdropView,
+                                            self.exerciseLabel,
+                                            self.exerciseButton,
+                                            self.advancedOptionsButton];
+                         
+                         for (UIView *view in views){
+                             
+                             CGRect currentFrame = view.frame;
+                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + slidingHeight, currentFrame.size.width, currentFrame.size.height);
+                             view.frame = newFrame;
+                             
+                         }
                          
                          CGRect currentTVFrame = self.personalRecordsTableView.frame;
                          CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + slidingHeight, currentTVFrame.size.width, currentTVFrame.size.height - slidingHeight);
@@ -1655,6 +1664,7 @@ static CGFloat const slidingHeight = 173;
     _advancedOptionsActive = YES;
     [self.advancedOptionsButton setTitle: @"- advanced options"
                                 forState: UIControlStateNormal];
+//    self.grayBackdropView.hidden = NO;
     
 }
 
@@ -1663,11 +1673,21 @@ static CGFloat const slidingHeight = 173;
     [UIView animateWithDuration: .4
                      animations: ^{
                          
-                         self.buttonsContainerConstraint.constant = -1 * slidingHeight;
+                         self.buttonControlsVerticalConstraint.constant = -1 * slidingHeight;
                          
-                         CGRect currentFrame = self.grayBackdropView.frame;
-                         CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - slidingHeight, currentFrame.size.width, currentFrame.size.height);
-                         self.grayBackdropView.frame = newFrame;
+                         
+                         NSArray *views = @[self.grayBackdropView,
+                                            self.exerciseLabel,
+                                            self.exerciseButton,
+                                            self.advancedOptionsButton];
+                         
+                         for (UIView *view in views){
+                             
+                             CGRect currentFrame = view.frame;
+                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - slidingHeight, currentFrame.size.width, currentFrame.size.height);
+                             view.frame = newFrame;
+                             
+                         }
                          
                          CGRect currentTVFrame = self.personalRecordsTableView.frame;
                          CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - slidingHeight, currentTVFrame.size.width, currentTVFrame.size.height + slidingHeight);
@@ -1678,6 +1698,7 @@ static CGFloat const slidingHeight = 173;
     _advancedOptionsActive = NO;
     [self.advancedOptionsButton setTitle: @"+ advanced options"
                                 forState: UIControlStateNormal];
+//    self.grayBackdropView.hidden = YES;
     
 }
 
