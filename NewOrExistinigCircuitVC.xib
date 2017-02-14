@@ -19,6 +19,7 @@
                 <outlet property="modifyButton" destination="KWr-xh-ldO" id="Vbn-UD-PYQ"/>
                 <outlet property="previousMarkButton" destination="X8G-LF-5HS" id="dEF-rf-bdd"/>
                 <outlet property="rightArrowButton" destination="muu-Ne-Y0K" id="fY0-rH-Nyj"/>
+                <outlet property="rightNewButton" destination="dmS-XB-EAg" id="vfI-Sl-sYz"/>
                 <outlet property="sortBySegmentedControl" destination="pL5-1h-FKf" id="TcY-kJ-FWG"/>
                 <outlet property="tableView" destination="YLP-je-fi9" id="baC-bn-5lA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -97,7 +98,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZc-c3-eUK">
-                    <rect key="frame" x="154" y="20" width="169" height="50"/>
+                    <rect key="frame" x="129" y="20" width="117" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="saU-C2-ESb"/>
                     </constraints>
@@ -112,7 +113,7 @@
                     </constraints>
                 </scrollView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muu-Ne-Y0K">
-                    <rect key="frame" x="325" y="20" width="50" height="50"/>
+                    <rect key="frame" x="248" y="20" width="50" height="50"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="50" id="Wze-gw-h9M"/>
                     </constraints>
@@ -122,7 +123,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZY-W0-fYd">
-                    <rect key="frame" x="102" y="20" width="50" height="50"/>
+                    <rect key="frame" x="77" y="20" width="50" height="50"/>
                     <state key="normal" title="&lt;"/>
                     <connections>
                         <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="46V-Zq-up9"/>
@@ -136,13 +137,24 @@
                     </segments>
                 </segmentedControl>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xaz-HF-NBZ">
-                    <rect key="frame" x="0.0" y="20" width="100" height="50"/>
+                    <rect key="frame" x="0.0" y="20" width="75" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="100" id="C6X-xk-K2Y"/>
+                        <constraint firstAttribute="width" constant="75" id="C6X-xk-K2Y"/>
                     </constraints>
                     <state key="normal" title="Back"/>
                     <connections>
                         <action selector="didPressBackButton:" destination="-1" eventType="touchUpInside" id="xPy-Ra-hUc"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dmS-XB-EAg">
+                    <rect key="frame" x="300" y="20" width="75" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="75" id="kPi-xG-WQU"/>
+                    </constraints>
+                    <state key="normal" title="New"/>
+                    <connections>
+                        <action selector="didPressBackButton:" destination="-1" eventType="touchUpInside" id="JQK-0j-2AY"/>
+                        <action selector="didPressRightNewButton:" destination="-1" eventType="touchUpInside" id="EWH-YZ-TPZ"/>
                     </connections>
                 </button>
             </subviews>
@@ -156,12 +168,14 @@
                 <constraint firstItem="tZY-W0-fYd" firstAttribute="leading" secondItem="Xaz-HF-NBZ" secondAttribute="trailing" constant="2" id="5Sq-PN-euf"/>
                 <constraint firstItem="cna-Rm-Pq1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="CFD-ZS-ub0"/>
                 <constraint firstItem="gVq-bE-dqU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="M2P-Lu-V1R"/>
-                <constraint firstAttribute="trailing" secondItem="muu-Ne-Y0K" secondAttribute="trailing" id="Tth-Ui-AoD"/>
+                <constraint firstItem="dmS-XB-EAg" firstAttribute="leading" secondItem="muu-Ne-Y0K" secondAttribute="trailing" constant="2" id="Soi-bQ-fVQ"/>
                 <constraint firstItem="yZc-c3-eUK" firstAttribute="bottom" secondItem="tZY-W0-fYd" secondAttribute="bottom" id="Twd-NF-ubh"/>
                 <constraint firstItem="gVq-bE-dqU" firstAttribute="top" secondItem="pL5-1h-FKf" secondAttribute="bottom" constant="16" id="Vdb-lL-VxK"/>
                 <constraint firstItem="yZc-c3-eUK" firstAttribute="leading" secondItem="tZY-W0-fYd" secondAttribute="trailing" constant="2" id="Wd8-oX-jPc"/>
                 <constraint firstAttribute="trailing" secondItem="cna-Rm-Pq1" secondAttribute="trailing" constant="16" id="Xgt-y7-ps3"/>
+                <constraint firstAttribute="trailing" secondItem="dmS-XB-EAg" secondAttribute="trailing" id="avZ-Xr-bJb"/>
                 <constraint firstAttribute="trailing" secondItem="iB7-75-csB" secondAttribute="trailing" id="g5M-Im-CAh"/>
+                <constraint firstItem="dmS-XB-EAg" firstAttribute="top" secondItem="yZc-c3-eUK" secondAttribute="top" id="gGO-ey-R3m"/>
                 <constraint firstItem="cna-Rm-Pq1" firstAttribute="top" secondItem="iB7-75-csB" secondAttribute="bottom" constant="16" id="gKD-ht-HBC"/>
                 <constraint firstItem="yZc-c3-eUK" firstAttribute="top" secondItem="Xaz-HF-NBZ" secondAttribute="top" id="gmO-sl-M8n"/>
                 <constraint firstItem="iB7-75-csB" firstAttribute="top" secondItem="yZc-c3-eUK" secondAttribute="bottom" constant="2" id="hpy-24-Mjs"/>
@@ -171,6 +185,7 @@
                 <constraint firstItem="iB7-75-csB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kTW-VG-1GL"/>
                 <constraint firstItem="yZc-c3-eUK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="kZk-JI-SUQ"/>
                 <constraint firstItem="yZc-c3-eUK" firstAttribute="bottom" secondItem="Xaz-HF-NBZ" secondAttribute="bottom" id="n2e-6W-Efy"/>
+                <constraint firstItem="dmS-XB-EAg" firstAttribute="bottom" secondItem="yZc-c3-eUK" secondAttribute="bottom" id="siq-LY-hPB"/>
                 <constraint firstItem="pL5-1h-FKf" firstAttribute="top" secondItem="cna-Rm-Pq1" secondAttribute="bottom" constant="8" id="wYQ-f5-Ajf"/>
                 <constraint firstItem="muu-Ne-Y0K" firstAttribute="width" secondItem="tZY-W0-fYd" secondAttribute="width" id="x9A-7u-G6Q"/>
                 <constraint firstItem="muu-Ne-Y0K" firstAttribute="bottom" secondItem="tZY-W0-fYd" secondAttribute="bottom" id="zQT-bm-rSx"/>

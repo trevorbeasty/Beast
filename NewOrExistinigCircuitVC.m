@@ -65,7 +65,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
-
+@property (weak, nonatomic) IBOutlet UIButton *rightNewButton;
 
 // IBAction
 
@@ -75,6 +75,7 @@
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
+- (IBAction)didPressRightNewButton:(id)sender;
 
 
 //// core data
@@ -387,7 +388,7 @@
     self.yearLabel.textColor = [UIColor whiteColor];
     self.yearLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
-    // arrows and back button
+    // arrows and other bar buttons
     
     NSArray *arrows = @[self.rightArrowButton, self.leftArrowButton];
     for (UIButton *b in arrows){
@@ -399,10 +400,17 @@
         
     }
     
-    self.backButton.backgroundColor = [UIColor darkGrayColor];
-    [self.backButton setTitleColor: [UIColor whiteColor]
-                          forState: UIControlStateNormal];
-    self.backButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    NSArray *barButtons = @[self.backButton, self.rightNewButton];
+    for (UIButton *button in barButtons){
+        
+        button.backgroundColor = [UIColor darkGrayColor];
+        [button setTitleColor: [UIColor whiteColor]
+                              forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
+    
+
     
 }
 
@@ -1052,6 +1060,27 @@
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+    
+}
+
+- (IBAction)didPressRightNewButton:(id)sender{
+    
+    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
+//    __weak NewOrExistinigCircuitVC *weakSelf = self;
+    
+//    [self dismissViewControllerAnimated: YES
+//                             completion: ^{
+//                                 
+//                                 [weakSelf.presentingViewController presentViewController: vc
+//                                                                                 animated: YES
+//                                                                               completion: nil];
+//                                 
+//                             }];
+    
+    [self.presentingViewController presentViewController: vc
+                                                animated: NO
+                                              completion: nil];
+
     
 }
 
