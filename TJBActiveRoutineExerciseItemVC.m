@@ -29,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *targetsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *previousEntriesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 
 // core
 
@@ -117,28 +118,42 @@
     
 //    [self curveCorners];
     
-    // table view curved corners
+    // colors
     
-    self.titleExerciseLabel.layer.masksToBounds = YES;
-    self.titleExerciseLabel.layer.cornerRadius = 4.0;
-    
-    self.previousEntriesTableView.layer.masksToBounds = YES;
-    self.previousEntriesTableView.layer.cornerRadius = 4.0;
-    
-    self.titleExerciseLabel.backgroundColor = [UIColor darkGrayColor];
+    self.titleExerciseLabel.backgroundColor = [UIColor clearColor];
+    self.titleExerciseLabel.textColor = [UIColor darkGrayColor];
     self.titleExerciseLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
-    NSArray *labels = @[self.targetsLabel,
-                        self.targetWeightLabel,
-                        self.targetRepsLabel,
-                        self.thinLineLabel,
-                        self.previousEntriesLabel];
-    
-    for (UILabel *label in labels){
+    NSArray *minorLabels = @[self.targetsLabel, self.targetWeightLabel, self.targetRepsLabel, self.previousEntriesLabel];
+    for (UILabel *label in minorLabels){
         
-        label.textColor = [UIColor darkGrayColor];
+        label.backgroundColor = [UIColor lightGrayColor];
+        label.font = [UIFont boldSystemFontOfSize: 15.0];
+        label.textColor = [UIColor whiteColor];
         
     }
+    
+    // curved corners of container view
+    
+    self.containerView.layer.masksToBounds = YES;
+    self.containerView.layer.cornerRadius = 8.0;
+    
+    
+    
+//    self.titleExerciseLabel.layer.masksToBounds = YES;
+//    self.titleExerciseLabel.layer.cornerRadius = 4.0;
+    
+  
+    
+//    self.titleExerciseLabel.backgroundColor = [UIColor darkGrayColor];
+//    self.titleExerciseLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
+//    NSArray *labels = @[self.targetsLabel,
+//                        self.targetWeightLabel,
+//                        self.targetRepsLabel,
+//                        self.thinLineLabel,
+//                        self.previousEntriesLabel];
+
     
 }
 
