@@ -255,8 +255,6 @@
         float reps;
         NSDate *date;
         
-        [previousMarksArray addObject: self.chainTemplate.exercises[exerciseIndex].name];
-        
         if (self.chainTemplate.targetingWeight){
             
             weight = realizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value;
@@ -429,7 +427,7 @@ static NSString const *restViewKey = @"restView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 200;
+    CGFloat exerciseCompHeight = 300;
     CGFloat restCompHeight = 100;
     CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight;
     
@@ -499,13 +497,13 @@ static NSString const *restViewKey = @"restView";
         
         // derive the previous entries to be passed to the exerciseItemVC based on the active targets index
         
-//        NSArray<NSArray *> *previousEntries = 
+        NSArray<NSArray *> *previousEntries = self.activePreviousMarks[i];
         
         TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
                                                                                                   targetExerciseName: exerciseName
                                                                                                         targetWeight: weight
                                                                                                           targetReps: reps
-                                                                                                     previousEntries: nil];
+                                                                                                     previousEntries: previousEntries];
         [self.exerciseItemChildVCs addObject: exerciseItemVC];
         [self addChildViewController: exerciseItemVC];
         

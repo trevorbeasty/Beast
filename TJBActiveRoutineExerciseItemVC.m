@@ -216,10 +216,20 @@ static NSString * previousEntryCellID = @"previousEntryCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    // in the array, the order of objects is as follows: weight, reps, date created
+    
     TJBActiveRoutineGuidancePreviousEntryCell *cell = [self.previousEntriesTableView dequeueReusableCellWithIdentifier: previousEntryCellID];
     
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    // give the cell the correct data
+    
+    NSArray *data = self.previousEntries[indexPath.row];
+    
+    [cell configureWithDate: data[2]
+                     weight: data[0]
+                       reps: data[1]];
     
     return cell;
     
