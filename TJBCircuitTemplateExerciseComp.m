@@ -78,6 +78,8 @@
     viewLayer.masksToBounds = YES;
     viewLayer.cornerRadius = 8.0;
     
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
     // column label views
     
     NSArray *labels = @[self.roundColumnLabel,
@@ -87,7 +89,7 @@
     
     for (UILabel *l in labels){
         
-        l.backgroundColor = [UIColor darkGrayColor];
+        l.backgroundColor = [UIColor lightGrayColor];
         l.textColor = [UIColor whiteColor];
         l.font = [UIFont boldSystemFontOfSize: 20.0];
         
@@ -95,7 +97,7 @@
     
     // title label view
     
-    self.titleLabel.backgroundColor = [UIColor darkGrayColor];
+    self.titleLabel.backgroundColor = [UIColor lightGrayColor];
     [self.titleLabel setTextColor: [UIColor whiteColor]];
     
     // selected exercise button
@@ -243,6 +245,9 @@
         
         [exerciseButton setTitle: exercise.name
                         forState: UIControlStateNormal];
+        
+        [exerciseButton setTitleColor: [UIColor blackColor]
+                             forState: UIControlStateNormal];
         
         [self configureButtonWithSelectedAppearance: exerciseButton];
         

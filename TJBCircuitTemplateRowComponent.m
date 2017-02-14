@@ -100,7 +100,7 @@
         self.roundLabel.text = [NSString stringWithFormat: @"%d", [self.roundNumber intValue]];
     }
     
-    self.roundLabel.backgroundColor = [UIColor darkGrayColor];
+    self.roundLabel.backgroundColor = [UIColor lightGrayColor];
     
     // button appearance
     
@@ -241,7 +241,7 @@
     
     button.backgroundColor = [UIColor clearColor];
     
-    [button setTitleColor: [UIColor whiteColor]
+    [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
     
 }

@@ -218,7 +218,7 @@ static NSString * const defaultValue = @"unselected";
                                                                                                 chainNumber: [NSNumber numberWithInt: i + 1]
                                                                                            masterController: self];
         
-        vc.view.backgroundColor = [UIColor lightGrayColor];
+//        vc.view.backgroundColor = [UIColor lightGrayColor];
         
         // add the exercise component to the child view controller array
         
@@ -318,7 +318,7 @@ static NSString * const defaultValue = @"unselected";
     void (^buttonAlterationBlock)(void) = ^{
         
         button.backgroundColor = [UIColor clearColor];
-        [button setTitleColor: [UIColor whiteColor]
+        [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
         
     };
@@ -450,7 +450,7 @@ static NSString * const defaultValue = @"unselected";
         
         button.backgroundColor = [UIColor clearColor];
         
-        [button setTitleColor: [UIColor whiteColor]
+        [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
         
         [weakSelf didSelectExercise: exercise
