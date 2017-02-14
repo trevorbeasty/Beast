@@ -37,7 +37,7 @@
 @property (nonatomic, strong) NSString *targetExerciseName;
 @property (nonatomic, strong) NSString *targetWeight;
 @property (nonatomic, strong) NSString *targetReps;
-@property (nonatomic, strong) NSArray *previousEntries;
+@property (nonatomic, strong) NSArray<NSArray *> *previousEntries;
 
 
 @end

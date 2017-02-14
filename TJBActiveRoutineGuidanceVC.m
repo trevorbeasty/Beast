@@ -86,6 +86,7 @@
 @property (nonatomic, strong) NSNumber *activeExerciseIndexForChain;
 
 @property (nonatomic, strong) NSMutableArray<NSArray *> *activeLiftTargets;
+@property (nonatomic, strong) NSMutableArray<NSArray<NSArray *> *> *activePreviousMarks;
 @property (nonatomic, strong) NSNumber *activeRestTarget;
 
 @property (nonatomic, strong) NSNumber *cancelRestorationExerciseIndex;
@@ -184,6 +185,7 @@
     
     self.activeLiftTargets = [[NSMutableArray alloc] init];
     self.activeRestTarget = nil;
+    self.activePreviousMarks = [[NSMutableArray alloc] init];
     
     [self deriveStateContent];
     
@@ -238,6 +240,59 @@
 
 #pragma mark - Scroll View Content
 
+- (NSArray<NSArray *> *)extractPreviousMarksArrayForActiveIndices{
+    
+    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+    
+    int exerciseIndex = [self.activeExerciseIndexForTargets intValue];
+    int roundIndex = [self.activeRoundIndexForTargets intValue];
+    
+    for (TJBRealizedChain *realizedChain in self.chainTemplate.realizedChains){
+        
+        NSMutableArray *previousMarksArray = [[NSMutableArray alloc] init];
+        
+        float weight;
+        float reps;
+        NSDate *date;
+        
+        [previousMarksArray addObject: self.chainTemplate.exercises[exerciseIndex].name];
+        
+        if (self.chainTemplate.targetingWeight){
+            
+            weight = realizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value;
+            
+        } else{
+            
+            weight = -1.0;
+            
+        }
+        
+        if (self.chainTemplate.targetingReps){
+            
+            reps = realizedChain.repsArrays[exerciseIndex].numbers[roundIndex].value;
+            
+        } else{
+            
+            reps = -1.0;
+            
+        }
+            
+        date = realizedChain.dateCreated;
+        
+        [previousMarksArray addObject: [NSNumber numberWithFloat: weight]];
+        [previousMarksArray addObject: [NSNumber numberWithFloat: reps]];
+        [previousMarksArray addObject: date];
+        
+        [returnArray addObject: previousMarksArray];
+        
+    }
+    
+    
+    
+    return returnArray;
+    
+}
+
 - (void)deriveStateContent{
     
     // based on the active exercise and round index, give the appropriate content to the state target arrays
@@ -245,6 +300,9 @@
     
     NSArray *targets = [self extractTargetsArrayForActiveIndices];
     [self.activeLiftTargets addObject: targets];
+    
+    NSArray<NSArray *> *previousMarks = [self extractPreviousMarksArrayForActiveIndices];
+    [self.activePreviousMarks addObject: previousMarks];
     
     // if the rest is zero, grab the next set of targets.  Otherwise, continue.  Will use recursion.
     
@@ -322,7 +380,7 @@
         
     } else{
         
-        weight = 0.0;
+        weight = -1.0;
         
     }
     
@@ -332,7 +390,7 @@
         
     } else{
         
-        reps = 0.0;
+        reps = -1.0;
         
     }
     
@@ -355,6 +413,8 @@
     return targetsCollector;
     
 }
+
+
 
 static NSString const *nextUpLabelKey = @"nextUpLabel";
 static NSString const *guidanceStackViewKey = @"guidanceStackView";
@@ -436,6 +496,10 @@ static NSString const *restViewKey = @"restView";
             reps = @"X";
             
         }
+        
+        // derive the previous entries to be passed to the exerciseItemVC based on the active targets index
+        
+//        NSArray<NSArray *> *previousEntries = 
         
         TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
                                                                                                   targetExerciseName: exerciseName
