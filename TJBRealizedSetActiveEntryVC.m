@@ -760,7 +760,7 @@
         
         [weakSelf.personalRecordsTableView reloadData];
         
-        [weakSelf dismissViewControllerAnimated: YES
+        [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
         
     };

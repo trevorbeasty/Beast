@@ -79,7 +79,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - View Life Cycle
 
-static CGFloat const controlHeight = 250.0;
+static CGFloat const controlHeight = 236.0;
 
 - (void)viewDidLoad{
     
@@ -96,6 +96,8 @@ static CGFloat const controlHeight = 250.0;
     [self configureInitialControlPosition];
     
     [self addTapGestureRecognizerToViewForKeyboardNotification];
+    
+    [self registerForCoreDataNotifications];
     
 }
 
@@ -127,11 +129,16 @@ static CGFloat const controlHeight = 250.0;
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)registerForCoreDataNotifications{
     
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch: &error];
-    [self.exerciseTableView reloadData];
+    //// configure managed context notification for updating
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(mocDidSave)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: moc];
     
 }
 
@@ -239,6 +246,8 @@ static CGFloat const controlHeight = 250.0;
     layer.borderWidth = 1;
     layer.borderColor = [[UIColor darkGrayColor] CGColor];
     
+    self.exerciseTextField.font = [UIFont systemFontOfSize: 20.0];
+    
 }
 
 - (void)configureTableView
@@ -295,6 +304,8 @@ static CGFloat const controlHeight = 250.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+//    self.exerciseAdditionContainer.hidden = YES;
     
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
@@ -603,6 +614,16 @@ static CGFloat const controlHeight = 250.0;
     [self.exerciseTextField resignFirstResponder];
     
     return YES;
+    
+}
+
+- (void)mocDidSave{
+    
+    //// refresh fetched managed objects and all trickle-down
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch: &error];
+    [self.exerciseTableView reloadData];
     
 }
 
