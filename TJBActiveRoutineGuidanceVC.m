@@ -50,8 +50,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *timerTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
-@property (weak, nonatomic) IBOutlet UILabel *nextUpDetailLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *nextUpDetailLabel;
 @property (weak, nonatomic) IBOutlet UIButton *setCompletedButton;
+@property (weak, nonatomic) IBOutlet UILabel *mainTitle;
 
 // IBAction
 
@@ -83,6 +84,9 @@
 
 @property (nonatomic, strong) NSMutableArray<NSArray *> *activeLiftTargets;
 @property (nonatomic, strong) NSNumber *activeRestTarget;
+
+@property (nonatomic, strong) NSNumber *cancelRestorationExerciseIndex;
+@property (nonatomic, strong) NSNumber *cancelRestorationRoundIndex;
 
 // stopwatch state
 
@@ -166,11 +170,6 @@
     } else{
         exercise = @"exercises";
     }
-    self.nextUpDetailLabel.text = [NSString stringWithFormat: @"%d %@, %d %@",
-                                   self.chainTemplate.numberOfExercises,
-                                   exercise,
-                                   self.chainTemplate.numberOfRounds,
-                                   round];
     
 }
 
@@ -201,6 +200,17 @@
 }
 
 - (void)configureViewAesthetics{
+    
+    NSArray *labels = @[self.roundTitleLabel,
+                        self.timerTitleLabel,
+                        self.mainTitle];
+    
+    for (UILabel *label in labels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
     
     // shadow for title objects to create separation
     

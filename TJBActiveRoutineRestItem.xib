@@ -11,7 +11,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBActiveRoutineRestItem">
             <connections>
-                <outlet property="numberTitleLabel" destination="5Ln-Sr-QfH" id="qka-tE-XI5"/>
                 <outlet property="restTitleLabel" destination="Lwo-ua-Iqx" id="9Mo-6y-xEB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -21,35 +20,22 @@
             <rect key="frame" x="0.0" y="0.0" width="510" height="56"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ln-Sr-QfH">
-                    <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lwo-ua-Iqx">
+                    <rect key="frame" x="16" y="0.0" width="478" height="40"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="iTE-Vd-dqD"/>
-                        <constraint firstAttribute="width" constant="32" id="k6B-kE-WTy"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lwo-ua-Iqx">
-                    <rect key="frame" x="32" y="0.0" width="414" height="30"/>
-                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="V4W-iD-QfK"/>
+                        <constraint firstAttribute="height" constant="40" id="V4W-iD-QfK"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="5Ln-Sr-QfH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="3Js-Rx-1wu"/>
-                <constraint firstItem="Lwo-ua-Iqx" firstAttribute="leading" secondItem="5Ln-Sr-QfH" secondAttribute="trailing" id="GaG-NW-KJS"/>
-                <constraint firstItem="5Ln-Sr-QfH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Jib-Sl-jC4"/>
-                <constraint firstAttribute="trailing" secondItem="Lwo-ua-Iqx" secondAttribute="trailing" constant="64" id="KNp-vM-MPr"/>
+                <constraint firstItem="Lwo-ua-Iqx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="44A-at-Q8M"/>
                 <constraint firstItem="Lwo-ua-Iqx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pxB-YG-fOB"/>
+                <constraint firstAttribute="trailing" secondItem="Lwo-ua-Iqx" secondAttribute="trailing" constant="16" id="u38-4L-kWi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="101" y="-252"/>

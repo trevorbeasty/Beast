@@ -1111,20 +1111,20 @@
         UITabBarController *tbc = [[UITabBarController alloc] init];
         [tbc setViewControllers: @[vc1, vc2]];
         tbc.tabBar.translucent = NO;
-        tbc.navigationItem.title = @"Lift Routine";
-        
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-                                                                       style: UIBarButtonItemStyleDone
-                                                                      target: vc1
-                                                                      action: @selector(didPressBack)];
-        [tbc.navigationItem setLeftBarButtonItem: backButton];
+//        tbc.navigationItem.title = @"Lift Routine";
+//        
+//        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+//                                                                       style: UIBarButtonItemStyleDone
+//                                                                      target: vc1
+//                                                                      action: @selector(didPressBack)];
+//        [tbc.navigationItem setLeftBarButtonItem: backButton];
         
         // navigation controller
         
-        UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-        navC.navigationBar.translucent = NO;
+//        UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+//        navC.navigationBar.translucent = NO;
         
-        [self presentViewController: navC
+        [self presentViewController: tbc
                            animated: NO
                          completion: nil];
         

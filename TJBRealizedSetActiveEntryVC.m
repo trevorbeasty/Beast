@@ -83,6 +83,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonsContainerConstraint;
 @property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
 @property (weak, nonatomic) IBOutlet UIButton *advancedOptionsButton;
+@property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 
 
 // IBAction
@@ -338,13 +339,14 @@
     // title labels
     
     NSArray *titleLabels = @[self.largeStatusLabel,
-                             self.timerLabel];
+                             self.timerLabel,
+                             self.freeformTitleLabel];
     
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
         label.textColor = [UIColor whiteColor];
-        label.font = [UIFont systemFontOfSize: 40.0];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
     
@@ -358,10 +360,13 @@
     
     for (UILabel *label in rowLabels){
         
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont systemFontOfSize: 15.0];
+        label.textColor = [UIColor darkGrayColor];
         
     }
+    
+    self.exerciseLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.exerciseLabel.textColor = [UIColor darkGrayColor];
 
     
     // table view

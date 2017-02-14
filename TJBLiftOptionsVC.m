@@ -134,20 +134,20 @@
     UITabBarController *tbc = [[UITabBarController alloc] init];
     [tbc setViewControllers: @[vc1, vc2]];
     tbc.tabBar.translucent = NO;
-    tbc.navigationItem.title = @"Freeform Lift";
+//    tbc.navigationItem.title = @"Freeform Lift";
+//    
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+//                                                                   style: UIBarButtonItemStyleDone
+//                                                                  target: self
+//                                                                  action: @selector(didPressBack)];
+//    [tbc.navigationItem setLeftBarButtonItem: backButton];
+//    
+//    // navigation controller
+//    
+//    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+//    navC.navigationBar.translucent = NO;
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-                                                                   style: UIBarButtonItemStyleDone
-                                                                  target: self
-                                                                  action: @selector(didPressBack)];
-    [tbc.navigationItem setLeftBarButtonItem: backButton];
-    
-    // navigation controller
-    
-    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-    navC.navigationBar.translucent = NO;
-    
-    [self presentViewController: navC
+    [self presentViewController: tbc
                        animated: NO
                      completion: nil];
     
