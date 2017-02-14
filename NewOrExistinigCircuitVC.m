@@ -53,7 +53,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
-@property (weak, nonatomic) IBOutlet UIButton *modifyButton;
+//@property (weak, nonatomic) IBOutlet UIButton *modifyButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
 
@@ -65,17 +65,17 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
-@property (weak, nonatomic) IBOutlet UIButton *rightNewButton;
+
 
 // IBAction
 
 - (IBAction)didPressLaunchButton:(id)sender;
-- (IBAction)didPressModifyButton:(id)sender;
+//- (IBAction)didPressModifyButton:(id)sender;
 
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
-- (IBAction)didPressRightNewButton:(id)sender;
+//- (IBAction)didPressRightNewButton:(id)sender;
 
 
 //// core data
@@ -354,7 +354,6 @@
     // buttons
     
     NSArray *buttons = @[self.launchButton,
-                         self.modifyButton,
                          self.previousMarkButton];
     
     for (UIButton *button in buttons){
@@ -400,7 +399,7 @@
         
     }
     
-    NSArray *barButtons = @[self.backButton, self.rightNewButton];
+    NSArray *barButtons = @[self.backButton];
     for (UIButton *button in barButtons){
         
         button.backgroundColor = [UIColor darkGrayColor];
@@ -794,16 +793,21 @@
 
 #pragma mark - Convenience
 
-- (void)toggleButtonsToOnState{
+- (void)toggleButtonsToOnStateWithViewHistoryEnabled:(BOOL)viewHistoryEnabled{
     
-    NSArray *buttons = @[self.launchButton,
-                         self.modifyButton,
-                         self.previousMarkButton];
+    NSArray *buttons = @[self.launchButton];
     
     for (UIButton *b in buttons){
         
         b.enabled = YES;
-        b.layer.opacity = 1;
+        b.layer.opacity = 1.0;
+        
+    }
+    
+    if (viewHistoryEnabled){
+        
+        self.previousMarkButton.enabled = YES;
+        self.previousMarkButton.layer.opacity = 1.0;
         
     }
     
@@ -812,7 +816,6 @@
 - (void)toggleButtonsToOffState{
     
     NSArray *buttons = @[self.launchButton,
-                         self.modifyButton,
                          self.previousMarkButton];
     
     for (UIButton *b in buttons){
@@ -997,6 +1000,8 @@
     
     TJBChainTemplate *chainTemplate = self.sortedContent[reversedIndex][indexPath.row - 1];
     
+    BOOL realizationsExist = chainTemplate.realizedChains.count > 0;
+    
     self.selectedChainTemplate = chainTemplate;
     
     // add blue border to selected cell
@@ -1007,7 +1012,7 @@
     
     selectedCell.layer.borderWidth = 4.0;
     
-    [self toggleButtonsToOnState];
+    [self toggleButtonsToOnStateWithViewHistoryEnabled: realizationsExist];
     
 }
 

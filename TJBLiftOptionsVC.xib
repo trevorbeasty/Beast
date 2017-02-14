@@ -11,9 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBLiftOptionsVC">
             <connections>
+                <outlet property="createNewRoutineButton" destination="O9f-NM-Q0L" id="EoK-An-gcA"/>
                 <outlet property="designedButton" destination="tI8-wo-CeW" id="jSi-pM-ndf"/>
                 <outlet property="freeformButton" destination="hf4-4q-MAz" id="aoA-4q-wH6"/>
-                <outlet property="navBar" destination="NPN-KW-7La" id="Fhn-6P-MYw"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,44 +22,45 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hf4-4q-MAz">
-                    <rect key="frame" x="32" y="92" width="311" height="255.5"/>
-                    <color key="backgroundColor" red="0.17465768257991349" green="0.61088359685504745" blue="0.85943571891191706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    <state key="normal" title="Freeform"/>
-                    <connections>
-                        <action selector="didPressFreeformButton:" destination="-1" eventType="touchUpInside" id="x01-In-v0e"/>
-                    </connections>
-                </button>
-                <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NPN-KW-7La">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="ZcK-Tm-uis"/>
-                    </constraints>
-                    <items>
-                        <navigationItem id="Pp3-8Y-ba2"/>
-                    </items>
-                </navigationBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tI8-wo-CeW">
-                    <rect key="frame" x="32" y="379.5" width="311" height="255.5"/>
-                    <state key="normal" title="Routine"/>
+                    <rect key="frame" x="0.0" y="425" width="375" height="120"/>
+                    <state key="normal" title="My Routines"/>
                     <connections>
                         <action selector="didPressDesignedButton:" destination="-1" eventType="touchUpInside" id="kB5-le-Ywn"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9f-NM-Q0L">
+                    <rect key="frame" x="0.0" y="547" width="375" height="120"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="120" id="8JN-em-jXU"/>
+                    </constraints>
+                    <state key="normal" title="Create New Routine"/>
+                    <connections>
+                        <action selector="didPressCreateNewRoutine:" destination="-1" eventType="touchUpInside" id="0Tz-aW-Erf"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hf4-4q-MAz">
+                    <rect key="frame" x="0.0" y="303" width="375" height="120"/>
+                    <color key="backgroundColor" red="0.17465768257991349" green="0.61088359685504745" blue="0.85943571891191706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <state key="normal" title="Freeform Lift"/>
+                    <connections>
+                        <action selector="didPressFreeformButton:" destination="-1" eventType="touchUpInside" id="x01-In-v0e"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="tI8-wo-CeW" firstAttribute="top" secondItem="hf4-4q-MAz" secondAttribute="bottom" constant="32" id="0eG-V9-EuJ"/>
-                <constraint firstItem="tI8-wo-CeW" firstAttribute="height" secondItem="hf4-4q-MAz" secondAttribute="height" id="5VT-sU-yhW"/>
-                <constraint firstAttribute="trailing" secondItem="hf4-4q-MAz" secondAttribute="trailing" constant="32" id="B1j-Y3-09D"/>
-                <constraint firstAttribute="trailing" secondItem="NPN-KW-7La" secondAttribute="trailing" id="CjM-65-LU4"/>
-                <constraint firstAttribute="bottom" secondItem="tI8-wo-CeW" secondAttribute="bottom" constant="32" id="JzO-Xj-x0W"/>
-                <constraint firstItem="NPN-KW-7La" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="T1T-oI-hAb"/>
-                <constraint firstAttribute="trailing" secondItem="tI8-wo-CeW" secondAttribute="trailing" constant="32" id="UF2-UY-cwL"/>
-                <constraint firstItem="hf4-4q-MAz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="Xlt-YP-rvS"/>
-                <constraint firstItem="NPN-KW-7La" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="gcD-lJ-39F"/>
-                <constraint firstItem="tI8-wo-CeW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="32" id="gx5-cT-KKW"/>
-                <constraint firstItem="hf4-4q-MAz" firstAttribute="top" secondItem="NPN-KW-7La" secondAttribute="bottom" constant="32" id="m8X-SS-g8H"/>
+                <constraint firstItem="O9f-NM-Q0L" firstAttribute="trailing" secondItem="hf4-4q-MAz" secondAttribute="trailing" id="1Y4-ug-Bz5"/>
+                <constraint firstItem="O9f-NM-Q0L" firstAttribute="height" secondItem="hf4-4q-MAz" secondAttribute="height" id="9VB-O4-Cq5"/>
+                <constraint firstItem="tI8-wo-CeW" firstAttribute="height" secondItem="hf4-4q-MAz" secondAttribute="height" id="As3-7s-wTJ"/>
+                <constraint firstItem="O9f-NM-Q0L" firstAttribute="leading" secondItem="hf4-4q-MAz" secondAttribute="leading" id="I7c-Kj-kf1"/>
+                <constraint firstAttribute="trailing" secondItem="O9f-NM-Q0L" secondAttribute="trailing" id="MtJ-oB-c5b"/>
+                <constraint firstAttribute="bottom" secondItem="O9f-NM-Q0L" secondAttribute="bottom" id="dXS-zM-H59"/>
+                <constraint firstItem="tI8-wo-CeW" firstAttribute="top" secondItem="hf4-4q-MAz" secondAttribute="bottom" constant="2" id="hn2-Eb-JcS"/>
+                <constraint firstItem="O9f-NM-Q0L" firstAttribute="top" secondItem="tI8-wo-CeW" secondAttribute="bottom" constant="2" id="jGy-ZB-Bfk"/>
+                <constraint firstItem="tI8-wo-CeW" firstAttribute="trailing" secondItem="hf4-4q-MAz" secondAttribute="trailing" id="ltp-P9-5Ui"/>
+                <constraint firstItem="O9f-NM-Q0L" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wg4-JM-JrS"/>
+                <constraint firstItem="tI8-wo-CeW" firstAttribute="leading" secondItem="hf4-4q-MAz" secondAttribute="leading" id="zm5-b5-DSE"/>
             </constraints>
             <point key="canvasLocation" x="35.5" y="53.5"/>
         </view>

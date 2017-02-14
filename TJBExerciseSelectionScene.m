@@ -197,6 +197,10 @@ static CGFloat const controlHeight = 236.0;
 
 - (void)viewAesthetics{
     
+    // table view
+    
+    self.exerciseTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
     // new exercise buttons
     
     self.addNewExerciseButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
@@ -295,7 +299,10 @@ static CGFloat const controlHeight = 236.0;
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     cell.textLabel.text = exercise.name;
-    cell.textLabel.font = [UIFont systemFontOfSize: 20.0];
+    cell.textLabel.font = [UIFont systemFontOfSize: 15.0];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.textLabel.textColor = [UIColor blackColor];
+    
     
     return cell;
 }
@@ -316,7 +323,7 @@ static CGFloat const controlHeight = 236.0;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
     UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [UIColor darkGrayColor];
+    label.backgroundColor = [UIColor lightGrayColor];
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont boldSystemFontOfSize: 20.0];
     label.textAlignment = NSTextAlignmentCenter;
@@ -336,7 +343,7 @@ static CGFloat const controlHeight = 236.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 60;
+    return 50;
     
 }
 

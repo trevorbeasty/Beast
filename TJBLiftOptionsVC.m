@@ -13,6 +13,7 @@
 #import "TJBWorkoutNavigationHub.h"
 #import "TJBRealizedSetActiveEntryVC.h"
 #import "NewOrExistinigCircuitVC.h"
+#import "TJBCircuitDesignVC.h"
 
 // aesthetics
 
@@ -25,12 +26,14 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (weak, nonatomic) IBOutlet UIButton *createNewRoutineButton;
+
 
 // IBAction
 
 - (IBAction)didPressFreeformButton:(id)sender;
 - (IBAction)didPressDesignedButton:(id)sender;
+- (IBAction)didPressCreateNewRoutine:(id)sender;
 
 
 @end
@@ -41,7 +44,6 @@
 
 - (void)viewDidLoad{
     
-    [self configureNavBar];
     
     [self configureViewAesthetics];
     
@@ -50,7 +52,8 @@
 - (void)configureViewAesthetics{
     
     NSArray *buttons = @[self.freeformButton,
-                         self.designedButton];
+                         self.designedButton,
+                         self.createNewRoutineButton];
     
     for (UIButton *button in buttons){
         
@@ -65,57 +68,40 @@
     }
     
     // shadows
-    
-    [self.view layoutIfNeeded];
-    
-    UIView *freeformShadow = [[UIView alloc] initWithFrame: self.freeformButton.frame];
-    freeformShadow.backgroundColor = [UIColor whiteColor];
-    freeformShadow.clipsToBounds = NO;
-    
-    CALayer *freeformShadowLayer = freeformShadow.layer;
-    freeformShadowLayer.masksToBounds = NO;
-    freeformShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-    freeformShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
-    freeformShadowLayer.shadowOpacity = 1.0;
-    freeformShadowLayer.shadowRadius = 5.0;
-    
-    [self.view insertSubview: freeformShadow
-                belowSubview: self.freeformButton];
-    
-    UIView *routineShadow = [[UIView alloc] initWithFrame: self.designedButton.frame];
-    routineShadow.backgroundColor = [UIColor whiteColor];
-    routineShadow.clipsToBounds = NO;
-    
-    CALayer *routineShadowLayer = routineShadow.layer;
-    routineShadowLayer.masksToBounds = NO;
-    routineShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-    routineShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
-    routineShadowLayer.shadowOpacity = 1.0;
-    routineShadowLayer.shadowRadius = 5.0;
-    
-    [self.view insertSubview: routineShadow
-                belowSubview: self.designedButton];
+//    
+//    [self.view layoutIfNeeded];
+//    
+//    UIView *freeformShadow = [[UIView alloc] initWithFrame: self.freeformButton.frame];
+//    freeformShadow.backgroundColor = [UIColor whiteColor];
+//    freeformShadow.clipsToBounds = NO;
+//    
+//    CALayer *freeformShadowLayer = freeformShadow.layer;
+//    freeformShadowLayer.masksToBounds = NO;
+//    freeformShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+//    freeformShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
+//    freeformShadowLayer.shadowOpacity = 1.0;
+//    freeformShadowLayer.shadowRadius = 5.0;
+//    
+//    [self.view insertSubview: freeformShadow
+//                belowSubview: self.freeformButton];
+//    
+//    UIView *routineShadow = [[UIView alloc] initWithFrame: self.designedButton.frame];
+//    routineShadow.backgroundColor = [UIColor whiteColor];
+//    routineShadow.clipsToBounds = NO;
+//    
+//    CALayer *routineShadowLayer = routineShadow.layer;
+//    routineShadowLayer.masksToBounds = NO;
+//    routineShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+//    routineShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
+//    routineShadowLayer.shadowOpacity = 1.0;
+//    routineShadowLayer.shadowRadius = 5.0;
+//    
+//    [self.view insertSubview: routineShadow
+//                belowSubview: self.designedButton];
     
 }
 
-- (void)configureNavBar{
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] init];
-    
-    navItem.title = @"Lift Options";
-    
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle: @"Home"
-                                                                     style: UIBarButtonItemStyleDone
-                                                                    target: self
-                                                                    action: @selector(didPressBack)];
-    cancelButton.enabled = NO;
-    [navItem setLeftBarButtonItem: cancelButton];
-    
-    [self.navBar setItems: @[navItem]];
-    
-    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
-    
-}
+
 
 #pragma mark - IBAction
 
@@ -189,6 +175,16 @@
 //    
     [self presentViewController: tbc
                        animated: NO
+                     completion: nil];
+    
+}
+
+- (IBAction)didPressCreateNewRoutine:(id)sender{
+    
+    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
+    
+    [self presentViewController: vc
+                       animated: YES
                      completion: nil];
     
 }
