@@ -68,7 +68,7 @@
      
     // circuit reference container VC
     
-    TJBCircuitReferenceContainerVC *circuitReference = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
+    TJBCircuitReferenceContainerVC *circuitReference = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: nil];
     
     [circuitReference.tabBarItem setTitle: @"Goals"];
     

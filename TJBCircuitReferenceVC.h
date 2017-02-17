@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class TJBChainTemplate;
+@class TJBRealizedChain;
 
 @interface TJBCircuitReferenceVC : UIViewController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate contentViewHeight:(NSNumber *)viewHeight contentViewWidth:(NSNumber *)viewWidth;
+//- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate contentViewHeight:(NSNumber *)viewHeight contentViewWidth:(NSNumber *)viewWidth;
+
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain viewSize:(CGSize)size;
 
 @end

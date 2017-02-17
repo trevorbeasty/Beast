@@ -10,7 +10,7 @@
 
 // core data
 
-#import "TJBExercise+CoreDataProperties.h"
+#import "CoreDataController.h"
 
 // aesthetics
 
@@ -24,16 +24,8 @@
 
 // core
 
-@property (nonatomic, strong) NSNumber *numberOfRounds;
-@property (nonatomic, strong) NSNumber *targetingWeight;
-@property (nonatomic, strong) NSNumber *targetingReps;
-@property (nonatomic, strong) NSNumber *targetingRest;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-@property (nonatomic, strong) NSNumber *chainNumber;
-@property (nonatomic, strong) TJBExercise *exercise;
-@property (nonatomic, strong) NSOrderedSet <TJBNumberTypeArrayComp *> *weightData;
-@property (nonatomic, strong) NSOrderedSet <TJBNumberTypeArrayComp *> *repsData;
-@property (nonatomic, strong) NSOrderedSet <TJBNumberTypeArrayComp *> *restData;
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
+@property (nonatomic, strong) NSNumber *exerciseIndex;
 
 // IBOutlets
 
@@ -54,24 +46,18 @@
 
 @implementation TJBCircuitReferenceExerciseComp
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData restData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)restData{
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex{
     
     self = [super init];
     
-    self.numberOfRounds = numberOfRounds;
-    self.targetingWeight = targetingWeight;
-    self.targetingReps = targetingReps;
-    self.targetingRest = targetingRest;
-    self.targetsVaryByRound = targetsVaryByRound;
-    self.chainNumber = chainNumber;
-    self.exercise = exercise;
-    self.weightData = weightData;
-    self.repsData = repsData;
-    self.restData = restData;
-
+    self.realizedChain = realizedChain;
+    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
     
     return self;
+    
 }
+
+
 
 #pragma mark - View Life Cycle
 
@@ -129,17 +115,20 @@
     
     // exercise
     
-    [self.selectedExerciseButton setTitle: self.exercise.name
+    [self.selectedExerciseButton setTitle: self.realizedChain.exercises[[self.exerciseIndex intValue]].name
                                  forState: UIControlStateNormal];
+    
     self.selectedExerciseButton.enabled = NO;
     
     // title label
     
-    self.titleLabel.text = [self.chainNumber stringValue];
+    self.titleLabel.text = [self.exerciseIndex stringValue];
+    
 }
 
-- (void)viewDidLoad
-{
+
+- (void)viewDidLoad{
+    
     [self configureViewAesthetics];
     
     [self configureViewDataAndFunctionality];
@@ -163,40 +152,13 @@
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", weightColumnLabel]];
     
-    for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++){
+    for (int i = 0 ; i < self.realizedChain.numberOfRounds; i ++){
         
-        // need to test if data is being targeted before passing it to the child VC
+        // create the child VC's and add their programattic constraints
         
-        NSNumber *weight;
-        NSNumber *reps;
-        NSNumber *rest;
-        
-        if ([self.targetingWeight boolValue] == YES){
-            weight = [NSNumber numberWithInt: self.weightData[i].value];
-        } else{
-            weight = nil;
-        }
-        
-        if ([self.targetingReps boolValue] == YES){
-            reps = [NSNumber numberWithInt: self.repsData[i].value];
-        } else{
-            reps = nil;
-        }
-        
-        if ([self.targetingRest boolValue] == YES){
-            rest = [NSNumber numberWithInt: self.restData[i].value];
-        } else{
-            rest = nil;
-        }
-        
-        TJBCircuitReferenceRowComp *rowVC = [[TJBCircuitReferenceRowComp alloc] initWithTargetingWeight: self.targetingWeight
-                                                                                          targetingReps: self.targetingReps
-                                                                                          targetingRest: self.targetingRest
-                                                                                     targetsVaryByRound: self.targetsVaryByRound
-                                                                                            roundNumber: [NSNumber numberWithInt: i + 1]
-                                                                                             weightData: [NSNumber numberWithFloat: self.weightData[i].value]
-                                                                                               repsData: [NSNumber numberWithFloat: self.repsData[i].value]
-                                                                                               restData: [NSNumber numberWithFloat: self.restData[i].value]];
+        TJBCircuitReferenceRowComp *rowVC = [[TJBCircuitReferenceRowComp alloc] initWithRealizedChain: self.realizedChain
+                                                                                        exerciseIndex: [self.exerciseIndex intValue]
+                                                                                           roundIndex: i];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -214,7 +176,7 @@
         
         NSString *verticalAppendString;
         
-        if (i == [self.numberOfRounds intValue] - 1)
+        if (i == self.realizedChain.numberOfRounds - 1)
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
                                     dynamicRowName,
@@ -253,6 +215,7 @@
     {
         [child didMoveToParentViewController: self];
     }
+    
 }
 
 

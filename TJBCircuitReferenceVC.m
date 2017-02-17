@@ -10,37 +10,25 @@
 
 // core data
 
-#import "TJBChainTemplate+CoreDataProperties.h"
-#import "TJBWeightArray+CoreDataProperties.h"
-#import "TJBRepsArray+CoreDataProperties.h"
-#import "TJBTargetRestTimeArray+CoreDataProperties.h"
+#import "CoreDataController.h"
 
 // child VC's
 
 #import "TJBCircuitReferenceExerciseComp.h"
 
-// experimenting
-
-#import "CoreDataController.h"
-
 @interface TJBCircuitReferenceVC ()
+
+{
+    
+    // core
+    
+    CGSize _prescribedSize;
+    
+}
 
 // core
 
-@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
-@property (nonatomic, strong) NSNumber *viewHeight;
-@property (nonatomic, strong) NSNumber *viewWidth;
-
-// IV's derived from chainTemplate
-
-@property (nonatomic, strong) NSNumber *numberOfExercises;
-@property (nonatomic, strong) NSNumber *numberOfRounds;
-
-@property (nonatomic, strong) NSNumber *targetingWeight;
-@property (nonatomic, strong) NSNumber *targetingReps;
-@property (nonatomic, strong) NSNumber *targetingRest;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 // for programmatic layout constraints
 
@@ -52,34 +40,14 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate contentViewHeight:(NSNumber *)viewHeight contentViewWidth:(NSNumber *)viewWidth{
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain viewSize:(CGSize)size{
     
     self = [super init];
     
-    // core
-    
-    self.chainTemplate = chainTemplate;
-    self.viewHeight = viewHeight;
-    self.viewWidth = viewWidth;
-    
-    // set IV's derived from chain template
-    
-    [self setDerivedInstanceVariables];
+    self.realizedChain = realizedChain;
+    _prescribedSize = size;
     
     return self;
-}
-
-- (void)setDerivedInstanceVariables{
-    
-    TJBChainTemplate *chainTemplate = self.chainTemplate;
-    
-    self.numberOfRounds = [NSNumber numberWithInt: chainTemplate.numberOfRounds];
-    self.numberOfExercises = [NSNumber numberWithInt: chainTemplate.numberOfExercises];
-    self.targetingWeight = [NSNumber numberWithBool: chainTemplate.targetingWeight];
-    self.targetingReps = [NSNumber numberWithBool: chainTemplate.targetingReps];
-    self.targetingRest = [NSNumber numberWithBool: chainTemplate.targetingRestTime];
-    self.targetsVaryByRound = [NSNumber numberWithBool: chainTemplate.targetsVaryByRound];
-    self.name = chainTemplate.name;
     
 }
 
@@ -89,9 +57,8 @@
     
     // this must be called when creating the view programatically
         
-    float viewWidth = [self.viewWidth floatValue];
-    float viewHeight = [self.viewHeight floatValue];
-    UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
+    CGRect frame = CGRectMake(0, 0, _prescribedSize.width, _prescribedSize.height);
+    UIView *view = [[UIView alloc] initWithFrame: frame];
     view.backgroundColor = [UIColor clearColor];
     self.view = view;
     
@@ -112,7 +79,7 @@
     
     // scroll view
     
-    CGRect scrollViewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], [self.viewHeight floatValue]);
+    CGRect scrollViewFrame = CGRectMake(0, 0, _prescribedSize.width, _prescribedSize.height);
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: scrollViewFrame];
     
     // determine height of scroll view content size
@@ -126,15 +93,15 @@
     
     CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 2.0;
     
-    componentHeight = rowHeight * ([self.numberOfRounds intValue] + 2) + componentStyleSpacing;
+    componentHeight = rowHeight * (self.realizedChain.numberOfRounds + 2) + componentStyleSpacing;
     
-    int numberOfComponents = [self.numberOfExercises intValue];
+    int numberOfComponents = self.realizedChain.numberOfExercises;
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
-    scrollView.contentSize = CGSizeMake([self.viewWidth floatValue], scrollContentHeight);
+    scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight);
     [self.view addSubview: scrollView];
     
-    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], scrollContentHeight);
+    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, _prescribedSize.width, scrollContentHeight);
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
@@ -145,42 +112,10 @@
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: @"V:|-"];
     
-    for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
+    for (int i = 0 ; i < self.realizedChain.numberOfExercises ; i ++){
         
-        // only attempt to pass data if the value is being targeted, otherwise pass nil
-        
-        NSOrderedSet <TJBNumberTypeArrayComp *> *weight;
-        NSOrderedSet <TJBNumberTypeArrayComp *> *reps;
-        NSOrderedSet <TJBNumberTypeArrayComp *> *rest;
-        
-        if ([self.targetingWeight boolValue] == YES){
-            weight = self.chainTemplate.weightArrays[i].numbers;
-        } else{
-            weight = nil;
-        }
-        
-        if ([self.targetingReps boolValue] == YES){
-            reps = self.chainTemplate.repsArrays[i].numbers;
-        } else{
-            reps = nil;
-        }
-        
-        if ([self.targetingRest boolValue] == YES){
-            rest = self.chainTemplate.targetRestTimeArrays[i].numbers;
-        } else{
-            rest = nil;
-        }
-        
-        TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithNumberOfRounds: self.numberOfRounds
-                                                                                              targetingWeight: self.targetingWeight
-                                                                                                targetingReps: self.targetingReps
-                                                                                                targetingRest: self.targetingRest
-                                                                                           targetsVaryByRound: self.targetsVaryByRound
-                                                                                                  chainNumber: [NSNumber numberWithInt: i + 1]
-                                                                                                     exercise: self.chainTemplate.exercises[i]
-                                                                                                   weightData: weight
-                                                                                                     repsData: reps
-                                                                                                     restData: rest];
+        TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithRealizedChain: self.realizedChain
+                                                                                               exerciseIndex: i];
         
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -199,7 +134,7 @@
         
         NSString *verticalAppendString;
         
-        if (i == [self.numberOfExercises intValue] - 1){
+        if (i == self.realizedChain.numberOfExercises - 1){
             
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]",
                                     dynamicComponentName,

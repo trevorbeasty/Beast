@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class TJBChainTemplate;
+@class TJBRealizedChain;
 
 @interface TJBCircuitReferenceContainerVC : UIViewController
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain;
 
 @end
