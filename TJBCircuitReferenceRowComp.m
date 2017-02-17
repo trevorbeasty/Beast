@@ -113,6 +113,19 @@
     NSDate *setEndDate;
     NSDate *nextSetBeginDate;
     
+    NSNumber *nextRoundIndex;
+    NSNumber *nextExerciseIndex;
+    BOOL nextSetIsWithinIndiceRange = [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: exerciseInd
+                                                                                  currentRoundIndex: roundInd
+                                                                                   maxExerciseIndex: chainTemplate.numberOfExercises - 1
+                                                                                      maxRoundIndex: chainTemplate.numberOfRounds - 1
+                                                                             exerciseIndexReference: &nextExerciseIndex
+                                                                                roundIndexReference: &nextRoundIndex];
+    BOOL nextSetHasOccurred = [TJBAssortedUtilities indiceWithExerciseIndex: [nextExerciseIndex intValue]
+                                                                 roundIndex: [nextRoundIndex intValue]
+                                            isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
+                                                        referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
+    
     if (instanceHasOccurred){
         
         realizedWeight = [NSNumber numberWithFloat: self.realizedChain.weightArrays[exerciseInd].numbers[roundInd].value];
@@ -125,19 +138,6 @@
         }
         
         // only grab the next set begin date if both (1) that instance occurred and (2) the next set begin date is not a default object
-        
-        NSNumber *nextRoundIndex;
-        NSNumber *nextExerciseIndex;
-        BOOL nextSetIsWithinIndiceRange = [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: exerciseInd
-                                                                                      currentRoundIndex: roundInd
-                                                                                       maxExerciseIndex: chainTemplate.numberOfExercises - 1
-                                                                                          maxRoundIndex: chainTemplate.numberOfRounds - 1
-                                                                                 exerciseIndexReference: &nextExerciseIndex
-                                                                                    roundIndexReference: &nextRoundIndex];
-        BOOL nextSetHasOccurred = [TJBAssortedUtilities indiceWithExerciseIndex: [nextExerciseIndex intValue]
-                                                                     roundIndex: [nextRoundIndex intValue]
-                                                isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
-                                                            referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
         
         if (nextSetIsWithinIndiceRange && nextSetHasOccurred){
             
@@ -152,17 +152,160 @@
     }
     
     // now that all the data has been grabbed, it is time to format it
-    
-    NSString *weightString;
-    NSString *repsString;
-    NSString *restString;
-    
     // formatting will differ according to whether this instance has occurred
-    // the rest string will differ according to whe
+    // the rest string will require both the set end date and next set begin date exist in order to display a realized value
+    
+    // weight and reps
     
     if (instanceHasOccurred){
         
+        // weight
         
+        if (chainTemplate.targetingWeight){
+            
+            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
+                                                                targetNumber: weightTarget
+                                                        realizedNumberExists: YES
+                                                          targetNumberExists: YES
+                                                                  isTimeType: NO]
+                               forState: UIControlStateNormal];
+            
+        } else{
+            
+            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
+                                                                 targetNumber: weightTarget
+                                                         realizedNumberExists: YES
+                                                           targetNumberExists: NO
+                                                                   isTimeType: NO]
+                               forState: UIControlStateNormal];
+            
+        }
+        
+        // reps
+        
+        if (chainTemplate.targetingReps){
+            
+            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
+                                                               targetNumber: repsTarget
+                                                       realizedNumberExists: YES
+                                                         targetNumberExists: YES
+                                                                 isTimeType: NO]
+                             forState: UIControlStateNormal];
+            
+        } else{
+            
+            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
+                                                               targetNumber: repsTarget
+                                                       realizedNumberExists: YES
+                                                         targetNumberExists: NO
+                                                                 isTimeType: NO]
+                             forState: UIControlStateNormal];
+            
+        }
+        
+    } else{
+        
+        // weight
+        
+        if (chainTemplate.targetingWeight){
+            
+            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
+                                                                 targetNumber: weightTarget
+                                                         realizedNumberExists: NO
+                                                           targetNumberExists: YES
+                                                                   isTimeType: NO]
+                               forState: UIControlStateNormal];
+            
+        } else{
+            
+            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
+                                                                 targetNumber: weightTarget
+                                                         realizedNumberExists: NO
+                                                           targetNumberExists: NO
+                                                                   isTimeType: NO]
+                               forState: UIControlStateNormal];
+            
+        }
+        
+        // reps
+        
+        if (chainTemplate.targetingReps){
+            
+            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
+                                                               targetNumber: repsTarget
+                                                       realizedNumberExists: NO
+                                                         targetNumberExists: YES
+                                                                 isTimeType: NO]
+                             forState: UIControlStateNormal];
+            
+        } else{
+            
+            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
+                                                               targetNumber: repsTarget
+                                                       realizedNumberExists: NO
+                                                         targetNumberExists: NO
+                                                                 isTimeType: NO]
+                             forState: UIControlStateNormal];
+            
+        }
+        
+    }
+    
+    // rest
+    
+    if (chainTemplate.targetingRestTime){
+        
+        // a realized rest will be shown only if all of the following conditions are met
+        
+        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
+            
+            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
+            
+            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
+                                                              targetNumber: restTarget
+                                                      realizedNumberExists: YES
+                                                        targetNumberExists: YES
+                                                                isTimeType: YES]
+                             forState: UIControlStateNormal];
+            
+            
+        } else{
+            
+            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
+                                                               targetNumber: restTarget
+                                                       realizedNumberExists: NO
+                                                         targetNumberExists: YES
+                                                                 isTimeType: YES]
+                             forState:UIControlStateNormal];
+            
+        }
+        
+    } else{
+        
+        // a realized rest will be shown only if all of the following conditions are met
+        
+        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
+            
+            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
+            
+            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
+                                                               targetNumber: nil
+                                                       realizedNumberExists: YES
+                                                         targetNumberExists: NO
+                                                                 isTimeType: YES]
+                             forState: UIControlStateNormal];
+            
+            
+        } else{
+            
+            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
+                                                               targetNumber: nil
+                                                       realizedNumberExists: NO
+                                                         targetNumberExists: NO
+                                                                 isTimeType: YES]
+                             forState: UIControlStateNormal];
+            
+        }
         
     }
     
