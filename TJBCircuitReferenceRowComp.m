@@ -10,24 +10,28 @@
 
 // aesthetics
 
-//#import "TJBAestheticsController.h"
+#import "TJBAestheticsController.h"
 
 // stopwatch
 
 #import "TJBStopwatch.h"
 
+// core data
+
+#import "CoreDataController.h"
+
+// utilities
+
+#import "TJBAssortedUtilities.h"
+
 @interface TJBCircuitReferenceRowComp ()
 
 // core
 
-@property (nonatomic, strong) NSNumber *targetingWeight;
-@property (nonatomic, strong) NSNumber *targetingReps;
-@property (nonatomic, strong) NSNumber *targetingRest;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-@property (nonatomic, strong) NSNumber *roundNumber;
-@property (nonatomic, strong) NSNumber *weightData;
-@property (nonatomic, strong) NSNumber *repsData;
-@property (nonatomic, strong) NSNumber *restData;
+@property (nonatomic, strong) NSNumber *exerciseIndex;
+@property (nonatomic, strong) NSNumber *roundIndex;
+
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 // IBOutlet
 
@@ -36,100 +40,183 @@
 @property (weak, nonatomic) IBOutlet UIButton *restButton;
 @property (weak, nonatomic) IBOutlet UILabel *roundLabel;
 
-
-
-
-
 @end
 
 @implementation TJBCircuitReferenceRowComp
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber weightData:(NSNumber *)weightData repsData:(NSNumber *)repsData restData:(NSNumber *)restData{
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
     
     self = [super init];
     
-    self.targetingWeight = targetingWeight;
-    self.targetingReps = targetingReps;
-    self.targetingRest = targetingRest;
-    self.targetsVaryByRound = targetsVaryByRound;
-    self.roundNumber = roundNumber;
-    self.weightData = weightData;
-    self.repsData = repsData;
-    self.restData = restData;
+    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
+    self.roundIndex = [NSNumber numberWithInt: roundIndex];
+    self.realizedChain = realizedChain;
     
     return self;
+    
 }
 
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
     
-    [self configureViewAestheticsAndFunctionality];
-    
     [self configureViewData];
 }
 
 - (void)configureViewData{
 
-    void (^deleteTitle)(UIButton *) = ^(UIButton *button){
-        [button setTitle: @""
-                forState: UIControlStateNormal];
-    };
+    // the data displayed in each button depends on the state.  There are three possible states: absolute comparison, relative comparison, editing
     
-    // if the value is being targeted, populate it.  If not, give it a blank title
+    //// absolute comparison
+    // must first gather all of the appropriate data and then format it appropriately
     
-    if ([self.targetingWeight boolValue] == YES){
-        [self.weightButton setTitle: [self.weightData stringValue]
-                           forState: UIControlStateNormal];
-    } else{
-        deleteTitle(self.weightButton);
+    int exerciseInd = [self.exerciseIndex intValue];
+    int roundInd = [self.roundIndex intValue];
+    
+    // targets
+    
+    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
+    
+    // only grab targets if the type is being targeted, otherwise leave them as nil
+    
+    NSNumber *weightTarget;
+    NSNumber *repsTarget;
+    NSNumber *restTarget;
+    
+    if (chainTemplate.targetingWeight){
+        weightTarget = [NSNumber numberWithFloat: chainTemplate.weightArrays[exerciseInd].numbers[roundInd].value];
     }
     
-    if ([self.targetingReps boolValue] == YES){
-        [self.repsButton setTitle: [self.repsData stringValue]
-                         forState: UIControlStateNormal];
-    } else{
-        deleteTitle(self.repsButton);
+    if (chainTemplate.targetingReps){
+        repsTarget = [NSNumber numberWithFloat: chainTemplate.repsArrays[exerciseInd].numbers[roundInd].value];
     }
     
-    if ([self.targetingRest boolValue] == YES){
+    if (chainTemplate.targetingRestTime){
+        restTarget = [NSNumber numberWithFloat: chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].value];
+    }
+    
+    // realizations
+    // only grab realizations if this round and exercise are prior to the first incomplete round and exercise
+    
+    BOOL instanceHasOccurred = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseInd
+                                                                  roundIndex: roundInd
+                                             isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
+                                                         referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
+    
+    NSNumber *realizedWeight;
+    NSNumber *realizedReps;
+    
+    // the rest shown for a particular row is the rest that occurs after the set is completed, before the next set.  Thus I need to know when this set ended and when the next began
+    
+    NSDate *setEndDate;
+    NSDate *nextSetBeginDate;
+    
+    if (instanceHasOccurred){
         
-        NSString *restString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.restData intValue]];
-        [self.restButton setTitle: restString
-                         forState: UIControlStateNormal];
+        realizedWeight = [NSNumber numberWithFloat: self.realizedChain.weightArrays[exerciseInd].numbers[roundInd].value];
+        realizedReps = [NSNumber numberWithFloat: self.realizedChain.repsArrays[exerciseInd].numbers[roundInd].value];
         
-    } else{
-        deleteTitle(self.restButton);
+        // only grab the set end date if it is not a default object.  If an exact or approximate date was recorded, isDefaultObject should be NO
+        
+        if (self.realizedChain.setEndDateArrays[exerciseInd].dates[roundInd].isDefaultObject == NO){
+            setEndDate = self.realizedChain.setEndDateArrays[exerciseInd].dates[roundInd].value;
+        }
+        
+        // only grab the next set begin date if both (1) that instance occurred and (2) the next set begin date is not a default object
+        
+        NSNumber *nextRoundIndex;
+        NSNumber *nextExerciseIndex;
+        BOOL nextSetIsWithinIndiceRange = [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: exerciseInd
+                                                                                      currentRoundIndex: roundInd
+                                                                                       maxExerciseIndex: chainTemplate.numberOfExercises - 1
+                                                                                          maxRoundIndex: chainTemplate.numberOfRounds - 1
+                                                                                 exerciseIndexReference: &nextExerciseIndex
+                                                                                    roundIndexReference: &nextRoundIndex];
+        BOOL nextSetHasOccurred = [TJBAssortedUtilities indiceWithExerciseIndex: [nextExerciseIndex intValue]
+                                                                     roundIndex: [nextRoundIndex intValue]
+                                                isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
+                                                            referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
+        
+        if (nextSetIsWithinIndiceRange && nextSetHasOccurred){
+            
+            if (self.realizedChain.setBeginDateArrays[[nextExerciseIndex intValue]].dates[[nextRoundIndex intValue]].isDefaultObject == NO){
+                
+                nextSetBeginDate = self.realizedChain.setBeginDateArrays[[nextExerciseIndex intValue]].dates[[nextRoundIndex intValue]].value;
+                
+            }
+            
+        }
+        
+    }
+    
+    // now that all the data has been grabbed, it is time to format it
+    
+    NSString *weightString;
+    NSString *repsString;
+    NSString *restString;
+    
+    // formatting will differ according to whether this instance has occurred
+    // the rest string will differ according to whe
+    
+    if (instanceHasOccurred){
+        
+        
+        
     }
     
     
     
 }
 
-- (void)configureViewAestheticsAndFunctionality{
-
-    self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundNumber intValue]];
+- (NSString *)displayStringForRealizedNumber:(NSNumber *)realizedNumber targetNumber:(NSNumber *)targetNumber realizedNumberExists:(BOOL)realizedNumberExists targetNumberExists:(BOOL)targetNumberExists isTimeType:(BOOL)isTimeType{
     
-    self.roundLabel.backgroundColor = [UIColor darkGrayColor];
-    self.roundLabel.textColor = [UIColor whiteColor];
-    
-    
-    // button appearance
-    
-    NSArray *buttons = @[self.weightButton,
-                         self.repsButton,
-                         self.restButton];
-    
-    for (UIButton *button in buttons){
+    if (isTimeType){
         
-        button.backgroundColor = [UIColor whiteColor];
-        [button setTitleColor: [UIColor blackColor]
-                     forState: UIControlStateNormal];
-        button.enabled = NO;
+        NSString *realizedTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [realizedNumber intValue]];
+        NSString *targetTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [targetNumber intValue]];
+        
+        if (realizedNumberExists && targetNumberExists){
+            
+            return [NSString stringWithFormat: @"%@ / %@", realizedTime, targetTime];
+            
+        } else if (!realizedNumberExists && targetNumberExists){
+            
+            return [NSString stringWithFormat: @"X / %@", targetTime];
+            
+        } else if (realizedNumberExists & !targetNumberExists){
+            
+            return [NSString stringWithFormat: @"%@ / X", realizedTime];
+            
+        } else{
+            
+            return [NSString stringWithFormat: @"X / X"];
+            
+        }
+        
+    } else{
+        
+        if (realizedNumberExists && targetNumberExists){
+            
+            return [NSString stringWithFormat: @"%@ / %@", [realizedNumber stringValue], [targetNumber stringValue]];
+            
+        } else if (!realizedNumberExists && targetNumberExists){
+            
+            return [NSString stringWithFormat: @"X / %@", [targetNumber stringValue]];
+            
+        } else if (realizedNumberExists & !targetNumberExists){
+            
+            return [NSString stringWithFormat: @"%@ / X", [realizedNumber stringValue]];
+            
+        } else{
+            
+            return [NSString stringWithFormat: @"X / X"];
+            
+        }
         
     }
+    
 }
 
 
