@@ -23,7 +23,7 @@
 - (void)configureWithDate:(NSDate *)date weight:(NSNumber *)weight reps:(NSNumber *)reps{
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MM / dd / yyyy";
+    df.dateFormat = @"MM / dd / yy";
     self.dateLabel.text = [df stringFromDate: date];
     
     self.weightLabel.text = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
