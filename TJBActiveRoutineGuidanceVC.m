@@ -681,141 +681,171 @@ static NSString const *restViewKey = @"restView";
     NSInteger selectionsToBeMade = self.activeLiftTargets.count;
     BOOL isLastLocalSelection = _selectionIndex == selectionsToBeMade - 1;
     
-//    for (int i = 0; i < selectionsToBeMade; i++){
+    // record first incomplete indices in case cancel block in called.  If cancel block is called, I will simply change the 'first incomplete' type properties of the realized chain.  I will not change the 'isDefaultObject' property of the weights, reps, and dates that may have been recorded.  I may have to change this later given broader system considerations
+    // the cancellation restoration exercise and round objects should only exist during the selection process, they should otherwise be nil
     
-        NSString *title = self.activeLiftTargets[_selectionIndex][0];
+    if (!self.cancelRestorationExerciseIndex){
+        self.cancelRestorationExerciseIndex = self.activeExerciseIndexForChain;
+    }
+    
+    if (!self.cancelRestorationRoundIndex){
+        self.cancelRestorationRoundIndex = self.activeRoundIndexForChain;
+    }
+    
+    NSString *title = self.activeLiftTargets[_selectionIndex][0];
         
-        // cancel block
+    // cancel block
         
-        void (^cancelBlock)(void) = ^{
-            
-            
-            
-        };
+    void (^cancelBlock)(void) = ^{
         
-        // number selected block
+        [weakSelf resetRealizedChainWithRespectToImmediateSelections];
         
-        NumberSelectedBlockDouble selectedBlock = ^(NSNumber *weight, NSNumber *reps){
-            
-            // fill in the realized chain with the selected values
-            // be sure to use the active round indices for 'chain'.  There are two pairs of round indices - one for grabbing targets and one for filling in the realized chain
-            // the skeleton chain template already has the appropriate exercises filled in, so must enter all other info here
-            // for now, I will offer no advanced options for user input.  The end of the second set will be recorded as the time the user presses 'set completed'.  All exercises that are not the last in this local sequence will not have rest times recorded
-            // the timer will be reset upon pressing of the set completed button. It will countdown backwards and should use the target rest value that is already stored as its starting value
-            
-            int exercise = [weakSelf.activeExerciseIndexForChain intValue];
-            int round = [weakSelf.activeRoundIndexForChain intValue];
-            
-            weakSelf.realizedChain.weightArrays[exercise].numbers[round].value = [weight floatValue];
-            weakSelf.realizedChain.repsArrays[exercise].numbers[round].value = [reps floatValue];
-            
-            // set begin dates will always be default objects.  It will vary for set end dates
-            
-            weakSelf.realizedChain.setBeginDateArrays[exercise].dates[round].isDefaultObject = YES;
-            
-            if (isLastLocalSelection){
-                
-                weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].value = [NSDate date];
-                weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = NO;
-                
-            } else{
-                
-                weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = YES;
-                
-            }
-            
-            // increment the chain indices
-            
-            BOOL routineNotCompleted = [self incrementActiveChainIndices];
-            
-            // save the changes - this must be done after incrementing because 'incrementActiveChainIndices' is where the 'first incomplete' type properties are updated for the realized chain
-            
-            [[CoreDataController singleton] saveContext];
-            
-            // if the iterator has reached its max value (all selections have been made), refresh the timer and active scroll view content
-            // must check that this is not the very last item in the chain
-            
-            if ([weakSelf allSelectionsMade]){
-                
-                if (routineNotCompleted){
-                    
-                    _selectionIndex = 0;
-                    
-                    // configure the round and timer labels
-                    
-                    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
-                                                         withForwardIncrementing: NO
-                                                                  lastUpdateDate: nil];
-                    
-                    weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"Round %d/%d",
-                                                     [weakSelf.activeRoundIndexForTargets intValue] + 1,
-                                                     weakSelf.chainTemplate.numberOfRounds];
-                    
-                    
-                    [weakSelf configureImmediateTargets];
-                    
-                    [weakSelf dismissViewControllerAnimated: YES
-                                                 completion: nil];
-                    
-                } else{
-                    
-                    // configure labels accordingly
-                    
-                    self.timerTitleLabel.text = @"";
-                    [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
-                    
-                    self.roundTitleLabel.text = @"";
-                    
-                    // alert and dismissal
-                    
-                    [weakSelf dismissViewControllerAnimated: YES
-                                                 completion: nil];
-                    
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Completed"
-                                                                                   message: @""
-                                                                            preferredStyle: UIAlertControllerStyleAlert];
-                    UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
-                                                                     style: UIAlertActionStyleDefault
-                                                                   handler:  ^(UIAlertAction *action){
-                                                                       [weakSelf dismissViewControllerAnimated: YES
-                                                                                                    completion: nil];
-                                                                   }];
-                    [alert addAction: action];
-                    
-                    [self presentViewController: alert
-                                       animated: YES
+        [weakSelf dismissViewControllerAnimated: NO
                                      completion: nil];
-                    
-                    
-                    
-                }
+        
+    };
+    
+    // number selected block
+        
+    NumberSelectedBlockDouble selectedBlock = ^(NSNumber *weight, NSNumber *reps){
+            
+        // fill in the realized chain with the selected values
+        // be sure to use the active round indices for 'chain'.  There are two pairs of round indices - one for grabbing targets and one for filling in the realized chain
+        // the skeleton chain template already has the appropriate exercises filled in, so must enter all other info here
+        // for now, I will offer no advanced options for user input.  The end of the second set will be recorded as the time the user presses 'set completed'.  All exercises that are not the last in this local sequence will not have rest times recorded
+        // the timer will be reset upon pressing of the set completed button. It will countdown backwards and should use the target rest value that is already stored as its starting value
+            
+        int exercise = [weakSelf.activeExerciseIndexForChain intValue];
+        int round = [weakSelf.activeRoundIndexForChain intValue];
+            
+        weakSelf.realizedChain.weightArrays[exercise].numbers[round].value = [weight floatValue];
+        weakSelf.realizedChain.repsArrays[exercise].numbers[round].value = [reps floatValue];
+            
+        // set begin dates will always be default objects.  It will vary for set end dates
+            
+        weakSelf.realizedChain.setBeginDateArrays[exercise].dates[round].isDefaultObject = YES;
+            
+        if (isLastLocalSelection){
                 
+            weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].value = [NSDate date];
+            weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = NO;
+                
+        } else{
+                
+            weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = YES;
+                
+        }
+            
+        // increment the chain indices
+            
+        BOOL routineNotCompleted = [self incrementActiveChainIndices];
+            
+        // save the changes - this must be done after incrementing because 'incrementActiveChainIndices' is where the 'first incomplete' type properties are updated for the realized chain
+            
+        [[CoreDataController singleton] saveContext];
+            
+        // if the iterator has reached its max value (all selections have been made), refresh the timer and active scroll view content
+        // must check that this is not the very last item in the chain
+            
+        if ([weakSelf allSelectionsMade]){
+                
+            if (routineNotCompleted){
+                    
+                _selectionIndex = 0;
+                    
+                // configure the round and timer labels
+                    
+                [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
+                                                     withForwardIncrementing: NO
+                                                              lastUpdateDate: nil];
+                
+                weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"Round %d/%d",
+                                                 [weakSelf.activeRoundIndexForTargets intValue] + 1,
+                                                 weakSelf.chainTemplate.numberOfRounds];
+                    
+                    
+                [weakSelf configureImmediateTargets];
+                
+                // nullify the cancellation restoration exercise index and round index
+                
+                self.cancelRestorationExerciseIndex = nil;
+                self.cancelRestorationRoundIndex = nil;
+                    
+                [weakSelf dismissViewControllerAnimated: YES
+                                                 completion: nil];
+                    
             } else{
-                
-                _selectionIndex++;
+                    
+            // configure labels accordingly
+                    
+            self.timerTitleLabel.text = @"";
+            [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
+                    
+            self.roundTitleLabel.text = @"";
+                    
+            // alert and dismissal
                 
                 [weakSelf dismissViewControllerAnimated: YES
-                                         completion: ^{
-                                             
-                                             [weakSelf didPressSetCompleted: nil];
-                                             
-                                         }];
-                
+                                         completion: nil];
+                    
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Completed"
+                                                                               message: @""
+                                                                        preferredStyle: UIAlertControllerStyleAlert];
+                UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                                 style: UIAlertActionStyleDefault
+                                                               handler:  ^(UIAlertAction *action){
+                                                                   [weakSelf dismissViewControllerAnimated: YES
+                                                                                                    completion: nil];
+                                                                   }];
+                [alert addAction: action];
+                    
+                [self presentViewController: alert
+                                   animated: YES
+                                 completion: nil];
+                    
+                    
+                    
             }
+                
+        } else{
+                
+            _selectionIndex++;
+                
+            [weakSelf dismissViewControllerAnimated: YES
+                                        completion: ^{
+                                             
+                                            [weakSelf didPressSetCompleted: nil];
+                                             
+                                        }];
+                
+        }
         
-        };
+    };
     
-        // number selection vc
+    // number selection vc
+    
+    TJBWeightRepsSelectionVC *selectionVC = [[TJBWeightRepsSelectionVC alloc] initWithTitle: title
+                                                                                cancelBlock: cancelBlock
+                                                                        numberSelectedBlock: selectedBlock];
         
-        TJBWeightRepsSelectionVC *selectionVC = [[TJBWeightRepsSelectionVC alloc] initWithTitle: title
-                                                                                    cancelBlock: cancelBlock
-                                                                            numberSelectedBlock: selectedBlock];
-        
-        [self presentViewController: selectionVC
-                           animated: YES
-                         completion: nil];
-        
-//    }
+    [self presentViewController: selectionVC
+                       animated: YES
+                     completion: nil];
+    
+}
+
+- (void)resetRealizedChainWithRespectToImmediateSelections{
+    
+    // must delete the cancellation exercise and round state objects.  Must also reset the first incomplete type properties of the realized chain
+    // must also reset the _selectionIndex to 0 (used by the setCompleted method to iterate through all active, immediate targets)
+    
+    _selectionIndex = 0;
+    
+    self.realizedChain.firstIncompleteRoundIndex = [self.cancelRestorationRoundIndex intValue];
+    self.realizedChain.firstIncompleteExerciseIndex = [self.cancelRestorationExerciseIndex intValue];
+    
+    self.cancelRestorationRoundIndex = nil;
+    self.cancelRestorationExerciseIndex = nil;
     
 }
 
