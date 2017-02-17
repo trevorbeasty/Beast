@@ -63,52 +63,51 @@
 
 - (void)configureViewAesthetics{
     
-    // container view
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     CALayer *viewLayer = self.view.layer;
     viewLayer.masksToBounds = YES;
     viewLayer.cornerRadius = 8.0;
     viewLayer.opacity = 1;
-    viewLayer.borderWidth = 1.0;
-    viewLayer.borderColor = [[UIColor darkGrayColor] CGColor];
+
     
     //  labels
     
-    self.roundColumnLabel.layer.opacity = 1;
-    self.roundColumnLabel.backgroundColor = [UIColor darkGrayColor];
-    self.roundColumnLabel.text = @"";
-    
-    NSArray *labels = @[self.weightColumnLabel,
+    NSArray *labels = @[self.roundColumnLabel,
+                        self.weightColumnLabel,
                         self.repsColumnLabel,
-                        self.restColumnLabel];
+                        self.restColumnLabel,
+                        self.titleLabel];
     
     for (UILabel *label in labels){
         
-        label.backgroundColor = [UIColor darkGrayColor];
+        label.backgroundColor = [UIColor lightGrayColor];
         label.textColor = [UIColor whiteColor];
         label.layer.opacity = 1;
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
-    
-    // title label
-    
-    self.titleLabel.backgroundColor = [[TJBAestheticsController singleton] color1];
-    self.titleLabel.textColor = [UIColor whiteColor];
     
     // selected exercise button
     
     UIButton *button = self.selectedExerciseButton;
     
-    button.backgroundColor = [UIColor whiteColor];
-    [button setTitleColor: [UIColor blackColor]
+    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    [button setTitleColor: [UIColor whiteColor]
                  forState: UIControlStateNormal];
+    button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    button.layer.masksToBounds = YES;
+    button.layer.cornerRadius = 8.0;
     
     // selected exercise button layer
     
     CALayer *layer = button.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8;
-    layer.opacity = .85;
+    layer.opacity = 1.0;
+    
 }
 
 - (void)configureViewDataAndFunctionality{
@@ -122,7 +121,8 @@
     
     // title label
     
-    self.titleLabel.text = [self.exerciseIndex stringValue];
+    NSString *exerciseNumberText = [NSString stringWithFormat: @"Exercise %d", [self.exerciseIndex intValue] + 1];
+    self.titleLabel.text = exerciseNumberText;
     
 }
 

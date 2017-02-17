@@ -76,7 +76,6 @@
 // core
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
-@property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 @property (nonatomic, strong) UIView *activeScrollContentView;
 @property (nonatomic, strong) UILabel *nextUpLabel;

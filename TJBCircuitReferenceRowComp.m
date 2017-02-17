@@ -62,10 +62,49 @@
 
 - (void)viewDidLoad{
     
+    [self configureViewAesthetics];
+    
     [self configureViewData];
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    // round label
+    
+    self.roundLabel.backgroundColor = [UIColor lightGrayColor];
+    self.roundLabel.textColor = [UIColor whiteColor];
+    self.roundLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    self.roundLabel.layer.opacity = 1.0;
+    
+    // buttons
+    
+    NSArray *buttons = @[self.weightButton,
+                         self.repsButton,
+                         self.restButton];
+    for (UIButton *button in buttons){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
+        
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = 8.0;
+        
+    }
+    
 }
 
 - (void)configureViewData{
+    
+    // round label text
+    
+    self.roundLabel.text = [NSString stringWithFormat: @"%d", [self.roundIndex intValue] + 1];
 
     // the data displayed in each button depends on the state.  There are three possible states: absolute comparison, relative comparison, editing
     

@@ -24,23 +24,29 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bui-wy-BVI">
-                    <rect key="frame" x="94" y="2" width="91.5" height="49"/>
+                    <rect key="frame" x="42" y="2" width="109" height="49"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Weight"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6c2-Z5-obk">
-                    <rect key="frame" x="187.5" y="2" width="91.5" height="49"/>
+                    <rect key="frame" x="153" y="2" width="109" height="49"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Reps"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYM-ew-RaA">
-                    <rect key="frame" x="281" y="2" width="92" height="49"/>
+                    <rect key="frame" x="264" y="2" width="109" height="49"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Rest"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Round" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kq-NJ-AtE">
-                    <rect key="frame" x="0.0" y="0.0" width="92" height="53"/>
-                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="0.0" width="40" height="53"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="tuc-DY-qrs"/>
+                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
@@ -53,17 +59,16 @@
                 <constraint firstAttribute="bottom" secondItem="bui-wy-BVI" secondAttribute="bottom" constant="2" id="BI1-bY-4OU"/>
                 <constraint firstItem="nYM-ew-RaA" firstAttribute="leading" secondItem="6c2-Z5-obk" secondAttribute="trailing" constant="2" id="CDm-8U-7Zn"/>
                 <constraint firstAttribute="bottom" secondItem="6c2-Z5-obk" secondAttribute="bottom" constant="2" id="HRo-GA-044"/>
-                <constraint firstItem="nYM-ew-RaA" firstAttribute="width" secondItem="6kq-NJ-AtE" secondAttribute="width" id="JSn-5v-INl"/>
                 <constraint firstAttribute="bottom" secondItem="nYM-ew-RaA" secondAttribute="bottom" constant="2" id="KWo-mw-D0N"/>
                 <constraint firstAttribute="bottom" secondItem="6kq-NJ-AtE" secondAttribute="bottom" id="MLj-Pm-N4B"/>
                 <constraint firstItem="bui-wy-BVI" firstAttribute="leading" secondItem="6kq-NJ-AtE" secondAttribute="trailing" constant="2" id="OjQ-QU-xMu"/>
                 <constraint firstAttribute="trailing" secondItem="nYM-ew-RaA" secondAttribute="trailing" constant="2" id="Qt7-RO-URV"/>
-                <constraint firstItem="bui-wy-BVI" firstAttribute="width" secondItem="6kq-NJ-AtE" secondAttribute="width" id="TTX-JI-rpf"/>
                 <constraint firstItem="6c2-Z5-obk" firstAttribute="leading" secondItem="bui-wy-BVI" secondAttribute="trailing" constant="2" id="XRU-CK-zb8"/>
-                <constraint firstItem="6c2-Z5-obk" firstAttribute="width" secondItem="6kq-NJ-AtE" secondAttribute="width" id="ftw-nN-4ec"/>
+                <constraint firstItem="nYM-ew-RaA" firstAttribute="width" secondItem="bui-wy-BVI" secondAttribute="width" id="kCb-h9-beL"/>
                 <constraint firstItem="6kq-NJ-AtE" firstAttribute="top" secondItem="Iof-JU-U3y" secondAttribute="top" id="maW-v3-UV9"/>
                 <constraint firstItem="nYM-ew-RaA" firstAttribute="top" secondItem="Iof-JU-U3y" secondAttribute="top" constant="2" id="oKq-dE-F9F"/>
                 <constraint firstItem="6kq-NJ-AtE" firstAttribute="leading" secondItem="Iof-JU-U3y" secondAttribute="leading" id="qqu-fH-0p5"/>
+                <constraint firstItem="6c2-Z5-obk" firstAttribute="width" secondItem="bui-wy-BVI" secondAttribute="width" id="vit-BP-j58"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

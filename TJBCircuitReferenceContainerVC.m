@@ -60,7 +60,7 @@
 
 #pragma  mark - View Life Cycle
 
-- (void)viewDidLoad{
+- (void)viewWillAppear:(BOOL)animated{
     
     // create a TJBCircuitReferenceVC with the dimensions of the containerView    
     // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
@@ -70,7 +70,7 @@
     [self.view layoutIfNeeded];
     
     TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithRealizedChain: self.realizedChain
-                                                                            viewSize: self.view.frame.size];
+                                                                            viewSize: self.circuitReferenceView.frame.size];
     
     [self addChildViewController: vc];
     

@@ -17,6 +17,7 @@
 #import "TJBCircuitDesignVC.h"
 #import "TJBActiveRoutineGuidanceVC.h"
 #import "TJBWorkoutNavigationHub.h"
+#import "TJBCircuitReferenceContainerVC.h"
 
 // views
 
@@ -1093,26 +1094,18 @@
         TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
         vc1.tabBarItem.title = @"Active";
         
-        TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
-        vc2.tabBarItem.title = @"Workout Log";
+        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] init];
+        vc3.tabBarItem.title = @"Workout Log";
+        
+        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
+        vc2.tabBarItem.title = @"Progress";
         
         // tab bar
         
         UITabBarController *tbc = [[UITabBarController alloc] init];
-        [tbc setViewControllers: @[vc1, vc2]];
+        [tbc setViewControllers: @[vc1, vc2, vc3]];
         tbc.tabBar.translucent = NO;
-//        tbc.navigationItem.title = @"Lift Routine";
-//        
-//        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-//                                                                       style: UIBarButtonItemStyleDone
-//                                                                      target: vc1
-//                                                                      action: @selector(didPressBack)];
-//        [tbc.navigationItem setLeftBarButtonItem: backButton];
-        
-        // navigation controller
-        
-//        UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-//        navC.navigationBar.translucent = NO;
+
         
         [self presentViewController: tbc
                            animated: NO

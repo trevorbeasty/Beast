@@ -11,8 +11,13 @@
 // core data
 
 @class TJBChainTemplate;
+@class TJBRealizedChain;
 
 @interface TJBActiveRoutineGuidanceVC : UIViewController
+
+// this is here because it is created in this class' init method and other tab bar VC's need it
+
+@property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
 - (instancetype)initFreshRoutineWithChainTemplate:(TJBChainTemplate *)chainTemplate;
 
