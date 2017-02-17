@@ -232,7 +232,7 @@
 
 - (void)removeAllPrimaryStopwatchObservers{
     
-    self.primaryTimeObservers = nil;
+    self.primaryTimeObservers = [[NSMutableSet alloc] init];
     
 }
 

@@ -247,45 +247,41 @@
     int exerciseIndex = [self.activeExerciseIndexForTargets intValue];
     int roundIndex = [self.activeRoundIndexForTargets intValue];
     
-    for (TJBRealizedChain *realizedChain in self.chainTemplate.realizedChains){
+    // because a placeholder realized chain is created when a routine is initiated, there will be a realized chain representing the active routine.  It will be the last realized chain and should be ignored in this context
+    // I collect them in reverse order so that the exercise item vc gets them with date descending order
+    
+    NSInteger numberOfValidRealizedChains = self.chainTemplate.realizedChains.count - 1;
+    
+    for (NSInteger i = numberOfValidRealizedChains - 1; i >= 0; i--){
         
         NSMutableArray *previousMarksArray = [[NSMutableArray alloc] init];
+        
+        TJBRealizedChain *iterativeRealizedChain = self.chainTemplate.realizedChains[i];
         
         float weight;
         float reps;
         NSDate *date;
         
-        if (self.chainTemplate.targetingWeight){
+        // it is possible that in historic realized chains, the user did not complete all sets.  Must check the 'first incomplete' type properties to check for this.  If the set occurred, weight, reps, and the creation date of the realized chain should be grabbed.  We only need the creation date because we only care to report the day executed to the user, not the rest or in-set time
+        
+        BOOL setExists = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseIndex
+                                                            roundIndex: roundIndex
+                                       isPriorToReferenceExerciseIndex: iterativeRealizedChain.firstIncompleteExerciseIndex
+                                                   referenceRoundIndex: iterativeRealizedChain.firstIncompleteRoundIndex];
+        if (setExists){
             
-            weight = realizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value;
+            weight = iterativeRealizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value;
+            reps = iterativeRealizedChain.repsArrays[exerciseIndex].numbers[roundIndex].value;
+            date = iterativeRealizedChain.dateCreated;
             
-        } else{
+            [previousMarksArray addObject: [NSNumber numberWithFloat: weight]];
+            [previousMarksArray addObject: [NSNumber numberWithFloat: reps]];
+            [previousMarksArray addObject: date];
             
-            weight = -1.0;
+            [returnArray addObject: previousMarksArray];
             
         }
-        
-        if (self.chainTemplate.targetingReps){
-            
-            reps = realizedChain.repsArrays[exerciseIndex].numbers[roundIndex].value;
-            
-        } else{
-            
-            reps = -1.0;
-            
-        }
-            
-        date = realizedChain.dateCreated;
-        
-        [previousMarksArray addObject: [NSNumber numberWithFloat: weight]];
-        [previousMarksArray addObject: [NSNumber numberWithFloat: reps]];
-        [previousMarksArray addObject: date];
-        
-        [returnArray addObject: previousMarksArray];
-        
     }
-    
-    
     
     return returnArray;
     
@@ -299,8 +295,15 @@
     NSArray *targets = [self extractTargetsArrayForActiveIndices];
     [self.activeLiftTargets addObject: targets];
     
+    // it is possible that an array of length 0 is assigned to previousMarks.  I must check that the length is greater than zero before adding (if it has no content, I do not want to show it to the user)
+    
     NSArray<NSArray *> *previousMarks = [self extractPreviousMarksArrayForActiveIndices];
-    [self.activePreviousMarks addObject: previousMarks];
+    
+    if (previousMarks.count > 0){
+        
+        [self.activePreviousMarks addObject: previousMarks];
+        
+    }
     
     // if the rest is zero, grab the next set of targets.  Otherwise, continue.  Will use recursion.
     
@@ -495,9 +498,20 @@ static NSString const *restViewKey = @"restView";
             
         }
         
-        // derive the previous entries to be passed to the exerciseItemVC based on the active targets index
+        // grab the previous entries to be passed to the exerciseItemVC based on the active targets index
+        // must make sure that a sub-array exists at the index before attempting to grab it.  If info exists at a certain index, it must exist at a lesser index given how chains work.  This allows me to just evaluate chain length when determining if info exists or not
         
-        NSArray<NSArray *> *previousEntries = self.activePreviousMarks[i];
+        NSInteger numberOfPreviousEntries = self.activePreviousMarks.count;
+        
+        NSArray<NSArray *> *previousEntries = nil;
+        
+        if (i < numberOfPreviousEntries){
+            
+            previousEntries = self.activePreviousMarks[i];
+            
+        }
+        
+   
         
         TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
                                                                                                   targetExerciseName: exerciseName
