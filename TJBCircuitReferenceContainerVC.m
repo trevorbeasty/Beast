@@ -25,10 +25,19 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIView *circuitReferenceView;
+@property (weak, nonatomic) IBOutlet UIView *titleContainerView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel2;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+
+// IBAction
+
+- (IBAction)didPressEdit:(id)sender;
 
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+@property (nonatomic, strong) UIView *childContentView;
 
 @end
 
@@ -60,6 +69,38 @@
 
 #pragma  mark - View Life Cycle
 
+- (void)viewDidLoad{
+    
+    [self configureViewAesthetics];
+    
+    [self configureDisplayData];
+    
+}
+
+- (void)configureDisplayData{
+    
+    self.titleLabel2.text = self.realizedChain.chainTemplate.name;
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    NSArray *titleLabels = @[self.titleLabel1, self.titleLabel2];
+    for (UILabel *label in titleLabels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.textColor = [UIColor whiteColor];
+        
+    }
+    
+    self.editButton.backgroundColor = [UIColor darkGrayColor];
+    self.editButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    [self.editButton setTitleColor: [UIColor whiteColor]
+                          forState: UIControlStateNormal];
+    
+}
+
 - (void)viewWillAppear:(BOOL)animated{
     
     // create a TJBCircuitReferenceVC with the dimensions of the containerView    
@@ -67,16 +108,24 @@
     // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
     // must layout the view first to ensure the passed size is correct
     
-    [self.view layoutIfNeeded];
+    if (!self.childContentView){
+        
+        [self.view layoutIfNeeded];
+        
+        TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithRealizedChain: self.realizedChain
+                                                                                viewSize: self.circuitReferenceView.frame.size];
+        
+        [self addChildViewController: vc];
+        
+        [self.circuitReferenceView addSubview: vc.view];
+        
+        [vc didMoveToParentViewController: self];
+        
+        self.childContentView = vc.view;
+        
+    }
     
-    TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithRealizedChain: self.realizedChain
-                                                                            viewSize: self.circuitReferenceView.frame.size];
-    
-    [self addChildViewController: vc];
-    
-    [self.circuitReferenceView addSubview: vc.view];
-    
-    [vc didMoveToParentViewController: self];
+
     
 }
 
@@ -109,6 +158,8 @@
 //}
 
 
+- (IBAction)didPressEdit:(id)sender {
+}
 @end
 
 

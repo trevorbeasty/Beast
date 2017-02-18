@@ -53,11 +53,13 @@
     self.realizedChain = realizedChain;
     self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
     
+    // prep
+    
+    self.childRowCompControllers = [[NSMutableArray alloc] init];
+    
     return self;
     
 }
-
-
 
 #pragma mark - View Life Cycle
 
@@ -94,8 +96,8 @@
     
     UIButton *button = self.selectedExerciseButton;
     
-    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    [button setTitleColor: [UIColor whiteColor]
+    button.backgroundColor = [UIColor clearColor];
+    [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
     button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     button.layer.masksToBounds = YES;
@@ -123,6 +125,10 @@
     
     NSString *exerciseNumberText = [NSString stringWithFormat: @"Exercise %d", [self.exerciseIndex intValue] + 1];
     self.titleLabel.text = exerciseNumberText;
+    
+    // disable button
+    
+    self.selectedExerciseButton.enabled = NO;
     
 }
 
@@ -159,6 +165,10 @@
         TJBCircuitReferenceRowComp *rowVC = [[TJBCircuitReferenceRowComp alloc] initWithRealizedChain: self.realizedChain
                                                                                         exerciseIndex: [self.exerciseIndex intValue]
                                                                                            roundIndex: i];
+        
+        // add the rowVC to the child controllers property
+        
+        [self.childRowCompControllers addObject: rowVC];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

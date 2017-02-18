@@ -15,6 +15,7 @@
 // child VC's
 
 #import "TJBCircuitReferenceExerciseComp.h"
+#import "TJBCircuitReferenceRowComp.h"
 
 @interface TJBCircuitReferenceVC ()
 
@@ -29,10 +30,13 @@
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+@property (nonatomic, strong) NSMutableArray *childExerciseCompControllers;
 
 // for programmatic layout constraints
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
+
+
 
 @end
 
@@ -47,9 +51,45 @@
     self.realizedChain = realizedChain;
     _prescribedSize = size;
     
+    // prep
+    
+    self.childExerciseCompControllers = [[NSMutableArray alloc] init];
+    
+//    
+//    [self createSkeletonStructureForGrandchildRowControllers];
+    
     return self;
     
 }
+
+//- (void)createSkeletonStructureForGrandchildRowControllers{
+//    
+//    // create a skeleton structure for the grandchild row controllers so that they can be assigned to specific index paths later on
+//    
+//    int exerciseLimit = self.realizedChain.numberOfExercises;
+//    int roundLimit = self.realizedChain.numberOfRounds;
+//    
+//    self.grandchildRowControllers = [[NSMutableArray alloc] init];
+//    
+//    for (int i = 0; i < exerciseLimit; i++){
+//        
+//        NSMutableArray *iterativeArray = [[NSMutableArray alloc] init];
+//        
+//        for (int j = 0; j < roundLimit; j++){
+//            
+//            NSString *placeholder = [NSString stringWithFormat: @"placeholder %d.%d",
+//                                     i,
+//                                     j];
+//            
+//            [iterativeArray addObject: placeholder];
+//            
+//        }
+//        
+//        [self.grandchildRowControllers addObject: iterativeArray];
+//        
+//    }
+//    
+//}
 
 #pragma mark - View Life Cycle
 
@@ -117,6 +157,9 @@
         TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithRealizedChain: self.realizedChain
                                                                                                exerciseIndex: i];
         
+        // add the vc to the child controllers array
+        
+        [self.childExerciseCompControllers addObject: vc];
         
         vc.view.translatesAutoresizingMaskIntoConstraints = NO;
         

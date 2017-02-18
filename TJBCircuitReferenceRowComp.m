@@ -26,6 +26,14 @@
 
 @interface TJBCircuitReferenceRowComp ()
 
+{
+    
+    // state
+    
+    BOOL _editingActive;
+    
+}
+
 // core
 
 @property (nonatomic, strong) NSNumber *exerciseIndex;
@@ -54,7 +62,27 @@
     self.roundIndex = [NSNumber numberWithInt: roundIndex];
     self.realizedChain = realizedChain;
     
+    // staying current with user input
+    
+    [self registerForCoreDataNotification];
+    
+    // state
+    
+    _editingActive = NO;
+    
     return self;
+    
+}
+
+- (void)registerForCoreDataNotification{
+    
+    // this class will take it upon itself to refresh it display data when core data is updated
+    // can refine later for improved performence (iterative updates / updates only for specific situations)
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(coreDataDidSave)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: [[CoreDataController singleton] moc]];
     
 }
 
@@ -65,6 +93,23 @@
     [self configureViewAesthetics];
     
     [self configureViewData];
+    
+    [self configureViewFunctionality];
+    
+}
+
+- (void)configureViewFunctionality{
+    
+    // buttons
+    
+    NSArray *buttons = @[self.weightButton,
+                         self.repsButton,
+                         self.restButton];
+    for (UIButton *button in buttons){
+        
+        button.enabled = NO;
+        
+    }
     
 }
 
@@ -88,8 +133,8 @@
                          self.restButton];
     for (UIButton *button in buttons){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        [button setTitleColor: [UIColor whiteColor]
+        button.backgroundColor = [UIColor clearColor];
+        [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
         
@@ -400,6 +445,32 @@
     }
     
 }
+
+#pragma mark - Notifications
+
+- (void)coreDataDidSave{
+    
+    // have the controller refresh its view data every time core data saves
+    
+    [self configureViewData];
+    
+}
+
+#pragma mark - Editing
+
+
+- (void)toggleToActiveEditingState{
+    
+    
+    
+}
+
+- (void)toggleToInactiveEditingState{
+    
+    
+    
+}
+
 
 
 

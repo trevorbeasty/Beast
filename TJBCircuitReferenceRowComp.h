@@ -14,4 +14,7 @@
 
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
+- (void)toggleToActiveEditingState;
+- (void)toggleToInactiveEditingState;
+
 @end
