@@ -461,18 +461,69 @@
 
 - (void)toggleToActiveEditingState{
     
+    // aesthetics and functionality
     
+    NSArray *buttons = @[self.weightButton,
+                         self.repsButton,
+                         self.restButton];
+    for (UIButton *button in buttons){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        [button setTitleColor: [UIColor whiteColor]
+                     forState: UIControlStateNormal];
+        button.enabled = YES;
+        
+    }
+    
+    // display data
+    
+    int exerciseInd = [self.exerciseIndex intValue];
+    int roundInd = [self.roundIndex intValue];
+    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
+    
+    if (chainTemplate.targetingWeight){
+        
+        self.weightButton setTitle: self.realizedChain.weightArrays[exerciseInd].numbers[round] forState:<#(UIControlState)#>
+        
+    } else{
+        
+        
+        
+    }
     
 }
 
 - (void)toggleToInactiveEditingState{
     
+    // buttons
     
+    NSArray *buttons = @[self.weightButton,
+                         self.repsButton,
+                         self.restButton];
+    for (UIButton *button in buttons){
+        
+        button.backgroundColor = [UIColor clearColor];
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
+        
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = 8.0;
+        
+    }
     
 }
 
 
+#pragma mark - Convenience
 
+- (NSString *)realizedWeightString{
+    
+    NSNumber *weight = [NSNumber numberWithFloat: self.realizedChain.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value];
+    
+    return [weight stringValue];
+    
+}
 
 @end
 
