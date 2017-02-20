@@ -30,9 +30,13 @@
     
     // state
     
-    BOOL _editingActive;
+    TJBRoutineReferenceMode _activeMode;
     
 }
+
+// state
+
+@property (strong) NSNumber *modePriorToEditing;
 
 // core
 
@@ -68,7 +72,7 @@
     
     // state
     
-    _editingActive = NO;
+    _activeMode = EditingMode;
     
     return self;
     
@@ -135,13 +139,17 @@
     
     // have the controller refresh its view data every time core data saves
     
-    [self configureViewForAbsoluteComparisonMode];
+    [self activateMode: _activeMode];
     
 }
 
 #pragma mark - Modes
 
 - (void)configureViewForRelativeComparisonMode{
+    
+    // state
+    
+    _activeMode = RelativeComparisonMode;
     
     // buttons
     
@@ -340,65 +348,37 @@
     
     // rest
     
-    if (chainTemplate.targetingRestTime){
+    // a realized rest will be shown only if all of the following conditions are met
+    
+    if (chainTemplate.targetingRestTime && nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
         
-        // a realized rest will be shown only if all of the following conditions are met
+        NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
+        float timeDiff = [realizedRest floatValue] - [restTarget floatValue];
+        NSString *timeText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)timeDiff];
         
-        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
-            
-            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
-                                                               targetNumber: restTarget
-                                                       realizedNumberExists: YES
-                                                         targetNumberExists: YES
-                                                                 isTimeType: YES]
-                             forState: UIControlStateNormal];
-            
-            
-        } else{
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
-                                                               targetNumber: restTarget
-                                                       realizedNumberExists: NO
-                                                         targetNumberExists: YES
-                                                                 isTimeType: YES]
-                             forState:UIControlStateNormal];
-            
-        }
+        [self.restButton setTitle: timeText
+                         forState: UIControlStateNormal];
+        
+        
+    } else if(nextSetHasOccurred && nextSetIsWithinIndiceRange){
+        
+        [self.restButton setTitle: @"X"
+                         forState:UIControlStateNormal];
         
     } else{
         
-        // a realized rest will be shown only if all of the following conditions are met
-        
-        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
-            
-            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
-                                                               targetNumber: nil
-                                                       realizedNumberExists: YES
-                                                         targetNumberExists: NO
-                                                                 isTimeType: YES]
-                             forState: UIControlStateNormal];
-            
-            
-        } else{
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
-                                                               targetNumber: nil
-                                                       realizedNumberExists: NO
-                                                         targetNumberExists: NO
-                                                                 isTimeType: YES]
-                             forState: UIControlStateNormal];
-            
-        }
+        [self.restButton setTitle: @""
+                         forState: UIControlStateNormal];
         
     }
     
 }
 
 - (void)configureViewForAbsoluteComparisonMode{
+    
+    // state
+    
+    _activeMode = AbsoluteComparisonMode;
     
     // buttons
     
@@ -676,6 +656,10 @@
 
 - (void)configureViewForEditingMode{
     
+    // state
+    
+    _activeMode = EditingMode;
+    
     // aesthetics and functionality
     
     int exerciseInd = [self.exerciseIndex intValue];
@@ -744,6 +728,7 @@
 
 #pragma mark - Convenience
 
+
 - (NSString *)displayStringForRealizedNumber:(NSNumber *)realizedNumber targetNumber:(NSNumber *)targetNumber realizedNumberExists:(BOOL)realizedNumberExists targetNumberExists:(BOOL)targetNumberExists isTimeType:(BOOL)isTimeType{
     
     if (isTimeType){
@@ -793,54 +778,7 @@
     
 }
 
-//- (NSString *)relativeComparisonModeDisplayStringForRealizedNumber:(NSNumber *)realizedNumber targetNumber:(NSNumber *)targetNumber realizedNumberExists:(BOOL)realizedNumberExists targetNumberExists:(BOOL)targetNumberExists isTimeType:(BOOL)isTimeType{
-//    
-//    if (isTimeType){
-//        
-//        NSString *realizedTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [realizedNumber intValue]];
-//        NSString *targetTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [targetNumber intValue]];
-//        
-//        if (realizedNumberExists && targetNumberExists){
-//            
-//            return [NSString stringWithFormat: @"%@ / %@", realizedTime, targetTime];
-//            
-//        } else if (!realizedNumberExists && targetNumberExists){
-//            
-//            return [NSString stringWithFormat: @"X / %@", targetTime];
-//            
-//        } else if (realizedNumberExists & !targetNumberExists){
-//            
-//            return [NSString stringWithFormat: @"%@ / X", realizedTime];
-//            
-//        } else{
-//            
-//            return [NSString stringWithFormat: @"X / X"];
-//            
-//        }
-//        
-//    } else{
-//        
-//        if (realizedNumberExists && targetNumberExists){
-//            
-//            return [NSString stringWithFormat: @"%@ / %@", [realizedNumber stringValue], [targetNumber stringValue]];
-//            
-//        } else if (!realizedNumberExists && targetNumberExists){
-//            
-//            return [NSString stringWithFormat: @"X / %@", [targetNumber stringValue]];
-//            
-//        } else if (realizedNumberExists & !targetNumberExists){
-//            
-//            return [NSString stringWithFormat: @"%@ / X", [realizedNumber stringValue]];
-//            
-//        } else{
-//            
-//            return [NSString stringWithFormat: @"X / X"];
-//            
-//        }
-//        
-//    }
-//    
-//}
+
 
 - (NSString *)realizedWeightString{
     
@@ -861,6 +799,16 @@
 #pragma mark - Class API
 
 - (void)activateMode:(TJBRoutineReferenceMode)mode{
+    
+//    // need to have the row comp remember what state it was in prior to editing so that it remains congruent with the segmented control when leaving editing mode
+//    
+//    self.modePriorToEditing = nil;
+//    
+//    if (mode == EditingMode){
+//        
+//        self.modePriorToEditing = [NSNumber numberWithInt: _activeMode];
+//        
+//    }
     
     switch (mode) {
         case EditingMode:

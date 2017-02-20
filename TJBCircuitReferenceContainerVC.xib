@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBm-HU-zw0">
-                    <rect key="frame" x="8" y="182" width="566" height="509"/>
+                    <rect key="frame" x="8" y="166" width="566" height="533"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9y5-2C-wjz" userLabel="titleContainer">
@@ -111,7 +111,7 @@
                 <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="16" id="I0N-vl-keb"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Iue-Tv-NOF"/>
                 <constraint firstAttribute="trailing" secondItem="9y5-2C-wjz" secondAttribute="trailing" id="aqZ-s8-tpg"/>
-                <constraint firstItem="OBm-HU-zw0" firstAttribute="top" secondItem="0yD-AC-hTp" secondAttribute="bottom" constant="16" id="bA7-6k-rus"/>
+                <constraint firstItem="OBm-HU-zw0" firstAttribute="top" secondItem="0yD-AC-hTp" secondAttribute="bottom" id="bA7-6k-rus"/>
                 <constraint firstAttribute="trailing" secondItem="e9u-lF-VWt" secondAttribute="trailing" constant="4" id="bbt-9X-YYF"/>
                 <constraint firstItem="e9u-lF-VWt" firstAttribute="leading" secondItem="0yD-AC-hTp" secondAttribute="trailing" constant="4" id="czy-v1-ErN"/>
                 <constraint firstItem="0yD-AC-hTp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="4" id="fgQ-xi-qqj"/>
@@ -119,7 +119,7 @@
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="m6G-MG-RcR"/>
                 <constraint firstItem="OBm-HU-zw0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="pgX-xX-A35"/>
                 <constraint firstAttribute="trailing" secondItem="OBm-HU-zw0" secondAttribute="trailing" constant="8" id="rLS-du-Uuy"/>
-                <constraint firstItem="QwT-0q-dsS" firstAttribute="top" secondItem="OBm-HU-zw0" secondAttribute="bottom" constant="8" id="rOS-dR-PHI"/>
+                <constraint firstItem="QwT-0q-dsS" firstAttribute="top" secondItem="OBm-HU-zw0" secondAttribute="bottom" id="rOS-dR-PHI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="79" y="127.5"/>
