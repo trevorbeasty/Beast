@@ -78,6 +78,18 @@
     
     [self configureDisplayData];
     
+    [self configureSegmentedControl];
+    
+}
+
+- (void)configureSegmentedControl{
+    
+    // configure the segmented control
+    
+    [self.comparisonTypeSegmentedControl addTarget: self
+                                            action: @selector(scValueDidChange)
+                                  forControlEvents: UIControlEventValueChanged];
+    
 }
 
 - (void)configureDisplayData{
@@ -87,6 +99,7 @@
     // initial state (editing not active)
     
     self.doneButton.enabled = NO;
+    self.doneButton.layer.opacity = .2;
     
 }
 
@@ -155,7 +168,10 @@
     // button state
     
     self.doneButton.enabled = YES;
+    self.doneButton.layer.opacity = 1.0;
+    
     self.editButton.enabled = NO;
+    self.editButton.layer.opacity = .2;
     
 }
 
@@ -166,7 +182,10 @@
     // button state
     
     self.doneButton.enabled = NO;
+    self.doneButton.layer.opacity = .2;
+    
     self.editButton.enabled = YES;
+    self.editButton.layer.opacity = 1.0;
     
 }
 
@@ -188,6 +207,16 @@
         default:
             break;
     }
+    
+}
+
+#pragma mark - Target Actions
+
+- (void)scValueDidChange{
+    
+    // switch to the mode designated by the SC
+    
+    [self toggleToComparisonMode];
     
 }
 
