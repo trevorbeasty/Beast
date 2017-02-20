@@ -92,24 +92,7 @@
     
     [self configureViewAesthetics];
     
-    [self configureViewData];
-    
-    [self configureViewFunctionality];
-    
-}
-
-- (void)configureViewFunctionality{
-    
-    // buttons
-    
-    NSArray *buttons = @[self.weightButton,
-                         self.repsButton,
-                         self.restButton];
-    for (UIButton *button in buttons){
-        
-        button.enabled = NO;
-        
-    }
+    [self configureViewForAbsoluteComparisonMode];
     
 }
 
@@ -145,7 +128,18 @@
     
 }
 
-- (void)configureViewData{
+- (void)configureViewForAbsoluteComparisonMode{
+    
+    // buttons
+    
+    NSArray *buttons = @[self.weightButton,
+                         self.repsButton,
+                         self.restButton];
+    for (UIButton *button in buttons){
+        
+        button.enabled = NO;
+        
+    }
     
     // round label text
     
@@ -452,68 +446,80 @@
     
     // have the controller refresh its view data every time core data saves
     
-    [self configureViewData];
+    [self configureViewForAbsoluteComparisonMode];
     
 }
 
 #pragma mark - Editing
 
 
-- (void)toggleToActiveEditingState{
+- (void)configureViewForEditingMode{
     
     // aesthetics and functionality
+    
+    int exerciseInd = [self.exerciseIndex intValue];
+    int roundInd = [self.roundIndex intValue];
+    
+    BOOL setHasOccurred = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseInd
+                                                             roundIndex: roundInd
+                                        isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
+                                                    referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
     
     NSArray *buttons = @[self.weightButton,
                          self.repsButton,
                          self.restButton];
-    for (UIButton *button in buttons){
+    
+    // if the set has actually occurred, then give it an active button appearance and enable it.  If not, simply give it a blank text string
+    
+    if (setHasOccurred){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        [button setTitleColor: [UIColor whiteColor]
-                     forState: UIControlStateNormal];
-        button.enabled = YES;
+        for (UIButton *button in buttons){
+            
+            button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+            [button setTitleColor: [UIColor whiteColor]
+                         forState: UIControlStateNormal];
+            button.enabled = YES;
+            
+        }
+        
+    } else{
+        
+        for (UIButton *button in buttons){
+            
+            button.enabled = NO;
+            [button setTitle: @""
+                    forState: UIControlStateNormal];\
+            
+        }
         
     }
     
     // display data
+    // if the set has occurred, then fill in the appropriate data
     
-    int exerciseInd = [self.exerciseIndex intValue];
-    int roundInd = [self.roundIndex intValue];
-    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
-    
-    if (chainTemplate.targetingWeight){
+    if (setHasOccurred){
         
-        self.weightButton setTitle: self.realizedChain.weightArrays[exerciseInd].numbers[round] forState:<#(UIControlState)#>
+        [self.weightButton setTitle: [self realizedWeightString]
+                           forState: UIControlStateNormal];
+        
+        [self.repsButton setTitle: [self realizedRepsString]
+                         forState: UIControlStateNormal];
+        
+        [self.restButton setTitle: @"00:00"
+                         forState: UIControlStateNormal];
         
     } else{
         
-        
-        
-    }
-    
-}
-
-- (void)toggleToInactiveEditingState{
-    
-    // buttons
-    
-    NSArray *buttons = @[self.weightButton,
-                         self.repsButton,
-                         self.restButton];
-    for (UIButton *button in buttons){
-        
-        button.backgroundColor = [UIColor clearColor];
-        [button setTitleColor: [UIColor blackColor]
-                     forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
-        
-        button.layer.masksToBounds = YES;
-        button.layer.cornerRadius = 8.0;
+        for (UIButton *button in buttons){
+            
+            [button setTitle: @""
+                    forState: UIControlStateNormal];
+            
+        }
         
     }
     
 }
-
 
 #pragma mark - Convenience
 
@@ -522,6 +528,38 @@
     NSNumber *weight = [NSNumber numberWithFloat: self.realizedChain.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value];
     
     return [weight stringValue];
+    
+}
+
+- (NSString *)realizedRepsString{
+    
+    NSNumber *reps = [NSNumber numberWithFloat: self.realizedChain.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value];
+    
+    return [reps stringValue];
+    
+}
+
+#pragma mark - Class API
+
+- (void)activateMode:(TJBRoutineReferenceMode)mode{
+    
+    switch (mode) {
+        case EditingMode:
+            [self configureViewForEditingMode];
+            break;
+            
+        case AbsoluteComparisonMode:
+            [self configureViewForAbsoluteComparisonMode];
+            break;
+            
+        case RelativeComparisonMode:
+            
+            break;
+            
+        default:
+            break;
+    
+    }
     
 }
 

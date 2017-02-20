@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+// parent VC
+
+#import "TJBCircuitReferenceVC.h"
+
 // core data
 
 @class  TJBRealizedChain;
 
 @interface TJBCircuitReferenceExerciseComp : UIViewController
 
-@property (nonatomic, strong) NSMutableArray *childRowCompControllers;
-
-//- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber exercise:(TJBExercise *)exercise weightData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)weightData repsData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)repsData restData:(NSOrderedSet<TJBNumberTypeArrayComp *> *)restData;
-
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex;
+
+- (void)activateMode:(TJBRoutineReferenceMode)mode;
 
 @end

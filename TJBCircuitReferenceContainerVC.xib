@@ -12,6 +12,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitReferenceContainerVC">
             <connections>
                 <outlet property="circuitReferenceView" destination="OBm-HU-zw0" id="zQz-GI-ZsD"/>
+                <outlet property="comparisonTypeSegmentedControl" destination="QwT-0q-dsS" id="HdN-eJ-38D"/>
+                <outlet property="doneButton" destination="e9u-lF-VWt" id="LAO-9g-pXF"/>
                 <outlet property="editButton" destination="0yD-AC-hTp" id="gH5-GP-r9Q"/>
                 <outlet property="titleContainerView" destination="9y5-2C-wjz" id="KWS-L5-Jhb"/>
                 <outlet property="titleLabel1" destination="1ft-dR-6VP" id="202-Vo-oi2"/>
@@ -25,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBm-HU-zw0">
-                    <rect key="frame" x="8" y="138" width="566" height="609"/>
+                    <rect key="frame" x="8" y="192" width="566" height="499"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9y5-2C-wjz" userLabel="titleContainer">
@@ -41,8 +43,8 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="routine name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fds-9Y-sIw">
-                            <rect key="frame" x="0.0" y="72" width="440" height="50"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Routine Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fds-9Y-sIw">
+                            <rect key="frame" x="0.0" y="72" width="582" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="LxE-NO-ZKr"/>
@@ -51,45 +53,73 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yD-AC-hTp">
-                            <rect key="frame" x="442" y="72" width="140" height="50"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="140" id="TU7-2L-14u"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                            <state key="normal" title="Edit">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="didPressEdit:" destination="-1" eventType="touchUpInside" id="kWE-fa-GxU"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="Fds-9Y-sIw" firstAttribute="leading" secondItem="9y5-2C-wjz" secondAttribute="leading" id="1Sk-fe-ysY"/>
-                        <constraint firstItem="0yD-AC-hTp" firstAttribute="top" secondItem="Fds-9Y-sIw" secondAttribute="top" id="9iz-cY-OvM"/>
-                        <constraint firstAttribute="trailing" secondItem="0yD-AC-hTp" secondAttribute="trailing" id="CSP-xu-vDU"/>
-                        <constraint firstItem="0yD-AC-hTp" firstAttribute="leading" secondItem="Fds-9Y-sIw" secondAttribute="trailing" constant="2" id="Uba-KI-CsR"/>
                         <constraint firstAttribute="height" constant="122" id="brB-cY-KRP"/>
                         <constraint firstAttribute="trailing" secondItem="1ft-dR-6VP" secondAttribute="trailing" id="kr6-gM-Qa2"/>
                         <constraint firstItem="Fds-9Y-sIw" firstAttribute="top" secondItem="1ft-dR-6VP" secondAttribute="bottom" constant="2" id="o0W-oh-k1Y"/>
                         <constraint firstItem="1ft-dR-6VP" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="top" constant="20" id="sOy-3G-W8p"/>
                         <constraint firstItem="1ft-dR-6VP" firstAttribute="leading" secondItem="9y5-2C-wjz" secondAttribute="leading" id="wTW-YY-0PU"/>
-                        <constraint firstItem="0yD-AC-hTp" firstAttribute="bottom" secondItem="Fds-9Y-sIw" secondAttribute="bottom" id="zLF-TM-ouO"/>
+                        <constraint firstAttribute="trailing" secondItem="Fds-9Y-sIw" secondAttribute="trailing" id="z4w-B5-5wo"/>
                     </constraints>
                 </view>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QwT-0q-dsS">
+                    <rect key="frame" x="8" y="699" width="566" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="tuc-c9-aVd"/>
+                    </constraints>
+                    <segments>
+                        <segment title="Absolute"/>
+                        <segment title="Relative"/>
+                    </segments>
+                </segmentedControl>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yD-AC-hTp">
+                    <rect key="frame" x="4" y="126" width="285" height="50"/>
+                    <color key="backgroundColor" red="0.042260741679999998" green="0.55925932619999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="FYh-JE-MEg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <state key="normal" title="Edit">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="didPressEdit:" destination="-1" eventType="touchUpInside" id="kWE-fa-GxU"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e9u-lF-VWt">
+                    <rect key="frame" x="293" y="126" width="285" height="50"/>
+                    <color key="backgroundColor" red="0.042260741679999998" green="0.55925932619999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <state key="normal" title="Done">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="didPressDoneButton:" destination="-1" eventType="touchUpInside" id="BDP-bP-dHg"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="QwT-0q-dsS" firstAttribute="trailing" secondItem="OBm-HU-zw0" secondAttribute="trailing" id="0hc-Ti-ISq"/>
+                <constraint firstItem="QwT-0q-dsS" firstAttribute="leading" secondItem="OBm-HU-zw0" secondAttribute="leading" id="1yg-ty-P2f"/>
+                <constraint firstItem="e9u-lF-VWt" firstAttribute="top" secondItem="0yD-AC-hTp" secondAttribute="top" id="5UU-8V-nhU"/>
+                <constraint firstItem="e9u-lF-VWt" firstAttribute="width" secondItem="0yD-AC-hTp" secondAttribute="width" id="6eN-Lr-hUT"/>
+                <constraint firstItem="0yD-AC-hTp" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="bottom" constant="4" id="Ap2-Qy-zKe"/>
+                <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="16" id="I0N-vl-keb"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Iue-Tv-NOF"/>
                 <constraint firstAttribute="trailing" secondItem="9y5-2C-wjz" secondAttribute="trailing" id="aqZ-s8-tpg"/>
-                <constraint firstAttribute="bottom" secondItem="OBm-HU-zw0" secondAttribute="bottom" constant="8" id="i6M-zF-UED"/>
-                <constraint firstItem="OBm-HU-zw0" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="bottom" constant="16" id="jbH-zG-fHt"/>
+                <constraint firstItem="OBm-HU-zw0" firstAttribute="top" secondItem="0yD-AC-hTp" secondAttribute="bottom" constant="16" id="bA7-6k-rus"/>
+                <constraint firstAttribute="trailing" secondItem="e9u-lF-VWt" secondAttribute="trailing" constant="4" id="bbt-9X-YYF"/>
+                <constraint firstItem="e9u-lF-VWt" firstAttribute="leading" secondItem="0yD-AC-hTp" secondAttribute="trailing" constant="4" id="czy-v1-ErN"/>
+                <constraint firstItem="0yD-AC-hTp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="4" id="fgQ-xi-qqj"/>
+                <constraint firstItem="e9u-lF-VWt" firstAttribute="bottom" secondItem="0yD-AC-hTp" secondAttribute="bottom" id="hjg-ID-pOy"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="m6G-MG-RcR"/>
                 <constraint firstItem="OBm-HU-zw0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="pgX-xX-A35"/>
                 <constraint firstAttribute="trailing" secondItem="OBm-HU-zw0" secondAttribute="trailing" constant="8" id="rLS-du-Uuy"/>
+                <constraint firstItem="QwT-0q-dsS" firstAttribute="top" secondItem="OBm-HU-zw0" secondAttribute="bottom" constant="8" id="rOS-dR-PHI"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="79" y="127.5"/>

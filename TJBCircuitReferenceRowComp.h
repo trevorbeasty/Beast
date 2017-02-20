@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+// parent VC
+
+#import "TJBCircuitReferenceVC.h"
+
 @class TJBRealizedChain;
 
 @interface TJBCircuitReferenceRowComp : UIViewController
 
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
-- (void)toggleToActiveEditingState;
-- (void)toggleToInactiveEditingState;
+- (void)activateMode:(TJBRoutineReferenceMode)mode;
 
 @end

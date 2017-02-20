@@ -55,41 +55,9 @@
     
     self.childExerciseCompControllers = [[NSMutableArray alloc] init];
     
-//    
-//    [self createSkeletonStructureForGrandchildRowControllers];
-    
     return self;
     
 }
-
-//- (void)createSkeletonStructureForGrandchildRowControllers{
-//    
-//    // create a skeleton structure for the grandchild row controllers so that they can be assigned to specific index paths later on
-//    
-//    int exerciseLimit = self.realizedChain.numberOfExercises;
-//    int roundLimit = self.realizedChain.numberOfRounds;
-//    
-//    self.grandchildRowControllers = [[NSMutableArray alloc] init];
-//    
-//    for (int i = 0; i < exerciseLimit; i++){
-//        
-//        NSMutableArray *iterativeArray = [[NSMutableArray alloc] init];
-//        
-//        for (int j = 0; j < roundLimit; j++){
-//            
-//            NSString *placeholder = [NSString stringWithFormat: @"placeholder %d.%d",
-//                                     i,
-//                                     j];
-//            
-//            [iterativeArray addObject: placeholder];
-//            
-//        }
-//        
-//        [self.grandchildRowControllers addObject: iterativeArray];
-//        
-//    }
-//    
-//}
 
 #pragma mark - View Life Cycle
 
@@ -218,7 +186,32 @@
     }
 }
 
+#pragma mark - Class Interface
 
+- (void)activateMode:(TJBRoutineReferenceMode)mode{
+    
+    for (TJBCircuitReferenceExerciseComp *exerciseComp in self.childExerciseCompControllers){
+        
+        switch (mode) {
+            case EditingMode:
+                [exerciseComp activateMode: EditingMode];
+                break;
+                
+            case AbsoluteComparisonMode:
+                [exerciseComp activateMode: AbsoluteComparisonMode];
+                break;
+                
+            case RelativeComparisonMode:
+                [exerciseComp activateMode: RelativeComparisonMode];
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+}
 
 
 @end

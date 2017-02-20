@@ -20,12 +20,15 @@
 
 #import "TJBCircuitReferenceRowComp.h"
 
+
+
 @interface TJBCircuitReferenceExerciseComp ()
 
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 @property (nonatomic, strong) NSNumber *exerciseIndex;
+@property (nonatomic, strong) NSMutableArray *childRowCompControllers;
 
 // IBOutlets
 
@@ -228,7 +231,32 @@
     
 }
 
+#pragma mark - Class API
 
+- (void)activateMode:(TJBRoutineReferenceMode)mode{
+    
+    for (TJBCircuitReferenceRowComp *rowComp in self.childRowCompControllers){
+        
+        switch (mode) {
+            case EditingMode:
+                [rowComp activateMode: EditingMode];
+                break;
+                
+            case AbsoluteComparisonMode:
+                [rowComp activateMode: AbsoluteComparisonMode];
+                break;
+                
+            case RelativeComparisonMode:
+                [rowComp activateMode: RelativeComparisonMode];
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+}
 
 
 

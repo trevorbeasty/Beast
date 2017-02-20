@@ -29,15 +29,18 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel2;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *comparisonTypeSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 // IBAction
 
 - (IBAction)didPressEdit:(id)sender;
+- (IBAction)didPressDoneButton:(id)sender;
 
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
-@property (nonatomic, strong) UIView *childContentView;
+@property (nonatomic, strong) TJBCircuitReferenceVC *childRoutineVC;
 
 @end
 
@@ -81,6 +84,10 @@
     
     self.titleLabel2.text = self.realizedChain.chainTemplate.name;
     
+    // initial state (editing not active)
+    
+    self.doneButton.enabled = NO;
+    
 }
 
 - (void)configureViewAesthetics{
@@ -94,10 +101,16 @@
         
     }
     
-    self.editButton.backgroundColor = [UIColor darkGrayColor];
-    self.editButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    [self.editButton setTitleColor: [UIColor whiteColor]
-                          forState: UIControlStateNormal];
+    NSArray *buttons = @[self.editButton, self.doneButton];
+    
+    for (UIButton *button in buttons){
+        
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        [button setTitleColor: [UIColor whiteColor]
+                              forState: UIControlStateNormal];
+        
+    }
     
 }
 
@@ -108,7 +121,7 @@
     // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
     // must layout the view first to ensure the passed size is correct
     
-    if (!self.childContentView){
+    if (!self.childRoutineVC){
         
         [self.view layoutIfNeeded];
         
@@ -121,7 +134,7 @@
         
         [vc didMoveToParentViewController: self];
         
-        self.childContentView = vc.view;
+        self.childRoutineVC = vc;
         
     }
     
@@ -132,34 +145,55 @@
 
 #pragma mark - <UIViewControllerRestoration>
 
-//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-//    
-//    //// this class only requires a chain template as input to populate a thereafter static view.  Thus, this method must simply instantiate the VC with the appropriate chain template
-//    
-//    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
-//    
-//    TJBChainTemplate *chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
-//    
-//    TJBCircuitReferenceContainerVC *vc = [[TJBCircuitReferenceContainerVC alloc] initWithChainTemplate: chainTemplate];
-//    
-//    return vc;
-//    
-//}
-//
-//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    //// encode the string of the chain template so that it can be retrieved later
-//    
-//    [super encodeRestorableStateWithCoder: coder];
-//    
-//    [coder encodeObject: self.chainTemplate.uniqueID
-//                 forKey: @"chainTemplateUniqueID"];
-//    
-//}
 
 
-- (IBAction)didPressEdit:(id)sender {
+
+- (IBAction)didPressEdit:(id)sender{
+    
+    [self.childRoutineVC activateMode: EditingMode];
+    
+    // button state
+    
+    self.doneButton.enabled = YES;
+    self.editButton.enabled = NO;
+    
 }
+
+- (IBAction)didPressDoneButton:(id)sender{
+    
+    [self toggleToComparisonMode];
+    
+    // button state
+    
+    self.doneButton.enabled = NO;
+    self.editButton.enabled = YES;
+    
+}
+
+- (void)toggleToComparisonMode{
+    
+    // switch to comparison mode designated by the segmented control
+    
+    NSInteger scInd = self.comparisonTypeSegmentedControl.selectedSegmentIndex;
+    
+    switch (scInd) {
+        case 0:
+            [self.childRoutineVC activateMode: AbsoluteComparisonMode];
+            break;
+            
+        case 1:
+            [self.childRoutineVC activateMode: RelativeComparisonMode];
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
+
+
+
 @end
 
 
