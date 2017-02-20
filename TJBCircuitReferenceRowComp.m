@@ -24,6 +24,10 @@
 
 #import "TJBAssortedUtilities.h"
 
+// number selection
+
+#import "TJBNumberSelectionVC.h"
+
 @interface TJBCircuitReferenceRowComp ()
 
 {
@@ -33,10 +37,6 @@
     TJBRoutineReferenceMode _activeMode;
     
 }
-
-// state
-
-@property (strong) NSNumber *modePriorToEditing;
 
 // core
 
@@ -51,6 +51,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *repsButton;
 @property (weak, nonatomic) IBOutlet UIButton *restButton;
 @property (weak, nonatomic) IBOutlet UILabel *roundLabel;
+
+// IBAction
+
+- (IBAction)didPressWeightButton:(id)sender;
+- (IBAction)didPressRepsButton:(id)sender;
 
 @end
 
@@ -671,8 +676,7 @@
                                                     referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
     
     NSArray *buttons = @[self.weightButton,
-                         self.repsButton,
-                         self.restButton];
+                         self.repsButton];
     
     // if the set has actually occurred, then give it an active button appearance and enable it.  If not, simply give it a blank text string
     
@@ -710,9 +714,6 @@
         [self.repsButton setTitle: [self realizedRepsString]
                          forState: UIControlStateNormal];
         
-        [self.restButton setTitle: @"00:00"
-                         forState: UIControlStateNormal];
-        
     } else{
         
         for (UIButton *button in buttons){
@@ -723,6 +724,11 @@
         }
         
     }
+    
+    // the user cannot edit rest times.  Simply show a blank string as the rest button title
+    
+    [self.restButton setTitle: @""
+                     forState: UIControlStateNormal];
     
 }
 
@@ -800,16 +806,6 @@
 
 - (void)activateMode:(TJBRoutineReferenceMode)mode{
     
-//    // need to have the row comp remember what state it was in prior to editing so that it remains congruent with the segmented control when leaving editing mode
-//    
-//    self.modePriorToEditing = nil;
-//    
-//    if (mode == EditingMode){
-//        
-//        self.modePriorToEditing = [NSNumber numberWithInt: _activeMode];
-//        
-//    }
-    
     switch (mode) {
         case EditingMode:
             [self configureViewForEditingMode];
@@ -830,7 +826,113 @@
     
 }
 
+#pragma mark - Target Action
+
+- (IBAction)didPressWeightButton:(id)sender{
+    
+    // present the single number selection scene.  If a number is chosen, update core data and refresh the view
+    
+    CancelBlock cancelBlock = ^{
+        
+      [self dismissViewControllerAnimated: NO
+                               completion: nil];
+        
+    };
+    
+    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *selectedNumber){
+        
+        // update the realized chain and save core data changes
+        
+        int exerciseInd = [self.exerciseIndex intValue];
+        int roundInd = [self.roundIndex intValue];
+        
+        self.realizedChain.weightArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+        
+        [[CoreDataController singleton] saveContext];
+        
+        // reload view data
+        
+        [self activateMode: _activeMode];
+         
+        // presented VC
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: WeightType
+                                                                                    title: @"Select Weight"
+                                                                              cancelBlock: cancelBlock
+                                                                      numberSelectedBlock: numberSelectedBlock];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
+    
+}
+
+- (IBAction)didPressRepsButton:(id)sender{
+    
+    // present the single number selection scene.  If a number is chosen, update core data and refresh the view
+    
+    // present the single number selection scene.  If a number is chosen, update core data and refresh the view
+    
+    CancelBlock cancelBlock = ^{
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *selectedNumber){
+        
+        // update the realized chain and save core data changes
+        
+        int exerciseInd = [self.exerciseIndex intValue];
+        int roundInd = [self.roundIndex intValue];
+        
+        self.realizedChain.repsArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+        
+        [[CoreDataController singleton] saveContext];
+        
+        // reload view data
+        
+        [self activateMode: _activeMode];
+        
+        // presented VC
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: RepsType
+                                                                                    title: @"Select Reps"
+                                                                              cancelBlock: cancelBlock
+                                                                      numberSelectedBlock: numberSelectedBlock];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
+    
+}
+
+
+
+
+
+
+
+
+
 @end
+
+
+
+
+
+
 
 
 

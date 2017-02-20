@@ -123,6 +123,9 @@
         [button setTitleColor: [UIColor whiteColor]
                               forState: UIControlStateNormal];
         
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = 4.0;
+        
     }
     
 }

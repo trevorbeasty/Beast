@@ -64,6 +64,7 @@
 @property (weak, nonatomic) IBOutlet UIView *advancedControlsContainer;
 @property (weak, nonatomic) IBOutlet UIView *titleContainer;
 @property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 
 // IBAction
 
@@ -236,26 +237,28 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     
     NSArray *labels = @[self.roundTitleLabel,
                         self.timerTitleLabel,
-                        self.mainTitle];
+                        self.mainTitle,
+                        self.activeRoutineLabel];
     
     for (UILabel *label in labels){
         
         label.backgroundColor = [UIColor darkGrayColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.textColor = [UIColor whiteColor];
         
     }
+    
+    self.mainTitle.font = [UIFont boldSystemFontOfSize: 15.0];
     
     NSArray *titleButtons = @[self.leftBarButton, self.rightBarButtoon];
     for (UIButton *button in titleButtons){
         
-        button.backgroundColor = [UIColor darkGrayColor];
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         
     }
-    
-    self.rightBarButtoon.titleLabel.font = [UIFont boldSystemFontOfSize: 30.0];
     
     // advanced control buttons
     
@@ -972,7 +975,7 @@ static NSString const *restViewKey = @"restView";
                          
                          self.advancedControlsConstraint.constant = 0;
                          
-                         NSArray *views = @[self.advancedControlsContainer];
+                         NSArray *views = @[self.advancedControlsContainer, self.leftBarButton, self.rightBarButtoon];
                          
                          for (UIView *view in views){
                              
@@ -989,7 +992,7 @@ static NSString const *restViewKey = @"restView";
                      }];
     
     _advancedControlsActive = YES;
-    [self.rightBarButtoon setTitle: @"-"
+    [self.rightBarButtoon setTitle: @"- Options"
                           forState: UIControlStateNormal];
     
     
@@ -1003,7 +1006,7 @@ static NSString const *restViewKey = @"restView";
                          self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
                          
                          
-                         NSArray *views = @[self.advancedControlsContainer];
+                         NSArray *views = @[self.advancedControlsContainer, self.leftBarButton, self.rightBarButtoon];
                          
                          for (UIView *view in views){
                              
@@ -1020,7 +1023,7 @@ static NSString const *restViewKey = @"restView";
                      }];
     
     _advancedControlsActive = NO;
-    [self.rightBarButtoon setTitle: @"+"
+    [self.rightBarButtoon setTitle: @"+ Options"
                           forState: UIControlStateNormal];
     
     
