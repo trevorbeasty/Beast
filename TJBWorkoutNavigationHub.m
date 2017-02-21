@@ -54,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UILabel *monthTitle;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
+@property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
 
 
 
@@ -635,26 +636,23 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 - (void)configureViewAesthetics{
     
-//    NSArray *buttons = @[self.liftButton];
-//    
-//    for (UIButton *button in buttons){
-//        
-//        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-//        [button setTitleColor: [UIColor whiteColor]
-//                     forState: UIControlStateNormal];
-//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-//        
-//    }
-    
     // scroll view
     
     self.dateScrollView.backgroundColor = [UIColor clearColor];
     
     // month title and arrows
     
-    self.monthTitle.backgroundColor = [UIColor darkGrayColor];
-    self.monthTitle.textColor = [UIColor whiteColor];
-    self.monthTitle.font = [UIFont boldSystemFontOfSize: 20.0];
+    NSArray *titleLabels = @[self.monthTitle, self.topTitleLabel];
+    for (UILabel *label in titleLabels){
+        
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
+    
+    self.monthTitle.font = [UIFont boldSystemFontOfSize: 15.0];
     
     NSArray *arrowButtons = @[self.leftArrowButton, self.rightArrowButton];
     for (UIButton *button in arrowButtons){

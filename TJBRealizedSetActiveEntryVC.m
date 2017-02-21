@@ -364,13 +364,13 @@
     for (UIButton *button in titleButtons){
         
         button.backgroundColor = [UIColor darkGrayColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-        [button setTitleColor: [UIColor whiteColor]
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                      forState: UIControlStateNormal];
         
     }
     
-    self.advancedOptionsButton.titleLabel.font = [UIFont boldSystemFontOfSize: 30.0];
+    self.advancedOptionsButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
     // selection row labels
     

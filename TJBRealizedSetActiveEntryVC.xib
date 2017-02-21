@@ -72,12 +72,12 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="STD-N5-Xbr" userLabel="leftButton">
-                            <rect key="frame" x="0.0" y="20" width="100" height="50"/>
+                            <rect key="frame" x="0.0" y="20" width="60" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="100" id="3aK-Co-ZFQ"/>
+                                <constraint firstAttribute="width" constant="60" id="3aK-Co-ZFQ"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="Back">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -86,7 +86,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Freeform" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LkM-c3-4QM">
-                            <rect key="frame" x="102" y="20" width="171" height="50"/>
+                            <rect key="frame" x="60" y="20" width="255" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="VkR-vf-dbe"/>
@@ -96,12 +96,12 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kVA-Gi-2Bo">
-                            <rect key="frame" x="275" y="20" width="100" height="50"/>
+                            <rect key="frame" x="315" y="20" width="60" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="100" id="hrp-vf-Lzz"/>
+                                <constraint firstAttribute="width" constant="60" id="hrp-vf-Lzz"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal" title="+">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -112,7 +112,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="LkM-c3-4QM" firstAttribute="leading" secondItem="STD-N5-Xbr" secondAttribute="trailing" constant="2" id="5mB-Ru-eaX"/>
+                        <constraint firstItem="LkM-c3-4QM" firstAttribute="leading" secondItem="STD-N5-Xbr" secondAttribute="trailing" id="5mB-Ru-eaX"/>
                         <constraint firstItem="sw3-k5-xCu" firstAttribute="top" secondItem="LkM-c3-4QM" secondAttribute="bottom" constant="2" id="6yS-kh-Bo0"/>
                         <constraint firstItem="FUJ-C9-fuN" firstAttribute="top" secondItem="STD-N5-Xbr" secondAttribute="bottom" constant="2" id="8cd-FN-Q9c"/>
                         <constraint firstAttribute="height" constant="122" id="AKI-aZ-aCc"/>
@@ -123,7 +123,7 @@
                         <constraint firstItem="FUJ-C9-fuN" firstAttribute="leading" secondItem="amz-tf-TWd" secondAttribute="leading" id="TuS-a1-wcU"/>
                         <constraint firstAttribute="trailing" secondItem="kVA-Gi-2Bo" secondAttribute="trailing" id="UQ3-AA-XHf"/>
                         <constraint firstItem="LkM-c3-4QM" firstAttribute="top" secondItem="amz-tf-TWd" secondAttribute="top" constant="20" id="boU-iZ-R5v"/>
-                        <constraint firstItem="kVA-Gi-2Bo" firstAttribute="leading" secondItem="LkM-c3-4QM" secondAttribute="trailing" constant="2" id="e5c-qv-6Ze"/>
+                        <constraint firstItem="kVA-Gi-2Bo" firstAttribute="leading" secondItem="LkM-c3-4QM" secondAttribute="trailing" id="e5c-qv-6Ze"/>
                         <constraint firstItem="sw3-k5-xCu" firstAttribute="width" secondItem="FUJ-C9-fuN" secondAttribute="width" id="gpm-R6-Alp"/>
                         <constraint firstItem="STD-N5-Xbr" firstAttribute="top" secondItem="amz-tf-TWd" secondAttribute="top" constant="20" id="l0o-XQ-hGq"/>
                         <constraint firstAttribute="trailing" secondItem="sw3-k5-xCu" secondAttribute="trailing" id="saI-IN-54W"/>
