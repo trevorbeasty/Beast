@@ -15,9 +15,12 @@
 
 
 @class  TJBCircuitTemplateVC;
+@class TJBChainTemplate;
 
 @interface TJBCircuitTemplateExerciseComp : UIViewController <TJBCircuitTemplateExerciseComponentProtocol>
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController;
+//- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController;
+
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController;
 
 @end

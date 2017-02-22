@@ -12,10 +12,10 @@
 
 @protocol TJBCircuitTemplateRowComponentProtocol <NSObject>
 
-- (void)updateWeightViewWithUserSelection:(TJBNumberTypeArrayComp *)weight;
-
-- (void)updateRepsViewWithUserSelection:(TJBNumberTypeArrayComp *)reps;
-
-- (void)updateRestViewWithUserSelection:(TJBNumberTypeArrayComp *)rest;
+//- (void)updateWeightViewWithUserSelection:(TJBNumberTypeArrayComp *)weight;
+//
+//- (void)updateRepsViewWithUserSelection:(TJBNumberTypeArrayComp *)reps;
+//
+//- (void)updateRestViewWithUserSelection:(TJBNumberTypeArrayComp *)rest;
 
 @end

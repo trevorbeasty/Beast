@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @class TJBCircuitTemplateVC;
+@class TJBChainTemplate;
+
+// protocols
 
 #import "TJBCircuitTemplateVCProtocol.h"
-
 #import "TJBCircuitTemplateRowComponentProtocol.h"
 
 @interface TJBCircuitTemplateRowComponent : UIViewController <TJBCircuitTemplateRowComponentProtocol>
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController chainNumber:(NSNumber *)chainNumber;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
 @end

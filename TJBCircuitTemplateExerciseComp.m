@@ -25,13 +25,14 @@
 
 // core
 
-@property (nonatomic, strong) NSNumber *numberOfRounds;
-@property (nonatomic, strong) NSNumber *targetingWeight;
-@property (nonatomic, strong) NSNumber *targetingReps;
-@property (nonatomic, strong) NSNumber *targetingRest;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-@property (nonatomic, strong) NSNumber *chainNumber;
+//@property (nonatomic, strong) NSNumber *numberOfRounds;
+//@property (nonatomic, strong) NSNumber *targetingWeight;
+//@property (nonatomic, strong) NSNumber *targetingReps;
+//@property (nonatomic, strong) NSNumber *targetingRest;
+//@property (nonatomic, strong) NSNumber *targetsVaryByRound;
+@property (nonatomic, strong) NSNumber *exerciseIndex;
 @property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 // IBOutlets
 
@@ -52,17 +53,29 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
+//- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
+//    
+//    self = [super init];
+//    
+//    self.numberOfRounds = numberOfRounds;
+//    self.targetingWeight = targetingWeight;
+//    self.targetingReps = targetingReps;
+//    self.targetingRest = targetingRest;
+//    self.targetsVaryByRound = targetsVaryByRound;
+//    self.chainNumber = chainNumber;
+//    self.masterController = masterController;
+//    
+//    return self;
+//    
+//}
+
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
     
     self = [super init];
     
-    self.numberOfRounds = numberOfRounds;
-    self.targetingWeight = targetingWeight;
-    self.targetingReps = targetingReps;
-    self.targetingRest = targetingRest;
-    self.targetsVaryByRound = targetsVaryByRound;
-    self.chainNumber = chainNumber;
+    self.chainTemplate = chainTemplate;
     self.masterController = masterController;
+    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
     
     return self;
     
@@ -128,7 +141,7 @@
     // labels
     
     self.titleLabel.text = [NSString stringWithFormat: @"Exercise %d",
-                            [self.chainNumber intValue]];
+                            [self.exerciseIndex intValue] + 1];
     
     // row components
     
@@ -145,20 +158,17 @@
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", thinLineLabel]];
     
-    for (int i = 0 ; i < [self.numberOfRounds intValue] ; i ++){
+    for (int i = 0 ; i < self.chainTemplate.numberOfRounds ; i ++){
         
-        TJBCircuitTemplateRowComponent *rowVC = [[TJBCircuitTemplateRowComponent alloc] initWithTargetingWeight: self.targetingWeight
-                                                                                                  targetingReps: self.targetingReps
-                                                                                                  targetingRest: self.targetingRest
-                                                                                             targetsVaryByRound: self.targetsVaryByRound
-                                                                                                    roundNumber: [NSNumber numberWithInt: i + 1]
-                                                                                               masterController: self.masterController
-                                                                                                    chainNumber: self.chainNumber];
+        TJBCircuitTemplateRowComponent *rowVC = [[TJBCircuitTemplateRowComponent alloc] initWithChainTemplate: self.chainTemplate
+                                                                                             masterController: self.masterController
+                                                                                                exerciseIndex: [self.exerciseIndex intValue]
+                                                                                                   roundIndex: i];
         
         // add the newly created row component to the master controller's child collection
         
         [self.masterController addChildRowController: rowVC
-                                    forExerciseIndex: [self.chainNumber intValue] - 1];
+                                    forExerciseIndex: [self.exerciseIndex intValue]];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -176,12 +186,12 @@
         
         NSString *verticalAppendString;
         
-        if ([self.targetsVaryByRound intValue] == 0)
+        if (self.chainTemplate.targetsVaryByRound == NO)
         {
-            i = [self.numberOfRounds intValue] - 1;
+            i = self.chainTemplate.numberOfRounds - 1;
         }
         
-        if (i == [self.numberOfRounds intValue] - 1)
+        if (i == self.chainTemplate.numberOfRounds - 1)
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
                                     dynamicRowName,
@@ -226,8 +236,8 @@
 
 - (IBAction)didPressSelectExercise:(id)sender{
     
-    [self.masterController didPressExerciseButton: self.selectedExerciseButton
-                                          inChain: self.chainNumber];
+//    [self.masterController didPressExerciseButton: self.selectedExerciseButton
+//                                          inChain: self.chainNumber];
     
 }
 

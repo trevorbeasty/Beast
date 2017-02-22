@@ -21,18 +21,22 @@
 
 @protocol TJBCircuitTemplateVCProtocol <NSObject>
 
-- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber;
-
-- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button;
-
+//- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber;
+//
+//- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button;
+//
 // for keeping track of child VC's
 
 - (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex;
 
 - (BOOL)allUserInputCollected;
+//
+//// for restoration / incomplete chain templates
+//
+//- (void)populateChildVCViewsWithUserSelectedValues;
 
-// for restoration / incomplete chain templates
+// advanced user input
 
-- (void)populateChildVCViewsWithUserSelectedValues;
+
 
 @end

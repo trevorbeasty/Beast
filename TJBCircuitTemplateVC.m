@@ -40,17 +40,15 @@
 
 //// core
 
-// these are largely for convenience as most are derived from the chain template itself
-
-@property (nonatomic, strong) NSNumber *targetingWeight;
-@property (nonatomic, strong) NSNumber *targetingReps;
-@property (nonatomic, strong) NSNumber *targetingRest;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-@property (nonatomic, strong) NSNumber *numberOfExercises;
-@property (nonatomic, strong) NSNumber *numberOfRounds;
-@property (nonatomic, strong) NSString *name;
-//@property (nonatomic, strong) NSNumber *viewHeight;
-
+//// these are largely for convenience as most are derived from the chain template itself
+//
+//@property (nonatomic, strong) NSNumber *targetingWeight;
+//@property (nonatomic, strong) NSNumber *targetingReps;
+//@property (nonatomic, strong) NSNumber *targetingRest;
+//@property (nonatomic, strong) NSNumber *targetsVaryByRound;
+//@property (nonatomic, strong) NSNumber *numberOfExercises;
+//@property (nonatomic, strong) NSNumber *numberOfRounds;
+//@property (nonatomic, strong) NSString *name;
 
 
 // keeps track of its children rows and exercise components to facillitate delegate functionality
@@ -80,13 +78,13 @@ static NSString * const defaultValue = @"unselected";
     
     self.chainTemplate = skeletonChainTemplate;
     
-    self.targetingWeight = [NSNumber numberWithBool: skeletonChainTemplate.targetingWeight];
-    self.targetingReps = [NSNumber numberWithBool: skeletonChainTemplate.targetingReps];
-    self.targetingRest = [NSNumber numberWithBool: skeletonChainTemplate.targetingRestTime];
-    self.targetsVaryByRound = [NSNumber numberWithBool: skeletonChainTemplate.targetsVaryByRound];
-    self.numberOfExercises = [NSNumber numberWithInt: skeletonChainTemplate.numberOfExercises];
-    self.numberOfRounds = [NSNumber numberWithInt: skeletonChainTemplate.numberOfRounds];
-    self.name = skeletonChainTemplate.name;
+//    self.targetingWeight = [NSNumber numberWithBool: skeletonChainTemplate.targetingWeight];
+//    self.targetingReps = [NSNumber numberWithBool: skeletonChainTemplate.targetingReps];
+//    self.targetingRest = [NSNumber numberWithBool: skeletonChainTemplate.targetingRestTime];
+//    self.targetsVaryByRound = [NSNumber numberWithBool: skeletonChainTemplate.targetsVaryByRound];
+//    self.numberOfExercises = [NSNumber numberWithInt: skeletonChainTemplate.numberOfExercises];
+//    self.numberOfRounds = [NSNumber numberWithInt: skeletonChainTemplate.numberOfRounds];
+//    self.name = skeletonChainTemplate.name;
 //    self.viewHeight = viewHeight;
 //    self.viewWidth = viewWidth;
     _viewSize = viewSize;
@@ -110,7 +108,7 @@ static NSString * const defaultValue = @"unselected";
     
     //// this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made when allUserInputCollected is calledr
     
-    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLenght: [self.numberOfExercises intValue]];
+    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLenght: self.chainTemplate.numberOfExercises];
     
     NSMutableOrderedSet *placeholderExerisesSet = [[NSMutableOrderedSet alloc] initWithArray: placeholderExercisesArray];
     
@@ -153,7 +151,7 @@ static NSString * const defaultValue = @"unselected";
     
     self.childRowControllers = [[NSMutableArray alloc] init];
     
-    int exerciseLimit = [self.numberOfExercises intValue];
+    int exerciseLimit = self.chainTemplate.numberOfExercises;
     
     for (int i = 0; i < exerciseLimit; i++){
         
@@ -190,18 +188,18 @@ static NSString * const defaultValue = @"unselected";
     
     CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 2.0;
     
-    BOOL targetsVaryByRound = [self.targetsVaryByRound boolValue] == YES;
+    BOOL targetsVaryByRound = self.chainTemplate.targetsVaryByRound == YES;
     
     if (targetsVaryByRound){
         
-        componentHeight = roundRowHeight * ([self.numberOfRounds intValue] + 1) + titleBarHeight + componentStyleSpacing;
+        componentHeight = roundRowHeight * (self.chainTemplate.numberOfRounds + 1) + titleBarHeight + componentStyleSpacing;
         
     } else{
         
         componentHeight = roundRowHeight * 2 + titleBarHeight + componentStyleSpacing;
     }
     
-    int numberOfComponents = [self.numberOfExercises intValue];
+    int numberOfComponents = self.chainTemplate.numberOfExercises;
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
     scrollView.contentSize = CGSizeMake(_viewSize.width, scrollContentHeight);
@@ -218,17 +216,11 @@ static NSString * const defaultValue = @"unselected";
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: @"V:|-16-"];
     
-    for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
+    for (int i = 0 ; i < self.chainTemplate.numberOfExercises ; i ++){
         
-        TJBCircuitTemplateExerciseComp *vc = [[TJBCircuitTemplateExerciseComp alloc] initWithNumberOfRounds: self.numberOfRounds
-                                                                                            targetingWeight: self.targetingWeight
-                                                                                              targetingReps: self.targetingReps
-                                                                                              targetingRest: self.targetingRest
-                                                                                         targetsVaryByRound: self.targetsVaryByRound
-                                                                                                chainNumber: [NSNumber numberWithInt: i + 1]
-                                                                                           masterController: self];
-        
-//        vc.view.backgroundColor = [UIColor lightGrayColor];
+        TJBCircuitTemplateExerciseComp *vc = [[TJBCircuitTemplateExerciseComp alloc] initWithChainTemplate: self.chainTemplate
+                                                                                             exerciseIndex: i
+                                                                                          masterController: self];
         
         // add the exercise component to the child view controller array
         
@@ -251,7 +243,7 @@ static NSString * const defaultValue = @"unselected";
         
         NSString *verticalAppendString;
         
-        if (i == [self.numberOfExercises intValue] - 1){
+        if (i == self.chainTemplate.numberOfExercises - 1){
             
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]",
                                     dynamicComponentName,
@@ -351,7 +343,7 @@ static NSString * const defaultValue = @"unselected";
             
             // clone the selection if targets do not vary by round
             
-            if ([self.targetsVaryByRound boolValue] == NO){
+            if (self.chainTemplate.targetsVaryByRound == NO){
                 
                 [[CoreDataController singleton] cloneFirstNumberForWeight: self.chainTemplate];
             }
@@ -387,7 +379,7 @@ static NSString * const defaultValue = @"unselected";
             
             // clone the selection if targets do not vary by round
             
-            if ([self.targetsVaryByRound boolValue] == NO){
+            if (self.chainTemplate.targetsVaryByRound == NO){
                 
                 [[CoreDataController singleton] cloneFirstNumberForReps: self.chainTemplate];
             }
@@ -426,7 +418,7 @@ static NSString * const defaultValue = @"unselected";
             
             // clone the selection if targets do not vary by round
             
-            if ([self.targetsVaryByRound boolValue] == NO){
+            if (self.chainTemplate.targetsVaryByRound == NO){
                 
                 [[CoreDataController singleton] cloneFirstNumberForRest: self.chainTemplate];
             }
@@ -509,85 +501,85 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
-- (void)populateChildVCViewsWithUserSelectedValues{
-    
-    //// for all non-default exercise, weight, reps, and rest objects, populate child VC's with the stored values.  The class is only responsible for sending each child view it corresponding data objects.  It is the job of the child views to evaluate the passed in data objects and determine whether or not their views should be updated (based on whether the object is a default object or not)
-    
-    int exerciseLimit = [self.numberOfExercises intValue];
-    int roundLimit = [self.numberOfRounds intValue];
-    
-    TJBCircuitTemplateExerciseComp *currentExerciseComp;
-    TJBCircuitTemplateRowComponent *currentRowComp;
-    
-    TJBChainTemplate *chain = self.chainTemplate;
-    
-    TJBExercise *currentExercise;
-    TJBNumberTypeArrayComp *currentWeight;
-    TJBNumberTypeArrayComp *currentReps;
-    TJBNumberTypeArrayComp *currentRest;
-    
-    for (int i = 0; i < exerciseLimit; i++){
-        
-        // exercise child controllers
-        
-        currentExerciseComp = self.childExerciseComponentControllers[i];
-        currentExercise = chain.exercises[i];
-        
-        // need to update this VC's selectedExercises as well as call the exercise components protocol method
-        
-        self.selectedExercises[i] = currentExercise;
-        
-        [currentExerciseComp updateViewsWithUserSelectedExercise: currentExercise];
-        
-        for (int j = 0; j < roundLimit; j++){
-            
-            // row child controllers
-            
-            // must evaluate if category is being targeted before sending message
-            
-            currentRowComp = self.childRowControllers[i][j];
-            
-            // weight
-            
-            if (chain.targetingWeight){
-                
-                currentWeight = chain.weightArrays[i].numbers[j];
-                
-                [currentRowComp updateWeightViewWithUserSelection: currentWeight];
-                
-            }
-            
-            // reps
-            
-            if (chain.targetingReps){
-                
-                currentReps = chain.repsArrays[i].numbers[j];
-                
-                [currentRowComp updateRepsViewWithUserSelection: currentReps];
-                
-            }
-            
-            // rest
-            
-            if (chain.targetingRestTime){
-                
-                currentRest = chain.targetRestTimeArrays[i].numbers[j];
-                
-                [currentRowComp updateRestViewWithUserSelection: currentRest];
-                
-            }
-            
-            // if targets do not vary by round, there will only be one row controller for each exercise component and this inner for-loop should only be run once
-            
-            BOOL targetsVaryByRound = chain.targetsVaryByRound;
-            
-            if (!targetsVaryByRound){
-                
-                break;
-            }
-        }
-    }
-}
+//- (void)populateChildVCViewsWithUserSelectedValues{
+//    
+//    //// for all non-default exercise, weight, reps, and rest objects, populate child VC's with the stored values.  The class is only responsible for sending each child view it corresponding data objects.  It is the job of the child views to evaluate the passed in data objects and determine whether or not their views should be updated (based on whether the object is a default object or not)
+//    
+//    int exerciseLimit = self.chainTemplate.numberOfExercises;
+//    int roundLimit = self.chainTemplate.numberOfRounds;
+//    
+//    TJBCircuitTemplateExerciseComp *currentExerciseComp;
+//    TJBCircuitTemplateRowComponent *currentRowComp;
+//    
+//    TJBChainTemplate *chain = self.chainTemplate;
+//    
+//    TJBExercise *currentExercise;
+//    TJBNumberTypeArrayComp *currentWeight;
+//    TJBNumberTypeArrayComp *currentReps;
+//    TJBNumberTypeArrayComp *currentRest;
+//    
+//    for (int i = 0; i < exerciseLimit; i++){
+//        
+//        // exercise child controllers
+//        
+//        currentExerciseComp = self.childExerciseComponentControllers[i];
+//        currentExercise = chain.exercises[i];
+//        
+//        // need to update this VC's selectedExercises as well as call the exercise components protocol method
+//        
+//        self.selectedExercises[i] = currentExercise;
+//        
+//        [currentExerciseComp updateViewsWithUserSelectedExercise: currentExercise];
+//        
+//        for (int j = 0; j < roundLimit; j++){
+//            
+//            // row child controllers
+//            
+//            // must evaluate if category is being targeted before sending message
+//            
+//            currentRowComp = self.childRowControllers[i][j];
+//            
+//            // weight
+//            
+//            if (chain.targetingWeight){
+//                
+//                currentWeight = chain.weightArrays[i].numbers[j];
+//                
+//                [currentRowComp updateWeightViewWithUserSelection: currentWeight];
+//                
+//            }
+//            
+//            // reps
+//            
+//            if (chain.targetingReps){
+//                
+//                currentReps = chain.repsArrays[i].numbers[j];
+//                
+//                [currentRowComp updateRepsViewWithUserSelection: currentReps];
+//                
+//            }
+//            
+//            // rest
+//            
+//            if (chain.targetingRestTime){
+//                
+//                currentRest = chain.targetRestTimeArrays[i].numbers[j];
+//                
+//                [currentRowComp updateRestViewWithUserSelection: currentRest];
+//                
+//            }
+//            
+//            // if targets do not vary by round, there will only be one row controller for each exercise component and this inner for-loop should only be run once
+//            
+//            BOOL targetsVaryByRound = chain.targetsVaryByRound;
+//            
+//            if (!targetsVaryByRound){
+//                
+//                break;
+//            }
+//        }
+//    }
+//}
 
 
 @end

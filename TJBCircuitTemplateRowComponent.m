@@ -28,12 +28,10 @@
 
 // core
 
-@property (nonatomic, strong) NSNumber *targetingWeight;
-@property (nonatomic, strong) NSNumber *targetingReps;
-@property (nonatomic, strong) NSNumber *targetingRest;
-@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-@property (nonatomic, strong) NSNumber *roundNumber;
-@property (nonatomic, strong) NSNumber *chainNumber;
+@property (nonatomic, strong) NSNumber *roundIndex;
+@property (nonatomic, strong) NSNumber *exerciseIndex;
+@property (nonatomic, strong) TJBChainTemplate *chainTemplate;
+@property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 
 // IBAction
 
@@ -48,9 +46,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *restButton;
 @property (weak, nonatomic) IBOutlet UILabel *roundLabel;
 
-// delegate
 
-@property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 
 @end
 
@@ -58,19 +54,17 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound roundNumber:(NSNumber *)roundNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController chainNumber:(NSNumber *)chainNumber{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
     
     self = [super init];
     
-    self.targetingWeight = targetingWeight;
-    self.targetingReps = targetingReps;
-    self.targetingRest = targetingRest;
-    self.targetsVaryByRound = targetsVaryByRound;
-    self.roundNumber = roundNumber;
+    self.chainTemplate = chainTemplate;
+    self.roundIndex = [NSNumber numberWithInt: roundIndex];
+    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
     self.masterController = masterController;
-    self.chainNumber = chainNumber;
     
     return self;
+    
 }
 
 #pragma mark - View Life Cycle
@@ -91,13 +85,14 @@
     
     // round label
     
-    if ([self.targetsVaryByRound intValue] == 0)
-    {
+    if (self.chainTemplate.targetsVaryByRound == NO){
+        
         self.roundLabel.text = @"All";
-    }
-    else
-    {
-        self.roundLabel.text = [NSString stringWithFormat: @"%d", [self.roundNumber intValue]];
+        
+    } else{
+        
+        self.roundLabel.text = [NSString stringWithFormat: @"%d", [self.roundIndex intValue] + 1];
+        
     }
     
     self.roundLabel.backgroundColor = [UIColor lightGrayColor];
@@ -125,7 +120,7 @@
         
     };
         
-    if ([self.targetingWeight boolValue] == YES){
+    if (self.chainTemplate.targetingWeight == YES){
             
         activeButtonConfiguration(self.weightButton);
         
@@ -134,7 +129,7 @@
         eraseButton(self.weightButton);
     }
         
-    if ([self.targetingReps boolValue] == YES){
+    if (self.chainTemplate.targetingReps == YES){
             
         activeButtonConfiguration(self.repsButton);
         
@@ -143,7 +138,7 @@
         eraseButton(self.repsButton);
     }
         
-    if ([self.targetingRest boolValue] == YES){
+    if (self.chainTemplate.targetingRestTime == YES){
             
         activeButtonConfiguration(self.restButton);
         
@@ -158,93 +153,25 @@
 
 #pragma mark - Button Actions
 
-- (IBAction)didPressWeightButton:(id)sender
-{
+- (IBAction)didPressWeightButton:(id)sender{
     
-        [self.masterController didPressUserInputButtonWithType: WeightType
-                                                   chainNumber: self.chainNumber
-                                                   roundNumber: self.roundNumber
-                                                        button: self.weightButton];
+    
+
 }
 
 - (IBAction)didPressRepsButton:(id)sender{
     
     
-        [self.masterController didPressUserInputButtonWithType: RepsType
-                                                   chainNumber: self.chainNumber
-                                                   roundNumber: self.roundNumber
-                                                        button: self.repsButton];
+    
 }
 
 - (IBAction)didPressRestButton:(id)sender{
     
-    
-        [self.masterController didPressUserInputButtonWithType: TargetRestType
-                                                   chainNumber: self.chainNumber
-                                                   roundNumber: self.roundNumber
-                                                        button: self.restButton];
-}
 
-#pragma mark - <TJBCircuitTemplateRowComponentProtocol>
-
-- (void)updateWeightViewWithUserSelection:(TJBNumberTypeArrayComp *)weight{
-    
-    BOOL weightIsDefaultObject = [[CoreDataController singleton] numberTypeArrayCompIsDefaultObject: weight];
-    
-    if (!weightIsDefaultObject){
-        
-        NSString *weightTitle = [[NSNumber numberWithFloat: weight.value] stringValue];
-        
-        [self.weightButton setTitle: weightTitle
-                           forState: UIControlStateNormal];
-        [self configureButtonWithSelectedAppearance: self.weightButton];
-        
-    }
     
 }
 
-- (void)updateRepsViewWithUserSelection:(TJBNumberTypeArrayComp *)reps{
-    
-    BOOL repsIsDefaultObject = [[CoreDataController singleton] numberTypeArrayCompIsDefaultObject: reps];
-    
-    if (!repsIsDefaultObject){
-        
-        NSString *repsTitle = [[NSNumber numberWithFloat: reps.value] stringValue];
-        
-        [self.repsButton setTitle: repsTitle
-                         forState: UIControlStateNormal];
-        [self configureButtonWithSelectedAppearance: self.repsButton];
-        
-    }
-    
-}
 
-- (void)updateRestViewWithUserSelection:(TJBNumberTypeArrayComp *)rest{
-    
-    BOOL restIsDefaultObject = [[CoreDataController singleton] numberTypeArrayCompIsDefaultObject: rest];
-    
-    if (!restIsDefaultObject){
-        
-        NSString *restTitle = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: rest.value];
-        
-        [self.restButton setTitle: restTitle
-                         forState: UIControlStateNormal];
-        [self configureButtonWithSelectedAppearance: self.restButton];
-        
-    }
-    
-}
-
-- (void)configureButtonWithSelectedAppearance:(UIButton *)button{
-    
-    //// configure the passed in button with the 'selected' appearance
-    
-    button.backgroundColor = [UIColor clearColor];
-    
-    [button setTitleColor: [UIColor blackColor]
-                 forState: UIControlStateNormal];
-    
-}
 
 
 
