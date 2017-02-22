@@ -56,7 +56,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Analysis Options" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qpr-bQ-Jk5">
-                    <rect key="frame" x="4" y="240" width="367" height="40"/>
+                    <rect key="frame" x="4" y="295" width="367" height="40"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="3M1-oh-fTL"/>
@@ -66,7 +66,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tOw-iS-ixe">
-                    <rect key="frame" x="0.0" y="296" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="351" width="375" height="60"/>
                     <color key="backgroundColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <state key="normal" title="View Workout Log">
@@ -77,7 +77,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tI8-wo-CeW">
-                    <rect key="frame" x="0.0" y="490" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="545" width="375" height="60"/>
                     <color key="backgroundColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <state key="normal" title="My Routines">
@@ -88,7 +88,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O9f-NM-Q0L">
-                    <rect key="frame" x="0.0" y="552" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                     <color key="backgroundColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="8JN-em-jXU"/>
@@ -102,7 +102,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hf4-4q-MAz">
-                    <rect key="frame" x="0.0" y="428" width="375" height="60"/>
+                    <rect key="frame" x="0.0" y="483" width="375" height="60"/>
                     <color key="backgroundColor" red="0.17465768257991349" green="0.61088359685504745" blue="0.85943571891191706" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <state key="normal" title="Freeform Lift">
@@ -113,7 +113,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lift Options" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQh-hh-uRb">
-                    <rect key="frame" x="4" y="372" width="367" height="40"/>
+                    <rect key="frame" x="4" y="427" width="367" height="40"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="qj6-1S-Dz5"/>
@@ -139,8 +139,8 @@
                 <constraint firstItem="O9f-NM-Q0L" firstAttribute="leading" secondItem="hf4-4q-MAz" secondAttribute="leading" id="I7c-Kj-kf1"/>
                 <constraint firstItem="tFf-6N-zKk" firstAttribute="top" secondItem="dc6-qG-HXb" secondAttribute="bottom" constant="2" id="K3b-pG-U15"/>
                 <constraint firstItem="dc6-qG-HXb" firstAttribute="trailing" secondItem="gss-Yu-pZn" secondAttribute="trailing" id="L49-2F-tlz"/>
-                <constraint firstItem="Qpr-bQ-Jk5" firstAttribute="top" secondItem="tFf-6N-zKk" secondAttribute="bottom" constant="16" id="Mly-Dn-0hS"/>
                 <constraint firstAttribute="trailing" secondItem="O9f-NM-Q0L" secondAttribute="trailing" id="MtJ-oB-c5b"/>
+                <constraint firstAttribute="bottom" secondItem="O9f-NM-Q0L" secondAttribute="bottom" id="Nbv-m8-KWa"/>
                 <constraint firstItem="hf4-4q-MAz" firstAttribute="height" secondItem="tOw-iS-ixe" secondAttribute="height" id="QjS-2X-A2v"/>
                 <constraint firstAttribute="trailing" secondItem="gss-Yu-pZn" secondAttribute="trailing" id="Vfe-l4-hYA"/>
                 <constraint firstItem="hf4-4q-MAz" firstAttribute="leading" secondItem="tOw-iS-ixe" secondAttribute="leading" id="a4v-VS-QfS"/>

@@ -21,15 +21,13 @@
 
 #import "TJBAestheticsController.h"
 
+// exercise selection
+
+#import "TJBExerciseSelectionScene.h"
+
 @interface TJBCircuitTemplateExerciseComp ()
 
 // core
-
-//@property (nonatomic, strong) NSNumber *numberOfRounds;
-//@property (nonatomic, strong) NSNumber *targetingWeight;
-//@property (nonatomic, strong) NSNumber *targetingReps;
-//@property (nonatomic, strong) NSNumber *targetingRest;
-//@property (nonatomic, strong) NSNumber *targetsVaryByRound;
 @property (nonatomic, strong) NSNumber *exerciseIndex;
 @property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
@@ -52,22 +50,6 @@
 @implementation TJBCircuitTemplateExerciseComp
 
 #pragma mark - Instantiation
-
-//- (instancetype)initWithNumberOfRounds:(NSNumber *)numberOfRounds targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound chainNumber:(NSNumber *)chainNumber masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
-//    
-//    self = [super init];
-//    
-//    self.numberOfRounds = numberOfRounds;
-//    self.targetingWeight = targetingWeight;
-//    self.targetingReps = targetingReps;
-//    self.targetingRest = targetingRest;
-//    self.targetsVaryByRound = targetsVaryByRound;
-//    self.chainNumber = chainNumber;
-//    self.masterController = masterController;
-//    
-//    return self;
-//    
-//}
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
     
@@ -236,45 +218,40 @@
 
 - (IBAction)didPressSelectExercise:(id)sender{
     
-//    [self.masterController didPressExerciseButton: self.selectedExerciseButton
-//                                          inChain: self.chainNumber];
+    __weak TJBCircuitTemplateExerciseComp *weakSelf = self;
+    
+    void (^callback)(TJBExercise *) = ^(TJBExercise *selectedExercise){
+        
+        // notify the master controller of the selection.  Because chain templates store the exercises as an ordered set (not mutable), the master controller must maintain a mutable ordered set (which initially contains placeholder exercises) and assign that set to the chain templates property every time an exercise is selected
+        
+        [self.masterController didSelectExercise: selectedExercise
+                                forExerciseIndex: [self.exerciseIndex intValue]];
+        
+        // update the view
+        
+        self.selectedExerciseButton.backgroundColor = [UIColor clearColor];
+        [self.selectedExerciseButton setTitleColor: [UIColor blackColor]
+                                          forState: UIControlStateNormal];
+        
+        [self.selectedExerciseButton setTitle: selectedExercise.name
+                                     forState: UIControlStateNormal];
+        
+        //
+        
+        [weakSelf dismissViewControllerAnimated: NO
+                                     completion: nil];
+        
+    };
+    
+    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithCallbackBlock: callback];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
     
 }
 
-#pragma mark - <TJBCircuitTemplateExerciseComponentProtocol>
 
-- (void)updateViewsWithUserSelectedExercise:(TJBExercise *)exercise{
-    
-    //// evaluate if the exercise is a default object.  If not, update the exercise view with the appropriate name and change the button appearance
-    
-    BOOL isDefaultExercise = [[CoreDataController singleton] exerciseIsPlaceholderExercise: exercise];
-    
-    if (!isDefaultExercise){
-        
-        UIButton *exerciseButton = self.selectedExerciseButton;
-        
-        [exerciseButton setTitle: exercise.name
-                        forState: UIControlStateNormal];
-        
-        [exerciseButton setTitleColor: [UIColor blackColor]
-                             forState: UIControlStateNormal];
-        
-        [self configureButtonWithSelectedAppearance: exerciseButton];
-        
-    }
-    
-}
-
-- (void)configureButtonWithSelectedAppearance:(UIButton *)button{
-    
-    //// configure the passed in button with the 'selected' appearance
-    
-    button.backgroundColor = [UIColor clearColor];
-    
-    [button setTitleColor: [UIColor whiteColor]
-                 forState: UIControlStateNormal];
-    
-}
 
 @end
 

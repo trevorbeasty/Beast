@@ -21,7 +21,7 @@
 
 @protocol TJBCircuitTemplateVCProtocol <NSObject>
 
-//- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber;
+- (void)didSelectExercise:(TJBExercise *)exercise forExerciseIndex:(int)exerciseIndex;
 //
 //- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button;
 //

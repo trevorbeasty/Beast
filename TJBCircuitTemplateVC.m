@@ -441,40 +441,39 @@ static NSString * const defaultValue = @"unselected";
     }
 }
 
-- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
-    
-    TJBCircuitTemplateVC * __weak weakSelf = self;
-    
-    void (^callback)(TJBExercise *) = ^(TJBExercise *exercise){
-        
-        [button setTitle: exercise.name
-                forState: UIControlStateNormal];
-        
-        button.backgroundColor = [UIColor clearColor];
-        
-        [button setTitleColor: [UIColor blackColor]
-                     forState: UIControlStateNormal];
-        
-        [weakSelf didSelectExercise: exercise
-                     forChainNumber: chainNumber];
-        
-        [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-    };
-    
-    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithCallbackBlock: callback];
-    
-    [self presentViewController: vc
-                       animated: NO
-                     completion: nil];
-}
+//- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
+//    
+//    TJBCircuitTemplateVC * __weak weakSelf = self;
+//    
+//    void (^callback)(TJBExercise *) = ^(TJBExercise *exercise){
+//        
+//        [button setTitle: exercise.name
+//                forState: UIControlStateNormal];
+//        
+//        button.backgroundColor = [UIColor clearColor];
+//        
+//        [button setTitleColor: [UIColor blackColor]
+//                     forState: UIControlStateNormal];
+//        
+//        [weakSelf didSelectExercise: exercise
+//                     forChainNumber: chainNumber];
+//        
+//        [weakSelf dismissViewControllerAnimated: NO
+//                                     completion: nil];
+//    };
+//    
+//    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithCallbackBlock: callback];
+//    
+//    [self presentViewController: vc
+//                       animated: NO
+//                     completion: nil];
+//}
 
-- (void)didSelectExercise:(TJBExercise *)exercise forChainNumber:(NSNumber *)chainNumber{
+- (void)didSelectExercise:(TJBExercise *)exercise forExerciseIndex:(int)exerciseIndex{
     
-    int index = [chainNumber intValue] - 1;
-    self.selectedExercises[index] = exercise;
+    self.selectedExercises[exerciseIndex] = exercise;
     
-    // for now, I am saving every time a selection is made
+    // save every time a selection is made
     
     self.chainTemplate.exercises = self.selectedExercises;
     

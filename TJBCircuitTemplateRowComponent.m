@@ -24,6 +24,8 @@
 
 #import "CoreDataController.h"
 
+// number selection
+
 @interface TJBCircuitTemplateRowComponent ()
 
 // core
@@ -155,17 +157,160 @@
 
 - (IBAction)didPressWeightButton:(id)sender{
     
+    // present the single number selection scene.  If a number is chosen, update core data and refresh the view
     
+    CancelBlock cancelBlock = ^{
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *selectedNumber){
+        
+        // update the realized chain and save core data changes
+        
+        int exerciseInd = [self.exerciseIndex intValue];
+        int roundInd = [self.roundIndex intValue];
+        
+        // update core data.  The 'isDefaultObject' property indicates if a selection has been made for this particular target since the skeleton chain was created.  It is useful for app restoration (indicates whether or not to show the button as blue or yellow)
+        
+        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
+        
+        [[CoreDataController singleton] saveContext];
+        
+        // configure the button
+        
+        self.weightButton.backgroundColor = [UIColor clearColor];
+        [self.weightButton setTitleColor: [UIColor blackColor]
+                                forState: UIControlStateNormal];
+        
+        NSString *weightText = [NSString stringWithFormat: @"%@ lbs", [selectedNumber stringValue]];
+        [self.weightButton setTitle: weightText
+                           forState: UIControlStateNormal];
+        
+        // presented VC
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: WeightType
+                                                                                    title: @"Select Weight"
+                                                                              cancelBlock: cancelBlock
+                                                                      numberSelectedBlock: numberSelectedBlock];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
 
 }
 
 - (IBAction)didPressRepsButton:(id)sender{
     
+    // present the single number selection scene.  If a number is chosen, update core data and refresh the view
     
+    CancelBlock cancelBlock = ^{
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *selectedNumber){
+        
+        // update the realized chain and save core data changes
+        
+        int exerciseInd = [self.exerciseIndex intValue];
+        int roundInd = [self.roundIndex intValue];
+        
+        // update core data.  The 'isDefaultObject' property indicates if a selection has been made for this particular target since the skeleton chain was created.  It is useful for app restoration (indicates whether or not to show the button as blue or yellow)
+        
+        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
+        
+        [[CoreDataController singleton] saveContext];
+        
+        // configure the button
+        
+        self.repsButton.backgroundColor = [UIColor clearColor];
+        [self.repsButton setTitleColor: [UIColor blackColor]
+                                forState: UIControlStateNormal];
+        
+        NSString *repsText = [NSString stringWithFormat: @"%@ reps", [selectedNumber stringValue]];
+        [self.repsButton setTitle: repsText
+                         forState: UIControlStateNormal];
+        
+        // presented VC
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: RepsType
+                                                                                    title: @"Select Weight"
+                                                                              cancelBlock: cancelBlock
+                                                                      numberSelectedBlock: numberSelectedBlock];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
     
 }
 
 - (IBAction)didPressRestButton:(id)sender{
+    
+    // present the single number selection scene.  If a number is chosen, update core data and refresh the view
+    
+    CancelBlock cancelBlock = ^{
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *selectedNumber){
+        
+        // update the realized chain and save core data changes
+        
+        int exerciseInd = [self.exerciseIndex intValue];
+        int roundInd = [self.roundIndex intValue];
+        
+        // update core data.  The 'isDefaultObject' property indicates if a selection has been made for this particular target since the skeleton chain was created.  It is useful for app restoration (indicates whether or not to show the button as blue or yellow)
+        
+        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
+        
+        [[CoreDataController singleton] saveContext];
+        
+        // configure the button
+        
+        self.restButton.backgroundColor = [UIColor clearColor];
+        [self.restButton setTitleColor: [UIColor blackColor]
+                              forState: UIControlStateNormal];
+        
+        NSString *restText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
+        [self.restButton setTitle: restText
+                         forState: UIControlStateNormal];
+        
+        // presented VC
+        
+        [self dismissViewControllerAnimated: NO
+                                 completion: nil];
+        
+    };
+    
+    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: TargetRestType
+                                                                                    title: @"Select Weight"
+                                                                              cancelBlock: cancelBlock
+                                                                      numberSelectedBlock: numberSelectedBlock];
+    
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
     
 
     

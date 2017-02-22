@@ -12,6 +12,6 @@
 
 @protocol TJBCircuitTemplateExerciseComponentProtocol <NSObject>
 
-- (void)updateViewsWithUserSelectedExercise:(TJBExercise *)exercise;
+//- (void)updateViewsWithUserSelectedExercise:(TJBExercise *)exercise;
 
 @end
