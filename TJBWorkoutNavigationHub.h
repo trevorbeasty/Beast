@@ -14,4 +14,6 @@
 
 @interface TJBWorkoutNavigationHub : UIViewController <TJBDateSelectionMaster>
 
+- (instancetype)initWithHomeButton:(BOOL)includeHomeButton;
+
 @end

@@ -27,6 +27,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
 @property (weak, nonatomic) IBOutlet UIButton *createNewRoutineButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel2;
+@property (weak, nonatomic) IBOutlet UILabel *analysisOptionsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *liftOptionsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *viewWorkoutLogButton;
+- (IBAction)didPressViewWorkoutLog:(id)sender;
 
 
 // IBAction
@@ -51,9 +57,12 @@
 
 - (void)configureViewAesthetics{
     
+    // buttons
+    
     NSArray *buttons = @[self.freeformButton,
                          self.designedButton,
-                         self.createNewRoutineButton];
+                         self.createNewRoutineButton,
+                         self.viewWorkoutLogButton];
     
     for (UIButton *button in buttons){
         
@@ -62,42 +71,31 @@
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
-//        button.layer.masksToBounds = YES;
-//        button.layer.cornerRadius = 4.0;
+    }
+    
+    // labels
+    
+    self.titleLabel1.backgroundColor = [UIColor darkGrayColor];
+    self.titleLabel1.textColor = [UIColor whiteColor];
+    self.titleLabel1.font = [UIFont boldSystemFontOfSize: 40.0];
+    
+    self.titleLabel2.backgroundColor = [UIColor darkGrayColor];
+    self.titleLabel2.textColor = [UIColor whiteColor];
+    self.titleLabel2.font = [UIFont boldSystemFontOfSize: 20.0];
+    
+    NSArray *grayLabels = @[self.analysisOptionsLabel, self.liftOptionsLabel];
+    for (UILabel *label in grayLabels){
+        
+        label.backgroundColor = [UIColor lightGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+        label.layer.masksToBounds = YES;
+        label.layer.cornerRadius = 4.0;
         
     }
     
-    // shadows
-//    
-//    [self.view layoutIfNeeded];
-//    
-//    UIView *freeformShadow = [[UIView alloc] initWithFrame: self.freeformButton.frame];
-//    freeformShadow.backgroundColor = [UIColor whiteColor];
-//    freeformShadow.clipsToBounds = NO;
-//    
-//    CALayer *freeformShadowLayer = freeformShadow.layer;
-//    freeformShadowLayer.masksToBounds = NO;
-//    freeformShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-//    freeformShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
-//    freeformShadowLayer.shadowOpacity = 1.0;
-//    freeformShadowLayer.shadowRadius = 5.0;
-//    
-//    [self.view insertSubview: freeformShadow
-//                belowSubview: self.freeformButton];
-//    
-//    UIView *routineShadow = [[UIView alloc] initWithFrame: self.designedButton.frame];
-//    routineShadow.backgroundColor = [UIColor whiteColor];
-//    routineShadow.clipsToBounds = NO;
-//    
-//    CALayer *routineShadowLayer = routineShadow.layer;
-//    routineShadowLayer.masksToBounds = NO;
-//    routineShadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-//    routineShadowLayer.shadowOffset = CGSizeMake(0.0, 0.0);
-//    routineShadowLayer.shadowOpacity = 1.0;
-//    routineShadowLayer.shadowRadius = 5.0;
-//    
-//    [self.view insertSubview: routineShadow
-//                belowSubview: self.designedButton];
+
     
 }
 
@@ -120,18 +118,6 @@
     UITabBarController *tbc = [[UITabBarController alloc] init];
     [tbc setViewControllers: @[vc1, vc2]];
     tbc.tabBar.translucent = NO;
-//    tbc.navigationItem.title = @"Freeform Lift";
-//    
-//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-//                                                                   style: UIBarButtonItemStyleDone
-//                                                                  target: self
-//                                                                  action: @selector(didPressBack)];
-//    [tbc.navigationItem setLeftBarButtonItem: backButton];
-//    
-//    // navigation controller
-//    
-//    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-//    navC.navigationBar.translucent = NO;
     
     [self presentViewController: tbc
                        animated: NO
@@ -154,25 +140,7 @@
     UITabBarController *tbc = [[UITabBarController alloc] init];
     [tbc setViewControllers: @[vc1, vc2]];
     tbc.tabBar.translucent = NO;
-//    tbc.navigationItem.title = @"My Routines";
-    
-//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-//                                                                   style: UIBarButtonItemStyleDone
-//                                                                  target: self
-//                                                                  action: @selector(didPressBack)];
-//    [tbc.navigationItem setLeftBarButtonItem: backButton];
-    
-//    UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithTitle: @"New"
-//                                                                  style: UIBarButtonItemStyleDone
-//                                                                 target: vc1
-//                                                                 action: @selector(didPressNew)];
-//    [tbc.navigationItem setRightBarButtonItem: newButton];
-//    
-//    // navigation controller
-//    
-//    UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-//    navC.navigationBar.translucent = NO;
-//    
+
     [self presentViewController: tbc
                        animated: NO
                      completion: nil];
@@ -189,18 +157,7 @@
     
 }
 
-//- (IBAction)didPressTestButton:(id)sender{
-//    
-//    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: WeightType
-//                                                                                    title: @"Bench"
-//                                                                              cancelBlock: nil
-//                                                                      numberSelectedBlock: nil];
-//    
-//    [self presentViewController:vc
-//                       animated: YES
-//                     completion: nil];
-//    
-//}
+
 
 - (void)didPressBack{
     
@@ -208,6 +165,25 @@
                              completion: nil];
     
 }
+
+
+
+
+
+
+- (IBAction)didPressViewWorkoutLog:(id)sender{
+    
+    TJBWorkoutNavigationHub *navHub = [[TJBWorkoutNavigationHub alloc] init];
+    
+    [self presentViewController: navHub
+                       animated: YES
+                     completion: nil];
+    
+    
+}
+
+
+
 
 
 

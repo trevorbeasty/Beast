@@ -11,10 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBLiftOptionsVC">
             <connections>
+                <outlet property="analysisOptionsLabel" destination="Qpr-bQ-Jk5" id="dbb-2D-PTY"/>
                 <outlet property="createNewRoutineButton" destination="O9f-NM-Q0L" id="EoK-An-gcA"/>
                 <outlet property="designedButton" destination="tI8-wo-CeW" id="jSi-pM-ndf"/>
                 <outlet property="freeformButton" destination="hf4-4q-MAz" id="aoA-4q-wH6"/>
+                <outlet property="liftOptionsLabel" destination="pQh-hh-uRb" id="rCC-nq-JPe"/>
+                <outlet property="titleLabel1" destination="gss-Yu-pZn" id="Fih-VV-f7p"/>
+                <outlet property="titleLabel2" destination="dc6-qG-HXb" id="Uu5-7f-Ajo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="viewWorkoutLogButton" destination="tOw-iS-ixe" id="KoL-Ed-EX2"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -48,7 +53,6 @@
                         <constraint firstAttribute="height" constant="100" id="Ly8-5p-e2q"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Analysis Options" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qpr-bQ-Jk5">
@@ -68,6 +72,9 @@
                     <state key="normal" title="View Workout Log">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="didPressViewWorkoutLog:" destination="-1" eventType="touchUpInside" id="vK1-vl-U9u"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tI8-wo-CeW">
                     <rect key="frame" x="0.0" y="490" width="375" height="60"/>

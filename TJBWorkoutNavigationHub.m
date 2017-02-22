@@ -42,6 +42,7 @@
     // state
     
     int _activeSelectionIndex;
+    BOOL _includesHomeButton;
 }
 
 // IBOutlet
@@ -100,7 +101,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 #pragma mark - Instantiation
 
-- (instancetype)init{
+- (instancetype)initWithHomeButton:(BOOL)includeHomeButton{
     
     self = [super init];
     
@@ -131,6 +132,10 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     [self deriveDailyList];
     
     [self configureNotifications];
+    
+    // home button
+    
+    _includesHomeButton = includeHomeButton;
     
     return self;
 }
