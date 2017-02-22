@@ -375,7 +375,7 @@
             
         }
         
-    } else if (gr.state == UIGestureRecognizerStateChanged){
+    } else if (gr.state == UIGestureRecognizerStateChanged && _copyingActive == YES){
         
         CGPoint touchPointInMasterView = [gr locationInView: self.masterController.view];
         
@@ -392,27 +392,32 @@
     
 }
 
-//- (void)didPanWeightButton:(UIGestureRecognizer *)gr{
-//    
-//    NSLog(@"pan");
-//    
-//}
-
 #pragma mark - Protocol
 
 - (void)copyValueForWeightButton{
     
-    // if it is not the reference button, then copy the value
+    // if it is not the reference button and copying is active, then copy the value
     
-    if (!_isReferenceForCopying){
+    if (!_isReferenceForCopying && _copyingActive){
         
-        NSString *weightText = [NSString stringWithFormat: @"%.01f lbs", _valueToCopy];
+        // button appearance
+        
+        NSNumber *copyNumber = [NSNumber numberWithFloat: _valueToCopy];
+        NSString *weightText = [NSString stringWithFormat: @"%@ lbs", [copyNumber stringValue]];
         [self.weightButton setTitle: weightText
                            forState: UIControlStateNormal];
         
-        self.weightButton.backgroundColor = [UIColor clearColor];
-        [self.weightButton setTitleColor: [UIColor blackColor]
+        self.weightButton.backgroundColor = [UIColor darkGrayColor];
+        [self.weightButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
                                 forState: UIControlStateNormal];
+        self.weightButton.layer.opacity = 1.0;
+        
+        // core data
+        
+        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
+        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
+        
+        [[CoreDataController singleton] saveContext];
         
     }
     
@@ -429,7 +434,7 @@
     
     if (!_isReferenceForCopying){
         
-        self.weightButton.layer.opacity = .4;
+        self.weightButton.layer.opacity = .25;
         
     }
     
@@ -437,19 +442,25 @@
 
 - (void)deactivateCopyingState{
     
-    // button appearance.  If it was the reference button, change its colors back to normal.  If not, change its opacity back to normal
+    // button appearance is determined by whether or not the button corresponds to a default value
     
-    if (_isReferenceForCopying){
+    BOOL weightNotYetSelected = self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+    
+    if (weightNotYetSelected){
+        
+        self.weightButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        [self.weightButton setTitleColor: [UIColor whiteColor]
+                                forState: UIControlStateNormal];
+        
+    } else{
         
         self.weightButton.backgroundColor = [UIColor clearColor];
         [self.weightButton setTitleColor: [UIColor blackColor]
                                 forState: UIControlStateNormal];
         
-    } else{
-        
-        self.weightButton.layer.opacity = 1.0;
-        
     }
+    
+    self.weightButton.layer.opacity = 1.0;
     
     // change state variables accordingly
     
