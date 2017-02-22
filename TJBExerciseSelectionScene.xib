@@ -34,7 +34,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
-                    <rect key="frame" x="0.0" y="308" width="375" height="319"/>
+                    <rect key="frame" x="0.0" y="318" width="375" height="299"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Ejm-bA-dJN"/>
@@ -42,10 +42,10 @@
                     </connections>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIv-ZX-jxj">
-                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                     <color key="backgroundColor" red="0.0" green="0.67129021883010864" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="s0G-2g-BSg"/>
+                        <constraint firstAttribute="height" constant="50" id="s0G-2g-BSg"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <state key="normal" title="Add New Exercise">
@@ -109,7 +109,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XMw-JV-WkI" userLabel="exerciseAdditionContainer">
-                    <rect key="frame" x="0.0" y="70" width="375" height="238"/>
+                    <rect key="frame" x="0.0" y="70" width="375" height="248"/>
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5LR-MZ-OAw">
                             <rect key="frame" x="16" y="46" width="343" height="40"/>
@@ -123,8 +123,8 @@
                                 <outlet property="delegate" destination="-1" id="3Am-v0-rYW"/>
                             </connections>
                         </textField>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4jc-fs-c4D">
-                            <rect key="frame" x="143" y="102" width="89.5" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Exercise Category" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4jc-fs-c4D">
+                            <rect key="frame" x="76" y="102" width="223" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="DOS-lr-fMz"/>
@@ -133,8 +133,8 @@
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zmW-lq-2bb">
-                            <rect key="frame" x="147" y="8" width="81.5" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Exercise Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zmW-lq-2bb">
+                            <rect key="frame" x="93" y="8" width="190" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="4dx-1v-sg2"/>
@@ -156,11 +156,8 @@
                             </segments>
                         </segmentedControl>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yrc-qZ-yZ9">
-                            <rect key="frame" x="188.5" y="196" width="186.5" height="40"/>
+                            <rect key="frame" x="188.5" y="196" width="186.5" height="50"/>
                             <color key="backgroundColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="Fwr-Kc-fuR"/>
-                            </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <state key="normal" title="Add + Select">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -171,10 +168,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o8B-mG-ldw">
-                            <rect key="frame" x="0.0" y="196" width="186.5" height="40"/>
+                            <rect key="frame" x="0.0" y="196" width="186.5" height="50"/>
                             <color key="backgroundColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="0n0-Hy-gxS"/>
+                                <constraint firstAttribute="height" constant="50" id="0n0-Hy-gxS"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <state key="normal" title="Add">
@@ -190,7 +187,7 @@
                         <constraint firstAttribute="trailing" secondItem="5LR-MZ-OAw" secondAttribute="trailing" constant="16" id="0Tg-35-5nI"/>
                         <constraint firstItem="yrc-qZ-yZ9" firstAttribute="leading" secondItem="o8B-mG-ldw" secondAttribute="trailing" constant="2" id="4Mj-ZN-6vL"/>
                         <constraint firstItem="yrc-qZ-yZ9" firstAttribute="bottom" secondItem="o8B-mG-ldw" secondAttribute="bottom" id="7I9-TO-KUa"/>
-                        <constraint firstAttribute="height" constant="238" id="EWQ-NH-m2d"/>
+                        <constraint firstAttribute="height" constant="248" id="EWQ-NH-m2d"/>
                         <constraint firstItem="Prd-XR-iTu" firstAttribute="leading" secondItem="XMw-JV-WkI" secondAttribute="leading" constant="16" id="EYl-ek-Ku9"/>
                         <constraint firstItem="5LR-MZ-OAw" firstAttribute="top" secondItem="zmW-lq-2bb" secondAttribute="bottom" constant="8" id="EpY-KI-CWM"/>
                         <constraint firstItem="o8B-mG-ldw" firstAttribute="top" secondItem="Prd-XR-iTu" secondAttribute="bottom" constant="16" id="GOg-c7-Q3q"/>

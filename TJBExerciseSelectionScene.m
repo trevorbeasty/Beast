@@ -79,7 +79,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - View Life Cycle
 
-static CGFloat const controlHeight = 236.0;
+static CGFloat const controlHeight = 246.0;
 
 - (void)viewDidLoad{
     

@@ -27,9 +27,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DGq-w9-M2p">
-                    <rect key="frame" x="0.0" y="677" width="505" height="40"/>
+                    <rect key="frame" x="0.0" y="667" width="505" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="G96-k3-Q8O"/>
+                        <constraint firstAttribute="height" constant="50" id="G96-k3-Q8O"/>
                     </constraints>
                     <state key="normal" title="Launch"/>
                     <connections>
@@ -57,7 +57,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddm-83-lU1">
-                    <rect key="frame" x="8" y="122" width="489" height="555"/>
+                    <rect key="frame" x="8" y="122" width="489" height="545"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Routine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sq-W5-vNc">

@@ -135,6 +135,8 @@
         
     }
     
+    
+    
 }
 
 
@@ -149,6 +151,110 @@
 }
 
 #pragma mark - Modes
+
+- (void)configureViewForTargetsMode{
+    
+    // state
+    
+    _activeMode = TargetsMode;
+    
+    // buttons
+    
+    NSArray *buttons = @[self.weightButton,
+                         self.repsButton,
+                         self.restButton];
+    for (UIButton *button in buttons){
+        
+        button.enabled = NO;
+        
+    }
+    
+    // aesthetis and functionality
+    
+    for (UIButton *b in buttons){
+        
+        b.enabled = NO;
+        
+        b.backgroundColor = [UIColor clearColor];
+        [b setTitleColor: [UIColor blackColor]
+                forState: UIControlStateNormal];
+        
+    }
+    
+    // must first gather all of the appropriate data and then format it appropriately
+    
+    int exerciseInd = [self.exerciseIndex intValue];
+    int roundInd = [self.roundIndex intValue];
+    
+    // targets
+    
+    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
+    
+    // only grab targets if the type is being targeted, otherwise leave them as nil
+    
+    NSNumber *weightTarget;
+    NSNumber *repsTarget;
+    NSNumber *restTarget;
+    
+    if (chainTemplate.targetingWeight){
+        weightTarget = [NSNumber numberWithFloat: chainTemplate.weightArrays[exerciseInd].numbers[roundInd].value];
+    }
+    
+    if (chainTemplate.targetingReps){
+        repsTarget = [NSNumber numberWithFloat: chainTemplate.repsArrays[exerciseInd].numbers[roundInd].value];
+    }
+    
+    if (chainTemplate.targetingRestTime){
+        restTarget = [NSNumber numberWithFloat: chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].value];
+    }
+    
+    // weight
+    
+    if (chainTemplate.targetingWeight){
+        
+        NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weightTarget stringValue]];
+        
+        [self.weightButton setTitle: weightString
+                           forState: UIControlStateNormal];
+        
+    } else{
+        
+        [self.weightButton setTitle: @"X"
+                           forState: UIControlStateNormal];
+        
+    }
+    
+    // reps
+    
+    if (chainTemplate.targetingReps){
+        
+        NSString *repsString = [NSString stringWithFormat: @"%@ reps", [repsTarget stringValue]];
+        
+        [self.repsButton setTitle: repsString
+                         forState: UIControlStateNormal];
+        
+    } else{
+        
+        [self.repsButton setTitle: @"X"
+                         forState: UIControlStateNormal];
+        
+    }
+    
+    // rest
+    
+    if (chainTemplate.targetingRestTime){
+        
+        [self.restButton setTitle: [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [restTarget intValue]]
+                         forState: UIControlStateNormal];
+        
+    } else{
+        
+        [self.restButton setTitle: @""
+                         forState: UIControlStateNormal];
+        
+    }
+    
+}
 
 - (void)configureViewForRelativeComparisonMode{
     
@@ -178,8 +284,6 @@
                 forState: UIControlStateNormal];
         
     }
-    
-    
     
     // round label text
     
@@ -817,6 +921,10 @@
             
         case RelativeComparisonMode:
             [self configureViewForRelativeComparisonMode];
+            break;
+            
+        case TargetsMode:
+            [self configureViewForTargetsMode];
             break;
             
         default:

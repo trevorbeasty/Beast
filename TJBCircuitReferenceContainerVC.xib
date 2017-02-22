@@ -99,7 +99,7 @@
                         <constraint firstAttribute="trailing" secondItem="Fds-9Y-sIw" secondAttribute="trailing" id="z4w-B5-5wo"/>
                     </constraints>
                 </view>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QwT-0q-dsS">
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QwT-0q-dsS">
                     <rect key="frame" x="8" y="699" width="566" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="tuc-c9-aVd"/>
@@ -107,6 +107,7 @@
                     <segments>
                         <segment title="Absolute"/>
                         <segment title="Relative"/>
+                        <segment title="Targets"/>
                     </segments>
                 </segmentedControl>
             </subviews>

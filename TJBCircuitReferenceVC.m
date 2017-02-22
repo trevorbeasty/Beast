@@ -206,6 +206,9 @@
                 [exerciseComp activateMode: RelativeComparisonMode];
                 break;
                 
+            case TargetsMode:
+                [exerciseComp activateMode: TargetsMode];
+                
             default:
                 break;
         }

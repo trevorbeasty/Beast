@@ -250,6 +250,10 @@
                 [rowComp activateMode: RelativeComparisonMode];
                 break;
                 
+            case TargetsMode:
+                [rowComp activateMode: TargetsMode];
+                break;
+                
             default:
                 break;
         }

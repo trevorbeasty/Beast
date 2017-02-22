@@ -31,10 +31,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gVq-bE-dqU" userLabel="Button Container">
-                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9q-4p-UvJ">
-                            <rect key="frame" x="0.0" y="0.0" width="186.5" height="40"/>
+                            <rect key="frame" x="0.0" y="0.0" width="186.5" height="50"/>
                             <color key="backgroundColor" red="1" green="0.42017299107142858" blue="0.20655691964285713" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Launch">
@@ -45,7 +45,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8G-LF-5HS">
-                            <rect key="frame" x="188.5" y="0.0" width="186.5" height="40"/>
+                            <rect key="frame" x="188.5" y="0.0" width="186.5" height="50"/>
                             <state key="normal" title="View History"/>
                         </button>
                     </subviews>
@@ -59,7 +59,7 @@
                         <constraint firstItem="X8G-LF-5HS" firstAttribute="top" secondItem="gVq-bE-dqU" secondAttribute="top" id="qRh-Bc-vf2"/>
                         <constraint firstAttribute="trailing" secondItem="X8G-LF-5HS" secondAttribute="trailing" id="qU2-bM-Pzr"/>
                         <constraint firstItem="M9q-4p-UvJ" firstAttribute="leading" secondItem="gVq-bE-dqU" secondAttribute="leading" id="sKw-kL-gJk"/>
-                        <constraint firstAttribute="height" constant="40" id="xTx-Y9-7x2"/>
+                        <constraint firstAttribute="height" constant="50" id="xTx-Y9-7x2"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZc-c3-eUK">
@@ -95,17 +95,17 @@
                     </connections>
                 </button>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pL5-1h-FKf">
-                    <rect key="frame" x="16" y="583" width="343" height="29"/>
+                    <rect key="frame" x="16" y="573" width="343" height="29"/>
                     <segments>
                         <segment title="Date Last Executed"/>
                         <segment title="Date Created"/>
                     </segments>
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cna-Rm-Pq1" userLabel="mainContainer">
-                    <rect key="frame" x="16" y="138" width="343" height="437"/>
+                    <rect key="frame" x="16" y="138" width="343" height="427"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="437"/>
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="427"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -137,7 +137,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="AZA-Ed-E97"/>
                     </constraints>
-                    <state key="normal" title="Back"/>
+                    <state key="normal" title="Home"/>
                     <connections>
                         <action selector="didPressBackButton:" destination="-1" eventType="touchUpInside" id="xPy-Ra-hUc"/>
                     </connections>

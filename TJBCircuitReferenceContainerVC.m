@@ -206,6 +206,10 @@
             [self.childRoutineVC activateMode: RelativeComparisonMode];
             break;
             
+        case 2:
+            [self.childRoutineVC activateMode: TargetsMode];
+            break;
+            
         default:
             break;
     }

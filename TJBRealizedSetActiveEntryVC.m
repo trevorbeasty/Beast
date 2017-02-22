@@ -64,7 +64,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 @property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
-//@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
@@ -85,6 +84,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonControlsVerticalConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleSubLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timerTopLabel;
+@property (weak, nonatomic) IBOutlet UILabel *statusTopLabel;
 
 
 
@@ -266,7 +268,6 @@
     
     if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 0){
         
-        self.largeStatusLabel.text = @"";
         [self.beginNextSetButton setTitle: @"Set Completed"
                                  forState: UIControlStateNormal];
         
@@ -356,6 +357,17 @@
         label.backgroundColor = [UIColor darkGrayColor];
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+    }
+    
+    NSArray *subtitleLabels = @[self.titleSubLabel,
+                                self.statusTopLabel,
+                                self.timerTopLabel];
+    for (UILabel *label in subtitleLabels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 15.0];
         
     }
     
@@ -647,7 +659,7 @@
     
     if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 0){
         
-        self.largeStatusLabel.text = @"";
+        self.largeStatusLabel.text = @"N/A";
         [self.beginNextSetButton setTitle: @"Set Completed"
                                  forState: UIControlStateNormal];
         
@@ -755,6 +767,8 @@
         
         [weakSelf.exerciseButton setTitle: selectedExercise.name
                                  forState: UIControlStateNormal];
+        
+        weakSelf.titleSubLabel.text = selectedExercise.name;
         
         [weakSelf fetchManagedObjectsAndDetermineRecordsForActiveExercise];
         

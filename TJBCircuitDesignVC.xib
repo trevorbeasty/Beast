@@ -130,10 +130,9 @@
                     </segments>
                 </segmentedControl>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QT3-p7-8xe">
-                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="KXC-Rg-adV"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="yEV-IR-JJZ"/>
+                        <constraint firstAttribute="height" constant="50" id="KXC-Rg-adV"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <state key="normal" title="Continue"/>
@@ -206,7 +205,7 @@
                         <constraint firstAttribute="height" constant="50" id="uIz-Q4-Lkj"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Back">
+                    <state key="normal" title="Home">
                         <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </state>
                     <connections>

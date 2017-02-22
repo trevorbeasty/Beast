@@ -55,7 +55,7 @@
                     </constraints>
                 </scrollView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRK-QI-22E">
-                    <rect key="frame" x="52" y="50" width="404" height="20"/>
+                    <rect key="frame" x="62" y="50" width="384" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="4TK-Vh-zD9"/>
                     </constraints>
@@ -64,9 +64,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t4e-f8-R8O">
-                    <rect key="frame" x="458" y="20" width="50" height="50"/>
+                    <rect key="frame" x="448" y="20" width="60" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="50" id="m6V-w5-kRZ"/>
+                        <constraint firstAttribute="width" constant="60" id="m6V-w5-kRZ"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                     <state key="normal" title="&gt;"/>
@@ -75,9 +75,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xyd-rd-xY1">
-                    <rect key="frame" x="0.0" y="20" width="50" height="50"/>
+                    <rect key="frame" x="0.0" y="20" width="60" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="50" id="wbs-mi-sxz"/>
+                        <constraint firstAttribute="width" constant="60" id="wbs-mi-sxz"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
                     <state key="normal" title="&lt;"/>
@@ -86,7 +86,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Workouts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tty-zV-IRM">
-                    <rect key="frame" x="52" y="20" width="404" height="30"/>
+                    <rect key="frame" x="62" y="20" width="384" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="V2j-fe-xwe"/>
                     </constraints>

@@ -12,6 +12,7 @@ typedef enum {
     EditingMode,
     AbsoluteComparisonMode,
     RelativeComparisonMode,
+    TargetsMode,
 } TJBRoutineReferenceMode;
 
 @class TJBRealizedChain;

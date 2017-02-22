@@ -27,8 +27,7 @@
     self.weightLabel.text = weightString;
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.timeStyle = NSDateFormatterNoStyle;
-    df.dateStyle = NSDateFormatterMediumStyle;
+    df.dateFormat = @"MM / dd / yy";
     self.dateLabel.text = [df stringFromDate: date];
     
     self.backgroundColor = [UIColor clearColor];

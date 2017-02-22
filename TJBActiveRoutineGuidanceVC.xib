@@ -152,10 +152,10 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2wr-bI-9Cm">
-                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
                     <color key="backgroundColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="Luu-gE-NaM"/>
+                        <constraint firstAttribute="height" constant="50" id="Luu-gE-NaM"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <state key="normal" title="Set Completed">
@@ -166,7 +166,7 @@
                     </connections>
                 </button>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-cq-CI2">
-                    <rect key="frame" x="0.0" y="160" width="375" height="467"/>
+                    <rect key="frame" x="0.0" y="160" width="375" height="457"/>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dVH-4S-63K" userLabel="advancedControlsContainer">
                     <rect key="frame" x="0.0" y="122" width="375" height="38"/>
