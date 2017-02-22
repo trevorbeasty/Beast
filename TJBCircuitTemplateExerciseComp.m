@@ -149,8 +149,7 @@
         
         // add the newly created row component to the master controller's child collection
         
-        [self.masterController addChildRowController: rowVC
-                                    forExerciseIndex: [self.exerciseIndex intValue]];
+        [self.masterController addChildRowController: rowVC];
         
         rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
         

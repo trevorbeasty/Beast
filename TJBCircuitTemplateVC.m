@@ -39,22 +39,10 @@
 @property (nonatomic, strong) NSMutableOrderedSet *selectedExercises;
 
 //// core
-
-//// these are largely for convenience as most are derived from the chain template itself
-//
-//@property (nonatomic, strong) NSNumber *targetingWeight;
-//@property (nonatomic, strong) NSNumber *targetingReps;
-//@property (nonatomic, strong) NSNumber *targetingRest;
-//@property (nonatomic, strong) NSNumber *targetsVaryByRound;
-//@property (nonatomic, strong) NSNumber *numberOfExercises;
-//@property (nonatomic, strong) NSNumber *numberOfRounds;
-//@property (nonatomic, strong) NSString *name;
-
-
 // keeps track of its children rows and exercise components to facillitate delegate functionality
 
 @property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateExerciseComp *> *childExerciseComponentControllers;
-@property (nonatomic, strong) NSMutableArray<NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *> *childRowControllers;
+@property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *childRowControllers;
 
 // for views
 
@@ -78,15 +66,6 @@ static NSString * const defaultValue = @"unselected";
     
     self.chainTemplate = skeletonChainTemplate;
     
-//    self.targetingWeight = [NSNumber numberWithBool: skeletonChainTemplate.targetingWeight];
-//    self.targetingReps = [NSNumber numberWithBool: skeletonChainTemplate.targetingReps];
-//    self.targetingRest = [NSNumber numberWithBool: skeletonChainTemplate.targetingRestTime];
-//    self.targetsVaryByRound = [NSNumber numberWithBool: skeletonChainTemplate.targetsVaryByRound];
-//    self.numberOfExercises = [NSNumber numberWithInt: skeletonChainTemplate.numberOfExercises];
-//    self.numberOfRounds = [NSNumber numberWithInt: skeletonChainTemplate.numberOfRounds];
-//    self.name = skeletonChainTemplate.name;
-//    self.viewHeight = viewHeight;
-//    self.viewWidth = viewWidth;
     _viewSize = viewSize;
     
     // for restoration
@@ -150,14 +129,6 @@ static NSString * const defaultValue = @"unselected";
     // child row controllers
     
     self.childRowControllers = [[NSMutableArray alloc] init];
-    
-    int exerciseLimit = self.chainTemplate.numberOfExercises;
-    
-    for (int i = 0; i < exerciseLimit; i++){
-        
-        NSMutableArray *array = [[NSMutableArray alloc] init];
-        [self.childRowControllers addObject: array];
-    }
     
     // child exercise controllers
     
@@ -286,188 +257,48 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - <TJBCircuitTemplateVCProtocol>
 
-- (void)presentNumberSelectionSceneWithNumberType:(NumberType)numberType numberMultiple:(NSNumber *)numberMultiple numberLimit:(NSNumber *)numberLimit title:(NSString *)title cancelBlock:(void(^)(void))cancelBlock numberSelectedBlock:(void(^)(NSNumber *))numberSelectedBlock animated:(BOOL)animated modalTransitionStyle:(UIModalTransitionStyle)transitionStyle{
+- (void)didDragAcrossPointInView:(CGPoint)dragPoint{
     
-    TJBNumberSelectionVC *numberSelectionVC = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: numberType                                                        
-                                                                                                   title: title
-                                                                                             cancelBlock: cancelBlock
-                                                                                     numberSelectedBlock: numberSelectedBlock];
+    // hit-test the point.  If that point is within the weight button of a child row comp, tell that row comp to update its value
     
+    UIView *hitTestView = [self.view hitTest: dragPoint
+                                   withEvent: nil];
     
-    numberSelectionVC.modalTransitionStyle = transitionStyle;
-    
-    [self presentViewController: numberSelectionVC
-                       animated: NO
-                     completion: nil];
+    for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
+        
+        if ([rowComp.weightButton isEqual: hitTestView]){
+            
+            [rowComp copyValueForWeightButton];
+            
+        }
+        
+    }
     
 }
 
-
-
-- (void)didPressUserInputButtonWithType:(NumberType)type chainNumber:(NSNumber *)chainNumber roundNumber:(NSNumber *)roundNumber button:(UIButton *)button{
+- (void)activateCopyingStateForNumber:(float)number{
     
-    //// this method handles selection of weight, reps, and rest.  Context should be saved immediately after updating the chain template
+    // activate the copying state in all row components for the given number
     
-    __weak TJBCircuitTemplateVC *weakSelf = self;
-    
-    CancelBlock cancelBlock = ^{
+    for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
         
-        [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
+        [rowComp activeCopyingStateForNumber: number];
         
-    };
-    
-    void (^buttonAlterationBlock)(void) = ^{
-        
-        button.backgroundColor = [UIColor clearColor];
-        [button setTitleColor: [UIColor blackColor]
-                     forState: UIControlStateNormal];
-        
-    };
-    
-    int indexOne = [chainNumber intValue] - 1;
-    int indexTwo = [roundNumber intValue] - 1;
-    
-    if (type == WeightType){
-        
-        NumberSelectedBlockSingle block = ^(NSNumber *number){
-            
-            [button setTitle: [number stringValue]
-                    forState: UIControlStateNormal];
-            
-            buttonAlterationBlock();
-            
-            TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.weightArrays[indexOne].numbers[indexTwo];
-            arrayComp.isDefaultObject = NO;
-            arrayComp.value = [number floatValue];
-            
-            // clone the selection if targets do not vary by round
-            
-            if (self.chainTemplate.targetsVaryByRound == NO){
-                
-                [[CoreDataController singleton] cloneFirstNumberForWeight: self.chainTemplate];
-            }
-            
-            [[CoreDataController singleton] saveContext];
-            
-            [self dismissViewControllerAnimated: NO
-                                     completion: nil];
-            
-        };
-        
-        [self presentNumberSelectionSceneWithNumberType: WeightType
-                                         numberMultiple: [NSNumber numberWithDouble: 2.5]
-                                            numberLimit: nil
-                                                  title: @"Select Weight"
-                                            cancelBlock: cancelBlock
-                                    numberSelectedBlock: block
-                                               animated: YES
-                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
     }
-    else if (type == RepsType){
-        
-        NumberSelectedBlockSingle block = ^(NSNumber *number){
-            
-            [button setTitle: [number stringValue]
-                    forState: UIControlStateNormal];
-            
-            buttonAlterationBlock();
-            
-            TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.repsArrays[indexOne].numbers[indexTwo];
-            arrayComp.isDefaultObject = NO;
-            arrayComp.value = [number floatValue];
-            
-            // clone the selection if targets do not vary by round
-            
-            if (self.chainTemplate.targetsVaryByRound == NO){
-                
-                [[CoreDataController singleton] cloneFirstNumberForReps: self.chainTemplate];
-            }
-            
-            [[CoreDataController singleton] saveContext];
-            
-            [self dismissViewControllerAnimated: NO
-                                     completion: nil];
-            
-        };
-        
-        [self presentNumberSelectionSceneWithNumberType: RepsType
-                                         numberMultiple: [NSNumber numberWithDouble: 1.0]
-                                            numberLimit: nil
-                                                  title: @"Select Reps"
-                                            cancelBlock: cancelBlock
-                                    numberSelectedBlock: block
-                                               animated: YES
-                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
-    else if (type == TargetRestType)
-    {
-        
-        NumberSelectedBlockSingle block = ^(NSNumber *number){
-            
-            NSString *title = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
-            
-            [button setTitle: title
-                    forState: UIControlStateNormal];
-            
-            buttonAlterationBlock();
-            
-            TJBNumberTypeArrayComp *arrayComp = self.chainTemplate.targetRestTimeArrays[indexOne].numbers[indexTwo];
-            arrayComp.isDefaultObject = NO;
-            arrayComp.value = [number floatValue];
-            
-            // clone the selection if targets do not vary by round
-            
-            if (self.chainTemplate.targetsVaryByRound == NO){
-                
-                [[CoreDataController singleton] cloneFirstNumberForRest: self.chainTemplate];
-            }
-            
-            [[CoreDataController singleton] saveContext];
-            
-            [self dismissViewControllerAnimated: NO
-                                     completion: nil];
-            
-        };
-        
-        [self presentNumberSelectionSceneWithNumberType: TargetRestType
-                                         numberMultiple: [NSNumber numberWithDouble: 5.0]
-                                            numberLimit: nil
-                                                  title: @"Select Rest"
-                                            cancelBlock: cancelBlock
-                                    numberSelectedBlock: block
-                                               animated: YES
-                                   modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    }
+    
 }
 
-//- (void)didPressExerciseButton:(UIButton *)button inChain:(NSNumber *)chainNumber{
-//    
-//    TJBCircuitTemplateVC * __weak weakSelf = self;
-//    
-//    void (^callback)(TJBExercise *) = ^(TJBExercise *exercise){
-//        
-//        [button setTitle: exercise.name
-//                forState: UIControlStateNormal];
-//        
-//        button.backgroundColor = [UIColor clearColor];
-//        
-//        [button setTitleColor: [UIColor blackColor]
-//                     forState: UIControlStateNormal];
-//        
-//        [weakSelf didSelectExercise: exercise
-//                     forChainNumber: chainNumber];
-//        
-//        [weakSelf dismissViewControllerAnimated: NO
-//                                     completion: nil];
-//    };
-//    
-//    TJBExerciseSelectionScene *vc = [[TJBExerciseSelectionScene alloc] initWithCallbackBlock: callback];
-//    
-//    [self presentViewController: vc
-//                       animated: NO
-//                     completion: nil];
-//}
+- (void)deactivateCopyingState{
+    
+    // deactivate the copying state in all row components
+    
+    for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
+        
+        [rowComp deactivateCopyingState];
+        
+    }
+    
+}
 
 - (void)didSelectExercise:(TJBExercise *)exercise forExerciseIndex:(int)exerciseIndex{
     
@@ -481,10 +312,9 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
-- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController forExerciseIndex:(int)exerciseIndex{
+- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController{
     
-    NSMutableArray *array = self.childRowControllers[exerciseIndex];
-    [array addObject: rowController];
+    [self.childRowControllers addObject: rowController];
     
 }
 
@@ -500,85 +330,7 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
-//- (void)populateChildVCViewsWithUserSelectedValues{
-//    
-//    //// for all non-default exercise, weight, reps, and rest objects, populate child VC's with the stored values.  The class is only responsible for sending each child view it corresponding data objects.  It is the job of the child views to evaluate the passed in data objects and determine whether or not their views should be updated (based on whether the object is a default object or not)
-//    
-//    int exerciseLimit = self.chainTemplate.numberOfExercises;
-//    int roundLimit = self.chainTemplate.numberOfRounds;
-//    
-//    TJBCircuitTemplateExerciseComp *currentExerciseComp;
-//    TJBCircuitTemplateRowComponent *currentRowComp;
-//    
-//    TJBChainTemplate *chain = self.chainTemplate;
-//    
-//    TJBExercise *currentExercise;
-//    TJBNumberTypeArrayComp *currentWeight;
-//    TJBNumberTypeArrayComp *currentReps;
-//    TJBNumberTypeArrayComp *currentRest;
-//    
-//    for (int i = 0; i < exerciseLimit; i++){
-//        
-//        // exercise child controllers
-//        
-//        currentExerciseComp = self.childExerciseComponentControllers[i];
-//        currentExercise = chain.exercises[i];
-//        
-//        // need to update this VC's selectedExercises as well as call the exercise components protocol method
-//        
-//        self.selectedExercises[i] = currentExercise;
-//        
-//        [currentExerciseComp updateViewsWithUserSelectedExercise: currentExercise];
-//        
-//        for (int j = 0; j < roundLimit; j++){
-//            
-//            // row child controllers
-//            
-//            // must evaluate if category is being targeted before sending message
-//            
-//            currentRowComp = self.childRowControllers[i][j];
-//            
-//            // weight
-//            
-//            if (chain.targetingWeight){
-//                
-//                currentWeight = chain.weightArrays[i].numbers[j];
-//                
-//                [currentRowComp updateWeightViewWithUserSelection: currentWeight];
-//                
-//            }
-//            
-//            // reps
-//            
-//            if (chain.targetingReps){
-//                
-//                currentReps = chain.repsArrays[i].numbers[j];
-//                
-//                [currentRowComp updateRepsViewWithUserSelection: currentReps];
-//                
-//            }
-//            
-//            // rest
-//            
-//            if (chain.targetingRestTime){
-//                
-//                currentRest = chain.targetRestTimeArrays[i].numbers[j];
-//                
-//                [currentRowComp updateRestViewWithUserSelection: currentRest];
-//                
-//            }
-//            
-//            // if targets do not vary by round, there will only be one row controller for each exercise component and this inner for-loop should only be run once
-//            
-//            BOOL targetsVaryByRound = chain.targetsVaryByRound;
-//            
-//            if (!targetsVaryByRound){
-//                
-//                break;
-//            }
-//        }
-//    }
-//}
+
 
 
 @end
