@@ -47,8 +47,6 @@
 
 // IBOutlet
 
-
-//@property (weak, nonatomic) IBOutlet UIButton *liftButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
@@ -56,14 +54,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *monthTitle;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
 @property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *homeButton;
 
 
 
 // IBAction
 
-//- (IBAction)didPressLiftButton:(id)sender;
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
+- (IBAction)didPressHomeButton:(id)sender;
 
 
 // circle dates
@@ -383,6 +382,27 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     [self configureTableView];
     
     [self configureTableShadow];
+    
+    [self configureOptionalHomeButton];
+    
+}
+
+- (void)configureOptionalHomeButton{
+    
+    if (_includesHomeButton){
+        
+        self.homeButton.backgroundColor = [UIColor clearColor];
+        self.homeButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        [self.homeButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                              forState: UIControlStateNormal];
+        
+        
+    } else{
+        
+        self.homeButton.enabled = NO;
+        self.homeButton.hidden = YES;
+        
+    }
     
 }
 
@@ -734,6 +754,13 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 //    [self scrollToOffset: newPosition
 //       animationDuration: maxAnimationTime * offsetXPositionAsPercent
 //     subsequentAnimation: nil];
+    
+}
+
+- (IBAction)didPressHomeButton:(id)sender{
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
     
 }
 

@@ -25,6 +25,14 @@
 
 @interface TJBCircuitTemplateVC ()
 
+{
+    
+    // core
+    
+    CGSize _viewSize;
+    
+}
+
 // core data
 
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
@@ -41,8 +49,9 @@
 @property (nonatomic, strong) NSNumber *numberOfExercises;
 @property (nonatomic, strong) NSNumber *numberOfRounds;
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSNumber *viewHeight;
-@property (nonatomic, strong) NSNumber *viewWidth;
+//@property (nonatomic, strong) NSNumber *viewHeight;
+
+
 
 // keeps track of its children rows and exercise components to facillitate delegate functionality
 
@@ -61,7 +70,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth{
+- (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate viewSize:(CGSize)viewSize{
     
     // call to super
     
@@ -78,8 +87,9 @@ static NSString * const defaultValue = @"unselected";
     self.numberOfExercises = [NSNumber numberWithInt: skeletonChainTemplate.numberOfExercises];
     self.numberOfRounds = [NSNumber numberWithInt: skeletonChainTemplate.numberOfRounds];
     self.name = skeletonChainTemplate.name;
-    self.viewHeight = viewHeight;
-    self.viewWidth = viewWidth;
+//    self.viewHeight = viewHeight;
+//    self.viewWidth = viewWidth;
+    _viewSize = viewSize;
     
     // for restoration
     
@@ -121,8 +131,8 @@ static NSString * const defaultValue = @"unselected";
     
     // this must be called when creating the view programatically
     
-    float viewWidth = [self.viewWidth floatValue];
-    float viewHeight = [self.viewHeight floatValue];
+    float viewWidth = _viewSize.width;
+    float viewHeight = _viewSize.height;
     UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
     view.backgroundColor = [UIColor clearColor];
     self.view = view;
@@ -165,7 +175,7 @@ static NSString * const defaultValue = @"unselected";
     
     // scroll view
     
-    CGRect scrollViewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], [self.viewHeight floatValue]);
+    CGRect scrollViewFrame = CGRectMake(0, 0, _viewSize.width, _viewSize.height);
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: scrollViewFrame];
     
     // determine height of scroll view content size
@@ -194,10 +204,10 @@ static NSString * const defaultValue = @"unselected";
     int numberOfComponents = [self.numberOfExercises intValue];
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
-    scrollView.contentSize = CGSizeMake([self.viewWidth floatValue], scrollContentHeight);
+    scrollView.contentSize = CGSizeMake(_viewSize.width, scrollContentHeight);
     [self.view addSubview: scrollView];
     
-    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, [self.viewWidth floatValue], scrollContentHeight);
+    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, _viewSize.width, scrollContentHeight);
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
@@ -206,7 +216,7 @@ static NSString * const defaultValue = @"unselected";
     // row components
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: @"V:|-8-"];
+    [verticalLayoutConstraintsString setString: @"V:|-16-"];
     
     for (int i = 0 ; i < [self.numberOfExercises intValue] ; i ++){
         

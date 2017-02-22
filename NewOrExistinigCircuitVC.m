@@ -1091,7 +1091,7 @@
         TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
         vc1.tabBarItem.title = @"Active";
         
-        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] init];
+        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
         vc3.tabBarItem.title = @"Workout Log";
         
         TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];

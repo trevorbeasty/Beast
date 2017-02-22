@@ -12,6 +12,6 @@
 
 @interface TJBCircuitTemplateVC : UIViewController <TJBCircuitTemplateVCProtocol>
 
-- (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate viewHeight:(NSNumber *)viewHeight viewWidth:(NSNumber *)viewWidth;
+- (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate viewSize:(CGSize)viewSize;
 
 @end

@@ -110,7 +110,7 @@
     TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
     vc1.tabBarItem.title = @"Active";
     
-    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
+    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
     vc2.tabBarItem.title = @"Workout Log";
     
     // tab bar controller
@@ -132,7 +132,7 @@
     NewOrExistinigCircuitVC *vc1 = [[NewOrExistinigCircuitVC alloc] init];
     vc1.tabBarItem.title = @"Selection";
     
-    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
+    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
     vc2.tabBarItem.title = @"Workout Log";
     
     // tab bar
@@ -173,8 +173,8 @@
 
 - (IBAction)didPressViewWorkoutLog:(id)sender{
     
-    TJBWorkoutNavigationHub *navHub = [[TJBWorkoutNavigationHub alloc] init];
-    
+    TJBWorkoutNavigationHub *navHub = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: YES];
+
     [self presentViewController: navHub
                        animated: YES
                      completion: nil];

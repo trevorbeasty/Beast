@@ -18,6 +18,7 @@
 
 #import "TJBWorkoutNavigationHub.h"
 #import "TJBActiveRoutineGuidanceVC.h"
+#import "TJBCircuitReferenceContainerVC.h"
 
 // aesthetics
 
@@ -45,11 +46,6 @@
 - (IBAction)didPressBack:(id)sender;
 
 // core
-
-@property (nonatomic, strong) NSNumber *childViewHeight;
-@property (nonatomic, strong) NSNumber *childViewWidth;
-
-// circuit template
 
 @property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *circuitTemplateVC;
 
@@ -109,28 +105,20 @@
     
     [self setRestorationProperties];
     
-    [self setViewDimensionPropertiesForUseByChildVC];
-    
-    [self configureContainerView];
-    
     [self configureViewAesthetics];
 
 }
 
-- (void)setViewDimensionPropertiesForUseByChildVC{
+- (void)viewDidAppear:(BOOL)animated{
     
-    // due to scroll view's issues with auto layout and the fact that accessing containerView's bounds literally takes the dimensions in the xib, no matter what size the xib view is, I have to do this little bit of math
-    // to properly do this, I will have to create IBOutlets for the auto layout constraints set in the xib file
-    
-    CGSize mainscreenSize = [UIScreen mainScreen].bounds.size;
-    
-    NSNumber *viewHeight = [NSNumber numberWithFloat: mainscreenSize.height - 150];
-    NSNumber *viewWidth = [NSNumber numberWithFloat: mainscreenSize.width - 16];
-    
-    self.childViewHeight = viewHeight;
-    self.childViewWidth = viewWidth;
+    if (!self.circuitTemplateVC){
+        
+        [self configureContainerView];
+        
+    }
     
 }
+
 
 - (void)configureViewAesthetics{
     
@@ -205,8 +193,7 @@
     //// create the TJBCircuitTemplateVC
     
     TJBCircuitTemplateVC *vc = [[TJBCircuitTemplateVC alloc] initWithSkeletonChainTemplate: self.chainTemplate
-                                                                                viewHeight: self.childViewHeight
-                                                                                 viewWidth: self.childViewWidth];
+                                                                                  viewSize: self.containerView.frame.size];
     
     self.circuitTemplateVC = vc;
     
@@ -265,30 +252,50 @@
             TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.chainTemplate];
             vc1.tabBarItem.title = @"Active";
             
-            TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
-            vc2.tabBarItem.title = @"Workout Log";
+            TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
+            vc3.tabBarItem.title = @"Workout Log";
+            
+            TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
+            vc2.tabBarItem.title = @"Progress";
             
             // tab bar
             
             UITabBarController *tbc = [[UITabBarController alloc] init];
-            [tbc setViewControllers: @[vc1, vc2]];
+            [tbc setViewControllers: @[vc1, vc2, vc3]];
             tbc.tabBar.translucent = NO;
-            tbc.navigationItem.title = @"Lift Routine";
             
-            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-                                                                           style: UIBarButtonItemStyleDone
-                                                                          target: vc1
-                                                                          action: @selector(didPressBack)];
-            [tbc.navigationItem setLeftBarButtonItem: backButton];
             
-            // navigation controller
-            
-            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-            navC.navigationBar.translucent = NO;
-            
-            [self presentViewController: navC
+            [self presentViewController: tbc
                                animated: NO
                              completion: nil];
+            
+//            TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.chainTemplate];
+//            vc1.tabBarItem.title = @"Active";
+//            
+//            TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
+//            vc2.tabBarItem.title = @"Workout Log";
+//            
+//            // tab bar
+//            
+//            UITabBarController *tbc = [[UITabBarController alloc] init];
+//            [tbc setViewControllers: @[vc1, vc2]];
+//            tbc.tabBar.translucent = NO;
+//            tbc.navigationItem.title = @"Lift Routine";
+//            
+//            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
+//                                                                           style: UIBarButtonItemStyleDone
+//                                                                          target: vc1
+//                                                                          action: @selector(didPressBack)];
+//            [tbc.navigationItem setLeftBarButtonItem: backButton];
+//            
+//            // navigation controller
+//            
+//            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
+//            navC.navigationBar.translucent = NO;
+//            
+//            [self presentViewController: navC
+//                               animated: NO
+//                             completion: nil];
             
         };
         
