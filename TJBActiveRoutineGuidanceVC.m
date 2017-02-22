@@ -65,6 +65,8 @@
 @property (weak, nonatomic) IBOutlet UIView *titleContainer;
 @property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
+@property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
+@property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
 
 // IBAction
 
@@ -185,8 +187,7 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     
     //// title labels
     
-    self.roundTitleLabel.text = [NSString stringWithFormat: @"Round 1/%d", self.chainTemplate.numberOfRounds];
-    self.timerTitleLabel.text = @"";
+    self.roundTitleLabel.text = [NSString stringWithFormat: @"1/%d", self.chainTemplate.numberOfRounds];
     self.mainTitle.text = self.chainTemplate.name;
     
     // detail title label
@@ -237,7 +238,6 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     
     NSArray *labels = @[self.roundTitleLabel,
                         self.timerTitleLabel,
-                        self.mainTitle,
                         self.activeRoutineLabel];
     
     for (UILabel *label in labels){
@@ -248,17 +248,28 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
         
     }
     
-    self.mainTitle.font = [UIFont boldSystemFontOfSize: 15.0];
+    NSArray *smallTextTitles = @[self.mainTitle,
+                                 self.roundTopLabel,
+                                 self.remainingRestTopLabel];
+    for (UILabel *label in smallTextTitles){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 15.0];
+        
+    }
     
     NSArray *titleButtons = @[self.leftBarButton, self.rightBarButtoon];
     for (UIButton *button in titleButtons){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-        [button setTitleColor: [UIColor whiteColor]
+        button.backgroundColor = [UIColor clearColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                      forState: UIControlStateNormal];
         
     }
+    
+    self.rightBarButtoon.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
     // advanced control buttons
     
@@ -471,13 +482,14 @@ static NSString const *restViewKey = @"restView";
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
     CGFloat exerciseCompHeight = 300;
     CGFloat restCompHeight = 100;
-    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight;
+    CGFloat initialTopSpacing = 16.0;
+    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight + initialTopSpacing;
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
     
     UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
-    masterView.backgroundColor = [UIColor redColor];
+    masterView.backgroundColor = [UIColor whiteColor];
     self.activeScrollContentView = masterView;
     
     //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
@@ -500,7 +512,10 @@ static NSString const *restViewKey = @"restView";
                                                                              options: 0
                                                                              metrics: nil
                                                                                views: self.constraintMapping];
-    NSArray *guidanceStackViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: @"V:|-0-[guidanceStackView]"
+    
+    
+    NSString *verticalStringStackView = [NSString stringWithFormat: @"V:|-%.01f-[guidanceStackView]", initialTopSpacing];
+    NSArray *guidanceStackViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalStringStackView
                                                                              options: 0
                                                                              metrics: nil
                                                                                views: self.constraintMapping];
@@ -599,8 +614,6 @@ static NSString const *restViewKey = @"restView";
     
     [masterView addConstraints: restViewHorC];
     [masterView addConstraints: restViewVerC];
-    
-//    [guidanceStackView addArrangedSubview: restItemVC.view];
     
     [restItemVC didMoveToParentViewController: self];
     
@@ -761,7 +774,7 @@ static NSString const *restViewKey = @"restView";
                                                      withForwardIncrementing: NO
                                                               lastUpdateDate: nil];
                 
-                weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"Round %d/%d",
+                weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"%d/%d",
                                                  [weakSelf.activeRoundIndexForTargets intValue] + 1,
                                                  weakSelf.chainTemplate.numberOfRounds];
                     
@@ -975,7 +988,7 @@ static NSString const *restViewKey = @"restView";
                          
                          self.advancedControlsConstraint.constant = 0;
                          
-                         NSArray *views = @[self.advancedControlsContainer, self.leftBarButton, self.rightBarButtoon];
+                         NSArray *views = @[self.advancedControlsContainer];
                          
                          for (UIView *view in views){
                              
@@ -992,7 +1005,7 @@ static NSString const *restViewKey = @"restView";
                      }];
     
     _advancedControlsActive = YES;
-    [self.rightBarButtoon setTitle: @"- Options"
+    [self.rightBarButtoon setTitle: @"-"
                           forState: UIControlStateNormal];
     
     
@@ -1006,7 +1019,7 @@ static NSString const *restViewKey = @"restView";
                          self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
                          
                          
-                         NSArray *views = @[self.advancedControlsContainer, self.leftBarButton, self.rightBarButtoon];
+                         NSArray *views = @[self.advancedControlsContainer];
                          
                          for (UIView *view in views){
                              
@@ -1023,7 +1036,7 @@ static NSString const *restViewKey = @"restView";
                      }];
     
     _advancedControlsActive = NO;
-    [self.rightBarButtoon setTitle: @"+ Options"
+    [self.rightBarButtoon setTitle: @"+"
                           forState: UIControlStateNormal];
     
     

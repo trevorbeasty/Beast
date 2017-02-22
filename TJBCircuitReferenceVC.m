@@ -96,6 +96,7 @@
     CGFloat componentToComponentSpacing = 16;
     CGFloat componentStyleSpacing = 8;
     CGFloat componentHeight;
+    CGFloat initialTopSpacing = 16.0;
 
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
     
@@ -106,10 +107,10 @@
     int numberOfComponents = self.realizedChain.numberOfExercises;
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
-    scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight);
+    scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight + initialTopSpacing);
     [self.view addSubview: scrollView];
     
-    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, _prescribedSize.width, scrollContentHeight);
+    CGRect scrollViewSubviewFrame = CGRectMake(0, initialTopSpacing, _prescribedSize.width, scrollContentHeight);
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
@@ -147,14 +148,12 @@
         
         if (i == self.realizedChain.numberOfExercises - 1){
             
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]",
-                                    dynamicComponentName,
-                                    (int)componentHeight];
+            verticalAppendString = [NSString stringWithFormat: @"[%@]",
+                                    dynamicComponentName];
         } else{
             
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==%d)]-%d-",
+            verticalAppendString = [NSString stringWithFormat: @"[%@]-%d-",
                                     dynamicComponentName,
-                                    (int)componentHeight,
                                     (int)componentToComponentSpacing];
         }
         
@@ -172,6 +171,8 @@
         
         [scrollViewSubview addConstraints: horizontalLayoutConstraints];
     }
+    
+    NSLog(@"%@", verticalLayoutConstraintsString);
     
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
                                                                                  options: 0

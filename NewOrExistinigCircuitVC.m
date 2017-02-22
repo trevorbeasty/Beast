@@ -50,34 +50,24 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
-
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
-//@property (weak, nonatomic) IBOutlet UIButton *modifyButton;
-
 @property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
-
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
-
-
 @property (weak, nonatomic) IBOutlet UILabel *yearLabel;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (weak, nonatomic) IBOutlet UILabel *myRoutinesLabel;
 
 
 // IBAction
 
 - (IBAction)didPressLaunchButton:(id)sender;
-//- (IBAction)didPressModifyButton:(id)sender;
-
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
-//- (IBAction)didPressRightNewButton:(id)sender;
-
 
 //// core data
 
@@ -384,9 +374,16 @@
     
     // year label
     
-    self.yearLabel.backgroundColor = [UIColor darkGrayColor];
-    self.yearLabel.textColor = [UIColor whiteColor];
-    self.yearLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    NSArray *titleLabels = @[self.yearLabel, self.myRoutinesLabel];
+    for (UILabel *label in titleLabels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        
+    }
+    
+    self.yearLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.myRoutinesLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
     // arrows and other bar buttons
     
@@ -404,9 +401,9 @@
     for (UIButton *button in barButtons){
         
         button.backgroundColor = [UIColor darkGrayColor];
-        [button setTitleColor: [UIColor whiteColor]
+        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                               forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
         
     }
     

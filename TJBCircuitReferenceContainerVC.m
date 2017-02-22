@@ -114,17 +114,16 @@
         
     }
     
+    self.titleLabel2.font = [UIFont boldSystemFontOfSize: 15.0];
+    
     NSArray *buttons = @[self.editButton, self.doneButton];
     
     for (UIButton *button in buttons){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-        [button setTitleColor: [UIColor whiteColor]
+        button.backgroundColor = [UIColor clearColor];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                               forState: UIControlStateNormal];
-        
-        button.layer.masksToBounds = YES;
-        button.layer.cornerRadius = 4.0;
         
     }
     
