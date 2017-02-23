@@ -18,6 +18,7 @@
 #import "TJBActiveRoutineGuidanceVC.h"
 #import "TJBWorkoutNavigationHub.h"
 #import "TJBCircuitReferenceContainerVC.h"
+#import "TJBCompleteChainHistoryVC.h"
 
 // views
 
@@ -68,6 +69,7 @@
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
+- (IBAction)didPressViewHistory:(id)sender;
 
 //// core data
 
@@ -1057,6 +1059,22 @@
     
 }
 
+- (IBAction)didPressViewHistory:(id)sender{
+    
+//    // only attempt to present the VC if a chain template has been selected
+//    
+//    if (self.selectedChainTemplate){
+//        
+//        TJBCompleteChainHistoryVC *vc = [[TJBCompleteChainHistoryVC alloc] initWithChainTemplate: self.selectedChainTemplate];
+//        
+//        [self presentViewController: vc
+//                           animated: YES
+//                         completion: nil];
+//        
+//    }
+//    
+}
+
 - (IBAction)didPressRightNewButton:(id)sender{
     
     TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
@@ -1119,11 +1137,6 @@
 }
 
 
-
-- (IBAction)didPressModifyButton:(id)sender{
-    
-    
-}
 
 - (IBAction)didPressLeftArrow:(id)sender{
     

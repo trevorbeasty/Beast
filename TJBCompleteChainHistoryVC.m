@@ -92,7 +92,7 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.chainTemplate.realizedChains.count;
+    return self.chainTemplate.realizedChains.count + 1;
     
 }
 
@@ -108,6 +108,8 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         
         titleCell.primaryLabel.text = self.chainTemplate.name;
         titleCell.secondaryLabel.text = @"Routine History";
+        
+        titleCell.backgroundColor = [UIColor clearColor];
         
         return titleCell;
         
@@ -132,6 +134,8 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         [chainCell configureWithRealizedChain: chain
                                        number: [NSNumber numberWithInteger: adjIndex + 1]];
         
+        chainCell.backgroundColor = [UIColor clearColor];
+        
         return chainCell;
         
     }
@@ -146,6 +150,26 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 
 #pragma mark - <UITableViewDelegate>
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    CGFloat titleHeight = 60.0;
+    
+    if (indexPath.row == 0){
+        
+        return titleHeight;
+        
+    } else{
+        
+        NSInteger adjIndex = indexPath.row - 1;
+        
+        TJBRealizedChain *realizedChain = self.chainTemplate.realizedChains[adjIndex];
+        
+        return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
+        
+    }
+    
+}
 
 
 

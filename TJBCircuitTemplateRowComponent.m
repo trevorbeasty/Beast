@@ -98,7 +98,7 @@
     UILongPressGestureRecognizer *longPressGRWeight = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                               action: @selector(didLongPressWeightButton:)];
     
-    longPressGRWeight.minimumPressDuration = .3;
+    longPressGRWeight.minimumPressDuration = .2;
     longPressGRWeight.numberOfTouchesRequired = 1;
     
     longPressGRWeight.cancelsTouchesInView = YES;
@@ -112,7 +112,7 @@
     UILongPressGestureRecognizer *longPressGRReps = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                                   action: @selector(didLongPressRepsButton:)];
     
-    longPressGRWeight.minimumPressDuration = .3;
+    longPressGRWeight.minimumPressDuration = .2;
     longPressGRWeight.numberOfTouchesRequired = 1;
     
     longPressGRWeight.cancelsTouchesInView = YES;
@@ -126,7 +126,7 @@
     UILongPressGestureRecognizer *longPressGRRest = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                                   action: @selector(didLongPressRestButton:)];
     
-    longPressGRWeight.minimumPressDuration = .3;
+    longPressGRWeight.minimumPressDuration = .2;
     longPressGRWeight.numberOfTouchesRequired = 1;
     
     longPressGRWeight.cancelsTouchesInView = YES;

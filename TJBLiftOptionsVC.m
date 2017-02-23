@@ -19,6 +19,10 @@
 
 #import "TJBAestheticsController.h"
 
+// test
+
+#import "TJBCompleteChainHistoryVC.h"
+
 
 @interface TJBLiftOptionsVC ()
 
@@ -86,8 +90,8 @@
     NSArray *grayLabels = @[self.analysisOptionsLabel, self.liftOptionsLabel];
     for (UILabel *label in grayLabels){
         
-        label.backgroundColor = [UIColor lightGrayColor];
-        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor darkGrayColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
         label.layer.masksToBounds = YES;
@@ -156,6 +160,7 @@
                      completion: nil];
     
 }
+
 
 
 
