@@ -107,8 +107,8 @@
 
 // two fetches are required - realized chain and realized set.  The results are stored for each.  Because fetched results are not being directly fed into a table view, NSFetchedResultsController is not used
 
-@property (nonatomic, strong) NSArray *realizedSetFetchResults;
-@property (nonatomic, strong) NSArray *realizedChainFetchResults;
+//@property (nonatomic, strong) NSArray *realizedSetFetchResults;
+//@property (nonatomic, strong) NSArray *realizedChainFetchResults;
 
 // an array of TJBRepsWeightRecordPairs.  Record pairs are always held for reps values of 1 through 12.  New pairs are added as needed
 
@@ -1407,8 +1407,10 @@
         
         [self instantiateRecordPairsArray];
         
-        [self fetchRealizedSets];
-        [self fetchRealizedChains];
+        // I don't think I actually need to fetch these two things
+        
+//        [self fetchRealizedSets];
+//        [self fetchRealizedChains];
         
         // realized sets
         
@@ -1476,50 +1478,50 @@
 }
 
 
-- (void)fetchRealizedSets{
-    
-    //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
-    
-    NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
-                                                               ascending: YES];
-    
-    NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
-                                                                 ascending: NO];
-    
-    NSString *activeExerciseName = self.exercise.name;
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"exercise.name = %@", activeExerciseName];
-    
-    [request setSortDescriptors: @[repsSort, weightSort]];
-    request.predicate = predicate;
-    
-    NSError *error = nil;
-    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
-                                                                                error: &error];
-    self.realizedSetFetchResults = fetchResults;
-    
-}
+//- (void)fetchRealizedSets{
+//    
+//    //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
+//    
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
+//    
+//    NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
+//                                                               ascending: YES];
+//    
+//    NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
+//                                                                 ascending: NO];
+//    
+//    NSString *activeExerciseName = self.exercise.name;
+//    
+//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"exercise.name = %@", activeExerciseName];
+//    
+//    [request setSortDescriptors: @[repsSort, weightSort]];
+//    request.predicate = predicate;
+//    
+//    NSError *error = nil;
+//    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
+//                                                                                error: &error];
+//    self.realizedSetFetchResults = fetchResults;
+//    
+//}
 
-- (void)fetchRealizedChains{
-    
-    //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedChain"];
-    
-    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"dateCreated"
-                                                               ascending: NO];
-    
-    [request setSortDescriptors: @[dateSort]];
-    
-    NSError *error = nil;
-    
-    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
-                                                                                error: &error];
-    self.realizedChainFetchResults = fetchResults;
-    
-}
+//- (void)fetchRealizedChains{
+//    
+//    //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
+//    
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedChain"];
+//    
+//    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"dateCreated"
+//                                                               ascending: NO];
+//    
+//    [request setSortDescriptors: @[dateSort]];
+//    
+//    NSError *error = nil;
+//    
+//    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
+//                                                                                error: &error];
+//    self.realizedChainFetchResults = fetchResults;
+//    
+//}
 
 - (TJBRepsWeightRecordPair *)repsWeightRecordPairForNumberOfReps:(int)reps{
     

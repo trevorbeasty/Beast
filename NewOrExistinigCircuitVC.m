@@ -44,7 +44,7 @@
 {
     // user selection flow
     
-    BOOL _inPreviewMode;
+    BOOL _viewingChainHistory;
     
 }
 
@@ -92,6 +92,7 @@
 
 @property (nonatomic, strong) NSDate *activeDate;
 @property (nonatomic, strong) NSNumber *selectedDateObjectIndex;
+@property (strong) TJBCompleteChainHistoryVC *chainHistoryVC;
 
 
 
@@ -123,7 +124,7 @@
     
     //// configure state variables for fresh state
     
-    _inPreviewMode = NO;
+    _viewingChainHistory = NO;
     
 }
 
@@ -1061,17 +1062,51 @@
 
 - (IBAction)didPressViewHistory:(id)sender{
     
-//    // only attempt to present the VC if a chain template has been selected
-//    
-//    if (self.selectedChainTemplate){
-//        
-//        TJBCompleteChainHistoryVC *vc = [[TJBCompleteChainHistoryVC alloc] initWithChainTemplate: self.selectedChainTemplate];
-//        
-//        [self presentViewController: vc
-//                           animated: YES
-//                         completion: nil];
-//        
-//    }
+    // only attempt to present the VC if a chain template has been selected
+    
+    if (_viewingChainHistory == NO){
+        
+        TJBCompleteChainHistoryVC *chainHistoryVC = [[TJBCompleteChainHistoryVC alloc] initWithChainTemplate: self.selectedChainTemplate];
+        self.chainHistoryVC = chainHistoryVC;
+        
+        // give the new vc's view the same rect as the current table view
+        // must go through the necessary steps to add the chain history vc as a child view controller
+        
+        [self addChildViewController: chainHistoryVC];
+        
+        CGRect finalMainscreenFrame = self.mainContainer.frame;
+        chainHistoryVC.view.frame = finalMainscreenFrame;
+        [self.view insertSubview: chainHistoryVC.view
+                    aboveSubview: self.tableView];
+        
+        [chainHistoryVC didMoveToParentViewController: self];
+        
+        // update state
+        
+        _viewingChainHistory = YES;
+        
+        // update button title
+        
+        [self.previousMarkButton setTitle: @"Back"
+                                 forState: UIControlStateNormal];
+        
+    } else{
+        
+        // remove the chain history view and nullify the class property
+        
+        [self.chainHistoryVC.view removeFromSuperview];
+        self.chainHistoryVC = nil;
+        
+        // update state and button title
+        
+        _viewingChainHistory = NO;
+        
+        [self.previousMarkButton setTitle: @"View History"
+                                 forState: UIControlStateNormal];
+        
+    }
+    
+
     
 }
 

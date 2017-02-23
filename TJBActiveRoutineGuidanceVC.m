@@ -725,16 +725,15 @@ static NSString const *restViewKey = @"restView";
     NumberSelectedBlockDouble selectedBlock = ^(NSNumber *weight, NSNumber *reps){
             
         // fill in the realized chain with the selected values
-        // be sure to use the active round indices for 'chain'.  There are two pairs of round indices - one for grabbing targets and one for filling in the realized chain
-        // the skeleton chain template already has the appropriate exercises filled in, so must enter all other info here
-        // for now, I will offer no advanced options for user input.  The end of the second set will be recorded as the time the user presses 'set completed'.  All exercises that are not the last in this local sequence will not have rest times recorded
-        // the timer will be reset upon pressing of the set completed button. It will countdown backwards and should use the target rest value that is already stored as its starting value
             
         int exercise = [weakSelf.activeExerciseIndexForChain intValue];
         int round = [weakSelf.activeRoundIndexForChain intValue];
             
         weakSelf.realizedChain.weightArrays[exercise].numbers[round].value = [weight floatValue];
         weakSelf.realizedChain.repsArrays[exercise].numbers[round].value = [reps floatValue];
+        
+        weakSelf.realizedChain.weightArrays[exercise].numbers[round].isDefaultObject = NO;
+        weakSelf.realizedChain.repsArrays[exercise].numbers[round].isDefaultObject = NO;
             
         // set begin dates will always be default objects.  It will vary for set end dates
             
@@ -947,8 +946,6 @@ static NSString const *restViewKey = @"restView";
     
     self.realizedChain.firstIncompleteRoundIndex = [newRoundIndex intValue];
     self.realizedChain.firstIncompleteExerciseIndex = [newExerciseIndex intValue];
-    
-    [[CoreDataController singleton] saveContext];
     
     if (forwardIndicesExist){
         
