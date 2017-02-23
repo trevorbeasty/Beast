@@ -266,11 +266,42 @@ static NSString * const defaultValue = @"unselected";
     
     for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
         
-        if ([rowComp.weightButton isEqual: hitTestView]){
-            
-            [rowComp copyValueForWeightButton];
-            
+        switch (copyInputType) {
+            case CopyWeightType:
+                
+                if ([rowComp.weightButton isEqual: hitTestView]){
+                    
+                    [rowComp copyValueForWeightButton];
+                    
+                }
+                
+                break;
+                
+            case CopyRepsType:
+                
+                if ([rowComp.repsButton isEqual: hitTestView]){
+                    
+                    [rowComp copyValueForRepsButton];
+                    
+                }
+                
+                break;
+                
+            case CopyRestType:
+                
+                if ([rowComp.restButton isEqual: hitTestView]){
+                    
+                    [rowComp copyValueForRestButton];
+                    
+                }
+                
+                break;
+                
+            default:
+                break;
         }
+        
+
         
     }
     

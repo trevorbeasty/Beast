@@ -443,9 +443,9 @@
             
             // change the appearance of the copying reference cell
             
-            self.weightButton.backgroundColor = [UIColor darkGrayColor];
-            [self.weightButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
-                                    forState: UIControlStateNormal];
+            self.repsButton.backgroundColor = [UIColor darkGrayColor];
+            [self.repsButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+                                  forState: UIControlStateNormal];
             
             [self.masterController activateCopyingStateForNumber: number
                                                    copyInputType: CopyRepsType];
@@ -489,9 +489,9 @@
             
             // change the appearance of the copying reference cell
             
-            self.weightButton.backgroundColor = [UIColor darkGrayColor];
-            [self.weightButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
-                                    forState: UIControlStateNormal];
+            self.restButton.backgroundColor = [UIColor darkGrayColor];
+            [self.restButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+                                  forState: UIControlStateNormal];
             
             [self.masterController activateCopyingStateForNumber: number
                                                    copyInputType: CopyRestType];
@@ -614,9 +614,28 @@
     
     // change the button appearance.  Simply give the button a lesser opacity if it is not the reference button
     
+    UIButton *button;
+    
+    switch (copyInputType) {
+        case CopyWeightType:
+            button = self.weightButton;
+            break;
+            
+        case CopyRepsType:
+            button = self.repsButton;
+            break;
+            
+        case CopyRestType:
+            button = self.restButton;
+            break;
+            
+        default:
+            break;
+    }
+    
     if (!_isReferenceForCopying){
         
-        self.weightButton.layer.opacity = .25;
+        button.layer.opacity = .25;
         
     }
     
@@ -626,23 +645,44 @@
     
     // button appearance is determined by whether or not the button corresponds to a default value
     
-    BOOL weightNotYetSelected = self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+    BOOL valueNotYetSelected;
+    UIButton *button;
     
-    if (weightNotYetSelected){
+    switch (_copyInputType) {
+        case CopyWeightType:
+            valueNotYetSelected = self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+            button = self.weightButton;
+            break;
+            
+        case CopyRepsType:
+            valueNotYetSelected = self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+            button = self.repsButton;
+            break;
+            
+        case CopyRestType:
+            valueNotYetSelected = self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+            button = self.restButton;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (valueNotYetSelected){
         
-        self.weightButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        [self.weightButton setTitleColor: [UIColor whiteColor]
-                                forState: UIControlStateNormal];
+        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        [button setTitleColor: [UIColor whiteColor]
+                            forState: UIControlStateNormal];
         
     } else{
         
-        self.weightButton.backgroundColor = [UIColor clearColor];
-        [self.weightButton setTitleColor: [UIColor blackColor]
-                                forState: UIControlStateNormal];
+        button.backgroundColor = [UIColor clearColor];
+        [button setTitleColor: [UIColor blackColor]
+                     forState: UIControlStateNormal];
         
     }
     
-    self.weightButton.layer.opacity = 1.0;
+    button.layer.opacity = 1.0;
     
     // change state variables accordingly
     
