@@ -109,6 +109,8 @@
 		0BC12E0E1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E0C1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib */; };
 		0BC12E131E5F10950041D863 /* TJBCompleteChainHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E111E5F10950041D863 /* TJBCompleteChainHistoryVC.m */; };
 		0BC12E141E5F10950041D863 /* TJBCompleteChainHistoryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E121E5F10950041D863 /* TJBCompleteChainHistoryVC.xib */; };
+		0BC12E191E5F20560041D863 /* TJBRealizedChainHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E171E5F20560041D863 /* TJBRealizedChainHistoryCell.m */; };
+		0BC12E1A1E5F20560041D863 /* TJBRealizedChainHistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E181E5F20560041D863 /* TJBRealizedChainHistoryCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -279,6 +281,9 @@
 		0BC12E101E5F10950041D863 /* TJBCompleteChainHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCompleteChainHistoryVC.h; sourceTree = "<group>"; };
 		0BC12E111E5F10950041D863 /* TJBCompleteChainHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCompleteChainHistoryVC.m; sourceTree = "<group>"; };
 		0BC12E121E5F10950041D863 /* TJBCompleteChainHistoryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCompleteChainHistoryVC.xib; sourceTree = "<group>"; };
+		0BC12E161E5F20560041D863 /* TJBRealizedChainHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedChainHistoryCell.h; sourceTree = "<group>"; };
+		0BC12E171E5F20560041D863 /* TJBRealizedChainHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedChainHistoryCell.m; sourceTree = "<group>"; };
+		0BC12E181E5F20560041D863 /* TJBRealizedChainHistoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedChainHistoryCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -484,6 +489,7 @@
 		0B78E7C21E3C162800EB216F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0BC12E151E5F20060041D863 /* Realized Chain History */,
 				0B78E7E81E462F5000EB216F /* Number Selection Cell - advanced */,
 				0B78E7E21E46292E00EB216F /* Number Selection Cell - basic */,
 				0B78E7DC1E454DB200EB216F /* No Data */,
@@ -818,6 +824,16 @@
 			name = "Chain Complete History";
 			sourceTree = "<group>";
 		};
+		0BC12E151E5F20060041D863 /* Realized Chain History */ = {
+			isa = PBXGroup;
+			children = (
+				0BC12E161E5F20560041D863 /* TJBRealizedChainHistoryCell.h */,
+				0BC12E171E5F20560041D863 /* TJBRealizedChainHistoryCell.m */,
+				0BC12E181E5F20560041D863 /* TJBRealizedChainHistoryCell.xib */,
+			);
+			name = "Realized Chain History";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -899,6 +915,7 @@
 				0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */,
 				0B3687EA1E3A2A780077290C /* TJBCircleDateVC.xib in Resources */,
 				0B843CA41DFDB5B00093F057 /* RealizedSetPersonalRecordCell.xib in Resources */,
+				0BC12E1A1E5F20560041D863 /* TJBRealizedChainHistoryCell.xib in Resources */,
 				0B3688291E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib in Resources */,
 				0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */,
 				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
@@ -975,6 +992,7 @@
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0B843C9E1DFDB3460093F057 /* RealizedSetPersonalRecordVC.m in Sources */,
 				0B870E4C1E2F9F9C00E38C46 /* RealizedChainTableViewCell.m in Sources */,
+				0BC12E191E5F20560041D863 /* TJBRealizedChainHistoryCell.m in Sources */,
 				0BA8AD0A1E26757900EE10C2 /* TJBCircuitActiveUpdatingVC.m in Sources */,
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,

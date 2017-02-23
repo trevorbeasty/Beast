@@ -14,7 +14,7 @@
 
 // table view cells
 
-#import "TJBRealizedChainCell.h"
+#import "TJBRealizedChainHistoryCell.h"
 #import "TJBWorkoutLogTitleCell.h"
 
 // aesthetics
@@ -63,13 +63,13 @@
     
 }
 
-static NSString *realizedChainCellID = @"TJBRealizedChainCell";
+static NSString *realizedChainCellID = @"TJBRealizedChainHistoryCell";
 static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 - (void)configureTableView{
     
-    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
-                                bundle: nil];
+    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainHistoryCell"
+                                             bundle: nil];
     
     [self.chainHistoryTV registerNib: realizedChainNib
               forCellReuseIdentifier: realizedChainCellID];
@@ -117,17 +117,22 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         
         // content cell
         
-        // adjust the index
+        // adjust the index.  This accounts for the 1 title cell and also reverses the index so that it grabs the last entry first
         
         NSInteger adjIndex = indexPath.row - 1;
+        NSInteger reversedIndex = (self.chainTemplate.realizedChains.count - 1) - adjIndex;
         
         // dequeue the cell
         
-        TJBRealizedChainCell *chainCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: realizedChainCellID];
+        TJBRealizedChainHistoryCell *chainCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: realizedChainCellID];
+        
+        // clear the cell's previous content
+        
+        [chainCell clearExistingEntries];
         
         // grab the appropriate realized chain
         
-        TJBRealizedChain *chain = self.chainTemplate.realizedChains[adjIndex];
+        TJBRealizedChain *chain = self.chainTemplate.realizedChains[reversedIndex];
         
         // configure the cell
         
@@ -165,7 +170,7 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         
         TJBRealizedChain *realizedChain = self.chainTemplate.realizedChains[adjIndex];
         
-        return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
+        return [TJBRealizedChainHistoryCell suggestedCellHeightForRealizedChain: realizedChain];
         
     }
     
