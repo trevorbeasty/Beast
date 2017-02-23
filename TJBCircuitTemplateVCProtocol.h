@@ -19,6 +19,10 @@
 #import "TJBCircuitTemplateExerciseComponentProtocol.h"
 #import "TJBCircuitTemplateRowComponentProtocol.h"
 
+// for typedef
+
+#import "TJBGlobalParameters.h"
+
 @protocol TJBCircuitTemplateVCProtocol <NSObject>
 
 - (void)didSelectExercise:(TJBExercise *)exercise forExerciseIndex:(int)exerciseIndex;
@@ -33,8 +37,8 @@
 
 // advanced user input
 
-- (void)activateCopyingStateForNumber:(float)number;
+- (void)activateCopyingStateForNumber:(float)number copyInputType:(TJBCopyInputType)copyInputType;
 - (void)deactivateCopyingState;
-- (void)didDragAcrossPointInView:(CGPoint)dragPoint;
+- (void)didDragAcrossPointInView:(CGPoint)dragPoint copyInputType:(TJBCopyInputType)copyInputType;
 
 @end

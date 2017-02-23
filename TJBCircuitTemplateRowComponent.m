@@ -35,6 +35,7 @@
     BOOL _copyingActive;
     BOOL _isReferenceForCopying;
     float _valueToCopy;
+    TJBCopyInputType _copyInputType;
     
 }
 
@@ -54,8 +55,7 @@
 // IBOutlet
 
 
-@property (weak, nonatomic) IBOutlet UIButton *repsButton;
-@property (weak, nonatomic) IBOutlet UIButton *restButton;
+
 @property (weak, nonatomic) IBOutlet UILabel *roundLabel;
 
 
@@ -93,6 +93,8 @@
     
     // a long press GR is used to kick off the copying process.  One must be used for every of the 3 buttons
     
+    // weight
+    
     UILongPressGestureRecognizer *longPressGRWeight = [[UILongPressGestureRecognizer alloc] initWithTarget: self
                                                                                               action: @selector(didLongPressWeightButton:)];
     
@@ -104,6 +106,34 @@
     longPressGRWeight.delaysTouchesEnded = NO;
     
     [self.weightButton addGestureRecognizer: longPressGRWeight];
+    
+    // reps
+    
+    UILongPressGestureRecognizer *longPressGRReps = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                                  action: @selector(didLongPressRepsButton:)];
+    
+    longPressGRWeight.minimumPressDuration = .3;
+    longPressGRWeight.numberOfTouchesRequired = 1;
+    
+    longPressGRWeight.cancelsTouchesInView = YES;
+    longPressGRWeight.delaysTouchesBegan = NO;
+    longPressGRWeight.delaysTouchesEnded = NO;
+    
+    [self.repsButton addGestureRecognizer: longPressGRReps];
+    
+    // rest
+    
+    UILongPressGestureRecognizer *longPressGRRest = [[UILongPressGestureRecognizer alloc] initWithTarget: self
+                                                                                                  action: @selector(didLongPressRestButton:)];
+    
+    longPressGRWeight.minimumPressDuration = .3;
+    longPressGRWeight.numberOfTouchesRequired = 1;
+    
+    longPressGRWeight.cancelsTouchesInView = YES;
+    longPressGRWeight.delaysTouchesBegan = NO;
+    longPressGRWeight.delaysTouchesEnded = NO;
+    
+    [self.restButton addGestureRecognizer: longPressGRRest];
     
 }
 
@@ -371,7 +401,8 @@
             [self.weightButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
                                     forState: UIControlStateNormal];
             
-            [self.masterController activateCopyingStateForNumber: number];
+            [self.masterController activateCopyingStateForNumber: number
+                                                   copyInputType: CopyWeightType];
             
         }
         
@@ -379,7 +410,100 @@
         
         CGPoint touchPointInMasterView = [gr locationInView: self.masterController.view];
         
-        [self.masterController didDragAcrossPointInView: touchPointInMasterView];
+        [self.masterController didDragAcrossPointInView: touchPointInMasterView
+                                          copyInputType: _copyInputType];
+        
+        
+    } else if (gr.state == UIGestureRecognizerStateRecognized){
+        
+        NSLog(@"recognized");
+        
+        [self.masterController deactivateCopyingState];
+        
+    }
+    
+}
+
+- (void)didLongPressRepsButton:(UIGestureRecognizer *)gr{
+    
+    if (gr.state == UIGestureRecognizerStateBegan){
+        
+        NSLog(@"began");
+        
+        BOOL valueNotSelected = self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+        
+        // only initiate the copying process if a value has been selected and the copying process is not already active
+        // make sure to change state variables accordingly
+        
+        if (!valueNotSelected && _copyingActive == NO){
+            
+            _isReferenceForCopying = YES;
+            
+            float number = self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value;
+            
+            // change the appearance of the copying reference cell
+            
+            self.weightButton.backgroundColor = [UIColor darkGrayColor];
+            [self.weightButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+                                    forState: UIControlStateNormal];
+            
+            [self.masterController activateCopyingStateForNumber: number
+                                                   copyInputType: CopyRepsType];
+            
+        }
+        
+    } else if (gr.state == UIGestureRecognizerStateChanged && _copyingActive == YES){
+        
+        CGPoint touchPointInMasterView = [gr locationInView: self.masterController.view];
+        
+        [self.masterController didDragAcrossPointInView: touchPointInMasterView
+                                          copyInputType: _copyInputType];
+        
+        
+    } else if (gr.state == UIGestureRecognizerStateRecognized){
+        
+        NSLog(@"recognized");
+        
+        [self.masterController deactivateCopyingState];
+        
+    }
+    
+}
+
+- (void)didLongPressRestButton:(UIGestureRecognizer *)gr{
+    
+    if (gr.state == UIGestureRecognizerStateBegan){
+        
+        NSLog(@"began");
+        
+        BOOL valueNotSelected = self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+        
+        // only initiate the copying process if a value has been selected and the copying process is not already active
+        // make sure to change state variables accordingly
+        
+        if (!valueNotSelected && _copyingActive == NO){
+            
+            _isReferenceForCopying = YES;
+            
+            float number = self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value;
+            
+            // change the appearance of the copying reference cell
+            
+            self.weightButton.backgroundColor = [UIColor darkGrayColor];
+            [self.weightButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+                                    forState: UIControlStateNormal];
+            
+            [self.masterController activateCopyingStateForNumber: number
+                                                   copyInputType: CopyRestType];
+            
+        }
+        
+    } else if (gr.state == UIGestureRecognizerStateChanged && _copyingActive == YES){
+        
+        CGPoint touchPointInMasterView = [gr locationInView: self.masterController.view];
+        
+        [self.masterController didDragAcrossPointInView: touchPointInMasterView
+                                          copyInputType: _copyInputType];
         
         
     } else if (gr.state == UIGestureRecognizerStateRecognized){
@@ -423,12 +547,70 @@
     
 }
 
-- (void)activeCopyingStateForNumber:(float)number{
+- (void)copyValueForRepsButton{
+    
+    // if it is not the reference button and copying is active, then copy the value
+    
+    if (!_isReferenceForCopying && _copyingActive){
+        
+        // button appearance
+        
+        NSNumber *copyNumber = [NSNumber numberWithFloat: _valueToCopy];
+        NSString *repsText = [NSString stringWithFormat: @"%@ reps", [copyNumber stringValue]];
+        [self.repsButton setTitle: repsText
+                           forState: UIControlStateNormal];
+        
+        self.repsButton.backgroundColor = [UIColor darkGrayColor];
+        [self.repsButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+                              forState: UIControlStateNormal];
+        self.repsButton.layer.opacity = 1.0;
+        
+        // core data
+        
+        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
+        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
+        
+        [[CoreDataController singleton] saveContext];
+        
+    }
+    
+}
+
+- (void)copyValueForRestButton{
+    
+    // if it is not the reference button and copying is active, then copy the value
+    
+    if (!_isReferenceForCopying && _copyingActive){
+        
+        // button appearance
+        
+        NSString *restText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)_valueToCopy];
+        [self.restButton setTitle: restText
+                         forState: UIControlStateNormal];
+        
+        self.restButton.backgroundColor = [UIColor darkGrayColor];
+        [self.restButton setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+                                forState: UIControlStateNormal];
+        self.restButton.layer.opacity = 1.0;
+        
+        // core data
+        
+        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
+        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
+        
+        [[CoreDataController singleton] saveContext];
+        
+    }
+    
+}
+
+- (void)activeCopyingStateForNumber:(float)number copyInputType:(TJBCopyInputType)copyInputType{
     
     // change the state variables accordingly
     
     _copyingActive = YES;
     _valueToCopy = number;
+    _copyInputType = copyInputType;
     
     // change the button appearance.  Simply give the button a lesser opacity if it is not the reference button
     

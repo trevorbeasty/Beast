@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-//#import "TJBGlobalParameters.h"
-
 typedef enum {
     WeightType,
     RepsType,

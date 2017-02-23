@@ -257,7 +257,7 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - <TJBCircuitTemplateVCProtocol>
 
-- (void)didDragAcrossPointInView:(CGPoint)dragPoint{
+- (void)didDragAcrossPointInView:(CGPoint)dragPoint copyInputType:(TJBCopyInputType)copyInputType{
     
     // hit-test the point.  If that point is within the weight button of a child row comp, tell that row comp to update its value
     
@@ -276,13 +276,14 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
-- (void)activateCopyingStateForNumber:(float)number{
+- (void)activateCopyingStateForNumber:(float)number copyInputType:(TJBCopyInputType)copyInputType{
     
     // activate the copying state in all row components for the given number
     
     for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
         
-        [rowComp activeCopyingStateForNumber: number];
+        [rowComp activeCopyingStateForNumber: number
+                               copyInputType: copyInputType];
         
     }
     

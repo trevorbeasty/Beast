@@ -21,5 +21,7 @@
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
 @property (weak, nonatomic) IBOutlet UIButton *weightButton;
+@property (weak, nonatomic) IBOutlet UIButton *repsButton;
+@property (weak, nonatomic) IBOutlet UIButton *restButton;
 
 @end

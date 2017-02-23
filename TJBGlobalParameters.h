@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-
+typedef enum{
+    CopyWeightType,
+    CopyRepsType,
+    CopyRestType
+} TJBCopyInputType;
 
 @interface TJBGlobalParameters : NSObject
 
