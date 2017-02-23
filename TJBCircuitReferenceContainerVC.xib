@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBm-HU-zw0">
-                    <rect key="frame" x="8" y="70" width="566" height="629"/>
+                    <rect key="frame" x="8" y="70" width="566" height="651"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9y5-2C-wjz" userLabel="titleContainer">
@@ -99,10 +99,10 @@
                         <constraint firstAttribute="trailing" secondItem="Fds-9Y-sIw" secondAttribute="trailing" id="z4w-B5-5wo"/>
                     </constraints>
                 </view>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QwT-0q-dsS">
-                    <rect key="frame" x="8" y="699" width="566" height="41"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QwT-0q-dsS">
+                    <rect key="frame" x="4" y="721" width="574" height="31"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="tuc-c9-aVd"/>
+                        <constraint firstAttribute="height" constant="30" id="tuc-c9-aVd"/>
                     </constraints>
                     <segments>
                         <segment title="Absolute"/>
@@ -113,12 +113,12 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="QwT-0q-dsS" firstAttribute="trailing" secondItem="OBm-HU-zw0" secondAttribute="trailing" id="0hc-Ti-ISq"/>
-                <constraint firstItem="QwT-0q-dsS" firstAttribute="leading" secondItem="OBm-HU-zw0" secondAttribute="leading" id="1yg-ty-P2f"/>
                 <constraint firstItem="OBm-HU-zw0" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="bottom" id="2vi-MV-A9K"/>
-                <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="16" id="I0N-vl-keb"/>
+                <constraint firstAttribute="trailing" secondItem="QwT-0q-dsS" secondAttribute="trailing" constant="4" id="5Bv-4P-yZB"/>
+                <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="4" id="I0N-vl-keb"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Iue-Tv-NOF"/>
                 <constraint firstAttribute="trailing" secondItem="9y5-2C-wjz" secondAttribute="trailing" id="aqZ-s8-tpg"/>
+                <constraint firstItem="QwT-0q-dsS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="4" id="eqc-Dg-hKC"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="m6G-MG-RcR"/>
                 <constraint firstItem="OBm-HU-zw0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="pgX-xX-A35"/>
                 <constraint firstAttribute="trailing" secondItem="OBm-HU-zw0" secondAttribute="trailing" constant="8" id="rLS-du-Uuy"/>

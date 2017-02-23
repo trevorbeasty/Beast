@@ -654,111 +654,151 @@
             
         }
         
-    } else{
+    }  else{
         
         // weight
         
-        if (chainTemplate.targetingWeight){
-            
-            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
-                                                                 targetNumber: weightTarget
-                                                         realizedNumberExists: NO
-                                                           targetNumberExists: YES
-                                                                   isTimeType: NO]
-                               forState: UIControlStateNormal];
-            
-        } else{
-            
-            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
-                                                                 targetNumber: weightTarget
-                                                         realizedNumberExists: NO
-                                                           targetNumberExists: NO
-                                                                   isTimeType: NO]
-                               forState: UIControlStateNormal];
-            
-        }
+        [self.weightButton setTitle: @""
+                           forState: UIControlStateNormal];
         
         // reps
         
-        if (chainTemplate.targetingReps){
-            
-            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
-                                                               targetNumber: repsTarget
-                                                       realizedNumberExists: NO
-                                                         targetNumberExists: YES
-                                                                 isTimeType: NO]
-                             forState: UIControlStateNormal];
-            
-        } else{
-            
-            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
-                                                               targetNumber: repsTarget
-                                                       realizedNumberExists: NO
-                                                         targetNumberExists: NO
-                                                                 isTimeType: NO]
-                             forState: UIControlStateNormal];
-            
-        }
+        [self.repsButton setTitle: @""
+                         forState: UIControlStateNormal];
         
     }
     
     // rest
     
-    if (chainTemplate.targetingRestTime){
+    // a realized rest will be shown only if all of the following conditions are met
+    
+    if (chainTemplate.targetingRestTime && nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
         
-        // a realized rest will be shown only if all of the following conditions are met
+        NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
+        float timeDiff = [realizedRest floatValue] - [restTarget floatValue];
+        NSString *timeText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)timeDiff];
         
-        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
-            
-            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
-                                                               targetNumber: restTarget
-                                                       realizedNumberExists: YES
-                                                         targetNumberExists: YES
-                                                                 isTimeType: YES]
-                             forState: UIControlStateNormal];
-            
-            
-        } else{
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
-                                                               targetNumber: restTarget
-                                                       realizedNumberExists: NO
-                                                         targetNumberExists: YES
-                                                                 isTimeType: YES]
-                             forState:UIControlStateNormal];
-            
-        }
+        [self.restButton setTitle: timeText
+                         forState: UIControlStateNormal];
+        
+        
+    } else if(nextSetHasOccurred && nextSetIsWithinIndiceRange){
+        
+        [self.restButton setTitle: @"X"
+                         forState:UIControlStateNormal];
         
     } else{
         
-        // a realized rest will be shown only if all of the following conditions are met
-        
-        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
-            
-            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
-                                                               targetNumber: nil
-                                                       realizedNumberExists: YES
-                                                         targetNumberExists: NO
-                                                                 isTimeType: YES]
-                             forState: UIControlStateNormal];
-            
-            
-        } else{
-            
-            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
-                                                               targetNumber: nil
-                                                       realizedNumberExists: NO
-                                                         targetNumberExists: NO
-                                                                 isTimeType: YES]
-                             forState: UIControlStateNormal];
-            
-        }
+        [self.restButton setTitle: @""
+                         forState: UIControlStateNormal];
         
     }
+    
+//    else{
+//        
+//        // weight
+//        
+//        if (chainTemplate.targetingWeight){
+//            
+//            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
+//                                                                 targetNumber: weightTarget
+//                                                         realizedNumberExists: NO
+//                                                           targetNumberExists: YES
+//                                                                   isTimeType: NO]
+//                               forState: UIControlStateNormal];
+//            
+//        } else{
+//            
+//            [self.weightButton setTitle: [self displayStringForRealizedNumber: realizedWeight
+//                                                                 targetNumber: weightTarget
+//                                                         realizedNumberExists: NO
+//                                                           targetNumberExists: NO
+//                                                                   isTimeType: NO]
+//                               forState: UIControlStateNormal];
+//            
+//        }
+//        
+//        // reps
+//        
+//        if (chainTemplate.targetingReps){
+//            
+//            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
+//                                                               targetNumber: repsTarget
+//                                                       realizedNumberExists: NO
+//                                                         targetNumberExists: YES
+//                                                                 isTimeType: NO]
+//                             forState: UIControlStateNormal];
+//            
+//        } else{
+//            
+//            [self.repsButton setTitle: [self displayStringForRealizedNumber: realizedReps
+//                                                               targetNumber: repsTarget
+//                                                       realizedNumberExists: NO
+//                                                         targetNumberExists: NO
+//                                                                 isTimeType: NO]
+//                             forState: UIControlStateNormal];
+//            
+//        }
+//        
+//    }
+//    
+//    // rest
+//    
+//    if (chainTemplate.targetingRestTime){
+//        
+//        // a realized rest will be shown only if all of the following conditions are met
+//        
+//        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
+//            
+//            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
+//            
+//            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
+//                                                               targetNumber: restTarget
+//                                                       realizedNumberExists: YES
+//                                                         targetNumberExists: YES
+//                                                                 isTimeType: YES]
+//                             forState: UIControlStateNormal];
+//            
+//            
+//        } else{
+//            
+//            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
+//                                                               targetNumber: restTarget
+//                                                       realizedNumberExists: NO
+//                                                         targetNumberExists: YES
+//                                                                 isTimeType: YES]
+//                             forState:UIControlStateNormal];
+//            
+//        }
+//        
+//    } else{
+//        
+//        // a realized rest will be shown only if all of the following conditions are met
+//        
+//        if (nextSetHasOccurred && nextSetIsWithinIndiceRange && setEndDate && nextSetBeginDate){
+//            
+//            NSNumber *realizedRest = [NSNumber numberWithFloat: [nextSetBeginDate timeIntervalSinceDate: setEndDate]];
+//            
+//            [self.restButton setTitle: [self displayStringForRealizedNumber: realizedRest
+//                                                               targetNumber: nil
+//                                                       realizedNumberExists: YES
+//                                                         targetNumberExists: NO
+//                                                                 isTimeType: YES]
+//                             forState: UIControlStateNormal];
+//            
+//            
+//        } else{
+//            
+//            [self.restButton setTitle: [self displayStringForRealizedNumber: nil
+//                                                               targetNumber: nil
+//                                                       realizedNumberExists: NO
+//                                                         targetNumberExists: NO
+//                                                                 isTimeType: YES]
+//                             forState: UIControlStateNormal];
+//            
+//        }
+//        
+//    }
     
 }
 

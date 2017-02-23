@@ -127,6 +127,10 @@
         
     }
     
+    // segmented control
+    
+    self.comparisonTypeSegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{

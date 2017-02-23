@@ -751,7 +751,7 @@ static NSString const *restViewKey = @"restView";
                 
         }
             
-        // increment the chain indices
+        // increment the chain indices.  The first incomplete type properties of the realized chain are updated in the following method
             
         BOOL routineNotCompleted = [self incrementActiveChainIndices];
             
@@ -947,6 +947,8 @@ static NSString const *restViewKey = @"restView";
     
     self.realizedChain.firstIncompleteRoundIndex = [newRoundIndex intValue];
     self.realizedChain.firstIncompleteExerciseIndex = [newExerciseIndex intValue];
+    
+    [[CoreDataController singleton] saveContext];
     
     if (forwardIndicesExist){
         
