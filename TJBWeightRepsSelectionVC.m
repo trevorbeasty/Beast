@@ -131,7 +131,7 @@
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
@@ -373,7 +373,7 @@ static float const numberOfCellsPerRow = 2;
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
-    return UIEdgeInsetsMake(8, 0, 8, 0);
+    return UIEdgeInsetsMake(0, 0, 8, 0);
     
 }
 
@@ -433,13 +433,33 @@ static float const numberOfCellsPerRow = 2;
 
 #pragma mark - Button Actions
 
-- (void)didPressCancel{
+//- (void)didPressCancel{
+//    
+//    self.cancelBlock();
+//    
+//}
+
+//- (void)didPressDone{
+//    
+//    if ([self requisiteUserInputCollected]){
+//        
+//        NSNumber *weight = [NSNumber numberWithFloat: self.weightSelectedCellIndexPath.row * [self weightMultiplier]];
+//        NSNumber *reps = [NSNumber numberWithFloat: self.repsSelectedCellIndexPath.row * [self repsMultiplier]];
+//        
+//        self.numberSelectedBlock(weight, reps);
+//        
+//    }
+//    
+//}
+
+- (BOOL)requisiteUserInputCollected{
     
-    self.cancelBlock();
+    return self.weightSelectedCellIndexPath && self.repsSelectedCellIndexPath;
     
 }
 
-- (void)didPressDone{
+
+- (IBAction)didPressSubmitButton:(id)sender{
     
     if ([self requisiteUserInputCollected]){
         
@@ -449,20 +469,12 @@ static float const numberOfCellsPerRow = 2;
         self.numberSelectedBlock(weight, reps);
         
     }
-    
 }
 
-- (BOOL)requisiteUserInputCollected{
+- (IBAction)didPressCancel:(id)sender{
     
-    return self.weightSelectedCellIndexPath && self.repsSelectedCellIndexPath;
+    self.cancelBlock();
     
-}
-
-
-- (IBAction)didPressSubmitButton:(id)sender {
-}
-
-- (IBAction)didPressCancel:(id)sender {
 }
 @end
 
