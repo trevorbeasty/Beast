@@ -12,6 +12,10 @@
 
 #import "CoreDataController.h"
 
+// stopwatch
+
+#import "TJBStopwatch.h"
+
 @interface TJBRealizedSetCollectionCell ()
 
 // IBOutlet
@@ -24,7 +28,7 @@
 // core
 
 @property (strong) NSArray<TJBRealizedSet *> *realizedSetCollection;
-
+@property (strong) NSNumber *finalRest;
 
 @end
 
@@ -51,6 +55,7 @@
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     
     self.realizedSetCollection = realizedSetColleection;
+    self.finalRest = finalRest;
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -75,7 +80,7 @@
     
     for (int i = 0; i < numSets; i++){
         
-        UIView *iterativeView = [self viewForRealizedSet: self.realizedSetCollection[i]];
+        UIView *iterativeView = [self viewForIndex: i];
         
         [self.contentStackView addArrangedSubview: iterativeView];
         
@@ -107,7 +112,9 @@
 }
 
 
-- (UIView *)viewForRealizedSet:(TJBRealizedSet *)realizedSet{
+- (UIView *)viewForIndex:(int)index{
+    
+    TJBRealizedSet *realizedSet = self.realizedSetCollection[index];
     
     //// create the exercise name subview, which will have two labels - one for a number and one for a name
     
@@ -126,7 +133,62 @@
     
     weightLabel.text = weightString;
     repsLabel.text = repsString;
-    restLabel.text = @"+ 00:00 rest";
+    
+    // rest string
+    
+    NSString *restText;
+    
+    // first, see if this is the last set of the collection.  If so, the 'finalRest' property must be used
+    
+    if (index < self.realizedSetCollection.count - 1){
+        
+        NSDate *currentSetEndDate;
+        NSDate *nextSetBeginDate;
+        
+        if (realizedSet.recordedEndDate){
+            currentSetEndDate = realizedSet.endDate;
+        } else{
+            currentSetEndDate = nil;
+        }
+        
+        if (self.realizedSetCollection[index + 1].recordedBeginDate){
+            nextSetBeginDate = self.realizedSetCollection[index+1].beginDate;
+        } else{
+            nextSetBeginDate = nil;
+        }
+        
+        // if both date are not nil, then calculate the rest
+        
+        if (currentSetEndDate && nextSetBeginDate){
+            
+            float timeDiff = [nextSetBeginDate timeIntervalSinceDate: currentSetEndDate];
+            restText = [NSString stringWithFormat: @"%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)timeDiff]];
+            restLabel.text = restText;
+            
+        } else{
+            
+            restLabel.text = @"X rest";
+            
+        }
+        
+    } else{
+        
+        // use the final rest property if there is one
+        
+        if (self.finalRest){
+            
+            restText = [NSString stringWithFormat: @"%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.finalRest intValue]]];
+            restLabel.text = restText;
+            
+        } else{
+            
+            restLabel.text = @"";
+            
+        }
+        
+    }
+    
+    // aesthetics and layout constraints
     
     NSArray *labels = @[weightLabel,
                         repsLabel,
