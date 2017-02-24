@@ -131,14 +131,14 @@
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
-        label.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        label.textColor = [UIColor whiteColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
     
     self.weightLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     self.repsLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    self.smallTopTitleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.topTitleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
     // buttons
     

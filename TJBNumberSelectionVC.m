@@ -33,15 +33,23 @@
 @property (copy) void (^numberSelectedBlock)(NSNumber *);
 @property (nonatomic, strong) NSString *selectionTitle;
 
-// view objects
+// IBOutlet
 
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UILabel *topLabel1;
+@property (weak, nonatomic) IBOutlet UILabel *topLabel2;
+
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *selectedValueLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *multiplierSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
 
-@property (nonatomic, weak) UIBarButtonItem *submitButton;
+// IBAction
+
+- (IBAction)didPressCancel:(id)sender;
+- (IBAction)didPressSubmit:(id)sender;
+
 
 // state
 
@@ -80,8 +88,6 @@ static NSString * const reuseIdentifier = @"cell";
     [self configureSegmentedControl];
     
     [self configureDisplay];
-    
-    [self configureNavigationBar];
     
 }
 
@@ -172,12 +178,33 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureViewAesthetics{
     
-    self.multiplierSegmentedControl.tintColor = [UIColor darkGrayColor];
+    self.multiplierSegmentedControl.tintColor = [UIColor lightGrayColor];
     
     // type label
     
-    self.typeLabel.layer.masksToBounds = YES;
-    self.typeLabel.layer.cornerRadius = 4.0;
+    NSArray *labels = @[self.topLabel1, self.topLabel2, self.typeLabel, self.selectedValueLabel];
+    for (UILabel *label in labels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20];
+        
+    }
+    
+    self.typeLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.topLabel2.font = [UIFont boldSystemFontOfSize: 15];
+    
+    // buttons
+    
+    [self.cancelButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                            forState: UIControlStateNormal];
+    self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.cancelButton.backgroundColor = [UIColor clearColor];
+    
+    self.submitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    [self.submitButton setTitleColor: [UIColor whiteColor]
+                            forState: UIControlStateNormal];
     
 }
 
@@ -190,35 +217,6 @@ static NSString * const reuseIdentifier = @"cell";
           forCellWithReuseIdentifier: reuseIdentifier];
     
 }
-
-- (void)configureNavigationBar{
-    
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.selectionTitle];
-    
-    UIBarButtonItem *submitButton = [[UIBarButtonItem alloc] initWithTitle: @"OK"
-                                                                     style: UIBarButtonItemStyleDone
-                                                                    target: self
-                                                                    action: @selector(didPressSubmit)];
-    
-    self.submitButton = submitButton;
-    submitButton.enabled = NO;
-    
-    [navItem setRightBarButtonItem: submitButton];
-    
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-                                                                                  target: self
-                                                                                  action: @selector(cancel)];
-    
-    [navItem setLeftBarButtonItem: cancelButton];
-    
-    [self.navBar setItems: @[navItem]];
-    
-    // nav bar text appearance
-    
-    [self.navBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
-    
-}
-
 
 
 #pragma mark <UICollectionViewDataSource>
@@ -420,15 +418,16 @@ static NSString * const reuseIdentifier = @"cell";
 }
 
 
-#pragma mark - Actions
+#pragma mark - Button Actions
 
-- (void)cancel{
+
+- (IBAction)didPressCancel:(id)sender{
     
     self.cancelBlock();
     
 }
 
-- (void)didPressSubmit{
+- (IBAction)didPressSubmit:(id)sender{
     
     if (self.selectedCellIndexPath){
         
@@ -455,7 +454,43 @@ static NSString * const reuseIdentifier = @"cell";
         self.numberSelectedBlock(selectedNumber);
         
     }
+    
 }
+
+//- (void)cancel{
+//    
+//    self.cancelBlock();
+//    
+//}
+//
+//- (void)didPressSubmit{
+//    
+//    if (self.selectedCellIndexPath){
+//        
+//        NSNumber *selectedNumber;
+//        
+//        if (_numberTypeIdentifier == TargetRestType){
+//            
+//            if (self.selectedCellIndexPath.row == 0){
+//                
+//                selectedNumber = [NSNumber numberWithInt: 0];
+//                
+//            } else{
+//                
+//                selectedNumber = [NSNumber numberWithFloat: (self.selectedCellIndexPath.row - 1) * [self multiplierValue] + 30.0];
+//                
+//            }
+//            
+//        } else{
+//            
+//            selectedNumber = [NSNumber numberWithFloat: self.selectedCellIndexPath.row * [self multiplierValue]];
+//            
+//        }
+//        
+//        self.numberSelectedBlock(selectedNumber);
+//        
+//    }
+//}
 
 - (void)scValueDidChange{
     
@@ -482,7 +517,7 @@ static float const numberOfCellsPerRow = 4;
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section{
     
-    return UIEdgeInsetsMake(8, 0, 8, 0);
+    return UIEdgeInsetsMake(0, 0, 8, 0);
     
     
 }
