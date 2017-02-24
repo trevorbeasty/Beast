@@ -18,14 +18,25 @@
     
     [self configureViewAesthetics];
     
-    NSString *exerciseText = [NSString stringWithFormat: @"Exercise: %@", exercise];
-    self.exerciseLabel.text = exerciseText;
-    
     NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
     NSString *repsString = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
-    NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [rest intValue]];
-    NSString *restString = [NSString stringWithFormat: @"+%@ rest", formattedRest];
-    NSString *numberString = [NSString stringWithFormat: @"%@.", [number stringValue]];
+    
+    NSString *restString;
+    
+    if (rest){
+        
+        NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [rest intValue]];
+        restString = [NSString stringWithFormat: @"+%@ rest", formattedRest];
+        
+    } else{
+        
+        restString = @"";
+        
+    }
+
+    NSString *numberString = [NSString stringWithFormat: @"%@. %@",
+                              [number stringValue],
+                              exercise];
     
     self.weightLabel.text = weightString;
     self.repsLabel.text = repsString;
@@ -41,7 +52,7 @@
     
     // main labels
     
-    NSArray *mainLabels = @[self.numberLabel, self.exerciseLabel];
+    NSArray *mainLabels = @[self.numberLabel];
     for (UILabel *label in mainLabels){
         
         label.backgroundColor = [UIColor clearColor];

@@ -21,7 +21,6 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
-@property (weak, nonatomic) IBOutlet UILabel *exerciseNameLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *contentStackView;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
@@ -63,10 +62,9 @@
     
     // configure label display info
     
-    NSString *exerciseNameText = [NSString stringWithFormat: @"%@", self.realizedSetCollection[0].exercise.name];
-    self.exerciseNameLabel.text = exerciseNameText;
-    
-    NSString *numberText = [NSString stringWithFormat: @"%@.", [number stringValue]];
+    NSString *numberText = [NSString stringWithFormat: @"%@. %@",
+                            [number stringValue],
+                            self.realizedSetCollection[0].exercise.name];
     self.numberLabel.text = numberText;
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
@@ -98,7 +96,7 @@
     
     // main label
     
-    NSArray *labels = @[self.numberLabel, self.exerciseNameLabel, self.dateLabel];
+    NSArray *labels = @[self.numberLabel, self.dateLabel];
     for (UILabel *label in labels){
         
         label.textColor = [UIColor blackColor];

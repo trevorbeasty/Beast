@@ -30,7 +30,6 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UILabel *chainNameLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
@@ -77,13 +76,10 @@
     
     // configure the chain name label
     
-    NSString *numberText = [NSString stringWithFormat: @"%@.", [number stringValue]];
+    NSString *numberText = [NSString stringWithFormat: @"%@. %@",
+                            [number stringValue],
+                            chainTemplate.name];
     self.numberLabel.text = numberText;
-    
-    NSString *title = [NSString stringWithFormat: @"%@",
-                       chainTemplate.name];
-    
-    self.chainNameLabel.text = title;
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     df.dateStyle = NSDateFormatterNoStyle;
@@ -114,7 +110,7 @@
     
     // labels
     
-    NSArray *mainLabels = @[self.chainNameLabel, self.numberLabel];
+    NSArray *mainLabels = @[self.numberLabel];
     for (UILabel *label in mainLabels){
         
         label.backgroundColor = [UIColor clearColor];
@@ -338,7 +334,11 @@
     float numberOfRounds = (float)realizedChain.numberOfRounds;
     float titleHeight = 20.0;
     float spacing = 8.0;
-    float error = 0.0;
+    float error = 8.0;
+    
+//    if (numberOfRounds * numberOfRounds == 1){
+//        error += 8;
+//    }
     
     return (numberOfExercises * (numberOfRounds + 1.0) + 1.0) * titleHeight + spacing + error;
  

@@ -280,7 +280,11 @@
     float numberOfRounds = (float)chainTemplate.numberOfRounds;
     float titleHeight = 20.0;
     float spacing = 8.0;
-    float error = 0.0;
+    float error = 8.0;
+    
+//    if (chainTemplate.numberOfRounds * chainTemplate.numberOfExercises == 1){
+//        error += 8;
+//    }
     
     return (numberOfExercises * (numberOfRounds + 1.0) + 1.0) * titleHeight + spacing + error;
     
