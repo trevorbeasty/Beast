@@ -22,16 +22,21 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *weightCollectionView;
 @property (weak, nonatomic) IBOutlet UICollectionView *repsCollectionView;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *weightSegmentedControl;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *repsSegmentedControl;
-@property (weak, nonatomic) IBOutlet UIView *collectionViewContainer;
 @property (weak, nonatomic) IBOutlet UILabel *weightSelectedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsSelectedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *smallTopTitleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
-@property (nonatomic, weak) UIBarButtonItem *submitButton;
+// IBAction
+
+- (IBAction)didPressSubmitButton:(id)sender;
+- (IBAction)didPressCancel:(id)sender;
 
 // state
 
@@ -77,32 +82,13 @@
     
     [self configureSegmentedControl];
     
-    [self configureNavigationBar];
+    [self configureViewData];
     
 }
 
-- (void)configureNavigationBar{
+- (void)configureViewData{
     
-    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: self.navBarTitle];
-    
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle: @"OK"
-                                                                    style: UIBarButtonItemStyleDone
-                                                                   target: self
-                                                                   action: @selector(didPressDone)];
-    
-    self.submitButton = rightButton;
-    rightButton.enabled = NO;
-    
-    [navItem setRightBarButtonItem: rightButton];
-    
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle: @"Cancel"
-                                                                   style: UIBarButtonItemStyleDone
-                                                                  target: self
-                                                                  action: @selector(didPressCancel)];
-    
-    [navItem setLeftBarButtonItem: leftButton];
-    
-    [self.navBar setItems: @[navItem]];
+    self.topTitleLabel.text = self.navBarTitle;
     
 }
 
@@ -130,96 +116,41 @@
     
     // segmented controls
     
-    self.weightSegmentedControl.tintColor = [UIColor darkGrayColor];
-    
-    self.repsSegmentedControl.tintColor = [UIColor darkGrayColor];
-    
-    // collection view container
-    
-    self.collectionViewContainer.backgroundColor = [UIColor whiteColor];
+    NSArray *segmentedControls = @[self.weightSegmentedControl, self.repsSegmentedControl];
+    for (UISegmentedControl *sc in segmentedControls){
+        
+        sc.tintColor = [UIColor lightGrayColor];
+        
+    }
     
     // rounded corners for top labels
     
     [self.view layoutIfNeeded];
     
-    NSArray *topCornersCurved = @[self.weightLabel, self.repsLabel];
-    
-    for (UILabel *label in topCornersCurved){
+    NSArray *titleLabels = @[self.topTitleLabel, self.weightLabel, self.repsLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel, self.smallTopTitleLabel];
+    for (UILabel *label in titleLabels){
         
-        CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
-        
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: label.bounds
-                                                   byRoundingCorners: (UIRectCornerTopLeft | UIRectCornerTopRight)
-                                                         cornerRadii: CGSizeMake(4.0, 4.0)];
-        
-        shapeLayer.path = path.CGPath;
-        shapeLayer.frame = label.bounds;
-        shapeLayer.fillRule = kCAFillRuleNonZero;
-        shapeLayer.fillColor = [UIColor redColor].CGColor;
-        
-        label.layer.mask = shapeLayer;
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
-//
-//    NSArray *bottomCornersCurved = @[self.weightSelectedValueLabel, self.repsSelectedValueLabel];
-//    
-//    for (UILabel *label in bottomCornersCurved){
-//        
-//        CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
-//        
-//        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: label.bounds
-//                                                   byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
-//                                                         cornerRadii: CGSizeMake(2.0, 2.0)];
-//        
-//        shapeLayer.path = path.CGPath;
-//        shapeLayer.frame = label.bounds;
-//        shapeLayer.fillRule = kCAFillRuleNonZero;
-//        shapeLayer.fillColor = [UIColor redColor].CGColor;
-//        
-//        label.layer.mask = shapeLayer;
-//        
-//    }
     
-//    // shadows for top labels
-//    
-//    NSArray *topItems = @[self.weightLabel, self.repsLabel];
-//    NSArray *bottomItems = @[sef.weightSelectedValueLabel, self.repsSelectedValueLabel];
-//    
-//    for (int i = 0; i < topItems.count; i++){
-//        
-//        UIView *shadowView = ;
-//        shadowView.clipsToBounds = NO;
-//        
-//        CALayer *shadowLayer = shadowView.layer;
-//        shadowLayer.masksToBounds = NO;
-//        shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-//        shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
-//        shadowLayer.shadowOpacity = 1.0;
-//        shadowLayer.shadowRadius = 3.0;
-//        
-//    }
+    self.weightLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.repsLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.smallTopTitleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
-
-
+    // buttons
     
-//     segmented controls
+    self.submitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    [self.submitButton setTitleColor: [UIColor whiteColor]
+                            forState: UIControlStateNormal];
+    self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
     
-//    NSArray *segmentedControls = @[self.weightSegmentedControl,
-//                                   self.repsSegmentedControl];
-//    
-//    for (UISegmentedControl *sc in segmentedControls){
-//        
-//        sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
-//        sc.backgroundColor = [UIColor whiteColor];
-//        
-//        sc.layer.masksToBounds = YES;
-//        sc.layer.cornerRadius = 4.0;
-//        NSDictionary *textDict = [[NSDictionary alloc] initWithObjects: @[[UIFont boldSystemFontOfSize: 12.0]]
-//                                                               forKeys: @[NSFontAttributeName]];
-//        [sc setTitleTextAttributes: textDict
-//                          forState: UIControlStateNormal];
-//        
-//    }
+    [self.cancelButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                            forState: UIControlStateNormal];
+    self.cancelButton.titleLabel.backgroundColor = [UIColor clearColor];
+    self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
 }
 
@@ -528,6 +459,11 @@ static float const numberOfCellsPerRow = 2;
 }
 
 
+- (IBAction)didPressSubmitButton:(id)sender {
+}
+
+- (IBAction)didPressCancel:(id)sender {
+}
 @end
 
 
