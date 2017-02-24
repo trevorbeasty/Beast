@@ -1148,7 +1148,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 dateFormatter.dateStyle = NSDateFormatterNoStyle;
                 dateFormatter.timeStyle = NSDateFormatterShortStyle;
-                NSString *date = [dateFormatter stringFromDate: realizedSet.beginDate];
+                NSString *date = [dateFormatter stringFromDate: realizedSet.endDate];
                 
                 [cell configureCellWithExercise: realizedSet.exercise.name
                                          weight: [NSNumber numberWithFloat: realizedSet.weight]
@@ -1172,7 +1172,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 [cell clearExistingEntries];
                 
                 [cell configureWithRealizedChain: realizedChain
-                                          number: number];
+                                          number: number
+                                       finalRest: nil];
                 
                 cell.backgroundColor = [UIColor clearColor];
                 
@@ -1189,7 +1190,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 cell.backgroundColor = [UIColor clearColor];
                 
                 [cell configureWithRealizedSetCollection: self.dailyList[rowIndex]
-                                                  number: number];
+                                                  number: number
+                                               finalRest: nil];
                 
                 return cell;
                 

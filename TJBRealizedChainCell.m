@@ -20,6 +20,10 @@
 
 #import "TJBAssortedUtilities.h"
 
+// stopwatch
+
+#import "TJBStopwatch.h"
+
 @interface TJBRealizedChainCell ()
 
 
@@ -34,6 +38,7 @@
 // core data
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+@property (strong) NSNumber *finalRest;
 
 
 
@@ -57,11 +62,12 @@
     
 }
 
-- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number{
+- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number finalRest:(NSNumber *)finalRest{
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     
     self.realizedChain = realizedChain;
+    self.finalRest = finalRest;
     
     TJBChainTemplate *chainTemplate = realizedChain.chainTemplate;
     
@@ -169,6 +175,8 @@
                                               isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
                                                           referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
     
+    // weight and reps should be filled if this round was executed
+    
     if (roundHasBeenExecuted){
         
         float weight = self.realizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value;
@@ -180,17 +188,92 @@
         
         weightLabel.text = weightString;
         repsLabel.text = repsString;
-        restLabel.text = @"+ 00:00 rest";
         
     } else{
         
         weightLabel.text = @"X";
         repsLabel.text = @"";
-        restLabel.text = @"";
         
     }
     
-
+    // rest should be filled depending upon if this round and the next were executed
+    
+    NSString *restText;
+    
+    NSNumber *nextExerciseInd = nil;
+    NSNumber *nextRoundInd = nil;
+    BOOL nextRoundWithinIndiceRange = [TJBAssortedUtilities nextIndiceValuesForCurrentExerciseIndex: exerciseIndex
+                                                                                   currentRoundIndex: roundIndex
+                                                                                    maxExerciseIndex: self.realizedChain.numberOfExercises - 1
+                                                                                       maxRoundIndex: self.realizedChain.numberOfRounds - 1
+                                                                              exerciseIndexReference: &nextExerciseInd
+                                                                                 roundIndexReference: &nextRoundInd];
+    
+    if (nextRoundWithinIndiceRange){
+        
+        BOOL nextRoundHasBeenExecuted = [TJBAssortedUtilities indiceWithExerciseIndex: [nextExerciseInd intValue]
+                                                                           roundIndex: [nextRoundInd intValue]
+                                                      isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
+                                                                  referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
+        
+        if (nextRoundHasBeenExecuted){
+            
+            NSDate *currentRoundEndDate;
+            NSDate *nextRoundBeginDate;
+            
+            // grab the two dates from the realized chain if they are not default objects
+            
+            if (self.realizedChain.setEndDateArrays[exerciseIndex].dates[roundIndex].isDefaultObject == NO){
+                currentRoundEndDate = self.realizedChain.setEndDateArrays[exerciseIndex].dates[roundIndex].value;
+            } else{
+                currentRoundEndDate = nil;
+            }
+            
+            if (self.realizedChain.setBeginDateArrays[[nextExerciseInd intValue]].dates[[nextRoundInd intValue]].isDefaultObject == NO){
+                nextRoundBeginDate = self.realizedChain.setBeginDateArrays[[nextExerciseInd intValue]].dates[[nextRoundInd intValue]].value;
+            } else{
+                nextRoundBeginDate = nil;
+            }
+            
+            // if both dates are not nil, then calculate the rest.  Otherwise, rest is X
+            
+            if (currentRoundEndDate && nextRoundBeginDate){
+                
+                float restTime = [nextRoundBeginDate timeIntervalSinceDate: currentRoundEndDate];
+                restText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)restTime];
+                restText = [NSString stringWithFormat: @"%@ rest", restText];
+                restLabel.text = restText;
+                
+            } else{
+                
+                restLabel.text = @"X rest";
+                
+            }
+            
+        } else{
+            
+            restLabel.text = @"";
+            
+        }
+        
+    } else{
+        
+        // this is the last round for this chain and the passed in 'finalRest' should be used
+        
+        if (self.finalRest){
+            
+            restText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.finalRest intValue]];
+            restText = [NSString stringWithFormat: @"%@ rest", restText];
+            restLabel.text = restText;
+            
+        } else{
+            
+            restLabel.text = @"";
+            
+        }
+        
+    }
+    
     
     NSArray *labels = @[weightLabel,
                         repsLabel,

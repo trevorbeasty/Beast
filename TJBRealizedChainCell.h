@@ -16,7 +16,7 @@
 
 - (void)clearExistingEntries;
 
-- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number;
+- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number finalRest:(NSNumber *)finalRest;
 
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain;
 
