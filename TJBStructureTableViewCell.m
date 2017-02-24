@@ -24,7 +24,6 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UILabel *chainNameLabel;
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
@@ -59,31 +58,17 @@
     
     self.chainTemplate = chainTemplate;
     
-//    self.selectionStyle = UITableViewCellSelectionStyleNone;
-    
     [self configureViewAesthetics];
     
     // configure the chain name label
-    
-//    NSString *recordWord;
-//    
-//    if (chainTemplate.realizedChains.count == 1){
-//        
-//        recordWord = @"record";
-//        
-//    } else{
-//        
-//        recordWord = @"records";
-//        
-//    }
     
     NSString *title = [NSString stringWithFormat: @"%@ (%d)",
                        chainTemplate.name,
                        (int)chainTemplate.realizedChains.count];
     
-    self.chainNameLabel.text = title;
-    
-    self.numberLabel.text = [number stringValue];
+    self.numberLabel.text = [NSString stringWithFormat: @"%@. %@",
+                             [number stringValue],
+                             title];
 
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     df.dateFormat = @"MMM d";
@@ -111,20 +96,18 @@
     
     //// configure view aesthetics
     
-    NSArray *views = @[self.chainNameLabel,
-                       self.dateLabel,
-                       self.stackView,
-                       self.contentView,
+    NSArray *labels = @[self.dateLabel,
                        self.numberLabel];
     
-    for (UIView *view in views){
+    for (UILabel *lab in labels){
         
-        view.backgroundColor = [UIColor clearColor];
-        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.textColor = [UIColor blackColor];
+
     }
     
     self.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    self.chainNameLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.dateLabel.font = [UIFont systemFontOfSize: 10.0];
     
 }
 
@@ -280,73 +263,19 @@
     float numberOfRounds = (float)chainTemplate.numberOfRounds;
     float titleHeight = 20.0;
     float spacing = 8.0;
-    float error = 8.0;
+    float error;
     
-//    if (chainTemplate.numberOfRounds * chainTemplate.numberOfExercises == 1){
-//        error += 8;
-//    }
+    if (numberOfExercises > 1){
+        error = 0;
+    } else{
+        error = 8;
+    }
     
     return (numberOfExercises * (numberOfRounds + 1.0) + 1.0) * titleHeight + spacing + error;
     
 }
 
-//- (UIView *)exerciseNameSubviewWithNumber:(NSNumber *)number name:(NSString *)name{
-//    
-//    //// create the exercise name subview, which will have two labels - one for a number and one for a name
-//    
-//    UIView *view = [[UIView alloc] init];
-//    
-//    UILabel *numberLabel = [[UILabel alloc] init];
-//    UILabel *nameLabel = [[UILabel alloc] init];
-//    
-//    numberLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//    nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//    
-//    numberLabel.text = [number stringValue];
-//    nameLabel.text = name;
-//    
-//    [view addSubview: numberLabel];
-//    [view addSubview: nameLabel];
-//    
-//    NSArray *labels = @[numberLabel, nameLabel];
-//    for (UILabel *label in labels){
-//        
-//        label.backgroundColor = [UIColor clearColor];
-//        label.font = [UIFont systemFontOfSize: 15.0];
-//        label.textColor = [UIColor blackColor];
-//        
-//    }
-//    
-//    NSDictionary *constraintMapping = [NSDictionary dictionaryWithObjects: @[numberLabel, nameLabel]
-//                                                                  forKeys: @[@"numberLabel", @"nameLabel"]];
-//    
-//    NSString *horizontal1 = @"H:|-0-[numberLabel(==20)]-4-[nameLabel]-0-|";
-//    
-//    NSArray *horizontalConstraints1 = [NSLayoutConstraint constraintsWithVisualFormat: horizontal1
-//                                                                              options: 0
-//                                                                              metrics: nil
-//                                                                                views: constraintMapping];
-//    
-//    NSString *vertical1 = @"V:|-0-[numberLabel]-0-|";
-//    NSString *vertical2 = @"V:|-0-[nameLabel]-0-|";
-//    
-//    NSArray *verticalConstraints1 = [NSLayoutConstraint constraintsWithVisualFormat: vertical1
-//                                                                            options: 0
-//                                                                            metrics: nil
-//                                                                              views: constraintMapping];
-//    
-//    NSArray *verticalConstraints2 = [NSLayoutConstraint constraintsWithVisualFormat: vertical2
-//                                                                            options: 0
-//                                                                            metrics: nil
-//                                                                              views: constraintMapping];
-//    
-//    [view addConstraints: horizontalConstraints1];
-//    [view addConstraints: verticalConstraints1];
-//    [view addConstraints: verticalConstraints2];
-//    
-//    return view;
-//    
-//}
+
 
 
 @end

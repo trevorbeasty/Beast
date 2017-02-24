@@ -19,12 +19,12 @@
     // core
     
     BOOL _marksEndOfRoutine;
+    BOOL _isTargetingRest;
     
 }
 
 // IBOutlet
 
-//@property (weak, nonatomic) IBOutlet UILabel *numberTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *restTitleLabel;
 
 // core
@@ -38,13 +38,14 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber restNumber:(NSNumber *)restNumber marksEndOfRoutine:(BOOL)marksEndOfRoutine{
+- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber restNumber:(NSNumber *)restNumber marksEndOfRoutine:(BOOL)marksEndOfRoutine isTargetingRest:(BOOL)isTargetingRest{
     
     self = [super init];
     
     self.number = titleNumber;
     self.rest = restNumber;
     _marksEndOfRoutine = marksEndOfRoutine;
+    _isTargetingRest = isTargetingRest;
     
     return self;
     
@@ -53,9 +54,6 @@
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
-    
-//    self.restTitleLabel.layer.masksToBounds = YES;
-//    self.restTitleLabel.layer.cornerRadius = 4.0;
     
     self.restTitleLabel.backgroundColor = [UIColor clearColor];
     self.restTitleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
@@ -67,9 +65,19 @@
         
     } else{
         
-        self.restTitleLabel.text = [NSString stringWithFormat: @"%d. Rest for %@",
-                                    [self.number intValue],
-                                    [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.rest intValue]]];
+        if (_isTargetingRest){
+            
+            self.restTitleLabel.text = [NSString stringWithFormat: @"%d. Rest for %@",
+                                        [self.number intValue],
+                                        [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.rest intValue]]];
+            
+        } else{
+        
+            self.restTitleLabel.text = [NSString stringWithFormat: @"%d. Rest", [self.number intValue]];
+            
+        }
+        
+
         
     }
     

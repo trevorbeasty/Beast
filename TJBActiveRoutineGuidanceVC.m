@@ -587,7 +587,8 @@ static NSString const *restViewKey = @"restView";
     NSNumber *titleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 1];
     TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
                                                                                       restNumber: self.activeRestTarget
-                                                                               marksEndOfRoutine: _isLastExerciseOfRoutine];
+                                                                               marksEndOfRoutine: _isLastExerciseOfRoutine
+                                                                                 isTargetingRest: self.chainTemplate.targetingRestTime];
     restItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.restItemChildVC = restItemVC;

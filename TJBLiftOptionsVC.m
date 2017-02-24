@@ -36,7 +36,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *analysisOptionsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *liftOptionsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *viewWorkoutLogButton;
-- (IBAction)didPressViewWorkoutLog:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 
 
 // IBAction
@@ -44,6 +44,7 @@
 - (IBAction)didPressFreeformButton:(id)sender;
 - (IBAction)didPressDesignedButton:(id)sender;
 - (IBAction)didPressCreateNewRoutine:(id)sender;
+- (IBAction)didPressViewWorkoutLog:(id)sender;
 
 
 @end
@@ -54,8 +55,9 @@
 
 - (void)viewDidLoad{
     
-    
     [self configureViewAesthetics];
+    
+//    self.
     
 }
 
@@ -74,6 +76,9 @@
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = 16.0;
         
     }
     
@@ -124,7 +129,7 @@
     tbc.tabBar.translucent = NO;
     
     [self presentViewController: tbc
-                       animated: NO
+                       animated: YES
                      completion: nil];
     
 }
@@ -146,7 +151,7 @@
     tbc.tabBar.translucent = NO;
 
     [self presentViewController: tbc
-                       animated: NO
+                       animated: YES
                      completion: nil];
     
 }

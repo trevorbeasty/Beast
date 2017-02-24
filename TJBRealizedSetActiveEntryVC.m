@@ -805,17 +805,17 @@
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
-    
-}
-
-- (void)didPressHome{
-    
     [self dismissViewControllerAnimated: NO
                              completion: nil];
     
 }
+
+//- (void)didPressHome{
+//    
+//    [self dismissViewControllerAnimated: NO
+//                             completion: nil];
+//    
+//}
 
 //- (IBAction)addNewExercise:(id)sender{
 //    

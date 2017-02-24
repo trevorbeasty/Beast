@@ -18,6 +18,8 @@
     
     [self configureViewAesthetics];
     
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
     NSString *repsString = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
     

@@ -16,11 +16,11 @@
             <rect key="frame" x="0.0" y="0.0" width="578" height="310"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="578" height="309.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="578" height="309"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbh-Xg-mqd">
-                        <rect key="frame" x="8" y="8" width="7" height="20"/>
+                        <rect key="frame" x="16" y="8" width="496" height="20"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="HIe-Jm-jYj"/>
@@ -30,31 +30,26 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOT-uX-gVp">
-                        <rect key="frame" x="537.5" y="8" width="32.5" height="18"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <rect key="frame" x="520" y="8" width="50" height="12"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="h03-zs-mrs"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-MC-vYb">
-                        <rect key="frame" x="8" y="28" width="562" height="273.5"/>
+                        <rect key="frame" x="16" y="28" width="554" height="273.5"/>
                         <color key="backgroundColor" red="1" green="0.89661400710000005" blue="0.73848710319999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </stackView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chain Template Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ie6-zF-kjZ">
-                        <rect key="frame" x="23" y="8" width="150.5" height="20"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstItem="ie6-zF-kjZ" firstAttribute="bottom" secondItem="cbh-Xg-mqd" secondAttribute="bottom" id="6Za-2v-0Ek"/>
+                    <constraint firstItem="nOT-uX-gVp" firstAttribute="leading" secondItem="cbh-Xg-mqd" secondAttribute="trailing" constant="8" id="52m-Ph-HDp"/>
                     <constraint firstAttribute="trailingMargin" secondItem="nOT-uX-gVp" secondAttribute="trailing" id="LES-WQ-q3b"/>
                     <constraint firstItem="gDn-MC-vYb" firstAttribute="leading" secondItem="cbh-Xg-mqd" secondAttribute="leading" id="P0q-S7-Jsa"/>
-                    <constraint firstItem="cbh-Xg-mqd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="QUM-ia-O62"/>
+                    <constraint firstItem="cbh-Xg-mqd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="QUM-ia-O62"/>
                     <constraint firstItem="cbh-Xg-mqd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="WtW-Rz-tQx"/>
-                    <constraint firstItem="ie6-zF-kjZ" firstAttribute="leading" secondItem="cbh-Xg-mqd" secondAttribute="trailing" constant="8" id="amL-aB-s0R"/>
-                    <constraint firstItem="ie6-zF-kjZ" firstAttribute="top" secondItem="cbh-Xg-mqd" secondAttribute="top" id="kuC-kk-X9R"/>
                     <constraint firstItem="nOT-uX-gVp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="m8u-bn-dqa"/>
                     <constraint firstAttribute="bottomMargin" secondItem="gDn-MC-vYb" secondAttribute="bottom" id="uLB-K6-EU2"/>
                     <constraint firstAttribute="trailingMargin" secondItem="gDn-MC-vYb" secondAttribute="trailing" id="znI-Mc-rty"/>
@@ -62,7 +57,6 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="chainNameLabel" destination="ie6-zF-kjZ" id="X4w-mM-zgP"/>
                 <outlet property="dateLabel" destination="nOT-uX-gVp" id="VKu-DI-uoD"/>
                 <outlet property="numberLabel" destination="cbh-Xg-mqd" id="V0Z-eg-aHm"/>
                 <outlet property="stackView" destination="gDn-MC-vYb" id="qYn-wX-W0f"/>

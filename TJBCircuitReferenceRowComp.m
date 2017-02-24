@@ -249,7 +249,7 @@
         
     } else{
         
-        [self.restButton setTitle: @""
+        [self.restButton setTitle: @"X rest"
                          forState: UIControlStateNormal];
         
     }

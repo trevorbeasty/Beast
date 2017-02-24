@@ -10,6 +10,6 @@
 
 @interface TJBActiveRoutineRestItem : UIViewController
 
-- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber restNumber:(NSNumber *)restNumber marksEndOfRoutine:(BOOL)marksEndOfRoutine;
+- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber restNumber:(NSNumber *)restNumber marksEndOfRoutine:(BOOL)marksEndOfRoutine isTargetingRest:(BOOL)isTargetingRest;
 
 @end
