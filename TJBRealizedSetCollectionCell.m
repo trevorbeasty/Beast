@@ -173,7 +173,7 @@
     //// must manually configure the inputs as the xib is altered
     
     float numberOfRows = (float)realizedSetCollection.count;
-    float titleHeight = 20.0;
+    float titleHeight = 30.0;
     float spacing = 8.0;
     float error = 0.0;
     

@@ -30,6 +30,7 @@
 #import "TJBRealizedChainCell.h"
 #import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
+#import "TJBRealizedSetCollectionCell.h"
 
 // presented VC's
 
@@ -580,6 +581,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self.tableView registerNib: noDataCell
          forCellReuseIdentifier: @"TJBNoDataCell"];
+    
+    UINib *realizedSetCollectionCell = [UINib nibWithNibName: @"TJBRealizedSetCollectionCell"
+                                                      bundle: nil];
+    
+    [self.tableView registerNib: realizedSetCollectionCell
+         forCellReuseIdentifier: @"TJBRealizedSetCollectionCell"];
     
 }
 
@@ -1175,9 +1182,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
                 // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
                 
-                TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
+                TJBRealizedSetCollectionCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCollectionCell"];
                 
-                cell.backgroundColor = [UIColor redColor];
+                [cell clearExistingEntries];
+                
+                cell.backgroundColor = [UIColor clearColor];
+                
+                [cell configureWithRealizedSetCollection: self.dailyList[rowIndex]
+                                                  number: number];
                 
                 return cell;
                 
@@ -1234,7 +1246,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
             } else{
                 
-                return 10;
+                TJBRealizedSetCollection rsc = self.dailyList[adjustedIndex];
+                
+                return [TJBRealizedSetCollectionCell suggestedCellHeightForRealizedSetCollection: rsc];
                 
             }
         }
