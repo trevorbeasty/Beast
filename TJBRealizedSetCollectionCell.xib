@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="225" id="KGk-i7-Jjw" customClass="TJBRealizedSetCollectionCell">
+            <rect key="frame" x="0.0" y="0.0" width="529" height="225"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="529" height="224.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b67-tT-vDV">
+                        <rect key="frame" x="16" y="8" width="12.5" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="T1q-G1-Xoi"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Realized Set Exercise Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MM4-cR-6qf">
+                        <rect key="frame" x="32.5" y="8" width="202" height="20"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="BZ2-kb-shW">
+                        <rect key="frame" x="16" y="36" width="505" height="180.5"/>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45b-rl-QMl">
+                        <rect key="frame" x="490.5" y="8" width="30.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="45b-rl-QMl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="FTp-c2-YYc"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="BZ2-kb-shW" secondAttribute="trailing" id="GDk-8Q-FGo"/>
+                    <constraint firstItem="MM4-cR-6qf" firstAttribute="leading" secondItem="b67-tT-vDV" secondAttribute="trailing" constant="4" id="WVu-Ij-zrV"/>
+                    <constraint firstItem="BZ2-kb-shW" firstAttribute="top" secondItem="MM4-cR-6qf" secondAttribute="bottom" constant="8" id="eQ7-N8-kY4"/>
+                    <constraint firstItem="b67-tT-vDV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="eue-Bg-bDX"/>
+                    <constraint firstItem="b67-tT-vDV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="gVz-UJ-Kgf"/>
+                    <constraint firstItem="BZ2-kb-shW" firstAttribute="leading" secondItem="b67-tT-vDV" secondAttribute="leading" id="jL7-CG-hrg"/>
+                    <constraint firstItem="MM4-cR-6qf" firstAttribute="top" secondItem="b67-tT-vDV" secondAttribute="top" id="mbG-8C-8pf"/>
+                    <constraint firstItem="MM4-cR-6qf" firstAttribute="bottom" secondItem="b67-tT-vDV" secondAttribute="bottom" id="rhM-Xj-eK2"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="BZ2-kb-shW" secondAttribute="bottom" id="tSs-aR-xTb"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="45b-rl-QMl" secondAttribute="trailing" id="upn-73-cZH"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="contentStackView" destination="BZ2-kb-shW" id="L22-Q4-1qQ"/>
+                <outlet property="dateLabel" destination="45b-rl-QMl" id="Guf-UG-qtw"/>
+                <outlet property="exerciseNameLabel" destination="MM4-cR-6qf" id="U5Z-Dn-RbR"/>
+                <outlet property="numberLabel" destination="b67-tT-vDV" id="njM-Ud-8Gk"/>
+            </connections>
+            <point key="canvasLocation" x="138.5" y="144.5"/>
+        </tableViewCell>
+    </objects>
+</document>
