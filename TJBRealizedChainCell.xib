@@ -34,15 +34,15 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q60-wO-p9d">
-                        <rect key="frame" x="16" y="36" width="510" height="239.5"/>
-                    </stackView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Realized Chain" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CDa-br-hrf">
                         <rect key="frame" x="27" y="8" width="101" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="q60-wO-p9d">
+                        <rect key="frame" x="16" y="36" width="510" height="239.5"/>
+                    </stackView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="CVA-CK-TLK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="4K4-hY-pXn"/>

@@ -58,14 +58,15 @@
     
     // configure label display info
     
-    self.exerciseNameLabel.text = self.realizedSetCollection[0].exercise.name;
+    NSString *exerciseNameText = [NSString stringWithFormat: @"%@", self.realizedSetCollection[0].exercise.name];
+    self.exerciseNameLabel.text = exerciseNameText;
     
     NSString *numberText = [NSString stringWithFormat: @"%@.", [number stringValue]];
     self.numberLabel.text = numberText;
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     df.dateStyle = NSDateFormatterNoStyle;;
-    df.timeStyle = NSDateFormatterMediumStyle;;
+    df.timeStyle = NSDateFormatterShortStyle;;
     self.dateLabel.text = [df stringFromDate: realizedSetColleection[0].endDate];
     
     //// configure the stack view.  For every exercise, create a UILabel and configure it before adding it to the stack view
@@ -89,6 +90,19 @@
 - (void)configureViewAesthetics{
     
     self.contentView.backgroundColor = [UIColor clearColor];
+    
+    // main label
+    
+    NSArray *labels = @[self.numberLabel, self.exerciseNameLabel, self.dateLabel];
+    for (UILabel *label in labels){
+        
+        label.textColor = [UIColor blackColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont boldSystemFontOfSize: 15.0];
+        
+    }
+    
+    self.dateLabel.font = [UIFont systemFontOfSize: 10.0];
     
 }
 
@@ -121,6 +135,7 @@
     for (UILabel *label in labels){
         
         label.translatesAutoresizingMaskIntoConstraints = NO;
+        label.backgroundColor = [UIColor clearColor];
         
         [view addSubview: label];
         
@@ -173,9 +188,9 @@
     //// must manually configure the inputs as the xib is altered
     
     float numberOfRows = (float)realizedSetCollection.count;
-    float titleHeight = 30.0;
+    float titleHeight = 20.0;
     float spacing = 8.0;
-    float error = 0.0;
+    float error = 8.0;
     
     return (numberOfRows + 1.0) * titleHeight + spacing + error;
     

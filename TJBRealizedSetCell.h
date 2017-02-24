@@ -17,6 +17,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *restLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
 
++ (float)suggestedCellHeight;
+
 - (void)configureCellWithExercise:(NSString *)exercise weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest date:(NSString *)date number:(NSNumber *)number;
+
+
 
 @end

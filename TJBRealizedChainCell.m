@@ -71,8 +71,8 @@
     
     // configure the chain name label
     
-    self.numberLabel.text = [number stringValue];
-    self.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    NSString *numberText = [NSString stringWithFormat: @"%@.", [number stringValue]];
+    self.numberLabel.text = numberText;
     
     NSString *title = [NSString stringWithFormat: @"%@",
                        chainTemplate.name];
@@ -105,6 +105,22 @@
 - (void)configureViewAesthetics{
     
     self.contentView.backgroundColor = [UIColor clearColor];
+    
+    // labels
+    
+    NSArray *mainLabels = @[self.chainNameLabel, self.numberLabel];
+    for (UILabel *label in mainLabels){
+        
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor blackColor];
+        label.font = [UIFont boldSystemFontOfSize: 15.0];
+        
+    }
+    
+    self.dateLabel.textColor = [UIColor blackColor];
+    self.dateLabel.backgroundColor = [UIColor clearColor];
+    self.dateLabel.font = [UIFont systemFontOfSize: 10.0];
+    
     
 }
 
@@ -183,6 +199,7 @@
     for (UILabel *label in labels){
         
         label.translatesAutoresizingMaskIntoConstraints = NO;
+        label.backgroundColor = [UIColor clearColor];
         
         [view addSubview: label];
         
