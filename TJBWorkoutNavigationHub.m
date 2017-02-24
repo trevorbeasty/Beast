@@ -35,7 +35,6 @@
 
 #import "TJBLiftOptionsVC.h"
 
-
 @interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate>
 
 {
@@ -95,6 +94,8 @@ static const CGFloat buttonHeight = 50.0;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
+
+typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 @implementation TJBWorkoutNavigationHub
 
@@ -216,8 +217,8 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 - (void)configureMasterList{
     
     //// add the fetched objects of the 2 FRC's to a mutable array and reorder it appropriately.  Then, use the array to create the master list.
-    
     // create the interim array and sort it such that it holds realized sets and realized chains with set begin dates and chain created dates, respectively, in descending order
+    // add adjacent realized sets with the same exercise to the same TJBRealizedSetCollection.  This type is used to group and present consecutive individual sets of the same exercise in a single table view cell
     
     if (!self.masterList){
         
@@ -225,12 +226,14 @@ typedef void (^AnimationCompletionBlock)(BOOL);
         
     }
     
-    NSMutableArray *interimArray = [[NSMutableArray alloc] init];
+    // add all realized sets and realized chains to the same array, and then sort them by date is ascending order
     
-    [interimArray addObjectsFromArray: self.realizedSetFRC.fetchedObjects];
-    [interimArray addObjectsFromArray: self.realizeChainFRC.fetchedObjects];
+    NSMutableArray *interimArray1 = [[NSMutableArray alloc] init];
     
-    [interimArray sortUsingComparator: ^(id obj1, id obj2){
+    [interimArray1 addObjectsFromArray: self.realizedSetFRC.fetchedObjects];
+    [interimArray1 addObjectsFromArray: self.realizeChainFRC.fetchedObjects];
+    
+    [interimArray1 sortUsingComparator: ^(id obj1, id obj2){
         
         NSDate *obj1Date;
         NSDate *obj2Date;
@@ -282,7 +285,65 @@ typedef void (^AnimationCompletionBlock)(BOOL);
         }
     }];
     
-    self.masterList = interimArray;
+    // evaluate if consecutive array objects are realized sets of the same exercises.  Group these using TJBRealizedSetCollection
+    // interim array 2 holds realized chains and TJBRealizedSetCollections
+    
+    NSMutableArray *interimArray2 = [[NSMutableArray alloc] init];
+    NSMutableArray *stagingArray = [[NSMutableArray alloc] init];
+    
+    // the above task will be completed by stepping through interim array 1
+    
+    NSInteger limit2 = interimArray1.count - 1;
+    
+    for (int i = 0; i < limit2; i++){
+        
+        [stagingArray addObject: interimArray1[i]];
+        
+        BOOL object1IsRealizedSet = [interimArray1[i] isKindOfClass: [TJBRealizedSet class]];
+        BOOL object2IsRealizedSet = [interimArray1[i+1] isKindOfClass: [TJBRealizedSet class]];
+        BOOL objectsAreBothRealizedSets = object1IsRealizedSet && object2IsRealizedSet;
+        
+        if (objectsAreBothRealizedSets){
+         
+            continue;
+            
+        }
+        
+        // the index set will only have length greater than 1 if it has the indices of multiple realized sets
+        
+        if (stagingArray.count > 1){
+            
+            // give the rsc all realized sets
+            
+            TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+            
+            // add the rsc to interim array 2 and clear all objects from the staging array
+            
+            [interimArray2 addObject: rsc];
+            
+            [stagingArray removeAllObjects];
+            
+            
+        } else if (stagingArray.count == 1){
+            
+            // the object is either a lone realized set or realized chain.  Add it to interim array 2
+            
+            [interimArray2 addObject: stagingArray[0]];
+            
+            // clear all objects from the staging array
+            
+            [stagingArray removeAllObjects];
+            
+        } else{
+            
+            abort();
+            
+        }
+    }
+    
+    // assign the master list using the appropriate interim array
+    
+    self.masterList = interimArray2;
     
 }
 
@@ -642,6 +703,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
     //// evaluates whether the object is a realized set or realized chain and returns the corresponding day begin date.  For realized sets this in the 'beginDate' and for realized chains this is the 'dateCreated'.  Date created is used as opposed to set begin dates because the former is always going to exist while the latter may not
     
     BOOL objectIsRealizedSet = [object isKindOfClass: [TJBRealizedSet class]];
+    BOOL objectIsRealizedChain = [object isKindOfClass: [TJBRealizedChain class]];
     
     if (objectIsRealizedSet){
         
@@ -649,11 +711,21 @@ typedef void (^AnimationCompletionBlock)(BOOL);
         
         return realizedSet.endDate;
         
-    } else{
+    } else if (objectIsRealizedChain){
         
         TJBRealizedChain *realizedChain = object;
         
         return realizedChain.dateCreated;
+        
+    } else{
+        
+        // if it is not a realized set or realized chain, it must be a TJBRealizedSetCollection
+        // simply return the end date of the first realized set
+        // I believe they are in asending order (by date), so I am returning the end date of the earliest set
+        
+        TJBRealizedSetCollection rsc = object;
+        
+        return rsc[0].endDate;
         
     }
     
