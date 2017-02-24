@@ -302,10 +302,81 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         BOOL object1IsRealizedSet = [interimArray1[i] isKindOfClass: [TJBRealizedSet class]];
         BOOL object2IsRealizedSet = [interimArray1[i+1] isKindOfClass: [TJBRealizedSet class]];
         BOOL objectsAreBothRealizedSets = object1IsRealizedSet && object2IsRealizedSet;
+        BOOL isLastIteration = i == interimArray1.count - 2;
+        
+        // if the for loop is making its last iteration, special logic must be employed.  Otherwise, the last object will not be added
+        
+        if (isLastIteration){
+            
+            if (objectsAreBothRealizedSets){
+                
+                TJBRealizedSet *rs1 = interimArray1[i];
+                TJBRealizedSet *rs2 = interimArray1[i+1];
+                
+                BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
+                
+                if (setsHaveSameExercise){
+                    
+                    [stagingArray addObject: interimArray1[i+1]];
+                    
+                    TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+                    
+                    [interimArray2 addObject: rsc];
+                    
+                } else{
+                    
+                    if (stagingArray.count > 1){
+                        
+                        TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+                        
+                        [interimArray2 addObject: rsc];
+                        
+                        [interimArray2 addObject: interimArray1[i+1]];
+                        
+                    } else{
+                        
+                        [interimArray2 addObject: interimArray1[i]];
+                        [interimArray2 addObject: interimArray1[i+1]];
+                        
+                    }
+                    
+                }
+                
+            } else{
+                
+                if (stagingArray.count > 1){
+                    
+                    TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+                    
+                    [interimArray2 addObject: rsc];
+                    
+                    [interimArray2 addObject: interimArray1[i+1]];
+                    
+                } else{
+                    
+                    [interimArray2 addObject: interimArray1[i]];
+                    [interimArray2 addObject: interimArray1[i+1]];
+                    
+                }
+                
+            }
+            
+            continue;
+            
+        }
         
         if (objectsAreBothRealizedSets){
-         
-            continue;
+            
+            TJBRealizedSet *rs1 = interimArray1[i];
+            TJBRealizedSet *rs2 = interimArray1[i+1];
+            
+            BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
+            
+            if (setsHaveSameExercise){
+                
+                continue;
+                
+            }
             
         }
         
@@ -1057,6 +1128,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             int rowIndex = (int)indexPath.row - 1;
             
             BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
+            BOOL isRealizedChain = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedChain class]];
             
             if (isRealizedSet){
                 
@@ -1065,8 +1137,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 // dequeue the realizedSetCell
                 
                 TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
-                
-                
                 
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 dateFormatter.dateStyle = NSDateFormatterNoStyle;
@@ -1084,7 +1154,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
                 return cell;
                 
-            } else{
+            } else if (isRealizedChain){
                 
                 TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
                 
@@ -1098,6 +1168,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                                           number: number];
                 
                 cell.backgroundColor = [UIColor clearColor];
+                
+                return cell;
+                
+            } else{
+                
+                // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
+                
+                TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
+                
+                cell.backgroundColor = [UIColor redColor];
                 
                 return cell;
                 
