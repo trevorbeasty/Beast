@@ -67,6 +67,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nextUpLabel;
 
 // IBAction
 
@@ -81,7 +82,7 @@
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @property (nonatomic, strong) UIView *activeScrollContentView;
-@property (nonatomic, strong) UILabel *nextUpLabel;
+//@property (nonatomic, strong) UILabel *nextUpLabel;
 @property (nonatomic, strong) UIStackView *guidanceStackView;
 @property (nonatomic, strong) NSMutableArray<TJBActiveRoutineExerciseItemVC *> *exerciseItemChildVCs;
 @property (nonatomic, strong) TJBActiveRoutineRestItem *restItemChildVC;
@@ -235,6 +236,12 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
 }
 
 - (void)configureViewAesthetics{
+    
+    // next up label
+    
+    self.nextUpLabel.backgroundColor = [UIColor lightGrayColor];
+    self.nextUpLabel.textColor = [UIColor whiteColor];
+    self.nextUpLabel.font = [UIFont boldSystemFontOfSize: 20];
     
     NSArray *labels = @[self.roundTitleLabel,
                         self.timerTitleLabel,

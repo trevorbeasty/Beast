@@ -96,18 +96,22 @@ static NSString * const reuseIdentifier = @"cell";
     switch (_numberTypeIdentifier) {
         case WeightType:
             self.typeLabel.text = @"Weight";
+            self.topLabel1.text = @"Select Weight";
             break;
             
         case TargetRestType:
             self.typeLabel.text = @"Rest";
+            self.topLabel1.text = @"Select Rest";
             break;
             
         case TimeIntervalSelection:
             self.typeLabel.text = @"Time";
+            self.topLabel1.text = @"Select Time";
             break;
             
         case RepsType:
             self.typeLabel.text = @"Reps";
+            self.topLabel1.text = @"Select Reps";
             break;
             
         default:
