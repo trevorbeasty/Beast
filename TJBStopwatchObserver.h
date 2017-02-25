@@ -10,7 +10,7 @@
 
 @protocol TJBStopwatchObserver <NSObject>
 
-- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date;
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue;
 
 - (void)secondaryTimerDidUpdateWithUpdateDate:(NSDate *)date;
 

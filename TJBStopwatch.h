@@ -37,4 +37,8 @@
 
 - (void)removeAllPrimaryStopwatchObservers;
 
+// direct timer manipulation
+
+- (void)resetAndPausePrimaryTimer;
+
 @end

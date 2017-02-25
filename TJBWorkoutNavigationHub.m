@@ -36,7 +36,11 @@
 
 #import "TJBLiftOptionsVC.h"
 
-@interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate>
+// for prefetching table view cells
+
+#import "TJBCellFetchingOperation.h"
+
+@interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching>
 
 {
     // state
@@ -47,7 +51,7 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
@@ -82,6 +86,10 @@
 @property (nonatomic, strong) NSFetchedResultsController *realizeChainFRC;
 @property (nonatomic, strong) NSMutableArray *masterList;
 @property (nonatomic, strong) NSMutableArray *dailyList;
+
+// cell prefetching
+
+@property (strong) NSOperationQueue *operationQueue;
 
 @end
 
@@ -557,6 +565,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 - (void)configureTableView{
     
     //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
+    
+    // for prefetching
+    
+//    self.tableView.prefetchDataSource = self;
     
     UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
                                            bundle: nil];
@@ -1085,7 +1097,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath{
     
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
     // if the row index is 0, it is the title cell
@@ -1198,6 +1210,210 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             }
         }
     }
+    
+}
+
+- (TJBCellFetchingOperation *)operationForIndexPath:(NSIndexPath *)indexPath{
+    
+    // search for the operation designated by the passed-in index path.  If one does not exist, return nil
+    
+    if (self.operationQueue){
+        
+        for (TJBCellFetchingOperation *operation in self.operationQueue.operations){
+            
+            BOOL match = [self indexForOperation: operation
+                                    matchesIndex: indexPath];
+            
+            if (match){
+                
+                return operation;
+                
+            }
+        }
+    }
+    
+    // if the control reaches this point, then no matches were found. Return nil
+    
+    return nil;
+    
+}
+
+- (BOOL)indexForOperation:(TJBCellFetchingOperation *)operation matchesIndex:(NSIndexPath *)indexPath{
+    
+    BOOL sectionMatch = operation.indexPath.section == indexPath.section;
+    BOOL rowMatch = operation.indexPath.row == indexPath.row;
+    
+    return  sectionMatch && rowMatch;
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    // check the operation queue for the specified index path.  If the cell has already been prepared, use that cell.  Otherwise, create and configure the cell
+    // must check for existence of queue
+    
+    NSString *logString = [NSString stringWithFormat: @"%d: %d",
+                           (int)indexPath.row,
+                           (int)self.operationQueue.operations.count];
+    NSLog(@"%@", logString);
+    
+    if (self.operationQueue){
+        
+        NSLog(@"prefetch");
+        
+        // fetch the operation.  Will return nil when not found
+        
+        TJBCellFetchingOperation *operation = [self operationForIndexPath: indexPath];
+        
+        if (operation){
+            
+            // must evaluate the status of the operation in order to determine the appropriate course of action
+            
+            if (operation.isExecuting){
+                
+                [operation waitUntilFinished];
+                
+                return operation.result;
+                
+            } else if (operation.isFinished){
+                
+                return operation.result;
+                
+            } else{
+                
+                return [self cellForIndexPath: indexPath];
+                
+            }
+            
+        } else{
+            
+            return [self cellForIndexPath: indexPath];
+            
+        }
+        
+    } else{
+        
+        NSLog(@"normal");
+        
+        // if there is no operation queue, create the cell as would normally be done
+        
+        return [self cellForIndexPath: indexPath];
+        
+    }
+    
+    
+    
+//    //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
+//    // if the row index is 0, it is the title cell
+//    
+//    if (indexPath.row == 0){
+//        
+//        TJBWorkoutLogTitleCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+//        
+//        
+//        
+//        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+//        BOOL isToday = [calendar isDate: self.activeDate
+//                        inSameDayAsDate: [NSDate date]];
+//        
+//        if (isToday){
+//            
+//            cell.secondaryLabel.text = @"Today";
+//            
+//        } else{
+//            
+//            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//            df.dateFormat = @"EEEE, MMMM d, yyyy";
+//            cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
+//            
+//        }
+//        
+//        cell.primaryLabel.text = @"My Workout Log";
+//        cell.backgroundColor = [UIColor clearColor];
+//        
+//        return cell;
+//        
+//    } else{
+//        
+//        if (self.dailyList.count == 0){
+//            
+//            TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+//            
+//            cell.mainLabel.text = @"No Entries";
+//            cell.backgroundColor = [UIColor clearColor];
+//            
+//            return cell;
+//            
+//        } else{
+//            
+//            NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
+//            
+//            int rowIndex = (int)indexPath.row - 1;
+//            
+//            BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
+//            BOOL isRealizedChain = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedChain class]];
+//            
+//            if (isRealizedSet){
+//                
+//                TJBRealizedSet *realizedSet = self.dailyList[rowIndex];
+//                
+//                // dequeue the realizedSetCell
+//                
+//                TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
+//                
+//                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//                dateFormatter.dateStyle = NSDateFormatterNoStyle;
+//                dateFormatter.timeStyle = NSDateFormatterShortStyle;
+//                NSString *date = [dateFormatter stringFromDate: realizedSet.endDate];
+//                
+//                [cell configureCellWithExercise: realizedSet.exercise.name
+//                                         weight: [NSNumber numberWithFloat: realizedSet.weight]
+//                                           reps: [NSNumber numberWithFloat: realizedSet.reps]
+//                                           rest: nil
+//                                           date: date
+//                                         number: number];
+//                
+//                cell.backgroundColor = [UIColor clearColor];
+//                
+//                return cell;
+//                
+//            } else if (isRealizedChain){
+//                
+//                TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
+//                
+//                // dequeue the realizedSetCell
+//                
+//                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+//                
+//                [cell clearExistingEntries];
+//                
+//                [cell configureWithRealizedChain: realizedChain
+//                                          number: number
+//                                       finalRest: nil];
+//                
+//                cell.backgroundColor = [UIColor clearColor];
+//                
+//                return cell;
+//                
+//            } else{
+//                
+//                // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
+//                
+//                TJBRealizedSetCollectionCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCollectionCell"];
+//                
+//                [cell clearExistingEntries];
+//                
+//                cell.backgroundColor = [UIColor clearColor];
+//                
+//                [cell configureWithRealizedSetCollection: self.dailyList[rowIndex]
+//                                                  number: number
+//                                               finalRest: nil];
+//                
+//                return cell;
+//                
+//            }
+//        }
+//    }
 }
 
 
@@ -1337,9 +1553,32 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
+#pragma mark - <UITableViewDataSourcePrefetching>
 
-
-
+- (void)tableView:(UITableView *)tableView prefetchRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
+    
+    // if there is no operation queue, create one
+    
+    if (!self.operationQueue){
+        
+        self.operationQueue = [[NSOperationQueue alloc] init];
+        
+    }
+    
+    for (NSIndexPath *path in indexPaths){
+        
+        // create the operation object for the given index path
+        
+        TJBCellFetchingOperation *operation = [[TJBCellFetchingOperation alloc] initWithTarget: self
+                                                                                      selector: @selector(cellForIndexPath:)
+                                                                                        object: path];
+        // add the operation object to the operation queue
+        
+        [self.operationQueue addOperation: operation];
+        
+    }
+    
+}
 
 @end
 

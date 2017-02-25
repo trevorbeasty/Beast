@@ -82,7 +82,6 @@
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @property (nonatomic, strong) UIView *activeScrollContentView;
-//@property (nonatomic, strong) UILabel *nextUpLabel;
 @property (nonatomic, strong) UIStackView *guidanceStackView;
 @property (nonatomic, strong) NSMutableArray<TJBActiveRoutineExerciseItemVC *> *exerciseItemChildVCs;
 @property (nonatomic, strong) TJBActiveRoutineRestItem *restItemChildVC;
@@ -107,6 +106,7 @@
 @property (nonatomic, strong) NSNumber *cancelRestorationRoundIndex;
 
 @property (nonatomic, strong) NSNumber *selectedAlertTiming;
+
 
 // stopwatch state
 
@@ -292,6 +292,11 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     self.alertTimingLabel.font = [UIFont systemFontOfSize: 15.0];
     self.alertTimingLabel.textColor = [UIColor darkGrayColor];
     self.alertTimingLabel.backgroundColor = [UIColor clearColor];
+    
+    // give the timer labels a red appearance to start
+    
+    self.timerTitleLabel.backgroundColor = [UIColor redColor];
+    self.remainingRestTopLabel.backgroundColor = [UIColor redColor];
     
 }
 
@@ -648,6 +653,11 @@ static NSString const *restViewKey = @"restView";
                                                           style: UIAlertActionStyleDefault
                                                         handler: ^(UIAlertAction *action){
                                                             
+                                                            // stopwatch courtesty
+                                                            
+                                                            [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
+                                                            [[TJBStopwatch singleton] removePrimaryStopwatchObserver: weakSelf.timerTitleLabel];
+                                                            
                                                             [weakSelf dismissViewControllerAnimated: YES
                                                                                          completion: nil];
                                                             
@@ -781,6 +791,11 @@ static NSString const *restViewKey = @"restView";
                                                      withForwardIncrementing: NO
                                                               lastUpdateDate: nil];
                 
+                // give the timer non red zone colors
+                
+                self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
+                self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
+                
                 weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"%d/%d",
                                                  [weakSelf.activeRoundIndexForTargets intValue] + 1,
                                                  weakSelf.chainTemplate.numberOfRounds];
@@ -816,8 +831,15 @@ static NSString const *restViewKey = @"restView";
                 UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
                                                                  style: UIAlertActionStyleDefault
                                                                handler:  ^(UIAlertAction *action){
+                                                                   
+                                                                   // stopwatch courtesty
+                                                                   
+                                                                   [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
+                                                                   [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerTitleLabel];
+                                                                   
                                                                    [weakSelf dismissViewControllerAnimated: YES
                                                                                                     completion: nil];
+                                                                   
                                                                    }];
                 [alert addAction: action];
                     
@@ -974,9 +996,29 @@ static NSString const *restViewKey = @"restView";
 
 #pragma mark - <TJBStopwatchObserver>
 
-- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
     
     self.dateForTimerRecovery = date;
+    
+    // if an alert timing has been selected, compare the timer value to the alert value
+    
+    if (self.selectedAlertTiming){
+        
+        BOOL inRedZone = [self.selectedAlertTiming floatValue] >= timerValue;
+        
+        if (inRedZone){
+            
+            self.remainingRestTopLabel.backgroundColor = [UIColor redColor];
+            self.timerTitleLabel.backgroundColor = [UIColor redColor];
+            
+        } else{
+            
+            self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
+            self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
+            
+        }
+        
+    }
     
 }
 

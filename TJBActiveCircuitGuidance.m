@@ -1142,7 +1142,7 @@ static NSString * const defaultValue = @"default value";
 
 #pragma mark - <TJBStopwatchObserver>
 
-- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
     
     self.lastPrimaryTimerUpdatedDate = date;
     

@@ -153,7 +153,8 @@
     
     for (UIViewController<TJBStopwatchObserver> *vc in self.primaryStopwatchObserverVCs){
         
-        [vc primaryTimerDidUpdateWithUpdateDate: currentDate];
+        [vc primaryTimerDidUpdateWithUpdateDate: currentDate
+                                     timerValue: _primaryElapsedTimeInSeconds];
         
     }
     
@@ -328,6 +329,15 @@
         return [NSString stringWithFormat: @"%02d:%02d", minutes, seconds];
         
     }
+    
+}
+
+#pragma mark - Direct Timer Manipulation
+
+- (void)resetAndPausePrimaryTimer{
+    
+    _primaryStopwatchIsOn = NO;
+    _primaryElapsedTimeInSeconds = 0;
     
 }
 

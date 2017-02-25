@@ -37,7 +37,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UILabel *topLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *topLabel2;
+
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
@@ -186,7 +186,7 @@ static NSString * const reuseIdentifier = @"cell";
     
     // type label
     
-    NSArray *labels = @[self.topLabel1, self.topLabel2, self.typeLabel, self.selectedValueLabel];
+    NSArray *labels = @[self.topLabel1, self.typeLabel, self.selectedValueLabel];
     for (UILabel *label in labels){
         
         label.backgroundColor = [UIColor darkGrayColor];
@@ -196,7 +196,6 @@ static NSString * const reuseIdentifier = @"cell";
     }
     
     self.typeLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    self.topLabel2.font = [UIFont boldSystemFontOfSize: 15];
     
     // buttons
     
@@ -460,41 +459,6 @@ static NSString * const reuseIdentifier = @"cell";
     }
     
 }
-
-//- (void)cancel{
-//    
-//    self.cancelBlock();
-//    
-//}
-//
-//- (void)didPressSubmit{
-//    
-//    if (self.selectedCellIndexPath){
-//        
-//        NSNumber *selectedNumber;
-//        
-//        if (_numberTypeIdentifier == TargetRestType){
-//            
-//            if (self.selectedCellIndexPath.row == 0){
-//                
-//                selectedNumber = [NSNumber numberWithInt: 0];
-//                
-//            } else{
-//                
-//                selectedNumber = [NSNumber numberWithFloat: (self.selectedCellIndexPath.row - 1) * [self multiplierValue] + 30.0];
-//                
-//            }
-//            
-//        } else{
-//            
-//            selectedNumber = [NSNumber numberWithFloat: self.selectedCellIndexPath.row * [self multiplierValue]];
-//            
-//        }
-//        
-//        self.numberSelectedBlock(selectedNumber);
-//        
-//    }
-//}
 
 - (void)scValueDidChange{
     

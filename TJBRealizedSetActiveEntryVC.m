@@ -134,8 +134,12 @@
 
 @property (nonatomic, strong) UIView *whiteoutView;
 
+// for stopwatch related behaviour
+
 @property (nonatomic, strong) NSDate *lastPrimaryTimerUpdateDate;
 @property (nonatomic, strong) NSDate *lastSecondaryTimerUpdateDate;
+
+@property (nonatomic, strong) NSNumber *lastPrimaryTimerValue;
 
 // for timer recovery
 
@@ -407,24 +411,6 @@
     
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    // give the light gray backdrop rounded corners for the bottom two corners.  Must layout views to update autolayout before calling frame
-    
-//    [self.view layoutIfNeeded];
-//    
-//    CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
-//    
-//    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect: self.grayBackdropView.bounds
-//                                               byRoundingCorners: (UIRectCornerBottomLeft | UIRectCornerBottomRight)
-//                                                     cornerRadii: CGSizeMake(16.0, 16.0)];
-//    
-//    shapeLayer.path = path.CGPath;
-//    shapeLayer.frame = self.grayBackdropView.bounds;
-//    shapeLayer.fillRule = kCAFillRuleNonZero;
-//    shapeLayer.fillColor = [UIColor redColor].CGColor;
-//    
-//    self.grayBackdropView.layer.mask = shapeLayer;
-
-    
     // segmented controls
     
     NSArray *segmentedControls = @[self.setEndTimeSegmentedControl,
@@ -447,85 +433,11 @@
 }
 
 
-//- (void)configureNavigationBar{
-//    
-//    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Freeform Lift"];
-//    
-//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-//                                                                      style: UIBarButtonItemStyleDone
-//                                                                     target: self
-//                                                                     action: @selector(didPressHome)];
-//    
-//    [navItem setLeftBarButtonItem: barButtonItem];
-//    
-//    [self.navigationBar setItems: @[navItem]];
-//    
-//    // nav bar text
-//    
-//    [self.navigationBar setTitleTextAttributes: @{NSFontAttributeName: [UIFont boldSystemFontOfSize: 20.0]}];
-//    
-//}
-
-//- (void)fetchCoreDataAndConfigureTableView{
-//    
-//    // table view reusable cell registration
-//    // notification center registration as well
-//    
-//    [self.exerciseTableView registerClass: [UITableViewCell class]
-//                   forCellReuseIdentifier: @"basicCell"];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(exerciseDataChanged)
-//                                                 name: ExerciseDataChanged
-//                                               object: nil];
-//    
-//    // NSFetchedResultsController
-//    
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
-//    
-//    NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
-//                                                    @"Placeholder"];
-//    
-//    request.predicate = noPlaceholderExercisesPredicate;
-//    
-//    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
-//                                                               ascending: YES];
-//    
-//    NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
-//                                                                   ascending: YES];
-//    
-//    [request setSortDescriptors: @[categorySort, nameSort]];
-//    
-//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-//    
-//    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-//                                                                          managedObjectContext: moc
-//                                                                            sectionNameKeyPath: @"category.name"
-//                                                                                     cacheName: nil];
-//    
-//    frc.delegate = self;
-//    
-//    self.fetchedResultsController = frc;
-//    
-//    NSError *error = nil;
-//    
-//    if (![self.fetchedResultsController performFetch: &error]){
-//        
-//        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
-//        
-//        abort();
-//        
-//    }
-//    
-//}
-
 - (void)exerciseDataChanged{
     
     NSError *error = nil;
     
     [self.fetchedResultsController performFetch: &error];
-    
-//    [self.exerciseTableView reloadData];
     
 }
 
@@ -799,33 +711,21 @@
         
     }
     
-    
-    
 }
 
 - (IBAction)didPressLeftBarButton:(id)sender{
+    
+    // stopwatch courtesty - reset and pause the stopwatch and remove this label as an observer.  The stopwatch needs to be reset and paused so that it does not populate views with nonsense values (if the active routine scene is navigated to after leaving this scene)
+    
+    [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerLabel];
+    [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
+    
+    //
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
     
 }
-
-//- (void)didPressHome{
-//    
-//    [self dismissViewControllerAnimated: NO
-//                             completion: nil];
-//    
-//}
-
-//- (IBAction)addNewExercise:(id)sender{
-//    
-//    TJBNewExerciseCreationVC *vc = [[TJBNewExerciseCreationVC alloc] init];
-//    
-//    [self presentViewController: vc
-//                       animated: YES
-//                     completion: nil];
-//    
-//}
 
 - (void)recoverTimer{
     
@@ -1001,6 +901,11 @@
                                                  withForwardIncrementing: YES
                                                           lastUpdateDate: nil];
             
+            // make the timer labels dark gray in case they were red before
+            
+            self.timerLabel.backgroundColor = [UIColor darkGrayColor];
+            self.timerTopLabel.backgroundColor = [UIColor darkGrayColor];
+            
             [weakSelf didPressBeginNextSet: nil];
             
         }
@@ -1048,7 +953,6 @@
             
         }
 
-//        [self presentSubmittedSetSummary];
         [self confirmSubmission];
         
         [self enableAllSegmentedControls];
@@ -1135,24 +1039,19 @@
     
     [[CoreDataController singleton] saveContext];
     
-//    [self.personalRecordVC newSetSubmitted];
-    
 }
 
 #pragma mark - <NewExerciseCreationDelegate>
 
 - (void)didCreateNewExercise:(TJBExercise *)exercise{
     self.exercise = exercise;
-//    [self.navItem setTitle: exercise.name];
     
     NSError *error = nil;
     [self.fetchedResultsController performFetch: &error];
-//    [self.exerciseTableView reloadData];
     
     [self dismissViewControllerAnimated: YES
                              completion: nil];
-    
-//    [self.personalRecordVC didSelectExercise: exercise];
+
 }
 
 #pragma mark - Notification to User
@@ -1381,11 +1280,34 @@
 
 #pragma mark - <TJBStopwatchObserver>
 
-- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
     
-    //// store the passed in date
+    // store the passed in date
     
     self.lastPrimaryTimerUpdateDate = date;
+    
+    // if the timer value is greater than the target rest minus the alert timing, turn the timer labels red
+    // must only execute if the targetRestTime and alerTiming have been selected
+    
+    if (self.targetRestTime && self.alertTiming){
+        
+        float alertValue = [self.targetRestTime floatValue] - [self.alertTiming floatValue];
+        
+        BOOL inRedZone = timerValue > alertValue;
+        
+        if (inRedZone){
+            
+            self.timerTopLabel.backgroundColor = [UIColor redColor];
+            self.timerLabel.backgroundColor = [UIColor redColor];
+            
+        } else{
+            
+            self.timerLabel.backgroundColor = [UIColor darkGrayColor];
+            self.timerTopLabel.backgroundColor = [UIColor darkGrayColor];
+            
+        }
+        
+    }
     
 }
 
@@ -1708,7 +1630,6 @@ static CGFloat const slidingHeight = 173.0;
     _advancedOptionsActive = YES;
     [self.advancedOptionsButton setTitle: @"-"
                                 forState: UIControlStateNormal];
-//    self.grayBackdropView.hidden = NO;
     
 }
 

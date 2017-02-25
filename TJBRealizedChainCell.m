@@ -30,13 +30,13 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UIStackView *stackView;
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *numberLabel;
+@property (weak) IBOutlet UIStackView *stackView;
+@property (weak) IBOutlet UILabel *dateLabel;
+@property (weak) IBOutlet UILabel *numberLabel;
 
 // core data
 
-@property (nonatomic, strong) TJBRealizedChain *realizedChain;
+@property (strong) TJBRealizedChain *realizedChain;
 @property (strong) NSNumber *finalRest;
 
 
