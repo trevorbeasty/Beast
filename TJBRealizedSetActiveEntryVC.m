@@ -1329,11 +1329,6 @@
         
         [self instantiateRecordPairsArray];
         
-        // I don't think I actually need to fetch these two things
-        
-//        [self fetchRealizedSets];
-//        [self fetchRealizedChains];
-        
         // realized sets
         
         for (TJBRealizedSet *realizedSet in activeExercise.realizedSets){

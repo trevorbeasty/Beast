@@ -197,11 +197,29 @@
     
     self.circuitTemplateVC = vc;
     
+    // get rects for animation
+    
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    CGRect endingFrame = vc.view.frame;
+    CGRect startingFrame = CGRectMake(endingFrame.origin.x, endingFrame.origin.y + screenSize.height, endingFrame.size.width, endingFrame.size.height);
+    vc.view.frame = startingFrame;
+    
     [self addChildViewController: vc];
     
     [self.containerView addSubview: vc.view];
+    [self.view insertSubview: self.launchCircuitButton
+                aboveSubview: vc.view];
     
     [vc didMoveToParentViewController: self];
+    
+    // animation
+    
+    [UIView animateWithDuration: .4
+                     animations: ^{
+                         
+                         vc.view.frame = endingFrame;
+                         
+                     }];
     
 }
 

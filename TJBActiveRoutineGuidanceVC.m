@@ -1037,7 +1037,7 @@ static NSString const *restViewKey = @"restView";
                          
                          self.advancedControlsConstraint.constant = 0;
                          
-                         NSArray *views = @[self.advancedControlsContainer];
+                         NSArray *views = @[self.advancedControlsContainer, self.nextUpLabel];
                          
                          for (UIView *view in views){
                              
@@ -1068,7 +1068,7 @@ static NSString const *restViewKey = @"restView";
                          self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
                          
                          
-                         NSArray *views = @[self.advancedControlsContainer];
+                         NSArray *views = @[self.advancedControlsContainer, self.nextUpLabel];
                          
                          for (UIView *view in views){
                              
