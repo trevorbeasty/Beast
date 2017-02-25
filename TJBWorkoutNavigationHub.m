@@ -511,7 +511,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self configureOptionalHomeButton];
     
-    [self configureGestureRecognizers];
+//    [self configureGestureRecognizers];
     
 }
 
@@ -873,18 +873,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: NO];
     
-    // animation
-    
-//    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
-//    float maxAnimationTime = 1.0;
-//    
-//    CGFloat newXPosition = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
-//    CGPoint newPosition = CGPointMake(newXPosition, 0);
-//    
-//    [self scrollToOffset: newPosition
-//       animationDuration: maxAnimationTime * (1.0 - offsetXPositionAsPercent)
-//     subsequentAnimation: nil];
-    
 }
 
 - (IBAction)didPressRightArrow:(id)sender{
@@ -892,17 +880,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     self.selectedDateButtonIndex = nil;	
     
     [self incrementDateControlMonthAndUpdateDateControlsInForwardDirection: YES];
-    
-    // animation
-    
-//    float offsetXPositionAsPercent = [self scrollViewXOffsetAsFractionOfContentView];
-//    float maxAnimationTime = 1.0;
-//    
-//    CGPoint newPosition = CGPointMake(0, 0);
-//    
-//    [self scrollToOffset: newPosition
-//       animationDuration: maxAnimationTime * offsetXPositionAsPercent
-//     subsequentAnimation: nil];
     
 }
 
@@ -1072,7 +1049,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // delete the managed object and cell designated by the index path
     
+    NSLog(@"%lu", (unsigned long)self.dailyList.count);
+    NSLog(@"%lu", (unsigned long)self.masterList.count);
+    NSLog(@"%lu", (unsigned long)[self tableView: self.tableView
+                           numberOfRowsInSection: 0]);
+    
     if (editingStyle == UITableViewCellEditingStyleDelete){
+        
+        [self.tableView beginUpdates];
+        
+
         
         id dailyListObject = self.dailyList[indexPath.row -1];
         
@@ -1100,23 +1086,18 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             
         }
         
-        [[CoreDataController singleton] saveContext];
+        NSLog(@"%lu", (unsigned long)self.dailyList.count);
+        NSLog(@"%lu", (unsigned long)self.masterList.count);
+        NSLog(@"%lu", (unsigned long)[self tableView: self.tableView
+                               numberOfRowsInSection: 0]);
         
-        
-        [self.masterList removeObject: dailyListObject];
-        
-        //
-        
-        [self.tableView beginUpdates];
-        
+
         [self.tableView deleteRowsAtIndexPaths: @[indexPath]
                               withRowAnimation: YES];
         
-        [self.dailyList removeObject: dailyListObject];
-        
         [self.tableView endUpdates];
         
-
+        [[CoreDataController singleton] saveContext];
         
     }
     
