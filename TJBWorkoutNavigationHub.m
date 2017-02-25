@@ -1047,60 +1047,63 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    // a callback block is created here so that animations are not interrupted
+    // deleting an object in core data has a trickle down effect that removes it from the master list.  Notifications cause the daily list to be derived and table view data reloaded upon core data saving
     // delete the managed object and cell designated by the index path
-    
-    NSLog(@"%lu", (unsigned long)self.dailyList.count);
-    NSLog(@"%lu", (unsigned long)self.masterList.count);
-    NSLog(@"%lu", (unsigned long)[self tableView: self.tableView
-                           numberOfRowsInSection: 0]);
     
     if (editingStyle == UITableViewCellEditingStyleDelete){
         
-        [self.tableView beginUpdates];
+        // CATransition allows me to control certain animation properties that are otherwise not accessible through the API
+        // it is used here to create a completion block, which is not possible otherwise
         
-
+        __weak TJBWorkoutNavigationHub *weakSelf = self;
         
-        id dailyListObject = self.dailyList[indexPath.row -1];
+        [CATransaction begin];
         
-        BOOL isRealizedSet = [dailyListObject isKindOfClass: [TJBRealizedSet class]];
-        BOOL isRealizedChain = [dailyListObject isKindOfClass: [TJBRealizedChain class]];
+        id dailyListObject = weakSelf.dailyList[indexPath.row -1];
+        [self.dailyList removeObjectAtIndex: indexPath.row - 1];
         
-        if (isRealizedSet){
+        [CATransaction setCompletionBlock: ^{
             
-            [[[CoreDataController singleton] moc] deleteObject: dailyListObject];
+            BOOL isRealizedSet = [dailyListObject isKindOfClass: [TJBRealizedSet class]];
+            BOOL isRealizedChain = [dailyListObject isKindOfClass: [TJBRealizedChain class]];
             
-        } else if (isRealizedChain){
-            
-            [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
-                                                               chain: dailyListObject];
-            
-        } else{
-            
-            // it must be a collection of realized sets in this case
-            
-            for (TJBRealizedSet *realizedSet in dailyListObject){
+            if (isRealizedSet){
                 
-                [[[CoreDataController singleton] moc] deleteObject: realizedSet];
+                [[[CoreDataController singleton] moc] deleteObject: dailyListObject];
                 
+            } else if (isRealizedChain){
+                
+                [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
+                                                                   chain: dailyListObject];
+                
+            } else{
+                
+                // it must be a collection of realized sets in this case
+                
+                for (TJBRealizedSet *realizedSet in dailyListObject){
+                    
+                    [[[CoreDataController singleton] moc] deleteObject: realizedSet];
+                    
+                }
             }
             
-        }
+            [[CoreDataController singleton] saveContext];
         
-        NSLog(@"%lu", (unsigned long)self.dailyList.count);
-        NSLog(@"%lu", (unsigned long)self.masterList.count);
-        NSLog(@"%lu", (unsigned long)[self tableView: self.tableView
-                               numberOfRowsInSection: 0]);
+        }];
         
-
+        // these are the core messages that delete the row
+        
+        [self.tableView beginUpdates];
+        
         [self.tableView deleteRowsAtIndexPaths: @[indexPath]
-                              withRowAnimation: YES];
+                              withRowAnimation: UITableViewRowAnimationNone];
         
         [self.tableView endUpdates];
         
-        [[CoreDataController singleton] saveContext];
+        [CATransaction commit];
         
     }
-    
 }
 
 
