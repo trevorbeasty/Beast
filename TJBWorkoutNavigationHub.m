@@ -452,39 +452,13 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 #pragma mark - View Life Cycle
 
 - (void)viewWillAppear:(BOOL)animated{
-    
-    // select today
-    
-    //// animation calculations
-    
-//    [self.view layoutIfNeeded];
 
+    //// animation calculations
     // first position
     
     CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
     CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
     self.dateScrollView.contentOffset = firstPosition;
-    
-    // second position
-    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    NSInteger day = [calendar component: NSCalendarUnitDay
-//                               fromDate: self.activeDate];
-//    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
-//    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
-//    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
-//    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
-//    
-//    //
-//    
-//    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
-//    float maxAnimationTime = 1.0;
-//    
-//    // animation call
-//    
-//    [self scrollToOffset: secondPosition
-//       animationDuration: maxAnimationTime * percentScrollViewWidth
-//     subsequentAnimation: nil];
     
 }
 
@@ -497,6 +471,17 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                                fromDate: self.activeDate];
     TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
     CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
+    
+    // make sure the second position will not drag the view too far, revealing a white screen beneath
+    
+    CGFloat viewWidth = self.view.frame.size.width;
+    
+    if (activeDateControlRightEdge < viewWidth){
+        
+        activeDateControlRightEdge = viewWidth;
+        
+    }
+    
     CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
     CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
     
