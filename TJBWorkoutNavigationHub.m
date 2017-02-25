@@ -511,6 +511,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self configureOptionalHomeButton];
     
+    [self configureGestureRecognizers];
+    
 }
 
 - (void)configureOptionalHomeButton{
@@ -936,84 +938,90 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)didSwipeLeft{
     
-    [self incrementActiveDateByNumberOfDaysAndRefreshCircleDates: -1];
+    NSLog(@"swipe left");
+    
+    [self.tableView setEditing: NO
+                      animated: YES];
     
 }
 
 - (void)didSwipeRight{
     
-    [self incrementActiveDateByNumberOfDaysAndRefreshCircleDates: 1];
+    NSLog(@"swipe right");
+    
+    [self.tableView setEditing: YES
+                      animated: YES];
     
 }
 
-- (void)incrementActiveDateByNumberOfDaysAndRefreshCircleDates:(int)numberOfDays{
-    
-    // active date
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    
-    BOOL atMaxDate = [calendar isDateInToday: self.activeDate];
-    
-    if (!(atMaxDate && numberOfDays == 1)){
-        
-        NSDateComponents *dateComps = [[NSDateComponents alloc] init];
-        dateComps.day = numberOfDays;
-        
-        NSDate *newDate = [calendar dateByAddingComponents: dateComps
-                                                    toDate: self.activeDate
-                                                   options: 0];
-        
-        self.activeDate = newDate;
-        
-    }
-    
-    // active index and date button appearance
-    
-    BOOL atRightExtreme = _activeSelectionIndex == 6 && numberOfDays == 1;
-    BOOL atLeftExtreme = _activeSelectionIndex == 0 && numberOfDays == -1;
-    
-    
-    if (!atRightExtreme && !atLeftExtreme){
-        
-        [self configureSelectedAppearanceForDateButtonAtIndex: _activeSelectionIndex + numberOfDays];
-        
-    } else if (atLeftExtreme){
-        
-        // give the date buttons new titles
-        
-        [self setTitlesAccordingToDate: self.activeDate
-                         isLargestDate: YES];
-        
-        // change the selected date button
-        
-        [self configureSelectedAppearanceForDateButtonAtIndex: 6];
-        
-    } else if (atRightExtreme && !atMaxDate){
-        
-        // give the date buttons new titles
-        
-        [self setTitlesAccordingToDate: self.activeDate
-                         isLargestDate: NO];
-        
-        // change the selected date button
-        
-        [self configureSelectedAppearanceForDateButtonAtIndex: 0];
-        
-    }
-    
-}
+//- (void)incrementActiveDateByNumberOfDaysAndRefreshCircleDates:(int)numberOfDays{
+//    
+//    // active date
+//    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    
+//    BOOL atMaxDate = [calendar isDateInToday: self.activeDate];
+//    
+//    if (!(atMaxDate && numberOfDays == 1)){
+//        
+//        NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+//        dateComps.day = numberOfDays;
+//        
+//        NSDate *newDate = [calendar dateByAddingComponents: dateComps
+//                                                    toDate: self.activeDate
+//                                                   options: 0];
+//        
+//        self.activeDate = newDate;
+//        
+//    }
+//    
+//    // active index and date button appearance
+//    
+//    BOOL atRightExtreme = _activeSelectionIndex == 6 && numberOfDays == 1;
+//    BOOL atLeftExtreme = _activeSelectionIndex == 0 && numberOfDays == -1;
+//    
+//    
+//    if (!atRightExtreme && !atLeftExtreme){
+//        
+//        [self configureSelectedAppearanceForDateButtonAtIndex: _activeSelectionIndex + numberOfDays];
+//        
+//    } else if (atLeftExtreme){
+//        
+//        // give the date buttons new titles
+//        
+//        [self setTitlesAccordingToDate: self.activeDate
+//                         isLargestDate: YES];
+//        
+//        // change the selected date button
+//        
+//        [self configureSelectedAppearanceForDateButtonAtIndex: 6];
+//        
+//    } else if (atRightExtreme && !atMaxDate){
+//        
+//        // give the date buttons new titles
+//        
+//        [self setTitlesAccordingToDate: self.activeDate
+//                         isLargestDate: NO];
+//        
+//        // change the selected date button
+//        
+//        [self configureSelectedAppearanceForDateButtonAtIndex: 0];
+//        
+//    }
+//    
+//}
 
-- (void)configureSelectedAppearanceForDateButtonAtIndex:(int)index{
-    
-    TJBCircleDateVC *circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
-    [circleDateVC configureButtonAsNotSelected];
-    
-    _activeSelectionIndex = index;
-    
-    circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
-    [circleDateVC configureButtonAsSelected];
-    
-}
+//- (void)configureSelectedAppearanceForDateButtonAtIndex:(int)index{
+//    
+//    TJBCircleDateVC *circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
+//    [circleDateVC configureButtonAsNotSelected];
+//    
+//    _activeSelectionIndex = index;
+//    
+//    circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
+//    [circleDateVC configureButtonAsSelected];
+//    
+//}
 
 - (void)setTitlesAccordingToDate:(NSDate *)date isLargestDate:(BOOL)isLargestDate{
     
@@ -1059,6 +1067,60 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 }
 
 #pragma mark - <UITableViewDataSource>
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    // delete the managed object and cell designated by the index path
+    
+    if (editingStyle == UITableViewCellEditingStyleDelete){
+        
+        id dailyListObject = self.dailyList[indexPath.row -1];
+        
+        BOOL isRealizedSet = [dailyListObject isKindOfClass: [TJBRealizedSet class]];
+        BOOL isRealizedChain = [dailyListObject isKindOfClass: [TJBRealizedChain class]];
+        
+        if (isRealizedSet){
+            
+            [[[CoreDataController singleton] moc] deleteObject: dailyListObject];
+            
+        } else if (isRealizedChain){
+            
+            [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
+                                                               chain: dailyListObject];
+            
+        } else{
+            
+            // it must be a collection of realized sets in this case
+            
+            for (TJBRealizedSet *realizedSet in dailyListObject){
+                
+                [[[CoreDataController singleton] moc] deleteObject: realizedSet];
+                
+            }
+            
+        }
+        
+        [[CoreDataController singleton] saveContext];
+        
+        
+        [self.masterList removeObject: dailyListObject];
+        
+        //
+        
+        [self.tableView beginUpdates];
+        
+        [self.tableView deleteRowsAtIndexPaths: @[indexPath]
+                              withRowAnimation: YES];
+        
+        [self.dailyList removeObject: dailyListObject];
+        
+        [self.tableView endUpdates];
+        
+
+        
+    }
+    
+}
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -1412,6 +1474,24 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 
 #pragma mark - <UITableViewDelegate>
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (self.dailyList.count == 0){
+        
+        return UITableViewCellEditingStyleNone;
+        
+    } else if (indexPath.row == 0){
+        
+        return UITableViewCellEditingStyleNone;
+        
+    } else{
+        
+        return UITableViewCellEditingStyleDelete;
+        
+    }
+    
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
