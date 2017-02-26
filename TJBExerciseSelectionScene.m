@@ -48,6 +48,9 @@
 @property (weak, nonatomic) IBOutlet UIView *exerciseAdditionContainer;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIButton *addAndSelectButton;
+@property (weak, nonatomic) IBOutlet UITextField *exerciseSeachTextField;
+@property (weak, nonatomic) IBOutlet UILabel *searchLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchFieldTopSpaceConstr;
 
 // IBAction
 
@@ -240,17 +243,31 @@ static CGFloat const controlHeight = 246.0;
         
     }
     
-    // exercise text field
+    // text fields and search label
     
     self.exerciseTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     
-    CALayer *layer = self.exerciseTextField.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8.0;
-    layer.borderWidth = 1;
-    layer.borderColor = [[UIColor darkGrayColor] CGColor];
+    NSArray *textFields = @[self.exerciseTextField];
+    for (UITextField *tf in textFields){
+        
+        CALayer *layer = tf.layer;
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 8.0;
+        layer.borderWidth = 1;
+        layer.borderColor = [[UIColor darkGrayColor] CGColor];
+        
+        tf.font = [UIFont systemFontOfSize: 20.0];
+        tf.textColor = [UIColor blackColor];
+        
+    }
     
-    self.exerciseTextField.font = [UIFont systemFontOfSize: 20.0];
+    CALayer *estfLayer = self.exerciseSeachTextField.layer;
+    estfLayer.borderWidth = 2.0;
+    estfLayer.borderColor = [UIColor lightGrayColor].CGColor;
+    
+    self.searchLabel.backgroundColor = [UIColor lightGrayColor];
+    self.searchLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    self.searchLabel.textColor = [UIColor whiteColor];
     
 }
 
@@ -312,8 +329,6 @@ static CGFloat const controlHeight = 246.0;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-//    self.exerciseAdditionContainer.hidden = YES;
-    
     TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
     
     self.callbackBlock(exercise);
@@ -348,13 +363,6 @@ static CGFloat const controlHeight = 246.0;
 }
 
 #pragma mark - Button Actions
-
-//- (void)didPressCancelButton{
-//    
-//    [self dismissViewControllerAnimated: NO
-//                             completion: nil];
-//    
-//}
 
 - (IBAction)didPressAddNewExercise:(id)sender {
     
@@ -504,26 +512,58 @@ static CGFloat const controlHeight = 246.0;
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
+    // the animation is completed in two parts.  First, the exercise addition container slides down over the search bar.  Next, the container and table view slide down together.  The search text field should be hidden / disabled after it is covered
+    
     self.exerciseAdditionContainer.hidden = NO;
     
-    [UIView animateWithDuration: .4
+    [UIView animateWithDuration: 1.0
                      animations: ^{
                          
-                         self.exerciseAdditionConstraint.constant = 0;
+                         // get the difference between the container bottom edge and tableview top edge
+                         
+                         CGFloat edgeDiff = self.exerciseTableView.frame.origin.y - (self.exerciseAdditionContainer.frame.origin.y + self.exerciseAdditionContainer.frame.size.height);
+//                         CGFloat slidingHeight = edgeDiff - 2;
+                         CGFloat constraintConst = -1 * (6 + self.exerciseSeachTextField.frame.size.height);
+                         
+                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - (14 + self.exerciseSeachTextField.frame.size.height));
+                         self.searchFieldTopSpaceConstr.constant = constraintConst;
+                         
+                         // stack view appropriately
+                         
+                         [self.view insertSubview: self.exerciseTableView
+                                     aboveSubview: self.searchLabel];
+                         [self.view insertSubview: self.exerciseTableView
+                                     aboveSubview: self.exerciseSeachTextField];
+                         
+                         [self.view insertSubview: self.exerciseAdditionContainer
+                                     aboveSubview: self.searchLabel];
+                         [self.view insertSubview: self.exerciseAdditionContainer
+                                     aboveSubview: self.exerciseSeachTextField];
+                         
+                         [self.view insertSubview: self.titleBarContainer
+                                     aboveSubview: self.exerciseAdditionContainer];
                          
                          NSArray *views = @[self.exerciseAdditionContainer];
                          
                          for (UIView *view in views){
                              
                              CGRect currentFrame = view.frame;
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + controlHeight, currentFrame.size.width, currentFrame.size.height);
+                             
+          
+                             
+                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + 66, currentFrame.size.width, currentFrame.size.height);
                              view.frame = newFrame;
+                             
+                             // must alter the contraint position the search text field relative to the exercise container so that the table view appears not to move
+                             // also make sure that sibling views are stacked appropriately so the correct one is visible and disable the search field upon completion
+                             
+
                              
                          }
                          
-                         CGRect currentTVFrame = self.exerciseTableView.frame;
-                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + controlHeight, currentTVFrame.size.width, currentTVFrame.size.height - controlHeight);
-                         self.exerciseTableView.frame = newTVFrame;
+//                         CGRect currentTVFrame = self.exerciseTableView.frame;
+//                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + controlHeight, currentTVFrame.size.width, currentTVFrame.size.height - controlHeight);
+//                         self.exerciseTableView.frame = newTVFrame;
                          
                      }];
     
@@ -541,7 +581,7 @@ static CGFloat const controlHeight = 246.0;
                          self.exerciseAdditionConstraint.constant = -1 * controlHeight;
                          
                          
-                         NSArray *views = @[self.exerciseAdditionContainer];
+                         NSArray *views = @[self.exerciseAdditionContainer, self.exerciseSeachTextField, self.searchLabel];
                          
                          for (UIView *view in views){
                              
