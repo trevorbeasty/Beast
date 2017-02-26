@@ -228,13 +228,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     //// add the fetched objects of the 2 FRC's to a mutable array and reorder it appropriately.  Then, use the array to create the master list.
     // create the interim array and sort it such that it holds realized sets and realized chains with set begin dates and chain created dates, respectively, in descending order
     // add adjacent realized sets with the same exercise to the same TJBRealizedSetCollection.  This type is used to group and present consecutive individual sets of the same exercise in a single table view cell
-    
-    if (!self.masterList){
-        
-        self.masterList = [[NSMutableArray alloc] init];
-        
-    }
-    
     // add all realized sets and realized chains to the same array, and then sort them by date is ascending order
     
     NSMutableArray *interimArray1 = [[NSMutableArray alloc] init];
@@ -301,6 +294,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     NSMutableArray *stagingArray = [[NSMutableArray alloc] init];
     
     // the above task will be completed by stepping through interim array 1
+    // if interim array 1 only contains 1 object, the logic will not work (it will never even begin iterating).  In this case, simply assign interim array 2
+    
+    if (interimArray1.count == 1){
+        
+        self.masterList = interimArray1;
+        return;
+        
+    }
     
     NSInteger limit2 = interimArray1.count - 1;
     
@@ -1060,6 +1061,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         [CATransaction begin];
         
+        // if only one content cell remains, must insert a no data cell
+        
+        BOOL oneContentCell = self.dailyList.count == 1;
+        
         id dailyListObject = weakSelf.dailyList[indexPath.row -1];
         [self.dailyList removeObjectAtIndex: indexPath.row - 1];
         
@@ -1098,6 +1103,18 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         [self.tableView deleteRowsAtIndexPaths: @[indexPath]
                               withRowAnimation: UITableViewRowAnimationNone];
+        
+        if (oneContentCell){
+            
+            // insert cell
+            
+            NSIndexPath *path = [NSIndexPath indexPathForRow: 1
+                                                   inSection: 0];
+            
+            [self.tableView insertRowsAtIndexPaths: @[path]
+                                  withRowAnimation: UITableViewRowAnimationNone];
+            
+        }
         
         [self.tableView endUpdates];
         
@@ -1283,14 +1300,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     // check the operation queue for the specified index path.  If the cell has already been prepared, use that cell.  Otherwise, create and configure the cell
     // must check for existence of queue
     
-    NSString *logString = [NSString stringWithFormat: @"%d: %d",
-                           (int)indexPath.row,
-                           (int)self.operationQueue.operations.count];
-    NSLog(@"%@", logString);
-    
     if (self.operationQueue){
         
-        NSLog(@"prefetch");
+//        NSLog(@"prefetch");
         
         // fetch the operation.  Will return nil when not found
         
@@ -1324,9 +1336,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
     } else{
         
-        NSLog(@"normal");
+//        NSLog(@"normal");
         
         // if there is no operation queue, create the cell as would normally be done
+        
+        NSLog(@"%lu", self.dailyList.count);
         
         return [self cellForIndexPath: indexPath];
         
