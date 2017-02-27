@@ -364,7 +364,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     if (_exerciseAdditionActive == YES){
         
-//        [self toggleButtonControlsToDefaultDisplay];
+        [self toggleButtonControlsToDefaultDisplay];
         
     } else{
         
@@ -587,7 +587,6 @@ static float const totalAniDur = .6;
                          for (UIView *view in views){
                              
                              CGRect currentFrame = view.frame;
-                             
                              CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + partialAniDist, currentFrame.size.width, currentFrame.size.height);
                              view.frame = newFrame;
   
@@ -603,35 +602,68 @@ static float const totalAniDur = .6;
     
 }
 
-//- (void)toggleButtonControlsToDefaultDisplay{
-//    
-//    [UIView animateWithDuration: .4
-//                     animations: ^{
-//                         
-//                         self.exerciseAdditionConstraint.constant = -1 * controlHeight;
-//                         
-//                         
-//                         NSArray *views = @[self.exerciseAdditionContainer, self.exerciseSeachTextField, self.searchLabel];
-//                         
-//                         for (UIView *view in views){
-//                             
-//                             CGRect currentFrame = view.frame;
-//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - controlHeight, currentFrame.size.width, currentFrame.size.height);
-//                             view.frame = newFrame;
-//                             
-//                         }
-//                         
-//                         CGRect currentTVFrame = self.exerciseTableView.frame;
-//                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - controlHeight, currentTVFrame.size.width, currentTVFrame.size.height + controlHeight);
-//                         self.exerciseTableView.frame = newTVFrame;
-//                         
-//                     }];
-//    
-//    _exerciseAdditionActive = NO;
-//    [self.addNewExerciseButton setTitle: @"Add New Exercise"
-//                                forState: UIControlStateNormal];
-//    
-//}
+- (void)toggleButtonControlsToDefaultDisplay{
+    
+    // unhide the exercise search controls
+    
+    self.exerciseSeachTextField.hidden = NO;
+    self.searchLabel.hidden = NO;
+    
+    CGFloat partialAniDist = 14 + self.exerciseSeachTextField.frame.size.height;
+    
+    // second animation
+    
+    __weak TJBExerciseSelectionScene *weakSelf = self;
+    
+    void (^secondAnimation)(BOOL) = ^(BOOL firstAnimationCompleted){
+        
+        [UIView animateWithDuration: ( partialAniDist / totalAniDist) * totalAniDur
+                         animations: ^{
+                             
+                             weakSelf.searchFieldTopSpaceConstr.constant = 8;
+                             weakSelf.exerciseAdditionConstraint.constant = -1 * totalAniDist;
+                             
+                             CGFloat viewTranslation = partialAniDist;
+                             
+                             CGRect currentFrame = weakSelf.exerciseAdditionContainer.frame;
+                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - viewTranslation, currentFrame.size.width, currentFrame.size.height);
+                             weakSelf.exerciseAdditionContainer.frame = newFrame;
+                             
+                         }];
+        
+    };
+    
+    // first animation
+    
+    [UIView animateWithDuration: totalAniDur * (totalAniDist - partialAniDist) / totalAniDist
+                     animations: ^{
+                         
+                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - partialAniDist);
+                         
+                         CGFloat viewVertTranslation = self.exerciseAdditionContainer.frame.size.height - partialAniDist;
+                         
+                         NSArray *views = @[self.exerciseAdditionContainer];
+                         
+                         for (UIView *view in views){
+                             
+                             CGRect currentFrame = view.frame;
+                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - viewVertTranslation, currentFrame.size.width, currentFrame.size.height);
+                             view.frame = newFrame;
+                             
+                         }
+                         
+                         CGRect currentTVFrame = self.exerciseTableView.frame;
+                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - viewVertTranslation, currentTVFrame.size.width, currentTVFrame.size.height + viewVertTranslation);
+                         self.exerciseTableView.frame = newTVFrame;
+                         
+                     }
+                     completion: secondAnimation];
+    
+    _exerciseAdditionActive = NO;
+    [self.addNewExerciseButton setTitle: @"Add New Exercise"
+                                forState: UIControlStateNormal];
+    
+}
 
 #pragma  mark - Convenience
 
