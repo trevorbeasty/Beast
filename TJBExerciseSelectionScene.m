@@ -261,6 +261,9 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     estfLayer.borderWidth = 2.0;
     estfLayer.borderColor = [UIColor lightGrayColor].CGColor;
     
+    self.exerciseSeachTextField.font = [UIFont systemFontOfSize: 20];
+    self.exerciseSeachTextField.textColor = [UIColor blackColor];
+    
     self.searchLabel.backgroundColor = [UIColor lightGrayColor];
     self.searchLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     self.searchLabel.textColor = [UIColor whiteColor];
@@ -705,11 +708,15 @@ static float const totalAniDur = .6;
     
     //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
     
-    BOOL keyboardIsShowing = [self.exerciseTextField isFirstResponder];
-    
-    if (keyboardIsShowing){
+    if ([self.exerciseTextField isFirstResponder]){
         
         [self.exerciseTextField resignFirstResponder];
+        
+    }
+    
+    if ([self.exerciseSeachTextField isFirstResponder]){
+        
+        [self.exerciseSeachTextField resignFirstResponder];
         
     }
 }
@@ -718,7 +725,7 @@ static float const totalAniDur = .6;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
-    [self.exerciseTextField resignFirstResponder];
+    [textField resignFirstResponder];
     
     return YES;
     

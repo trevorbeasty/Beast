@@ -273,16 +273,16 @@
 #pragma mark - Gesture Recognizer
 
 - (void)didSingleTap:(UIGestureRecognizer *)gr{
-    
+
     //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
-    
-    BOOL keyboardIsShowing = [self.exerciseTextField isFirstResponder];
-    
-    if (keyboardIsShowing){
+
+    if ([self.exerciseTextField isFirstResponder]){
         
         [self.exerciseTextField resignFirstResponder];
         
     }
+    
+
 }
 
 #pragma mark - <UITextFieldDelegate>
