@@ -82,15 +82,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - View Life Cycle
 
-static CGFloat const controlHeight = 246.0;
-
 - (void)viewDidLoad{
     
     self.exerciseAdditionContainer.hidden = YES;
     
     [self configureTableView];
-    
-//    [self configureNavigationBar];
     
     [self createFetchedResultsController];
     
@@ -128,7 +124,7 @@ static CGFloat const controlHeight = 246.0;
     [self.view insertSubview: self.exerciseAdditionContainer
                 belowSubview: self.titleBarContainer];
     
-    self.exerciseAdditionConstraint.constant = -1 * controlHeight;
+    self.exerciseAdditionConstraint.constant = -1 * totalAniDist;
     
 }
 
@@ -368,7 +364,7 @@ static CGFloat const controlHeight = 246.0;
     
     if (_exerciseAdditionActive == YES){
         
-        [self toggleButtonControlsToDefaultDisplay];
+//        [self toggleButtonControlsToDefaultDisplay];
         
     } else{
         
@@ -510,6 +506,9 @@ static CGFloat const controlHeight = 246.0;
 
 #pragma mark - Animation
 
+static CGFloat const totalAniDist = 246.0;
+static float const totalAniDur = .6;
+
 - (void)toggleButtonControlsToAdvancedDisplay{
     
     // the animation is completed in two parts.  First, the exercise addition container slides down over the search bar.  Next, the container and table view slide down together.  The search text field should be hidden / disabled after it is covered
@@ -518,52 +517,48 @@ static CGFloat const controlHeight = 246.0;
     
     // stack view appropriately - sibling views must be configured appropriately so that the correct view is displayed as views slide over one another
     
-    [self.view insertSubview: self.exerciseTableView
-                aboveSubview: self.searchLabel];
-    
-    [self.view insertSubview: self.exerciseTableView
-                aboveSubview: self.exerciseSeachTextField];
-    
-    [self.view insertSubview: self.exerciseAdditionContainer
-                aboveSubview: self.exerciseSeachTextField];
-    
-    [self.view insertSubview: self.exerciseAdditionContainer
-                aboveSubview: self.searchLabel];
-    
     [self.view insertSubview: self.titleBarContainer
                 aboveSubview: self.exerciseAdditionContainer];
+    [self.view sendSubviewToBack: self.searchLabel];
+    [self.view sendSubviewToBack: self.exerciseSeachTextField];
     
     // the second animation is defined here. It is executed upon completion of the first animation.  It slides down the table view and addition container to their final, advanced positions
     
     __weak TJBExerciseSelectionScene *weakSelf = self;
     
+    // need to define this here so that I can make the two animations appear to run at the same speed
+    
+    CGFloat partialAniDist = 14 + self.exerciseSeachTextField.frame.size.height;
+    
     void (^secondAnimation)(BOOL) = ^(BOOL firstAnimationCompleted){
         
-        [UIView animateWithDuration: 1.0
+        // hide the exercise search objects
+        
+        self.exerciseSeachTextField.hidden = YES;
+        self.searchLabel.hidden = YES;
+        
+        [UIView animateWithDuration: totalAniDur * (totalAniDist - partialAniDist) / totalAniDist
                          animations: ^{
                              
                              // give the container view its final position, where it is fully showing
                              // must grab the current value of the constraint so that I can make the views slide down the difference
                              // the old constant formula is grabbed from the first animation.  It cannot be accessed via the frame property because this block captures
                              
-                             CGFloat oldConstant = -1 * (weakSelf.exerciseAdditionContainer.frame.size.height - (14 + self.exerciseSeachTextField.frame.size.height));
-                             CGFloat additionContainerHeight = weakSelf.exerciseAdditionContainer.frame.size.height;
-                             CGFloat constraintDiff = additionContainerHeight - oldConstant;
-                             
                              weakSelf.exerciseAdditionConstraint.constant = 0;
+                             CGFloat animationConst = totalAniDist - partialAniDist;
                              
                              // float the addition container down and slide the table view down (while shrinking its height)
                              
                              // exercise table view
                              
                              CGRect currentTVFrame = weakSelf.exerciseTableView.frame;
-                             CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + constraintDiff, currentTVFrame.size.width, currentTVFrame.size.height - constraintDiff);
+                             CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + animationConst, currentTVFrame.size.width, currentTVFrame.size.height - animationConst);
                              weakSelf.exerciseTableView.frame = newTVFrame;
                              
                              // addition container
                              
                              CGRect currentAddContFrame = weakSelf.exerciseAdditionContainer.frame;
-                             CGRect newAddContFrame = CGRectMake(currentAddContFrame.origin.x, currentAddContFrame.origin.y + constraintDiff, currentAddContFrame.size.width, currentAddContFrame.size.height);
+                             CGRect newAddContFrame = CGRectMake(currentAddContFrame.origin.x, currentAddContFrame.origin.y + animationConst, currentAddContFrame.size.width, currentAddContFrame.size.height);
                              weakSelf.exerciseAdditionContainer.frame = newAddContFrame;
                              
                          }];
@@ -571,7 +566,7 @@ static CGFloat const controlHeight = 246.0;
     
     // the inititial animation
     
-    [UIView animateWithDuration: 1.0
+    [UIView animateWithDuration: ( partialAniDist / totalAniDist) * totalAniDur
                      animations: ^{
                          
                          // first the exercise addition container slides down over the search text field.  Then the table view shifts down with it.  Layout constraints define ending positions for each animation and the specified animation describes how the object travels to that end position
@@ -583,7 +578,7 @@ static CGFloat const controlHeight = 246.0;
                          
                          // this constraint describes the exercise addition container's position relative to the title container.  This addition container is initially behind the title container
                          
-                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - (14 + self.exerciseSeachTextField.frame.size.height));
+                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - partialAniDist);
                          
                          // this shows an animation of the addition container sliding down to its final position
                          
@@ -593,7 +588,7 @@ static CGFloat const controlHeight = 246.0;
                              
                              CGRect currentFrame = view.frame;
                              
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + 66, currentFrame.size.width, currentFrame.size.height);
+                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + partialAniDist, currentFrame.size.width, currentFrame.size.height);
                              view.frame = newFrame;
   
                          }
@@ -608,35 +603,35 @@ static CGFloat const controlHeight = 246.0;
     
 }
 
-- (void)toggleButtonControlsToDefaultDisplay{
-    
-    [UIView animateWithDuration: .4
-                     animations: ^{
-                         
-                         self.exerciseAdditionConstraint.constant = -1 * controlHeight;
-                         
-                         
-                         NSArray *views = @[self.exerciseAdditionContainer, self.exerciseSeachTextField, self.searchLabel];
-                         
-                         for (UIView *view in views){
-                             
-                             CGRect currentFrame = view.frame;
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - controlHeight, currentFrame.size.width, currentFrame.size.height);
-                             view.frame = newFrame;
-                             
-                         }
-                         
-                         CGRect currentTVFrame = self.exerciseTableView.frame;
-                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - controlHeight, currentTVFrame.size.width, currentTVFrame.size.height + controlHeight);
-                         self.exerciseTableView.frame = newTVFrame;
-                         
-                     }];
-    
-    _exerciseAdditionActive = NO;
-    [self.addNewExerciseButton setTitle: @"Add New Exercise"
-                                forState: UIControlStateNormal];
-    
-}
+//- (void)toggleButtonControlsToDefaultDisplay{
+//    
+//    [UIView animateWithDuration: .4
+//                     animations: ^{
+//                         
+//                         self.exerciseAdditionConstraint.constant = -1 * controlHeight;
+//                         
+//                         
+//                         NSArray *views = @[self.exerciseAdditionContainer, self.exerciseSeachTextField, self.searchLabel];
+//                         
+//                         for (UIView *view in views){
+//                             
+//                             CGRect currentFrame = view.frame;
+//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - controlHeight, currentFrame.size.width, currentFrame.size.height);
+//                             view.frame = newFrame;
+//                             
+//                         }
+//                         
+//                         CGRect currentTVFrame = self.exerciseTableView.frame;
+//                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - controlHeight, currentTVFrame.size.width, currentTVFrame.size.height + controlHeight);
+//                         self.exerciseTableView.frame = newTVFrame;
+//                         
+//                     }];
+//    
+//    _exerciseAdditionActive = NO;
+//    [self.addNewExerciseButton setTitle: @"Add New Exercise"
+//                                forState: UIControlStateNormal];
+//    
+//}
 
 #pragma  mark - Convenience
 
