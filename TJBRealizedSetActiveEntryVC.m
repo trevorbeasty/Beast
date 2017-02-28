@@ -45,6 +45,10 @@
 #import "TJBNumberSelectionVC.h"
 #import "TJBWeightRepsSelectionVC.h"
 
+// set completed summary
+
+#import "TJBSetCompletedSummaryVC.h"
+
 
 @interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration, UITableViewDelegate, UITableViewDataSource>
 
@@ -150,6 +154,10 @@
 @property (nonatomic, strong) NSNumber *timerValueForRecovery;
 
 ////
+
+// state
+
+@property (strong) TJBSetCompletedSummaryVC *activeSetCompletedSummaryVC;
 
 // for restoration
 
@@ -718,7 +726,7 @@
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
-    // stopwatch courtesty - reset and pause the stopwatch and remove this label as an observer.  The stopwatch needs to be reset and paused so that it does not populate views with nonsense values (if the active routine scene is navigated to after leaving this scene)
+    // stopwatch courtesty - reset and pause the stopwatch and remove this label as an observer.  The stopwatch needs to be reset and paused so that it does not populate views with nonsense values (if the active routine scene is navigated to after leaving this scene).  This also prevents irrelevant alert messages from being sent
     
     [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerLabel];
     [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
@@ -1057,7 +1065,7 @@
 
 }
 
-#pragma mark - Notification to User
+#pragma mark - Set Completion Actions
 
 - (void)presentSubmittedSetSummary{
     // UIAlertController
@@ -1116,7 +1124,30 @@
     
     [self addRealizedSetToCoreData];
     
+    [self presentConfirmationToUser];
+    
     [self setRealizedSetParametersToNil];
+}
+
+- (void)presentConfirmationToUser{
+    
+    // present the confirmation scene to the user and schedule it to dismiss itself after a set time interval.  It will also be dismissed when the user touches anywhere on screen
+    
+    TJBSetCompletedSummaryVC *vc = [[TJBSetCompletedSummaryVC alloc] initWithExerciseName: self.exercise.name
+                                                                                   weight: self.weight
+                                                                                     reps: self.reps
+                                                                            callbackBlock: nil];
+    
+    self.activeSetCompletedSummaryVC = vc;
+    
+    // add the view and configure as child view controller
+    
+    [self addChildViewController: vc];
+    
+    [self.view addSubview: vc.view];
+    
+    [vc didMoveToParentViewController: self];
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>
@@ -1301,6 +1332,8 @@
         // because the stopwatch observer methods are sent every .1 seconds, the if structure must seek to match timer values over a span of .1 seconds.  Any less of a span might miss the vibration call, and any more may cause it to vibrate twice
         
         // the following is called three times so that the phone vibrates a total of three times.  The vibrate calls are spaced at equal intervals
+        
+        // this observer method is stilled called when an alternate scene is being presented
         
         if (timerValue >= alertValue - .25 && timerValue < alertValue - .15){
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
