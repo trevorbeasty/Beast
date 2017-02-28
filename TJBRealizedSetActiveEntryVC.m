@@ -12,7 +12,10 @@
 
 
 #import "TJBNewExerciseCreationVC.h"
-//#import "TJBInSetVC.h"
+
+// audio - for phone vibrating
+
+#import <AudioToolbox/AudioToolbox.h>
 
 // stopwatch
 
@@ -1294,6 +1297,22 @@
         float alertValue = [self.targetRestTime floatValue] - [self.alertTiming floatValue];
         
         BOOL inRedZone = timerValue > alertValue;
+        
+        // because the stopwatch observer methods are sent every .1 seconds, the if structure must seek to match timer values over a span of .1 seconds.  Any less of a span might miss the vibration call, and any more may cause it to vibrate twice
+        
+        // the following is called three times so that the phone vibrates a total of three times.  The vibrate calls are spaced at equal intervals
+        
+        if (timerValue >= alertValue - .25 && timerValue < alertValue - .15){
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        }
+        
+        if (timerValue >= alertValue + .15 && timerValue < alertValue + .25){
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        }
+        
+        if (timerValue >= alertValue + .55 && timerValue < alertValue + .65){
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        }
         
         if (inRedZone){
             

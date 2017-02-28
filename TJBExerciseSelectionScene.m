@@ -510,7 +510,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 #pragma mark - Animation
 
 static CGFloat const totalAniDist = 246.0;
-static float const totalAniDur = .6;
+static float const totalAniDur = .3;
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
