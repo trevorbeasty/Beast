@@ -36,7 +36,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
                     <rect key="frame" x="0.0" y="382" width="375" height="235"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
@@ -242,7 +242,6 @@
                 <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="HyP-W1-zif"/>
                 <constraint firstItem="XMw-JV-WkI" firstAttribute="top" secondItem="jh0-lA-Qit" secondAttribute="bottom" id="Ku2-af-57X"/>
                 <constraint firstItem="tIK-6q-L3x" firstAttribute="top" secondItem="XMw-JV-WkI" secondAttribute="bottom" constant="8" id="NhC-Ng-9mD"/>
-                <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="tIK-6q-L3x" secondAttribute="bottom" constant="8" id="Q66-H5-MhE"/>
                 <constraint firstItem="b4Z-dJ-DvS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Q8S-t1-01G"/>
                 <constraint firstItem="tIK-6q-L3x" firstAttribute="top" secondItem="b4Z-dJ-DvS" secondAttribute="top" id="ScI-PH-yeT"/>
                 <constraint firstItem="XIv-ZX-jxj" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" id="YKt-GX-OjI"/>

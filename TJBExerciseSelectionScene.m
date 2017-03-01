@@ -24,9 +24,10 @@
     
 }
 
-// FRC
+//// core
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (strong) NSMutableArray *filteredExercises;
 
 // callback
 
@@ -98,6 +99,20 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [self registerForCoreDataNotifications];
     
+    [self configureExerciseFilterTextField];
+    
+}
+
+- (void)configureExerciseFilterTextField{
+    
+    self.exerciseSeachTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.exerciseSeachTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(updateFetchedResultsController)
+                                                 name: UITextFieldTextDidChangeNotification
+                                               object: self.exerciseSeachTextField];
+    
 }
 
 - (void)addTapGestureRecognizerToViewForKeyboardNotification{
@@ -135,7 +150,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(mocDidSave)
+                                             selector: @selector(updateFetchedResultsController)
                                                  name: NSManagedObjectContextDidSaveNotification
                                                object: moc];
     
@@ -147,27 +162,38 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-//- (void)configureNavigationBar{
-//    
-//    UINavigationItem *navItem = [[UINavigationItem alloc] initWithTitle: @"Select Exercise"];
-//    
-//    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-//                                                                                  target: self
-//                                                                                  action: @selector(didPressCancelButton)];
-//    [navItem setLeftBarButtonItem: cancelButton];
-//    
-//    [self.navBar setItems: @[navItem]];
-//    
-//}
+
 
 - (void)createFetchedResultsController{
     
+    if (self.fetchedResultsController){
+        
+        self.fetchedResultsController = nil;
+        
+    }
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    
+    // only apply the compount predicate if the exercise search text field has a non blank entry
     
     NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
                                                     @"Placeholder"];
     
-    request.predicate = noPlaceholderExercisesPredicate;
+    if ([self.exerciseSeachTextField.text isEqualToString: @""]){
+        
+        request.predicate = noPlaceholderExercisesPredicate;
+        
+    } else{
+        
+        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@",
+                                              self.exerciseSeachTextField.text];
+        
+        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
+                                                                                              searchFilterPredicate]];
+        
+        request.predicate = compPred;
+        
+    }
     
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
@@ -731,15 +757,19 @@ static float const totalAniDur = .3;
     
 }
 
-- (void)mocDidSave{
+#pragma mark - Core Data
+
+- (void)updateFetchedResultsController{
     
     //// refresh fetched managed objects and all trickle-down
     
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch: &error];
+    [self createFetchedResultsController];
+    
     [self.exerciseTableView reloadData];
     
 }
+
+
 
 @end
 
