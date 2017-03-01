@@ -34,8 +34,8 @@
         <attribute name="isPlaceholderExercise" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseCategory" inverseName="exercises" inverseEntity="ExerciseCategory" syncable="YES"/>
-        <relationship name="chains" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Chain" inverseName="exercises" inverseEntity="Chain" syncable="YES"/>
-        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
+        <relationship name="chains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Chain" inverseName="exercises" inverseEntity="Chain" syncable="YES"/>
+        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
     </entity>
     <entity name="ExerciseCategory" representedClassName="TJBExerciseCategory" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>

@@ -8,6 +8,8 @@
 
 #import "TJBExerciseSelectionScene.h"
 
+// core data
+
 #import "CoreDataController.h"
 
 #import "TJBNewExerciseCreationVC.h"
@@ -15,6 +17,7 @@
 // cells
 
 #import "TJBNoDataCell.h"
+#import "TJBExerciseSelectionCell.h"
 
 #import "TJBAestheticsController.h"
 
@@ -320,9 +323,6 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (void)configureTableView{
     
-    [self.exerciseTableView registerClass: [UITableViewCell class]
-                   forCellReuseIdentifier: cellReuseIdentifier];
-    
     NSArray *titleButtons = @[self.leftBarButton, self.rightBarButton];
     for (UIButton *button in titleButtons){
         
@@ -344,6 +344,12 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [self.exerciseTableView registerNib: noDataCell
                  forCellReuseIdentifier: @"TJBNoDataCell"];
+    
+    UINib *exerciseSelectionCell = [UINib nibWithNibName: @"TJBExerciseSelectionCell"
+                                                  bundle: nil];
+    
+    [self.exerciseTableView registerNib: exerciseSelectionCell
+                 forCellReuseIdentifier: @"TJBExerciseSelectionCell"];
     
 }
 
@@ -410,20 +416,114 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
     } else{
         
-        UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: cellReuseIdentifier];
+        TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
         
         TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
         
-        cell.textLabel.text = exercise.name;
-        cell.textLabel.font = [UIFont systemFontOfSize: 15.0];
+        cell.exerciseNameLabel.text = exercise.name;
+        
+        NSDate *dateLastExecuted = [self dateLastExecutedForExercise: exercise];
+        
+        // nil may be returned for the date. If so, give the date label an X
+        
+        if (dateLastExecuted){
+            
+            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+            df.dateFormat = @"MM / dd / yy";
+            cell.dateLabel.text = [df stringFromDate: dateLastExecuted];
+            
+        } else{
+            
+            cell.dateLabel.text = @"X";
+            
+        }
+        
         cell.backgroundColor = [UIColor clearColor];
-        cell.textLabel.textColor = [UIColor blackColor];
+        
+        NSArray *labels = @[cell.exerciseNameLabel, cell.dateLabel];
+        for (UILabel *label in labels){
+            
+            label.font = [UIFont boldSystemFontOfSize: 15];
+            label.textColor = [UIColor blackColor];
+            label.backgroundColor = [UIColor clearColor];
+            
+        }
         
         return cell;
         
     }
     
 
+}
+
+- (NSDate *)dateLastExecutedForExercise:(TJBExercise *)exercise{
+    
+    // returns the date last executed for a given exercise
+    // must find the greatest date for realized sets and realized chains separately, then return the larger one
+    
+    // realized set
+    
+    NSDate *realizedSetDate = nil;
+    NSInteger realizedSetCount = exercise.realizedSets.count;
+    
+    if (realizedSetCount > 0){
+        
+        NSOrderedSet *realizedSets = exercise.realizedSets;
+        realizedSetDate = [[realizedSets lastObject] endDate];
+        
+    }
+    
+    // realized chain
+    
+    NSDate *realizedChainDate = nil;
+    NSInteger chainCount = exercise.chains.count;
+    
+    if (chainCount > 0){
+        
+        // find the realized chain at the largest index
+        // the chains property holds a mix of chain templates and realized chains, so I have to check for type
+        // no check is done to see if an exercise was actually performed - this function will return the date created for a realized chain even if no exercises were actually performed
+        
+        for (int i = (int)chainCount - 1; i >= 0; i--){
+            
+            TJBChain *chain = exercise.chains[i];
+            
+            if ([chain isKindOfClass: [TJBRealizedChain class]]){
+                
+                realizedChainDate = chain.dateCreated;
+                
+                break;
+                
+            }
+        }
+    }
+    
+    // if both dates are nonnull, return the larger one.  If only one date is nonnull, return that date.  Otherwise, return nil
+    
+    if (!realizedSetDate && !realizedChainDate){
+        
+        return nil;
+        
+    } else if (realizedSetDate && !realizedChainDate){
+        
+        return realizedSetDate;
+        
+    } else if (!realizedSetDate && realizedChainDate){
+        
+        return realizedChainDate;
+        
+    } else{
+        
+        float timeDiff = [realizedSetDate timeIntervalSinceDate: realizedChainDate];
+        
+        if (timeDiff > 0){
+            return realizedSetDate;
+        } else{
+            return realizedChainDate;
+        }
+        
+    }
+    
 }
 
 #pragma mark - <UITableViewDelegate>
@@ -497,7 +597,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
     } else{
         
-        return 50;
+        return 60;
         
     }
     
