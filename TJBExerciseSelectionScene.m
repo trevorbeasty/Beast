@@ -12,6 +12,10 @@
 
 #import "TJBNewExerciseCreationVC.h"
 
+// cells
+
+#import "TJBNoDataCell.h"
+
 #import "TJBAestheticsController.h"
 
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
@@ -110,6 +114,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     self.exerciseSeachTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.exerciseSeachTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    self.exerciseSeachTextField.clearButtonMode = UITextFieldViewModeAlways;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(updateFetchedResultsController)
@@ -313,8 +318,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-- (void)configureTableView
-{
+- (void)configureTableView{
+    
     [self.exerciseTableView registerClass: [UITableViewCell class]
                    forCellReuseIdentifier: cellReuseIdentifier];
     
@@ -332,75 +337,169 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     self.mainTitleLabel.textColor = [UIColor whiteColor];
     
+    // register cells
+    
+    UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
+                                       bundle: nil];
+    
+    [self.exerciseTableView registerNib: noDataCell
+                 forCellReuseIdentifier: @"TJBNoDataCell"];
+    
 }
 
 
 
 #pragma mark - <UITableViewDataSource>
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    
     NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-    return sectionCount;
+    
+    NSLog(@"%lu", sectionCount);
+    
+    // a no data cell will be shown if there are no exercises in the resulting fetched results controller
+    
+    if (sectionCount == 0){
+        
+        return 1;
+        
+    } else{
+        
+        return sectionCount;
+        
+    }
+
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-    NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-    return numberOfObjects;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    
+    // if there are zero sections (because there are no fetched exercises) return 1 so that the no data cell can be shown
+    
+    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+    
+    if (sectionCount == 0){
+        
+        return 1;
+        
+    } else{
+        
+        id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+        NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
+        
+        return numberOfObjects;
+        
+    }
+ 
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: cellReuseIdentifier];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    // if there are no exercises, show a no data cell
     
-    cell.textLabel.text = exercise.name;
-    cell.textLabel.font = [UIFont systemFontOfSize: 15.0];
-    cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.textColor = [UIColor blackColor];
+    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
     
+    if (sectionCount == 0){
+        
+        TJBNoDataCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+        
+        cell.mainLabel.text = @"No Exercises";
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor clearColor];
+        
+        return cell;
+        
+    } else{
+        
+        UITableViewCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: cellReuseIdentifier];
+        
+        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        cell.textLabel.text = exercise.name;
+        cell.textLabel.font = [UIFont systemFontOfSize: 15.0];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor blackColor];
+        
+        return cell;
+        
+    }
     
-    return cell;
+
 }
 
 #pragma mark - <UITableViewDelegate>
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+    // only select the row if it is an exercise
     
-    self.callbackBlock(exercise);
+    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
     
+    if (sectionCount != 0){
+        
+        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        
+        self.callbackBlock(exercise);
+        
+    }
+ 
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
-    UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [UIColor lightGrayColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont boldSystemFontOfSize: 20.0];
-    label.textAlignment = NSTextAlignmentCenter;
+    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
     
-    id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-    label.text = [sectionInfo name];
-    
-    return label;
-    
+    if (sectionCount == 0){
+        
+        return nil;
+        
+    } else{
+        
+        UILabel *label = [[UILabel alloc] init];
+        label.backgroundColor = [UIColor lightGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.textAlignment = NSTextAlignmentCenter;
+        
+        id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+        label.text = [sectionInfo name];
+        
+        return label;
+        
+    }
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     
-    return 50;
+    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+    
+    if (sectionCount == 0){
+        
+        return 0;
+        
+    } else{
+        
+        return 50;
+        
+    }
+    
+
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 50;
+    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+    
+    if (sectionCount == 0){
+        
+        return self.exerciseTableView.frame.size.height;
+        
+    } else{
+        
+        return 50;
+        
+    }
     
 }
 
@@ -553,7 +652,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 #pragma mark - Animation
 
 static CGFloat const totalAniDist = 246.0;
-static float const totalAniDur = 5.0;
+static float const totalAniDur = .6;
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
