@@ -1129,14 +1129,37 @@
     [self setRealizedSetParametersToNil];
 }
 
+- (void)removeConfirmationFromViewHierarchy{
+    
+    // a view is added to the hierarchy for completed set confirmation.  This method removes the view and nullifies its controller
+    
+    // I call the methods suggested by apple documentation for removing a child view controller
+    
+    [self.activeSetCompletedSummaryVC willMoveToParentViewController: nil];
+    
+    [self.activeSetCompletedSummaryVC.view removeFromSuperview];
+    self.activeSetCompletedSummaryVC = nil;
+    
+    [self.activeSetCompletedSummaryVC removeFromParentViewController];
+    
+}
+
 - (void)presentConfirmationToUser{
     
     // present the confirmation scene to the user and schedule it to dismiss itself after a set time interval.  It will also be dismissed when the user touches anywhere on screen
     
+    // the callback block removes the child view from the view hierarchy
+    
+    TJBCompletedSetCallback callbackBlock = ^{
+        
+        [self removeConfirmationFromViewHierarchy];
+        
+    };
+    
     TJBSetCompletedSummaryVC *vc = [[TJBSetCompletedSummaryVC alloc] initWithExerciseName: self.exercise.name
                                                                                    weight: self.weight
                                                                                      reps: self.reps
-                                                                            callbackBlock: nil];
+                                                                            callbackBlock: callbackBlock];
     
     self.activeSetCompletedSummaryVC = vc;
     

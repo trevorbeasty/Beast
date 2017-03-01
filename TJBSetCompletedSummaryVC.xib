@@ -26,9 +26,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D3V-oW-gVy" userLabel="Content Container">
-                    <rect key="frame" x="16" y="156.5" width="343" height="154"/>
+                    <rect key="frame" x="16" y="157.5" width="343" height="152"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Completed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzm-rm-NDJ">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Entry Submitted" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzm-rm-NDJ">
                             <rect key="frame" x="0.0" y="0.0" width="343" height="30"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -39,7 +39,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ypm-F3-n55">
-                            <rect key="frame" x="0.0" y="52" width="343" height="50"/>
+                            <rect key="frame" x="0.0" y="50" width="343" height="50"/>
                             <color key="backgroundColor" red="0.97438395690000001" green="1" blue="0.69670033659999997" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="k1r-fb-Ntm"/>
@@ -48,7 +48,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5o-p0-db4">
-                            <rect key="frame" x="0.0" y="104" width="170.5" height="50"/>
+                            <rect key="frame" x="0.0" y="102" width="170.5" height="50"/>
                             <color key="backgroundColor" red="0.97438395690000001" green="1" blue="0.69670033659999997" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="dAA-4o-izw"/>
@@ -57,7 +57,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B01-y6-c1V">
-                            <rect key="frame" x="172" y="104" width="170.5" height="50"/>
+                            <rect key="frame" x="172" y="102" width="170.5" height="50"/>
                             <color key="backgroundColor" red="0.97438395690000001" green="1" blue="0.69670033659999997" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <nil key="highlightedColor"/>
@@ -76,8 +76,8 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="M5o-p0-db4" firstAttribute="leading" secondItem="D3V-oW-gVy" secondAttribute="leading" id="0zT-tf-eds"/>
-                        <constraint firstItem="Ypm-F3-n55" firstAttribute="top" secondItem="gc2-VN-BDZ" secondAttribute="bottom" constant="2" id="3sj-2N-Vvd"/>
-                        <constraint firstAttribute="height" constant="154" id="5U3-bH-SfB"/>
+                        <constraint firstItem="Ypm-F3-n55" firstAttribute="top" secondItem="gc2-VN-BDZ" secondAttribute="bottom" id="3sj-2N-Vvd"/>
+                        <constraint firstAttribute="height" constant="152" id="5U3-bH-SfB"/>
                         <constraint firstAttribute="trailing" secondItem="qzm-rm-NDJ" secondAttribute="trailing" id="7gu-Jh-uZ5"/>
                         <constraint firstItem="B01-y6-c1V" firstAttribute="leading" secondItem="M5o-p0-db4" secondAttribute="trailing" constant="2" id="DBh-Tk-kL2"/>
                         <constraint firstItem="M5o-p0-db4" firstAttribute="top" secondItem="Ypm-F3-n55" secondAttribute="bottom" constant="2" id="Dvw-tO-0hr"/>
@@ -101,6 +101,7 @@
                 <constraint firstAttribute="trailing" secondItem="D3V-oW-gVy" secondAttribute="trailing" constant="16" id="fnM-pJ-BpP"/>
                 <constraint firstItem="D3V-oW-gVy" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" constant="-100" id="xgE-jQ-H6T"/>
             </constraints>
+            <point key="canvasLocation" x="35.5" y="53.5"/>
         </view>
     </objects>
 </document>

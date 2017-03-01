@@ -62,6 +62,25 @@
     
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [self configureVisualEffectView];
+    
+}
+
+- (void)configureVisualEffectView{
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
+    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect: blur];
+    
+    visualEffectView.frame = self.view.bounds;
+    
+    [self.view addSubview: visualEffectView];
+    
+    [visualEffectView.contentView addSubview: self.contentContainerView];
+    
+}
+
 - (void)configureDisplay{
     
     self.exerciseLabel.text = self.exerciseName;
@@ -88,7 +107,7 @@
     NSArray *titleLabels = @[self.setCompletedLabel, self.pressAnywhereLabel];
     for (UILabel *lab in titleLabels){
         
-        lab.backgroundColor = [UIColor darkGrayColor];
+        lab.backgroundColor = [UIColor clearColor];
         lab.textColor = [UIColor whiteColor];
         
     }
