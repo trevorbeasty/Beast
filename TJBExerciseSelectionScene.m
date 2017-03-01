@@ -664,10 +664,18 @@ static float const totalAniDur = 5.0;
     
     // unhide the exercise search controls
     
-    self.exerciseSeachTextField.hidden = NO;
-    self.searchLabel.hidden = NO;
-    
-    CGFloat partialAniDist = 14 + self.exerciseSeachTextField.frame.size.height;
+    NSArray *coveredViews = @[self.searchLabel,
+                              self.exerciseSeachTextField,
+                              self.exerciseNameLabel,
+                              self.thinDividerLabel,
+                              self.dateLastExecutedLabel];
+    for (UIView *cv in coveredViews){
+        
+        cv.hidden = NO;
+        
+    }
+
+    CGFloat partialAniDist = 8 + self.exerciseSeachTextField.frame.size.height + 8 + self.exerciseNameLabel.frame.size.height + 6;
     
     // second animation
     
@@ -698,7 +706,10 @@ static float const totalAniDur = 5.0;
                          
                          self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - partialAniDist);
                          
-                         CGFloat viewVertTranslation = self.exerciseAdditionContainer.frame.size.height - partialAniDist;
+                         CGFloat constraintConst = -1 * (partialAniDist - 8);
+                         self.searchFieldTopSpaceConstr.constant = constraintConst;
+                         
+                         CGFloat viewVertTranslation = totalAniDist - partialAniDist;
                          
                          NSArray *views = @[self.exerciseAdditionContainer];
                          
