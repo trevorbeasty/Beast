@@ -52,6 +52,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *exerciseSeachTextField;
 @property (weak, nonatomic) IBOutlet UILabel *searchLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchFieldTopSpaceConstr;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLastExecutedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *thinDividerLabel;
 
 // IBAction
 
@@ -221,6 +224,20 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 }
 
 - (void)viewAesthetics{
+    
+    // table view header labels
+    
+    NSArray *columnLabels = @[self.exerciseNameLabel, self.dateLastExecutedLabel];
+    for (UILabel *lab in columnLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.textColor = [UIColor darkGrayColor];
+        lab.font = [UIFont boldSystemFontOfSize: 15];
+        
+    }
+    
+    self.thinDividerLabel.backgroundColor = [UIColor darkGrayColor];
+    self.thinDividerLabel.textColor = [UIColor darkGrayColor];
     
     // table view
     
@@ -536,7 +553,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 #pragma mark - Animation
 
 static CGFloat const totalAniDist = 246.0;
-static float const totalAniDur = .3;
+static float const totalAniDur = 5.0;
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
@@ -548,8 +565,17 @@ static float const totalAniDur = .3;
     
     [self.view insertSubview: self.titleBarContainer
                 aboveSubview: self.exerciseAdditionContainer];
-    [self.view sendSubviewToBack: self.searchLabel];
-    [self.view sendSubviewToBack: self.exerciseSeachTextField];
+    
+    NSArray *coveredViews = @[self.searchLabel,
+                              self.exerciseSeachTextField,
+                              self.exerciseNameLabel,
+                              self.thinDividerLabel,
+                              self.dateLastExecutedLabel];
+    for (UIView *cv in coveredViews){
+        
+        [self.view sendSubviewToBack: cv];
+        
+    }
     
     // the second animation is defined here. It is executed upon completion of the first animation.  It slides down the table view and addition container to their final, advanced positions
     
@@ -557,14 +583,17 @@ static float const totalAniDur = .3;
     
     // need to define this here so that I can make the two animations appear to run at the same speed
     
-    CGFloat partialAniDist = 14 + self.exerciseSeachTextField.frame.size.height;
+    CGFloat partialAniDist = 8 + self.exerciseSeachTextField.frame.size.height + 8 + self.exerciseNameLabel.frame.size.height + 6;
     
     void (^secondAnimation)(BOOL) = ^(BOOL firstAnimationCompleted){
         
         // hide the exercise search objects
         
-        self.exerciseSeachTextField.hidden = YES;
-        self.searchLabel.hidden = YES;
+        for (UIView *cv in coveredViews){
+            
+            cv.hidden = YES;
+            
+        }
         
         [UIView animateWithDuration: totalAniDur * (totalAniDist - partialAniDist) / totalAniDist
                          animations: ^{
@@ -602,7 +631,7 @@ static float const totalAniDur = .3;
                          
                          // this gives the exercise search field the correct position relative to the exercise addition container. Given the containers final position, this places the seach field such that its final location is the same as its initial location
 
-                         CGFloat constraintConst = -1 * (6 + self.exerciseSeachTextField.frame.size.height);
+                         CGFloat constraintConst = -1 * (partialAniDist - 8);
                          self.searchFieldTopSpaceConstr.constant = constraintConst;
                          
                          // this constraint describes the exercise addition container's position relative to the title container.  This addition container is initially behind the title container
