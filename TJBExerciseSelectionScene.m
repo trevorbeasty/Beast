@@ -233,6 +233,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (void)viewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     // table view header labels
     
     NSArray *columnLabels = @[self.exerciseNameLabel, self.dateLastExecutedLabel];

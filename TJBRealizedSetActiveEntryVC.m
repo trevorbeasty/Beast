@@ -331,6 +331,10 @@
 
 - (void)viewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     //// buttons
     
     NSArray *buttons = @[self.targetRestButton,

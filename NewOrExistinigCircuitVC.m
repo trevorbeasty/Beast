@@ -337,6 +337,10 @@
 
 - (void)viewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     // filter
     
     self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];

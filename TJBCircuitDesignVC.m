@@ -142,6 +142,10 @@
 
 - (void)viewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     // title bar
     
     NSArray *titleButtons = @[self.backButton, self.rightTitleButton];

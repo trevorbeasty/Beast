@@ -811,6 +811,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)configureViewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     // scroll view
     
     self.dateScrollView.backgroundColor = [UIColor clearColor];

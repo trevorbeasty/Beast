@@ -114,6 +114,10 @@
 
 - (void)configureViewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     // segmented controls
     
     NSArray *segmentedControls = @[self.weightSegmentedControl, self.repsSegmentedControl];

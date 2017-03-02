@@ -36,7 +36,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *analysisOptionsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *liftOptionsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *viewWorkoutLogButton;
-@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UIView *contentContainerView;
 
 
@@ -75,7 +74,7 @@
     veView.frame = self.contentContainerView.frame;
     [self.view addSubview: veView];
     [veView.contentView addSubview: self.contentContainerView];
-    
+ 
 }
 
 - (void)configureViewAesthetics{
@@ -116,16 +115,12 @@
         
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 30.0];
+        label.font = [UIFont boldSystemFontOfSize: 25];
         
         label.layer.masksToBounds = YES;
         label.layer.cornerRadius = 4.0;
         
     }
-    
-    // description label
-    
-    self.descriptionLabel.hidden = YES;
     
 }
 

@@ -182,6 +182,10 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureViewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     self.multiplierSegmentedControl.tintColor = [UIColor lightGrayColor];
     
     // type label
