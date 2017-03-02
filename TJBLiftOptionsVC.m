@@ -116,7 +116,7 @@
         
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.font = [UIFont boldSystemFontOfSize: 30.0];
         
         label.layer.masksToBounds = YES;
         label.layer.cornerRadius = 4.0;
