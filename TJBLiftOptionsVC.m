@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *liftOptionsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *viewWorkoutLogButton;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIView *contentContainerView;
 
 
 // IBAction
@@ -57,7 +58,23 @@
     
     [self configureViewAesthetics];
     
-//    self.
+    [self.view layoutIfNeeded];
+    
+    [self configureScene];
+    
+}
+
+- (void)configureScene{
+    
+    // visual effect
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
+    
+    UIVisualEffectView *veView = [[UIVisualEffectView alloc] initWithEffect: blur];
+    
+    veView.frame = self.contentContainerView.frame;
+    [self.view addSubview: veView];
+    [veView.contentView addSubview: self.contentContainerView];
     
 }
 
@@ -72,23 +89,25 @@
     
     for (UIButton *button in buttons){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        [button setTitleColor: [UIColor whiteColor]
+        button.backgroundColor = [UIColor clearColor];
+        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
         button.layer.masksToBounds = YES;
         button.layer.cornerRadius = 16.0;
+        button.layer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
+        button.layer.borderWidth = 1.0;
         
     }
     
     // labels
     
-    self.titleLabel1.backgroundColor = [UIColor darkGrayColor];
+    self.titleLabel1.backgroundColor = [UIColor clearColor];
     self.titleLabel1.textColor = [UIColor whiteColor];
     self.titleLabel1.font = [UIFont boldSystemFontOfSize: 40.0];
     
-    self.titleLabel2.backgroundColor = [UIColor darkGrayColor];
+    self.titleLabel2.backgroundColor = [UIColor clearColor];
     self.titleLabel2.textColor = [UIColor whiteColor];
     self.titleLabel2.font = [UIFont boldSystemFontOfSize: 20.0];
     
@@ -96,7 +115,7 @@
     for (UILabel *label in grayLabels){
         
         label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
         label.layer.masksToBounds = YES;
@@ -104,7 +123,9 @@
         
     }
     
-
+    // description label
+    
+    self.descriptionLabel.hidden = YES;
     
 }
 
