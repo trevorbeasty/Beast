@@ -1149,7 +1149,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath shouldDequeue:(BOOL)shouldDequeue{
+- (TJBMasterCell *)cellForIndexPath:(NSIndexPath *)indexPath shouldDequeue:(BOOL)shouldDequeue{
     
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
     // if the row index is 0, it is the title cell
@@ -1529,19 +1529,21 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         // create the operation object for the given index path
 
         NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
-                                                                                selector: @selector(preloadedCellForIndexPath:)
+                                                                                selector: @selector(preloadAndStoreCellForIndexPath:)
                                                                                   object: path];
         
         // must also assign a completion block which will add the resulting cell to this class' storage array upon completion
         
-        __weak TJBWorkoutNavigationHub *weakSelf = self;
-        __weak NSInvocationOperation *weakOperation = operation;
-        
-        operation.completionBlock = ^{
-            
-            [weakSelf storeOperationResultForOperation: weakOperation];
-        
-        };
+//        __weak TJBWorkoutNavigationHub *weakSelf = self;
+//        __weak NSInvocationOperation *weakOperation = operation;
+//        
+//        operation.completionBlock = ^{
+//            
+//            NSLog(@"\n\noperation resut: %@", weakOperation.result);
+//            
+//            [weakSelf storeOperationResultForOperation: weakOperation];
+//        
+//        };
         
         // add the operation object to the operation queue
         
@@ -1551,24 +1553,28 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (void)storeOperationResultForOperation:(NSInvocationOperation *)operation{
+//- (void)storeOperationResultForOperation:(NSInvocationOperation *)operation{
+//    
+
+//    
+//    [self.preloadResultCells addObject: operation.result];
+//    
+//}
+
+- (void)preloadAndStoreCellForIndexPath:(NSIndexPath *)indexPath{
+    
+    TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
+                                            shouldDequeue: NO];
     
     // if there is no storage array, create one
     
     if (!self.preloadResultCells){
-        
+    
         self.preloadResultCells = [[NSMutableArray alloc] init];
-        
+    
     }
     
-    [self.preloadResultCells addObject: operation.result];
-    
-}
-
-- (UITableViewCell *)preloadedCellForIndexPath:(NSIndexPath *)indexPath{
-    
-    return [self cellForIndexPath: indexPath
-                    shouldDequeue: NO];
+    [self.preloadResultCells addObject: preloadedCell];
     
 }
 
