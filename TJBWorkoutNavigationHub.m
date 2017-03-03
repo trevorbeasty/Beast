@@ -556,7 +556,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // for prefetching
     
-//    self.tableView.prefetchDataSource = self;
+    self.tableView.prefetchDataSource = self;
     
     UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
                                            bundle: nil];
@@ -1149,16 +1149,24 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath shouldDequeue:(BOOL)shouldDequeue{
     
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
     // if the row index is 0, it is the title cell
     
+    TJBWorkoutLogTitleCell *cell = nil;
+    
     if (indexPath.row == 0){
         
-        TJBWorkoutLogTitleCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
-        
-        
+        if (shouldDequeue){
+            
+            cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+            
+        } else{
+            
+            cell = [[TJBWorkoutLogTitleCell alloc] init];
+            
+        }
         
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
         BOOL isToday = [calendar isDate: self.activeDate
@@ -1231,8 +1239,18 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
                 // dequeue the realizedSetCell
                 
-                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+                TJBRealizedChainCell *cell = nil;
                 
+                if (shouldDequeue){
+                    
+                    cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+                    
+                } else{
+                    
+                    cell = [[TJBRealizedChainCell alloc] init];
+                    
+                }
+ 
                 [cell clearExistingEntries];
                 
                 [cell configureWithRealizedChain: realizedChain
@@ -1306,7 +1324,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     if (self.operationQueue){
         
-//        NSLog(@"prefetch");
+        NSLog(@"prefetch");
         
         // fetch the operation.  Will return nil when not found
         
@@ -1328,141 +1346,31 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
             } else{
                 
-                return [self cellForIndexPath: indexPath];
+                return [self cellForIndexPath: indexPath
+                                shouldDequeue: YES];
                 
             }
             
         } else{
             
-            return [self cellForIndexPath: indexPath];
+            return [self cellForIndexPath: indexPath
+                            shouldDequeue: YES];
             
         }
         
     } else{
         
-//        NSLog(@"normal");
+        NSLog(@"normal");
         
         // if there is no operation queue, create the cell as would normally be done
         
         NSLog(@"%lu", self.dailyList.count);
         
-        return [self cellForIndexPath: indexPath];
+        return [self cellForIndexPath: indexPath
+                        shouldDequeue: YES];
         
     }
     
-    
-    
-//    //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
-//    // if the row index is 0, it is the title cell
-//    
-//    if (indexPath.row == 0){
-//        
-//        TJBWorkoutLogTitleCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
-//        
-//        
-//        
-//        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-//        BOOL isToday = [calendar isDate: self.activeDate
-//                        inSameDayAsDate: [NSDate date]];
-//        
-//        if (isToday){
-//            
-//            cell.secondaryLabel.text = @"Today";
-//            
-//        } else{
-//            
-//            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//            df.dateFormat = @"EEEE, MMMM d, yyyy";
-//            cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
-//            
-//        }
-//        
-//        cell.primaryLabel.text = @"My Workout Log";
-//        cell.backgroundColor = [UIColor clearColor];
-//        
-//        return cell;
-//        
-//    } else{
-//        
-//        if (self.dailyList.count == 0){
-//            
-//            TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
-//            
-//            cell.mainLabel.text = @"No Entries";
-//            cell.backgroundColor = [UIColor clearColor];
-//            
-//            return cell;
-//            
-//        } else{
-//            
-//            NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
-//            
-//            int rowIndex = (int)indexPath.row - 1;
-//            
-//            BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
-//            BOOL isRealizedChain = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedChain class]];
-//            
-//            if (isRealizedSet){
-//                
-//                TJBRealizedSet *realizedSet = self.dailyList[rowIndex];
-//                
-//                // dequeue the realizedSetCell
-//                
-//                TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
-//                
-//                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//                dateFormatter.dateStyle = NSDateFormatterNoStyle;
-//                dateFormatter.timeStyle = NSDateFormatterShortStyle;
-//                NSString *date = [dateFormatter stringFromDate: realizedSet.endDate];
-//                
-//                [cell configureCellWithExercise: realizedSet.exercise.name
-//                                         weight: [NSNumber numberWithFloat: realizedSet.weight]
-//                                           reps: [NSNumber numberWithFloat: realizedSet.reps]
-//                                           rest: nil
-//                                           date: date
-//                                         number: number];
-//                
-//                cell.backgroundColor = [UIColor clearColor];
-//                
-//                return cell;
-//                
-//            } else if (isRealizedChain){
-//                
-//                TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
-//                
-//                // dequeue the realizedSetCell
-//                
-//                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-//                
-//                [cell clearExistingEntries];
-//                
-//                [cell configureWithRealizedChain: realizedChain
-//                                          number: number
-//                                       finalRest: nil];
-//                
-//                cell.backgroundColor = [UIColor clearColor];
-//                
-//                return cell;
-//                
-//            } else{
-//                
-//                // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
-//                
-//                TJBRealizedSetCollectionCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCollectionCell"];
-//                
-//                [cell clearExistingEntries];
-//                
-//                cell.backgroundColor = [UIColor clearColor];
-//                
-//                [cell configureWithRealizedSetCollection: self.dailyList[rowIndex]
-//                                                  number: number
-//                                               finalRest: nil];
-//                
-//                return cell;
-//                
-//            }
-//        }
-//    }
 }
 
 
@@ -1477,7 +1385,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 #pragma mark - <UITableViewDelegate>
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCellEditingStyle)txableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (self.dailyList.count == 0){
         
@@ -1634,16 +1542,29 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     for (NSIndexPath *path in indexPaths){
         
+        NSLog(@"%@", path);
+        
         // create the operation object for the given index path
         
+        
+        
         TJBCellFetchingOperation *operation = [[TJBCellFetchingOperation alloc] initWithTarget: self
-                                                                                      selector: @selector(cellForIndexPath:)
+                                                                                      selector: @selector(preloadedCellForIndexPath:)
                                                                                         object: path];
+        operation.indexPath = path;
+        
         // add the operation object to the operation queue
         
         [self.operationQueue addOperation: operation];
         
     }
+    
+}
+
+- (UITableViewCell *)preloadedCellForIndexPath:(NSIndexPath *)indexPath{
+    
+    return [self cellForIndexPath: indexPath
+                    shouldDequeue: NO];
     
 }
 
