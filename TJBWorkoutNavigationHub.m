@@ -31,14 +31,11 @@
 #import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
 #import "TJBRealizedSetCollectionCell.h"
+#import "TJBMasterCell.h"
 
 // presented VC's
 
 #import "TJBLiftOptionsVC.h"
-
-// for prefetching table view cells
-
-#import "TJBCellFetchingOperation.h"
 
 @interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching>
 
@@ -89,7 +86,10 @@
 
 // cell prefetching
 
+// an operation queue will dequeue an operation once it has finished execution. At this point, a strong reference must be established to the operation results, or else be deallocated.  I add the results of the operationQueue to the preloadResultCells array
+
 @property (strong) NSOperationQueue *operationQueue;
+@property (strong) NSMutableArray *preloadResultCells;
 
 @end
 
@@ -1154,9 +1154,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
     // if the row index is 0, it is the title cell
     
-    TJBWorkoutLogTitleCell *cell = nil;
-    
     if (indexPath.row == 0){
+        
+        TJBWorkoutLogTitleCell *cell = nil;
         
         if (shouldDequeue){
             
@@ -1227,7 +1227,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                                            reps: [NSNumber numberWithFloat: realizedSet.reps]
                                            rest: nil
                                            date: date
-                                         number: number];
+                                         number: number
+                             referenceIndexPath: indexPath];
                 
                 cell.backgroundColor = [UIColor clearColor];
                 
@@ -1255,7 +1256,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
                 [cell configureWithRealizedChain: realizedChain
                                           number: number
-                                       finalRest: nil];
+                                       finalRest: nil
+                              referenceIndexPath: indexPath];
                 
                 cell.backgroundColor = [UIColor clearColor];
                 
@@ -1273,7 +1275,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
                 [cell configureWithRealizedSetCollection: self.dailyList[rowIndex]
                                                   number: number
-                                               finalRest: nil];
+                                               finalRest: nil
+                                      referenceIndexPath: indexPath];
                 
                 return cell;
                 
@@ -1283,20 +1286,20 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (TJBCellFetchingOperation *)operationForIndexPath:(NSIndexPath *)indexPath{
+- (TJBMasterCell *)prefetchedCellForIndexPath:(NSIndexPath *)indexPath{
     
     // search for the operation designated by the passed-in index path.  If one does not exist, return nil
     
-    if (self.operationQueue){
+    if (self.preloadResultCells){
         
-        for (TJBCellFetchingOperation *operation in self.operationQueue.operations){
+        for (TJBMasterCell *cell in self.preloadResultCells){
             
-            BOOL match = [self indexForOperation: operation
-                                    matchesIndex: indexPath];
+            BOOL match = [self indexForPrefetchedCell: cell
+                                         matchesIndex: indexPath];
             
             if (match){
                 
-                return operation;
+                return cell;
                 
             }
         }
@@ -1308,10 +1311,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (BOOL)indexForOperation:(TJBCellFetchingOperation *)operation matchesIndex:(NSIndexPath *)indexPath{
+- (BOOL)indexForPrefetchedCell:(TJBMasterCell *)cell matchesIndex:(NSIndexPath *)indexPath{
     
-    BOOL sectionMatch = operation.indexPath.section == indexPath.section;
-    BOOL rowMatch = operation.indexPath.row == indexPath.row;
+    BOOL sectionMatch = cell.referenceIndexPath.section == indexPath.section;
+    BOOL rowMatch = cell.referenceIndexPath.row == indexPath.row;
     
     return  sectionMatch && rowMatch;
     
@@ -1319,53 +1322,34 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+//    NSLog(@"\n\nsystem asking for cell: %@", indexPath);
+//    NSLog(@"\n\nnumber of cells in preload array: %lu", self.operationQueue.operationCount);
+//    NSLog(@"\n\ntotal number of content cells for active day: %lu", self.dailyList.count);
+    
     // check the operation queue for the specified index path.  If the cell has already been prepared, use that cell.  Otherwise, create and configure the cell
     // must check for existence of queue
     
-    if (self.operationQueue){
+    if (self.preloadResultCells){
         
-        NSLog(@"prefetch");
+        // fetch the preloaded cell.  Will return nil when not found
         
-        // fetch the operation.  Will return nil when not found
+        TJBMasterCell *prefetchedCell = [self prefetchedCellForIndexPath: indexPath];
         
-        TJBCellFetchingOperation *operation = [self operationForIndexPath: indexPath];
-        
-        if (operation){
+        if (prefetchedCell){
             
-            // must evaluate the status of the operation in order to determine the appropriate course of action
-            
-            if (operation.isExecuting){
+            return prefetchedCell;
                 
-                [operation waitUntilFinished];
-                
-                return operation.result;
-                
-            } else if (operation.isFinished){
-                
-                return operation.result;
-                
-            } else{
-                
-                return [self cellForIndexPath: indexPath
-                                shouldDequeue: YES];
-                
-            }
-            
         } else{
-            
+                
             return [self cellForIndexPath: indexPath
                             shouldDequeue: YES];
-            
+                
         }
         
     } else{
-        
-        NSLog(@"normal");
-        
-        // if there is no operation queue, create the cell as would normally be done
-        
-        NSLog(@"%lu", self.dailyList.count);
-        
+
+        // if there are no preloaded cells, create the cell as would normally be done
+
         return [self cellForIndexPath: indexPath
                         shouldDequeue: YES];
         
@@ -1541,23 +1525,43 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     }
     
     for (NSIndexPath *path in indexPaths){
-        
-        NSLog(@"%@", path);
-        
+
         // create the operation object for the given index path
+
+        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
+                                                                                selector: @selector(preloadedCellForIndexPath:)
+                                                                                  object: path];
         
+        // must also assign a completion block which will add the resulting cell to this class' storage array upon completion
         
+        __weak TJBWorkoutNavigationHub *weakSelf = self;
+        __weak NSInvocationOperation *weakOperation = operation;
         
-        TJBCellFetchingOperation *operation = [[TJBCellFetchingOperation alloc] initWithTarget: self
-                                                                                      selector: @selector(preloadedCellForIndexPath:)
-                                                                                        object: path];
-        operation.indexPath = path;
+        operation.completionBlock = ^{
+            
+            [weakSelf storeOperationResultForOperation: weakOperation];
+        
+        };
         
         // add the operation object to the operation queue
         
         [self.operationQueue addOperation: operation];
         
     }
+    
+}
+
+- (void)storeOperationResultForOperation:(NSInvocationOperation *)operation{
+    
+    // if there is no storage array, create one
+    
+    if (!self.preloadResultCells){
+        
+        self.preloadResultCells = [[NSMutableArray alloc] init];
+        
+    }
+    
+    [self.preloadResultCells addObject: operation.result];
     
 }
 

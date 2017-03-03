@@ -49,7 +49,9 @@
     
 }
 
-- (void)configureWithRealizedSetCollection:(NSArray<TJBRealizedSet *> *)realizedSetColleection number:(NSNumber *)number finalRest:(NSNumber *)finalRest{
+- (void)configureWithRealizedSetCollection:(NSArray<TJBRealizedSet *> *)realizedSetColleection number:(NSNumber *)number finalRest:(NSNumber *)finalRest referenceIndexPath:(NSIndexPath *)path{
+    
+    self.referenceIndexPath = path;
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     

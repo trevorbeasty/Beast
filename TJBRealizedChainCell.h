@@ -8,15 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TJBMasterCell.h"
+
 // core data
 
 @class TJBRealizedChain;
 
-@interface TJBRealizedChainCell : UITableViewCell
+@interface TJBRealizedChainCell : TJBMasterCell
 
 - (void)clearExistingEntries;
 
-- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number finalRest:(NSNumber *)finalRest;
+- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number finalRest:(NSNumber *)finalRest referenceIndexPath:(NSIndexPath *)path;
 
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain;
 

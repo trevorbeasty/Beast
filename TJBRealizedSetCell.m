@@ -14,7 +14,9 @@
 
 @implementation TJBRealizedSetCell
 
-- (void)configureCellWithExercise:(NSString *)exercise weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest date:(NSString *)date number:(NSNumber *)number{
+- (void)configureCellWithExercise:(NSString *)exercise weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest date:(NSString *)date number:(NSNumber *)number referenceIndexPath:(NSIndexPath *)path{
+    
+    self.referenceIndexPath = path;
     
     [self configureViewAesthetics];
     

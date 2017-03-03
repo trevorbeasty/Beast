@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TJBMasterCell.h"
+
 @class TJBRealizedSet;
 
-@interface TJBRealizedSetCollectionCell : UITableViewCell
+@interface TJBRealizedSetCollectionCell : TJBMasterCell
 
 - (void)clearExistingEntries;
 
-- (void)configureWithRealizedSetCollection:(NSArray<TJBRealizedSet *> *)realizedSetColleection number:(NSNumber *)number finalRest:(NSNumber *)finalRest;
+- (void)configureWithRealizedSetCollection:(NSArray<TJBRealizedSet *> *)realizedSetColleection number:(NSNumber *)number finalRest:(NSNumber *)finalRest referenceIndexPath:(NSIndexPath *)path;
 
 + (float)suggestedCellHeightForRealizedSetCollection:(NSArray<TJBRealizedSet *> *)realizedSetCollection;
 

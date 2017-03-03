@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TJBRealizedSetCell : UITableViewCell
+#import "TJBMasterCell.h"
+
+@interface TJBRealizedSetCell : TJBMasterCell
 
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
@@ -18,7 +20,7 @@
 
 + (float)suggestedCellHeight;
 
-- (void)configureCellWithExercise:(NSString *)exercise weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest date:(NSString *)date number:(NSNumber *)number;
+- (void)configureCellWithExercise:(NSString *)exercise weight:(NSNumber *)weight reps:(NSNumber *)reps rest:(NSNumber *)rest date:(NSString *)date number:(NSNumber *)number referenceIndexPath:(NSIndexPath *)path;
 
 
 

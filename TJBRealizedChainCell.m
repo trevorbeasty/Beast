@@ -26,8 +26,6 @@
 
 @interface TJBRealizedChainCell ()
 
-
-
 // IBOutlet
 
 @property (weak) IBOutlet UIStackView *stackView;
@@ -61,12 +59,13 @@
     
 }
 
-- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number finalRest:(NSNumber *)finalRest{
+- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number finalRest:(NSNumber *)finalRest referenceIndexPath:(NSIndexPath *)path{
     
     //// this cell will be dynamically sized, showing the chain name in the main label and stacking another label for every exercise in the chain
     
     self.realizedChain = realizedChain;
     self.finalRest = finalRest;
+    self.referenceIndexPath = path;
     
     TJBChainTemplate *chainTemplate = realizedChain.chainTemplate;
     

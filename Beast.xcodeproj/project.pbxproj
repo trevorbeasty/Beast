@@ -53,6 +53,7 @@
 		0B78E7FC1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7FA1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.xib */; };
 		0B78E8011E67654C00EB216F /* TJBExerciseSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7FF1E67654C00EB216F /* TJBExerciseSelectionCell.m */; };
 		0B78E8021E67654C00EB216F /* TJBExerciseSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E8001E67654C00EB216F /* TJBExerciseSelectionCell.xib */; };
+		0B78E8061E69C55400EB216F /* TJBMasterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E8051E69C55400EB216F /* TJBMasterCell.m */; };
 		0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */; };
 		0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */; };
 		0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C851DFAD0A00093F057 /* CoreDataController.m */; };
@@ -194,6 +195,8 @@
 		0B78E7FE1E67654C00EB216F /* TJBExerciseSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseSelectionCell.h; sourceTree = "<group>"; };
 		0B78E7FF1E67654C00EB216F /* TJBExerciseSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBExerciseSelectionCell.m; sourceTree = "<group>"; };
 		0B78E8001E67654C00EB216F /* TJBExerciseSelectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseSelectionCell.xib; sourceTree = "<group>"; };
+		0B78E8041E69C55400EB216F /* TJBMasterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBMasterCell.h; sourceTree = "<group>"; };
+		0B78E8051E69C55400EB216F /* TJBMasterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBMasterCell.m; sourceTree = "<group>"; };
 		0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryVC.h; sourceTree = "<group>"; };
 		0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryVC.m; sourceTree = "<group>"; };
 		0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedSetActiveEntryVC.xib; sourceTree = "<group>"; };
@@ -511,6 +514,7 @@
 		0B78E7C21E3C162800EB216F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				0B78E8031E69C51F00EB216F /* Master Cell */,
 				0B78E7FD1E67651D00EB216F /* Exercise Selection */,
 				0BC12E1B1E5FBDE80041D863 /* Realized Set Collection */,
 				0BC12E151E5F20060041D863 /* Realized Chain History */,
@@ -665,6 +669,15 @@
 				0B78E8001E67654C00EB216F /* TJBExerciseSelectionCell.xib */,
 			);
 			name = "Exercise Selection";
+			sourceTree = "<group>";
+		};
+		0B78E8031E69C51F00EB216F /* Master Cell */ = {
+			isa = PBXGroup;
+			children = (
+				0B78E8041E69C55400EB216F /* TJBMasterCell.h */,
+				0B78E8051E69C55400EB216F /* TJBMasterCell.m */,
+			);
+			name = "Master Cell";
 			sourceTree = "<group>";
 		};
 		0B843C901DFB7E9C0093F057 /* Freeform Lift */ = {
@@ -1040,6 +1053,7 @@
 				0B3688311E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m in Sources */,
 				0BA8ACE61E1FD0FD00EE10C2 /* TJBRealizedSetActiveEntryTBC.m in Sources */,
 				0B3688211E4352B80077290C /* TJBSchemeSelectionDateComp.m in Sources */,
+				0B78E8061E69C55400EB216F /* TJBMasterCell.m in Sources */,
 				0B78E7FB1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.m in Sources */,
 				0B86FB801E257310000D1B5F /* TJBCircuitTemplateVC.m in Sources */,
 				0B86FB891E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.m in Sources */,
