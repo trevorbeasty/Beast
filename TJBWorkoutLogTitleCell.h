@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TJBWorkoutLogTitleCell : UITableViewCell
+#import "TJBMasterCell.h"
+
+@interface TJBWorkoutLogTitleCell : TJBMasterCell
 
 @property (weak, nonatomic) IBOutlet UILabel *secondaryLabel;
 @property (weak, nonatomic) IBOutlet UILabel *primaryLabel;
