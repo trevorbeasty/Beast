@@ -1335,7 +1335,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSLog(@"table view requesting cell for index path: %@", indexPath);
+
     
     // check the operation queue for the specified index path.  If the cell has already been prepared, use that cell.  Otherwise, create and configure the cell
     // must check for existence of queue
@@ -1344,15 +1344,19 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         // fetch the preloaded cell.  Will return nil when not found
         
-        NSLog(@"%lu", self.preloadResultCells.count);
+//        NSLog(@"%lu", self.preloadResultCells.count);
         
         TJBMasterCell *prefetchedCell = [self prefetchedCellForIndexPath: indexPath];
         
         if (prefetchedCell){
             
+            NSLog(@"\n\ntable view using prefetched cell for index path: %@", indexPath);
+            
             return prefetchedCell;
                 
         } else{
+            
+            NSLog(@"\n\ntable view using dequeued cell for index path: %@", indexPath);
                 
             return [self cellForIndexPath: indexPath
                             shouldDequeue: YES];
@@ -1529,6 +1533,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)tableView:(UITableView *)tableView prefetchRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
     
+    //// every potential cell will only be fetched and stored once.  Prefetched cells are held permanently until the selected date changes.  The cells do not seem to take up enough memory that they must be deallocated.  Obviously, this observation may change for extreme scenarios (with extremely large numbers of entries for a given day).  For now, prefetched cells will not be disposed of
+    
     // if there is no operation queue, create one
     
     if (!self.operationQueue){
@@ -1550,22 +1556,28 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     for (NSIndexPath *path in indexPaths){
 
-        // create the operation object for the given index path
-
-        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
-                                                                                selector: @selector(preloadAndStoreCellForIndexPath:)
-                                                                                  object: path];
+        // create the operation object for the given index path if it has not already been prefetched
         
-        // add a dependencies so that the operations execute in order, with one beginning only after the prior completes
+        TJBMasterCell *prefetchedCell = [self prefetchedCellForIndexPath: path];
         
-        if (interimArray.count > 0){
+        if (!prefetchedCell){
             
-            [operation addDependency: interimArray.lastObject];
+            NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
+                                                                                    selector: @selector(preloadAndStoreCellForIndexPath:)
+                                                                                      object: path];
+            
+            // add a dependencies so that the operations execute in order, with one beginning only after the prior completes
+            
+            if (interimArray.count > 0){
+                
+                [operation addDependency: interimArray.lastObject];
+                
+            }
+            
+            [interimArray addObject: operation];
             
         }
-        
-        [interimArray addObject: operation];
-        
+ 
     }
     
     // add the operation objects to the operation queue.  They are added all at once
@@ -1578,14 +1590,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)preloadAndStoreCellForIndexPath:(NSIndexPath *)indexPath{
     
-    NSLog(@"\n\n preload index path: %@", indexPath);
+    NSLog(@"\n\npreload cell for index path: %@", indexPath);
     
     TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
                                             shouldDequeue: NO];
 
     [self.preloadResultCells addObject: preloadedCell];
     
-    NSLog(@"number of prefetched cells: %lu", self.preloadResultCells.count);
+//    NSLog(@"number of prefetched cells: %lu", self.preloadResultCells.count);
     
 }
 
