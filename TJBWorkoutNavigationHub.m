@@ -1164,7 +1164,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             
         } else{
             
-            cell = [[TJBWorkoutLogTitleCell alloc] init];
+            UINib *cellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+                                            bundle: nil];
+            NSArray *topLevelNibObjects = [cellNib instantiateWithOwner: nil
+                                                                options: nil];
+            
+            cell = topLevelNibObjects[0];
             
         }
         
@@ -1526,12 +1531,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // if there is no operation queue, create one
     
-//    if (!self.operationQueue){
-//        
-//        self.operationQueue = [[NSOperationQueue alloc] init];
-//        self.operationQueue.maxConcurrentOperationCount = 1;
-//        
-//    }
+    if (!self.operationQueue){
+        
+        self.operationQueue = [[NSOperationQueue alloc] init];
+        self.operationQueue.maxConcurrentOperationCount = 1;
+        
+    }
     
     // if there is no storage array, create one
     
@@ -1541,41 +1546,39 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
     }
     
-//    NSMutableArray *interimArray = [[NSMutableArray alloc] init];
+    NSMutableArray *interimArray = [[NSMutableArray alloc] init];
     
     for (NSIndexPath *path in indexPaths){
-        
-        [self preloadAndStoreCellForIndexPath: path];
 
-//        // create the operation object for the given index path
-//
-//        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
-//                                                                                selector: @selector(preloadAndStoreCellForIndexPath:)
-//                                                                                  object: path];
-//        
-//        // add a dependencies so that the operations execute in order, with one beginning only after the prior completes
-//        
-//        if (interimArray.count > 0){
-//            
-//            [operation addDependency: interimArray.lastObject];
-//            
-//        }
-//        
-//        [interimArray addObject: operation];
+        // create the operation object for the given index path
+
+        NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
+                                                                                selector: @selector(preloadAndStoreCellForIndexPath:)
+                                                                                  object: path];
+        
+        // add a dependencies so that the operations execute in order, with one beginning only after the prior completes
+        
+        if (interimArray.count > 0){
+            
+            [operation addDependency: interimArray.lastObject];
+            
+        }
+        
+        [interimArray addObject: operation];
         
     }
     
     // add the operation objects to the operation queue.  They are added all at once
     
-//    [self.operationQueue addOperations: interimArray
-//                     waitUntilFinished: NO];
+    [self.operationQueue addOperations: interimArray
+                     waitUntilFinished: NO];
     
 }
 
 
 - (void)preloadAndStoreCellForIndexPath:(NSIndexPath *)indexPath{
     
-    NSLog(@"\n\nindex path: %@", indexPath);
+    NSLog(@"\n\n preload index path: %@", indexPath);
     
     TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
                                             shouldDequeue: NO];
