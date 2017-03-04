@@ -68,21 +68,26 @@
 
 // circle dates
 
-@property (nonatomic, strong) UIStackView *dateStackView;
-@property (nonatomic, strong) NSMutableArray <TJBCircleDateVC *> *circleDateChildren;
+@property (strong) UIStackView *dateStackView;
+@property (strong) NSMutableArray <TJBCircleDateVC *> *circleDateChildren;
 
 // state
 
-@property (nonatomic, strong) NSDate *activeDate;
-@property (nonatomic, strong) NSDate *firstDayOfDateControlMonth;
-@property (nonatomic, strong) NSNumber *selectedDateButtonIndex;
+@property (strong) NSDate *activeDate;
+@property (strong) NSDate *firstDayOfDateControlMonth;
+@property (strong) NSNumber *selectedDateButtonIndex;
+@property (strong) UIActivityIndicatorView *activityIndicatorView;
 
 // core data
 
-@property (nonatomic, strong) NSFetchedResultsController *realizedSetFRC;
-@property (nonatomic, strong) NSFetchedResultsController *realizeChainFRC;
-@property (nonatomic, strong) NSMutableArray *masterList;
-@property (nonatomic, strong) NSMutableArray *dailyList;
+@property (strong) NSFetchedResultsController *realizedSetFRC;
+@property (strong) NSFetchedResultsController *realizeChainFRC;
+@property (strong) NSMutableArray *masterList;
+@property (strong) NSMutableArray *dailyList;
+
+// nextDailyList is the resulting array from preparing the daily list in a background queue
+
+@property (strong) NSMutableArray *nextDailyList;
 
 // cell prefetching
 
@@ -897,6 +902,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)incrementDateControlMonthAndUpdateDateControlsInForwardDirection:(BOOL)inForwardDirection{
     
+    // changing the month represented by the date controls does not automatically select a new date. Thus, the preloaded cells should not be nullified at this point
+    
     NSInteger monthDelta;
     
     if (inForwardDirection){
@@ -1344,20 +1351,18 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         // fetch the preloaded cell.  Will return nil when not found
         
-//        NSLog(@"%lu", self.preloadResultCells.count);
-        
         TJBMasterCell *prefetchedCell = [self prefetchedCellForIndexPath: indexPath];
         
         if (prefetchedCell){
             
-            NSLog(@"\n\ntable view using prefetched cell for index path: %@", indexPath);
+//            NSLog(@"\n\ntable view using prefetched cell for index path: %@", indexPath);
             
             return prefetchedCell;
                 
         } else{
             
-            NSLog(@"\n\ntable view using dequeued cell for index path: %@", indexPath);
-                
+//            NSLog(@"\n\ntable view using dequeued cell for index path: %@", indexPath);
+            
             return [self cellForIndexPath: indexPath
                             shouldDequeue: YES];
                 
@@ -1454,6 +1459,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
     
+    // immediately change the colors of the previously selected and newly selected controls
+    
     if (self.selectedDateButtonIndex){
         
         [self.circleDateChildren[[self.selectedDateButtonIndex intValue]] configureButtonAsNotSelected];
@@ -1462,13 +1469,114 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self.circleDateChildren[[index intValue]] configureButtonAsSelected];
     
-    self.selectedDateButtonIndex = index;
+    // state
     
+    self.selectedDateButtonIndex = index;
     self.activeDate = representedDate;
+    
+    // derive new daily list and update table view. Be sure to delete all prefetched cells
+    
     [self deriveDailyList];
+    
+    self.preloadResultCells = nil;
+    
     [self.tableView reloadData];
     
+//    // execute the heavy lifting of calculating the new workout log values to a background queue and show a spinning status icon in the meantime.  This is done to improve the perception of app responsiveness
+//    
+//    // ensure an operation queue exists
+//    
+//    if (!self.operationQueue){
+//        
+//        self.operationQueue = [[NSOperationQueue alloc] init];
+//        
+//    }
+//    
+//    // create the operation to be added to the queue. Give it top priority - displaying information for the new date is the most important task at this point
+//    
+//    // the busy wheel can hide itself when it is not spinning. I will thus choose to not nullify the view, but instead hide and unhide it as necessary
+//    
+//    if (!self.activityIndicatorView){
+//        
+//        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+//        
+//        aiView.frame = self.tableView.bounds;
+//        aiView.hidesWhenStopped = YES;
+//        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//        
+//        self.activityIndicatorView = aiView;
+//        
+//        [self.tableView addSubview: aiView];
+//        
+//    }
+//    
+//    [self.activityIndicatorView startAnimating];
+//    
+////    [self performSelector: @selector(hideActivityIndicator)
+////               withObject: nil
+////               afterDelay: 2];
+//    
+//    __weak TJBWorkoutNavigationHub *weakSelf = self;
+//    
+//    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
+//                                                                            selector: @selector(deriveNexDailyListInBackgroundThread)
+//                                                                              object: nil];
+//    
+//    operation.queuePriority = NSOperationQueuePriorityVeryHigh;
+//    
+//    operation.completionBlock = ^{
+//        
+//        [weakSelf configureNewDailyList];
+//        
+//    };
+//    
+//    NSLog(@"number of operations in queue: %lu", self.operationQueue.operationCount);
+//    
+//    [self.operationQueue addOperation: operation];
+
 }
+
+- (void)configureNewDailyList{
+    
+    
+    
+//    self.dailyList = self.nextDailyList;
+//    
+//    [self.tableView reloadData];
+    
+    [self.activityIndicatorView stopAnimating];
+    
+}
+
+//- (void)deriveNexDailyListInBackgroundThread{
+//    
+//    [NSThread sleepForTimeInterval: 2.0];
+//    
+////    //// creats the dailyList from the masterList based on the active date and updates the table view
+////    
+////    NSMutableArray *interimArray = [[NSMutableArray alloc] init];
+////    
+////    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+////    
+////    for (NSObject *object in self.masterList){
+////        
+////        NSDate *objectDate = [self dateForRecordObject: object];
+////        
+////        BOOL recordIsForActiveDate = [calendar isDate: objectDate
+////                                      inSameDayAsDate: self.activeDate];
+////        
+////        if (recordIsForActiveDate){
+////            
+////            [interimArray addObject: object];
+////            
+////        }
+////        
+////    }
+////    
+////    self.nextDailyList = interimArray;
+//    
+//}
+
 
 - (void)deriveDailyList{
     
@@ -1540,7 +1648,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     if (!self.operationQueue){
         
         self.operationQueue = [[NSOperationQueue alloc] init];
-        self.operationQueue.maxConcurrentOperationCount = 1;
         
     }
     
@@ -1566,14 +1673,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                                                                                     selector: @selector(preloadAndStoreCellForIndexPath:)
                                                                                       object: path];
             
-            // add a dependencies so that the operations execute in order, with one beginning only after the prior completes
-            
-            if (interimArray.count > 0){
-                
-                [operation addDependency: interimArray.lastObject];
-                
-            }
-            
             [interimArray addObject: operation];
             
         }
@@ -1590,14 +1689,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)preloadAndStoreCellForIndexPath:(NSIndexPath *)indexPath{
     
-    NSLog(@"\n\npreload cell for index path: %@", indexPath);
+//    NSLog(@"\n\npreload cell for index path: %@", indexPath);
     
     TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
                                             shouldDequeue: NO];
 
     [self.preloadResultCells addObject: preloadedCell];
-    
-//    NSLog(@"number of prefetched cells: %lu", self.preloadResultCells.count);
     
 }
 

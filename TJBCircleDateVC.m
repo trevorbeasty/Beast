@@ -204,11 +204,7 @@
     UIColor *color = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     self.view.backgroundColor = color;
-    
-//    self.dayLabel.backgroundColor = color;
     self.dayLabel.textColor = [UIColor blackColor];
-    
-//    self.numberLabel.backgroundColor = color;
     self.numberLabel.textColor = [UIColor blackColor];
     
     if (_isCircled){
