@@ -54,6 +54,8 @@
 		0B78E8011E67654C00EB216F /* TJBExerciseSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7FF1E67654C00EB216F /* TJBExerciseSelectionCell.m */; };
 		0B78E8021E67654C00EB216F /* TJBExerciseSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E8001E67654C00EB216F /* TJBExerciseSelectionCell.xib */; };
 		0B78E8061E69C55400EB216F /* TJBMasterCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E8051E69C55400EB216F /* TJBMasterCell.m */; };
+		0B78E80B1E6AC13A00EB216F /* TJBRoutineSelectionTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E8091E6AC13A00EB216F /* TJBRoutineSelectionTBC.m */; };
+		0B78E80C1E6AC13A00EB216F /* TJBRoutineSelectionTBC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E80A1E6AC13A00EB216F /* TJBRoutineSelectionTBC.xib */; };
 		0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */; };
 		0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */; };
 		0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C851DFAD0A00093F057 /* CoreDataController.m */; };
@@ -197,6 +199,9 @@
 		0B78E8001E67654C00EB216F /* TJBExerciseSelectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseSelectionCell.xib; sourceTree = "<group>"; };
 		0B78E8041E69C55400EB216F /* TJBMasterCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBMasterCell.h; sourceTree = "<group>"; };
 		0B78E8051E69C55400EB216F /* TJBMasterCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBMasterCell.m; sourceTree = "<group>"; };
+		0B78E8081E6AC13A00EB216F /* TJBRoutineSelectionTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRoutineSelectionTBC.h; sourceTree = "<group>"; };
+		0B78E8091E6AC13A00EB216F /* TJBRoutineSelectionTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRoutineSelectionTBC.m; sourceTree = "<group>"; };
+		0B78E80A1E6AC13A00EB216F /* TJBRoutineSelectionTBC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRoutineSelectionTBC.xib; sourceTree = "<group>"; };
 		0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetActiveEntryVC.h; sourceTree = "<group>"; };
 		0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetActiveEntryVC.m; sourceTree = "<group>"; };
 		0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedSetActiveEntryVC.xib; sourceTree = "<group>"; };
@@ -553,6 +558,7 @@
 		0B78E7CF1E3D317500EB216F /* Lift Options */ = {
 			isa = PBXGroup;
 			children = (
+				0B78E8071E6AC10D00EB216F /* Routine TBC */,
 				0B78E7D01E3D31B100EB216F /* TJBLiftOptionsVC.h */,
 				0B78E7D11E3D31B100EB216F /* TJBLiftOptionsVC.m */,
 				0B78E7D21E3D31B100EB216F /* TJBLiftOptionsVC.xib */,
@@ -678,6 +684,16 @@
 				0B78E8051E69C55400EB216F /* TJBMasterCell.m */,
 			);
 			name = "Master Cell";
+			sourceTree = "<group>";
+		};
+		0B78E8071E6AC10D00EB216F /* Routine TBC */ = {
+			isa = PBXGroup;
+			children = (
+				0B78E8081E6AC13A00EB216F /* TJBRoutineSelectionTBC.h */,
+				0B78E8091E6AC13A00EB216F /* TJBRoutineSelectionTBC.m */,
+				0B78E80A1E6AC13A00EB216F /* TJBRoutineSelectionTBC.xib */,
+			);
+			name = "Routine TBC";
 			sourceTree = "<group>";
 		};
 		0B843C901DFB7E9C0093F057 /* Freeform Lift */ = {
@@ -1000,6 +1016,7 @@
 				0B843C951DFB80640093F057 /* TJBRealizedSetHistoryByDay.xib in Resources */,
 				0BA8AD011E26636E00EE10C2 /* TJBCircuitReferenceRowComp.xib in Resources */,
 				0B1616D61E080E6F001C8F45 /* TJBExerciseSelectionScene.xib in Resources */,
+				0B78E80C1E6AC13A00EB216F /* TJBRoutineSelectionTBC.xib in Resources */,
 				0B3688221E4352B80077290C /* TJBSchemeSelectionDateComp.xib in Resources */,
 				0BA8ACEF1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.xib in Resources */,
 				0B86FB751E2129C4000D1B5F /* TJBNumberSelectionVC.xib in Resources */,
@@ -1092,6 +1109,7 @@
 				0B3687E91E3A2A780077290C /* TJBCircleDateVC.m in Sources */,
 				0B1616D51E080E6F001C8F45 /* TJBExerciseSelectionScene.m in Sources */,
 				0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */,
+				0B78E80B1E6AC13A00EB216F /* TJBRoutineSelectionTBC.m in Sources */,
 				0BA8ACFB1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

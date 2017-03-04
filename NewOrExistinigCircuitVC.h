@@ -14,5 +14,9 @@
 
 @interface NewOrExistinigCircuitVC : UIViewController <TJBSchemeSelectionDateCompDelegate>
 
+// for toggling of tab bar
+
+//- (void)willDisplayWorkoutLog;
+
 
 @end

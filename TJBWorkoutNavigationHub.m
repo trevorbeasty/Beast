@@ -1371,6 +1371,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     } else{
 
         // if there are no preloaded cells, create the cell as would normally be done
+        
+//        NSLog(@"\n\ntable view using dequeued cell for index path: %@", indexPath);
 
         return [self cellForIndexPath: indexPath
                         shouldDequeue: YES];
@@ -1648,6 +1650,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     if (!self.operationQueue){
         
         self.operationQueue = [[NSOperationQueue alloc] init];
+        self.operationQueue.maxConcurrentOperationCount = 1;
         
     }
     

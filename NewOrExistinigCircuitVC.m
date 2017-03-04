@@ -132,7 +132,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     
-    [self configureSelectionAsNil];
+//    [self configureSelectionAsNil];
     
 }
 
@@ -1265,6 +1265,12 @@
     [self.dateControlObjects[[index intValue]] configureAsSelected];
     
 }
+
+//- (void)willDisplayWorkoutLog{
+//    
+//    // create a restoration block to restore selected state when view reappears
+//    
+//}
 
 
 
