@@ -220,18 +220,51 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     
     [self deriveStateContent];
     
-    // get the scrollContentView and make it a subview of the scroll view
-    
-    if (self.activeScrollContentView){
-        
-        [self.activeScrollContentView removeFromSuperview];
-        self.activeScrollContentView = nil;
-        
-    }
-    
-    [self.contentScrollView addSubview: [self scrollContentViewForTargetArrays]];
-    
     self.contentScrollView.contentOffset = CGPointMake(0, 0);
+    
+    UIView *newView = [self scrollContentViewForTargetArrays];
+    
+    [UIView transitionWithView: self.contentScrollView
+                      duration: 1.0
+                       options: UIViewAnimationOptionTransitionCurlDown
+                    animations: ^{
+                        
+                        [self.contentScrollView addSubview: newView];
+                        
+                    }
+                    completion: ^(BOOL completed){
+                        
+                        if (self.activeScrollContentView){
+                            
+                            [self.activeScrollContentView removeFromSuperview];
+                            self.activeScrollContentView = nil;
+                            
+                        }
+                        
+                        self.activeScrollContentView = newView;
+                        
+                    }];
+    
+//    [UIView animateWithDuration: 1.0
+//                          delay: .3
+//                        options: UIViewAnimationOptionTransitionCurlDown
+//                     animations: ^{
+//                         
+//                         [self.contentScrollView addSubview: newView];
+//                         
+//                     }
+//                     completion: ^(BOOL completed){
+//                         
+//                         if (self.activeScrollContentView){
+//                             
+//                             [self.activeScrollContentView removeFromSuperview];
+//                             self.activeScrollContentView = nil;
+//                             
+//                         }
+//                         
+//                         self.activeScrollContentView = newView;
+//                         
+//                     }]; 
     
 }
 
@@ -502,7 +535,7 @@ static NSString const *restViewKey = @"restView";
     
     UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
     masterView.backgroundColor = [UIColor whiteColor];
-    self.activeScrollContentView = masterView;
+//    self.activeScrollContentView = masterView;
     
     //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
     
@@ -784,9 +817,12 @@ static NSString const *restViewKey = @"restView";
             if (routineNotCompleted){
                     
                 _selectionIndex = 0;
-                    
+                
+                [weakSelf dismissViewControllerAnimated: YES
+                                             completion: nil];
+                
                 // configure the round and timer labels
-                    
+                
                 [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
                                                      withForwardIncrementing: NO
                                                               lastUpdateDate: nil];
@@ -799,18 +835,24 @@ static NSString const *restViewKey = @"restView";
                 weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"%d/%d",
                                                  [weakSelf.activeRoundIndexForTargets intValue] + 1,
                                                  weakSelf.chainTemplate.numberOfRounds];
-                    
-                    
+                
+                
                 [weakSelf configureImmediateTargets];
+                
+//                [UIView animateWithDuration: 3.0
+//                                 animations: ^{
+//                                     
+//
+//                                     
+//                                 }];
+                
+
                 
                 // nullify the cancellation restoration exercise index and round index
                 
                 self.cancelRestorationExerciseIndex = nil;
                 self.cancelRestorationRoundIndex = nil;
-                    
-                [weakSelf dismissViewControllerAnimated: YES
-                                                 completion: nil];
-                    
+                         
             } else{
                     
             // configure labels accordingly
