@@ -124,6 +124,7 @@
 @end
 
 static CGFloat const advancedControlSlidingHeight = 38.0;
+static float const animationTimeUnit = .4;
 
 @implementation TJBActiveRoutineGuidanceVC
 
@@ -234,7 +235,7 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     UIView *newView = [self scrollContentViewForTargetArrays];
     
     [UIView transitionWithView: self.contentScrollView
-                      duration: 1.5
+                      duration: animationTimeUnit * 2.0
                        options: UIViewAnimationOptionTransitionCurlDown
                     animations: ^{
                         
@@ -247,6 +248,8 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
                         
                         [self.contentScrollView addSubview: newView];
                         self.activeScrollContentView = newView;
+                        
+                        self.contentScrollView.hidden = NO;
                         
                     }
                     completion: nil];
@@ -827,6 +830,8 @@ static NSString const *restViewKey = @"restView";
                 self.loadingNewTargetsLabel.hidden = NO;
                 self.nextUpLabel.hidden = YES;
                 
+                self.contentScrollView.hidden = YES;
+                
                 self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
                 self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
                 
@@ -929,7 +934,7 @@ static NSString const *restViewKey = @"restView";
     
     [self performSelector: @selector(nextUpLabelAnimation)
                withObject: nil
-               afterDelay: 1.5];
+               afterDelay: animationTimeUnit * 2.0];
     
 }
 
@@ -944,7 +949,7 @@ static NSString const *restViewKey = @"restView";
     __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
     
     [UIView transitionWithView: self.nextUpContainer
-                      duration: 1.5
+                      duration: animationTimeUnit * 2.0
                        options: UIViewAnimationOptionTransitionCrossDissolve
                     animations: ^{
                         
@@ -958,6 +963,8 @@ static NSString const *restViewKey = @"restView";
                     completion: nil];
     
 }
+
+
 
 - (void)roundRestLabelAnimation{
     
@@ -981,7 +988,7 @@ static NSString const *restViewKey = @"restView";
     
     void (^secondAnimation)(void) = ^{
         
-        [UIView animateWithDuration: .75
+        [UIView animateWithDuration: animationTimeUnit
                          animations: ^{
                              
                              // shift left
@@ -1013,7 +1020,7 @@ static NSString const *restViewKey = @"restView";
         
     };
     
-    [UIView animateWithDuration: .75
+    [UIView animateWithDuration: animationTimeUnit
                      animations: ^{
                          
                          // shift left
@@ -1206,26 +1213,33 @@ static NSString const *restViewKey = @"restView";
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
+    self.advancedControlsConstraint.constant = 0;
+    
     [UIView animateWithDuration: .4
                      animations: ^{
                          
-                         self.advancedControlsConstraint.constant = 0;
+                         self.advancedControlsContainer.hidden = NO;
+
+                    NSArray *views = @[self.advancedControlsContainer, self.nextUpContainer];
                          
-                         NSArray *views = @[self.advancedControlsContainer, self.nextUpLabel];
-                         
-                         for (UIView *view in views){
+                    for (UIView *view in views){
                              
-                             CGRect currentFrame = view.frame;
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
-                             view.frame = newFrame;
+                        CGRect currentFrame = view.frame;
+                        CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
+                        view.frame = newFrame;
                              
-                         }
+                    }
                          
-                         CGRect currentSVFrame = self.contentScrollView.frame;
-                         CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y + advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height - advancedControlSlidingHeight);
-                         self.contentScrollView.frame = newSVFrame;
+                    CGRect currentSVFrame = self.contentScrollView.frame;
+                    CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y + advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height - advancedControlSlidingHeight);
+                    self.contentScrollView.frame = newSVFrame;
+                    
+                    }
+                    completion: ^(BOOL completed){
                          
-                     }];
+                        
+                        
+                    }];
     
     _advancedControlsActive = YES;
     [self.rightBarButtoon setTitle: @"-"
@@ -1236,13 +1250,12 @@ static NSString const *restViewKey = @"restView";
 
 - (void)toggleButtonControlsToDefaultDisplay{
     
+    self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
+    
     [UIView animateWithDuration: .4
                      animations: ^{
                          
-                         self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
-                         
-                         
-                         NSArray *views = @[self.advancedControlsContainer, self.nextUpLabel];
+                         NSArray *views = @[self.advancedControlsContainer, self.nextUpContainer];
                          
                          for (UIView *view in views){
                              
@@ -1255,6 +1268,11 @@ static NSString const *restViewKey = @"restView";
                          CGRect currentSVFrame = self.contentScrollView.frame;
                          CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y - advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height + advancedControlSlidingHeight);
                          self.contentScrollView.frame = newSVFrame;
+                         
+                     }
+                     completion: ^(BOOL completed){
+                         
+                         self.advancedControlsContainer.hidden = YES;
                          
                      }];
     
