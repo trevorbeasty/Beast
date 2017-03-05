@@ -10,7 +10,6 @@
 
 // protocols
 
-#import "SelectedExerciseObserver.h"
 #import "TJBStopwatchObserver.h"
 
 @interface TJBRealizedSetActiveEntryVC : UIViewController <TJBStopwatchObserver>
