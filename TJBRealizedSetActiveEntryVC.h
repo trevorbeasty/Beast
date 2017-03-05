@@ -15,6 +15,5 @@
 
 @interface TJBRealizedSetActiveEntryVC : UIViewController <TJBStopwatchObserver>
 
-//@property (nonatomic, weak) UIViewController <SelectedExerciseObserver> *personalRecordVC;
 
 @end
