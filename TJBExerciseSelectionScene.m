@@ -12,7 +12,6 @@
 
 #import "CoreDataController.h"
 
-#import "TJBNewExerciseCreationVC.h"
 
 // cells
 

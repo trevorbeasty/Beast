@@ -11,7 +11,6 @@
 #import "TJBRealizedSet+CoreDataProperties.h"
 
 
-#import "TJBNewExerciseCreationVC.h"
 
 // audio - for phone vibrating
 
