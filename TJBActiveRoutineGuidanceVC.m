@@ -68,6 +68,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nextUpLabel;
+@property (weak, nonatomic) IBOutlet UILabel *loadingNewTargetsLabel;
+@property (weak, nonatomic) IBOutlet UIView *nextUpContainer;
 
 // IBAction
 
@@ -246,11 +248,24 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
 
 - (void)configureViewAesthetics{
     
-    // next up label
+    // next up / loading new data labels
+    // also make sure next up is on top of loading new data
     
-    self.nextUpLabel.backgroundColor = [UIColor lightGrayColor];
-    self.nextUpLabel.textColor = [UIColor whiteColor];
-    self.nextUpLabel.font = [UIFont boldSystemFontOfSize: 20];
+    NSArray *moreInfoLabels = @[self.nextUpLabel, self.loadingNewTargetsLabel];
+    for (UILabel *lab in moreInfoLabels){
+        
+        lab.backgroundColor = [UIColor lightGrayColor];
+        lab.textColor = [UIColor whiteColor];
+        lab.font = [UIFont boldSystemFontOfSize: 20];
+        
+    }
+    
+    self.loadingNewTargetsLabel.backgroundColor = [UIColor redColor];
+    
+    [self.nextUpContainer insertSubview: self.nextUpLabel
+                           aboveSubview: self.loadingNewTargetsLabel];
+    
+    //
     
     NSArray *labels = @[self.roundTitleLabel,
                         self.timerTitleLabel,
@@ -799,6 +814,9 @@ static NSString const *restViewKey = @"restView";
                 
                 // this is where the views are updated to reflect new targets. Must ensure the current run loop finishes before calling this next method so that the next method's animation is properly displayed (views only redraw when the run-loop finishes, and thus one must allow the run loop to finish in order to display some interim state
                 
+                [self.nextUpContainer insertSubview: self.loadingNewTargetsLabel
+                                       aboveSubview: self.nextUpLabel];
+                
                 [weakSelf performSelector: @selector(showNextSetOfTargets)
                                withObject: nil
                                afterDelay: .5];
@@ -874,21 +892,7 @@ static NSString const *restViewKey = @"restView";
     
     // this method derives and displays the new targets. The transition to the new targets is animated to make it apparent to the user that a change has occurred
     
-    // configure the round and timer labels
-    
-    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeRestTarget intValue]];
-    
-    self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-    
-    CALayer *timerLabelLayer = self.timerTitleLabel.layer;
-    
-    timerLabelLayer.shadowColor = [[UIColor whiteColor] CGColor];
-    timerLabelLayer.shadowRadius = 12.0;
-    timerLabelLayer.shadowOpacity = 0;
-    timerLabelLayer.shadowOffset = CGSizeZero;
-    timerLabelLayer.masksToBounds = NO;
-    
-
+    // timer
     
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
                                          withForwardIncrementing: NO
@@ -896,11 +900,34 @@ static NSString const *restViewKey = @"restView";
     
     // give the timer non red zone colors
     
+    self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
     self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
     
-    self.roundTitleLabel.text = [NSString stringWithFormat: @"%d/%d",
-                                     [self.activeRoundIndexForTargets intValue] + 1,
-                                     self.chainTemplate.numberOfRounds];
+    // the new text to be displayed for the timer and round label
+    
+    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeRestTarget intValue]];
+    
+    
+    
+    NSString *newRoundText = [NSString stringWithFormat: @"%d/%d",
+                              [self.activeRoundIndexForTargets intValue] + 1,
+                              self.chainTemplate.numberOfRounds];
+    
+    // animate the showing of the 'next up' label (dissolve from label to label)
+    
+    [UIView transitionWithView: self.nextUpContainer
+                      duration: 1.5
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        [self.nextUpContainer insertSubview: self.nextUpLabel
+                                               aboveSubview: self.loadingNewTargetsLabel];
+                        
+                    }
+                    completion: nil];
+    
+    // animate the timer and round label changes - they fly out to the sides, have their values updated, and fly back in
+    
     
     
     [self configureImmediateTargets];
