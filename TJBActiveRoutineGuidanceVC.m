@@ -71,6 +71,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *loadingNewTargetsLabel;
 @property (weak, nonatomic) IBOutlet UIView *nextUpContainer;
 
+// constraints for flying round and rest labes horizontally
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundRestLabelGap;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundLabelLeadingSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *restLabelTrailingSpace;
+
+
 // IBAction
 
 - (IBAction)didPressLeftBarButton:(id)sender;
@@ -264,6 +271,7 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     
     [self.nextUpContainer insertSubview: self.nextUpLabel
                            aboveSubview: self.loadingNewTargetsLabel];
+    self.loadingNewTargetsLabel.hidden = YES;
     
     //
     
@@ -816,10 +824,15 @@ static NSString const *restViewKey = @"restView";
                 
                 [self.nextUpContainer insertSubview: self.loadingNewTargetsLabel
                                        aboveSubview: self.nextUpLabel];
+                self.loadingNewTargetsLabel.hidden = NO;
+                self.nextUpLabel.hidden = YES;
+                
+                self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
+                self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
                 
                 [weakSelf performSelector: @selector(showNextSetOfTargets)
                                withObject: nil
-                               afterDelay: .5];
+                               afterDelay: .25];
         
             } else{
                     
@@ -902,6 +915,51 @@ static NSString const *restViewKey = @"restView";
     
     self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
     self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
+
+    // animate the timer and round label changes - they fly out to the sides, have their values updated, and fly back in
+    
+    [self roundRestLabelAnimation];
+    
+    // nullify the cancellation restoration exercise index and round index
+    
+    self.cancelRestorationExerciseIndex = nil;
+    self.cancelRestorationRoundIndex = nil;
+    
+    // next animation
+    
+    [self performSelector: @selector(nextUpLabelAnimation)
+               withObject: nil
+               afterDelay: 1.5];
+    
+}
+
+- (void)nextUpLabelAnimation{
+    
+    // update the targets content
+    
+    [self configureImmediateTargets];
+    
+    // transition from the 'loading new data' to the 'next up' label
+    
+    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+    
+    [UIView transitionWithView: self.nextUpContainer
+                      duration: 1.5
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        [weakSelf.nextUpContainer insertSubview: weakSelf.nextUpLabel
+                                                   aboveSubview: weakSelf.loadingNewTargetsLabel];
+                        
+                        weakSelf.nextUpLabel.hidden = NO;
+                        weakSelf.loadingNewTargetsLabel.hidden = YES;
+                        
+                    }
+                    completion: nil];
+    
+}
+
+- (void)roundRestLabelAnimation{
     
     // the new text to be displayed for the timer and round label
     
@@ -913,29 +971,84 @@ static NSString const *restViewKey = @"restView";
                               [self.activeRoundIndexForTargets intValue] + 1,
                               self.chainTemplate.numberOfRounds];
     
-    // animate the showing of the 'next up' label (dissolve from label to label)
+    // animation - fly the labels offscreen horizontally and then fly them back to original positions
     
-    [UIView transitionWithView: self.nextUpContainer
-                      duration: 1.5
-                       options: UIViewAnimationOptionTransitionCrossDissolve
-                    animations: ^{
-                        
-                        [self.nextUpContainer insertSubview: self.nextUpLabel
-                                               aboveSubview: self.loadingNewTargetsLabel];
-                        
-                    }
-                    completion: nil];
+    // must make the gap between the labels equal to the screen width and change both labels relationship with the screen edge appropriately so that the labels' width is maintained
     
-    // animate the timer and round label changes - they fly out to the sides, have their values updated, and fly back in
+    CGFloat buttonWidth = self.roundTitleLabel.bounds.size.width;
     
+    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
     
+    void (^secondAnimation)(void) = ^{
+        
+        [UIView animateWithDuration: .75
+                         animations: ^{
+                             
+                             // shift left
+                             
+                             NSArray *leftShiftViews = @[weakSelf.timerTitleLabel, weakSelf.remainingRestTopLabel];
+                             
+                             for (UIView *view in leftShiftViews){
+                                 
+                                 CGRect viewRect = view.frame;
+                                 
+                                 view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+                                 
+                             }
+                             
+                             // shift right
+                             
+                             NSArray *rightShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
+                             
+                             for (UIView *view in rightShiftViews){
+                                 
+                                 CGRect viewRect = view.frame;
+                                 
+                                 view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+                                 
+                             }
+                             
+                         }
+                         completion: nil];
+        
+    };
     
-    [self configureImmediateTargets];
-    
-    // nullify the cancellation restoration exercise index and round index
-    
-    self.cancelRestorationExerciseIndex = nil;
-    self.cancelRestorationRoundIndex = nil;
+    [UIView animateWithDuration: .75
+                     animations: ^{
+                         
+                         // shift left
+                         
+                         NSArray *leftShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
+                         
+                         for (UIView *view in leftShiftViews){
+                             
+                             CGRect viewRect = view.frame;
+                             
+                             view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+                             
+                         }
+                         
+                         // shift right
+                         
+                         NSArray *rightShiftViews = @[weakSelf.timerTitleLabel, weakSelf.remainingRestTopLabel];
+                         
+                         for (UIView *view in rightShiftViews){
+                             
+                             CGRect viewRect = view.frame;
+                             
+                             view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+                             
+                         }
+                         
+                     }
+                     completion: ^(BOOL completed){
+                         
+                         weakSelf.roundTitleLabel.text = newRoundText;
+                         weakSelf.timerTitleLabel.text = newTimerText;
+                         
+                         secondAnimation();
+                         
+                     }];
     
 }
 
