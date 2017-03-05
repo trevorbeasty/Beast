@@ -225,14 +225,9 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
     UIView *newView = [self scrollContentViewForTargetArrays];
     
     [UIView transitionWithView: self.contentScrollView
-                      duration: 1.0
+                      duration: 1.5
                        options: UIViewAnimationOptionTransitionCurlDown
                     animations: ^{
-                        
-                        [self.contentScrollView addSubview: newView];
-                        
-                    }
-                    completion: ^(BOOL completed){
                         
                         if (self.activeScrollContentView){
                             
@@ -241,30 +236,11 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
                             
                         }
                         
+                        [self.contentScrollView addSubview: newView];
                         self.activeScrollContentView = newView;
                         
-                    }];
-    
-//    [UIView animateWithDuration: 1.0
-//                          delay: .3
-//                        options: UIViewAnimationOptionTransitionCurlDown
-//                     animations: ^{
-//                         
-//                         [self.contentScrollView addSubview: newView];
-//                         
-//                     }
-//                     completion: ^(BOOL completed){
-//                         
-//                         if (self.activeScrollContentView){
-//                             
-//                             [self.activeScrollContentView removeFromSuperview];
-//                             self.activeScrollContentView = nil;
-//                             
-//                         }
-//                         
-//                         self.activeScrollContentView = newView;
-//                         
-//                     }]; 
+                    }
+                    completion: nil];
     
 }
 
@@ -385,7 +361,7 @@ static CGFloat const advancedControlSlidingHeight = 38.0;
 - (void)deriveStateContent{
     
     // based on the active exercise and round index, give the appropriate content to the state target arrays
-    // grab all exercises, beginning with the one corresponding to the active indices, and continuing to grab exercises until the rest is nonzero or the round ends
+    // grab all exercises, beginning with the one corresponding to the active indices, and continuing to grab exercises until the rest is nonzero
     
     NSArray *targets = [self extractTargetsArrayForActiveIndices];
     [self.activeLiftTargets addObject: targets];
@@ -821,46 +797,20 @@ static NSString const *restViewKey = @"restView";
                 [weakSelf dismissViewControllerAnimated: YES
                                              completion: nil];
                 
-                // configure the round and timer labels
+                // this is where the views are updated to reflect new targets. Must ensure the current run loop finishes before calling this next method so that the next method's animation is properly displayed (views only redraw when the run-loop finishes, and thus one must allow the run loop to finish in order to display some interim state
                 
-                [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
-                                                     withForwardIncrementing: NO
-                                                              lastUpdateDate: nil];
-                
-                // give the timer non red zone colors
-                
-                self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-                self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
-                
-                weakSelf.roundTitleLabel.text = [NSString stringWithFormat: @"%d/%d",
-                                                 [weakSelf.activeRoundIndexForTargets intValue] + 1,
-                                                 weakSelf.chainTemplate.numberOfRounds];
-                
-                
-                [weakSelf configureImmediateTargets];
-                
-//                [UIView animateWithDuration: 3.0
-//                                 animations: ^{
-//                                     
-//
-//                                     
-//                                 }];
-                
-
-                
-                // nullify the cancellation restoration exercise index and round index
-                
-                self.cancelRestorationExerciseIndex = nil;
-                self.cancelRestorationRoundIndex = nil;
-                         
+                [weakSelf performSelector: @selector(showNextSetOfTargets)
+                               withObject: nil
+                               afterDelay: .5];
+        
             } else{
                     
             // configure labels accordingly
                     
-            self.timerTitleLabel.text = @"";
+            weakSelf.timerTitleLabel.text = @"";
             [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
                     
-            self.roundTitleLabel.text = @"";
+            weakSelf.roundTitleLabel.text = @"";
                     
             // alert and dismissal
                 
@@ -885,7 +835,7 @@ static NSString const *restViewKey = @"restView";
                                                                    }];
                 [alert addAction: action];
                     
-                [self presentViewController: alert
+                [weakSelf presentViewController: alert
                                    animated: YES
                                  completion: nil];
                     
@@ -917,6 +867,48 @@ static NSString const *restViewKey = @"restView";
     [self presentViewController: selectionVC
                        animated: YES
                      completion: nil];
+    
+}
+
+- (void)showNextSetOfTargets{
+    
+    // this method derives and displays the new targets. The transition to the new targets is animated to make it apparent to the user that a change has occurred
+    
+    // configure the round and timer labels
+    
+    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeRestTarget intValue]];
+    
+    self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
+    
+    CALayer *timerLabelLayer = self.timerTitleLabel.layer;
+    
+    timerLabelLayer.shadowColor = [[UIColor whiteColor] CGColor];
+    timerLabelLayer.shadowRadius = 12.0;
+    timerLabelLayer.shadowOpacity = 0;
+    timerLabelLayer.shadowOffset = CGSizeZero;
+    timerLabelLayer.masksToBounds = NO;
+    
+
+    
+    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
+                                         withForwardIncrementing: NO
+                                                  lastUpdateDate: nil];
+    
+    // give the timer non red zone colors
+    
+    self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
+    
+    self.roundTitleLabel.text = [NSString stringWithFormat: @"%d/%d",
+                                     [self.activeRoundIndexForTargets intValue] + 1,
+                                     self.chainTemplate.numberOfRounds];
+    
+    
+    [self configureImmediateTargets];
+    
+    // nullify the cancellation restoration exercise index and round index
+    
+    self.cancelRestorationExerciseIndex = nil;
+    self.cancelRestorationRoundIndex = nil;
     
 }
 
