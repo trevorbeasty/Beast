@@ -1531,13 +1531,13 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
         
-        aiView.frame = self.tableView.bounds;
+        aiView.frame = self.tableViewContainer.frame;
         aiView.hidesWhenStopped = YES;
         aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
         self.activityIndicatorView = aiView;
         
-        [self.tableView addSubview: aiView];
+        [self.view addSubview: aiView];
         
         [self.activityIndicatorView startAnimating];
         
