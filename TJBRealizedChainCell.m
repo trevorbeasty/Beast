@@ -335,10 +335,6 @@
     float spacing = 8.0;
     float error = 8.0;
     
-//    if (numberOfRounds * numberOfRounds == 1){
-//        error += 8;
-//    }
-    
     return (numberOfExercises * (numberOfRounds + 1.0) + 1.0) * titleHeight + spacing + error;
  
 }

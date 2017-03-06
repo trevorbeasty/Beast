@@ -12,10 +12,6 @@
 
 #import "TJBAestheticsController.h"
 
-// history
-
-//#import "TJBCompleteHistoryVC.h"
-
 // circle dates
 
 #import "TJBCircleDateVC.h"
@@ -36,6 +32,10 @@
 // presented VC's
 
 #import "TJBLiftOptionsVC.h"
+
+// cell preloading
+
+#import "TJBCellFetchingOperation.h"
 
 @interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching>
 
@@ -94,7 +94,7 @@
 // an operation queue will dequeue an operation once it has finished execution. At this point, a strong reference must be established to the operation results, or else be deallocated.  I add the results of the operationQueue to the preloadResultCells array
 
 @property (strong) NSOperationQueue *operationQueue;
-@property (strong) NSMutableArray *preloadResultCells;
+@property (strong) NSMutableArray<TJBCellFetchingOperation *> *preloadOperations;
 
 @end
 
@@ -561,7 +561,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // for prefetching
     
-    self.tableView.prefetchDataSource = self;
+//    self.tableView.prefetchDataSource = self;
     
     UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
                                            bundle: nil];
@@ -1310,16 +1310,28 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // search for the operation designated by the passed-in index path.  If one does not exist, return nil
     
-    if (self.preloadResultCells){
+    if (self.preloadOperations){
         
-        for (TJBMasterCell *cell in self.preloadResultCells){
+        for (TJBCellFetchingOperation *operation in self.preloadOperations){
             
-            BOOL match = [self indexForPrefetchedCell: cell
-                                         matchesIndex: indexPath];
+            BOOL match = [self indexForPrefetchOperation: operation
+                                            matchesIndex: indexPath];
             
             if (match){
                 
-                return cell;
+                // if the operation is finished, immediately return the result. Otherwise, wait for the operation to finish before returning the result
+                
+                if (operation.isFinished){
+                    
+                    return operation.result;
+                    
+                } else{
+                    
+                    [operation waitUntilFinished];
+                    
+                    return operation.result;
+                    
+                }
                 
             }
         }
@@ -1331,12 +1343,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (BOOL)indexForPrefetchedCell:(TJBMasterCell *)cell matchesIndex:(NSIndexPath *)indexPath{
+- (BOOL)indexForPrefetchOperation:(TJBCellFetchingOperation *)operation matchesIndex:(NSIndexPath *)indexPath{
     
-    BOOL sectionMatch = cell.referenceIndexPath.section == indexPath.section;
-    BOOL rowMatch = cell.referenceIndexPath.row == indexPath.row;
+    BOOL sectionMatch = operation.indexPath.section == indexPath.section;
+    BOOL rowMatch = operation.indexPath.row == indexPath.row;
     
-    return  sectionMatch && rowMatch;
+    // if it is not a match, return FALSE.  Otherwise, return TRUE
+    
+    return sectionMatch && rowMatch;
     
 }
 
@@ -1347,7 +1361,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     // check the operation queue for the specified index path.  If the cell has already been prepared, use that cell.  Otherwise, create and configure the cell
     // must check for existence of queue
     
-    if (self.preloadResultCells){
+    if (self.preloadOperations){
         
         // fetch the preloaded cell.  Will return nil when not found
         
@@ -1355,13 +1369,13 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         if (prefetchedCell){
             
-//            NSLog(@"\n\ntable view using prefetched cell for index path: %@", indexPath);
+            NSLog(@"\n\nusing prefetched cell for index path: %@", indexPath);
             
             return prefetchedCell;
                 
         } else{
             
-//            NSLog(@"\n\ntable view using dequeued cell for index path: %@", indexPath);
+            NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
             
             return [self cellForIndexPath: indexPath
                             shouldDequeue: YES];
@@ -1369,10 +1383,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         }
         
     } else{
+        
+        NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
 
         // if there are no preloaded cells, create the cell as would normally be done
-        
-//        NSLog(@"\n\ntable view using dequeued cell for index path: %@", indexPath);
 
         return [self cellForIndexPath: indexPath
                         shouldDequeue: YES];
@@ -1380,16 +1394,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     }
     
 }
-
-
-
-
-
-
-
-
-
-
 
 #pragma mark - <UITableViewDelegate>
 
@@ -1480,7 +1484,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self deriveDailyList];
     
-    self.preloadResultCells = nil;
+    self.preloadOperations = nil;
     
     [self.tableView reloadData];
     
@@ -1656,13 +1660,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // if there is no storage array, create one
     
-    if (!self.preloadResultCells){
+    if (!self.preloadOperations){
         
-        self.preloadResultCells = [[NSMutableArray alloc] init];
+        self.preloadOperations = [[NSMutableArray alloc] init];
         
     }
-    
-    NSMutableArray *interimArray = [[NSMutableArray alloc] init];
     
     for (NSIndexPath *path in indexPaths){
 
@@ -1672,32 +1674,37 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         if (!prefetchedCell){
             
-            NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
-                                                                                    selector: @selector(preloadAndStoreCellForIndexPath:)
-                                                                                      object: path];
+            TJBCellFetchingOperation *operation = [[TJBCellFetchingOperation alloc] initWithTarget: self
+                                                                                          selector: @selector(preloadCellForIndexPath:)
+                                                                                            object: path];
             
-            [interimArray addObject: operation];
+            operation.indexPath = path;
+            
+            [self.preloadOperations addObject: operation];
+            [self.operationQueue addOperation: operation];
             
         }
  
     }
     
-    // add the operation objects to the operation queue.  They are added all at once
+    // add the operation objects to the operation queue and and the preloadOperations array which will be used to reference them.  They are added all at once
     
-    [self.operationQueue addOperations: interimArray
-                     waitUntilFinished: NO];
+//    [self.preloadOperations addObjectsFromArray: interimArray];
+//    
+//    [self.operationQueue addOperations: interimArray
+//                     waitUntilFinished: NO];
     
 }
 
 
-- (void)preloadAndStoreCellForIndexPath:(NSIndexPath *)indexPath{
+- (TJBMasterCell *)preloadCellForIndexPath:(NSIndexPath *)indexPath{
     
-//    NSLog(@"\n\npreload cell for index path: %@", indexPath);
+    NSLog(@"\n\npreload cell for index path: %@", indexPath);
     
     TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
                                             shouldDequeue: NO];
-
-    [self.preloadResultCells addObject: preloadedCell];
+    
+    return preloadedCell;
     
 }
 
