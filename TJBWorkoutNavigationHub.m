@@ -37,7 +37,7 @@
 
 #import "TJBCellFetchingOperation.h"
 
-@interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate, UITableViewDataSourcePrefetching>
+@interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate>
 
 {
     // state
@@ -87,14 +87,16 @@
 
 // nextDailyList is the resulting array from preparing the daily list in a background queue
 
-@property (strong) NSMutableArray *nextDailyList;
+//@property (strong) NSMutableArray *nextDailyList;
 
 // cell prefetching
 
 // an operation queue will dequeue an operation once it has finished execution. At this point, a strong reference must be established to the operation results, or else be deallocated.  I add the results of the operationQueue to the preloadResultCells array
 
-@property (strong) NSOperationQueue *operationQueue;
-@property (strong) NSMutableArray<TJBCellFetchingOperation *> *preloadOperations;
+//@property (strong) NSOperationQueue *operationQueue;
+//@property (strong) NSMutableArray<TJBCellFetchingOperation *> *preloadOperations;
+
+@property (strong) NSMutableArray *activeTableViewCells;
 
 @end
 
@@ -137,6 +139,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     [dateComps setDay: 1];
     self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
     
+    [self configureNotifications];
+    
+    // home button
+    
+    _includesHomeButton = includeHomeButton;
     
     // core data
     
@@ -144,12 +151,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     [self configureRealizedChainFRC];
     [self configureMasterList];
     [self deriveDailyList];
-    
-    [self configureNotifications];
-    
-    // home button
-    
-    _includesHomeButton = includeHomeButton;
     
     return self;
 }
@@ -517,9 +518,51 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self configureOptionalHomeButton];
     
-//    [self configureGestureRecognizers];
+    [self deriveActiveCells];
+    
+//    [self showActivityIndicatorWhileLoadingData];
     
 }
+
+//- (void)showActivityIndicatorWhileLoadingData{
+//    
+//    if (!self.activityIndicatorView){
+//        
+//        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+//        
+//        aiView.frame = self.tableView.bounds;
+//        aiView.hidesWhenStopped = YES;
+//        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//        
+//        self.activityIndicatorView = aiView;
+//        
+//        [self.tableView addSubview: aiView];
+//        
+//        [self.activityIndicatorView startAnimating];
+//        
+//    }
+//    
+//    //
+//    
+//    self.activeTableViewCells = [[NSMutableArray alloc] init];
+//    
+//    [self performSelector: @selector(loadDataAndRemoveActivityIndicator)
+//               withObject: nil
+//               afterDelay: .1];
+//    
+//}
+//
+//- (void)loadDataAndRemoveActivityIndicator{
+//    
+//    // core data
+//    
+//
+//    
+//    [self.view setNeedsDisplay];
+//    
+//    [self prepareNewContentCellsAndRemoveActivityIndicator];
+//    
+//}
 
 - (void)configureOptionalHomeButton{
     
@@ -557,11 +600,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)configureTableView{
     
+//    self.tableView.prefetchDataSource = self;
+    
     //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
     
     // for prefetching
-    
-    self.tableView.prefetchDataSource = self;
     
     UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
                                            bundle: nil];
@@ -1306,42 +1349,42 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (TJBMasterCell *)prefetchedCellForIndexPath:(NSIndexPath *)indexPath{
-    
-    // search for the operation designated by the passed-in index path.  If one does not exist, return nil
-    
-    if (self.preloadOperations){
-        
-        for (TJBCellFetchingOperation *operation in self.preloadOperations){
-            
-            BOOL match = [self indexForPrefetchOperation: operation
-                                            matchesIndex: indexPath];
-            
-            if (match){
-                
-                // if the operation is finished, immediately return the result. Otherwise, wait for the operation to finish before returning the result
-                
-                if (operation.isFinished){
-                    
-                    return operation.result;
-                    
-                } else{
-                    
-                    [operation waitUntilFinished];
-                    
-                    return operation.result;
-                    
-                }
-                
-            }
-        }
-    }
-    
-    // if the control reaches this point, then no matches were found. Return nil
-    
-    return nil;
-    
-}
+//- (TJBCellFetchingOperation *)operationForIndexPath:(NSIndexPath *)indexPath{
+//    
+//    // search for the operation designated by the passed-in index path.  If one does not exist, return nil
+//    
+//    if (self.preloadOperations){
+//        
+//        for (TJBCellFetchingOperation *operation in self.preloadOperations){
+//            
+//            BOOL match = [self indexForPrefetchOperation: operation
+//                                            matchesIndex: indexPath];
+//            
+//            if (match){
+//                
+//                // if the operation is finished, immediately return the result. Otherwise, wait for the operation to finish before returning the result
+//                
+//                if (operation.isFinished){
+//                    
+//                    return operation;
+//                    
+//                } else{
+//                    
+//                    [operation waitUntilFinished];
+//                    
+//                    return operation;
+//                    
+//                }
+//                
+//            }
+//        }
+//    }
+//    
+//    // if the control reaches this point, then no matches were found. Return nil
+//    
+//    return nil;
+//    
+//}
 
 - (BOOL)indexForPrefetchOperation:(TJBCellFetchingOperation *)operation matchesIndex:(NSIndexPath *)indexPath{
     
@@ -1356,42 +1399,60 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-
+    return self.activeTableViewCells[indexPath.row];
     
     // check the operation queue for the specified index path.  If the cell has already been prepared, use that cell.  Otherwise, create and configure the cell
     // must check for existence of queue
     
-    if (self.preloadOperations){
-        
-        // fetch the preloaded cell.  Will return nil when not found
-        
-        TJBMasterCell *prefetchedCell = [self prefetchedCellForIndexPath: indexPath];
-        
-        if (prefetchedCell){
-            
-            NSLog(@"\n\nusing prefetched cell for index path: %@", indexPath);
-            
-            return prefetchedCell;
-                
-        } else{
-            
-            NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
-            
-            return [self cellForIndexPath: indexPath
-                            shouldDequeue: YES];
-                
-        }
-        
-    } else{
-        
-        NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
-
-        // if there are no preloaded cells, create the cell as would normally be done
-
-        return [self cellForIndexPath: indexPath
-                        shouldDequeue: YES];
-        
-    }
+//    if (self.preloadOperations){
+//        
+//        // fetch the preloaded cell.  Will return nil when not found
+//        
+//        TJBCellFetchingOperation *operation = [self operationForIndexPath: indexPath];
+//        
+//        if (operation){
+//            
+//            NSLog(@"\n\nusing prefetched cell for index path: %@", indexPath);
+//            
+//            if (indexPath.row == 0){
+//                
+//                TJBWorkoutLogTitleCell *titleCell = (TJBWorkoutLogTitleCell *)operation.result;
+//                
+//                NSLog(@"primary label text: %@", titleCell.primaryLabel.text);
+//                
+//                NSLog(@"needs update constraints: %d", [titleCell.contentView needsUpdateConstraints]);
+//                
+//            }
+//            
+//            //
+//            
+////            [prefetchedCell.contentView layoutSubviews];
+//            
+//            [self.preloadOperations removeObject: operation];
+//            
+//            return operation.result;
+//                
+//        } else{
+//            
+//            NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
+//            
+//            return [self cellForIndexPath: indexPath
+//                            shouldDequeue: YES];
+//                
+//        }
+//        
+//    } else{
+//        
+//  
+//        
+//        NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
+//
+//        // if there are no preloaded cells, create the cell as would normally be done
+//
+//        return [self cellForIndexPath: indexPath
+//                        shouldDequeue: YES];
+//        
+//    }
     
 }
 
@@ -1466,6 +1527,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
     
+    if (!self.activityIndicatorView){
+        
+        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+        
+        aiView.frame = self.tableView.bounds;
+        aiView.hidesWhenStopped = YES;
+        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        
+        self.activityIndicatorView = aiView;
+        
+        [self.tableView addSubview: aiView];
+        
+        [self.activityIndicatorView startAnimating];
+        
+    }
+    
     // immediately change the colors of the previously selected and newly selected controls
     
     if (self.selectedDateButtonIndex){
@@ -1481,79 +1558,72 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     self.selectedDateButtonIndex = index;
     self.activeDate = representedDate;
     
-    // derive new daily list and update table view. Be sure to delete all prefetched cells
+    [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
+               withObject: nil
+               afterDelay: .1];
+
+}
+
+- (void)prepareNewContentCellsAndRemoveActivityIndicator{
     
     [self deriveDailyList];
     
-    self.preloadOperations = nil;
+    // call the table view cellForIndexPath method for all daily list cells and store the results
+    
+    [self deriveActiveCells];
     
     [self.tableView reloadData];
     
-//    // execute the heavy lifting of calculating the new workout log values to a background queue and show a spinning status icon in the meantime.  This is done to improve the perception of app responsiveness
-//    
-//    // ensure an operation queue exists
-//    
-//    if (!self.operationQueue){
-//        
-//        self.operationQueue = [[NSOperationQueue alloc] init];
-//        
-//    }
-//    
-//    // create the operation to be added to the queue. Give it top priority - displaying information for the new date is the most important task at this point
-//    
-//    // the busy wheel can hide itself when it is not spinning. I will thus choose to not nullify the view, but instead hide and unhide it as necessary
-//    
-//    if (!self.activityIndicatorView){
-//        
-//        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-//        
-//        aiView.frame = self.tableView.bounds;
-//        aiView.hidesWhenStopped = YES;
-//        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//        
-//        self.activityIndicatorView = aiView;
-//        
-//        [self.tableView addSubview: aiView];
-//        
-//    }
-//    
-//    [self.activityIndicatorView startAnimating];
-//    
-////    [self performSelector: @selector(hideActivityIndicator)
-////               withObject: nil
-////               afterDelay: 2];
-//    
-//    __weak TJBWorkoutNavigationHub *weakSelf = self;
-//    
-//    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget: self
-//                                                                            selector: @selector(deriveNexDailyListInBackgroundThread)
-//                                                                              object: nil];
-//    
-//    operation.queuePriority = NSOperationQueuePriorityVeryHigh;
-//    
-//    operation.completionBlock = ^{
-//        
-//        [weakSelf configureNewDailyList];
-//        
-//    };
-//    
-//    NSLog(@"number of operations in queue: %lu", self.operationQueue.operationCount);
-//    
-//    [self.operationQueue addOperation: operation];
-
-}
-
-- (void)configureNewDailyList{
+    // remove activity indicator
     
-    
-    
-//    self.dailyList = self.nextDailyList;
-//    
-//    [self.tableView reloadData];
-    
-    [self.activityIndicatorView stopAnimating];
+    [self.activityIndicatorView removeFromSuperview];
+    self.activityIndicatorView = nil;
     
 }
+
+- (void)deriveActiveCells{
+    
+    self.activeTableViewCells = [[NSMutableArray alloc] init];
+    
+    NSInteger limit;
+    
+    if (self.dailyList.count == 0){
+        
+        limit = 2;
+        
+    } else{
+        
+        limit = self.dailyList.count + 1;
+        
+    }
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        TJBMasterCell *cell = [self cellForIndexPath: path
+                                       shouldDequeue: YES];
+        
+        [self.activeTableViewCells addObject: cell];
+        
+    }
+    
+    return;
+    
+}
+
+//- (void)configureNewDailyList{
+//
+//
+//
+////    self.dailyList = self.nextDailyList;
+////
+////    [self.tableView reloadData];
+//    
+//    [self.activityIndicatorView stopAnimating];
+//    
+//}
 
 //- (void)deriveNexDailyListInBackgroundThread{
 //    
@@ -1644,65 +1714,65 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-#pragma mark - <UITableViewDataSourcePrefetching>
-
-- (void)tableView:(UITableView *)tableView prefetchRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
-    
-    //// every potential cell will only be fetched and stored once.  Prefetched cells are held permanently until the selected date changes.  The cells do not seem to take up enough memory that they must be deallocated.  Obviously, this observation may change for extreme scenarios (with extremely large numbers of entries for a given day).  For now, prefetched cells will not be disposed of
-    
-    // if there is no operation queue, create one
-    
-    if (!self.operationQueue){
-        
-        self.operationQueue = [[NSOperationQueue alloc] init];
+//#pragma mark - <UITableViewDataSourcePrefetching>
+//
+//- (void)tableView:(UITableView *)tableView prefetchRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
+//    
+//    //// every potential cell will only be fetched and stored once.  Prefetched cells are held permanently until the selected date changes.  The cells do not seem to take up enough memory that they must be deallocated.  Obviously, this observation may change for extreme scenarios (with extremely large numbers of entries for a given day).  For now, prefetched cells will not be disposed of
+//    
+//    // if there is no operation queue, create one
+//    
+//    if (!self.operationQueue){
+//        
+//        self.operationQueue = [[NSOperationQueue alloc] init];
 //        self.operationQueue.maxConcurrentOperationCount = 1;
-        
-    }
-    
-    // if there is no storage array, create one
-    
-    if (!self.preloadOperations){
-        
-        self.preloadOperations = [[NSMutableArray alloc] init];
-        
-    }
-    
-    for (NSIndexPath *path in indexPaths){
-
-        // create the operation object for the given index path if it has not already been prefetched
-        
-        TJBMasterCell *prefetchedCell = [self prefetchedCellForIndexPath: path];
-        
-        if (!prefetchedCell){
-            
-            TJBCellFetchingOperation *operation = [[TJBCellFetchingOperation alloc] initWithTarget: self
-                                                                                          selector: @selector(preloadCellForIndexPath:)
-                                                                                            object: path];
-            
-            operation.indexPath = path;
-            
-            [self.preloadOperations addObject: operation];
-            [self.operationQueue addOperation: operation];
-            
-            NSLog(@"\n\nnumber of active operations: %lu", self.operationQueue.operationCount);
-            
-        }
- 
-    }
-    
-}
-
-
-- (TJBMasterCell *)preloadCellForIndexPath:(NSIndexPath *)indexPath{
-    
-    NSLog(@"\n\npreload cell for index path: %@", indexPath);
-    
-    TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
-                                            shouldDequeue: NO];
-    
-    return preloadedCell;
-    
-}
+//        
+//    }
+//    
+//    // if there is no storage array, create one
+//    
+//    if (!self.preloadOperations){
+//        
+//        self.preloadOperations = [[NSMutableArray alloc] init];
+//        
+//    }
+//    
+//    for (NSIndexPath *path in indexPaths){
+//
+//        // create the operation object for the given index path if it has not already been prefetched
+//        
+//        TJBCellFetchingOperation *queuedOperation = [self operationForIndexPath: path];
+//        
+//        if (!queuedOperation){
+//            
+//            TJBCellFetchingOperation *operation = [[TJBCellFetchingOperation alloc] initWithTarget: self
+//                                                                                          selector: @selector(preloadCellForIndexPath:)
+//                                                                                            object: path];
+//            
+//            operation.indexPath = path;
+//            
+//            [self.preloadOperations addObject: operation];
+//            [self.operationQueue addOperation: operation];
+//            
+//            NSLog(@"\n\nnumber of active operations: %lu", self.operationQueue.operationCount);
+//            
+//        }
+// 
+//    }
+//    
+//}
+//
+//
+//- (TJBMasterCell *)preloadCellForIndexPath:(NSIndexPath *)indexPath{
+//    
+//    NSLog(@"\n\npreload cell for index path: %@", indexPath);
+//    
+//    TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
+//                                            shouldDequeue: NO];
+//    
+//    return preloadedCell;
+//    
+//}
 
 @end
 
