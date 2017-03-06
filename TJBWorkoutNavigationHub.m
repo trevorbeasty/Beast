@@ -48,8 +48,8 @@
 
 // IBOutlet
 
-@property (weak) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIView *tableViewContainer;
+@property (strong) UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIScrollView *tableViewContainer;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UILabel *monthTitle;
@@ -151,6 +151,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     [self configureRealizedChainFRC];
     [self configureMasterList];
     [self deriveDailyList];
+    
+    // table view
+    
+    self.tableView = [[UITableView alloc] init];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.tableView.scrollEnabled = NO;
     
     return self;
 }
@@ -1597,6 +1605,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
     }
     
+    // calculate and assign the table view container (scroll view) content size as well
+    
+    CGFloat totalHeight = 0;
+    
     for (int i = 0; i < limit; i++){
         
         NSIndexPath *path = [NSIndexPath indexPathForRow: i
@@ -1607,7 +1619,27 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         [self.activeTableViewCells addObject: cell];
         
+        // height calc
+        
+        CGFloat iterativeHeight = [self tableView: self.tableView
+                          heightForRowAtIndexPath: path];
+        totalHeight += iterativeHeight;
+        
     }
+    
+    // give the scroll view the correct dimensions
+    
+    [self.view layoutIfNeeded];
+    
+    CGSize contentSize = CGSizeMake(self.tableViewContainer.frame.size.width, totalHeight);
+    
+    self.tableViewContainer.contentSize = contentSize;
+    self.tableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    
+    self.tableViewContainer.backgroundColor = [UIColor redColor];
+    self.tableViewContainer.layer.masksToBounds = YES;
+    
+    [self.tableViewContainer addSubview: self.tableView];
     
     return;
     
