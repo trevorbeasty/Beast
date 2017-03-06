@@ -467,6 +467,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 #pragma mark - View Life Cycle
 
 - (void)viewWillAppear:(BOOL)animated{
+    
+    [self configureTableShadow];
 
     //// animation calculations
     // first position
@@ -522,55 +524,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self configureTableView];
     
-    [self configureTableShadow];
-    
     [self configureOptionalHomeButton];
     
     [self deriveActiveCells];
     
-//    [self showActivityIndicatorWhileLoadingData];
-    
 }
-
-//- (void)showActivityIndicatorWhileLoadingData{
-//    
-//    if (!self.activityIndicatorView){
-//        
-//        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-//        
-//        aiView.frame = self.tableView.bounds;
-//        aiView.hidesWhenStopped = YES;
-//        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//        
-//        self.activityIndicatorView = aiView;
-//        
-//        [self.tableView addSubview: aiView];
-//        
-//        [self.activityIndicatorView startAnimating];
-//        
-//    }
-//    
-//    //
-//    
-//    self.activeTableViewCells = [[NSMutableArray alloc] init];
-//    
-//    [self performSelector: @selector(loadDataAndRemoveActivityIndicator)
-//               withObject: nil
-//               afterDelay: .1];
-//    
-//}
-//
-//- (void)loadDataAndRemoveActivityIndicator{
-//    
-//    // core data
-//    
-//
-//    
-//    [self.view setNeedsDisplay];
-//    
-//    [self prepareNewContentCellsAndRemoveActivityIndicator];
-//    
-//}
 
 - (void)configureOptionalHomeButton{
     
@@ -593,7 +551,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)configureTableShadow{
     
-    UIView *shadowView = self.tableViewContainer;
+    [self.view layoutIfNeeded];
+    
+    UIView *shadowView = [[UIView alloc] initWithFrame: self.tableViewContainer.frame];
     shadowView.backgroundColor = [UIColor clearColor];
     shadowView.clipsToBounds = NO;
     
@@ -603,6 +563,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
     shadowLayer.shadowOpacity = 1.0;
     shadowLayer.shadowRadius = 3.0;
+    
+    [self.view insertSubview: shadowView
+                belowSubview: self.tableViewContainer];
     
 }
 
@@ -646,29 +609,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (void)configureGestureRecognizers{
-    
-    // left swipe GR
-    
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                    action: @selector(didSwipeLeft)];
-    
-    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
-    leftSwipe.numberOfTouchesRequired = 1;
-    
-    [self.view addGestureRecognizer: leftSwipe];
-    
-    // right swipe GR
-    
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget: self
-                                                                                    action: @selector(didSwipeRight)];
-    
-    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-    rightSwipe.numberOfTouchesRequired = 1;
-    
-    [self.view addGestureRecognizer: rightSwipe];
-    
-}
 
 - (void)clearTransitoryDateControlObjects{
     
@@ -974,94 +914,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 }
 
 
-#pragma mark - Gesture Recognizer Actions
 
-- (void)didSwipeLeft{
-    
-    NSLog(@"swipe left");
-    
-    [self.tableView setEditing: NO
-                      animated: YES];
-    
-}
-
-- (void)didSwipeRight{
-    
-    NSLog(@"swipe right");
-    
-    [self.tableView setEditing: YES
-                      animated: YES];
-    
-}
-
-//- (void)incrementActiveDateByNumberOfDaysAndRefreshCircleDates:(int)numberOfDays{
-//    
-//    // active date
-//    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    
-//    BOOL atMaxDate = [calendar isDateInToday: self.activeDate];
-//    
-//    if (!(atMaxDate && numberOfDays == 1)){
-//        
-//        NSDateComponents *dateComps = [[NSDateComponents alloc] init];
-//        dateComps.day = numberOfDays;
-//        
-//        NSDate *newDate = [calendar dateByAddingComponents: dateComps
-//                                                    toDate: self.activeDate
-//                                                   options: 0];
-//        
-//        self.activeDate = newDate;
-//        
-//    }
-//    
-//    // active index and date button appearance
-//    
-//    BOOL atRightExtreme = _activeSelectionIndex == 6 && numberOfDays == 1;
-//    BOOL atLeftExtreme = _activeSelectionIndex == 0 && numberOfDays == -1;
-//    
-//    
-//    if (!atRightExtreme && !atLeftExtreme){
-//        
-//        [self configureSelectedAppearanceForDateButtonAtIndex: _activeSelectionIndex + numberOfDays];
-//        
-//    } else if (atLeftExtreme){
-//        
-//        // give the date buttons new titles
-//        
-//        [self setTitlesAccordingToDate: self.activeDate
-//                         isLargestDate: YES];
-//        
-//        // change the selected date button
-//        
-//        [self configureSelectedAppearanceForDateButtonAtIndex: 6];
-//        
-//    } else if (atRightExtreme && !atMaxDate){
-//        
-//        // give the date buttons new titles
-//        
-//        [self setTitlesAccordingToDate: self.activeDate
-//                         isLargestDate: NO];
-//        
-//        // change the selected date button
-//        
-//        [self configureSelectedAppearanceForDateButtonAtIndex: 0];
-//        
-//    }
-//    
-//}
-
-//- (void)configureSelectedAppearanceForDateButtonAtIndex:(int)index{
-//    
-//    TJBCircleDateVC *circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
-//    [circleDateVC configureButtonAsNotSelected];
-//    
-//    _activeSelectionIndex = index;
-//    
-//    circleDateVC =  self.circleDateChildren[_activeSelectionIndex];
-//    [circleDateVC configureButtonAsSelected];
-//    
-//}
 
 - (void)setTitlesAccordingToDate:(NSDate *)date isLargestDate:(BOOL)isLargestDate{
     
@@ -1357,42 +1210,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-//- (TJBCellFetchingOperation *)operationForIndexPath:(NSIndexPath *)indexPath{
-//    
-//    // search for the operation designated by the passed-in index path.  If one does not exist, return nil
-//    
-//    if (self.preloadOperations){
-//        
-//        for (TJBCellFetchingOperation *operation in self.preloadOperations){
-//            
-//            BOOL match = [self indexForPrefetchOperation: operation
-//                                            matchesIndex: indexPath];
-//            
-//            if (match){
-//                
-//                // if the operation is finished, immediately return the result. Otherwise, wait for the operation to finish before returning the result
-//                
-//                if (operation.isFinished){
-//                    
-//                    return operation;
-//                    
-//                } else{
-//                    
-//                    [operation waitUntilFinished];
-//                    
-//                    return operation;
-//                    
-//                }
-//                
-//            }
-//        }
-//    }
-//    
-//    // if the control reaches this point, then no matches were found. Return nil
-//    
-//    return nil;
-//    
-//}
 
 - (BOOL)indexForPrefetchOperation:(TJBCellFetchingOperation *)operation matchesIndex:(NSIndexPath *)indexPath{
     
@@ -1408,59 +1225,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return self.activeTableViewCells[indexPath.row];
-    
-    // check the operation queue for the specified index path.  If the cell has already been prepared, use that cell.  Otherwise, create and configure the cell
-    // must check for existence of queue
-    
-//    if (self.preloadOperations){
-//        
-//        // fetch the preloaded cell.  Will return nil when not found
-//        
-//        TJBCellFetchingOperation *operation = [self operationForIndexPath: indexPath];
-//        
-//        if (operation){
-//            
-//            NSLog(@"\n\nusing prefetched cell for index path: %@", indexPath);
-//            
-//            if (indexPath.row == 0){
-//                
-//                TJBWorkoutLogTitleCell *titleCell = (TJBWorkoutLogTitleCell *)operation.result;
-//                
-//                NSLog(@"primary label text: %@", titleCell.primaryLabel.text);
-//                
-//                NSLog(@"needs update constraints: %d", [titleCell.contentView needsUpdateConstraints]);
-//                
-//            }
-//            
-//            //
-//            
-////            [prefetchedCell.contentView layoutSubviews];
-//            
-//            [self.preloadOperations removeObject: operation];
-//            
-//            return operation.result;
-//                
-//        } else{
-//            
-//            NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
-//            
-//            return [self cellForIndexPath: indexPath
-//                            shouldDequeue: YES];
-//                
-//        }
-//        
-//    } else{
-//        
-//  
-//        
-//        NSLog(@"\n\nusing dequeued cell for index path: %@", indexPath);
-//
-//        // if there are no preloaded cells, create the cell as would normally be done
-//
-//        return [self cellForIndexPath: indexPath
-//                        shouldDequeue: YES];
-//        
-//    }
     
 }
 
@@ -1593,6 +1357,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     self.activeTableViewCells = [[NSMutableArray alloc] init];
     
+    [self.tableView reloadData];
+    
     NSInteger limit;
     
     if (self.dailyList.count == 0){
@@ -1636,7 +1402,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     self.tableViewContainer.contentSize = contentSize;
     self.tableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
     
-    self.tableViewContainer.backgroundColor = [UIColor redColor];
+    self.tableViewContainer.backgroundColor = [UIColor clearColor];
     self.tableViewContainer.layer.masksToBounds = YES;
     
     [self.tableViewContainer addSubview: self.tableView];
@@ -1644,47 +1410,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     return;
     
 }
-
-//- (void)configureNewDailyList{
-//
-//
-//
-////    self.dailyList = self.nextDailyList;
-////
-////    [self.tableView reloadData];
-//    
-//    [self.activityIndicatorView stopAnimating];
-//    
-//}
-
-//- (void)deriveNexDailyListInBackgroundThread{
-//    
-//    [NSThread sleepForTimeInterval: 2.0];
-//    
-////    //// creats the dailyList from the masterList based on the active date and updates the table view
-////    
-////    NSMutableArray *interimArray = [[NSMutableArray alloc] init];
-////    
-////    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-////    
-////    for (NSObject *object in self.masterList){
-////        
-////        NSDate *objectDate = [self dateForRecordObject: object];
-////        
-////        BOOL recordIsForActiveDate = [calendar isDate: objectDate
-////                                      inSameDayAsDate: self.activeDate];
-////        
-////        if (recordIsForActiveDate){
-////            
-////            [interimArray addObject: object];
-////            
-////        }
-////        
-////    }
-////    
-////    self.nextDailyList = interimArray;
-//    
-//}
 
 
 - (void)deriveDailyList{
@@ -1746,65 +1471,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-//#pragma mark - <UITableViewDataSourcePrefetching>
-//
-//- (void)tableView:(UITableView *)tableView prefetchRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths{
-//    
-//    //// every potential cell will only be fetched and stored once.  Prefetched cells are held permanently until the selected date changes.  The cells do not seem to take up enough memory that they must be deallocated.  Obviously, this observation may change for extreme scenarios (with extremely large numbers of entries for a given day).  For now, prefetched cells will not be disposed of
-//    
-//    // if there is no operation queue, create one
-//    
-//    if (!self.operationQueue){
-//        
-//        self.operationQueue = [[NSOperationQueue alloc] init];
-//        self.operationQueue.maxConcurrentOperationCount = 1;
-//        
-//    }
-//    
-//    // if there is no storage array, create one
-//    
-//    if (!self.preloadOperations){
-//        
-//        self.preloadOperations = [[NSMutableArray alloc] init];
-//        
-//    }
-//    
-//    for (NSIndexPath *path in indexPaths){
-//
-//        // create the operation object for the given index path if it has not already been prefetched
-//        
-//        TJBCellFetchingOperation *queuedOperation = [self operationForIndexPath: path];
-//        
-//        if (!queuedOperation){
-//            
-//            TJBCellFetchingOperation *operation = [[TJBCellFetchingOperation alloc] initWithTarget: self
-//                                                                                          selector: @selector(preloadCellForIndexPath:)
-//                                                                                            object: path];
-//            
-//            operation.indexPath = path;
-//            
-//            [self.preloadOperations addObject: operation];
-//            [self.operationQueue addOperation: operation];
-//            
-//            NSLog(@"\n\nnumber of active operations: %lu", self.operationQueue.operationCount);
-//            
-//        }
-// 
-//    }
-//    
-//}
-//
-//
-//- (TJBMasterCell *)preloadCellForIndexPath:(NSIndexPath *)indexPath{
-//    
-//    NSLog(@"\n\npreload cell for index path: %@", indexPath);
-//    
-//    TJBMasterCell *preloadedCell = [self cellForIndexPath: indexPath
-//                                            shouldDequeue: NO];
-//    
-//    return preloadedCell;
-//    
-//}
+
 
 @end
 
