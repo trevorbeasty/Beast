@@ -561,7 +561,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // for prefetching
     
-//    self.tableView.prefetchDataSource = self;
+    self.tableView.prefetchDataSource = self;
     
     UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
                                            bundle: nil];
@@ -1458,6 +1458,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             }
         }
     }
+    
 }
 
 
@@ -1654,7 +1655,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     if (!self.operationQueue){
         
         self.operationQueue = [[NSOperationQueue alloc] init];
-        self.operationQueue.maxConcurrentOperationCount = 1;
+//        self.operationQueue.maxConcurrentOperationCount = 1;
         
     }
     
@@ -1683,16 +1684,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             [self.preloadOperations addObject: operation];
             [self.operationQueue addOperation: operation];
             
+            NSLog(@"\n\nnumber of active operations: %lu", self.operationQueue.operationCount);
+            
         }
  
     }
-    
-    // add the operation objects to the operation queue and and the preloadOperations array which will be used to reference them.  They are added all at once
-    
-//    [self.preloadOperations addObjectsFromArray: interimArray];
-//    
-//    [self.operationQueue addOperations: interimArray
-//                     waitUntilFinished: NO];
     
 }
 
