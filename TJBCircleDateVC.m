@@ -256,8 +256,6 @@
 
 - (void)didSelectView{
     
-//    NSLog(@"%@\n%d",self.representedDate, [self.dayIndex intValue]);
-    
     [self.masterController didSelectObjectWithIndex: self.dayIndex
                                     representedDate: self.representedDate];
     

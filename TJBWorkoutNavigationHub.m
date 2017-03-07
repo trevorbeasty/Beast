@@ -44,11 +44,12 @@
     
     int _activeSelectionIndex;
     BOOL _includesHomeButton;
+    
 }
 
 // IBOutlet
 
-@property (strong) UITableView *tableView;
+@property (weak, nonatomic) UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIScrollView *tableViewContainer;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
@@ -56,6 +57,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
 @property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
+@property (weak, nonatomic) IBOutlet UIView *shadowContainer;
 
 
 
@@ -84,17 +86,6 @@
 @property (strong) NSFetchedResultsController *realizeChainFRC;
 @property (strong) NSMutableArray *masterList;
 @property (strong) NSMutableArray *dailyList;
-
-// nextDailyList is the resulting array from preparing the daily list in a background queue
-
-//@property (strong) NSMutableArray *nextDailyList;
-
-// cell prefetching
-
-// an operation queue will dequeue an operation once it has finished execution. At this point, a strong reference must be established to the operation results, or else be deallocated.  I add the results of the operationQueue to the preloadResultCells array
-
-//@property (strong) NSOperationQueue *operationQueue;
-//@property (strong) NSMutableArray<TJBCellFetchingOperation *> *preloadOperations;
 
 @property (strong) NSMutableArray *activeTableViewCells;
 
@@ -150,15 +141,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     [self configureRealizedSetFRC];
     [self configureRealizedChainFRC];
     [self configureMasterList];
-    [self deriveDailyList];
-    
-    // table view
-    
-    self.tableView = [[UITableView alloc] init];
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.tableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    self.tableView.scrollEnabled = NO;
+//    [self deriveDailyList];
     
     return self;
 }
@@ -522,11 +505,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self configureDateControlsAndSelectActiveDate: YES];
     
-    [self configureTableView];
-    
     [self configureOptionalHomeButton];
     
-    [self deriveActiveCells];
+    [self artificiallySelectToday];
     
 }
 
@@ -553,8 +534,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self.view layoutIfNeeded];
     
-    UIView *shadowView = [[UIView alloc] initWithFrame: self.tableViewContainer.frame];
-    shadowView.backgroundColor = [UIColor clearColor];
+    UIView *shadowView = self.shadowContainer;
+    shadowView.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
     shadowView.clipsToBounds = NO;
     
     CALayer *shadowLayer = shadowView.layer;
@@ -570,8 +551,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 }
 
 - (void)configureTableView{
-    
-//    self.tableView.prefetchDataSource = self;
     
     //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
     
@@ -806,6 +785,13 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 }
 
 - (void)configureViewAesthetics{
+    
+    // table view container
+    
+    self.tableViewContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.tableViewContainer.layer.masksToBounds = YES;
+    
+    self.dateScrollView.translatesAutoresizingMaskIntoConstraints = NO;
     
     // meta view
     
@@ -1262,7 +1248,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             
             [self.view layoutIfNeeded];
             
-            return self.tableView.frame.size.height - titleHeight;
+            return self.tableViewContainer.frame.size.height - titleHeight;
             
         } else{
             
@@ -1297,13 +1283,32 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 #pragma mark - <TJBDateSelectionMaster>
 
+- (void)artificiallySelectToday{
+    
+    NSDate *today = [NSDate date];
+    
+    // extract the day component to back solve for the date object index
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSInteger day = [calendar component: NSCalendarUnitDay
+                               fromDate: today];
+    
+    // correct for indexing
+    
+    day -= 1;
+    
+    [self didSelectObjectWithIndex: @(day)
+                   representedDate: today];
+    
+}
+
 - (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
     
     if (!self.activityIndicatorView){
         
         UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
         
-        aiView.frame = self.tableViewContainer.frame;
+        aiView.frame = self.shadowContainer.frame;
         aiView.hidesWhenStopped = YES;
         aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
@@ -1342,7 +1347,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // call the table view cellForIndexPath method for all daily list cells and store the results
     
-    [self deriveActiveCells];
+    [self deriveActiveCellsAndCreateTableView];
+    
+    
     
     [self.tableView reloadData];
     
@@ -1353,11 +1360,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (void)deriveActiveCells{
+- (void)deriveActiveCellsAndCreateTableView{
     
-    self.activeTableViewCells = [[NSMutableArray alloc] init];
-    
-    [self.tableView reloadData];
+    // derive the active cells - the 'limit' describes the number of cells that will be shown based on the daily list
     
     NSInteger limit;
     
@@ -1372,6 +1377,21 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     }
     
     // calculate and assign the table view container (scroll view) content size as well
+    // must create the new table view first so that the cellForIndexPath method has a valid table to dequeue
+    
+    UITableView *newTableView = [[UITableView alloc] init];
+    newTableView.dataSource = self;
+    newTableView.delegate = self;
+    newTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    newTableView.scrollEnabled = NO;
+    
+    // make sure to remove the old table view from the view hierarchy or else it will not deallocate
+    
+    [self.tableView removeFromSuperview];
+    self.tableView = newTableView;
+    [self configureTableView];
+    
+    self.activeTableViewCells = [[NSMutableArray alloc] init];
     
     CGFloat totalHeight = 0;
     
@@ -1393,19 +1413,30 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
     }
     
-    // give the scroll view the correct dimensions
+    // make sure the total height is as least as long as the table view container
     
     [self.view layoutIfNeeded];
     
+    CGFloat minHeight = self.tableViewContainer.frame.size.height;
+    
+    if (totalHeight < minHeight){
+        
+        totalHeight = minHeight;
+        
+    }
+    
+    // give the scroll view the correct dimensions and create a new table view
+    
     CGSize contentSize = CGSizeMake(self.tableViewContainer.frame.size.width, totalHeight);
     
+    // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
+
     self.tableViewContainer.contentSize = contentSize;
-    self.tableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
-    
-    self.tableViewContainer.backgroundColor = [UIColor clearColor];
+    self.tableViewContainer.contentOffset = CGPointMake(0, 0);
     self.tableViewContainer.layer.masksToBounds = YES;
-    
-    [self.tableViewContainer addSubview: self.tableView];
+
+    newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    [self.tableViewContainer addSubview: newTableView];
     
     return;
     
@@ -1468,6 +1499,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     CGFloat xRange = [self dateSVWidthGivenButtonSpecifications] - self.dateScrollView.frame.size.width;
     
     return xPosition / xRange;
+    
+}
+
+#pragma mark - Debugging
+
+- (void)dealloc{
+    
+    NSLog(@"dealloc");
     
 }
 
