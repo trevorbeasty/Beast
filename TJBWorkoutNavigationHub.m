@@ -50,7 +50,7 @@
 // IBOutlet
 
 @property (weak, nonatomic) UITableView *tableView;
-@property (weak, nonatomic) IBOutlet UIScrollView *tableViewContainer;
+@property (weak, nonatomic) UIScrollView *tableViewScrollContainer;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UILabel *monthTitle;
@@ -141,7 +141,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     [self configureRealizedSetFRC];
     [self configureRealizedChainFRC];
     [self configureMasterList];
-//    [self deriveDailyList];
     
     return self;
 }
@@ -450,8 +449,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 #pragma mark - View Life Cycle
 
 - (void)viewWillAppear:(BOOL)animated{
-    
-    [self configureTableShadow];
 
     //// animation calculations
     // first position
@@ -535,7 +532,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     [self.view layoutIfNeeded];
     
     UIView *shadowView = self.shadowContainer;
-    shadowView.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    shadowView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     shadowView.clipsToBounds = NO;
     
     CALayer *shadowLayer = shadowView.layer;
@@ -544,9 +541,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
     shadowLayer.shadowOpacity = 1.0;
     shadowLayer.shadowRadius = 3.0;
-    
-    [self.view insertSubview: shadowView
-                belowSubview: self.tableViewContainer];
     
 }
 
@@ -715,8 +709,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                                                                  masterController: self
                                                                   representedDate: [calendar dateFromComponents: dateComps]];
         
-        
-        
         [self.circleDateChildren addObject: circleDateVC];
         
         [self addChildViewController: circleDateVC];
@@ -786,12 +778,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)configureViewAesthetics{
     
+    // shadow container
+    
+    [self configureTableShadow];
+    
     // table view container
     
-    self.tableViewContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    self.tableViewContainer.layer.masksToBounds = YES;
+//    self.tableViewContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//    self.tableViewContainer.layer.masksToBounds = YES;
     
-    self.dateScrollView.translatesAutoresizingMaskIntoConstraints = NO;
+//    self.dateScrollView.translatesAutoresizingMaskIntoConstraints = NO;
     
     // meta view
     
@@ -1248,7 +1244,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             
             [self.view layoutIfNeeded];
             
-            return self.tableViewContainer.frame.size.height - titleHeight;
+            return self.shadowContainer.frame.size.height - titleHeight;
             
         } else{
             
@@ -1417,7 +1413,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self.view layoutIfNeeded];
     
-    CGFloat minHeight = self.tableViewContainer.frame.size.height;
+    CGFloat minHeight = self.shadowContainer.frame.size.height;
     
     if (totalHeight < minHeight){
         
@@ -1427,16 +1423,23 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // give the scroll view the correct dimensions and create a new table view
     
-    CGSize contentSize = CGSizeMake(self.tableViewContainer.frame.size.width, totalHeight);
+    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight);
     
     // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
-
-    self.tableViewContainer.contentSize = contentSize;
-    self.tableViewContainer.contentOffset = CGPointMake(0, 0);
-    self.tableViewContainer.layer.masksToBounds = YES;
-
+    
+    UIScrollView *sv = [[UIScrollView alloc] init];
+    self.tableViewScrollContainer = sv;
+    
+    sv.frame = CGRectMake(0, 0, contentSize.width, self.shadowContainer.frame.size.height);
+    sv.contentSize = contentSize;
+    sv.contentOffset = CGPointMake(0, 0);
+    sv.layer.masksToBounds = YES;
+    sv.scrollEnabled = YES;
+    
     newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
-    [self.tableViewContainer addSubview: newTableView];
+    
+    [sv addSubview: newTableView];
+    [self.shadowContainer addSubview: sv];
     
     return;
     
