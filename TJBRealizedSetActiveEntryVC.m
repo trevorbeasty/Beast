@@ -364,7 +364,9 @@
     [self.advancedOptionsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                      forState: UIControlStateNormal];
     
-    // title labels and title buttons
+    // title labels and title buttons and container
+    
+    self.titleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
     
     NSArray *titleLabels = @[self.largeStatusLabel,
                              self.timerLabel,
@@ -443,6 +445,10 @@
                           forState: UIControlStateNormal];
         
     }
+    
+    // advanced controls container
+    
+    self.grayBackdropView.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
     
 }
 
