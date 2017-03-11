@@ -296,7 +296,18 @@
     
 }
 
-
+- (void)getRidOfContentDot{
+    
+    _isCircled = NO;
+    
+    if (self.activeShapeLayer){
+        
+        [self.activeShapeLayer removeFromSuperlayer];
+        self.activeShapeLayer = nil;
+        
+    }
+    
+}
 
 
 @end

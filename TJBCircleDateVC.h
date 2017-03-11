@@ -27,5 +27,9 @@
 - (void)configureDisabledAppearance;
 - (void)configureEnabledAppearance;
 
+// get rid of dot when all cell content is deleted for the active date
+
+- (void)getRidOfContentDot;
+
 
 @end

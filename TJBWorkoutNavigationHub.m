@@ -860,9 +860,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     if (self.tabBarController){
         
-        if ([self.tabBarController.selectedViewController isEqual: self]){
+        if (![self.tabBarController.selectedViewController isEqual: self]){
             
-            _cellsNeedUpdating = YES;
+            _cellsNeedUpdating = YES; // when this state BOOL == YES, it means that core data was saved while this was not the active view controller in a tab bar controller. When this is the case, it is necessary for the table view to reload its cells when its view appears
             
         }
         
@@ -1029,15 +1029,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             
             [[CoreDataController singleton] saveContext];
             
+            // this later part of the callback must only run if more content remains after a deletion (because that content must then be renumbered). Thus, this callback immediately returns if only one content cell exists to begin with
+            
+            if (oneContentCell) return;
+            
             NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
             
             [self didSelectObjectWithIndex: @(dayAsIndex)
                            representedDate: self.activeDate];
             
-//            [self.tableViewScrollContainer setContentOffset: initialScrollPosition
-//                                                   animated: YES];
-            
-        
         }];
         
         // these are the core messages that delete the row
@@ -1058,6 +1058,18 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             
             [self.tableView insertRowsAtIndexPaths: @[path]
                                   withRowAnimation: UITableViewRowAnimationNone];
+            
+            // must also add the no data cell to the activeCells array. I do this by calling my cellForIndexPath method.  Because the dailyList is current, this method will return the correct cell
+            
+            UITableViewCell *noDataCell = [self cellForIndexPath: path
+                                                   shouldDequeue: YES];
+            
+            [self.activeTableViewCells addObject: noDataCell];
+            
+            // the dot must be erased from the appropriate date control if the last content cell was deleted
+            
+            NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
+            [self.circleDateChildren[dayAsIndex] getRidOfContentDot];
             
         }
         
@@ -1087,8 +1099,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         return self.dailyList.count + 1;
         
     }
-    
-//    return self.activeTableViewCells.count;
     
 }
 
@@ -1371,6 +1381,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         aiView.hidesWhenStopped = YES;
         aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
+        aiView.layer.opacity = .9;
+        
         self.activityIndicatorView = aiView;
         
         [self.view addSubview: aiView];
@@ -1434,8 +1446,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     // call the table view cellForIndexPath method for all daily list cells and store the results
     
     [self deriveActiveCellsAndCreateTableView];
-    
-    
     
     [self.tableView reloadData];
     
