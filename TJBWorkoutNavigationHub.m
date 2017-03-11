@@ -61,6 +61,7 @@
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
 @property (weak, nonatomic) IBOutlet UILabel *grayColorLeftLabel;
 @property (weak, nonatomic) IBOutlet UILabel *grayColorRight;
+@property (weak, nonatomic) IBOutlet UIButton *todayButton;
 
 
 
@@ -69,6 +70,7 @@
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressHomeButton:(id)sender;
+- (IBAction)didPressTodayButton:(id)sender;
 
 
 // circle dates
@@ -472,6 +474,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         [self didSelectObjectWithIndex: @(dayAsIndex)
                        representedDate: self.activeDate];
         
+        // the date controls should also be reloaded, in case a day that previously had not content now contains content
+        
+        [self configureDateControlsAndSelectActiveDate: YES];
+        
         // update the state variable to reflect that cells no longer need updating
         
         _cellsNeedUpdating = NO;
@@ -800,6 +806,13 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)configureViewAesthetics{
     
+    // today button
+    
+    self.todayButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    [self.todayButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                           forState: UIControlStateNormal];
+    self.todayButton.backgroundColor = [UIColor clearColor];
+    
     // shadow container
     
     [self configureTableShadow];
@@ -903,6 +916,19 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+    
+}
+
+- (IBAction)didPressTodayButton:(id)sender{
+    
+    // make today the active date and load the proper date controls and artificially select today
+    
+    self.activeDate = [NSDate date];
+    
+    NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
+    
+    [self didSelectObjectWithIndex: @(dayAsIndex)
+                   representedDate: self.activeDate];
     
 }
 
@@ -1159,6 +1185,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             cell.backgroundColor = [UIColor clearColor];
             cell.referenceIndexPath = indexPath;
             
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
             return cell;
             
         } else{
@@ -1272,7 +1300,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 #pragma mark - <UITableViewDelegate>
 
-- (UITableViewCellEditingStyle)txableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (self.dailyList.count == 0){
         

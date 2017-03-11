@@ -247,7 +247,7 @@
 
 - (void)didSelectView{
     
-    if (_isEnabled && _representsHistoricDay){
+    if (_isEnabled == YES && _representsHistoricDay == YES){
         
         [self.masterController didSelectObjectWithIndex: self.dayIndex
                                         representedDate: self.representedDate];
