@@ -1300,6 +1300,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
     
+    // present an activity indicator and also dull the date selection options and home button
+    // I am disabling user interaction while cell content is being loaded because I have no better alternative.  All UI objects must be manipulated on the main thread, which is the thread that serially handles user interaction.  The cells take a relatively long time to prepare (a second or two) when the daily list for a particular day is very long (about 40+ chain objects).  This is the major work being done when a user presses a date control button - the daily list is derived in addition to loading all cells, but the derivation of the daily list takes relatively no time.  Even if I try to create an operation object and dispatch it in a background queue, the odds that the user will be able to press a date before the main queue begins loading cells is almost zero.  Essentialy, I would need to find a way to drastically reduce the amount of UI work that needs to be done if I want to increase app responsiveness and leave the main thread open to accept and process new events
+    
     if (!self.activityIndicatorView){
         
         UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
@@ -1333,8 +1336,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
                withObject: nil
-               afterDelay: .1];
-
+               afterDelay: .01];
+    
 }
 
 - (void)prepareNewContentCellsAndRemoveActivityIndicator{
