@@ -44,6 +44,7 @@
     
     int _activeSelectionIndex;
     BOOL _includesHomeButton;
+    BOOL _cellsNeedUpdating; // used to indicate that core data has saved during this controller's lifetime while a different tab of the tab bar controller was selected
     
 }
 
@@ -81,6 +82,7 @@
 @property (strong) NSDate *firstDayOfDateControlMonth;
 @property (strong) NSNumber *selectedDateButtonIndex;
 @property (strong) UIActivityIndicatorView *activityIndicatorView;
+@property (strong) NSNumber *scrollPositionForUpdate;
 
 // core data
 
@@ -461,6 +463,21 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
     self.dateScrollView.contentOffset = firstPosition;
     
+    // the following is used to update the cells if core data was updated while this controller existed but was not the active view controller (in the tab bar controller). The core data update will have prompted this controller to refetch core data objects and derive the master list. The following logic will then derive the daily list and active cells, showing the activity indicator while doing so
+    
+    if (_cellsNeedUpdating){
+        
+        NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
+        
+        [self didSelectObjectWithIndex: @(dayAsIndex)
+                       representedDate: self.activeDate];
+        
+        // update the state variable to reflect that cells no longer need updating
+        
+        _cellsNeedUpdating = NO;
+        
+    }
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -835,13 +852,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 - (void)mocDidSave{
     
     //// refresh fetched managed objects and all trickle-down
+    // the daily list is derived whenever a date control object is selected. Even when a date control object is not explicitly selected by the user, I programmatically make the selection to select the desired day.
     
     [self configureRealizedSetFRC];
     [self configureRealizedChainFRC];
     [self configureMasterList];
-    [self deriveDailyList];
     
-    [self.tableView reloadData];
+    if (self.tabBarController){
+        
+        if ([self.tabBarController.selectedViewController isEqual: self]){
+            
+            _cellsNeedUpdating = YES;
+            
+        }
+        
+    }
+
 }
 
 
@@ -958,19 +984,21 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     if (editingStyle == UITableViewCellEditingStyleDelete){
         
+        CGPoint initialScrollPosition = self.tableViewScrollContainer.contentOffset; // this is stored so that the table view's scroll position is maintained after the activity indicator disappears
+        self.scrollPositionForUpdate = @(initialScrollPosition.y); // if this object exists when the table view is reloaded, the container scroll view will be given this 'y' value for its content offset
+        
         // CATransition allows me to control certain animation properties that are otherwise not accessible through the API
         // it is used here to create a completion block, which is not possible otherwise
         
         __weak TJBWorkoutNavigationHub *weakSelf = self;
         
         [CATransaction begin];
+
+        BOOL oneContentCell = self.dailyList.count == 1; // if only one content cell remains, must insert a no data cell because the cell count will still be 2, because the no data cell will take the place of the previous cell corresponding to a core data object
+    
+        id dailyListObject = weakSelf.dailyList[indexPath.row -1]; // must adjust the indexing because the daily list only accounts for core data objects
         
-        // if only one content cell remains, must insert a no data cell
-        
-        BOOL oneContentCell = self.dailyList.count == 1;
-        
-        id dailyListObject = weakSelf.dailyList[indexPath.row -1];
-        [self.dailyList removeObjectAtIndex: indexPath.row - 1];
+        [self.dailyList removeObject: dailyListObject]; // even though the activeCells array is the direct data source for the table view, other methods still rely on the daily list and so it must be updated
         
         [CATransaction setCompletionBlock: ^{
             
@@ -997,13 +1025,26 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 }
             }
             
+            // when core data is saved, a notification is sent that invokes the 'mocDidSave' method of this controller. That method fetches core data objects anew and refreshes the master list. The dailyList and activeCells are derived when the date object selection method is called
+            
             [[CoreDataController singleton] saveContext];
+            
+            NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
+            
+            [self didSelectObjectWithIndex: @(dayAsIndex)
+                           representedDate: self.activeDate];
+            
+//            [self.tableViewScrollContainer setContentOffset: initialScrollPosition
+//                                                   animated: YES];
+            
         
         }];
         
         // these are the core messages that delete the row
         
         [self.tableView beginUpdates];
+        
+        [self.activeTableViewCells removeObjectAtIndex: indexPath.row]; // the daily list contains only core data objects (or collections of them), but the activeTableViewCells array contains cells for all indexes. No index correction is needed
         
         [self.tableView deleteRowsAtIndexPaths: @[indexPath]
                               withRowAnimation: UITableViewRowAnimationNone];
@@ -1046,6 +1087,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         return self.dailyList.count + 1;
         
     }
+    
+//    return self.activeTableViewCells.count;
     
 }
 
@@ -1287,21 +1330,31 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 #pragma mark - <TJBDateSelectionMaster>
 
 - (void)artificiallySelectToday{
+
+    // extract the day component to back solve for the date object index
     
     NSDate *today = [NSDate date];
+    
+    NSInteger dayAsIndex = [self dayIndexForDate: today];
+
+    [self didSelectObjectWithIndex: @(dayAsIndex)
+                   representedDate: today];
+    
+}
+
+- (NSInteger)dayIndexForDate:(NSDate *)date{
     
     // extract the day component to back solve for the date object index
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSInteger day = [calendar component: NSCalendarUnitDay
-                               fromDate: today];
+                               fromDate: date];
     
     // correct for indexing
     
     day -= 1;
     
-    [self didSelectObjectWithIndex: @(day)
-                   representedDate: today];
+    return day;
     
 }
 
@@ -1490,7 +1543,25 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     sv.frame = CGRectMake(0, 0, contentSize.width, self.shadowContainer.frame.size.height);
     sv.contentSize = contentSize;
-    sv.contentOffset = CGPointMake(0, 0);
+    
+    // if there is an object for the scrollPositionForUpdate property, use that value to derive the correct CGPoint
+    
+    CGPoint newScrollPosition;
+    
+    if (self.scrollPositionForUpdate){
+        
+        newScrollPosition = CGPointMake(0, [self.scrollPositionForUpdate floatValue]);
+        
+        self.scrollPositionForUpdate = nil; // the logic is structured such that this object should be nullified once used.  Other objects will recreate it if they would like to influence scroll position
+        
+    } else{
+        
+        newScrollPosition = CGPointZero;
+        
+    }
+    
+    sv.contentOffset = newScrollPosition;
+    
     sv.layer.masksToBounds = YES;
     sv.scrollEnabled = YES;
     
