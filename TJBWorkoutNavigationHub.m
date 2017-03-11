@@ -58,6 +58,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
+@property (weak, nonatomic) IBOutlet UILabel *grayColorLeftLabel;
+@property (weak, nonatomic) IBOutlet UILabel *grayColorRight;
 
 
 
@@ -448,6 +450,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 #pragma mark - View Life Cycle
 
+// viewWillAppear and viewDidAppear are used to handle the animation that slides the date scroll view from right to left when the workout log becomes visible
+
 - (void)viewWillAppear:(BOOL)animated{
 
     //// animation calculations
@@ -704,10 +708,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                                                                          dayTitle: dayTitle
                                                                              size: buttonSize
                                                             hasSelectedAppearance: isTheActiveDate
-                                                                        isEnabled: !iterativeDateGreaterThanToday
+                                                                        isEnabled: YES
                                                                         isCircled: recordExistsForIterativeDate
                                                                  masterController: self
-                                                                  representedDate: [calendar dateFromComponents: dateComps]];
+                                                                  representedDate: [calendar dateFromComponents: dateComps]
+                                                            representsHistoricDay: !iterativeDateGreaterThanToday];
         
         [self.circleDateChildren addObject: circleDateVC];
         
@@ -782,12 +787,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self configureTableShadow];
     
-    // table view container
+    // arrow background labels
     
-//    self.tableViewContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//    self.tableViewContainer.layer.masksToBounds = YES;
-    
-//    self.dateScrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.grayColorLeftLabel.backgroundColor = [UIColor darkGrayColor];
+    self.grayColorRight.backgroundColor = [UIColor darkGrayColor];
     
     // meta view
     
@@ -798,6 +801,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     self.dateScrollView.backgroundColor = [UIColor clearColor];
     
     // month title and arrows
+    // make sure the arrows sit above their gray background labels
+    
+    [self.view insertSubview: self.leftArrowButton aboveSubview: self.grayColorLeftLabel];
+    [self.view insertSubview: self.rightArrowButton aboveSubview: self.grayColorRight];
     
     NSArray *titleLabels = @[self.monthTitle, self.topTitleLabel];
     for (UILabel *label in titleLabels){
@@ -814,7 +821,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     NSArray *arrowButtons = @[self.leftArrowButton, self.rightArrowButton];
     for (UIButton *button in arrowButtons){
         
-        button.backgroundColor = [UIColor darkGrayColor];
+        button.backgroundColor = [UIColor clearColor];
         [button setTitleColor: [UIColor whiteColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize: 40.0];
@@ -1329,14 +1336,41 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self.circleDateChildren[[index intValue]] configureButtonAsSelected];
     
+    // reduce opacity of buttons and disable them until the cells have loaded
+    
+    for (TJBCircleDateVC *circVC in self.circleDateChildren){
+        
+        [circVC configureDisabledAppearance];
+        
+    }
+    
+    if (self.homeButton){
+        
+        self.homeButton.enabled = NO;
+        self.homeButton.layer.opacity = .4;
+        
+    }
+    
+    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *b in arrows){
+        
+        b.enabled = NO;
+        b.layer.opacity = .4;
+        
+    }
+    
     // state
     
     self.selectedDateButtonIndex = index;
     self.activeDate = representedDate;
     
+    [self.view layoutIfNeeded];
+    
     [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
                withObject: nil
-               afterDelay: .01];
+               afterDelay: .2];
+    
+    [self.view setNeedsDisplay];
     
 }
 
@@ -1352,10 +1386,31 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     [self.tableView reloadData];
     
-    // remove activity indicator
+    // remove activity indicator and give the buttons active appearance / functionality
     
     [self.activityIndicatorView removeFromSuperview];
     self.activityIndicatorView = nil;
+    
+    for (TJBCircleDateVC *circVC in self.circleDateChildren){
+        
+        [circVC configureEnabledAppearance];
+        
+    }
+    
+    if (self.homeButton){
+        
+        self.homeButton.enabled = YES;
+        self.homeButton.layer.opacity = 1.0;
+        
+    }
+    
+    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *b in arrows){
+        
+        b.enabled = YES;
+        b.layer.opacity = 1.0;
+        
+    }
     
 }
 

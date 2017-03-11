@@ -15,12 +15,17 @@
 
 @interface TJBCircleDateVC : UIViewController
 
-- (instancetype)initWithDayIndex:(NSNumber *)dayIndex dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled masterController:(TJBWorkoutNavigationHub<TJBDateSelectionMaster> *)masterController representedDate:(NSDate *)representedDate;
+- (instancetype)initWithDayIndex:(NSNumber *)dayIndex dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled masterController:(TJBWorkoutNavigationHub<TJBDateSelectionMaster> *)masterController representedDate:(NSDate *)representedDate representsHistoricDay:(BOOL)representsHistoricDay;
 
 - (void)configureButtonAsSelected;
 - (void)configureButtonAsNotSelected;
 
 - (void)configureWithDayTitle:(NSString *)dayTitle buttonTitle:(NSString *)buttonTitle;
+
+// disabling controls while cell content loads
+
+- (void)configureDisabledAppearance;
+- (void)configureEnabledAppearance;
 
 
 @end

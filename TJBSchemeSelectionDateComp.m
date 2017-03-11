@@ -177,9 +177,9 @@
 #pragma mark - Actions
 
 - (void)didSelectView{
-    
-    [self.masterController didSelectObjectWithIndex: self.index];
-    
+        
+        [self.masterController didSelectObjectWithIndex: self.index];
+        
 }
 
 #pragma mark - API

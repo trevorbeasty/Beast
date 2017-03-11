@@ -24,6 +24,7 @@
     BOOL _hasSelectedAppearance;
     BOOL _isCircled;
     BOOL _isEnabled;
+    BOOL _representsHistoricDay;
     CGPoint _center;
 }
 
@@ -46,7 +47,7 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithDayIndex:(NSNumber *)dayIndex dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled masterController:(TJBWorkoutNavigationHub<TJBDateSelectionMaster> *)masterController representedDate:(NSDate *)representedDate{
+- (instancetype)initWithDayIndex:(NSNumber *)dayIndex dayTitle:(NSString *)dayTitle size:(CGSize)size hasSelectedAppearance:(BOOL)hasSelectedAppearance isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled masterController:(TJBWorkoutNavigationHub<TJBDateSelectionMaster> *)masterController representedDate:(NSDate *)representedDate representsHistoricDay:(BOOL)representsHistoricDay{
     
     self = [super init];
     
@@ -60,6 +61,7 @@
         _isEnabled = isEnabled;
         self.masterController = masterController;
         self.representedDate = representedDate;
+        _representsHistoricDay = representsHistoricDay;
         
     }
     
@@ -78,24 +80,20 @@
     
     // GR
     
-    if (_isEnabled){
-        
-        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                action: @selector(didSelectView)];
-        tapGR.numberOfTouchesRequired = 1;
-        tapGR.numberOfTapsRequired = 1;
-        
-        [self.view addGestureRecognizer: tapGR];
-        
-    }
+    // the tap GR will always be there. It only reacts (in the didSelectView method) if the vc isEnableld == YES
     
-    //
+    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+                                                                            action: @selector(didSelectView)];
+    tapGR.numberOfTouchesRequired = 1;
+    tapGR.numberOfTapsRequired = 1;
+    
+    [self.view addGestureRecognizer: tapGR];
     
     [self configureViews];
     
 }
 
-- (void)drawCircle{
+- (void)drawCircleWithOpacity:(float)opacity{
     
     if (self.activeShapeLayer){
         
@@ -112,6 +110,7 @@
     CAShapeLayer *shapeLayer = [CAShapeLayer layer];
     self.activeShapeLayer = shapeLayer;
     shapeLayer.path = path.CGPath;
+    shapeLayer.opacity = opacity;
     
     if (_hasSelectedAppearance){
         
@@ -146,10 +145,8 @@
     self.dayLabel.backgroundColor = [UIColor clearColor];
     self.dayLabel.font = [UIFont systemFontOfSize: 15.0];
     
-    if (_isEnabled){
+    if (_representsHistoricDay){
         
-//        self.numberLabel.backgroundColor = [UIColor darkGrayColor];
-//        self.dayLabel.backgroundColor = [UIColor grayColor];
         self.view.backgroundColor = [UIColor darkGrayColor];
         
     } else{
@@ -166,7 +163,7 @@
     
     if (_isCircled){
         
-        [self drawCircle];
+        [self drawCircleWithOpacity: 1.0];
         
     }
     
@@ -209,7 +206,7 @@
     
     if (_isCircled){
         
-        [self drawCircle];
+        [self drawCircleWithOpacity: .4];
         
     }
     
@@ -217,29 +214,23 @@
 
 - (void)configureButtonAsNotSelected{
     
-//    NSLog(@"%@\n%d", self.representedDate, [self.dayIndex intValue] );
-    
     _hasSelectedAppearance = NO;
     
     UIColor *color;
     
-    if (_isEnabled){
+    if (_representsHistoricDay){
         color = [UIColor darkGrayColor];
     } else{
         color = [UIColor lightGrayColor];
     }
     
     self.view.backgroundColor = color;
-    
-//    self.dayLabel.backgroundColor = color;
     self.dayLabel.textColor = [UIColor whiteColor];
-    
-//    self.numberLabel.backgroundColor = color;
     self.numberLabel.textColor = [UIColor whiteColor];
     
     if (_isCircled){
         
-        [self drawCircle];
+        [self drawCircleWithOpacity: .4];
         
     }
     
@@ -256,8 +247,52 @@
 
 - (void)didSelectView{
     
-    [self.masterController didSelectObjectWithIndex: self.dayIndex
-                                    representedDate: self.representedDate];
+    if (_isEnabled && _representsHistoricDay){
+        
+        [self.masterController didSelectObjectWithIndex: self.dayIndex
+                                        representedDate: self.representedDate];
+        
+    }
+    
+}
+
+#pragma mark - Runtime Manipulation
+
+- (void)configureEnabledAppearance{
+    
+    NSArray *views = @[self.numberLabel, self.dayLabel];
+    for (UIView *v in views){
+        
+        v.layer.opacity = 1.0;
+        
+    }
+    
+    if (_isCircled){
+        
+        [self drawCircleWithOpacity: 1.0];
+        
+    }
+    
+    _isEnabled = YES;
+    
+}
+
+- (void)configureDisabledAppearance{
+    
+    NSArray *views = @[self.numberLabel, self.dayLabel];
+    for (UIView *v in views){
+        
+        v.layer.opacity = .4;
+        
+    }
+    
+    if (_isCircled){
+        
+        [self drawCircleWithOpacity: .4];
+        
+    }
+    
+    _isEnabled = NO;
     
 }
 
