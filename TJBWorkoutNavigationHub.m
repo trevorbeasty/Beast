@@ -461,9 +461,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     //// animation calculations
     // first position
     
-    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
-    CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
-    self.dateScrollView.contentOffset = firstPosition;
+    [self configureInitialDateControlAnimationPosition];
+    
+//    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
+//    CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
+//    self.dateScrollView.contentOffset = firstPosition;
     
     // the following is used to update the cells if core data was updated while this controller existed but was not the active view controller (in the tab bar controller). The core data update will have prompted this controller to refetch core data objects and derive the master list. The following logic will then derive the daily list and active cells, showing the activity indicator while doing so
     
@@ -486,7 +488,54 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
+- (void)configureInitialDateControlAnimationPosition{
+    
+    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
+    CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
+    self.dateScrollView.contentOffset = firstPosition;
+    
+}
+
 - (void)viewDidAppear:(BOOL)animated{
+    
+    [self executeDateControlAnimation];
+    
+//    // second position
+//    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    NSInteger day = [calendar component: NSCalendarUnitDay
+//                               fromDate: self.activeDate];
+//    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
+//    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
+//    
+//    // make sure the second position will not drag the view too far, revealing a white screen beneath
+//    
+//    CGFloat viewWidth = self.view.frame.size.width;
+//    
+//    if (activeDateControlRightEdge < viewWidth){
+//        
+//        activeDateControlRightEdge = viewWidth;
+//        
+//    }
+//    
+//    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
+//    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
+//    
+//    //
+//    
+//    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
+//    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
+//    float maxAnimationTime = .5;
+//    
+//    // animation call
+//    
+//    [self scrollToOffset: secondPosition
+//       animationDuration: maxAnimationTime * percentScrollViewWidth
+//     subsequentAnimation: nil];
+    
+}
+
+- (void)executeDateControlAnimation{
     
     // second position
     
@@ -921,14 +970,34 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (IBAction)didPressTodayButton:(id)sender{
     
+    NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDate *today = [NSDate date];
+    
+    // the date controls are governed by the 'firstDayOfDateControlMonth' property. Get the first day of the current month and assign it to this property. Then call 'configureDateControlsAndSelectActiveDate'
+    
+    
+    NSDateComponents *dateControlComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                                     fromDate: today];
+    
+    dateControlComps.day = 1;
+    
+    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateControlComps];
+    
+    [self configureDateControlsAndSelectActiveDate: NO];
+    
     // make today the active date and load the proper date controls and artificially select today
     
-    self.activeDate = [NSDate date];
+    self.activeDate = today;
     
     NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
     
     [self didSelectObjectWithIndex: @(dayAsIndex)
                    representedDate: self.activeDate];
+    
+    // date control animation
+    
+    [self configureInitialDateControlAnimationPosition];
+    [self executeDateControlAnimation];
     
 }
 
@@ -1437,10 +1506,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
     }
     
-    if (self.homeButton){
+    NSArray *buttons = @[self.homeButton, self.todayButton];
+    for (UIButton *b in buttons){
         
-        self.homeButton.enabled = NO;
-        self.homeButton.layer.opacity = .4;
+        b.enabled = NO;
+        b.layer.opacity = .4;
         
     }
     
@@ -1488,10 +1558,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
     }
     
-    if (self.homeButton){
+    NSArray *buttons = @[self.homeButton, self.todayButton];
+    for (UIButton *b in buttons){
         
-        self.homeButton.enabled = YES;
-        self.homeButton.layer.opacity = 1.0;
+        b.enabled = YES;
+        b.layer.opacity = 1.0;
         
     }
     

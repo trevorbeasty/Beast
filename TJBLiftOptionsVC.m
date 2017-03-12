@@ -17,7 +17,7 @@
 
 // tbc's
 
-#import "TJBRoutineSelectionTBC.h"
+//#import "TJBRoutineSelectionTBC.h"
 
 // aesthetics
 
@@ -156,25 +156,17 @@
 
 - (IBAction)didPressDesignedButton:(id)sender{
     
-//    // tab bar vc's
-//    
-//    NewOrExistinigCircuitVC *vc1 = [[NewOrExistinigCircuitVC alloc] init];
-//    vc1.tabBarItem.title = @"Selection";
-//    
-//    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
-//    vc2.tabBarItem.title = @"Workout Log";
-//    
-//    // tab bar
-//    
-//    UITabBarController *tbc = [[UITabBarController alloc] init];
-//    [tbc setViewControllers: @[vc1, vc2]];
-//    tbc.tabBar.translucent = NO;
+    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
     
-    TJBRoutineSelectionTBC *tbc = [[TJBRoutineSelectionTBC alloc] init];
-
-    [self presentViewController: tbc
+    [self presentViewController: vc
                        animated: YES
                      completion: nil];
+    
+//    TJBRoutineSelectionTBC *tbc = [[TJBRoutineSelectionTBC alloc] init];
+//
+//    [self presentViewController: tbc
+//                       animated: YES
+//                     completion: nil];
     
 }
 
