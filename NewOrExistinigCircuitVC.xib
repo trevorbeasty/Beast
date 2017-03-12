@@ -20,7 +20,6 @@
                 <outlet property="previousMarkButton" destination="X8G-LF-5HS" id="dEF-rf-bdd"/>
                 <outlet property="rightArrowButton" destination="muu-Ne-Y0K" id="fY0-rH-Nyj"/>
                 <outlet property="sortBySegmentedControl" destination="pL5-1h-FKf" id="TcY-kJ-FWG"/>
-                <outlet property="tableView" destination="YLP-je-fi9" id="baC-bn-5lA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yearLabel" destination="yZc-c3-eUK" id="gpZ-IA-MuZ"/>
             </connections>
@@ -106,25 +105,7 @@
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cna-Rm-Pq1" userLabel="mainContainer">
                     <rect key="frame" x="16" y="138" width="343" height="427"/>
-                    <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YLP-je-fi9">
-                            <rect key="frame" x="0.0" y="0.0" width="343" height="427"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="Bxi-kz-iJm"/>
-                                <outlet property="delegate" destination="-1" id="oVB-Jp-xB6"/>
-                            </connections>
-                        </tableView>
-                    </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="YLP-je-fi9" firstAttribute="leading" secondItem="cna-Rm-Pq1" secondAttribute="leading" id="Euw-ZA-IUT"/>
-                        <constraint firstAttribute="trailing" secondItem="YLP-je-fi9" secondAttribute="trailing" id="Lki-Ca-sGG"/>
-                        <constraint firstAttribute="bottom" secondItem="YLP-je-fi9" secondAttribute="bottom" id="UlP-Zl-gQC"/>
-                        <constraint firstItem="YLP-je-fi9" firstAttribute="top" secondItem="cna-Rm-Pq1" secondAttribute="top" id="Xq4-75-gJr"/>
-                    </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Routines" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bip-Sj-lP7">
                     <rect key="frame" x="62" y="20" width="251" height="30"/>
