@@ -63,6 +63,8 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *myRoutinesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *leftArrowGrayBackgr;
+@property (weak, nonatomic) IBOutlet UILabel *rightArrowGrayBackgr;
 
 // IBAction
 
@@ -294,7 +296,15 @@
         
     }
     
-
+    // arrow background labels
+    
+    self.leftArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
+    [self.view insertSubview: self.leftArrowButton
+                aboveSubview: self.leftArrowGrayBackgr];
+    
+    self.rightArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
+    [self.view insertSubview: self.rightArrowButton
+                aboveSubview: self.rightArrowGrayBackgr];
     
 }
 
@@ -743,11 +753,12 @@
         TJBSchemeSelectionDateComp *dateControlObject = [[TJBSchemeSelectionDateComp alloc] initWithMonthString: monthString
                                                                                                 representedDate: iterativeDate
                                                                                                           index: [NSNumber numberWithInt: i]
-                                                                                                      isEnabled: !iterativeMonthGreaterThanCurrentMonth
+                                                                                                      isEnabled: YES
                                                                                                       isCircled: recordExistsForIterativeMonth
                                                                                           hasSelectedAppearance: NO
                                                                                                            size: dateControlSize
-                                                                                               masterController: self];
+                                                                                               masterController: self
+                                                                                             representsPastDate: !iterativeMonthGreaterThanCurrentMonth];
         
         [self.dateControlObjects addObject: dateControlObject];
         
@@ -1134,17 +1145,17 @@
 
 - (void)segmentedControlValueChanged{
     
-//    [self configureSelectionAsNil];
-//    
-//    //// re-sort the content array based upon the new sorting preference
-//    
-//    [self configureSortedContentForActiveYear];
-//    [self.tableView reloadData];
-//    [self drawCircles];
-//    
-//    [self toggleButtonsToOffState];
-//    
-//    self.selectedChainTemplate = nil;
+    [self configureSelectionAsNil];
+    
+    // must rederive and layout date controls because the filter criteria for chain templates has now changed
+    
+    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
+    
+    [self configureDateControlsBasedOnDCActiveDate];
+    
+    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
+    
+    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
     
 }
 
@@ -1259,6 +1270,10 @@
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
     
+    // disable controls and give disabled appearance
+    
+    [self giveControlsDisabledConfiguration];
+    
     // must show the new selection in the date control objects, show the activity indicator while replacing the old table view, and adjust all state variables accordingly
     
     [self configureSelectionAsNil]; // adjusts certain state parameters
@@ -1282,6 +1297,7 @@
     indView.frame = self.mainContainer.frame;
     indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     indView.layer.opacity = .9;
+    indView.hidesWhenStopped = YES;
     
     [self.view addSubview: indView];
     
@@ -1293,6 +1309,48 @@
                withObject: index
                afterDelay: .2];
 
+}
+
+- (void)giveControlsDisabledConfiguration{
+    
+    self.backButton.enabled = NO;
+    self.backButton.layer.opacity = .4;
+    
+    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *b in arrows){
+        
+        b.enabled = NO;
+        b.layer.opacity = .4;
+        
+    }
+    
+    for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
+        
+        [comp configureAsDisabled];
+        
+    }
+    
+}
+
+- (void)giveControlsEnabledConfiguration{
+    
+    self.backButton.enabled = YES;
+    self.backButton.layer.opacity = 1.0;
+    
+    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *b in arrows){
+        
+        b.enabled = YES;
+        b.layer.opacity = 1.0;
+        
+    }
+    
+    for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
+        
+        [comp configureAsEnabled];
+        
+    }
+    
 }
 
 - (void)updateTableViewAndRemoveActivityIndicator:(NSNumber *)index{
@@ -1329,6 +1387,10 @@
     
     [self addEmbeddedTableViewToViewHierarchy];
     
+    // enable all buttons and give enabled appearance
+    
+    [self giveControlsEnabledConfiguration];
+    
 }
 
 - (void)addEmbeddedTableViewToViewHierarchy{
@@ -1337,7 +1399,6 @@
     
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
     self.activeScrollView = sv;
-    
     
     CGFloat tvContentHeight = [self totalTableViewHeightBasedOnTVSortedContent];
     
@@ -1348,7 +1409,7 @@
     CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, tvContentHeight); // the scroll view is large enough that the table view will layout all of its content
     sv.contentSize = svContentSize;
     
-    sv.backgroundColor = [UIColor redColor];
+    sv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     UITableView *tv = [[UITableView alloc] init];
     self.activeTableView = tv;
@@ -1372,12 +1433,14 @@
     // activity indicator
     
     if (self.activeActivityIndicator){
-        
+    
+        [self.activeActivityIndicator stopAnimating];
         [self.activeActivityIndicator removeFromSuperview];
         self.activeActivityIndicator = nil;
         
+        
     }
-    
+
 }
 
 - (CGFloat)totalTableViewHeightBasedOnTVSortedContent{

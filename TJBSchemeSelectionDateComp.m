@@ -25,6 +25,7 @@
     BOOL _isEnabled;
     BOOL _hasSelectedAppearance;
     BOOL _isCircled;
+    BOOL _representsPastDate;
     CGSize _size;
     
 }
@@ -52,13 +53,14 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithMonthString:(NSString *)monthString representedDate:(NSDate *)representedDate index:(NSNumber *)index isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled hasSelectedAppearance:(BOOL)hasSelectedAppearance size:(CGSize)size masterController:(NewOrExistinigCircuitVC<TJBSchemeSelectionDateCompDelegate> *)masterController{
+- (instancetype)initWithMonthString:(NSString *)monthString representedDate:(NSDate *)representedDate index:(NSNumber *)index isEnabled:(BOOL)isEnabled isCircled:(BOOL)isCircled hasSelectedAppearance:(BOOL)hasSelectedAppearance size:(CGSize)size masterController:(NewOrExistinigCircuitVC<TJBSchemeSelectionDateCompDelegate> *)masterController representsPastDate:(BOOL)representsPastDate{
     
     self = [super init];
     
     _isEnabled = isEnabled;
     _hasSelectedAppearance = hasSelectedAppearance;
     _isCircled = isCircled;
+    _representsPastDate = representsPastDate;
     _size = size;
     self.representedDate = representedDate;
     self.masterController = masterController;
@@ -73,12 +75,8 @@
 
 - (void)viewDidLoad{
     
-  
-        
     [self configureGestureRecognizer];
-        
-    
-    
+
     if (_isCircled){
         
         [self drawCircle];
@@ -178,7 +176,7 @@
 
 - (void)didSelectView{
     
-    if (_isEnabled){
+    if (_isEnabled && _representsPastDate){
         
         [self.masterController didSelectObjectWithIndex: self.index];
         
@@ -207,7 +205,7 @@
     
     _hasSelectedAppearance = NO;
     
-    if (!_isEnabled){
+    if (!_representsPastDate){
         
         self.monthLabel.textColor = [UIColor whiteColor];
         self.view.backgroundColor = [UIColor lightGrayColor];
@@ -224,6 +222,22 @@
         [self drawCircle];
         
     }
+    
+}
+
+- (void)configureAsEnabled{
+    
+    self.monthLabel.layer.opacity = 1.0;
+    
+    _isEnabled = YES;
+    
+}
+
+- (void)configureAsDisabled{
+    
+    self.monthLabel.layer.opacity = .4;
+    
+    _isEnabled = NO;
     
 }
 
