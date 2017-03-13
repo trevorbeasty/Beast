@@ -450,10 +450,10 @@ static float const animationTimeUnit = .4;
                                                                       exerciseIndexReference: &newExerciseIndex
                                                                          roundIndexReference: &newRoundIndex];
     
+    self.activeExerciseIndexForTargets = newExerciseIndex;
+    self.activeRoundIndexForTargets = newRoundIndex;
+    
     if (forwardIndicesExist){
-        
-        self.activeExerciseIndexForTargets = newExerciseIndex;
-        self.activeRoundIndexForTargets = newRoundIndex;
     
         return YES;
         
@@ -820,18 +820,18 @@ static NSString const *restViewKey = @"restView";
         
             } else{
                     
-            // configure labels accordingly
+                // configure labels accordingly
                     
-            weakSelf.timerTitleLabel.text = @"";
-            [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
+                weakSelf.timerTitleLabel.text = @"";
+                [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
+                
+                weakSelf.roundTitleLabel.text = @"";
                     
-            weakSelf.roundTitleLabel.text = @"";
-                    
-            // alert and dismissal
+                // alert and dismissal
                 
                 [weakSelf dismissViewControllerAnimated: YES
                                          completion: nil];
-                    
+                
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Completed"
                                                                                message: @""
                                                                         preferredStyle: UIAlertControllerStyleAlert];
@@ -1137,10 +1137,12 @@ static NSString const *restViewKey = @"restView";
     self.realizedChain.firstIncompleteRoundIndex = [newRoundIndex intValue];
     self.realizedChain.firstIncompleteExerciseIndex = [newExerciseIndex intValue];
     
+    [[CoreDataController singleton] saveContext];
+    
+    self.activeExerciseIndexForChain = newExerciseIndex;
+    self.activeRoundIndexForChain = newRoundIndex;
+    
     if (forwardIndicesExist){
-        
-        self.activeExerciseIndexForChain = newExerciseIndex;
-        self.activeRoundIndexForChain = newRoundIndex;
         
         return YES;
         

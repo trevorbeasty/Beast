@@ -26,7 +26,7 @@
         
         return NO;
         
-    } else if (currentRoundIndex == referenceRoundIndex){
+    } else{
         
         if (currentExerciseIndex < referenceExerciseIndex){
             
@@ -37,10 +37,6 @@
             return NO;
             
         }
-        
-    } else{
-        
-        abort();
         
     }
     
@@ -61,6 +57,13 @@
         
         if (atMaxRoundIndex){
             
+            exerciseReturnValue = [NSNumber numberWithInt: 0];
+            
+            roundReturnValue = [NSNumber numberWithInt: currentRoundIndex + 1];
+            
+            *exerciseIndexReference = exerciseReturnValue;
+            *roundIndexReference = roundReturnValue;
+            
             return NO;
             
         } else{
@@ -69,11 +72,8 @@
             
             roundReturnValue = [NSNumber numberWithInt: currentRoundIndex + 1];
             
-            
         }
-            
-
-            
+        
     } else{
             
         exerciseReturnValue = [NSNumber numberWithInt: currentExerciseIndex + 1];
