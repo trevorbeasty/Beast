@@ -51,6 +51,7 @@
 // IBOutlet
 
 @property (strong) UITableView *activeTableView;
+@property (strong) UIActivityIndicatorView *activeActivityIndicator;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
 @property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
@@ -172,6 +173,12 @@
     
     NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: today];
     
+    for (int i = 0; i < 12; i++){
+        
+        NSLog(@"\n%lu", initialRefArray[i].count);
+        
+    }
+    
     self.dcSortedContent = initialRefArray;
     self.tvSortedContent = initialRefArray;
     
@@ -184,9 +191,9 @@
     // table view
     // the table view is created by artificially selecting a date control
     
+    int dateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
     
-    
-    
+    [self didSelectObjectWithIndex: @(dateControlIndex)];
     
 }
 
@@ -298,29 +305,7 @@
 }
 
 
-- (void)configureTableView{
-    
-    // table view configuration
-    
-    UINib *nib = [UINib nibWithNibName: @"TJBStructureTableViewCell"
-                                bundle: nil];
-    
-    [self.activeTableView registerNib: nib
-         forCellReuseIdentifier: @"TJBStructureTableViewCell"];
-    
-    UINib *nib2 = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-                                 bundle: nil];
-    
-    [self.activeTableView registerNib: nib2
-         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
-    
-    UINib *nib3 = [UINib nibWithNibName: @"TJBNoDataCell"
-                                 bundle: nil];
-    
-    [self.activeTableView registerNib: nib3
-         forCellReuseIdentifier: @"TJBNoDataCell"];
-    
-}
+
 
 - (void)fetchCoreData{
     
@@ -373,10 +358,14 @@
     
     NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
     
+    NSLog(@"interim array count: %lu", interimArray.count);
+    
     if (sortByDateLastExecuted){
         
         [self filterAndSortArrayByDateLastExecuted: interimArray
                                      referenceDate: referenceDate];
+        
+        NSLog(@"interim array count: %lu", interimArray.count);
         
         return [self bucketByMonthAccordingToDateLastExecuted: interimArray
                                                 referenceDate: referenceDate];
@@ -529,7 +518,7 @@
             
             iterativeChainTemplate = chainTemplatesArray[j];
             iterativeRealizedChain = [self largestRealizeChainInReferenceYearAndMonthForChainTemplate: iterativeChainTemplate
-                                                                                        referenceDate: [iterativeDateComps date]];
+                                                                                        referenceDate: [calendar dateFromComponents: iterativeDateComps]];
             
             // nil will be returned if there are no matches for the relevant month and year.  If there is a match, add the chain to the return array
             // if there is no match, then all subsequent arrays will not contain any matches because the dates are in decreasing order, so break the for loop and continue to the next month
@@ -1285,7 +1274,11 @@
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
     
-    [self configureSelectionAsNil];
+    // must show the new selection in the date control objects, show the activity indicator while replacing the old table view, and adjust all state variables accordingly
+    
+    [self configureSelectionAsNil]; // adjusts certain state parameters
+    
+    // date objects
     
     if (self.selectedDateObjectIndex){
         
@@ -1293,10 +1286,95 @@
         
     }
     
-    self.selectedDateObjectIndex = index;
-    [self.activeTableView reloadData];
-    
     [self.dateControlObjects[[index intValue]] configureAsSelected];
+    self.selectedDateObjectIndex = index;
+    
+    // table view
+    
+    if (self.activeTableView){
+        
+        [self.activeTableView removeFromSuperview];
+        self.activeTableView = nil;
+        
+    }
+    
+    // activity indicator
+    
+    UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    
+    indView.frame = self.mainContainer.frame;
+    
+    indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    [self.view addSubview: indView];
+    
+    [indView startAnimating];
+    
+    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
+    
+    // NEED TO DISPATCH A BLOCK WITH DELAY HERE
+    
+    
+//    [self.activeTableView reloadData];
+    
+    
+    
+}
+
+- (UITableView *)newTableViewForActiveDate{
+    
+    UITableView *tv = [[UITableView alloc] init];
+    
+    [self configureTableView: tv];
+    
+    tv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    // ... other aesthetic properties
+    
+    
+    
+    return tv;
+    
+}
+
+- (int)dateControlObjectIndexForDate:(NSDate *)date{
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSInteger monthAsInt = [calendar component: NSCalendarUnitMonth
+                                      fromDate: date];
+    
+    return (int)monthAsInt - 1;
+    
+}
+
+- (void)configureTableView:(UITableView *)tableView{
+    
+    // table view configuration
+    
+    // cells
+    
+    UINib *nib = [UINib nibWithNibName: @"TJBStructureTableViewCell"
+                                bundle: nil];
+    
+    [tableView registerNib: nib
+               forCellReuseIdentifier: @"TJBStructureTableViewCell"];
+    
+    UINib *nib2 = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+                                 bundle: nil];
+    
+    [tableView registerNib: nib2
+               forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
+    
+    UINib *nib3 = [UINib nibWithNibName: @"TJBNoDataCell"
+                                 bundle: nil];
+    
+    [tableView registerNib: nib3
+               forCellReuseIdentifier: @"TJBNoDataCell"];
+    
+    // data source and delegate
+    
+    tableView.delegate = self;
+    tableView.dataSource = self;
     
 }
 
