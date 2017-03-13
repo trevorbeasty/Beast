@@ -27,6 +27,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *chainHistoryTV;
 
+
 // core
 
 @property (strong) TJBChainTemplate *chainTemplate;
@@ -173,6 +174,38 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         return [TJBRealizedChainHistoryCell suggestedCellHeightForRealizedChain: realizedChain];
         
     }
+    
+}
+
+#pragma mark - API
+
+- (CGFloat)contentHeight{
+    
+    // returns the total height for cells containing content
+    
+    NSInteger realizedChainCount = self.chainTemplate.realizedChains.count;
+    
+    NSInteger iterationLimit;
+    if (realizedChainCount == 0){
+        iterationLimit = 2;
+    } else{
+        iterationLimit = realizedChainCount + 1;
+    }
+    
+    CGFloat sum = 0;
+    for (int i = 0; i < iterationLimit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        CGFloat height = [self tableView: self.chainHistoryTV
+                 heightForRowAtIndexPath: path];
+        
+        sum += height;
+        
+    }
+    
+    return sum;
     
 }
 

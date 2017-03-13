@@ -12,6 +12,10 @@
 
 @interface TJBCompleteChainHistoryVC : UIViewController
 
+
+
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+
+- (CGFloat)contentHeight;
 
 @end

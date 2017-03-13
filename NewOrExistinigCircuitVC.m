@@ -107,6 +107,7 @@
 // complete chain history vc - is presented on top of table view. This property keeps track of the object
 
 @property (strong) TJBCompleteChainHistoryVC *chainHistoryVC;
+@property (strong) UIScrollView *chainHistoryScrollView;
 
 @end
 
@@ -1088,29 +1089,18 @@
     
     if (_viewingChainHistory == NO){
         
-        TJBCompleteChainHistoryVC *chainHistoryVC = [[TJBCompleteChainHistoryVC alloc] initWithChainTemplate: self.selectedChainTemplate];
-        self.chainHistoryVC = chainHistoryVC;
+        // will need to show an activity indicator while loading the history table view because it could have enough cells to require a significant amount of loading time
         
-        // give the new vc's view the same rect as the current table view
-        // must go through the necessary steps to add the chain history vc as a child view controller
+        [self showActivityIndicator];
         
-        [self addChildViewController: chainHistoryVC];
+        [self giveControlsDisabledConfiguration];
         
-        CGRect finalMainscreenFrame = self.mainContainer.frame;
-        chainHistoryVC.view.frame = finalMainscreenFrame;
-        [self.view insertSubview: chainHistoryVC.view
-                    aboveSubview: self.activeTableView];
+        // the chain history table view is handled by a separate controller. I simply add it to a scroll view here and designate it as a a child view controller
+        // this task must be completed after a short delay to allow the view to draw the activity indicator
         
-        [chainHistoryVC didMoveToParentViewController: self];
-        
-        // update state
-        
-        _viewingChainHistory = YES;
-        
-        // update button title
-        
-        [self.previousMarkButton setTitle: @"Back"
-                                 forState: UIControlStateNormal];
+        [self performSelector: @selector(showChainHistoryForSelectedChainAndUpdateStateVariables)
+                   withObject: nil
+                   afterDelay: 2.0];
         
     } else{
         
@@ -1129,6 +1119,104 @@
     }
     
 
+    
+}
+
+- (void)showChainHistoryForSelectedChainAndUpdateStateVariables{
+    
+    // get rid of all table views before adding current table view
+    
+    [self clearAllTableViewsAndDirectlyAssociatedObjects];
+    
+    // history table view
+    
+    TJBCompleteChainHistoryVC *chainHistoryVC = [[TJBCompleteChainHistoryVC alloc] initWithChainTemplate: self.selectedChainTemplate];
+    self.chainHistoryVC = chainHistoryVC;
+    
+    CGFloat contentHeight = [chainHistoryVC contentHeight]; // gets the total height of cells based on provided chain template
+    if (contentHeight < self.mainContainer.frame.size.height){
+        contentHeight = self.mainContainer.frame.size.height;
+    }
+    
+    CGRect rect = CGRectMake(0, 0, self.mainContainer.frame.size.width, contentHeight);
+    chainHistoryVC.view.frame = rect;
+    
+    // scroll view
+    
+    UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
+    self.chainHistoryScrollView = sv;
+    
+    CGSize contentSize = CGSizeMake(self.mainContainer.frame.size.width, contentHeight);
+    sv.contentSize = contentSize;
+    
+    [sv addSubview: chainHistoryVC.view];
+    
+    // give the new vc's view the same rect as the current table view
+    // must go through the necessary steps to add the chain history vc as a child view controller
+    
+    [self addChildViewController: chainHistoryVC];
+    
+    [self.mainContainer addSubview: sv];
+    
+    [chainHistoryVC didMoveToParentViewController: self];
+    
+    // update state
+    
+    _viewingChainHistory = YES;
+    
+    // update button title
+    
+    [self.previousMarkButton setTitle: @"Back"
+                             forState: UIControlStateNormal];
+    
+    // get rid of the activity indicator and old table view content. The content will be reloaded if it is later required
+    
+    [self removeActivityIndicatorIfExists];
+    
+    [self giveControlsEnabledConfiguration];
+    
+}
+
+- (void)clearAllTableViewsAndDirectlyAssociatedObjects{
+    
+    // chain template tv
+    
+    if (self.activeTableView){
+        
+        [self.activeTableView removeFromSuperview];
+        self.activeTableView = nil;
+        
+    }
+    
+    if (self.activeScrollView){
+        
+        [self.activeScrollView removeFromSuperview];
+        self.activeScrollView = nil;
+        
+    }
+    
+    // chain history tv
+    
+    if (self.chainHistoryScrollView){
+        
+        [self.chainHistoryScrollView removeFromSuperview];
+        self.chainHistoryScrollView = nil;
+        
+    }
+    
+    if (self.chainHistoryVC){
+        
+        // remove the child view controller as dictated in apple's programming guide
+        
+        [self.chainHistoryVC willMoveToParentViewController: nil];
+        
+        [self.chainHistoryVC.view removeFromSuperview];
+        
+        [self.chainHistoryVC removeFromParentViewController];
+        
+        self.chainHistoryVC = nil;
+        
+    }
     
 }
 
@@ -1291,6 +1379,27 @@
     
     // activity indicator
     
+    [self showActivityIndicator];
+    
+    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
+    
+    [self performSelector: @selector(updateTableViewAndRemoveActivityIndicator:)
+               withObject: index
+               afterDelay: .2];
+
+}
+
+
+
+- (void)showActivityIndicator{
+    
+    if (self.activeActivityIndicator){
+        
+        [self.activeActivityIndicator removeFromSuperview];
+        self.activeActivityIndicator = nil;
+        
+    }
+    
     UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     self.activeActivityIndicator = indView;
     
@@ -1303,12 +1412,6 @@
     
     [indView startAnimating];
     
-    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
-    
-    [self performSelector: @selector(updateTableViewAndRemoveActivityIndicator:)
-               withObject: index
-               afterDelay: .2];
-
 }
 
 - (void)giveControlsDisabledConfiguration{
@@ -1355,8 +1458,11 @@
 
 - (void)updateTableViewAndRemoveActivityIndicator:(NSNumber *)index{
     
-    // table view UI and supporting array
+    // get rid of all existing table before adding the new one
     
+    [self clearAllTableViewsAndDirectlyAssociatedObjects];
+    
+    // table view UI and supporting array
     // supporting array must be derived before the table view is configured because the supporting array is required to determine table view size and to determine cell content
     
     int reversedIndex = 11 - [index intValue]; // must use a reversed index because December is in the 0th position of dcSortedContent
@@ -1369,21 +1475,7 @@
     [dateComps setDay: 1];
     self.tvActiveDate = [cal dateFromComponents: dateComps];
     
-    // table view itself
-    
-    if (self.activeTableView){
-        
-        [self.activeTableView removeFromSuperview];
-        self.activeTableView = nil;
-        
-    }
-    
-    if (self.activeScrollView){
-        
-        [self.activeScrollView removeFromSuperview];
-        self.activeScrollView = nil;
-        
-    }
+    // new table view
     
     [self addEmbeddedTableViewToViewHierarchy];
     
@@ -1432,15 +1524,21 @@
     
     // activity indicator
     
-    if (self.activeActivityIndicator){
+    [self removeActivityIndicatorIfExists];
+
+}
+
+- (void)removeActivityIndicatorIfExists{
     
+    if (self.activeActivityIndicator){
+        
         [self.activeActivityIndicator stopAnimating];
         [self.activeActivityIndicator removeFromSuperview];
         self.activeActivityIndicator = nil;
         
         
     }
-
+    
 }
 
 - (CGFloat)totalTableViewHeightBasedOnTVSortedContent{
