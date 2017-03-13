@@ -1072,16 +1072,7 @@
     
 }
 
-
-#pragma mark - Button Actions
-
-
-- (IBAction)didPressBackButton:(id)sender{
-    
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
-    
-}
+#pragma mark - View History and Related Actions
 
 - (IBAction)didPressViewHistory:(id)sender{
     
@@ -1100,25 +1091,62 @@
         
         [self performSelector: @selector(showChainHistoryForSelectedChainAndUpdateStateVariables)
                    withObject: nil
-                   afterDelay: 2.0];
+                   afterDelay: .2];
         
     } else{
         
-        // remove the chain history view and nullify the class property
+        // show activity indicator
         
-        [self.chainHistoryVC.view removeFromSuperview];
-        self.chainHistoryVC = nil;
+        [self showActivityIndicator];
         
-        // update state and button title
+        // queue the uploading of the new table to allow the view to redraw itself
         
-        _viewingChainHistory = NO;
+        [self performSelector: @selector(showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables)
+                   withObject: nil
+                   afterDelay: .2];
         
-        [self.previousMarkButton setTitle: @"View History"
-                                 forState: UIControlStateNormal];
+        
         
     }
     
+    
+    
+}
 
+- (void)showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables{
+    
+    // show the chain options for the current tvActiveDate
+    
+    // remove all existing table view objects
+    
+    [self clearAllTableViewsAndDirectlyAssociatedObjects];
+    
+    // clear all previous table view selections
+    
+    [self configureSelectionAsNil];
+    
+    // the tvSortedContent is not cleared when the chainHistoryVC is presented, thus, no work has to be done to derive tvSortedContent
+    
+    // show the new table view
+    
+    // new table view
+    
+    [self addEmbeddedTableViewToViewHierarchy];
+    
+    // enable all buttons and give enabled appearance
+    
+    [self giveControlsEnabledConfiguration];
+    
+    // remove the activity indicator
+    
+    [self removeActivityIndicatorIfExists];
+    
+    // update state and button title
+    
+    _viewingChainHistory = NO;
+    
+    [self.previousMarkButton setTitle: @"View History"
+                             forState: UIControlStateNormal];
     
 }
 
@@ -1173,7 +1201,10 @@
     
     [self removeActivityIndicatorIfExists];
     
-    [self giveControlsEnabledConfiguration];
+    // only enable certain controls. Will force the user to press back to return to previous browsing mode
+    
+    self.backButton.enabled = YES;
+    self.backButton.layer.opacity = 1.0;
     
 }
 
@@ -1219,6 +1250,19 @@
     }
     
 }
+
+
+#pragma mark - Button Actions
+
+
+- (IBAction)didPressBackButton:(id)sender{
+    
+    [self dismissViewControllerAnimated: NO
+                             completion: nil];
+    
+}
+
+
 
 - (IBAction)didPressRightNewButton:(id)sender{
     
@@ -1427,6 +1471,9 @@
         
     }
     
+    self.sortBySegmentedControl.enabled = NO;
+    self.sortBySegmentedControl.layer.opacity = .4;
+    
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
         [comp configureAsDisabled];
@@ -1447,6 +1494,9 @@
         b.layer.opacity = 1.0;
         
     }
+    
+    self.sortBySegmentedControl.enabled = YES;
+    self.sortBySegmentedControl.layer.opacity = 1.0;
     
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
@@ -1501,7 +1551,7 @@
     CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, tvContentHeight); // the scroll view is large enough that the table view will layout all of its content
     sv.contentSize = svContentSize;
     
-    sv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    sv.backgroundColor = [UIColor clearColor];
     
     UITableView *tv = [[UITableView alloc] init];
     self.activeTableView = tv;
