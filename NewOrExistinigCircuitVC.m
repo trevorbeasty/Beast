@@ -51,6 +51,7 @@
 // IBOutlet
 
 @property (strong) UITableView *activeTableView;
+@property (strong) UIScrollView *activeScrollView;
 @property (strong) UIActivityIndicatorView *activeActivityIndicator;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
@@ -78,7 +79,7 @@
 //// state
 // these are the content arrays. Due to algorithmic considerations, the sortedContent is such that the 0th array is December and the 11th array is January
 
-@property (nonatomic, strong) NSMutableArray <NSMutableArray <TJBChainTemplate *> *> *tvSortedContent; // this is the array used by the table view as a data source. It holds a collection of chain templates for each month of the year actively displayed in the table view. It is also the array accessed when a user selects a table view cell. It should be reloaded anytime a date control object is selected that corresponds to a different year than it currently represents
+@property (nonatomic, strong) NSMutableArray <TJBChainTemplate *> *tvSortedContent; // this is the array used by the table view as a data source. It holds a collection of chain templates for each month of the year actively displayed in the table view. It is also the array accessed when a user selects a table view cell. It should be reloaded anytime a date control object is selected that corresponds to a different year than it currently represents
 
 @property (nonatomic, strong) NSMutableArray <NSMutableArray <TJBChainTemplate *> *> *dcSortedContent; // this is the date control sorted content.  It holds a collection of chain template collections that correspond to the year actively displayed in the date controls. It must be derived every time a new date control year is selected.  It is leveraged to draw circles appropriately on the date controls and also is assigned to tvSortedContent when a date control object in a new year is selected
 
@@ -173,14 +174,7 @@
     
     NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: today];
     
-    for (int i = 0; i < 12; i++){
-        
-        NSLog(@"\n%lu", initialRefArray[i].count);
-        
-    }
-    
-    self.dcSortedContent = initialRefArray;
-    self.tvSortedContent = initialRefArray;
+    self.dcSortedContent = initialRefArray; // only the dc needs to store this annual, sorted content bucketed by month. The table view simply must choose the correct bucket when setting its tvSortedContent
     
     // must now configure the date controls and create the table view
     
@@ -358,14 +352,10 @@
     
     NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
     
-    NSLog(@"interim array count: %lu", interimArray.count);
-    
     if (sortByDateLastExecuted){
         
         [self filterAndSortArrayByDateLastExecuted: interimArray
                                      referenceDate: referenceDate];
-        
-        NSLog(@"interim array count: %lu", interimArray.count);
         
         return [self bucketByMonthAccordingToDateLastExecuted: interimArray
                                                 referenceDate: referenceDate];
@@ -769,8 +759,6 @@
         
     }
     
-//    [self drawCircles];
-    
 }
 
 - (void)clearTransitoryDateControlObjects{
@@ -865,9 +853,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
-    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+//    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
     
-    NSInteger rowCount = self.tvSortedContent[reversedIndex].count;
+    NSInteger rowCount = self.tvSortedContent.count;
     
     if (rowCount == 0){
         
@@ -913,8 +901,7 @@
         
     } else{
         
-        int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
-        NSInteger chainCount = self.tvSortedContent[reversedIndex].count;
+        NSInteger chainCount = self.tvSortedContent.count;
         
         if (chainCount == 0){
             
@@ -945,7 +932,7 @@
             
             NSInteger adjustedRowIndex = indexPath.row - 1;
             
-            TJBChainTemplate *chainTemplate = self.tvSortedContent[reversedIndex][adjustedRowIndex];
+            TJBChainTemplate *chainTemplate = self.tvSortedContent[adjustedRowIndex];
             
             NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
             BOOL sortByDateLastExecuted = sortSelection == 0;
@@ -994,8 +981,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
-    NSInteger chainCount = self.tvSortedContent[reversedIndex].count;
+    NSInteger chainCount = self.tvSortedContent.count;
     
     if (indexPath.row == 0 || chainCount == 0){
         
@@ -1024,9 +1010,9 @@
     
     // highlight the new cell
     
-    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
+//    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
     
-    TJBChainTemplate *chainTemplate = self.tvSortedContent[reversedIndex][indexPath.row - 1];
+    TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row - 1];
     
     BOOL realizationsExist = chainTemplate.realizedChains.count > 0;
     
@@ -1054,9 +1040,7 @@
         
     } else{
         
-        int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
-        
-        NSInteger chainCount = self.tvSortedContent[reversedIndex].count;
+        NSInteger chainCount = self.tvSortedContent.count;
         
         if (chainCount == 0){
             
@@ -1066,7 +1050,7 @@
             
         } else{
             
-            TJBChainTemplate *chainTemplate = self.tvSortedContent[reversedIndex][indexPath.row -1];
+            TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row -1];
             
             return [TJBStructureTableViewCell suggestedCellHeightForChainTemplate: chainTemplate];
             
@@ -1202,13 +1186,13 @@
 
 - (IBAction)didPressLeftArrow:(id)sender{
     
-    [self incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward: NO];
+    [self incrementDCACtiveYearWithIncrementDirectionForward: NO];
     
 }
 
 - (IBAction)didPressRightArrow:(id)sender{
     
-    [self incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward: YES];
+    [self incrementDCACtiveYearWithIncrementDirectionForward: YES];
     
 }
 
@@ -1221,18 +1205,18 @@
     self.selectedChainTemplate = nil;
     [self toggleButtonsToOffState];
     
-    TJBStructureTableViewCell *cell = [self.activeTableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
-    cell.layer.borderWidth = 0.0;
-    cell.backgroundColor = [UIColor clearColor];
-    self.lastSelectedIndexPath = nil;
+    if (self.lastSelectedIndexPath){
+        
+        TJBStructureTableViewCell *cell = [self.activeTableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+        cell.layer.borderWidth = 0.0;
+        cell.backgroundColor = [UIColor clearColor];
+        self.lastSelectedIndexPath = nil;
+        
+    }
     
 }
 
-- (void)incrementActiveYearAndConfigureDownhillObjectsWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
-    
-    [self configureSelectionAsNil];
-    
-    //
+- (void)incrementDCACtiveYearWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
     
     int yearDelta;
     
@@ -1243,18 +1227,19 @@
     }
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+    NSDateComponents *dateComps = [calendar components: NSCalendarUnitYear
                                               fromDate: self.dcActiveDate];
     
     dateComps.year += yearDelta;
+    [dateComps setDay: 1];
+    [dateComps setMonth: 1];
     self.dcActiveDate = [calendar dateFromComponents: dateComps];
     
-//    [self configureDateControlsAndSelectToday: NO];
-//    [self configureSortedContentForActiveYear];
-    [self drawCircles];
-//    [self.tableView reloadData];
-//    
-//    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
+    // source array and date control objects
+    
+    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
+    
+    [self configureDateControlsBasedOnDCActiveDate];
     
 }
 
@@ -1289,7 +1274,44 @@
     [self.dateControlObjects[[index intValue]] configureAsSelected];
     self.selectedDateObjectIndex = index;
     
-    // table view
+    // activity indicator
+    
+    UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    self.activeActivityIndicator = indView;
+    
+    indView.frame = self.mainContainer.frame;
+    indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    indView.layer.opacity = .9;
+    
+    [self.view addSubview: indView];
+    
+    [indView startAnimating];
+    
+    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
+    
+    [self performSelector: @selector(updateTableViewAndRemoveActivityIndicator:)
+               withObject: index
+               afterDelay: .2];
+
+}
+
+- (void)updateTableViewAndRemoveActivityIndicator:(NSNumber *)index{
+    
+    // table view UI and supporting array
+    
+    // supporting array must be derived before the table view is configured because the supporting array is required to determine table view size and to determine cell content
+    
+    int reversedIndex = 11 - [index intValue]; // must use a reversed index because December is in the 0th position of dcSortedContent
+    self.tvSortedContent = self.dcSortedContent[reversedIndex]; // the chains being used by the tv will always be a subset of those stored in the dcSortedContent array
+    
+    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
+                                         fromDate: self.dcActiveDate];
+    [dateComps setMonth: [index intValue] + 1];
+    [dateComps setDay: 1];
+    self.tvActiveDate = [cal dateFromComponents: dateComps];
+    
+    // table view itself
     
     if (self.activeTableView){
         
@@ -1298,42 +1320,97 @@
         
     }
     
-    // activity indicator
+    if (self.activeScrollView){
+        
+        [self.activeScrollView removeFromSuperview];
+        self.activeScrollView = nil;
+        
+    }
     
-    UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-    
-    indView.frame = self.mainContainer.frame;
-    
-    indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
-    [self.view addSubview: indView];
-    
-    [indView startAnimating];
-    
-    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
-    
-    // NEED TO DISPATCH A BLOCK WITH DELAY HERE
-    
-    
-//    [self.activeTableView reloadData];
-    
-    
+    [self addEmbeddedTableViewToViewHierarchy];
     
 }
 
-- (UITableView *)newTableViewForActiveDate{
+- (void)addEmbeddedTableViewToViewHierarchy{
+    
+    //// returns a table view embedded inside a scroll view. This is done so that the table view is forced to layout all its content
+    
+    UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
+    self.activeScrollView = sv;
+    
+    
+    CGFloat tvContentHeight = [self totalTableViewHeightBasedOnTVSortedContent];
+    
+    if (tvContentHeight < self.mainContainer.frame.size.height){
+        tvContentHeight = self.mainContainer.frame.size.height;
+    }
+    
+    CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, tvContentHeight); // the scroll view is large enough that the table view will layout all of its content
+    sv.contentSize = svContentSize;
+    
+    sv.backgroundColor = [UIColor redColor];
     
     UITableView *tv = [[UITableView alloc] init];
+    self.activeTableView = tv;
     
     [self configureTableView: tv];
     
+    tv.frame = CGRectMake(0, 0, svContentSize.width, tvContentHeight);
     tv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    tv.dataSource = self;
+    tv.delegate = self;
     
     // ... other aesthetic properties
     
+    //// view hierarchy
+    // sv and tv
     
+    [sv addSubview: tv];
+    [self.mainContainer addSubview: sv];
     
-    return tv;
+    // activity indicator
+    
+    if (self.activeActivityIndicator){
+        
+        [self.activeActivityIndicator removeFromSuperview];
+        self.activeActivityIndicator = nil;
+        
+    }
+    
+}
+
+- (CGFloat)totalTableViewHeightBasedOnTVSortedContent{
+    
+    // based on the array of chain templates found in tvSortedContent, calculate the total table view height
+    
+    NSInteger iterationLimit; // based on the count of objects in tvSortedContent, the amount of cells presented by the table view will vary
+    
+    if (self.tvSortedContent.count == 0){
+        
+        iterationLimit = 2;
+        
+    } else{
+        
+        iterationLimit = self.tvSortedContent.count + 1;
+        
+    }
+    
+    CGFloat sum = 0;
+    
+    for (int i = 0; i < iterationLimit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        CGFloat height = [self tableView: self.activeTableView
+                 heightForRowAtIndexPath: path];
+        
+        sum += height;
+        
+    }
+    
+    return sum;
     
 }
 

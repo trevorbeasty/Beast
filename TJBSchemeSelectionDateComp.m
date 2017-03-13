@@ -177,8 +177,12 @@
 #pragma mark - Actions
 
 - (void)didSelectView{
+    
+    if (_isEnabled){
         
         [self.masterController didSelectObjectWithIndex: self.index];
+        
+    }
         
 }
 
