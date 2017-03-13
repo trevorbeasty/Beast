@@ -21,6 +21,4 @@
 
 - (instancetype)initFreshRoutineWithChainTemplate:(TJBChainTemplate *)chainTemplate;
 
-- (void)didPressBack;
-
 @end

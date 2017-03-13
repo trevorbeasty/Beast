@@ -105,6 +105,12 @@
 
 - (void)configureViewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
+    // labels
+    
     NSArray *titleLabels = @[self.titleLabel1, self.titleLabel2];
     for (UILabel *label in titleLabels){
         

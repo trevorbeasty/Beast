@@ -39,6 +39,10 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+// for dismissing directly back to home screen
+
+#import "TJBWorkoutNavigationHub.h"
+
 @interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
 
 {
@@ -697,41 +701,12 @@ static NSString const *restViewKey = @"restView";
                                                             [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
                                                             [[TJBStopwatch singleton] removePrimaryStopwatchObserver: weakSelf.timerTitleLabel];
                                                             
-                                                            [weakSelf dismissViewControllerAnimated: YES
-                                                                                         completion: nil];
+                                                            UIViewController *homeVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
                                                             
-                                                            // disassociate with the timer
+                                                            [homeVC dismissViewControllerAnimated: YES
+                                                                                       completion: nil];
                                                             
-                                                            [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
-                                                            
-                                                        }];
-    [alert addAction: leaveAction];
-    
-    [self presentViewController: alert
-                       animated: YES
-                     completion: nil];
-    
-}
 
-
-- (void)didPressBack{
-    
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Are you sure?"
-                                                                   message: @"A routine cannot be resumed after leaving"
-                                                            preferredStyle: UIAlertControllerStyleAlert];
-    
-    UIAlertAction *stayAction = [UIAlertAction actionWithTitle: @"Stay"
-                                                         style: UIAlertActionStyleDefault
-                                                       handler: nil];
-    [alert addAction: stayAction];
-    
-    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-    UIAlertAction *leaveAction = [UIAlertAction actionWithTitle: @"Leave"
-                                                          style: UIAlertActionStyleDefault
-                                                        handler: ^(UIAlertAction *action){
-                                                            
-                                                            [weakSelf dismissViewControllerAnimated: YES
-                                                                                         completion: nil];
                                                             
                                                             // disassociate with the timer
                                                             

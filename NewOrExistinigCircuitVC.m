@@ -1312,7 +1312,7 @@
 
         
         [self presentViewController: tbc
-                           animated: NO
+                           animated: YES
                          completion: nil];
         
     } else{

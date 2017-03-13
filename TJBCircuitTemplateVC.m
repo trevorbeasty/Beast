@@ -157,7 +157,7 @@ static NSString * const defaultValue = @"unselected";
     
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
     
-    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 2.0;
+    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
     
     BOOL targetsVaryByRound = self.chainTemplate.targetsVaryByRound == YES;
     

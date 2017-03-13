@@ -44,6 +44,7 @@
 
 - (IBAction)didPressLaunchCircuit:(id)sender;
 - (IBAction)didPressBack:(id)sender;
+- (IBAction)didPressAdd:(id)sender;
 
 // core
 
@@ -156,8 +157,6 @@
                                    forState: UIControlStateNormal];
     self.launchCircuitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     // title labels text
     
     self.titleLabel.text = self.chainTemplate.name;
@@ -233,8 +232,8 @@
 
 - (void)alertUserInputIncomplete{
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"All Selections Not Made"
-                                                                   message: @"Please make all selections"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Required Selections Incomplete"
+                                                                   message: @"Please make all available selections"
                                                             preferredStyle: UIAlertControllerStyleAlert];
     
     UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
@@ -291,33 +290,7 @@
                                animated: NO
                              completion: nil];
             
-//            TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.chainTemplate];
-//            vc1.tabBarItem.title = @"Active";
-//            
-//            TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] init];
-//            vc2.tabBarItem.title = @"Workout Log";
-//            
-//            // tab bar
-//            
-//            UITabBarController *tbc = [[UITabBarController alloc] init];
-//            [tbc setViewControllers: @[vc1, vc2]];
-//            tbc.tabBar.translucent = NO;
-//            tbc.navigationItem.title = @"Lift Routine";
-//            
-//            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle: @"Back"
-//                                                                           style: UIBarButtonItemStyleDone
-//                                                                          target: vc1
-//                                                                          action: @selector(didPressBack)];
-//            [tbc.navigationItem setLeftBarButtonItem: backButton];
-//            
-//            // navigation controller
-//            
-//            UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController: tbc];
-//            navC.navigationBar.translucent = NO;
-//            
-//            [self presentViewController: navC
-//                               animated: NO
-//                             completion: nil];
+
             
         };
         
@@ -339,14 +312,6 @@
 
 - (IBAction)didPressBack:(id)sender{
     
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
-    
-}
-    
-
-- (void)didPressX{
-    
     // delete the chain template from the persistent store if it is incomplete
     
     // must check for completeness of chain template.  If all user selections have been been made but the 'launch circuit' or '+' buttons have not been pressed, its 'isIncomplete' property will not be updated
@@ -358,7 +323,7 @@
         
         [[CoreDataController singleton] deleteChainWithChainType: ChainTemplateType
                                                            chain: self.chainTemplate];
-    
+        
     }
     
     [self dismissViewControllerAnimated: NO
@@ -366,7 +331,9 @@
     
 }
 
-- (void)didPressAdd{
+
+
+- (IBAction)didPressAdd:(id)sender{
     
     //// this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
     
@@ -381,17 +348,18 @@
         
         // alert
         
-        NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
-                             self.chainTemplate.name];
+        NSString *message = [NSString stringWithFormat: @"New routine added to My Routines"];
         
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Saved"
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Successfully Saved"
                                                                        message: message
                                                                 preferredStyle: UIAlertControllerStyleAlert];
         
         void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
             
-            [self dismissViewControllerAnimated: NO
-                                     completion: nil];
+            UIViewController *homeVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+            
+            [homeVC dismissViewControllerAnimated: YES
+                                       completion: nil];
             
         };
         

@@ -17,6 +17,10 @@
 #import "TJBCircuitReferenceExerciseComp.h"
 #import "TJBCircuitReferenceRowComp.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBCircuitReferenceVC ()
 
 {
@@ -75,6 +79,10 @@
 
 - (void)viewDidLoad{
     
+    // meta view background color
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
     [self createChildViewControllersAndLayoutViews];
     
 }
@@ -100,7 +108,7 @@
 
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
     
-    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 2.0;
+    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
     
     componentHeight = rowHeight * (self.realizedChain.numberOfRounds + 2) + componentStyleSpacing;
     
@@ -110,7 +118,7 @@
     scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight + initialTopSpacing);
     [self.view addSubview: scrollView];
     
-    CGRect scrollViewSubviewFrame = CGRectMake(0, initialTopSpacing, _prescribedSize.width, scrollContentHeight);
+    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, _prescribedSize.width, scrollContentHeight + initialTopSpacing);
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
@@ -119,7 +127,8 @@
     // exercise components
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: @"V:|-"];
+    NSString *string = [NSString stringWithFormat: @"V:|-%f-", initialTopSpacing];
+    [verticalLayoutConstraintsString setString: string];
     
     for (int i = 0 ; i < self.realizedChain.numberOfExercises ; i ++){
         
@@ -148,12 +157,14 @@
         
         if (i == self.realizedChain.numberOfExercises - 1){
             
-            verticalAppendString = [NSString stringWithFormat: @"[%@]",
-                                    dynamicComponentName];
+            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]",
+                                    dynamicComponentName,
+                                    componentHeight];
         } else{
             
-            verticalAppendString = [NSString stringWithFormat: @"[%@]-%d-",
+            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]-%d-",
                                     dynamicComponentName,
+                                    componentHeight,
                                     (int)componentToComponentSpacing];
         }
         

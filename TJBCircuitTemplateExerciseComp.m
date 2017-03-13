@@ -104,6 +104,8 @@
     [button setTitleColor: color
                  forState: UIControlStateNormal];
     
+    button.titleLabel.numberOfLines = 0;
+    
     
     // selected exercise button layer
     
