@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -165,16 +165,13 @@
                         <constraint firstAttribute="height" constant="50" id="Luu-gE-NaM"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                    <state key="normal" title="Set Completed">
+                    <state key="normal" title="Sequence Completed">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
                         <action selector="didPressSetCompleted:" destination="-1" eventType="touchUpInside" id="seR-Pk-bew"/>
                     </connections>
                 </button>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-cq-CI2">
-                    <rect key="frame" x="0.0" y="212" width="375" height="405"/>
-                </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dVH-4S-63K" userLabel="advancedControlsContainer">
                     <rect key="frame" x="0.0" y="122" width="375" height="38"/>
                     <subviews>
@@ -213,17 +210,17 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s57-hw-ztV" userLabel="nextUpContainer">
-                    <rect key="frame" x="0.0" y="162" width="375" height="50"/>
+                    <rect key="frame" x="0.0" y="162" width="375" height="40"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading New Targets" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXD-DA-eaY">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading New Targets..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OXD-DA-eaY">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PHf-Ag-msU">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Up..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PHf-Ag-msU">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -232,17 +229,20 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="PHf-Ag-msU" firstAttribute="bottom" secondItem="OXD-DA-eaY" secondAttribute="bottom" id="7n6-cD-jVq"/>
-                        <constraint firstItem="PHf-Ag-msU" firstAttribute="top" secondItem="OXD-DA-eaY" secondAttribute="top" id="HDc-5g-XSS"/>
-                        <constraint firstAttribute="height" constant="50" id="bAL-fq-9Z9"/>
-                        <constraint firstItem="PHf-Ag-msU" firstAttribute="trailing" secondItem="OXD-DA-eaY" secondAttribute="trailing" id="h1H-nG-ArE"/>
+                        <constraint firstAttribute="trailing" secondItem="PHf-Ag-msU" secondAttribute="trailing" id="Q9f-eE-xvu"/>
+                        <constraint firstItem="PHf-Ag-msU" firstAttribute="leading" secondItem="s57-hw-ztV" secondAttribute="leading" id="TXT-Nl-Vyv"/>
+                        <constraint firstAttribute="bottom" secondItem="PHf-Ag-msU" secondAttribute="bottom" id="W7p-Px-xV1"/>
+                        <constraint firstAttribute="height" constant="40" id="bAL-fq-9Z9"/>
+                        <constraint firstItem="PHf-Ag-msU" firstAttribute="top" secondItem="s57-hw-ztV" secondAttribute="top" id="eWt-1v-jXd"/>
                         <constraint firstItem="OXD-DA-eaY" firstAttribute="leading" secondItem="s57-hw-ztV" secondAttribute="leading" id="kWp-6c-Efz"/>
                         <constraint firstAttribute="bottom" secondItem="OXD-DA-eaY" secondAttribute="bottom" id="pTP-YA-1MM"/>
                         <constraint firstItem="OXD-DA-eaY" firstAttribute="top" secondItem="s57-hw-ztV" secondAttribute="top" id="uZI-dX-pVi"/>
                         <constraint firstAttribute="trailing" secondItem="OXD-DA-eaY" secondAttribute="trailing" id="vy5-Pw-dld"/>
-                        <constraint firstItem="PHf-Ag-msU" firstAttribute="leading" secondItem="OXD-DA-eaY" secondAttribute="leading" id="yu8-ad-jN0"/>
                     </constraints>
                 </view>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-cq-CI2">
+                    <rect key="frame" x="0.0" y="202" width="375" height="415"/>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
