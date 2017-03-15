@@ -26,6 +26,7 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *restTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberLabel;
 
 // core
 
@@ -55,9 +56,17 @@
 
 - (void)viewDidLoad{
     
-    self.restTitleLabel.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    self.restTitleLabel.backgroundColor = [UIColor lightGrayColor];
     self.restTitleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    self.restTitleLabel.textColor = [UIColor darkGrayColor];
+    self.restTitleLabel.textColor = [UIColor whiteColor];
+    
+    self.numberLabel.backgroundColor = [UIColor lightGrayColor];
+    self.numberLabel.font = [UIFont systemFontOfSize: 35];
+    self.numberLabel.textColor = [UIColor whiteColor];
+    
+    self.numberLabel.text = [self.number stringValue];
     
     if (_marksEndOfRoutine){
         
@@ -67,13 +76,12 @@
         
         if (_isTargetingRest){
             
-            self.restTitleLabel.text = [NSString stringWithFormat: @"%d. Rest for %@",
-                                        [self.number intValue],
+            self.restTitleLabel.text = [NSString stringWithFormat: @"Rest for %@",
                                         [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.rest intValue]]];
             
         } else{
         
-            self.restTitleLabel.text = [NSString stringWithFormat: @"%d. Rest", [self.number intValue]];
+            self.restTitleLabel.text = @"Rest";
             
         }
         

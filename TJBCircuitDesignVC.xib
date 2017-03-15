@@ -224,7 +224,7 @@
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.9277890476068027" green="0.92854786474654838" blue="0.95269577512028125" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color key="backgroundColor" red="0.00030712644803921073" green="0.013069778462315421" blue="0.12315819300518138" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
                 <constraint firstItem="YYk-TL-zUU" firstAttribute="top" secondItem="DZM-7I-oFK" secondAttribute="top" id="0cd-1x-Akg"/>
                 <constraint firstItem="uQE-ay-pDu" firstAttribute="leading" secondItem="bpz-PO-qIV" secondAttribute="trailing" id="0iE-lA-vcU"/>

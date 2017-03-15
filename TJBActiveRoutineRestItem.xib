@@ -11,33 +11,45 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBActiveRoutineRestItem">
             <connections>
+                <outlet property="numberLabel" destination="PHd-DT-dWM" id="99h-X4-Lh6"/>
                 <outlet property="restTitleLabel" destination="Lwo-ua-Iqx" id="9Mo-6y-xEB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="510" height="56"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lwo-ua-Iqx">
-                    <rect key="frame" x="16" y="0.0" width="478" height="40"/>
+                    <rect key="frame" x="60" y="0.0" width="315" height="60"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="V4W-iD-QfK"/>
+                        <constraint firstAttribute="height" constant="60" id="V4W-iD-QfK"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PHd-DT-dWM">
+                    <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="W7O-cH-DyD"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Lwo-ua-Iqx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="44A-at-Q8M"/>
-                <constraint firstItem="Lwo-ua-Iqx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pxB-YG-fOB"/>
-                <constraint firstAttribute="trailing" secondItem="Lwo-ua-Iqx" secondAttribute="trailing" constant="16" id="u38-4L-kWi"/>
+                <constraint firstItem="Lwo-ua-Iqx" firstAttribute="top" secondItem="PHd-DT-dWM" secondAttribute="top" id="A5I-Vy-cii"/>
+                <constraint firstItem="Lwo-ua-Iqx" firstAttribute="leading" secondItem="PHd-DT-dWM" secondAttribute="trailing" id="Ach-eN-55L"/>
+                <constraint firstItem="PHd-DT-dWM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="DZP-UV-tZG"/>
+                <constraint firstItem="Lwo-ua-Iqx" firstAttribute="bottom" secondItem="PHd-DT-dWM" secondAttribute="bottom" id="OZN-4j-5aZ"/>
+                <constraint firstAttribute="trailing" secondItem="Lwo-ua-Iqx" secondAttribute="trailing" id="u38-4L-kWi"/>
+                <constraint firstItem="PHd-DT-dWM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vMo-Hi-G8n"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="101" y="-252"/>
         </view>
     </objects>

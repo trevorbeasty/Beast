@@ -27,9 +27,10 @@
 //@property (weak, nonatomic) IBOutlet UILabel *roundCornerLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *thenLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *targetsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *previousEntriesLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *previousEntriesLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UILabel *titleNumberLabel;
 
 // core
 
@@ -74,29 +75,31 @@
 
 - (void)configureViewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    // title labels
+    
     NSArray *titleLabels = @[self.titleExerciseLabel, self.targetWeightLabel, self.targetRepsLabel];
     for (UILabel *lab in titleLabels){
         
-        lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [UIColor darkGrayColor];
+        lab.backgroundColor = [UIColor lightGrayColor];
+        lab.textColor = [UIColor whiteColor];
         lab.font = [UIFont boldSystemFontOfSize: 20];
         
     }
     
+    // number label
     
-    NSArray *minorLabels = @[self.previousEntriesLabel];
-    for (UILabel *label in minorLabels){
-        
-        label.backgroundColor = [UIColor lightGrayColor];
-        label.font = [UIFont boldSystemFontOfSize: 15.0];
-        label.textColor = [UIColor whiteColor];
-        
-    }
+    self.titleNumberLabel.backgroundColor = [UIColor lightGrayColor];
+    self.titleNumberLabel.textColor = [UIColor whiteColor];
+    self.titleNumberLabel.font = [UIFont systemFontOfSize: 35];
     
     // curved corners of container view
     
-    self.containerView.layer.masksToBounds = YES;
-    self.containerView.layer.cornerRadius = 8.0;
+//    self.containerView.layer.masksToBounds = YES;
+//    self.containerView.layer.cornerRadius = 8.0;
     
 }
 
@@ -105,10 +108,11 @@
     // target labels and exercise title
     
     NSString *titleText = [NSString stringWithFormat: @"%@",
-                       self.targetExerciseName];
+                           self.targetExerciseName];
     NSString *targetWeightText = [NSString stringWithFormat: @"%@ lbs", self.targetWeight];
     NSString *targetRepsText = [NSString stringWithFormat: @"%@ reps", self.targetReps];
     
+    self.titleNumberLabel.text = [NSString stringWithFormat: @"%@", self.titleNumber];
     self.titleExerciseLabel.text = titleText;
     self.targetWeightLabel.text = targetWeightText;
     self.targetRepsLabel.text = targetRepsText;
@@ -137,7 +141,11 @@ static NSString * previousEntryCellID = @"previousEntryCell";
 
 #pragma mark - <UITableViewDelegate>
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return 30;
+    
+}
 
 
 

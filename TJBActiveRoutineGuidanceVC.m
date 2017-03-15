@@ -75,9 +75,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
-@property (weak, nonatomic) IBOutlet UILabel *nextUpLabel;
-@property (weak, nonatomic) IBOutlet UILabel *loadingNewTargetsLabel;
-@property (weak, nonatomic) IBOutlet UIView *nextUpContainer;
+//@property (weak, nonatomic) IBOutlet UILabel *nextUpLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *loadingNewTargetsLabel;
+//@property (weak, nonatomic) IBOutlet UIView *nextUpContainer;
 
 // constraints for flying round and rest labes horizontally
 
@@ -269,20 +269,20 @@ static float const animationTimeUnit = .4;
     // next up / loading new data labels
     // also make sure next up is on top of loading new data
     
-    NSArray *moreInfoLabels = @[self.nextUpLabel, self.loadingNewTargetsLabel];
-    for (UILabel *lab in moreInfoLabels){
-        
-        lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [UIColor darkGrayColor];
-        lab.font = [UIFont boldSystemFontOfSize: 20];
-        
-    }
+//    NSArray *moreInfoLabels = @[self.nextUpLabel, self.loadingNewTargetsLabel];
+//    for (UILabel *lab in moreInfoLabels){
+//        
+//        lab.backgroundColor = [UIColor clearColor];
+//        lab.textColor = [UIColor darkGrayColor];
+//        lab.font = [UIFont boldSystemFontOfSize: 20];
+//        
+//    }
     
-    self.loadingNewTargetsLabel.textColor = [UIColor redColor];
-    
-    [self.nextUpContainer insertSubview: self.nextUpLabel
-                           aboveSubview: self.loadingNewTargetsLabel];
-    self.loadingNewTargetsLabel.hidden = YES;
+//    self.loadingNewTargetsLabel.textColor = [UIColor redColor];
+//    
+//    [self.nextUpContainer insertSubview: self.nextUpLabel
+//                           aboveSubview: self.loadingNewTargetsLabel];
+//    self.loadingNewTargetsLabel.hidden = YES;
     
     //
     
@@ -340,6 +340,22 @@ static float const animationTimeUnit = .4;
     
     self.timerTitleLabel.backgroundColor = [UIColor redColor];
     self.remainingRestTopLabel.backgroundColor = [UIColor redColor];
+    
+    // meta view
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    
+    // content container
+    
+    self.contentScrollView.backgroundColor = [UIColor clearColor];
+    
+    // title container
+    
+    self.titleContainer.backgroundColor = [UIColor clearColor];
+    
+    // advanced controls container
+    
+    self.advancedControlsContainer.backgroundColor = [UIColor clearColor];
     
 }
 
@@ -535,17 +551,16 @@ static NSString const *restViewKey = @"restView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 300;
-    CGFloat restCompHeight = 100;
-    CGFloat initialTopSpacing = 16.0;
+    CGFloat exerciseCompHeight = 176;
+    CGFloat restCompHeight = 84;
+    CGFloat initialTopSpacing = 2.0;
     CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight + initialTopSpacing;
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
     
     UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
-    masterView.backgroundColor = [UIColor whiteColor];
-//    self.activeScrollContentView = masterView;
+    masterView.backgroundColor = [UIColor clearColor];
     
     //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
     
@@ -554,6 +569,7 @@ static NSString const *restViewKey = @"restView";
     guidanceStackView.distribution = UIStackViewDistributionFillEqually;
     guidanceStackView.alignment = UIStackViewDistributionFill;
     guidanceStackView.spacing = 0;
+    guidanceStackView.backgroundColor = [UIColor clearColor];
     
     guidanceStackView.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -569,20 +585,20 @@ static NSString const *restViewKey = @"restView";
                                                                                views: self.constraintMapping];
     
     
-    NSString *verticalStringStackView = [NSString stringWithFormat: @"V:|-%.01f-[guidanceStackView]", initialTopSpacing];
-    NSArray *guidanceStackViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalStringStackView
-                                                                             options: 0
-                                                                             metrics: nil
-                                                                               views: self.constraintMapping];
+//    NSString *verticalStringStackView = [NSString stringWithFormat: @"V:|-%.01f-[guidanceStackView]", initialTopSpacing];
+//    NSArray *guidanceStackViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalStringStackView
+//                                                                             options: 0
+//                                                                             metrics: nil
+//                                                                               views: self.constraintMapping];
     
     [masterView addConstraints: guidanceStackViewHorC];
-    [masterView addConstraints: guidanceStackViewVerC];
+//    [masterView addConstraints: guidanceStackViewVerC];
     
     // add views to the guidance stack view
     
     for (int i = 0; i < self.activeLiftTargets.count; i++){
         
-        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 1];
+        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 2];
         NSString *exerciseName = self.activeLiftTargets[i][0];
         NSString *weight;
         NSString *reps;
@@ -639,7 +655,7 @@ static NSString const *restViewKey = @"restView";
     // add single rest view to stack view
     // the rest view needs to know if it is the last view.  If so, it will indicate the routine ends instead of showing a rest value.  The active target indices will stop at their max values when all chain values have been pulled.  I keep track of this with a state variable
     
-    NSNumber *titleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 1];
+    NSNumber *titleNumber = [NSNumber numberWithInteger: 1];
     TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
                                                                                       restNumber: self.activeRestTarget
                                                                                marksEndOfRoutine: _isLastExerciseOfRoutine
@@ -661,7 +677,8 @@ static NSString const *restViewKey = @"restView";
                                                                              metrics: nil
                                                                                views: self.constraintMapping];
     
-    NSString *verticalString = [NSString stringWithFormat: @"V:[guidanceStackView]-0-[restView(==%d)]-0-|",
+    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[restView(==%d)]-0-[guidanceStackView]-0-|",
+                                initialTopSpacing,
                                 (int)restCompHeight];
     NSArray *restViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalString
                                                                              options: 0
@@ -804,10 +821,10 @@ static NSString const *restViewKey = @"restView";
                 
                 // this is where the views are updated to reflect new targets. Must ensure the current run loop finishes before calling this next method so that the next method's animation is properly displayed (views only redraw when the run-loop finishes, and thus one must allow the run loop to finish in order to display some interim state
                 
-                [self.nextUpContainer insertSubview: self.loadingNewTargetsLabel
-                                       aboveSubview: self.nextUpLabel];
-                self.loadingNewTargetsLabel.hidden = NO;
-                self.nextUpLabel.hidden = YES;
+//                [self.nextUpContainer insertSubview: self.loadingNewTargetsLabel
+//                                       aboveSubview: self.nextUpLabel];
+//                self.loadingNewTargetsLabel.hidden = NO;
+//                self.nextUpLabel.hidden = YES;
                 
                 self.contentScrollView.hidden = YES;
                 
@@ -1067,7 +1084,7 @@ static NSString const *restViewKey = @"restView";
                          
                          self.advancedControlsContainer.hidden = NO;
 
-                    NSArray *views = @[self.advancedControlsContainer, self.nextUpContainer];
+                    NSArray *views = @[self.advancedControlsContainer];
                          
                     for (UIView *view in views){
                              
@@ -1102,7 +1119,7 @@ static NSString const *restViewKey = @"restView";
     [UIView animateWithDuration: .4
                      animations: ^{
                          
-                         NSArray *views = @[self.advancedControlsContainer, self.nextUpContainer];
+                         NSArray *views = @[self.advancedControlsContainer];
                          
                          for (UIView *view in views){
                              
@@ -1158,37 +1175,37 @@ static NSString const *restViewKey = @"restView";
     
     // next animation
     
-    [self performSelector: @selector(nextUpLabelAnimation)
+    [self performSelector: @selector(configureImmediateTargets)
                withObject: nil
                afterDelay: animationTimeUnit * 2.0];
     
 }
 
-- (void)nextUpLabelAnimation{
-    
-    // update the targets content
-    
-    [self configureImmediateTargets];
-    
-    // transition from the 'loading new data' to the 'next up' label
-    
-    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-    
-    [UIView transitionWithView: self.nextUpContainer
-                      duration: animationTimeUnit * 2.0
-                       options: UIViewAnimationOptionTransitionCrossDissolve
-                    animations: ^{
-                        
-                        [weakSelf.nextUpContainer insertSubview: weakSelf.nextUpLabel
-                                                   aboveSubview: weakSelf.loadingNewTargetsLabel];
-                        
-                        weakSelf.nextUpLabel.hidden = NO;
-                        weakSelf.loadingNewTargetsLabel.hidden = YES;
-                        
-                    }
-                    completion: nil];
-    
-}
+//- (void)nextUpLabelAnimation{
+//    
+//    // update the targets content
+//    
+//    [self configureImmediateTargets];
+//    
+//    // transition from the 'loading new data' to the 'next up' label
+//    
+//    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+//    
+//    [UIView transitionWithView: self.nextUpContainer
+//                      duration: animationTimeUnit * 2.0
+//                       options: UIViewAnimationOptionTransitionCrossDissolve
+//                    animations: ^{
+//                        
+//                        [weakSelf.nextUpContainer insertSubview: weakSelf.nextUpLabel
+//                                                   aboveSubview: weakSelf.loadingNewTargetsLabel];
+//                        
+//                        weakSelf.nextUpLabel.hidden = NO;
+//                        weakSelf.loadingNewTargetsLabel.hidden = YES;
+//                        
+//                    }
+//                    completion: nil];
+//    
+//}
 
 
 
