@@ -14,15 +14,6 @@
 
 @interface TJBActiveRoutineRestItem ()
 
-{
-    
-    // core
-    
-    BOOL _marksEndOfRoutine;
-    BOOL _isTargetingRest;
-    
-}
-
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *restTitleLabel;
@@ -31,7 +22,7 @@
 // core
 
 @property (nonatomic, strong) NSNumber *number;
-@property (nonatomic, strong) NSNumber *rest;
+@property (nonatomic, strong) NSString *contentText;
 
 @end
 
@@ -39,14 +30,12 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber restNumber:(NSNumber *)restNumber marksEndOfRoutine:(BOOL)marksEndOfRoutine isTargetingRest:(BOOL)isTargetingRest{
+- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber contentText:(NSString *)contentText{
     
     self = [super init];
     
     self.number = titleNumber;
-    self.rest = restNumber;
-    _marksEndOfRoutine = marksEndOfRoutine;
-    _isTargetingRest = isTargetingRest;
+    self.contentText = contentText;
     
     return self;
     
@@ -68,28 +57,7 @@
     
     self.numberLabel.text = [self.number stringValue];
     
-    if (_marksEndOfRoutine){
-        
-        self.restTitleLabel.text = @"Routine Completed";
-        
-    } else{
-        
-        if (_isTargetingRest){
-            
-            self.restTitleLabel.text = [NSString stringWithFormat: @"Rest for %@",
-                                        [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.rest intValue]]];
-            
-        } else{
-        
-            self.restTitleLabel.text = @"Rest";
-            
-        }
-        
-
-        
-    }
-    
-
+    self.restTitleLabel.text = self.contentText;
     
 }
 

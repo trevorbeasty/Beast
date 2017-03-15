@@ -55,6 +55,7 @@
     // used for content view creation / configuration
     
     BOOL _isLastExerciseOfRoutine;
+    BOOL _showingFirstTargets;
     
 }
 
@@ -155,6 +156,7 @@ static float const animationTimeUnit = .4;
     _selectionIndex = 0;
     
     _isLastExerciseOfRoutine = NO;
+    _showingFirstTargets = YES;
     
     self.realizedChain = [[CoreDataController singleton] createAndSaveSkeletonRealizedChainForChainTemplate: chainTemplate];
     
@@ -240,7 +242,22 @@ static float const animationTimeUnit = .4;
     
     self.contentScrollView.contentOffset = CGPointMake(0, 0);
     
-    UIView *newView = [self scrollContentViewForTargetArrays];
+    UIView *newView;
+    
+    // if this is the first set of targets, there should be no rest item displayed
+    // _showingFirstTargets is set to YES when this VC is initialized
+    
+    if (_showingFirstTargets){
+        
+        newView = [self scrollContentViewForTargetArraysWithoutRestItem];
+        
+        _showingFirstTargets = NO;
+        
+    } else{
+        
+        newView = [self scrollContentViewForTargetArraysWithRestItem];
+        
+    }
     
     [UIView transitionWithView: self.contentScrollView
                       duration: animationTimeUnit * 2.0
@@ -265,26 +282,6 @@ static float const animationTimeUnit = .4;
 }
 
 - (void)configureViewAesthetics{
-    
-    // next up / loading new data labels
-    // also make sure next up is on top of loading new data
-    
-//    NSArray *moreInfoLabels = @[self.nextUpLabel, self.loadingNewTargetsLabel];
-//    for (UILabel *lab in moreInfoLabels){
-//        
-//        lab.backgroundColor = [UIColor clearColor];
-//        lab.textColor = [UIColor darkGrayColor];
-//        lab.font = [UIFont boldSystemFontOfSize: 20];
-//        
-//    }
-    
-//    self.loadingNewTargetsLabel.textColor = [UIColor redColor];
-//    
-//    [self.nextUpContainer insertSubview: self.nextUpLabel
-//                           aboveSubview: self.loadingNewTargetsLabel];
-//    self.loadingNewTargetsLabel.hidden = YES;
-    
-    //
     
     NSArray *labels = @[self.roundTitleLabel,
                         self.timerTitleLabel,
@@ -542,7 +539,7 @@ static NSString const *nextUpLabelKey = @"nextUpLabel";
 static NSString const *guidanceStackViewKey = @"guidanceStackView";
 static NSString const *restViewKey = @"restView";
 
-- (UIView *)scrollContentViewForTargetArrays{
+- (UIView *)scrollContentViewForTargetArraysWithRestItem{
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     self.exerciseItemChildVCs = [[NSMutableArray alloc] init];
@@ -584,15 +581,7 @@ static NSString const *restViewKey = @"restView";
                                                                              metrics: nil
                                                                                views: self.constraintMapping];
     
-    
-//    NSString *verticalStringStackView = [NSString stringWithFormat: @"V:|-%.01f-[guidanceStackView]", initialTopSpacing];
-//    NSArray *guidanceStackViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalStringStackView
-//                                                                             options: 0
-//                                                                             metrics: nil
-//                                                                               views: self.constraintMapping];
-    
     [masterView addConstraints: guidanceStackViewHorC];
-//    [masterView addConstraints: guidanceStackViewVerC];
     
     // add views to the guidance stack view
     
@@ -656,10 +645,13 @@ static NSString const *restViewKey = @"restView";
     // the rest view needs to know if it is the last view.  If so, it will indicate the routine ends instead of showing a rest value.  The active target indices will stop at their max values when all chain values have been pulled.  I keep track of this with a state variable
     
     NSNumber *titleNumber = [NSNumber numberWithInteger: 1];
+    
+    NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeRestTarget intValue]];
+    
+    NSString *contentText = [NSString stringWithFormat: @"Rest for %@", formattedRest];
+    
     TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
-                                                                                      restNumber: self.activeRestTarget
-                                                                               marksEndOfRoutine: _isLastExerciseOfRoutine
-                                                                                 isTargetingRest: self.chainTemplate.targetingRestTime];
+                                                                                     contentText: contentText];
     restItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.restItemChildVC = restItemVC;
@@ -689,6 +681,120 @@ static NSString const *restViewKey = @"restView";
     [masterView addConstraints: restViewVerC];
     
     [restItemVC didMoveToParentViewController: self];
+    
+    return masterView;
+    
+}
+
+- (UIView *)scrollContentViewForTargetArraysWithoutRestItem{
+    
+    self.constraintMapping = [[NSMutableDictionary alloc] init];
+    self.exerciseItemChildVCs = [[NSMutableArray alloc] init];
+    
+    //// create the master view and give it the appropriate frame. Set the scroll view's content area according to the masterFrame's size
+    
+    CGFloat width = self.contentScrollView.frame.size.width;
+    float numberOfExerciseComps = (float)self.activeLiftTargets.count;
+    CGFloat exerciseCompHeight = 176;
+    CGFloat initialTopSpacing = 2.0;
+    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + initialTopSpacing;
+    
+    CGRect masterFrame = CGRectMake(0, 0, width, height);
+    [self.contentScrollView setContentSize: CGSizeMake(width, height)];
+    
+    UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
+    masterView.backgroundColor = [UIColor clearColor];
+    
+    //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
+    
+    UIStackView *guidanceStackView = [[UIStackView alloc] init];
+    guidanceStackView.axis = UILayoutConstraintAxisVertical;
+    guidanceStackView.distribution = UIStackViewDistributionFillEqually;
+    guidanceStackView.alignment = UIStackViewDistributionFill;
+    guidanceStackView.spacing = 0;
+    guidanceStackView.backgroundColor = [UIColor clearColor];
+    
+    guidanceStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // layout constraints
+    
+    [self.constraintMapping setObject: guidanceStackView
+                               forKey: guidanceStackViewKey];
+    [masterView addSubview: guidanceStackView];
+    
+    NSArray *guidanceStackViewHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[guidanceStackView]-0-|"
+                                                                             options: 0
+                                                                             metrics: nil
+                                                                               views: self.constraintMapping];
+    
+    [masterView addConstraints: guidanceStackViewHorC];
+    
+    // add views to the guidance stack view
+    
+    for (int i = 0; i < self.activeLiftTargets.count; i++){
+        
+        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 1];
+        NSString *exerciseName = self.activeLiftTargets[i][0];
+        NSString *weight;
+        NSString *reps;
+        
+        if (self.chainTemplate.targetingWeight){
+            
+            weight = [self.activeLiftTargets[i][1] stringValue];
+            
+        } else{
+            
+            weight = @"X";
+            
+        }
+        
+        if (self.chainTemplate.targetingReps){
+            
+            reps = [self.activeLiftTargets[i][2] stringValue];
+            
+        } else{
+            
+            reps = @"X";
+            
+        }
+        
+        // grab the previous entries to be passed to the exerciseItemVC based on the active targets index
+        // must make sure that a sub-array exists at the index before attempting to grab it.  If info exists at a certain index, it must exist at a lesser index given how chains work.  This allows me to just evaluate chain length when determining if info exists or not
+        
+        NSInteger numberOfPreviousEntries = self.activePreviousMarks.count;
+        
+        NSArray<NSArray *> *previousEntries = nil;
+        
+        if (i < numberOfPreviousEntries){
+            
+            previousEntries = self.activePreviousMarks[i];
+            
+        }
+        
+        
+        
+        TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
+                                                                                                  targetExerciseName: exerciseName
+                                                                                                        targetWeight: weight
+                                                                                                          targetReps: reps
+                                                                                                     previousEntries: previousEntries];
+        [self.exerciseItemChildVCs addObject: exerciseItemVC];
+        [self addChildViewController: exerciseItemVC];
+        
+        [guidanceStackView addArrangedSubview: exerciseItemVC.view];
+        
+        [exerciseItemVC didMoveToParentViewController: self];
+        
+    }
+    
+    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[guidanceStackView]-0-|",
+                                initialTopSpacing];
+    NSArray *vertConstr = [NSLayoutConstraint constraintsWithVisualFormat: verticalString
+                                                                    options: 0
+                                                                    metrics: nil
+                                                                      views: self.constraintMapping];
+
+    [masterView addConstraints: vertConstr];
     
     return masterView;
     
