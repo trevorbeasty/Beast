@@ -1176,6 +1176,7 @@
     
     CGSize contentSize = CGSizeMake(self.mainContainer.frame.size.width, contentHeight);
     sv.contentSize = contentSize;
+    sv.bounces = NO;
     
     [sv addSubview: chainHistoryVC.view];
     

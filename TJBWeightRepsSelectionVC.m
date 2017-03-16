@@ -26,10 +26,10 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *repsSegmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *weightSelectedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsSelectedValueLabel;
-@property (weak, nonatomic) IBOutlet UILabel *weightLabel;
-@property (weak, nonatomic) IBOutlet UILabel *repsLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *weightLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *repsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *smallTopTitleLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *smallTopTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
@@ -131,7 +131,7 @@
     
     [self.view layoutIfNeeded];
     
-    NSArray *titleLabels = @[self.topTitleLabel, self.weightLabel, self.repsLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel, self.smallTopTitleLabel];
+    NSArray *titleLabels = @[self.topTitleLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel];
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
@@ -139,10 +139,6 @@
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
-    
-    self.weightLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    self.repsLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    self.topTitleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
     // buttons
     
