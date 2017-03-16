@@ -564,11 +564,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 60.0;
+    CGFloat titleHeight = 90;
     
     if (indexPath.row == 0){
         
-        return titleHeight + 30;
+        return titleHeight;
         
     } else{
         
@@ -576,7 +576,7 @@
             
             [self.view layoutIfNeeded];
             
-            return self.personalRecordsTableView.frame.size.height - titleHeight;
+            return self.shadowView.frame.size.height - titleHeight;
             
         } else{
             

@@ -17,6 +17,7 @@
 
 #import "TJBNoDataCell.h"
 #import "TJBExerciseSelectionCell.h"
+#import "TJBExerciseSelectionTitleCell.h"
 
 #import "TJBAestheticsController.h"
 
@@ -28,11 +29,14 @@
     
     BOOL _exerciseAdditionActive;
     
+    BOOL _searchIsActive;
+    
 }
 
 //// core
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *exercisesForBrowsingSCValue;
 @property (strong) NSMutableArray *filteredExercises;
 
 // callback
@@ -55,12 +59,17 @@
 @property (weak, nonatomic) IBOutlet UIView *exerciseAdditionContainer;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIButton *addAndSelectButton;
-@property (weak, nonatomic) IBOutlet UITextField *exerciseSeachTextField;
-@property (weak, nonatomic) IBOutlet UILabel *searchLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchFieldTopSpaceConstr;
-@property (weak, nonatomic) IBOutlet UILabel *exerciseNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dateLastExecutedLabel;
-@property (weak, nonatomic) IBOutlet UILabel *thinDividerLabel;
+//@property (weak, nonatomic) IBOutlet UITextField *exerciseSeachTextField;
+//@property (weak, nonatomic) IBOutlet UILabel *searchLabel;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchFieldTopSpaceConstr;
+//@property (weak, nonatomic) IBOutlet UILabel *exerciseNameLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *dateLastExecutedLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *thinDividerLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *normalBrowsingExerciseSC;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
+
+@property (strong) TJBExerciseSelectionTitleCell *titleCell;
+
 
 // IBAction
 
@@ -68,6 +77,7 @@
 - (IBAction)didPressLeftBarButton:(id)sender;
 - (IBAction)didPressAddButton:(id)sender;
 - (IBAction)didPressAddAndSelect:(id)sender;
+- (IBAction)didPressSearchButton:(id)sender;
 
 
 @end
@@ -85,6 +95,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     self.callbackBlock = block;
     
     _exerciseAdditionActive = NO;
+    _searchIsActive = NO;
     
     return self;
     
@@ -100,6 +111,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [self createFetchedResultsController];
     
+    [self browsingSCValueDidChange]; // called to force the controller to create the array the table view needs
+    
     [self viewAesthetics];
     
     [self configureInitialControlPosition];
@@ -110,18 +123,28 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [self configureExerciseFilterTextField];
     
+    [self configureNormalBrowsingExerciseSC];
+    
+}
+
+- (void)configureNormalBrowsingExerciseSC{
+    
+    [self.normalBrowsingExerciseSC addTarget: self
+                                      action: @selector(browsingSCValueDidChange)
+                            forControlEvents: UIControlEventValueChanged];
+    
 }
 
 - (void)configureExerciseFilterTextField{
     
-    self.exerciseSeachTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.exerciseSeachTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-    self.exerciseSeachTextField.clearButtonMode = UITextFieldViewModeAlways;
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(updateFetchedResultsController)
-                                                 name: UITextFieldTextDidChangeNotification
-                                               object: self.exerciseSeachTextField];
+//    self.exerciseSeachTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+//    self.exerciseSeachTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+//    self.exerciseSeachTextField.clearButtonMode = UITextFieldViewModeAlways;
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(updateFetchedResultsController)
+//                                                 name: UITextFieldTextDidChangeNotification
+//                                               object: self.exerciseSeachTextField];
     
 }
 
@@ -189,28 +212,30 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
                                                     @"Placeholder"];
     
-    if ([self.exerciseSeachTextField.text isEqualToString: @""]){
-        
-        request.predicate = noPlaceholderExercisesPredicate;
-        
-    } else{
-        
-        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@",
-                                              self.exerciseSeachTextField.text];
-        
-        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
-                                                                                              searchFilterPredicate]];
-        
-        request.predicate = compPred;
-        
-    }
+    request.predicate = noPlaceholderExercisesPredicate;
+    
+//    if ([self.exerciseSeachTextField.text isEqualToString: @""]){
+//        
+//        
+//        
+//    } else{
+//        
+//        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@",
+//                                              self.exerciseSeachTextField.text];
+//        
+//        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
+//                                                                                              searchFilterPredicate]];
+//        
+//        request.predicate = compPred;
+//        
+//    }
     
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
     
-    NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
-                                                                   ascending: YES];
-    [request setSortDescriptors: @[categorySort, nameSort]];
+//    NSSortDescriptor *categorySort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
+//                                                                   ascending: YES];
+    [request setSortDescriptors: @[nameSort]];
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
@@ -238,17 +263,17 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     // table view header labels
     
-    NSArray *columnLabels = @[self.exerciseNameLabel, self.dateLastExecutedLabel];
-    for (UILabel *lab in columnLabels){
-        
-        lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [UIColor darkGrayColor];
-        lab.font = [UIFont boldSystemFontOfSize: 15];
-        
-    }
-    
-    self.thinDividerLabel.backgroundColor = [UIColor darkGrayColor];
-    self.thinDividerLabel.textColor = [UIColor darkGrayColor];
+//    NSArray *columnLabels = @[self.exerciseNameLabel, self.dateLastExecutedLabel];
+//    for (UILabel *lab in columnLabels){
+//        
+//        lab.backgroundColor = [UIColor clearColor];
+//        lab.textColor = [UIColor darkGrayColor];
+//        lab.font = [UIFont boldSystemFontOfSize: 15];
+//        
+//    }
+//    
+//    self.thinDividerLabel.backgroundColor = [UIColor darkGrayColor];
+//    self.thinDividerLabel.textColor = [UIColor darkGrayColor];
     
     // table view
     
@@ -283,7 +308,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     // add buttons
     
-    NSArray *addButtons = @[self.addButton, self.addAndSelectButton];
+    NSArray *addButtons = @[self.addButton, self.addAndSelectButton, self.addNewExerciseButton, self.searchButton];
     for (UIButton *button in addButtons){
         
         button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
@@ -311,16 +336,16 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
     }
     
-    CALayer *estfLayer = self.exerciseSeachTextField.layer;
-    estfLayer.borderWidth = 2.0;
-    estfLayer.borderColor = [UIColor lightGrayColor].CGColor;
-    
-    self.exerciseSeachTextField.font = [UIFont systemFontOfSize: 20];
-    self.exerciseSeachTextField.textColor = [UIColor blackColor];
-    
-    self.searchLabel.backgroundColor = [UIColor lightGrayColor];
-    self.searchLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    self.searchLabel.textColor = [UIColor whiteColor];
+//    CALayer *estfLayer = self.exerciseSeachTextField.layer;
+//    estfLayer.borderWidth = 2.0;
+//    estfLayer.borderColor = [UIColor lightGrayColor].CGColor;
+//    
+//    self.exerciseSeachTextField.font = [UIFont systemFontOfSize: 20];
+//    self.exerciseSeachTextField.textColor = [UIColor blackColor];
+//    
+//    self.searchLabel.backgroundColor = [UIColor lightGrayColor];
+//    self.searchLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+//    self.searchLabel.textColor = [UIColor whiteColor];
     
 }
 
@@ -354,6 +379,54 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     [self.exerciseTableView registerNib: exerciseSelectionCell
                  forCellReuseIdentifier: @"TJBExerciseSelectionCell"];
     
+    UINib *titleNib = [UINib nibWithNibName: @"TJBExerciseSelectionTitleCell"
+                                     bundle: nil];
+    
+    [self.exerciseTableView registerNib: titleNib
+                 forCellReuseIdentifier: @"TJBExerciseSelectionTitleCell"];
+    
+}
+
+
+#pragma mark - Exercise Browsing SC
+
+- (void)browsingSCValueDidChange{
+    
+    NSString *filterString;
+    
+    switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
+        case 0:
+            filterString = @"Push";
+            break;
+            
+        case 1:
+            filterString = @"Pull";
+            break;
+            
+        case 2:
+            filterString = @"Legs";
+            break;
+            
+        case 3:
+            filterString = @"Other";
+            
+        default:
+            break;
+    }
+    
+    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+    
+    NSPredicate *categoryFilter = [NSPredicate predicateWithFormat: @"category.name == %@",
+                                   filterString];
+    
+    returnArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
+    
+    [returnArray filterUsingPredicate: categoryFilter];
+    
+    self.exercisesForBrowsingSCValue = returnArray;
+    
+    [self.exerciseTableView reloadData];
+    
 }
 
 
@@ -362,40 +435,37 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+//    
+//    NSLog(@"%lu", sectionCount);
+//    
+//    // a no data cell will be shown if there are no exercises in the resulting fetched results controller
+//    
+//    if (sectionCount == 0){
+//        
+//        return 1;
+//        
+//    } else{
+//        
+//        return sectionCount;
+//        
+//    }
     
-    NSLog(@"%lu", sectionCount);
-    
-    // a no data cell will be shown if there are no exercises in the resulting fetched results controller
-    
-    if (sectionCount == 0){
-        
-        return 1;
-        
-    } else{
-        
-        return sectionCount;
-        
-    }
+    return 1;
 
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    // if there are zero sections (because there are no fetched exercises) return 1 so that the no data cell can be shown
+    NSInteger contentCellCount = self.exercisesForBrowsingSCValue.count;
     
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-    
-    if (sectionCount == 0){
+    if (contentCellCount == 0){
         
-        return 1;
+        return 2;
         
     } else{
         
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-        NSUInteger numberOfObjects = [sectionInfo numberOfObjects];
-        
-        return numberOfObjects;
+        return contentCellCount + 1;
         
     }
  
@@ -403,60 +473,101 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    // if there are no exercises, show a no data cell
+    NSInteger contentCellCount = self.exercisesForBrowsingSCValue.count;
     
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-    
-    if (sectionCount == 0){
+    if (indexPath.row == 0){
         
-        TJBNoDataCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+        NSString *filterString;
         
-        cell.mainLabel.text = @"No Exercises";
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.backgroundColor = [UIColor clearColor];
+        switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
+            case 0:
+                filterString = @"Push";
+                break;
+                
+            case 1:
+                filterString = @"Pull";
+                break;
+                
+            case 2:
+                filterString = @"Leg";
+                break;
+                
+            case 3:
+                filterString = @"Other";
+                
+            default:
+                break;
+        }
         
-        return cell;
+        if (!self.titleCell){
+            
+            TJBExerciseSelectionTitleCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionTitleCell"];
+            self.titleCell = cell;
+            
+            cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+            
+        }
+        
+        self.titleCell.titleLabel.text = [NSString stringWithFormat: @"%@ Exercises", filterString];
+        self.titleCell.subTitleLabel.text = @"select an exercise";
+        
+        self.titleCell.detail1Label.text = @"Name";
+        self.titleCell.detail2Label.text = @"Date Last Executed";
+        
+        return  self.titleCell;
         
     } else{
         
-        TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
-        
-        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
-        
-        cell.exerciseNameLabel.text = exercise.name;
-        
-        NSDate *dateLastExecuted = [self dateLastExecutedForExercise: exercise];
-        
-        // nil may be returned for the date. If so, give the date label an X
-        
-        if (dateLastExecuted){
+        if (contentCellCount == 0){
             
-            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-            df.dateFormat = @"MM / dd / yy";
-            cell.dateLabel.text = [df stringFromDate: dateLastExecuted];
+            TJBNoDataCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+            
+            cell.mainLabel.text = @"No Exercises";
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
             
         } else{
             
-            cell.dateLabel.text = @"X";
+            TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
             
+            NSInteger adjustedIndex = indexPath.row - 1;
+            TJBExercise *exercise = self.exercisesForBrowsingSCValue[adjustedIndex];
+            
+            cell.exerciseNameLabel.text = exercise.name;
+            
+            NSDate *dateLastExecuted = [self dateLastExecutedForExercise: exercise];
+            
+            // nil may be returned for the date. If so, give the date label an X
+            
+            if (dateLastExecuted){
+                
+                NSDateFormatter *df = [[NSDateFormatter alloc] init];
+                df.dateFormat = @"MM / dd / yy";
+                cell.dateLabel.text = [df stringFromDate: dateLastExecuted];
+                
+            } else{
+                
+                cell.dateLabel.text = @"X";
+                
+            }
+            
+            cell.backgroundColor = [UIColor clearColor];
+            
+//            NSArray *labels = @[cell.exerciseNameLabel, cell.dateLabel];
+//            for (UILabel *label in labels){
+//                
+//                label.font = [UIFont boldSystemFontOfSize: 15];
+//                label.textColor = [UIColor blackColor];
+//                label.backgroundColor = [UIColor clearColor];
+//            
+//            }
+            
+            return cell;
+        
         }
-        
-        cell.backgroundColor = [UIColor clearColor];
-        
-        NSArray *labels = @[cell.exerciseNameLabel, cell.dateLabel];
-        for (UILabel *label in labels){
-            
-            label.font = [UIFont boldSystemFontOfSize: 15];
-            label.textColor = [UIColor blackColor];
-            label.backgroundColor = [UIColor clearColor];
-            
-        }
-        
-        return cell;
-        
     }
-    
-
 }
 
 - (NSDate *)dateLastExecutedForExercise:(TJBExercise *)exercise{
@@ -547,62 +658,79 @@ static NSString * const cellReuseIdentifier = @"basicCell";
  
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-    
-    if (sectionCount == 0){
-        
-        return nil;
-        
-    } else{
-        
-        UILabel *label = [[UILabel alloc] init];
-        label.backgroundColor = [UIColor lightGrayColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        label.textAlignment = NSTextAlignmentCenter;
-        
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-        label.text = [sectionInfo name];
-        
-        return label;
-        
-    }
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    
+//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+//    
+//    if (sectionCount == 0){
+//        
+//        return nil;
+//        
+//    } else{
+//        
+//        UILabel *label = [[UILabel alloc] init];
+//        label.backgroundColor = [UIColor lightGrayColor];
+//        label.textColor = [UIColor whiteColor];
+//        label.font = [UIFont boldSystemFontOfSize: 20.0];
+//        label.textAlignment = NSTextAlignmentCenter;
+//        
+//        id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
+//        label.text = [sectionInfo name];
+//        
+//        return label;
+//        
+//    }
+//
+//}
 
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-    
-    if (sectionCount == 0){
-        
-        return 0;
-        
-    } else{
-        
-        return 50;
-        
-    }
-    
-
-    
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+//    
+//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+//    
+//    if (sectionCount == 0){
+//        
+//        return 0;
+//        
+//    } else{
+//        
+//        return 50;
+//        
+//    }
+//    
+//
+//    
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
+    CGFloat titleCellHeight;
     
-    if (sectionCount == 0){
+    if (_searchIsActive){
+        titleCellHeight = 100;
+    } else{
+        titleCellHeight = 90;
+    }
+    
+    NSInteger contentCellCount = self.exercisesForBrowsingSCValue.count;
+    
+    if (indexPath.row == 0){
         
-        return self.exerciseTableView.frame.size.height;
+        return titleCellHeight;
         
     } else{
         
-        return 60;
+        if (contentCellCount == 0){
+            
+            return self.exerciseTableView.frame.size.height - titleCellHeight;
+            
+        } else{
+            
+            
+            return 60;
+        }
         
     }
+
     
 }
 
@@ -752,187 +880,209 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     }
 }
 
-#pragma mark - Animation
-
-static CGFloat const totalAniDist = 246.0;
-static float const totalAniDur = .6;
-
-- (void)toggleButtonControlsToAdvancedDisplay{
+- (IBAction)didPressSearchButton:(id)sender{
     
-    // the animation is completed in two parts.  First, the exercise addition container slides down over the search bar.  Next, the container and table view slide down together.  The search text field should be hidden / disabled after it is covered
-    
-    self.exerciseAdditionContainer.hidden = NO;
-    
-    // stack view appropriately - sibling views must be configured appropriately so that the correct view is displayed as views slide over one another
-    
-    [self.view insertSubview: self.titleBarContainer
-                aboveSubview: self.exerciseAdditionContainer];
-    
-    NSArray *coveredViews = @[self.searchLabel,
-                              self.exerciseSeachTextField,
-                              self.exerciseNameLabel,
-                              self.thinDividerLabel,
-                              self.dateLastExecutedLabel];
-    for (UIView *cv in coveredViews){
+    if (_searchIsActive == NO){
         
-        [self.view sendSubviewToBack: cv];
+        
+        
+        [self.titleCell toggleToSearchState];
+        
+        [self.titleCell.searchTextField becomeFirstResponder];
+        
+        _searchIsActive = YES;
+    
+    } else{
+        
+        [self.titleCell toggleToDefaultState];
+        
+        _searchIsActive = NO;
         
     }
     
-    // the second animation is defined here. It is executed upon completion of the first animation.  It slides down the table view and addition container to their final, advanced positions
+    [self.exerciseTableView reloadData];
     
-    __weak TJBExerciseSelectionScene *weakSelf = self;
-    
-    // need to define this here so that I can make the two animations appear to run at the same speed
-    
-    CGFloat partialAniDist = 8 + self.exerciseSeachTextField.frame.size.height + 8 + self.exerciseNameLabel.frame.size.height + 6;
-    
-    void (^secondAnimation)(BOOL) = ^(BOOL firstAnimationCompleted){
-        
-        // hide the exercise search objects
-        
-        for (UIView *cv in coveredViews){
-            
-            cv.hidden = YES;
-            
-        }
-        
-        [UIView animateWithDuration: totalAniDur * (totalAniDist - partialAniDist) / totalAniDist
-                         animations: ^{
-                             
-                             // give the container view its final position, where it is fully showing
-                             // must grab the current value of the constraint so that I can make the views slide down the difference
-                             // the old constant formula is grabbed from the first animation.  It cannot be accessed via the frame property because this block captures
-                             
-                             weakSelf.exerciseAdditionConstraint.constant = 0;
-                             CGFloat animationConst = totalAniDist - partialAniDist;
-                             
-                             // float the addition container down and slide the table view down (while shrinking its height)
-                             
-                             // exercise table view
-                             
-                             CGRect currentTVFrame = weakSelf.exerciseTableView.frame;
-                             CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + animationConst, currentTVFrame.size.width, currentTVFrame.size.height - animationConst);
-                             weakSelf.exerciseTableView.frame = newTVFrame;
-                             
-                             // addition container
-                             
-                             CGRect currentAddContFrame = weakSelf.exerciseAdditionContainer.frame;
-                             CGRect newAddContFrame = CGRectMake(currentAddContFrame.origin.x, currentAddContFrame.origin.y + animationConst, currentAddContFrame.size.width, currentAddContFrame.size.height);
-                             weakSelf.exerciseAdditionContainer.frame = newAddContFrame;
-                             
-                         }];
-    };
-    
-    // the inititial animation
-    
-    [UIView animateWithDuration: ( partialAniDist / totalAniDist) * totalAniDur
-                     animations: ^{
-                         
-                         // first the exercise addition container slides down over the search text field.  Then the table view shifts down with it.  Layout constraints define ending positions for each animation and the specified animation describes how the object travels to that end position
-                         
-                         // this gives the exercise search field the correct position relative to the exercise addition container. Given the containers final position, this places the seach field such that its final location is the same as its initial location
+}
 
-                         CGFloat constraintConst = -1 * (partialAniDist - 8);
-                         self.searchFieldTopSpaceConstr.constant = constraintConst;
-                         
-                         // this constraint describes the exercise addition container's position relative to the title container.  This addition container is initially behind the title container
-                         
-                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - partialAniDist);
-                         
-                         // this shows an animation of the addition container sliding down to its final position
-                         
-                         NSArray *views = @[self.exerciseAdditionContainer];
-                         
-                         for (UIView *view in views){
-                             
-                             CGRect currentFrame = view.frame;
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + partialAniDist, currentFrame.size.width, currentFrame.size.height);
-                             view.frame = newFrame;
-  
-                         }
-                         
-                     }
-                     completion: secondAnimation];
+#pragma mark - Animation
+
+static CGFloat const totalAniDist = 246.0;
+//static float const totalAniDur = .6;
+
+- (void)toggleButtonControlsToAdvancedDisplay{
     
-    _exerciseAdditionActive = YES;
-    
-    [self.addNewExerciseButton setTitle: @"Done"
-                               forState: UIControlStateNormal];
+//    // the animation is completed in two parts.  First, the exercise addition container slides down over the search bar.  Next, the container and table view slide down together.  The search text field should be hidden / disabled after it is covered
+//    
+//    self.exerciseAdditionContainer.hidden = NO;
+//    
+//    // stack view appropriately - sibling views must be configured appropriately so that the correct view is displayed as views slide over one another
+//    
+//    [self.view insertSubview: self.titleBarContainer
+//                aboveSubview: self.exerciseAdditionContainer];
+//    
+//    NSArray *coveredViews = @[self.searchLabel,
+//                              self.exerciseSeachTextField,
+//                              self.dateLastExecutedLabel];
+//    for (UIView *cv in coveredViews){
+//        
+//        [self.view sendSubviewToBack: cv];
+//        
+//    }
+//    
+//    // the second animation is defined here. It is executed upon completion of the first animation.  It slides down the table view and addition container to their final, advanced positions
+//    
+//    __weak TJBExerciseSelectionScene *weakSelf = self;
+//    
+//    // need to define this here so that I can make the two animations appear to run at the same speed
+//    
+//    CGFloat partialAniDist = 8 + self.exerciseSeachTextField.frame.size.height + 8 + self.exerciseNameLabel.frame.size.height + 6;
+//    
+//    void (^secondAnimation)(BOOL) = ^(BOOL firstAnimationCompleted){
+//        
+//        // hide the exercise search objects
+//        
+//        for (UIView *cv in coveredViews){
+//            
+//            cv.hidden = YES;
+//            
+//        }
+//        
+//        [UIView animateWithDuration: totalAniDur * (totalAniDist - partialAniDist) / totalAniDist
+//                         animations: ^{
+//                             
+//                             // give the container view its final position, where it is fully showing
+//                             // must grab the current value of the constraint so that I can make the views slide down the difference
+//                             // the old constant formula is grabbed from the first animation.  It cannot be accessed via the frame property because this block captures
+//                             
+//                             weakSelf.exerciseAdditionConstraint.constant = 0;
+//                             CGFloat animationConst = totalAniDist - partialAniDist;
+//                             
+//                             // float the addition container down and slide the table view down (while shrinking its height)
+//                             
+//                             // exercise table view
+//                             
+//                             CGRect currentTVFrame = weakSelf.exerciseTableView.frame;
+//                             CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + animationConst, currentTVFrame.size.width, currentTVFrame.size.height - animationConst);
+//                             weakSelf.exerciseTableView.frame = newTVFrame;
+//                             
+//                             // addition container
+//                             
+//                             CGRect currentAddContFrame = weakSelf.exerciseAdditionContainer.frame;
+//                             CGRect newAddContFrame = CGRectMake(currentAddContFrame.origin.x, currentAddContFrame.origin.y + animationConst, currentAddContFrame.size.width, currentAddContFrame.size.height);
+//                             weakSelf.exerciseAdditionContainer.frame = newAddContFrame;
+//                             
+//                         }];
+//    };
+//    
+//    // the inititial animation
+//    
+//    [UIView animateWithDuration: ( partialAniDist / totalAniDist) * totalAniDur
+//                     animations: ^{
+//                         
+//                         // first the exercise addition container slides down over the search text field.  Then the table view shifts down with it.  Layout constraints define ending positions for each animation and the specified animation describes how the object travels to that end position
+//                         
+//                         // this gives the exercise search field the correct position relative to the exercise addition container. Given the containers final position, this places the seach field such that its final location is the same as its initial location
+//
+//                         CGFloat constraintConst = -1 * (partialAniDist - 8);
+//                         self.searchFieldTopSpaceConstr.constant = constraintConst;
+//                         
+//                         // this constraint describes the exercise addition container's position relative to the title container.  This addition container is initially behind the title container
+//                         
+//                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - partialAniDist);
+//                         
+//                         // this shows an animation of the addition container sliding down to its final position
+//                         
+//                         NSArray *views = @[self.exerciseAdditionContainer];
+//                         
+//                         for (UIView *view in views){
+//                             
+//                             CGRect currentFrame = view.frame;
+//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + partialAniDist, currentFrame.size.width, currentFrame.size.height);
+//                             view.frame = newFrame;
+//  
+//                         }
+//                         
+//                     }
+//                     completion: secondAnimation];
+//    
+//    _exerciseAdditionActive = YES;
+//    
+//    [self.addNewExerciseButton setTitle: @"Done"
+//                               forState: UIControlStateNormal];
     
 }
 
 - (void)toggleButtonControlsToDefaultDisplay{
     
     // unhide the exercise search controls
-    
-    NSArray *coveredViews = @[self.searchLabel,
-                              self.exerciseSeachTextField,
-                              self.exerciseNameLabel,
-                              self.thinDividerLabel,
-                              self.dateLastExecutedLabel];
-    for (UIView *cv in coveredViews){
-        
-        cv.hidden = NO;
-        
-    }
-
-    CGFloat partialAniDist = 8 + self.exerciseSeachTextField.frame.size.height + 8 + self.exerciseNameLabel.frame.size.height + 6;
-    
-    // second animation
-    
-    __weak TJBExerciseSelectionScene *weakSelf = self;
-    
-    void (^secondAnimation)(BOOL) = ^(BOOL firstAnimationCompleted){
-        
-        [UIView animateWithDuration: ( partialAniDist / totalAniDist) * totalAniDur
-                         animations: ^{
-                             
-                             weakSelf.searchFieldTopSpaceConstr.constant = 8;
-                             weakSelf.exerciseAdditionConstraint.constant = -1 * totalAniDist;
-                             
-                             CGFloat viewTranslation = partialAniDist;
-                             
-                             CGRect currentFrame = weakSelf.exerciseAdditionContainer.frame;
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - viewTranslation, currentFrame.size.width, currentFrame.size.height);
-                             weakSelf.exerciseAdditionContainer.frame = newFrame;
-                             
-                         }];
-        
-    };
-    
-    // first animation
-    
-    [UIView animateWithDuration: totalAniDur * (totalAniDist - partialAniDist) / totalAniDist
-                     animations: ^{
-                         
-                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - partialAniDist);
-                         
-                         CGFloat constraintConst = -1 * (partialAniDist - 8);
-                         self.searchFieldTopSpaceConstr.constant = constraintConst;
-                         
-                         CGFloat viewVertTranslation = totalAniDist - partialAniDist;
-                         
-                         NSArray *views = @[self.exerciseAdditionContainer];
-                         
-                         for (UIView *view in views){
-                             
-                             CGRect currentFrame = view.frame;
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - viewVertTranslation, currentFrame.size.width, currentFrame.size.height);
-                             view.frame = newFrame;
-                             
-                         }
-                         
-                         CGRect currentTVFrame = self.exerciseTableView.frame;
-                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - viewVertTranslation, currentTVFrame.size.width, currentTVFrame.size.height + viewVertTranslation);
-                         self.exerciseTableView.frame = newTVFrame;
-                         
-                     }
-                     completion: secondAnimation];
-    
-    _exerciseAdditionActive = NO;
-    [self.addNewExerciseButton setTitle: @"Add New Exercise"
-                                forState: UIControlStateNormal];
+//    
+//    NSArray *coveredViews = @[self.searchLabel,
+//                              self.exerciseSeachTextField,
+//                              self.exerciseNameLabel,
+//                              self.thinDividerLabel,
+//                              self.dateLastExecutedLabel];
+//    for (UIView *cv in coveredViews){
+//        
+//        cv.hidden = NO;
+//        
+//    }
+//
+//    CGFloat partialAniDist = 8 + self.exerciseSeachTextField.frame.size.height + 8 + self.exerciseNameLabel.frame.size.height + 6;
+//    
+//    // second animation
+//    
+//    __weak TJBExerciseSelectionScene *weakSelf = self;
+//    
+//    void (^secondAnimation)(BOOL) = ^(BOOL firstAnimationCompleted){
+//        
+//        [UIView animateWithDuration: ( partialAniDist / totalAniDist) * totalAniDur
+//                         animations: ^{
+//                             
+//                             weakSelf.searchFieldTopSpaceConstr.constant = 8;
+//                             weakSelf.exerciseAdditionConstraint.constant = -1 * totalAniDist;
+//                             
+//                             CGFloat viewTranslation = partialAniDist;
+//                             
+//                             CGRect currentFrame = weakSelf.exerciseAdditionContainer.frame;
+//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - viewTranslation, currentFrame.size.width, currentFrame.size.height);
+//                             weakSelf.exerciseAdditionContainer.frame = newFrame;
+//                             
+//                         }];
+//        
+//    };
+//    
+//    // first animation
+//    
+//    [UIView animateWithDuration: totalAniDur * (totalAniDist - partialAniDist) / totalAniDist
+//                     animations: ^{
+//                         
+//                         self.exerciseAdditionConstraint.constant = -1 * (self.exerciseAdditionContainer.frame.size.height - partialAniDist);
+//                         
+//                         CGFloat constraintConst = -1 * (partialAniDist - 8);
+//                         self.searchFieldTopSpaceConstr.constant = constraintConst;
+//                         
+//                         CGFloat viewVertTranslation = totalAniDist - partialAniDist;
+//                         
+//                         NSArray *views = @[self.exerciseAdditionContainer];
+//                         
+//                         for (UIView *view in views){
+//                             
+//                             CGRect currentFrame = view.frame;
+//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - viewVertTranslation, currentFrame.size.width, currentFrame.size.height);
+//                             view.frame = newFrame;
+//                             
+//                         }
+//                         
+//                         CGRect currentTVFrame = self.exerciseTableView.frame;
+//                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - viewVertTranslation, currentTVFrame.size.width, currentTVFrame.size.height + viewVertTranslation);
+//                         self.exerciseTableView.frame = newTVFrame;
+//                         
+//                     }
+//                     completion: secondAnimation];
+//    
+//    _exerciseAdditionActive = NO;
+//    [self.addNewExerciseButton setTitle: @"Add New Exercise"
+//                                forState: UIControlStateNormal];
     
 }
 
@@ -982,11 +1132,11 @@ static float const totalAniDur = .6;
         
     }
     
-    if ([self.exerciseSeachTextField isFirstResponder]){
-        
-        [self.exerciseSeachTextField resignFirstResponder];
-        
-    }
+//    if ([self.exerciseSeachTextField isFirstResponder]){
+//        
+//        [self.exerciseSeachTextField resignFirstResponder];
+//        
+//    }
 }
 
 #pragma mark - <UITextFieldDelegate>
