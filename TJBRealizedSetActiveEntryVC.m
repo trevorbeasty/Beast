@@ -35,7 +35,7 @@
 // table view cells
 
 #import "TJBPersonalRecordCell.h"
-#import "TJBWorkoutLogTitleCell.h"
+#import "TJBDetailTitleCell.h"
 #import "TJBNoDataCell.h"
 
 // selection vc's
@@ -72,12 +72,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
-@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
 @property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
-@property (weak, nonatomic) IBOutlet UILabel *largeStatusLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *largeStatusLabel;
 @property (weak, nonatomic) IBOutlet UIView *grayBackdropView;
 @property (weak, nonatomic) IBOutlet UILabel *setStartTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *setEndTimeLabel;
@@ -90,9 +90,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonControlsVerticalConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-@property (weak, nonatomic) IBOutlet UILabel *titleSubLabel;
-@property (weak, nonatomic) IBOutlet UILabel *timerTopLabel;
-@property (weak, nonatomic) IBOutlet UILabel *statusTopLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *titleSubLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *timerTopLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *statusTopLabel;
 
 
 
@@ -237,8 +237,6 @@
     
     _whiteoutActive = NO;
     
-//    [self configureNavigationBar];
-    
     [self addAppropriateStopwatchObservers];
     
     [self configureTableView];
@@ -261,8 +259,6 @@
                 belowSubview: self.titleLabelsContainer];
     
     self.buttonControlsVerticalConstraint.constant = -1 * slidingHeight;
-    
-//    self.grayBackdropView.hidden = YES;
     
 }
 
@@ -314,17 +310,19 @@
     [self.personalRecordsTableView registerNib: nib
                         forCellReuseIdentifier: @"PRCell"];
     
-    UINib *nib2 = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+    UINib *nib2 = [UINib nibWithNibName: @"TJBDetailTitleCell"
                                 bundle: nil];
     
     [self.personalRecordsTableView registerNib: nib2
-                        forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
+                        forCellReuseIdentifier: @"TJBDetailTitleCell"];
     
     UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
                                  bundle: nil];
     
     [self.personalRecordsTableView registerNib: noDataCell
                         forCellReuseIdentifier: @"TJBNoDataCell"];
+    
+    self.personalRecordsTableView.bounces = NO;
     
 }
 
@@ -337,8 +335,7 @@
     //// buttons
     
     NSArray *buttons = @[self.targetRestButton,
-                         self.alertTimingButton,
-                         self.exerciseButton];
+                         self.alertTimingButton];
     
     for (UIButton *button in buttons){
         
@@ -352,6 +349,11 @@
         bl.cornerRadius = 4.0;
         
     }
+    
+    self.exerciseButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    [self.exerciseButton setTitleColor: [UIColor whiteColor]
+                              forState: UIControlStateNormal];
+    self.exerciseButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
     
     self.beginNextSetButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     [self.beginNextSetButton setTitleColor: [UIColor whiteColor]
@@ -368,28 +370,29 @@
     
     self.titleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
     
-    NSArray *titleLabels = @[self.largeStatusLabel,
-                             self.timerLabel,
-                             self.freeformTitleLabel];
+    NSArray *titleLabels = @[self.freeformTitleLabel];
     
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
         label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.font = [UIFont boldSystemFontOfSize: 20];
         
     }
     
-    NSArray *subtitleLabels = @[self.titleSubLabel,
-                                self.statusTopLabel,
-                                self.timerTopLabel];
-    for (UILabel *label in subtitleLabels){
-        
-        label.backgroundColor = [UIColor darkGrayColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 15.0];
-        
-    }
+    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
+    self.timerLabel.font = [UIFont boldSystemFontOfSize: 30];
+    self.timerLabel.textColor = [UIColor whiteColor];
+    
+//    NSArray *subtitleLabels = @[self.statusTopLabel,
+//                                self.timerTopLabel];
+//    for (UILabel *label in subtitleLabels){
+//        
+//        label.backgroundColor = [UIColor darkGrayColor];
+//        label.textColor = [UIColor whiteColor];
+//        label.font = [UIFont boldSystemFontOfSize: 15.0];
+//        
+//    }
     
     NSArray *titleButtons = @[self.leftBarButton,
                               self.advancedOptionsButton];
@@ -418,10 +421,6 @@
         label.textColor = [UIColor darkGrayColor];
         
     }
-    
-    self.exerciseLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    self.exerciseLabel.textColor = [UIColor darkGrayColor];
-
     
     // table view
     
@@ -506,19 +505,22 @@
     
     if (indexPath.row == 0){
         
-        TJBWorkoutLogTitleCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+        TJBDetailTitleCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBDetailTitleCell"];
         
         if (self.exercise){
             
-            cell.secondaryLabel.text = self.exercise.name;
+            cell.subtitleLabel.text = self.exercise.name;
             
         } else{
             
-            cell.secondaryLabel.text = @"Select an exercise";
+            cell.subtitleLabel.text = @"Select an exercise";
             
         }
         
-        cell.primaryLabel.text = @"Personal Records";
+        cell.titleLabel.text = @"Personal Records";
+        cell.detail1Label.text = @"reps";
+        cell.detail2Label.text = @"weight";
+        cell.detail3Label.text = @"date";
         
         cell.backgroundColor = [UIColor clearColor];
         
@@ -566,7 +568,7 @@
     
     if (indexPath.row == 0){
         
-        return titleHeight;
+        return titleHeight + 30;
         
     } else{
         
@@ -591,7 +593,7 @@
     
     if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 0){
         
-        self.largeStatusLabel.text = @"N/A";
+//        self.largeStatusLabel.text = @"N/A";
         [self.beginNextSetButton setTitle: @"Set Completed"
                                  forState: UIControlStateNormal];
         
@@ -601,7 +603,7 @@
         
     } else{
         
-        self.largeStatusLabel.text = @"Resting";
+//        self.largeStatusLabel.text = @"Resting";
         [self.beginNextSetButton setTitle: @"Begin Next Set"
                                  forState: UIControlStateNormal];
         
@@ -700,8 +702,6 @@
         [weakSelf.exerciseButton setTitle: selectedExercise.name
                                  forState: UIControlStateNormal];
         
-        weakSelf.titleSubLabel.text = selectedExercise.name;
-        
         [weakSelf fetchManagedObjectsAndDetermineRecordsForActiveExercise];
         
         [weakSelf.personalRecordsTableView reloadData];
@@ -783,7 +783,7 @@
     
         if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1){
             
-            self.largeStatusLabel.text = @"Resting";
+//            self.largeStatusLabel.text = @"Resting";
             
             [self.beginNextSetButton setTitle: @"Begin Next Set"
                                      forState: UIControlStateNormal];
@@ -833,7 +833,7 @@
                 
                 // change display items accordingly
                 
-                self.largeStatusLabel.text = @"In Set";
+//                self.largeStatusLabel.text = @"In Set";
                 
                 [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [number intValue] * -1
                                                      withForwardIncrementing: YES
@@ -863,7 +863,7 @@
             
             // change display items accordingly
             
-            self.largeStatusLabel.text = @"In Set";
+//            self.largeStatusLabel.text = @"In Set";
             
             [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
                                                  withForwardIncrementing: YES
@@ -924,7 +924,7 @@
             // make the timer labels dark gray in case they were red before
             
             self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-            self.timerTopLabel.backgroundColor = [UIColor darkGrayColor];
+//            self.timerTopLabel.backgroundColor = [UIColor darkGrayColor];
             
             [weakSelf didPressBeginNextSet: nil];
             
@@ -962,14 +962,14 @@
             [self.beginNextSetButton setTitle: @"Begin Next Set"
                                      forState: UIControlStateNormal];
             
-            self.largeStatusLabel.text = @"Resting";
+//            self.largeStatusLabel.text = @"Resting";
             
         } else{
             
             [self.beginNextSetButton setTitle: @"Set Completed"
                                      forState: UIControlStateNormal];
             
-            self.largeStatusLabel.text = @"";
+//            self.largeStatusLabel.text = @"";
             
         }
 
@@ -1381,13 +1381,13 @@
         
         if (inRedZone){
             
-            self.timerTopLabel.backgroundColor = [UIColor redColor];
+//            self.timerTopLabel.backgroundColor = [UIColor redColor];
             self.timerLabel.backgroundColor = [UIColor redColor];
             
         } else{
             
             self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-            self.timerTopLabel.backgroundColor = [UIColor darkGrayColor];
+//            self.timerTopLabel.backgroundColor = [UIColor darkGrayColor];
             
         }
         
@@ -1679,7 +1679,7 @@
 
 #pragma mark - Animation
 
-static CGFloat const slidingHeight = 173.0;
+static CGFloat const slidingHeight = 176.0;
 
 - (void)toggleButtonControlsToAdvancedDisplay{
     
@@ -1688,9 +1688,7 @@ static CGFloat const slidingHeight = 173.0;
                          
                          self.buttonControlsVerticalConstraint.constant = 0;
                          
-                         NSArray *views = @[self.grayBackdropView,
-                                            self.exerciseLabel,
-                                            self.exerciseButton];
+                         NSArray *views = @[self.grayBackdropView];
                          
                          for (UIView *view in views){
                              
@@ -1720,9 +1718,7 @@ static CGFloat const slidingHeight = 173.0;
                          self.buttonControlsVerticalConstraint.constant = -1 * slidingHeight;
                          
                          
-                         NSArray *views = @[self.grayBackdropView,
-                                            self.exerciseLabel,
-                                            self.exerciseButton];
+                         NSArray *views = @[self.grayBackdropView];
                          
                          for (UIView *view in views){
                              
@@ -1741,7 +1737,6 @@ static CGFloat const slidingHeight = 173.0;
     _advancedOptionsActive = NO;
     [self.advancedOptionsButton setTitle: @"+"
                                 forState: UIControlStateNormal];
-//    self.grayBackdropView.hidden = YES;
     
 }
 

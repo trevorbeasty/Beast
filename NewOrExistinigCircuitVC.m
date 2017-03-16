@@ -1552,6 +1552,7 @@
     sv.contentSize = svContentSize;
     
     sv.backgroundColor = [UIColor clearColor];
+    sv.bounces = NO;
     
     UITableView *tv = [[UITableView alloc] init];
     self.activeTableView = tv;

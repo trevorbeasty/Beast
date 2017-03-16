@@ -1652,6 +1652,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     sv.frame = CGRectMake(0, 0, contentSize.width, self.shadowContainer.frame.size.height);
     sv.contentSize = contentSize;
+    sv.bounces = NO;
     
     // if there is an object for the scrollPositionForUpdate property, use that value to derive the correct CGPoint
     
