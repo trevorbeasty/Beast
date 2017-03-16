@@ -193,8 +193,8 @@
 - (UIColor *)offWhiteColor{
     
     return [UIColor colorWithRed: 0 / 255.0
-                           green: 3 / 255.0
-                            blue: 31 / 255.0
+                           green: 0 / 255.0
+                            blue: 0 / 255.0
                            alpha: 1.0];
     
 }

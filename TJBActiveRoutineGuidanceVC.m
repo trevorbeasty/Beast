@@ -118,7 +118,8 @@
 
 @property (nonatomic, strong) NSMutableArray<NSArray *> *activeLiftTargets;
 @property (nonatomic, strong) NSMutableArray<NSArray<NSArray *> *> *activePreviousMarks;
-@property (nonatomic, strong) NSNumber *activeRestTarget;
+@property (nonatomic, strong) NSNumber *futureRestTarget;
+@property (nonatomic, strong) NSNumber *currentRestTarget;
 
 @property (nonatomic, strong) NSNumber *cancelRestorationExerciseIndex;
 @property (nonatomic, strong) NSNumber *cancelRestorationRoundIndex;
@@ -234,8 +235,10 @@ static float const animationTimeUnit = .4;
     
     //// state
     
+    self.currentRestTarget = self.futureRestTarget; // when content is derived, the rest that will be displayed as the first item in the next set of targets is derived. I must give this value a new owner before deriving the next rest target
+    
     self.activeLiftTargets = [[NSMutableArray alloc] init];
-    self.activeRestTarget = nil;
+    self.futureRestTarget = nil;
     self.activePreviousMarks = [[NSMutableArray alloc] init];
     
     [self deriveStateContent];
@@ -437,7 +440,7 @@ static float const animationTimeUnit = .4;
             
         } else{
             
-            self.activeRestTarget = targets[3];
+            self.futureRestTarget = targets[3];
             
         }
         
@@ -646,7 +649,7 @@ static NSString const *restViewKey = @"restView";
     
     NSNumber *titleNumber = [NSNumber numberWithInteger: 1];
     
-    NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeRestTarget intValue]];
+    NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
     
     NSString *contentText = [NSString stringWithFormat: @"Rest for %@", formattedRest];
     
@@ -967,8 +970,8 @@ static NSString const *restViewKey = @"restView";
                                                                    [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
                                                                    [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerTitleLabel];
                                                                    
-                                                                   [weakSelf dismissViewControllerAnimated: YES
-                                                                                                    completion: nil];
+                                                                   [[[[[UIApplication sharedApplication] delegate] window] rootViewController] dismissViewControllerAnimated: YES
+                                                                                                                                                                  completion: nil];
                                                                    
                                                                    }];
                 [alert addAction: action];
@@ -1261,7 +1264,7 @@ static NSString const *restViewKey = @"restView";
     
     // timer
     
-    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.activeRestTarget intValue]
+    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.futureRestTarget intValue]
                                          withForwardIncrementing: NO
                                                   lastUpdateDate: nil];
     
@@ -1319,7 +1322,7 @@ static NSString const *restViewKey = @"restView";
     
     // the new text to be displayed for the timer and round label
     
-    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.activeRestTarget intValue]];
+    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
     
     
     
