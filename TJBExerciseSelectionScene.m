@@ -339,10 +339,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         layer.masksToBounds = YES;
         layer.cornerRadius = 8.0;
         layer.borderWidth = 1;
-        layer.borderColor = [[UIColor whiteColor] CGColor];
+        layer.borderColor = [[[TJBAestheticsController singleton] blueButtonColor] CGColor];
         
         tf.font = [UIFont systemFontOfSize: 20.0];
-        tf.textColor = [UIColor whiteColor];
+        tf.textColor = [[TJBAestheticsController singleton] blueButtonColor];
         
     }
     

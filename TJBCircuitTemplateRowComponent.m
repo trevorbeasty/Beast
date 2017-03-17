@@ -149,15 +149,17 @@
     
     if (self.chainTemplate.targetsVaryByRound == NO){
         
-        self.roundLabel.text = @"All";
+        self.roundLabel.text = @"All Rnds";
         
     } else{
         
-        self.roundLabel.text = [NSString stringWithFormat: @"%d", [self.roundIndex intValue] + 1];
+        self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundIndex intValue] + 1];
         
     }
     
-    self.roundLabel.backgroundColor = [UIColor lightGrayColor];
+    self.roundLabel.backgroundColor = [UIColor clearColor];
+    self.roundLabel.textColor = [UIColor whiteColor];
+    self.roundLabel.font = [UIFont boldSystemFontOfSize: 15];
     
     // button appearance
     
@@ -243,7 +245,7 @@
         // configure the button
         
         self.weightButton.backgroundColor = [UIColor clearColor];
-        [self.weightButton setTitleColor: [UIColor blackColor]
+        [self.weightButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                 forState: UIControlStateNormal];
         
         NSString *weightText = [NSString stringWithFormat: @"%@ lbs", [selectedNumber stringValue]];
@@ -296,7 +298,7 @@
         // configure the button
         
         self.repsButton.backgroundColor = [UIColor clearColor];
-        [self.repsButton setTitleColor: [UIColor blackColor]
+        [self.repsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                 forState: UIControlStateNormal];
         
         NSString *repsText = [NSString stringWithFormat: @"%@ reps", [selectedNumber stringValue]];
@@ -349,7 +351,7 @@
         // configure the button
         
         self.restButton.backgroundColor = [UIColor clearColor];
-        [self.restButton setTitleColor: [UIColor blackColor]
+        [self.restButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                               forState: UIControlStateNormal];
         
         NSString *restText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];

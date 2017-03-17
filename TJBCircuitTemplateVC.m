@@ -149,10 +149,10 @@ static NSString * const defaultValue = @"unselected";
     
     // determine height of scroll view content size
     
-    CGFloat titleBarHeight = 50;
-    CGFloat roundRowHeight = 50;
-    CGFloat componentToComponentSpacing = 16;
-    CGFloat componentStyleSpacing = 0;
+    CGFloat titleBarHeight = 40;
+//    CGFloat roundRowHeight = 40;
+    CGFloat componentToComponentSpacing = 24;
+    CGFloat componentStyleSpacing = 11;
     CGFloat componentHeight;
     
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
@@ -163,11 +163,11 @@ static NSString * const defaultValue = @"unselected";
     
     if (targetsVaryByRound){
         
-        componentHeight = roundRowHeight * (self.chainTemplate.numberOfRounds + 1) + titleBarHeight + componentStyleSpacing;
+        componentHeight = titleBarHeight * (self.chainTemplate.numberOfRounds + 1) + componentStyleSpacing;
         
     } else{
         
-        componentHeight = roundRowHeight * 2 + titleBarHeight + componentStyleSpacing;
+        componentHeight = titleBarHeight * 2 + componentStyleSpacing;
     }
     
     int numberOfComponents = self.chainTemplate.numberOfExercises;
@@ -185,7 +185,7 @@ static NSString * const defaultValue = @"unselected";
     // row components
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: @"V:|-16-"];
+    [verticalLayoutConstraintsString setString: @"V:|-2-"];
     
     for (int i = 0 ; i < self.chainTemplate.numberOfExercises ; i ++){
         

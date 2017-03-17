@@ -34,13 +34,14 @@
 
 // IBOutlets
 
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *roundColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *roundColumnLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
+@property (weak, nonatomic) IBOutlet UILabel *horizontalThinLabel;
 
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
@@ -67,33 +68,28 @@
 
 - (void)viewAesthetics{
     
-    // container view
-    
-    CALayer *viewLayer = self.view.layer;
-    viewLayer.masksToBounds = YES;
-    viewLayer.cornerRadius = 8.0;
-    
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
     // column label views
     
-    NSArray *labels = @[self.roundColumnLabel,
-                            self.weightColumnLabel,
-                            self.repsColumnLabel,
-                            self.restColumnLabel];
-    
-    for (UILabel *l in labels){
-        
-        l.backgroundColor = [UIColor lightGrayColor];
-        l.textColor = [UIColor whiteColor];
-        l.font = [UIFont boldSystemFontOfSize: 20.0];
-        
-    }
+//    NSArray *labels = @[self.roundColumnLabel,
+//                            self.weightColumnLabel,
+//                            self.repsColumnLabel,
+//                            self.restColumnLabel];
+//    
+//    for (UILabel *l in labels){
+//        
+//        l.backgroundColor = [UIColor lightGrayColor];
+//        l.textColor = [UIColor whiteColor];
+//        l.font = [UIFont boldSystemFontOfSize: 20.0];
+//        
+//    }
     
     // title label view
     
-    self.titleLabel.backgroundColor = [UIColor lightGrayColor];
-    [self.titleLabel setTextColor: [UIColor whiteColor]];
+//    self.titleLabel.backgroundColor = [UIColor clearColor];
+//    [self.titleLabel setTextColor: [UIColor whiteColor]];
+//    self.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
     
     // selected exercise button
     
@@ -124,23 +120,25 @@
     
     // labels
     
-    self.titleLabel.text = [NSString stringWithFormat: @"Exercise %d",
-                            [self.exerciseIndex intValue] + 1];
+//    self.titleLabel.text = [NSString stringWithFormat: @"Exercise %d",
+//                            [self.exerciseIndex intValue] + 1];
     
     // row components
     
-    NSString *thinLineLabel = @"thinLineLabel";
-    [self.constraintMapping setObject: self.thinLineLabel
-                               forKey: thinLineLabel];
+//    NSString *thinLineLabel = @"thinLineLabel";
+//    [self.constraintMapping setObject: self.thinLineLabel
+//                               forKey: thinLineLabel];
     
-    NSString *roundColumnLabel = @"roundColumnLabel";
-    [self.constraintMapping setObject:self.roundColumnLabel
-                               forKey: roundColumnLabel];
+    NSString *exerciseButton = @"exerciseButton";
+    [self.constraintMapping setObject: self.selectedExerciseButton
+                               forKey: exerciseButton];
     
-    
+    NSString *horizontalThinLabel = @"horzThin";
+    [self.constraintMapping setObject: self.horizontalThinLabel
+                               forKey: horizontalThinLabel];
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", thinLineLabel]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-4-", horizontalThinLabel]];
     
     for (int i = 0 ; i < self.chainTemplate.numberOfRounds ; i ++){
         
@@ -178,13 +176,13 @@
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
                                     dynamicRowName,
-                                    roundColumnLabel];
+                                    exerciseButton];
         }
         else
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-",
                                     dynamicRowName,
-                                    roundColumnLabel];
+                                    exerciseButton];
         }
         
         [verticalLayoutConstraintsString appendString: verticalAppendString];
@@ -231,7 +229,7 @@
         // update the view
         
         self.selectedExerciseButton.backgroundColor = [UIColor clearColor];
-        [self.selectedExerciseButton setTitleColor: [UIColor blackColor]
+        [self.selectedExerciseButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                           forState: UIControlStateNormal];
         
         [self.selectedExerciseButton setTitle: selectedExercise.name

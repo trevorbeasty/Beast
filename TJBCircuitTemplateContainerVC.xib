@@ -57,7 +57,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddm-83-lU1">
-                    <rect key="frame" x="8" y="122" width="359" height="495"/>
+                    <rect key="frame" x="0.0" y="122" width="375" height="495"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Routine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sq-W5-vNc">
@@ -108,7 +108,7 @@
                 <constraint firstItem="RkR-Wp-XV7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="6FJ-hq-Mdo"/>
                 <constraint firstItem="RkR-Wp-XV7" firstAttribute="top" secondItem="tNV-kd-5n4" secondAttribute="bottom" id="7z8-0C-zix"/>
                 <constraint firstItem="VD7-7W-J65" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="KBh-t5-Yil"/>
-                <constraint firstItem="ddm-83-lU1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Qxi-oF-DUP"/>
+                <constraint firstItem="ddm-83-lU1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Qxi-oF-DUP"/>
                 <constraint firstItem="DGq-w9-M2p" firstAttribute="top" secondItem="ddm-83-lU1" secondAttribute="bottom" id="S7S-Lq-kxP"/>
                 <constraint firstItem="a2A-HH-h48" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="UBE-Bm-XHQ"/>
                 <constraint firstItem="a2A-HH-h48" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="UdR-QL-BiR"/>
@@ -117,7 +117,7 @@
                 <constraint firstAttribute="trailing" secondItem="tNV-kd-5n4" secondAttribute="trailing" id="Yab-oY-1kL"/>
                 <constraint firstItem="tNV-kd-5n4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ccR-up-wEv"/>
                 <constraint firstItem="4sq-W5-vNc" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dgM-6U-zJo"/>
-                <constraint firstAttribute="trailing" secondItem="ddm-83-lU1" secondAttribute="trailing" constant="8" id="j85-Ti-kXd"/>
+                <constraint firstAttribute="trailing" secondItem="ddm-83-lU1" secondAttribute="trailing" id="j85-Ti-kXd"/>
                 <constraint firstAttribute="trailing" secondItem="RkR-Wp-XV7" secondAttribute="trailing" id="jYF-5D-fB5"/>
                 <constraint firstItem="4sq-W5-vNc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="rZD-7d-9bi"/>
                 <constraint firstItem="tNV-kd-5n4" firstAttribute="top" secondItem="4sq-W5-vNc" secondAttribute="bottom" constant="2" id="usS-Us-7Jh"/>
