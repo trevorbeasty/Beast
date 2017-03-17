@@ -150,9 +150,9 @@ static NSString * const defaultValue = @"unselected";
     // determine height of scroll view content size
     
     CGFloat titleBarHeight = 40;
-//    CGFloat roundRowHeight = 40;
+    CGFloat contentRowHeight = 44;
     CGFloat componentToComponentSpacing = 24;
-    CGFloat componentStyleSpacing = 11;
+    CGFloat componentStyleSpacing = 9;
     CGFloat componentHeight;
     
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
@@ -163,11 +163,11 @@ static NSString * const defaultValue = @"unselected";
     
     if (targetsVaryByRound){
         
-        componentHeight = titleBarHeight * (self.chainTemplate.numberOfRounds + 1) + componentStyleSpacing;
+        componentHeight = titleBarHeight + contentRowHeight * (self.chainTemplate.numberOfRounds) + componentStyleSpacing;
         
     } else{
         
-        componentHeight = titleBarHeight * 2 + componentStyleSpacing;
+        componentHeight = titleBarHeight + contentRowHeight + componentStyleSpacing;
     }
     
     int numberOfComponents = self.chainTemplate.numberOfExercises;

@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitTemplateExerciseComp">
             <connections>
+                <outlet property="exerciseNumberLabel" destination="pbk-G5-LH0" id="h2k-DI-dBg"/>
                 <outlet property="horizontalThinLabel" destination="E2K-H1-c4D" id="TFk-0g-uK2"/>
                 <outlet property="selectedExerciseButton" destination="VS1-DP-des" id="SB1-fM-eUP"/>
                 <outlet property="view" destination="zaK-yu-xvx" id="1LX-J7-OKp"/>
@@ -53,15 +54,25 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbk-G5-LH0">
+                    <rect key="frame" x="0.0" y="2" width="74" height="40"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="VS1-DP-des" firstAttribute="top" secondItem="pbk-G5-LH0" secondAttribute="top" id="5Pm-qw-JeH"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="top" secondItem="zaK-yu-xvx" secondAttribute="top" constant="2" id="7Jn-cU-ZqU"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="leading" secondItem="E2K-H1-c4D" secondAttribute="leading" id="9uW-rL-Qaq"/>
                 <constraint firstItem="E2K-H1-c4D" firstAttribute="top" secondItem="VS1-DP-des" secondAttribute="bottom" constant="4" id="Byb-af-smW"/>
                 <constraint firstAttribute="trailing" secondItem="E2K-H1-c4D" secondAttribute="trailing" id="IH5-F5-WKF"/>
+                <constraint firstItem="pbk-G5-LH0" firstAttribute="leading" secondItem="zaK-yu-xvx" secondAttribute="leading" id="LKT-Of-ALd"/>
                 <constraint firstAttribute="trailing" secondItem="VS1-DP-des" secondAttribute="trailing" constant="2" id="QhQ-JQ-Aj0"/>
+                <constraint firstItem="VS1-DP-des" firstAttribute="bottom" secondItem="pbk-G5-LH0" secondAttribute="bottom" id="Rv0-6D-smh"/>
                 <constraint firstItem="9GY-RM-qzL" firstAttribute="top" secondItem="E2K-H1-c4D" secondAttribute="bottom" id="WID-V6-Rpi"/>
+                <constraint firstItem="VS1-DP-des" firstAttribute="leading" secondItem="pbk-G5-LH0" secondAttribute="trailing" id="a4L-ko-6G1"/>
                 <constraint firstItem="E2K-H1-c4D" firstAttribute="leading" secondItem="zaK-yu-xvx" secondAttribute="leading" constant="74" id="g58-iO-AiN"/>
                 <constraint firstItem="9GY-RM-qzL" firstAttribute="leading" secondItem="E2K-H1-c4D" secondAttribute="leading" id="rYn-ik-rhI"/>
             </constraints>

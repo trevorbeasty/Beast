@@ -42,6 +42,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
 @property (weak, nonatomic) IBOutlet UILabel *horizontalThinLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseNumberLabel;
 
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
@@ -101,6 +102,13 @@
                  forState: UIControlStateNormal];
     
     button.titleLabel.numberOfLines = 0;
+    button.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+    // number label
+    
+    self.exerciseNumberLabel.font = [UIFont boldSystemFontOfSize: 30];
+    self.exerciseNumberLabel.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.exerciseNumberLabel.backgroundColor = [UIColor clearColor];
     
     
     // selected exercise button layer
@@ -129,6 +137,10 @@
 //    [self.constraintMapping setObject: self.thinLineLabel
 //                               forKey: thinLineLabel];
     
+    // number label text
+    
+    self.exerciseNumberLabel.text = [NSString stringWithFormat: @"%d", [self.exerciseIndex intValue] + 1];
+    
     NSString *exerciseButton = @"exerciseButton";
     [self.constraintMapping setObject: self.selectedExerciseButton
                                forKey: exerciseButton];
@@ -138,7 +150,7 @@
                                forKey: horizontalThinLabel];
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-4-", horizontalThinLabel]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", horizontalThinLabel]];
     
     for (int i = 0 ; i < self.chainTemplate.numberOfRounds ; i ++){
         
