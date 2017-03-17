@@ -794,7 +794,7 @@
         
         [weakSelf setRealizedSetParametersToNil];
         
-        [weakSelf dismissViewControllerAnimated: NO
+        [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
 
     };

@@ -169,9 +169,11 @@
     tfLayer.masksToBounds = YES;
     tfLayer.cornerRadius = 8;
     tfLayer.borderWidth = 1;
-    tfLayer.borderColor = [[UIColor darkGrayColor] CGColor];
+    tfLayer.borderColor = [[[TJBAestheticsController singleton] blueButtonColor] CGColor];
     
     self.nameTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    self.nameTextField.backgroundColor = [UIColor clearColor];
+    self.nameTextField.textColor = [[TJBAestheticsController singleton] blueButtonColor];
     
     // SC's and steppers
     
@@ -222,7 +224,7 @@
     for (UILabel *label in largeLabels){
         
         label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
@@ -235,6 +237,16 @@
                                     forState: UIControlStateNormal];
     
     self.launchTemplateButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
+    // counter labels
+    
+    NSArray *counterLabels = @[self.counterNumberOfRounds, self.counterNumberOfExercises];
+    for (UILabel *lab in counterLabels){
+        
+        lab.textColor = [[TJBAestheticsController singleton] blueButtonColor];
+        lab.backgroundColor = [UIColor clearColor];
+        
+    }
     
 }
 

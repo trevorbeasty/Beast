@@ -1011,7 +1011,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                            forState: UIControlStateNormal];
         
         self.normalBrowsingExerciseSC.enabled = YES;
-        self.normalBrowsingExerciseSC.layer.opacity = .4;
+        self.normalBrowsingExerciseSC.layer.opacity = 1.0;
         
         self.addNewExerciseButton.enabled = YES;
         self.addNewExerciseButton.layer.opacity = 1.0;

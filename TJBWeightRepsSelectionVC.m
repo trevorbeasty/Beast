@@ -414,7 +414,7 @@ static float const numberOfCellsPerRow = 2;
     [self.weightCollectionView reloadData];
     
     self.weightSelectedCellIndexPath = nil;
-    self.weightSelectedValueLabel.text = @"select";
+    self.weightSelectedValueLabel.text = @"--- lbs";
     
     self.submitButton.enabled = NO;
     
@@ -425,7 +425,7 @@ static float const numberOfCellsPerRow = 2;
     [self.repsCollectionView reloadData];
     
     self.repsSelectedCellIndexPath = nil;
-    self.repsSelectedValueLabel.text = @"select";
+    self.repsSelectedValueLabel.text = @"--- reps";
     
     self.submitButton.enabled = NO;
     
