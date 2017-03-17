@@ -354,7 +354,8 @@
         [self.restButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                               forState: UIControlStateNormal];
         
-        NSString *restText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
+        NSString *formattedTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
+        NSString *restText = [NSString stringWithFormat: @"%@ rest", formattedTime];
         [self.restButton setTitle: restText
                          forState: UIControlStateNormal];
         
@@ -399,7 +400,7 @@
             
             // change the appearance of the copying reference cell
             
-            self.weightButton.backgroundColor = [UIColor lightGrayColor];
+            self.weightButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
             [self.weightButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                     forState: UIControlStateNormal];
             
@@ -445,7 +446,7 @@
             
             // change the appearance of the copying reference cell
             
-            self.repsButton.backgroundColor = [UIColor lightGrayColor];
+            self.repsButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
             [self.repsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                   forState: UIControlStateNormal];
             
@@ -491,7 +492,7 @@
             
             // change the appearance of the copying reference cell
             
-            self.restButton.backgroundColor = [UIColor lightGrayColor];
+            self.restButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
             [self.restButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                   forState: UIControlStateNormal];
             
@@ -533,7 +534,7 @@
         [self.weightButton setTitle: weightText
                            forState: UIControlStateNormal];
         
-        self.weightButton.backgroundColor = [UIColor lightGrayColor];
+        self.weightButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         [self.weightButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                 forState: UIControlStateNormal];
         self.weightButton.layer.opacity = 1.0;
@@ -562,7 +563,7 @@
         [self.repsButton setTitle: repsText
                            forState: UIControlStateNormal];
         
-        self.repsButton.backgroundColor = [UIColor lightGrayColor];
+        self.repsButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         [self.repsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                               forState: UIControlStateNormal];
         self.repsButton.layer.opacity = 1.0;
@@ -586,11 +587,12 @@
         
         // button appearance
         
-        NSString *restText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)_valueToCopy];
+        NSString *formattedTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)_valueToCopy];
+        NSString *restText = [NSString stringWithFormat: @"%@ rest", formattedTime];
         [self.restButton setTitle: restText
                          forState: UIControlStateNormal];
         
-        self.restButton.backgroundColor = [UIColor lightGrayColor];
+        self.restButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         [self.restButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                                 forState: UIControlStateNormal];
         self.restButton.layer.opacity = 1.0;

@@ -44,8 +44,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *horizontalThinLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseNumberLabel;
 
+// auto layout
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
+@property (strong) NSString *firstRowKey; // used to specify that all row comps have height equal to the first row comp
 
 @end
 
@@ -152,7 +154,15 @@
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", horizontalThinLabel]];
     
-    for (int i = 0 ; i < self.chainTemplate.numberOfRounds ; i ++){
+    NSInteger iterationLimit; // establish the iteration limit. It is equal to the number of rounds unless targets do not vary by round, in which case it is 1
+    
+    if (self.chainTemplate.targetsVaryByRound == NO){
+        iterationLimit = 1;
+    } else{
+        iterationLimit = self.chainTemplate.numberOfRounds;
+    }
+    
+    for (int i = 0 ; i < iterationLimit ; i ++){
         
         TJBCircuitTemplateRowComponent *rowVC = [[TJBCircuitTemplateRowComponent alloc] initWithChainTemplate: self.chainTemplate
                                                                                              masterController: self.masterController
@@ -179,22 +189,35 @@
         
         NSString *verticalAppendString;
         
-        if (self.chainTemplate.targetsVaryByRound == NO)
-        {
-            i = self.chainTemplate.numberOfRounds - 1;
+        if (i == 0){ // the row components have the same height. I specify that all row components have height equal to the first row component. This is not specified for the first row component
+            
+            self.firstRowKey = dynamicRowName;
+            
         }
         
-        if (i == self.chainTemplate.numberOfRounds - 1)
-        {
+        if (self.chainTemplate.targetsVaryByRound == NO || self.chainTemplate.numberOfRounds == 1){
+            
+            verticalAppendString = [NSString stringWithFormat: @"[%@]-0-|",
+                                    dynamicRowName];
+            
+        } else if (i == 0){
+            
+            verticalAppendString = [NSString stringWithFormat: @"[%@]-0-",
+                                    dynamicRowName];
+            
+            
+        } else if (i == iterationLimit - 1){
+            
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
                                     dynamicRowName,
-                                    exerciseButton];
-        }
-        else
-        {
+                                    self.firstRowKey];
+            
+        } else{
+            
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-",
                                     dynamicRowName,
-                                    exerciseButton];
+                                    self.firstRowKey];
+            
         }
         
         [verticalLayoutConstraintsString appendString: verticalAppendString];

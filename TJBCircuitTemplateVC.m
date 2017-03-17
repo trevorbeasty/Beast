@@ -149,7 +149,7 @@ static NSString * const defaultValue = @"unselected";
     
     // determine height of scroll view content size
     
-    CGFloat titleBarHeight = 40;
+    CGFloat titleBarHeight = 50;
     CGFloat contentRowHeight = 44;
     CGFloat componentToComponentSpacing = 24;
     CGFloat componentStyleSpacing = 9;
