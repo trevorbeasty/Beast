@@ -40,7 +40,7 @@
 
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *selectedValueLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *multiplierSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
@@ -95,22 +95,18 @@ static NSString * const reuseIdentifier = @"cell";
     
     switch (_numberTypeIdentifier) {
         case WeightType:
-            self.typeLabel.text = @"Weight";
             self.topLabel1.text = @"Select Weight";
             break;
             
         case TargetRestType:
-            self.typeLabel.text = @"Rest";
             self.topLabel1.text = @"Select Rest";
             break;
             
         case TimeIntervalSelection:
-            self.typeLabel.text = @"Time";
             self.topLabel1.text = @"Select Time";
             break;
             
         case RepsType:
-            self.typeLabel.text = @"Reps";
             self.topLabel1.text = @"Select Reps";
             break;
             
@@ -190,7 +186,7 @@ static NSString * const reuseIdentifier = @"cell";
     
     // type label
     
-    NSArray *labels = @[self.topLabel1, self.typeLabel, self.selectedValueLabel];
+    NSArray *labels = @[self.topLabel1, self.selectedValueLabel];
     for (UILabel *label in labels){
         
         label.backgroundColor = [UIColor darkGrayColor];
@@ -198,8 +194,6 @@ static NSString * const reuseIdentifier = @"cell";
         label.font = [UIFont boldSystemFontOfSize: 20];
         
     }
-    
-    self.typeLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     
     // buttons
     

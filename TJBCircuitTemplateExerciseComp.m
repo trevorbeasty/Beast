@@ -108,7 +108,7 @@
     
     // number label
     
-    self.exerciseNumberLabel.font = [UIFont boldSystemFontOfSize: 30];
+    self.exerciseNumberLabel.font = [UIFont boldSystemFontOfSize: 35];
     self.exerciseNumberLabel.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     self.exerciseNumberLabel.backgroundColor = [UIColor clearColor];
     
