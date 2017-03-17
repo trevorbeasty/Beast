@@ -36,8 +36,8 @@
 //// core
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) NSMutableArray *exercisesForBrowsingSCValue;
-@property (strong) NSMutableArray *filteredExercises;
+@property (nonatomic, strong) NSMutableArray *contentExercisesArray;
+//@property (strong) NSMutableArray *filteredExercises;
 
 // callback
 
@@ -67,8 +67,10 @@
 //@property (weak, nonatomic) IBOutlet UILabel *thinDividerLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *normalBrowsingExerciseSC;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 
-@property (strong) TJBExerciseSelectionTitleCell *titleCell;
+//@property (strong) TJBExerciseSelectionTitleCell *titleCell;
+@property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
 
 
 // IBAction
@@ -106,6 +108,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 - (void)viewDidLoad{
     
     self.exerciseAdditionContainer.hidden = YES;
+    self.searchTextField.hidden = YES;
     
     [self configureTableView];
     
@@ -121,9 +124,20 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [self registerForCoreDataNotifications];
     
-    [self configureExerciseFilterTextField];
-    
     [self configureNormalBrowsingExerciseSC];
+    
+    [self configureSearchTextFieldNotification];
+    
+}
+
+- (void)configureSearchTextFieldNotification{
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(deriveExerciseContentBasedOnSearch)
+                                                 name: UITextFieldTextDidChangeNotification
+                                               object: self.searchTextField];
+    
+    self.searchTextField.delegate = self;
     
 }
 
@@ -135,35 +149,23 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-- (void)configureExerciseFilterTextField{
-    
-//    self.exerciseSeachTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-//    self.exerciseSeachTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-//    self.exerciseSeachTextField.clearButtonMode = UITextFieldViewModeAlways;
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(updateFetchedResultsController)
-//                                                 name: UITextFieldTextDidChangeNotification
-//                                               object: self.exerciseSeachTextField];
-    
-}
 
 - (void)addTapGestureRecognizerToViewForKeyboardNotification{
     
-    //// add gesture recognizer to the view.  It will be used to dismiss the keyboard if the touch is not in the keyboard or text field
-    //// also register for the UIKeyboardDidShowNotification so that the frame of the keyboard can be stored for later use in analyzing touches
-    
-    // tap GR
-    
-    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                  action: @selector(didSingleTap:)];
-    
-    singleTapGR.numberOfTapsRequired = 1;
-    singleTapGR.cancelsTouchesInView = NO;
-    singleTapGR.delaysTouchesBegan = NO;
-    singleTapGR.delaysTouchesEnded = NO;
-    
-    [self.view addGestureRecognizer: singleTapGR];
+//    //// add gesture recognizer to the view.  It will be used to dismiss the keyboard if the touch is not in the keyboard or text field
+//    //// also register for the UIKeyboardDidShowNotification so that the frame of the keyboard can be stored for later use in analyzing touches
+//    
+//    // tap GR
+//    
+//    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+//                                                                                  action: @selector(didSingleTap:)];
+//    
+//    singleTapGR.numberOfTapsRequired = 1;
+//    singleTapGR.cancelsTouchesInView = NO;
+//    singleTapGR.delaysTouchesBegan = NO;
+//    singleTapGR.delaysTouchesEnded = NO;
+//    
+//    [self.view addGestureRecognizer: singleTapGR];
     
 }
 
@@ -306,9 +308,13 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     [self.categorySegmentedControl setTitleTextAttributes: info
                                                  forState: UIControlStateNormal];
     
+    // browsing segmented control
+    
+    self.normalBrowsingExerciseSC.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+    
     // add buttons
     
-    NSArray *addButtons = @[self.addButton, self.addAndSelectButton, self.addNewExerciseButton, self.searchButton];
+    NSArray *addButtons = @[self.addButton, self.addAndSelectButton, self.addNewExerciseButton];
     for (UIButton *button in addButtons){
         
         button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
@@ -317,6 +323,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                              forState: UIControlStateNormal];
         
     }
+    
+    
     
     // text fields and search label
     
@@ -335,6 +343,35 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         tf.textColor = [UIColor blackColor];
         
     }
+    
+    // bar buttons
+    
+    NSArray *buttons = @[self.leftBarButton, self.searchButton];
+    for (UIButton *b in buttons){
+        
+        b.backgroundColor = [UIColor clearColor];
+        b.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                forState: UIControlStateNormal];
+        
+    }
+    
+    self.leftBarButton.backgroundColor = [UIColor darkGrayColor];
+    
+    // search text field
+    
+    self.searchTextField.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.searchTextField.layer.borderWidth = 1.0;
+    self.searchTextField.font = [UIFont systemFontOfSize: 20.0];
+    self.searchTextField.textColor = [UIColor whiteColor];
+    self.searchTextField.textAlignment = NSTextAlignmentCenter;
+    self.searchTextField.layer.cornerRadius = 8.0;
+    self.searchTextField.layer.masksToBounds = YES;
+    
+    // second bar label
+    
+    self.secondBarLabel.backgroundColor = [UIColor darkGrayColor];
+    self.secondBarLabel.text = @"";
     
 //    CALayer *estfLayer = self.exerciseSeachTextField.layer;
 //    estfLayer.borderWidth = 2.0;
@@ -360,6 +397,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                      forState: UIControlStateNormal];
         
     }
+    
+    self.exerciseTableView.bounces = NO;
     
     self.mainTitleLabel.backgroundColor = [UIColor darkGrayColor];
     self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
@@ -388,7 +427,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 }
 
 
-#pragma mark - Exercise Browsing SC
+#pragma mark - Exercise Browsing
 
 - (void)browsingSCValueDidChange{
     
@@ -423,10 +462,55 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [returnArray filterUsingPredicate: categoryFilter];
     
-    self.exercisesForBrowsingSCValue = returnArray;
+    self.contentExercisesArray = returnArray;
     
     [self.exerciseTableView reloadData];
     
+}
+
+- (void)deriveExerciseContentBasedOnSearch{
+    
+    NSString *searchString = self.searchTextField.text;
+    
+    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
+    
+    NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
+    NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
+    
+    NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
+                                                                                          searchFilterPredicate]];
+    
+    NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
+    self.contentExercisesArray = [filteredExercises mutableCopy];
+    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.exerciseTableView reloadData];
+//    });
+//    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.exerciseTableView reloadData];
+//    });
+    
+    [self.exerciseTableView reloadData];
+    
+//    [self.titleCell.searchTextField becomeFirstResponder];
+    
+//    // cannot reload the title cell because doing so causes the text field to be dismissed
+//    
+//    NSInteger contentCount = filteredExercises.count;
+//    NSMutableArray *indexPathCollector = [[NSMutableArray alloc] init];
+//    for (int i = 0; i < contentCount; i++){
+//        
+//        NSIndexPath *iterativePath = [NSIndexPath indexPathForRow: i + 1
+//                                                        inSection: 0];
+//        
+//        [indexPathCollector addObject: iterativePath];
+//        
+//    }
+//    
+//    [self.exerciseTableView reloadRowsAtIndexPaths: indexPathCollector
+//                                  withRowAnimation: UITableViewRowAnimationAutomatic];
+
 }
 
 
@@ -457,7 +541,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    NSInteger contentCellCount = self.exercisesForBrowsingSCValue.count;
+    NSInteger contentCellCount = self.contentExercisesArray.count;
     
     if (contentCellCount == 0){
         
@@ -473,48 +557,53 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSInteger contentCellCount = self.exercisesForBrowsingSCValue.count;
+    NSInteger contentCellCount = self.contentExercisesArray.count;
     
     if (indexPath.row == 0){
         
         NSString *filterString;
         
-        switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
-            case 0:
-                filterString = @"Push";
-                break;
-                
-            case 1:
-                filterString = @"Pull";
-                break;
-                
-            case 2:
-                filterString = @"Leg";
-                break;
-                
-            case 3:
-                filterString = @"Other";
-                
-            default:
-                break;
+        if (_searchIsActive){
+            
+            filterString = @"Searching All";
+            
+        } else{
+            
+            switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
+                case 0:
+                    filterString = @"Push";
+                    break;
+                    
+                case 1:
+                    filterString = @"Pull";
+                    break;
+                    
+                case 2:
+                    filterString = @"Leg";
+                    break;
+                    
+                case 3:
+                    filterString = @"Other";
+                    
+                default:
+                    break;
+            }
+            
         }
         
-        if (!self.titleCell){
-            
-            TJBExerciseSelectionTitleCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionTitleCell"];
-            self.titleCell = cell;
-            
-            cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-            
-        }
+
         
-        self.titleCell.titleLabel.text = [NSString stringWithFormat: @"%@ Exercises", filterString];
-        self.titleCell.subTitleLabel.text = @"select an exercise";
+        TJBExerciseSelectionTitleCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionTitleCell"];
         
-        self.titleCell.detail1Label.text = @"Name";
-        self.titleCell.detail2Label.text = @"Date Last Executed";
+        cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
-        return  self.titleCell;
+        cell.titleLabel.text = [NSString stringWithFormat: @"%@ Exercises", filterString];
+        cell.subTitleLabel.text = @"select an exercise";
+        
+        cell.detail1Label.text = @"Name";
+        cell.detail2Label.text = @"Date Last Executed";
+        
+        return cell;
         
     } else{
         
@@ -533,7 +622,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
             
             NSInteger adjustedIndex = indexPath.row - 1;
-            TJBExercise *exercise = self.exercisesForBrowsingSCValue[adjustedIndex];
+            TJBExercise *exercise = self.contentExercisesArray[adjustedIndex];
             
             cell.exerciseNameLabel.text = exercise.name;
             
@@ -644,15 +733,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    // only select the row if it is an exercise
-    
-    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-    
-    if (sectionCount != 0){
+    if (indexPath.row != 0){
         
-        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: indexPath];
+        TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row - 1];
         
-        self.callbackBlock(exercise);
+        self.callbackBlock(selectedExercise);
         
     }
  
@@ -703,15 +788,9 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleCellHeight;
+    CGFloat titleCellHeight = 90;
     
-    if (_searchIsActive){
-        titleCellHeight = 100;
-    } else{
-        titleCellHeight = 90;
-    }
-    
-    NSInteger contentCellCount = self.exercisesForBrowsingSCValue.count;
+    NSInteger contentCellCount = self.contentExercisesArray.count;
     
     if (indexPath.row == 0){
         
@@ -884,23 +963,33 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     if (_searchIsActive == NO){
         
+        [self.searchButton setTitle: @"Back"
+                           forState: UIControlStateNormal];
         
+        self.normalBrowsingExerciseSC.enabled = NO;
+
+        [self deriveExerciseContentBasedOnSearch];
         
-        [self.titleCell toggleToSearchState];
-        
-        [self.titleCell.searchTextField becomeFirstResponder];
+        self.searchTextField.hidden = NO;
+        [self.searchTextField becomeFirstResponder];
         
         _searchIsActive = YES;
     
     } else{
         
-        [self.titleCell toggleToDefaultState];
+        [self.searchButton setTitle: @"Search"
+                           forState: UIControlStateNormal];
+        
+        self.normalBrowsingExerciseSC.enabled = YES;
+        
+        self.searchTextField.hidden = YES;
+        [self.searchTextField resignFirstResponder];
         
         _searchIsActive = NO;
         
+        [self browsingSCValueDidChange];
+        
     }
-    
-    [self.exerciseTableView reloadData];
     
 }
 
@@ -1122,22 +1211,22 @@ static CGFloat const totalAniDist = 246.0;
 
 #pragma mark - Gesture Recognizer
 
-- (void)didSingleTap:(UIGestureRecognizer *)gr{
-    
-    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
-    
-    if ([self.exerciseTextField isFirstResponder]){
-        
-        [self.exerciseTextField resignFirstResponder];
-        
-    }
-    
-//    if ([self.exerciseSeachTextField isFirstResponder]){
+//- (void)didSingleTap:(UIGestureRecognizer *)gr{
+//    
+//    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
+//    
+//    if ([self.exerciseTextField isFirstResponder]){
 //        
-//        [self.exerciseSeachTextField resignFirstResponder];
+//        [self.exerciseTextField resignFirstResponder];
 //        
 //    }
-}
+//    
+////    if ([self.exerciseSeachTextField isFirstResponder]){
+////        
+////        [self.exerciseSeachTextField resignFirstResponder];
+////        
+////    }
+//}
 
 #pragma mark - <UITextFieldDelegate>
 
@@ -1148,6 +1237,8 @@ static CGFloat const totalAniDist = 246.0;
     return YES;
     
 }
+
+
 
 #pragma mark - Core Data
 

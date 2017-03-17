@@ -67,7 +67,7 @@
                                 <action selector="didPressLeftBarButton:" destination="-1" eventType="touchUpInside" id="wAz-wX-m64"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Freeform Lift" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LkM-c3-4QM">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select an Exercise" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LkM-c3-4QM">
                             <rect key="frame" x="60" y="20" width="255" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -110,21 +110,21 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWv-BT-UWM">
-                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <rect key="frame" x="188.5" y="617" width="186.5" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="zMl-Ls-hwJ"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Begin Next Set"/>
+                    <state key="normal" title="Set Completed"/>
                     <connections>
                         <action selector="didPressBeginNextSet:" destination="-1" eventType="touchUpInside" id="ZdQ-Gf-b9j"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TJM-C8-3Ry" userLabel="shadowView">
-                    <rect key="frame" x="0.0" y="300" width="375" height="263"/>
+                    <rect key="frame" x="0.0" y="300" width="375" height="315"/>
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="v9H-xu-7S6">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="263"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -264,9 +264,9 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LEG-Nx-SbA">
-                    <rect key="frame" x="0.0" y="565" width="375" height="50"/>
+                    <rect key="frame" x="0.0" y="617" width="186.5" height="50"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                    <state key="normal" title="Select an Exercise"/>
+                    <state key="normal" title="Select Exercise"/>
                     <connections>
                         <action selector="didPressExerciseButton:" destination="-1" eventType="touchUpInside" id="8Rg-D5-B7M"/>
                     </connections>
@@ -277,18 +277,18 @@
                 <constraint firstItem="TJM-C8-3Ry" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2E5-LM-0PP"/>
                 <constraint firstItem="sWv-BT-UWM" firstAttribute="height" secondItem="LEG-Nx-SbA" secondAttribute="height" id="6sE-Bs-RDL"/>
                 <constraint firstAttribute="trailing" secondItem="amz-tf-TWd" secondAttribute="trailing" id="76Z-4S-2j9"/>
-                <constraint firstAttribute="trailing" secondItem="LEG-Nx-SbA" secondAttribute="trailing" id="Chk-Nt-Kvm"/>
-                <constraint firstItem="sWv-BT-UWM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LQw-LM-MsM"/>
+                <constraint firstItem="sWv-BT-UWM" firstAttribute="leading" secondItem="LEG-Nx-SbA" secondAttribute="trailing" constant="2" id="Ep7-vT-nwH"/>
+                <constraint firstItem="LEG-Nx-SbA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="LR0-wr-xsE"/>
                 <constraint firstAttribute="bottom" secondItem="sWv-BT-UWM" secondAttribute="bottom" id="NWv-0X-MvD"/>
                 <constraint firstItem="TJM-C8-3Ry" firstAttribute="top" secondItem="7z5-Lm-Ltj" secondAttribute="bottom" id="O2J-AN-Mqa"/>
+                <constraint firstItem="LEG-Nx-SbA" firstAttribute="top" secondItem="TJM-C8-3Ry" secondAttribute="bottom" constant="2" id="O38-wA-dbi"/>
+                <constraint firstItem="sWv-BT-UWM" firstAttribute="width" secondItem="LEG-Nx-SbA" secondAttribute="width" id="Qyi-1f-zMf"/>
                 <constraint firstAttribute="trailing" secondItem="TJM-C8-3Ry" secondAttribute="trailing" id="RUv-nE-pjm"/>
                 <constraint firstItem="7z5-Lm-Ltj" firstAttribute="top" secondItem="amz-tf-TWd" secondAttribute="bottom" id="UED-Uj-61e"/>
                 <constraint firstItem="amz-tf-TWd" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cVv-4s-5iC"/>
                 <constraint firstItem="amz-tf-TWd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dyH-nJ-bsC"/>
-                <constraint firstItem="LEG-Nx-SbA" firstAttribute="top" secondItem="TJM-C8-3Ry" secondAttribute="bottom" constant="2" id="gds-jD-G1p"/>
-                <constraint firstItem="LEG-Nx-SbA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hnq-y7-oCT"/>
                 <constraint firstItem="7z5-Lm-Ltj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nXR-5C-7OP"/>
-                <constraint firstItem="sWv-BT-UWM" firstAttribute="top" secondItem="LEG-Nx-SbA" secondAttribute="bottom" constant="2" id="qrE-yw-h4y"/>
+                <constraint firstAttribute="bottom" secondItem="LEG-Nx-SbA" secondAttribute="bottom" id="oE9-aG-ga6"/>
                 <constraint firstAttribute="trailing" secondItem="7z5-Lm-Ltj" secondAttribute="trailing" id="tcU-WG-NXg"/>
                 <constraint firstAttribute="trailing" secondItem="sWv-BT-UWM" secondAttribute="trailing" id="ygN-ev-jZ3"/>
             </constraints>

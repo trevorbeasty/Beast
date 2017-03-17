@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -16,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="447" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="447" height="199.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="447" height="199"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0DA-bX-see">
@@ -53,40 +53,21 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jet-OS-sNX" customClass="TJBTextField">
-                        <rect key="frame" x="16" y="32" width="415" height="30"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <nil key="textColor"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <textInputTraits key="textInputTraits"/>
-                    </textField>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search All Exercises" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CXP-LH-6OJ">
-                        <rect key="frame" x="126.5" y="8" width="194" height="24"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="dhY-8x-Nwk" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="31G-2v-njb"/>
                     <constraint firstAttribute="bottomMargin" secondItem="dhY-8x-Nwk" secondAttribute="bottom" id="5Cx-tp-h48"/>
                     <constraint firstItem="dhY-8x-Nwk" firstAttribute="bottom" secondItem="b7d-u2-2A4" secondAttribute="bottom" id="8er-cS-Cp0"/>
-                    <constraint firstItem="Jet-OS-sNX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="Dq3-pX-IGv"/>
-                    <constraint firstItem="Jet-OS-sNX" firstAttribute="top" secondItem="Wdq-gM-PsX" secondAttribute="top" id="E7J-An-1oz"/>
                     <constraint firstItem="PiU-xJ-t9m" firstAttribute="leading" secondItem="dhY-8x-Nwk" secondAttribute="trailing" id="EL4-Jc-iCq"/>
                     <constraint firstItem="PiU-xJ-t9m" firstAttribute="bottom" secondItem="b7d-u2-2A4" secondAttribute="bottom" id="HTA-rw-oPN"/>
-                    <constraint firstItem="Jet-OS-sNX" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="Tj7-A7-bNg"/>
                     <constraint firstItem="dhY-8x-Nwk" firstAttribute="leading" secondItem="b7d-u2-2A4" secondAttribute="trailing" id="Wsc-Fu-U6D"/>
                     <constraint firstItem="0DA-bX-see" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="Y4Z-n7-03s"/>
                     <constraint firstItem="dhY-8x-Nwk" firstAttribute="top" secondItem="b7d-u2-2A4" secondAttribute="top" id="dWS-B7-Q5T"/>
                     <constraint firstItem="PiU-xJ-t9m" firstAttribute="width" secondItem="b7d-u2-2A4" secondAttribute="width" id="dwY-QM-0s1"/>
                     <constraint firstItem="Wdq-gM-PsX" firstAttribute="top" secondItem="0DA-bX-see" secondAttribute="bottom" id="g9P-8w-8SZ"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Jet-OS-sNX" secondAttribute="trailing" constant="8" id="m3K-4L-Qww"/>
                     <constraint firstItem="Wdq-gM-PsX" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="mOs-cV-V5W"/>
                     <constraint firstAttribute="trailingMargin" secondItem="PiU-xJ-t9m" secondAttribute="trailing" id="qbB-iH-86B"/>
                     <constraint firstItem="PiU-xJ-t9m" firstAttribute="top" secondItem="b7d-u2-2A4" secondAttribute="top" id="qeh-II-kgq"/>
-                    <constraint firstItem="CXP-LH-6OJ" firstAttribute="top" secondItem="0DA-bX-see" secondAttribute="top" id="rW3-v9-B8F"/>
-                    <constraint firstItem="CXP-LH-6OJ" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="wan-Y2-cIN"/>
                     <constraint firstItem="0DA-bX-see" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="wlm-Mb-e3S"/>
                     <constraint firstItem="b7d-u2-2A4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="wyP-AJ-TOU"/>
                 </constraints>
@@ -94,8 +75,6 @@
             <connections>
                 <outlet property="detail1Label" destination="b7d-u2-2A4" id="gIF-AD-0UH"/>
                 <outlet property="detail2Label" destination="PiU-xJ-t9m" id="keZ-ij-Ny4"/>
-                <outlet property="searchTextField" destination="Jet-OS-sNX" id="PpO-mG-EQI"/>
-                <outlet property="searchTitle" destination="CXP-LH-6OJ" id="Qx6-iQ-ZYU"/>
                 <outlet property="subTitleLabel" destination="Wdq-gM-PsX" id="uW9-cR-IjL"/>
                 <outlet property="titleLabel" destination="0DA-bX-see" id="dcM-6U-AY1"/>
             </connections>

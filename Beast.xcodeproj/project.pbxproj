@@ -95,7 +95,6 @@
 		0BC12E201E5FBE100041D863 /* TJBRealizedSetCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E1E1E5FBE100041D863 /* TJBRealizedSetCollectionCell.xib */; };
 		0BC12E251E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E231E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.m */; };
 		0BC12E261E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E241E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib */; };
-		0BC12E291E7ABEAB0041D863 /* TJBTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E281E7ABEAB0041D863 /* TJBTextField.m */; };
 		0BF2385B1E7A267600270059 /* TJBDetailTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF238591E7A267600270059 /* TJBDetailTitleCell.m */; };
 		0BF2385C1E7A267600270059 /* TJBDetailTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */; };
 /* End PBXBuildFile section */
@@ -243,8 +242,6 @@
 		0BC12E221E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseSelectionTitleCell.h; sourceTree = "<group>"; };
 		0BC12E231E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBExerciseSelectionTitleCell.m; sourceTree = "<group>"; };
 		0BC12E241E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseSelectionTitleCell.xib; sourceTree = "<group>"; };
-		0BC12E271E7ABEAB0041D863 /* TJBTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBTextField.h; sourceTree = "<group>"; };
-		0BC12E281E7ABEAB0041D863 /* TJBTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBTextField.m; sourceTree = "<group>"; };
 		0BF238581E7A267600270059 /* TJBDetailTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBDetailTitleCell.h; sourceTree = "<group>"; };
 		0BF238591E7A267600270059 /* TJBDetailTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBDetailTitleCell.m; sourceTree = "<group>"; };
 		0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBDetailTitleCell.xib; sourceTree = "<group>"; };
@@ -720,8 +717,6 @@
 				0BC12E221E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.h */,
 				0BC12E231E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.m */,
 				0BC12E241E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib */,
-				0BC12E271E7ABEAB0041D863 /* TJBTextField.h */,
-				0BC12E281E7ABEAB0041D863 /* TJBTextField.m */,
 			);
 			name = "Exercise Selection Title Cell";
 			sourceTree = "<group>";
@@ -863,7 +858,6 @@
 				0B3688211E4352B80077290C /* TJBSchemeSelectionDateComp.m in Sources */,
 				0B78E8061E69C55400EB216F /* TJBMasterCell.m in Sources */,
 				0B78E7FB1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.m in Sources */,
-				0BC12E291E7ABEAB0041D863 /* TJBTextField.m in Sources */,
 				0B86FB801E257310000D1B5F /* TJBCircuitTemplateVC.m in Sources */,
 				0B86FB891E2584DA000D1B5F /* TJBCircuitTemplateRowComponent.m in Sources */,
 				0B3687DC1E38DB530077290C /* TJBStructureTableViewCell.m in Sources */,
