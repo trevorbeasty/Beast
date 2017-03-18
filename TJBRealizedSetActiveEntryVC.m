@@ -283,22 +283,6 @@
     
 }
 
-//- (void)configureTableShadow{
-//    
-//    UIView *shadowView = self.shadowView;
-//    shadowView.backgroundColor = [UIColor clearColor];
-//    shadowView.clipsToBounds = NO;
-//    
-//    CALayer *shadowLayer = shadowView.layer;
-//    shadowLayer.masksToBounds = NO;
-//    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-//    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
-//    shadowLayer.shadowOpacity = 1.0;
-//    shadowLayer.shadowRadius = 3.0;
-//    
-//}
-
-
 
 - (void)configureTableView{
     
@@ -320,7 +304,7 @@
     [self.personalRecordsTableView registerNib: noDataCell
                         forCellReuseIdentifier: @"TJBNoDataCell"];
     
-    self.personalRecordsTableView.bounces = NO;
+    self.personalRecordsTableView.bounces = YES;
     
 }
 
@@ -578,7 +562,7 @@
         
         if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count ==0){
             
-            [self.view layoutIfNeeded];
+//            [self.view layoutIfNeeded];
             
             return self.shadowView.frame.size.height - titleHeight;
             

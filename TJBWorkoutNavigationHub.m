@@ -1599,7 +1599,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     newTableView.dataSource = self;
     newTableView.delegate = self;
     newTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    newTableView.scrollEnabled = NO;
+    newTableView.scrollEnabled = YES;
+    newTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    newTableView.separatorColor = [UIColor blackColor];
     
     // make sure to remove the old table view from the view hierarchy or else it will not deallocate
     
@@ -1652,7 +1654,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     sv.frame = CGRectMake(0, 0, contentSize.width, self.shadowContainer.frame.size.height);
     sv.contentSize = contentSize;
-    sv.bounces = NO;
+    sv.bounces = YES;
     
     // if there is an object for the scrollPositionForUpdate property, use that value to derive the correct CGPoint
     

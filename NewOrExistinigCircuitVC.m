@@ -250,7 +250,7 @@
     // container view shadow
     
     UIView *shadowView = self.mainContainer;
-    shadowView.backgroundColor = [UIColor clearColor];
+    shadowView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     shadowView.clipsToBounds = NO;
     
     CALayer *shadowLayer = shadowView.layer;
@@ -1176,7 +1176,7 @@
     
     CGSize contentSize = CGSizeMake(self.mainContainer.frame.size.width, contentHeight);
     sv.contentSize = contentSize;
-    sv.bounces = NO;
+    sv.bounces = YES;
     
     [sv addSubview: chainHistoryVC.view];
     
@@ -1553,7 +1553,7 @@
     sv.contentSize = svContentSize;
     
     sv.backgroundColor = [UIColor clearColor];
-    sv.bounces = NO;
+    sv.bounces = YES;
     
     UITableView *tv = [[UITableView alloc] init];
     self.activeTableView = tv;
@@ -1562,6 +1562,8 @@
     
     tv.frame = CGRectMake(0, 0, svContentSize.width, tvContentHeight);
     tv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    tv.separatorColor = [UIColor blackColor];
+    tv.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     
     tv.dataSource = self;
     tv.delegate = self;

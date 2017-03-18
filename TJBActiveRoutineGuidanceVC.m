@@ -347,7 +347,7 @@ static float const animationTimeUnit = .4;
     
     // content container
     
-    self.contentScrollView.backgroundColor = [UIColor clearColor];
+    self.contentScrollView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // title container
     
@@ -553,7 +553,7 @@ static NSString const *restViewKey = @"restView";
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
     CGFloat exerciseCompHeight = 154;
     CGFloat restCompHeight = 62;
-    CGFloat initialTopSpacing = 2.0;
+    CGFloat initialTopSpacing = 0;
     CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight + initialTopSpacing;
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
@@ -699,7 +699,7 @@ static NSString const *restViewKey = @"restView";
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
     CGFloat exerciseCompHeight = 154;
-    CGFloat initialTopSpacing = 2.0;
+    CGFloat initialTopSpacing = 0;
     CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + initialTopSpacing;
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
