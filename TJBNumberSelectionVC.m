@@ -95,18 +95,22 @@ static NSString * const reuseIdentifier = @"cell";
     
     switch (_numberTypeIdentifier) {
         case WeightType:
+            self.selectedValueLabel.text = @"--- lbs";
             self.topLabel1.text = @"Select Weight";
             break;
             
         case TargetRestType:
+            self.selectedValueLabel.text = @"--- rest";
             self.topLabel1.text = @"Select Rest";
             break;
             
         case TimeIntervalSelection:
+            self.selectedValueLabel.text = @"---";
             self.topLabel1.text = @"Select Time";
             break;
             
         case RepsType:
+            self.selectedValueLabel.text = @"--- reps";
             self.topLabel1.text = @"Select Reps";
             break;
             
@@ -248,12 +252,14 @@ static NSString * const reuseIdentifier = @"cell";
     }
     
     cell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    cell.numberLabel.textColor = [UIColor whiteColor];
     
     if (self.selectedCellIndexPath){
         
         if (self.selectedCellIndexPath.row == indexPath.row){
             
-            cell.backgroundColor = [UIColor redColor];
+            cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+            cell.numberLabel.textColor = [UIColor blackColor];
             
         }
         
@@ -283,7 +289,6 @@ static NSString * const reuseIdentifier = @"cell";
         
     }
     
-    cell.numberLabel.textColor = [UIColor whiteColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     cell.typeLabel.text = @"";
     cell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
@@ -370,6 +375,7 @@ static NSString * const reuseIdentifier = @"cell";
         TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.collectionView cellForItemAtIndexPath: self.selectedCellIndexPath];
             
         previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        previousCell.numberLabel.textColor = [UIColor whiteColor];
             
     }
         
@@ -377,7 +383,8 @@ static NSString * const reuseIdentifier = @"cell";
         
     TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
         
-    currentCell.backgroundColor = [UIColor redColor];
+    currentCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    currentCell.numberLabel.textColor = [UIColor blackColor];
     
     NSNumber *number;
     if (_numberTypeIdentifier == TargetRestType){
@@ -466,7 +473,7 @@ static NSString * const reuseIdentifier = @"cell";
     
     [self.collectionView reloadData];
     
-    self.selectedValueLabel.text = @"select";
+    [self configureDisplay]; // called so that the selectedValueLabel resets to the correct 'no selection made' text
     
 }
 

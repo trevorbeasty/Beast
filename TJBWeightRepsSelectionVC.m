@@ -32,6 +32,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *smallTopTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UILabel *topBarRightLabel;
 
 // IBAction
 
@@ -127,11 +128,11 @@
         
     }
     
-    // rounded corners for top labels
+    // top labels
     
     [self.view layoutIfNeeded];
     
-    NSArray *titleLabels = @[self.topTitleLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel];
+    NSArray *titleLabels = @[self.topTitleLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel, self.topBarRightLabel];
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
@@ -139,6 +140,8 @@
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
+    
+    self.topBarRightLabel.text = @"";
     
     // buttons
     
@@ -151,6 +154,7 @@
                             forState: UIControlStateNormal];
     self.cancelButton.titleLabel.backgroundColor = [UIColor clearColor];
     self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.cancelButton.backgroundColor = [UIColor darkGrayColor];
     
 }
 
@@ -209,7 +213,8 @@
             
             if (self.weightSelectedCellIndexPath.row == indexPath.row){
                 
-                weightCell.backgroundColor = [UIColor redColor];
+                weightCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+                weightCell.numberLabel.textColor = [UIColor blackColor];
                 
             }
             
@@ -239,7 +244,8 @@
             
             if (self.repsSelectedCellIndexPath.row == indexPath.row){
                 
-                repsCell.backgroundColor = [UIColor redColor];
+                repsCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+                repsCell.numberLabel.textColor = [UIColor blackColor];
                 
             }
             
@@ -318,6 +324,7 @@
             TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.weightCollectionView cellForItemAtIndexPath: self.weightSelectedCellIndexPath];
             
             previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+            previousCell.numberLabel.textColor = [UIColor whiteColor];
             
         }
         
@@ -325,7 +332,8 @@
         
         TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.weightCollectionView cellForItemAtIndexPath: indexPath];
         
-        currentCell.backgroundColor = [UIColor redColor];
+        currentCell.numberLabel.textColor = [UIColor blackColor];
+        currentCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
         NSNumber *weight = [NSNumber numberWithFloat: indexPath.row * [self weightMultiplier]];
         self.weightSelectedValueLabel.text = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
@@ -337,6 +345,7 @@
             TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.repsCollectionView cellForItemAtIndexPath: self.repsSelectedCellIndexPath];
             
             previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+            previousCell.numberLabel.textColor = [UIColor whiteColor];
             
         }
         
@@ -344,7 +353,8 @@
         
         TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.repsCollectionView cellForItemAtIndexPath: indexPath];
         
-        currentCell.backgroundColor = [UIColor redColor];
+        currentCell.numberLabel.textColor = [UIColor blackColor];
+        currentCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
         NSNumber *reps = [NSNumber numberWithFloat: indexPath.row * [self repsMultiplier]];
         self.repsSelectedValueLabel.text = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];

@@ -522,6 +522,8 @@
         
         cell.backgroundColor = [UIColor clearColor];
         
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         return cell;
         
     } else{
@@ -532,6 +534,8 @@
             
             cell.mainLabel.text = @"No Personal Records";
             cell.backgroundColor = [UIColor clearColor];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             return cell;
             
@@ -546,6 +550,8 @@
             [cell configureWithReps: repsWeightRecordPair.reps
                              weight: repsWeightRecordPair.weight
                                date: repsWeightRecordPair.date];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             return cell;
             

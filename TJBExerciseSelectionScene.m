@@ -68,6 +68,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *normalBrowsingExerciseSC;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UILabel *searchingAllExercisesLabel;
 
 //@property (strong) TJBExerciseSelectionTitleCell *titleCell;
 @property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
@@ -109,6 +110,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     self.exerciseAdditionContainer.hidden = YES;
     self.searchTextField.hidden = YES;
+    self.searchingAllExercisesLabel.hidden = YES;
     
     [self configureTableView];
     
@@ -258,6 +260,12 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 }
 
 - (void)viewAesthetics{
+    
+    // searching all exercises label
+    
+    self.searchingAllExercisesLabel.backgroundColor = [UIColor clearColor];
+    self.searchingAllExercisesLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.searchingAllExercisesLabel.textColor = [UIColor whiteColor];
     
     // meta view
     
@@ -480,42 +488,25 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
     
-    NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
-    NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
-    
-    NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
-                                                                                          searchFilterPredicate]];
-    
-    NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
-    self.contentExercisesArray = [filteredExercises mutableCopy];
-    
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.exerciseTableView reloadData];
-//    });
-//    
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.exerciseTableView reloadData];
-//    });
-    
+    if ([self.searchTextField.text isEqualToString: @""]){ // if the search text field is blank, show all options
+        
+        
+        self.contentExercisesArray = allExercises;
+        
+    } else{
+        
+        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
+        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
+        
+        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
+                                                                                              searchFilterPredicate]];
+        
+        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
+        self.contentExercisesArray = [filteredExercises mutableCopy];
+        
+    }
+
     [self.exerciseTableView reloadData];
-    
-//    [self.titleCell.searchTextField becomeFirstResponder];
-    
-//    // cannot reload the title cell because doing so causes the text field to be dismissed
-//    
-//    NSInteger contentCount = filteredExercises.count;
-//    NSMutableArray *indexPathCollector = [[NSMutableArray alloc] init];
-//    for (int i = 0; i < contentCount; i++){
-//        
-//        NSIndexPath *iterativePath = [NSIndexPath indexPathForRow: i + 1
-//                                                        inSection: 0];
-//        
-//        [indexPathCollector addObject: iterativePath];
-//        
-//    }
-//    
-//    [self.exerciseTableView reloadRowsAtIndexPaths: indexPathCollector
-//                                  withRowAnimation: UITableViewRowAnimationAutomatic];
 
 }
 
@@ -525,22 +516,6 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-//    
-//    NSLog(@"%lu", sectionCount);
-//    
-//    // a no data cell will be shown if there are no exercises in the resulting fetched results controller
-//    
-//    if (sectionCount == 0){
-//        
-//        return 1;
-//        
-//    } else{
-//        
-//        return sectionCount;
-//        
-//    }
-    
     return 1;
 
 }
@@ -549,13 +524,21 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     NSInteger contentCellCount = self.contentExercisesArray.count;
     
+    NSInteger isSearchingCorrection; // when searching, there is not title cell. Must adjust table view count with respect to this
+    
+    if (_searchIsActive){
+        isSearchingCorrection = -1;
+    } else{
+        isSearchingCorrection = 0;
+    }
+    
     if (contentCellCount == 0){
         
-        return 2;
+        return 2 + isSearchingCorrection;
         
     } else{
         
-        return contentCellCount + 1;
+        return contentCellCount + 1 + isSearchingCorrection;
         
     }
  
@@ -565,7 +548,19 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     NSInteger contentCellCount = self.contentExercisesArray.count;
     
-    if (indexPath.row == 0){
+    NSInteger adjustedIndex; // used to reference the content array. It adjust the row of the index path according to vc state
+    
+    if (_searchIsActive == NO){
+        
+        adjustedIndex = indexPath.row - 1;
+        
+    } else{
+        
+        adjustedIndex = indexPath.row;
+        
+    }
+    
+    if (indexPath.row == 0 && _searchIsActive == NO){
         
         NSString *filterString;
         
@@ -596,9 +591,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             }
             
         }
-        
-
-        
+    
         TJBExerciseSelectionTitleCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionTitleCell"];
         
         cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
@@ -608,6 +601,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
         cell.detail1Label.text = @"Name";
         cell.detail2Label.text = @"Date Last Executed";
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
         
@@ -627,7 +622,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
             TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
             
-            NSInteger adjustedIndex = indexPath.row - 1;
+//            NSInteger adjustedIndex = indexPath.row - 1;
             TJBExercise *exercise = self.contentExercisesArray[adjustedIndex];
             
             cell.exerciseNameLabel.text = exercise.name;
@@ -649,15 +644,6 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             }
             
             cell.backgroundColor = [UIColor clearColor];
-            
-//            NSArray *labels = @[cell.exerciseNameLabel, cell.dateLabel];
-//            for (UILabel *label in labels){
-//                
-//                label.font = [UIFont boldSystemFontOfSize: 15];
-//                label.textColor = [UIColor blackColor];
-//                label.backgroundColor = [UIColor clearColor];
-//            
-//            }
             
             return cell;
         
@@ -739,66 +725,52 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.row != 0 && self.contentExercisesArray.count != 0){
+    if (self.contentExercisesArray.count != 0){
         
-        TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row - 1];
-        
-        self.callbackBlock(selectedExercise);
+        if (_searchIsActive){
+            
+            TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row];
+            
+            self.callbackBlock(selectedExercise);
+            
+        } else{
+            
+            if (indexPath.row != 0){
+                
+                TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row - 1];
+                
+                self.callbackBlock(selectedExercise);
+                
+            }
+            
+        }
         
     }
  
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    
-//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-//    
-//    if (sectionCount == 0){
-//        
-//        return nil;
-//        
-//    } else{
-//        
-//        UILabel *label = [[UILabel alloc] init];
-//        label.backgroundColor = [UIColor lightGrayColor];
-//        label.textColor = [UIColor whiteColor];
-//        label.font = [UIFont boldSystemFontOfSize: 20.0];
-//        label.textAlignment = NSTextAlignmentCenter;
-//        
-//        id<NSFetchedResultsSectionInfo> sectionInfo = [[self fetchedResultsController] sections][section];
-//        label.text = [sectionInfo name];
-//        
-//        return label;
-//        
-//    }
-//
-//}
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//    
-//    NSUInteger sectionCount = [[[self fetchedResultsController] sections] count];
-//    
-//    if (sectionCount == 0){
-//        
-//        return 0;
-//        
-//    } else{
-//        
-//        return 50;
-//        
-//    }
-//    
-//
-//    
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     CGFloat titleCellHeight = 90;
+    CGFloat contentCellHeight = 60;
     
     NSInteger contentCellCount = self.contentExercisesArray.count;
     
-    if (indexPath.row == 0){
+    NSInteger adjustedIndex; // used to reference the content array. It adjust the row of the index path according to vc state
+    
+    if (_searchIsActive == NO){
+        
+        adjustedIndex = indexPath.row - 1;
+        
+    } else{
+        
+        adjustedIndex = indexPath.row;
+        
+    }
+    
+    if (indexPath.row == 0 && _searchIsActive == NO){
         
         return titleCellHeight;
         
@@ -806,14 +778,13 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
         if (contentCellCount == 0){
             
-            return self.exerciseTableView.frame.size.height - titleCellHeight;
+            return self.exerciseTableView.frame.size.height;
             
         } else{
             
+            return contentCellHeight;
             
-            return 60;
         }
-        
     }
 
     
@@ -989,11 +960,15 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     if (_searchIsActive == NO){
         
+        _searchIsActive = YES;
+        
         [self.searchButton setTitle: @"Back"
                            forState: UIControlStateNormal];
         
         self.normalBrowsingExerciseSC.enabled = NO;
         self.normalBrowsingExerciseSC.layer.opacity = .4;
+        
+        self.searchingAllExercisesLabel.hidden = NO;
         
         self.addNewExerciseButton.enabled = NO;
         self.addNewExerciseButton.layer.opacity = .4;
@@ -1002,10 +977,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
         self.searchTextField.hidden = NO;
         [self.searchTextField becomeFirstResponder];
-        
-        _searchIsActive = YES;
     
     } else{
+        
+        _searchIsActive = NO;
         
         [self.searchButton setTitle: @"Search"
                            forState: UIControlStateNormal];
@@ -1016,10 +991,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         self.addNewExerciseButton.enabled = YES;
         self.addNewExerciseButton.layer.opacity = 1.0;
         
+        self.searchingAllExercisesLabel.hidden = YES;
+        
         self.searchTextField.hidden = YES;
         [self.searchTextField resignFirstResponder];
-        
-        _searchIsActive = NO;
         
         [self browsingSCValueDidChange];
         
