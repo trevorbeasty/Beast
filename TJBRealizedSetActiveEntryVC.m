@@ -735,6 +735,8 @@
             
         };
         
+        self.setEndDate = [NSDate date];
+        
         NSString *title = [NSString stringWithFormat: @"%@", self.exercise.name];
         
         TJBWeightRepsSelectionVC *vc = [[TJBWeightRepsSelectionVC alloc] initWithTitle: title
