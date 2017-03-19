@@ -72,30 +72,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
 @property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
-////@property (weak, nonatomic) IBOutlet UILabel *largeStatusLabel;
-//@property (weak, nonatomic) IBOutlet UIView *grayBackdropView;
-//@property (weak, nonatomic) IBOutlet UILabel *setStartTimeLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *setEndTimeLabel;
-//@property (weak, nonatomic) IBOutlet UISegmentedControl *setStartTimeSegmentedControl;
-//@property (weak, nonatomic) IBOutlet UISegmentedControl *setEndTimeSegmentedControl;
-//@property (weak, nonatomic) IBOutlet UILabel *trackSetLengthLabel;
-//@property (weak, nonatomic) IBOutlet UISegmentedControl *trackSetLengthSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
-//@property (weak, nonatomic) IBOutlet UIButton *advancedOptionsButton;
 @property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonControlsVerticalConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-//@property (weak, nonatomic) IBOutlet UILabel *titleSubLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *timerTopLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *statusTopLabel;
-
-
-
 
 // IBAction
 
@@ -103,9 +86,7 @@
 - (IBAction)didPressTargetRestButton:(id)sender;
 - (IBAction)didPressAlertTimingButton:(id)sender;
 - (IBAction)didPressExerciseButton:(id)sender;
-//- (IBAction)didPressAdvancedOptions:(id)sender;
 - (IBAction)didPressLeftBarButton:(id)sender;
-
 
 //// core data
 
@@ -246,32 +227,9 @@
     
     [self configureStartingDisplayValues];
     
-//    [self configureSegmentedControls];
-    
-//    [self configureButtonControlStartingState];
-    
 }
 
-//- (void)configureButtonControlStartingState{
-//    
-//    [self.view insertSubview: self.grayBackdropView
-//                belowSubview: self.titleLabelsContainer];
-//    
-//    self.buttonControlsVerticalConstraint.constant = -1 * slidingHeight;
-//    
-//}
 
-//- (void)configureSegmentedControls{
-//    
-//    [self.trackSetLengthSegmentedControl addTarget: self
-//                                            action: @selector(trackSetLengthSCValueChanged)
-//                                  forControlEvents: UIControlEventValueChanged];
-//    
-//    // because the 'track set length' control starts in the NO position, the 'set begin timing' control must be disabled - set begin times are not recorded when 'track set length' is no, so it would make no sense to allow for options to further specify how to record the set start time
-//    
-//    self.setStartTimeSegmentedControl.enabled = NO;
-//    
-//}
 
 - (void)configureStartingDisplayValues{
     
@@ -579,31 +537,6 @@
 
 #pragma mark - Button Actions
 
-//- (void)trackSetLengthSCValueChanged{
-//    
-//    if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 0){
-//        
-////        self.largeStatusLabel.text = @"N/A";
-//        [self.beginNextSetButton setTitle: @"Set Completed"
-//                                 forState: UIControlStateNormal];
-//        
-//        // disable other segmented control as follows logically
-//        
-//        self.setStartTimeSegmentedControl.enabled = NO;
-//        
-//    } else{
-//        
-////        self.largeStatusLabel.text = @"Resting";
-//        [self.beginNextSetButton setTitle: @"Begin Next Set"
-//                                 forState: UIControlStateNormal];
-//        
-//        // enable other segmented control as follows logically
-//        
-//        self.setStartTimeSegmentedControl.enabled = YES;
-//        
-//    }
-//    
-//}
 
 - (IBAction)didPressTargetRestButton:(id)sender {
     
@@ -708,19 +641,6 @@
     
 }
 
-//- (IBAction)didPressAdvancedOptions:(id)sender{
-//    
-//    if (_advancedOptionsActive == YES){
-//        
-//        [self toggleButtonControlsToDefaultDisplay];
-//        
-//    } else{
-//        
-//        [self toggleButtonControlsToAdvancedDisplay];
-//        
-//    }
-//    
-//}
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
@@ -764,19 +684,7 @@
     
     CancelBlock cancelBlock = ^{
         
-//        [weakSelf enableAllSegmentedControls];
-        
         [weakSelf removeWhiteoutView];
-        
-        // VC appearance
-    
-//        if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1){
-//            
-////            self.largeStatusLabel.text = @"Resting";
-//            
-//            [self.beginNextSetButton setTitle: @"Begin Next Set"
-//                                     forState: UIControlStateNormal];
-//        }
         
         // timer recovery
         
@@ -833,28 +741,8 @@
                          completion: nil];
         
     } else{
-        
-        // give the VC the appropriate appearance according to selected advanced settings
-        
-//        if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1){
-//            
-//            [self.beginNextSetButton setTitle: @"Begin Next Set"
-//                                     forState: UIControlStateNormal];
-//            
-////            self.largeStatusLabel.text = @"Resting";
-//            
-//        } else{
-//            
-//            [self.beginNextSetButton setTitle: @"Set Completed"
-//                                     forState: UIControlStateNormal];
-//            
-////            self.largeStatusLabel.text = @"";
-//            
-//        }
 
         [self confirmSubmission];
-        
-//        [self enableAllSegmentedControls];
         
     }
 }
@@ -889,45 +777,14 @@
     TJBRealizedSet *realizedSet = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
                                                                 inManagedObjectContext: moc];
     
-    // begin and end dates are optional and may not be recorded depending on the user's advanced settings.  BOOLs are non-optional and indicate user selections active during creation of the realized set
-    
-    // set begin date and associated BOOLs
-    
-//    if (self.trackSetLengthSegmentedControl.selectedSegmentIndex == 1){
-//        
-//        realizedSet.beginDate = self.setBeginDate;
-//        realizedSet.recordedBeginDate = YES;
-//    
-//    } else{
-    
-        realizedSet.recordedBeginDate = NO;
-        
-//    }
-    
-//    if (self.setStartTimeSegmentedControl.selectedSegmentIndex == 1){
-//        
-//        realizedSet.exactBeginDate = YES;
-//        
-//    } else{
-    
-        realizedSet.exactBeginDate = NO;
-        
-//    }
-    
+    realizedSet.recordedBeginDate = NO;
+    realizedSet.exactBeginDate = NO;
+
     // set end date and associated BOOLs
     
     realizedSet.recordedEndDate = YES;
     realizedSet.endDate = self.setEndDate;
-    
-//    if (self.setEndTimeSegmentedControl.selectedSegmentIndex == 1){
-//        
-//        realizedSet.exactEndDate = YES;
-//        
-//    } else{
-    
-        realizedSet.exactEndDate = NO;
-        
-//    }
+    realizedSet.exactEndDate = NO;
     
     // other
     
@@ -1093,21 +950,6 @@
     [coder encodeObject: self.lastSecondaryTimerUpdateDate
                  forKey: @"lastSecondaryTimerUpdateDate"];
     
-    // table view
-    
-//    CGPoint scrollPosition = self.exerciseTableView.contentOffset;
-//    int y = scrollPosition.y;
-//    [coder encodeFloat: y
-//                forKey: @"scrollYPosition"];
-    
-//    NSIndexPath *path = self.exerciseTableView.indexPathForSelectedRow;
-//    if (path){
-//        
-//        [coder encodeObject: path
-//                     forKey: @"path"];
-    
-//    }
-    
     // realized set user selections
     
     [coder encodeBool: _whiteoutActive
@@ -1159,27 +1001,6 @@
                                                   lastUpdateDate: lastPrimaryTimerUpdateDate];
     
     self.timerLabel.text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: primaryTime];
-    
-    // table view
-    
-//    float y = [coder decodeDoubleForKey: @"scrollYPosition"];
-//    self.exerciseTableView.contentOffset = CGPointMake(0, y);
-//    
-//    NSIndexPath *path = [coder decodeObjectForKey: @"path"];
-//    if (path){
-//        
-//        // artificially make table view selections for state restoration
-//        
-//        [self.exerciseTableView selectRowAtIndexPath: path
-//                                            animated: NO
-//                                      scrollPosition: UITableViewScrollPositionNone];
-//        [self tableView: self.exerciseTableView didSelectRowAtIndexPath: path];
-//        
-//        // use the saved path to restore the 'exercise' property
-//        
-//        TJBExercise *exercise = [self.fetchedResultsController objectAtIndexPath: path];
-//        self.exercise = exercise;
-//    }
     
     // realized set user selections
     
@@ -1401,52 +1222,6 @@
     
 }
 
-
-//- (void)fetchRealizedSets{
-//    
-//    //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
-//    
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
-//    
-//    NSSortDescriptor *repsSort = [NSSortDescriptor sortDescriptorWithKey: @"reps"
-//                                                               ascending: YES];
-//    
-//    NSSortDescriptor *weightSort = [NSSortDescriptor sortDescriptorWithKey: @"weight"
-//                                                                 ascending: NO];
-//    
-//    NSString *activeExerciseName = self.exercise.name;
-//    
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"exercise.name = %@", activeExerciseName];
-//    
-//    [request setSortDescriptors: @[repsSort, weightSort]];
-//    request.predicate = predicate;
-//    
-//    NSError *error = nil;
-//    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
-//                                                                                error: &error];
-//    self.realizedSetFetchResults = fetchResults;
-//    
-//}
-
-//- (void)fetchRealizedChains{
-//    
-//    //// fetch the realized set, sorting by both weight and reps to facillitate extraction of personal records
-//    
-//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedChain"];
-//    
-//    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"dateCreated"
-//                                                               ascending: NO];
-//    
-//    [request setSortDescriptors: @[dateSort]];
-//    
-//    NSError *error = nil;
-//    
-//    NSArray *fetchResults = [[[CoreDataController singleton] moc] executeFetchRequest: request
-//                                                                                error: &error];
-//    self.realizedChainFetchResults = fetchResults;
-//    
-//}
-
 - (TJBRepsWeightRecordPair *)repsWeightRecordPairForNumberOfReps:(int)reps{
     
     //// returns the TJBRepsWeightRecordPair corresponding to the specified reps
@@ -1458,15 +1233,6 @@
         return nil;
         
     }
-    
-//    BOOL repsWithinStaticRange = reps <= 12;
-//    
-//    if (repsWithinStaticRange){
-//        
-//        return self.repsWeightRecordPairs[reps - 1];
-//        
-//    }
-//    else{
     
         // create the record pair for the new reps number and assign it appropriate values.  Configure the tracker array as well
         
@@ -1569,99 +1335,6 @@
     [self.personalRecordsTableView reloadData];
     
 }
-
-#pragma mark - Convenience
-
-//- (void)disableAllSegmentedControls{
-//    
-//    NSArray *segmentedControls = @[self.trackSetLengthSegmentedControl,
-//                                   self.setStartTimeSegmentedControl,
-//                                   self.setEndTimeSegmentedControl];
-//    
-//    for (UISegmentedControl *sc in segmentedControls){
-//        
-//        sc.enabled = NO;
-//        
-//    }
-//    
-//}
-
-//- (void)enableAllSegmentedControls{
-//    
-//    NSArray *segmentedControls = @[self.trackSetLengthSegmentedControl,
-//                                   self.setStartTimeSegmentedControl,
-//                                   self.setEndTimeSegmentedControl];
-//    
-//    for (UISegmentedControl *sc in segmentedControls){
-//        
-//        sc.enabled = YES;
-//        
-//    }
-//    
-//}
-
-#pragma mark - Animation
-
-//static CGFloat const slidingHeight = 176.0;
-//
-//- (void)toggleButtonControlsToAdvancedDisplay{
-//    
-//    [UIView animateWithDuration: .4
-//                     animations: ^{
-//                         
-//                         self.buttonControlsVerticalConstraint.constant = 0;
-//                         
-//                         NSArray *views = @[self.grayBackdropView];
-//                         
-//                         for (UIView *view in views){
-//                             
-//                             CGRect currentFrame = view.frame;
-//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + slidingHeight, currentFrame.size.width, currentFrame.size.height);
-//                             view.frame = newFrame;
-//                             
-//                         }
-//                         
-//                         CGRect currentTVFrame = self.personalRecordsTableView.frame;
-//                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y + slidingHeight, currentTVFrame.size.width, currentTVFrame.size.height - slidingHeight);
-//                         self.personalRecordsTableView.frame = newTVFrame;
-//                         
-//                     }];
-//    
-//    _advancedOptionsActive = YES;
-//    [self.advancedOptionsButton setTitle: @"-"
-//                                forState: UIControlStateNormal];
-//    
-//}
-//
-//- (void)toggleButtonControlsToDefaultDisplay{
-//    
-//    [UIView animateWithDuration: .4
-//                     animations: ^{
-//                         
-//                         self.buttonControlsVerticalConstraint.constant = -1 * slidingHeight;
-//                         
-//                         
-//                         NSArray *views = @[self.grayBackdropView];
-//                         
-//                         for (UIView *view in views){
-//                             
-//                             CGRect currentFrame = view.frame;
-//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - slidingHeight, currentFrame.size.width, currentFrame.size.height);
-//                             view.frame = newFrame;
-//                             
-//                         }
-//                         
-//                         CGRect currentTVFrame = self.personalRecordsTableView.frame;
-//                         CGRect newTVFrame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y - slidingHeight, currentTVFrame.size.width, currentTVFrame.size.height + slidingHeight);
-//                         self.personalRecordsTableView.frame = newTVFrame;
-//                         
-//                     }];
-//    
-//    _advancedOptionsActive = NO;
-//    [self.advancedOptionsButton setTitle: @"+"
-//                                forState: UIControlStateNormal];
-//    
-//}
 
 @end
 
