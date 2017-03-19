@@ -86,7 +86,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *trackSetLengthLabel;
 //@property (weak, nonatomic) IBOutlet UISegmentedControl *trackSetLengthSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
-@property (weak, nonatomic) IBOutlet UIButton *advancedOptionsButton;
+//@property (weak, nonatomic) IBOutlet UIButton *advancedOptionsButton;
 @property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonControlsVerticalConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
@@ -135,6 +135,7 @@
 @property (nonatomic, strong) NSNumber *targetRestTime;
 @property (nonatomic, strong) NSNumber *alertTiming;
 @property (nonatomic, strong) TJBExercise *exercise;
+@property (weak, nonatomic) IBOutlet UILabel *topBarRightLabel;
 
 //// timer and target rest time
 
@@ -341,18 +342,13 @@
     [self.beginNextSetButton setTitleColor: [UIColor whiteColor]
                                   forState: UIControlStateNormal];
     self.beginNextSetButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    
-    // advanced options button
-    
-    self.advancedOptionsButton.titleLabel.font = [UIFont systemFontOfSize: 15.0];
-    [self.advancedOptionsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                                     forState: UIControlStateNormal];
+
     
     // title labels and title buttons and container
     
     self.titleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
     
-    NSArray *titleLabels = @[self.freeformTitleLabel];
+    NSArray *titleLabels = @[self.freeformTitleLabel, self.topBarRightLabel];
     
     for (UILabel *label in titleLabels){
         
@@ -366,18 +362,9 @@
     self.timerLabel.font = [UIFont boldSystemFontOfSize: 30];
     self.timerLabel.textColor = [UIColor whiteColor];
     
-//    NSArray *subtitleLabels = @[self.statusTopLabel,
-//                                self.timerTopLabel];
-//    for (UILabel *label in subtitleLabels){
-//        
-//        label.backgroundColor = [UIColor darkGrayColor];
-//        label.textColor = [UIColor whiteColor];
-//        label.font = [UIFont boldSystemFontOfSize: 15.0];
-//        
-//    }
+
     
-    NSArray *titleButtons = @[self.leftBarButton,
-                              self.advancedOptionsButton];
+    NSArray *titleButtons = @[self.leftBarButton];
     for (UIButton *button in titleButtons){
         
         button.backgroundColor = [UIColor darkGrayColor];
@@ -387,7 +374,6 @@
         
     }
     
-    self.advancedOptionsButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
     // selection row labels
     
@@ -404,29 +390,28 @@
     
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    // segmented controls
+    // rest time buttons and labels
     
-//    NSArray *segmentedControls = @[self.setEndTimeSegmentedControl,
-//                                   self.setStartTimeSegmentedControl,
-//                                   self.trackSetLengthSegmentedControl];
-//    for (UISegmentedControl *sc in segmentedControls){
-//        
-//        sc.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
-//        sc.backgroundColor = [UIColor whiteColor];
-//        
-//        sc.layer.masksToBounds = YES;
-//        sc.layer.cornerRadius = 4.0;
-//        NSDictionary *textDict = [[NSDictionary alloc] initWithObjects: @[[UIFont boldSystemFontOfSize: 12.0]]
-//                                                               forKeys: @[NSFontAttributeName]];
-//        [sc setTitleTextAttributes: textDict
-//                          forState: UIControlStateNormal];
-//        
-//    }
+    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
+    for (UIButton *b in restButtons){
+        
+        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                forState: UIControlStateNormal];
+        
+        b.backgroundColor = [UIColor clearColor];
+        b.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+        
+    }
     
-    // advanced controls container
-    
-//    self.grayBackdropView.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
-    
+    NSArray *restLabels = @[self.targetRestLabel, self.alertTimingLabel];
+    for (UILabel *lab in restLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.font = [UIFont boldSystemFontOfSize: 15];
+        lab.textColor = [[TJBAestheticsController singleton] blueButtonColor];
+        
+    }
+  
 }
 
 
@@ -467,6 +452,10 @@
     
     //// add 1 to account for title cell
     
+    if (!self.exercise){
+        return 1;
+    }
+    
     if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0){
         
         return 2;
@@ -480,6 +469,19 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (!self.exercise){
+        
+        TJBNoDataCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+        
+        cell.mainLabel.text = @"No Exercise Selected";
+        cell.backgroundColor = [UIColor clearColor];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
+        
+    }
     
     if (indexPath.row == 0){
         
@@ -547,6 +549,10 @@
 #pragma mark - <UITableViewDelegate>
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (!self.exercise){
+        return self.personalRecordsTableView.frame.size.height;
+    }
     
     CGFloat titleHeight = 90;
     
@@ -1254,15 +1260,59 @@
         
         if (inRedZone){
             
-//            self.timerTopLabel.backgroundColor = [UIColor redColor];
-            self.timerLabel.backgroundColor = [UIColor redColor];
+            [self toggleRestControlsToRedZone];
             
         } else{
             
-            self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-//            self.timerTopLabel.backgroundColor = [UIColor darkGrayColor];
+            [self toggleRestControlsToDefaultState];
             
         }
+        
+    }
+    
+}
+
+- (void)toggleRestControlsToRedZone{
+    
+    self.timerLabel.backgroundColor = [UIColor redColor];
+    
+    // rest time buttons and labels
+    
+    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
+    for (UIButton *b in restButtons){
+        
+        [b setTitleColor: [UIColor whiteColor]
+                forState: UIControlStateNormal];
+        
+    }
+    
+    NSArray *restLabels = @[self.targetRestLabel, self.alertTimingLabel];
+    for (UILabel *lab in restLabels){
+        
+        lab.textColor = [UIColor whiteColor];
+        
+    }
+    
+}
+
+- (void)toggleRestControlsToDefaultState{
+    
+    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
+    
+    // rest time buttons and labels
+    
+    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
+    for (UIButton *b in restButtons){
+        
+        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                forState: UIControlStateNormal];
+        
+    }
+    
+    NSArray *restLabels = @[self.targetRestLabel, self.alertTimingLabel];
+    for (UILabel *lab in restLabels){
+        
+        lab.textColor = [[TJBAestheticsController singleton] blueButtonColor];
         
     }
     
