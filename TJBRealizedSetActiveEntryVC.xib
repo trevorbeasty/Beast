@@ -12,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBRealizedSetActiveEntryVC">
             <connections>
                 <outlet property="alertTimingButton" destination="ynu-8H-dqh" id="SSJ-2W-wxL"/>
-                <outlet property="alertTimingLabel" destination="b5e-VI-xZ9" id="jvE-TQ-Iqo"/>
+                <outlet property="alertTimingTitle" destination="rN7-Q9-EUF" id="Pn0-Ct-rAR"/>
                 <outlet property="beginNextSetButton" destination="sWv-BT-UWM" id="ZTR-IY-k1Q"/>
                 <outlet property="exerciseButton" destination="LEG-Nx-SbA" id="1gc-9F-STT"/>
                 <outlet property="freeformTitleLabel" destination="LkM-c3-4QM" id="CfN-VL-Lg0"/>
@@ -20,7 +20,7 @@
                 <outlet property="personalRecordsTableView" destination="v9H-xu-7S6" id="tJO-Mp-0yO"/>
                 <outlet property="shadowView" destination="TJM-C8-3Ry" id="wEc-1l-efV"/>
                 <outlet property="targetRestButton" destination="sk4-vL-8nv" id="5Zb-jz-gC2"/>
-                <outlet property="targetRestLabel" destination="NbM-Kj-fIr" id="UJk-vP-GLr"/>
+                <outlet property="targetRestTitle" destination="9PW-Ye-mgs" id="lQm-ug-5pk"/>
                 <outlet property="timerLabel" destination="sw3-k5-xCu" id="NDE-1K-afg"/>
                 <outlet property="titleLabelsContainer" destination="amz-tf-TWd" id="sZ0-pn-zqS"/>
                 <outlet property="topBarRightLabel" destination="KB3-qD-3bM" id="Lg8-5q-UXP"/>
@@ -45,6 +45,13 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9PW-Ye-mgs">
+                            <rect key="frame" x="0.0" y="72" width="100" height="20"/>
+                            <state key="normal" title="Target Rest"/>
+                            <connections>
+                                <action selector="didPressTargetRestTitle:" destination="-1" eventType="touchUpInside" id="QVy-1N-1f3"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="STD-N5-Xbr" userLabel="leftButton">
                             <rect key="frame" x="0.0" y="20" width="60" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -81,18 +88,6 @@
                                 <action selector="didPressTargetRestButton:" destination="-1" eventType="touchUpInside" id="OJe-y5-Zdg"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Target Rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NbM-Kj-fIr">
-                            <rect key="frame" x="0.0" y="72" width="100" height="20"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alert Timing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b5e-VI-xZ9">
-                            <rect key="frame" x="275" y="72" width="100" height="20"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ynu-8H-dqh">
                             <rect key="frame" x="275" y="92" width="100" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -108,37 +103,44 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rN7-Q9-EUF">
+                            <rect key="frame" x="275" y="72" width="100" height="20"/>
+                            <state key="normal" title="Alert Timing"/>
+                            <connections>
+                                <action selector="didPressAlertTimingTitle:" destination="-1" eventType="touchUpInside" id="ICe-WH-yGl"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="ynu-8H-dqh" firstAttribute="top" secondItem="rN7-Q9-EUF" secondAttribute="bottom" id="0Y0-Cq-j0M"/>
                         <constraint firstItem="KB3-qD-3bM" firstAttribute="leading" secondItem="LkM-c3-4QM" secondAttribute="trailing" id="24Q-Zj-Kja"/>
                         <constraint firstItem="KB3-qD-3bM" firstAttribute="top" secondItem="LkM-c3-4QM" secondAttribute="top" id="37i-aR-nkX"/>
                         <constraint firstItem="LkM-c3-4QM" firstAttribute="leading" secondItem="STD-N5-Xbr" secondAttribute="trailing" id="5mB-Ru-eaX"/>
                         <constraint firstItem="ynu-8H-dqh" firstAttribute="bottom" secondItem="sk4-vL-8nv" secondAttribute="bottom" id="7FD-HP-7nI"/>
-                        <constraint firstItem="ynu-8H-dqh" firstAttribute="trailing" secondItem="b5e-VI-xZ9" secondAttribute="trailing" id="8Bk-rE-fBd"/>
                         <constraint firstAttribute="height" constant="122" id="AKI-aZ-aCc"/>
-                        <constraint firstItem="ynu-8H-dqh" firstAttribute="top" secondItem="b5e-VI-xZ9" secondAttribute="bottom" id="Aap-Ul-I5S"/>
+                        <constraint firstItem="rN7-Q9-EUF" firstAttribute="top" secondItem="9PW-Ye-mgs" secondAttribute="top" id="BQv-e2-fUY"/>
                         <constraint firstAttribute="trailing" secondItem="KB3-qD-3bM" secondAttribute="trailing" id="Bgz-5W-mdc"/>
                         <constraint firstItem="sk4-vL-8nv" firstAttribute="leading" secondItem="amz-tf-TWd" secondAttribute="leading" id="BsT-Sm-Bcg"/>
-                        <constraint firstItem="ynu-8H-dqh" firstAttribute="leading" secondItem="b5e-VI-xZ9" secondAttribute="leading" id="D11-MW-DsH"/>
                         <constraint firstItem="STD-N5-Xbr" firstAttribute="leading" secondItem="amz-tf-TWd" secondAttribute="leading" id="EeU-xc-XMn"/>
-                        <constraint firstItem="b5e-VI-xZ9" firstAttribute="bottom" secondItem="NbM-Kj-fIr" secondAttribute="bottom" id="Efy-2V-ev4"/>
+                        <constraint firstItem="rN7-Q9-EUF" firstAttribute="bottom" secondItem="9PW-Ye-mgs" secondAttribute="bottom" id="Giv-Mm-mqP"/>
+                        <constraint firstAttribute="trailing" secondItem="rN7-Q9-EUF" secondAttribute="trailing" id="HNs-rg-XFb"/>
                         <constraint firstItem="KB3-qD-3bM" firstAttribute="bottom" secondItem="LkM-c3-4QM" secondAttribute="bottom" id="JS2-7z-1CA"/>
+                        <constraint firstItem="sk4-vL-8nv" firstAttribute="leading" secondItem="9PW-Ye-mgs" secondAttribute="leading" id="PEz-rz-z8J"/>
                         <constraint firstItem="LkM-c3-4QM" firstAttribute="bottom" secondItem="STD-N5-Xbr" secondAttribute="bottom" id="V0r-Gl-zU2"/>
                         <constraint firstItem="sw3-k5-xCu" firstAttribute="leading" secondItem="amz-tf-TWd" secondAttribute="leading" id="VJy-WV-VkV"/>
-                        <constraint firstItem="b5e-VI-xZ9" firstAttribute="top" secondItem="sw3-k5-xCu" secondAttribute="top" id="Wc4-Od-n7g"/>
                         <constraint firstItem="sw3-k5-xCu" firstAttribute="top" secondItem="KB3-qD-3bM" secondAttribute="bottom" constant="2" id="YWB-Oh-zyN"/>
-                        <constraint firstItem="sk4-vL-8nv" firstAttribute="leading" secondItem="NbM-Kj-fIr" secondAttribute="leading" id="Ygr-80-LOt"/>
                         <constraint firstItem="LkM-c3-4QM" firstAttribute="top" secondItem="amz-tf-TWd" secondAttribute="top" constant="20" id="boU-iZ-R5v"/>
                         <constraint firstAttribute="trailing" secondItem="ynu-8H-dqh" secondAttribute="trailing" id="cS7-St-jRe"/>
                         <constraint firstItem="KB3-qD-3bM" firstAttribute="width" secondItem="STD-N5-Xbr" secondAttribute="width" id="e90-Tc-Xxf"/>
                         <constraint firstItem="ynu-8H-dqh" firstAttribute="height" secondItem="sk4-vL-8nv" secondAttribute="height" id="eCV-s6-dFf"/>
+                        <constraint firstItem="rN7-Q9-EUF" firstAttribute="leading" secondItem="ynu-8H-dqh" secondAttribute="leading" id="eJ4-fz-v2x"/>
                         <constraint firstItem="ynu-8H-dqh" firstAttribute="width" secondItem="sk4-vL-8nv" secondAttribute="width" id="hjn-6P-iAz"/>
                         <constraint firstItem="STD-N5-Xbr" firstAttribute="top" secondItem="amz-tf-TWd" secondAttribute="top" constant="20" id="l0o-XQ-hGq"/>
                         <constraint firstItem="sk4-vL-8nv" firstAttribute="bottom" secondItem="sw3-k5-xCu" secondAttribute="bottom" id="lQD-5g-Qn8"/>
-                        <constraint firstItem="sk4-vL-8nv" firstAttribute="trailing" secondItem="NbM-Kj-fIr" secondAttribute="trailing" id="mRr-E0-iMJ"/>
-                        <constraint firstItem="sw3-k5-xCu" firstAttribute="top" secondItem="NbM-Kj-fIr" secondAttribute="top" id="qLX-zy-a7Z"/>
+                        <constraint firstItem="rN7-Q9-EUF" firstAttribute="top" secondItem="sw3-k5-xCu" secondAttribute="top" id="pGt-Cz-OdS"/>
                         <constraint firstAttribute="trailing" secondItem="sw3-k5-xCu" secondAttribute="trailing" id="saI-IN-54W"/>
+                        <constraint firstItem="sk4-vL-8nv" firstAttribute="trailing" secondItem="9PW-Ye-mgs" secondAttribute="trailing" id="yTD-N9-PLk"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWv-BT-UWM">

@@ -71,14 +71,16 @@
 @property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
-@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
-@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
 @property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
 @property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
+@property (weak, nonatomic) IBOutlet UIButton *targetRestTitle;
+@property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
 
 // IBAction
 
@@ -87,7 +89,8 @@
 - (IBAction)didPressAlertTimingButton:(id)sender;
 - (IBAction)didPressExerciseButton:(id)sender;
 - (IBAction)didPressLeftBarButton:(id)sender;
-
+- (IBAction)didPressAlertTimingTitle:(id)sender;
+- (IBAction)didPressTargetRestTitle:(id)sender;
 //// core data
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -332,18 +335,6 @@
         
     }
     
-    
-    // selection row labels
-    
-    NSArray *rowLabels = @[self.targetRestLabel];
-    
-    for (UILabel *label in rowLabels){
-        
-        label.font = [UIFont systemFontOfSize: 15.0];
-        label.textColor = [UIColor darkGrayColor];
-        
-    }
-    
     // table view
     
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
@@ -361,12 +352,13 @@
         
     }
     
-    NSArray *restLabels = @[self.targetRestLabel, self.alertTimingLabel];
-    for (UILabel *lab in restLabels){
+    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
+    for (UIButton *b in restTitleButtons){
         
-        lab.backgroundColor = [UIColor clearColor];
-        lab.font = [UIFont boldSystemFontOfSize: 15];
-        lab.textColor = [[TJBAestheticsController singleton] blueButtonColor];
+        b.backgroundColor = [UIColor clearColor];
+        b.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
+        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                forState: UIControlStateNormal];
         
     }
   
@@ -653,6 +645,18 @@
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+    
+}
+
+- (IBAction)didPressAlertTimingTitle:(id)sender{
+    
+    [self didPressAlertTimingButton: nil];
+    
+}
+
+- (IBAction)didPressTargetRestTitle:(id)sender{
+    
+    [self didPressTargetRestButton: nil];
     
 }
 
@@ -1107,10 +1111,11 @@
         
     }
     
-    NSArray *restLabels = @[self.targetRestLabel, self.alertTimingLabel];
-    for (UILabel *lab in restLabels){
-        
-        lab.textColor = [UIColor whiteColor];
+    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
+    for (UIButton *b in restTitleButtons){
+    
+        [b setTitleColor: [UIColor whiteColor]
+                forState: UIControlStateNormal];
         
     }
     
@@ -1130,10 +1135,11 @@
         
     }
     
-    NSArray *restLabels = @[self.targetRestLabel, self.alertTimingLabel];
-    for (UILabel *lab in restLabels){
+    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
+    for (UIButton *b in restTitleButtons){
         
-        lab.textColor = [[TJBAestheticsController singleton] blueButtonColor];
+        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                forState: UIControlStateNormal];
         
     }
     
