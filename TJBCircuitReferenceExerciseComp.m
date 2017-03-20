@@ -33,16 +33,13 @@
 // IBOutlets
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *roundColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
-@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
+@property (weak, nonatomic) IBOutlet UILabel *horzThinLabel;
 
 // for programmatic auto layout constraints
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
+@property (strong) NSString *firstRowKey; // used to specify that all row comps have height equal to the first row comp
 
 
 @end
@@ -70,7 +67,7 @@
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
     CALayer *viewLayer = self.view.layer;
     viewLayer.masksToBounds = YES;
@@ -80,18 +77,14 @@
     
     //  labels
     
-    NSArray *labels = @[self.roundColumnLabel,
-                        self.weightColumnLabel,
-                        self.repsColumnLabel,
-                        self.restColumnLabel,
-                        self.titleLabel];
+    NSArray *labels = @[self.titleLabel];
     
     for (UILabel *label in labels){
         
-        label.backgroundColor = [UIColor lightGrayColor];
-        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         label.layer.opacity = 1;
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
+        label.font = [UIFont boldSystemFontOfSize: 35];
         
     }
     
@@ -100,7 +93,7 @@
     UIButton *button = self.selectedExerciseButton;
     
     button.backgroundColor = [UIColor clearColor];
-    [button setTitleColor: [UIColor blackColor]
+    [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                  forState: UIControlStateNormal];
     button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     button.layer.masksToBounds = YES;
@@ -146,20 +139,20 @@
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
-    // row components
+    // number label text
     
-    NSString *weightColumnLabel = @"weightColumnLabel";
-    [self.constraintMapping setObject: self.weightColumnLabel
-                               forKey: weightColumnLabel];
+    self.titleLabel.text = [NSString stringWithFormat: @"%d", [self.exerciseIndex intValue] + 1];
     
-    NSString *roundColumnLabel = @"roundColumnLabel";
-    [self.constraintMapping setObject:self.roundColumnLabel
-                               forKey: roundColumnLabel];
+    NSString *exerciseButton = @"exerciseButton";
+    [self.constraintMapping setObject: self.selectedExerciseButton
+                               forKey: exerciseButton];
     
-    
+    NSString *horizontalThinLabel = @"horzThin";
+    [self.constraintMapping setObject: self.horzThinLabel
+                               forKey: horizontalThinLabel];
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-0-", weightColumnLabel]];
+    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", horizontalThinLabel]];
     
     for (int i = 0 ; i < self.realizedChain.numberOfRounds; i ++){
         
@@ -185,21 +178,29 @@
         [self.constraintMapping setObject: rowVC.view
                                    forKey: dynamicRowName];
         
+        if (i == 0){ // the row components have the same height. I specify that all row components have height equal to the first row component. This is not specified for the first row component
+            
+            self.firstRowKey = dynamicRowName;
+            
+        }
+        
         // vertical constraints
         
         NSString *verticalAppendString;
+        
+        
         
         if (i == self.realizedChain.numberOfRounds - 1)
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
                                     dynamicRowName,
-                                    roundColumnLabel];
+                                    self.firstRowKey];
         }
         else
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-",
                                     dynamicRowName,
-                                    roundColumnLabel];
+                                    self.firstRowKey];
         }
         
         [verticalLayoutConstraintsString appendString: verticalAppendString];
@@ -242,12 +243,8 @@
                 [rowComp activateMode: EditingMode];
                 break;
                 
-            case AbsoluteComparisonMode:
-                [rowComp activateMode: AbsoluteComparisonMode];
-                break;
-                
-            case RelativeComparisonMode:
-                [rowComp activateMode: RelativeComparisonMode];
+            case ProgressMode:
+                [rowComp activateMode: ProgressMode];
                 break;
                 
             case TargetsMode:

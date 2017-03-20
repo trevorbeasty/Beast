@@ -105,8 +105,7 @@
                         <constraint firstAttribute="height" constant="30" id="tuc-c9-aVd"/>
                     </constraints>
                     <segments>
-                        <segment title="Absolute"/>
-                        <segment title="Relative"/>
+                        <segment title="Progress"/>
                         <segment title="Targets"/>
                     </segments>
                 </segmentedControl>

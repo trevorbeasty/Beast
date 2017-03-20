@@ -100,25 +100,26 @@
     
     // determine height of scroll view content size
     
-    CGFloat rowHeight = 50;
-    CGFloat componentToComponentSpacing = 16;
-    CGFloat componentStyleSpacing = 8;
+    
+    CGFloat titleBarHeight = 50;
+    CGFloat contentRowHeight = 44;
+    CGFloat componentToComponentSpacing = 24;
+    CGFloat componentStyleSpacing = 9;
     CGFloat componentHeight;
-    CGFloat initialTopSpacing = 16.0;
 
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
     
     CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
     
-    componentHeight = rowHeight * (self.realizedChain.numberOfRounds + 2) + componentStyleSpacing;
+    componentHeight = titleBarHeight + contentRowHeight * (self.realizedChain.numberOfRounds) + componentStyleSpacing;
     
     int numberOfComponents = self.realizedChain.numberOfExercises;
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
-    scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight + initialTopSpacing);
+    scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight);
     [self.view addSubview: scrollView];
     
-    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, _prescribedSize.width, scrollContentHeight + initialTopSpacing);
+    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, _prescribedSize.width, scrollContentHeight);
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
@@ -127,8 +128,7 @@
     // exercise components
     
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    NSString *string = [NSString stringWithFormat: @"V:|-%f-", initialTopSpacing];
-    [verticalLayoutConstraintsString setString: string];
+    [verticalLayoutConstraintsString setString: @"V:|-2-"];
     
     for (int i = 0 ; i < self.realizedChain.numberOfExercises ; i ++){
         
@@ -183,8 +183,6 @@
         [scrollViewSubview addConstraints: horizontalLayoutConstraints];
     }
     
-    NSLog(@"%@", verticalLayoutConstraintsString);
-    
     NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
                                                                                  options: 0
                                                                                  metrics: nil
@@ -209,12 +207,8 @@
                 [exerciseComp activateMode: EditingMode];
                 break;
                 
-            case AbsoluteComparisonMode:
-                [exerciseComp activateMode: AbsoluteComparisonMode];
-                break;
-                
-            case RelativeComparisonMode:
-                [exerciseComp activateMode: RelativeComparisonMode];
+            case ProgressMode:
+                [exerciseComp activateMode: ProgressMode];
                 break;
                 
             case TargetsMode:

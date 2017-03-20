@@ -34,12 +34,6 @@
 
 // IBOutlets
 
-//@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *roundColumnLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *restColumnLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
 @property (weak, nonatomic) IBOutlet UILabel *horizontalThinLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseNumberLabel;
@@ -72,27 +66,6 @@
 - (void)viewAesthetics{
     
     self.view.backgroundColor = [UIColor clearColor];
-    
-    // column label views
-    
-//    NSArray *labels = @[self.roundColumnLabel,
-//                            self.weightColumnLabel,
-//                            self.repsColumnLabel,
-//                            self.restColumnLabel];
-//    
-//    for (UILabel *l in labels){
-//        
-//        l.backgroundColor = [UIColor lightGrayColor];
-//        l.textColor = [UIColor whiteColor];
-//        l.font = [UIFont boldSystemFontOfSize: 20.0];
-//        
-//    }
-    
-    // title label view
-    
-//    self.titleLabel.backgroundColor = [UIColor clearColor];
-//    [self.titleLabel setTextColor: [UIColor whiteColor]];
-//    self.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
     
     // selected exercise button
     
@@ -127,17 +100,6 @@
     //// major functionality includeing row child VC's and layout constraints
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
-    
-    // labels
-    
-//    self.titleLabel.text = [NSString stringWithFormat: @"Exercise %d",
-//                            [self.exerciseIndex intValue] + 1];
-    
-    // row components
-    
-//    NSString *thinLineLabel = @"thinLineLabel";
-//    [self.constraintMapping setObject: self.thinLineLabel
-//                               forKey: thinLineLabel];
     
     // number label text
     

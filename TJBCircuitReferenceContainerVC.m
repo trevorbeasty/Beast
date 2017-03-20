@@ -189,7 +189,7 @@
 
 - (IBAction)didPressDoneButton:(id)sender{
     
-    [self toggleToComparisonMode];
+    [self toggleComparisonMode];
     
     // button state
     
@@ -201,7 +201,7 @@
     
 }
 
-- (void)toggleToComparisonMode{
+- (void)toggleComparisonMode{
     
     // switch to comparison mode designated by the segmented control
     
@@ -209,14 +209,10 @@
     
     switch (scInd) {
         case 0:
-            [self.childRoutineVC activateMode: AbsoluteComparisonMode];
+            [self.childRoutineVC activateMode: ProgressMode];
             break;
             
         case 1:
-            [self.childRoutineVC activateMode: RelativeComparisonMode];
-            break;
-            
-        case 2:
             [self.childRoutineVC activateMode: TargetsMode];
             break;
             
@@ -232,7 +228,7 @@
     
     // switch to the mode designated by the SC
     
-    [self toggleToComparisonMode];
+    [self toggleComparisonMode];
     
 }
 

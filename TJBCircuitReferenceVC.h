@@ -10,8 +10,7 @@
 
 typedef enum {
     EditingMode,
-    AbsoluteComparisonMode,
-    RelativeComparisonMode,
+    ProgressMode,
     TargetsMode,
 } TJBRoutineReferenceMode;
 
