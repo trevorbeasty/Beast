@@ -63,22 +63,24 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *roundTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timerTitleLabel;
-@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
+//@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *setCompletedButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitle;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-@property (weak, nonatomic) IBOutlet UIButton *rightBarButtoon;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *advancedControlsConstraint;
-@property (weak, nonatomic) IBOutlet UIView *advancedControlsContainer;
+//@property (weak, nonatomic) IBOutlet UIButton *rightBarButtoon;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *advancedControlsConstraint;
+//@property (weak, nonatomic) IBOutlet UIView *advancedControlsContainer;
 @property (weak, nonatomic) IBOutlet UIView *titleContainer;
-@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
-@property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *nextUpLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *loadingNewTargetsLabel;
 //@property (weak, nonatomic) IBOutlet UIView *nextUpContainer;
+@property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
+@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 
 // constraints for flying round and rest labes horizontally
 
@@ -91,8 +93,8 @@
 
 - (IBAction)didPressLeftBarButton:(id)sender;
 - (IBAction)didPressSetCompleted:(id)sender;
-- (IBAction)didPressRightBarButton:(id)sender;
-- (IBAction)didPressAlertTimingButton:(id)sender;
+//- (IBAction)didPressRightBarButton:(id)sender;
+//- (IBAction)didPressAlertTimingButton:(id)sender;
 
 
 // core
@@ -133,7 +135,6 @@
 
 @end
 
-static CGFloat const advancedControlSlidingHeight = 38.0;
 static float const animationTimeUnit = .4;
 
 @implementation TJBActiveRoutineGuidanceVC
@@ -175,8 +176,6 @@ static float const animationTimeUnit = .4;
     
     //
     
-    [self setAdvancedControlsToOffPosition];
-    
     [self configureViewAesthetics];
     
     [self configureImmediateTargets];
@@ -184,17 +183,6 @@ static float const animationTimeUnit = .4;
     [self configureTimer];
     
     [self configureInitialDisplay];
-    
-}
-
-- (void)setAdvancedControlsToOffPosition{
-    
-    self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
-    
-    [self.view insertSubview: self.advancedControlsContainer
-                belowSubview: self.titleContainer];
-    
-    _advancedControlsActive = NO;
     
 }
 
@@ -288,7 +276,7 @@ static float const animationTimeUnit = .4;
     
     NSArray *labels = @[self.roundTitleLabel,
                         self.timerTitleLabel,
-                        self.activeRoutineLabel];
+                        self.mainTitle];
     
     for (UILabel *label in labels){
         
@@ -298,8 +286,7 @@ static float const animationTimeUnit = .4;
         
     }
     
-    NSArray *smallTextTitles = @[self.mainTitle,
-                                 self.roundTopLabel,
+    NSArray *smallTextTitles = @[self.roundTopLabel,
                                  self.remainingRestTopLabel];
     for (UILabel *label in smallTextTitles){
         
@@ -309,7 +296,7 @@ static float const animationTimeUnit = .4;
         
     }
     
-    NSArray *titleButtons = @[self.leftBarButton, self.rightBarButtoon];
+    NSArray *titleButtons = @[self.leftBarButton];
     for (UIButton *button in titleButtons){
         
         button.backgroundColor = [UIColor clearColor];
@@ -318,23 +305,6 @@ static float const animationTimeUnit = .4;
                      forState: UIControlStateNormal];
         
     }
-    
-    self.rightBarButtoon.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    
-    // advanced control buttons
-    
-    self.alertTimingButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    self.alertTimingButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    [self.alertTimingButton setTitleColor: [UIColor whiteColor]
-                                 forState: UIControlStateNormal];
-    self.alertTimingButton.layer.masksToBounds = YES;
-    self.alertTimingButton.layer.cornerRadius = 4.0;
-    
-    // advanced control labels
-    
-    self.alertTimingLabel.font = [UIFont systemFontOfSize: 15.0];
-    self.alertTimingLabel.textColor = [UIColor darkGrayColor];
-    self.alertTimingLabel.backgroundColor = [UIColor clearColor];
     
     // give the timer labels a red appearance to start
     
@@ -347,15 +317,26 @@ static float const animationTimeUnit = .4;
     
     // content container
     
-    self.contentScrollView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.contentScrollView.backgroundColor = [UIColor clearColor];
     
     // title container
     
     self.titleContainer.backgroundColor = [UIColor clearColor];
     
-    // advanced controls container
+    // alert timing controls
     
-    self.advancedControlsContainer.backgroundColor = [UIColor clearColor];
+    NSArray *alertTimingControls = @[self.alertTimingTitle, self.alertTimingButton];
+    for (UIButton *but in alertTimingControls){
+        
+        but.backgroundColor = [UIColor darkGrayColor];
+        [but setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                  forState: UIControlStateNormal];
+        
+    }
+    
+    self.alertTimingTitle.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.alertTimingButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
     
 }
 
@@ -1026,54 +1007,41 @@ static NSString const *restViewKey = @"restView";
     
 }
 
-- (IBAction)didPressRightBarButton:(id)sender{
-    
-    if (_advancedControlsActive){
-        
-        [self toggleButtonControlsToDefaultDisplay];
-        
-    } else{
-        
-        [self toggleButtonControlsToAdvancedDisplay];
-        
-    }
-    
-}
 
 - (IBAction)didPressAlertTimingButton:(id)sender{
     
-    // present the rest selection scene and store the selected number in the appropriate state variable
-    
-    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-    
-    CancelBlock cancelBlock = ^{
-        
-        [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-        
-    };
-    
-    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
-        
-        weakSelf.selectedAlertTiming = number;
-        
-        NSString *text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
-        [weakSelf.alertTimingButton setTitle: text
-                                    forState: UIControlStateNormal];
-        
-        [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-        
-    };
-    
-    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: TimeIntervalSelection
-                                                                                    title: @"Select Alert Timing"
-                                                                              cancelBlock: cancelBlock
-                                                                      numberSelectedBlock: numberSelectedBlock];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
+//    // present the rest selection scene and store the selected number in the appropriate state variable
+//    
+//    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+//    
+//    CancelBlock cancelBlock = ^{
+//        
+//        [weakSelf dismissViewControllerAnimated: NO
+//                                     completion: nil];
+//        
+//    };
+//    
+//    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
+//        
+//        weakSelf.selectedAlertTiming = number;
+//        
+//        NSString *text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+//        [weakSelf.alertTimingButton setTitle: text
+//                                    forState: UIControlStateNormal];
+//        
+//        [weakSelf dismissViewControllerAnimated: NO
+//                                     completion: nil];
+//        
+//    };
+//    
+//    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: TimeIntervalSelection
+//                                                                                    title: @"Select Alert Timing"
+//                                                                              cancelBlock: cancelBlock
+//                                                                      numberSelectedBlock: numberSelectedBlock];
+//    
+//    [self presentViewController: vc
+//                       animated: YES
+//                     completion: nil];
     
 }
 
@@ -1182,79 +1150,79 @@ static NSString const *restViewKey = @"restView";
     
 }
 
-#pragma mark - Animation
-
-- (void)toggleButtonControlsToAdvancedDisplay{
-    
-    self.advancedControlsConstraint.constant = 0;
-    
-    [UIView animateWithDuration: .4
-                     animations: ^{
-                         
-                         self.advancedControlsContainer.hidden = NO;
-
-                    NSArray *views = @[self.advancedControlsContainer];
-                         
-                    for (UIView *view in views){
-                             
-                        CGRect currentFrame = view.frame;
-                        CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
-                        view.frame = newFrame;
-                             
-                    }
-                         
-                    CGRect currentSVFrame = self.contentScrollView.frame;
-                    CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y + advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height - advancedControlSlidingHeight);
-                    self.contentScrollView.frame = newSVFrame;
-                    
-                    }
-                    completion: ^(BOOL completed){
-                         
-                        
-                        
-                    }];
-    
-    _advancedControlsActive = YES;
-    [self.rightBarButtoon setTitle: @"-"
-                          forState: UIControlStateNormal];
-    
-    
-}
-
-- (void)toggleButtonControlsToDefaultDisplay{
-    
-    self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
-    
-    [UIView animateWithDuration: .4
-                     animations: ^{
-                         
-                         NSArray *views = @[self.advancedControlsContainer];
-                         
-                         for (UIView *view in views){
-                             
-                             CGRect currentFrame = view.frame;
-                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
-                             view.frame = newFrame;
-                             
-                         }
-                         
-                         CGRect currentSVFrame = self.contentScrollView.frame;
-                         CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y - advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height + advancedControlSlidingHeight);
-                         self.contentScrollView.frame = newSVFrame;
-                         
-                     }
-                     completion: ^(BOOL completed){
-                         
-                         self.advancedControlsContainer.hidden = YES;
-                         
-                     }];
-    
-    _advancedControlsActive = NO;
-    [self.rightBarButtoon setTitle: @"+"
-                          forState: UIControlStateNormal];
-    
-    
-}
+//#pragma mark - Animation
+//
+//- (void)toggleButtonControlsToAdvancedDisplay{
+//    
+//    self.advancedControlsConstraint.constant = 0;
+//    
+//    [UIView animateWithDuration: .4
+//                     animations: ^{
+//                         
+//                         self.advancedControlsContainer.hidden = NO;
+//
+//                    NSArray *views = @[self.advancedControlsContainer];
+//                         
+//                    for (UIView *view in views){
+//                             
+//                        CGRect currentFrame = view.frame;
+//                        CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
+//                        view.frame = newFrame;
+//                             
+//                    }
+//                         
+//                    CGRect currentSVFrame = self.contentScrollView.frame;
+//                    CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y + advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height - advancedControlSlidingHeight);
+//                    self.contentScrollView.frame = newSVFrame;
+//                    
+//                    }
+//                    completion: ^(BOOL completed){
+//                         
+//                        
+//                        
+//                    }];
+//    
+//    _advancedControlsActive = YES;
+//    [self.rightBarButtoon setTitle: @"-"
+//                          forState: UIControlStateNormal];
+//    
+//    
+//}
+//
+//- (void)toggleButtonControlsToDefaultDisplay{
+//    
+//    self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
+//    
+//    [UIView animateWithDuration: .4
+//                     animations: ^{
+//                         
+//                         NSArray *views = @[self.advancedControlsContainer];
+//                         
+//                         for (UIView *view in views){
+//                             
+//                             CGRect currentFrame = view.frame;
+//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
+//                             view.frame = newFrame;
+//                             
+//                         }
+//                         
+//                         CGRect currentSVFrame = self.contentScrollView.frame;
+//                         CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y - advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height + advancedControlSlidingHeight);
+//                         self.contentScrollView.frame = newSVFrame;
+//                         
+//                     }
+//                     completion: ^(BOOL completed){
+//                         
+//                         self.advancedControlsContainer.hidden = YES;
+//                         
+//                     }];
+//    
+//    _advancedControlsActive = NO;
+//    [self.rightBarButtoon setTitle: @"+"
+//                          forState: UIControlStateNormal];
+//    
+//    
+//}
 
 #pragma mark - New Content Animation
 

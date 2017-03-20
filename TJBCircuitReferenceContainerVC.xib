@@ -27,7 +27,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBm-HU-zw0">
-                    <rect key="frame" x="8" y="70" width="566" height="651"/>
+                    <rect key="frame" x="8" y="70" width="566" height="647"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9y5-2C-wjz" userLabel="titleContainer">
@@ -100,7 +100,7 @@
                     </constraints>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QwT-0q-dsS">
-                    <rect key="frame" x="4" y="721" width="574" height="31"/>
+                    <rect key="frame" x="4" y="717" width="574" height="31"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="tuc-c9-aVd"/>
                     </constraints>
@@ -114,7 +114,7 @@
             <constraints>
                 <constraint firstItem="OBm-HU-zw0" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="bottom" id="2vi-MV-A9K"/>
                 <constraint firstAttribute="trailing" secondItem="QwT-0q-dsS" secondAttribute="trailing" constant="4" id="5Bv-4P-yZB"/>
-                <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="4" id="I0N-vl-keb"/>
+                <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="8" id="I0N-vl-keb"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Iue-Tv-NOF"/>
                 <constraint firstAttribute="trailing" secondItem="9y5-2C-wjz" secondAttribute="trailing" id="aqZ-s8-tpg"/>
                 <constraint firstItem="QwT-0q-dsS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="4" id="eqc-Dg-hKC"/>
