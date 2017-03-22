@@ -535,7 +535,7 @@ static NSString const *restViewKey = @"restView";
     CGFloat exerciseCompHeight = 154;
     CGFloat restCompHeight = 62;
     CGFloat initialTopSpacing = 0;
-    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight + initialTopSpacing;
+    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight * 2 + initialTopSpacing; // rest comp height is multiplied by two because I am now including both a rest component and a 'sequence completed' component
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
@@ -641,19 +641,41 @@ static NSString const *restViewKey = @"restView";
     self.restItemChildVC = restItemVC;
     [self addChildViewController: restItemVC];
     
+    // add 'sequence completed' item
+    // will reuse the TJBActiveRoutineRestItem class because it works for this purpose
+    
+    NSNumber *scTitleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 2];
+    
+    NSString *scText = @"Sequence Completed";
+    
+    TJBActiveRoutineRestItem *scItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: scTitleNumber
+                                                                                 contentText: scText];
+    scItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addChildViewController: scItemVC];
+    
     // layout constraints
     
     [masterView addSubview: restItemVC.view];
+    [masterView addSubview: scItemVC.view];
     
     [self.constraintMapping setObject: restItemVC.view
                                forKey: restViewKey];
+    
+    [self.constraintMapping setObject: scItemVC.view
+                               forKey: @"scItem"];
     
     NSArray *restViewHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[restView]-0-|"
                                                                              options: 0
                                                                              metrics: nil
                                                                                views: self.constraintMapping];
     
-    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[restView(==%d)]-0-[guidanceStackView]-0-|",
+    NSArray *scHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[scItem]-0-|"
+                                                                    options: 0
+                                                                    metrics: nil
+                                                                      views: self.constraintMapping];
+    
+    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[restView(==%d)]-0-[guidanceStackView]-0-[scItem(==restView)]-0-|",
                                 initialTopSpacing,
                                 (int)restCompHeight];
     NSArray *restViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalString
@@ -662,6 +684,8 @@ static NSString const *restViewKey = @"restView";
                                                                                views: self.constraintMapping];
     
     [masterView addConstraints: restViewHorC];
+    [masterView addConstraints: scHorC];
+    
     [masterView addConstraints: restViewVerC];
     
     [restItemVC didMoveToParentViewController: self];
@@ -681,7 +705,9 @@ static NSString const *restViewKey = @"restView";
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
     CGFloat exerciseCompHeight = 154;
     CGFloat initialTopSpacing = 0;
-    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + initialTopSpacing;
+    CGFloat scCompHeight = 62;
+    CGFloat contentHeight = exerciseCompHeight * numberOfExerciseComps;
+    CGFloat height = contentHeight + initialTopSpacing + scCompHeight;
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
@@ -771,13 +797,42 @@ static NSString const *restViewKey = @"restView";
         
     }
     
-    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[guidanceStackView]-0-|",
-                                initialTopSpacing];
+    // add 'sequence completed' item
+    // will reuse the TJBActiveRoutineRestItem class because it works for this purpose
+    
+    NSNumber *scTitleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 1];
+    
+    NSString *scText = @"Sequence Completed";
+    
+    TJBActiveRoutineRestItem *scItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: scTitleNumber
+                                                                                   contentText: scText];
+    scItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addChildViewController: scItemVC];
+    
+    // constraints
+    
+    [masterView addSubview: scItemVC.view];
+    
+    [self.constraintMapping setObject: scItemVC.view
+                               forKey: @"scItem"];
+    
+    NSArray *scHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[scItem]-0-|"
+                                                              options: 0
+                                                              metrics: nil
+                                                                views: self.constraintMapping];
+    
+    
+    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[guidanceStackView(==%d)]-0-[scItem]-0-|",
+                                initialTopSpacing,
+                                (int)contentHeight];
+    
     NSArray *vertConstr = [NSLayoutConstraint constraintsWithVisualFormat: verticalString
                                                                     options: 0
                                                                     metrics: nil
                                                                       views: self.constraintMapping];
 
+    [masterView addConstraints: scHorC];
     [masterView addConstraints: vertConstr];
     
     return masterView;
