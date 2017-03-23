@@ -16,6 +16,10 @@
 
 #import "TJBAestheticsController.h"
 
+// jump bars
+
+#import "TJBNumberJumpVC.h"
+
 @interface TJBWeightRepsSelectionVC () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 // view objects
@@ -32,6 +36,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *smallTopTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIView *leftJumpBarContainer;
 @property (weak, nonatomic) IBOutlet UILabel *topBarRightLabel;
 
 // IBAction
@@ -84,6 +89,26 @@
     [self configureSegmentedControl];
     
     [self configureViewData];
+    
+    [self configureJumpBars];
+    
+}
+
+- (void)configureJumpBars{
+    
+    [self.view layoutIfNeeded];
+    
+    TJBNumberJumpVC *jumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
+                                                            numberOfLabels: @(10)
+                                                              intervalSize: @(50)
+                                                          delegateCallback: nil];
+    
+    [self addChildViewController: jumpBar];
+    
+    jumpBar.view.frame = self.leftJumpBarContainer.bounds;
+    [self.leftJumpBarContainer addSubview: jumpBar.view];
+    
+    [jumpBar didMoveToParentViewController: self];
     
 }
 
