@@ -71,9 +71,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
-//@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
-//@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
 @property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
@@ -81,6 +79,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
 @property (weak, nonatomic) IBOutlet UIButton *targetRestTitle;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
+@property (weak, nonatomic) IBOutlet UILabel *topTopLabel;
 
 // IBAction
 
@@ -276,23 +275,7 @@
     
     self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
     
-    //// buttons
-    
-    NSArray *buttons = @[self.targetRestButton,
-                         self.alertTimingButton];
-    
-    for (UIButton *button in buttons){
-        
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        [button setTitleColor: [UIColor whiteColor]
-                     forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-        
-        CALayer *bl = button.layer;
-        bl.masksToBounds = YES;
-        bl.cornerRadius = 4.0;
-        
-    }
+    // buttons
     
     self.exerciseButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     [self.exerciseButton setTitleColor: [UIColor whiteColor]
@@ -302,14 +285,14 @@
     self.beginNextSetButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
     [self.beginNextSetButton setTitleColor: [UIColor whiteColor]
                                   forState: UIControlStateNormal];
-    self.beginNextSetButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    self.beginNextSetButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
 
     
     // title labels and title buttons and container
     
     self.titleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
     
-    NSArray *titleLabels = @[self.freeformTitleLabel, self.topBarRightLabel];
+    NSArray *titleLabels = @[self.freeformTitleLabel, self.topBarRightLabel, self.topTopLabel];
     
     for (UILabel *label in titleLabels){
         
@@ -319,8 +302,11 @@
         
     }
     
+    self.freeformTitleLabel.font = [UIFont systemFontOfSize: 15];
+    self.topTopLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
     self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-    self.timerLabel.font = [UIFont boldSystemFontOfSize: 30];
+    self.timerLabel.font = [UIFont systemFontOfSize: 30];
     self.timerLabel.textColor = [UIColor whiteColor];
     
 
@@ -330,7 +316,7 @@
         
         button.backgroundColor = [UIColor darkGrayColor];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [button setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
                      forState: UIControlStateNormal];
         
     }
@@ -344,7 +330,7 @@
     NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
     for (UIButton *b in restButtons){
         
-        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
                 forState: UIControlStateNormal];
         
         b.backgroundColor = [UIColor clearColor];
@@ -357,7 +343,7 @@
         
         b.backgroundColor = [UIColor clearColor];
         b.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
-        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
                 forState: UIControlStateNormal];
         
     }
@@ -1132,7 +1118,7 @@
     NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
     for (UIButton *b in restButtons){
         
-        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
                 forState: UIControlStateNormal];
         
     }
@@ -1140,7 +1126,7 @@
     NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
     for (UIButton *b in restTitleButtons){
         
-        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
                 forState: UIControlStateNormal];
         
     }
