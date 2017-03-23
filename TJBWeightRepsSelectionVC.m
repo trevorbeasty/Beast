@@ -30,10 +30,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *repsSegmentedControl;
 @property (weak, nonatomic) IBOutlet UILabel *weightSelectedValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsSelectedValueLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *weightLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *repsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *smallTopTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIView *leftJumpBarContainer;
@@ -98,10 +95,18 @@
     
     [self.view layoutIfNeeded];
     
+    __weak TJBWeightRepsSelectionVC *weakSelf = self;
+    
+    void (^jumpBarCallback)(NSNumber *) = ^(NSNumber *touchNumber){
+        
+        [weakSelf jumpBarTouchedWithNumberEquivalent: touchNumber];
+        
+    };
+    
     TJBNumberJumpVC *jumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
-                                                            numberOfLabels: @(10)
+                                                            numberOfLabels: @(11)
                                                               intervalSize: @(50)
-                                                          delegateCallback: nil];
+                                                          delegateCallback: jumpBarCallback];
     
     [self addChildViewController: jumpBar];
     
@@ -211,7 +216,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
-    return 1000;
+    return 500;
     
 }
 
@@ -492,6 +497,42 @@ static float const numberOfCellsPerRow = 2;
     self.cancelBlock();
     
 }
+
+
+
+#pragma mark - Jump Bars
+
+- (void)jumpBarTouchedWithNumberEquivalent:(NSNumber *)touchNumber{
+    
+    NSIndexPath *pathToSelect = [self pathForJumpBarTouchNumber: touchNumber];
+    
+    [self.weightCollectionView selectItemAtIndexPath: pathToSelect
+                                            animated: YES
+                                      scrollPosition: UICollectionViewScrollPositionCenteredVertically];
+    
+}
+
+- (NSIndexPath *)pathForJumpBarTouchNumber:(NSNumber *)touchNumber{
+    
+    // get the value of the multiplier, designated by the segmented control
+    // round the touchNumber to the lower encapsulating multiple
+    // divide by the touch touch to get the row of the index path
+    
+    float multValue = [self weightMultiplier];
+    NSInteger touchNum = [touchNumber intValue];
+    NSInteger lowerBoundMultiple = touchNum / multValue;
+    
+    NSLog(@"weight to select: %@\nlowerBoundMult: %ld", [touchNumber stringValue], lowerBoundMultiple);
+    
+    NSIndexPath *returnPath = [NSIndexPath indexPathForRow: lowerBoundMultiple
+                                                 inSection: 0];
+    
+    return returnPath;
+    
+}
+
+
+
 @end
 
 

@@ -66,7 +66,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="HnF-gb-8PT">
-                    <rect key="frame" x="40" y="130" width="142.5" height="431"/>
+                    <rect key="frame" x="38" y="130" width="144.5" height="431"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vib-K0-I1B">
                         <size key="itemSize" width="50" height="50"/>
@@ -133,8 +133,11 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Otr-Cg-8HO" userLabel="leftJumpBarContainer">
-                    <rect key="frame" x="4" y="130" width="32" height="431"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="4" y="170" width="30" height="351"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="izE-UW-yWL"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -158,8 +161,7 @@
                 <constraint firstItem="l41-YA-PUS" firstAttribute="top" secondItem="HnF-gb-8PT" secondAttribute="bottom" constant="8" id="btM-m9-XUE"/>
                 <constraint firstItem="iwf-i4-0Nw" firstAttribute="leading" secondItem="kFb-NO-8Ye" secondAttribute="leading" id="cOD-K8-aHp"/>
                 <constraint firstItem="iwf-i4-0Nw" firstAttribute="trailing" secondItem="kFb-NO-8Ye" secondAttribute="trailing" id="cZx-Jf-WP3"/>
-                <constraint firstItem="Otr-Cg-8HO" firstAttribute="top" secondItem="HnF-gb-8PT" secondAttribute="top" id="dfE-Fc-wjk"/>
-                <constraint firstItem="l41-YA-PUS" firstAttribute="leading" secondItem="HnF-gb-8PT" secondAttribute="leading" constant="-32" id="dsR-az-8pb"/>
+                <constraint firstItem="Otr-Cg-8HO" firstAttribute="top" secondItem="HnF-gb-8PT" secondAttribute="top" constant="40" id="dfE-Fc-wjk"/>
                 <constraint firstItem="l41-YA-PUS" firstAttribute="trailing" secondItem="hqd-bG-zir" secondAttribute="trailing" constant="-4" id="eX3-jL-LYl"/>
                 <constraint firstAttribute="trailing" secondItem="uiF-4h-mUv" secondAttribute="trailing" id="gev-2Y-wWp"/>
                 <constraint firstItem="I6v-Cl-mMV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jS2-46-8gP"/>
@@ -167,7 +169,7 @@
                 <constraint firstAttribute="trailing" secondItem="oAV-Bn-215" secondAttribute="trailing" id="m7C-fQ-KHg"/>
                 <constraint firstItem="uiF-4h-mUv" firstAttribute="top" secondItem="Ipf-uu-ASp" secondAttribute="top" id="mNK-pS-obM"/>
                 <constraint firstItem="Ipf-uu-ASp" firstAttribute="top" secondItem="dMC-f8-HzZ" secondAttribute="top" id="nQl-rz-MgS"/>
-                <constraint firstItem="Otr-Cg-8HO" firstAttribute="bottom" secondItem="HnF-gb-8PT" secondAttribute="bottom" id="o7j-Yg-lFM"/>
+                <constraint firstItem="Otr-Cg-8HO" firstAttribute="bottom" secondItem="HnF-gb-8PT" secondAttribute="bottom" constant="-40" id="o7j-Yg-lFM"/>
                 <constraint firstItem="Ipf-uu-ASp" firstAttribute="bottom" secondItem="dMC-f8-HzZ" secondAttribute="bottom" id="oN9-HK-XXN"/>
                 <constraint firstItem="hqd-bG-zir" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="qXY-bQ-Ysw"/>
                 <constraint firstAttribute="trailing" secondItem="I6v-Cl-mMV" secondAttribute="trailing" id="tIS-tP-SmV"/>

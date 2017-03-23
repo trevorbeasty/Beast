@@ -21,6 +21,8 @@
 @property (strong) NSNumber *numberOfLabels;
 @property (copy) void (^delegateCallback)(NSNumber *);
 
+@property (strong) NSNumber *impliedUpperLimit;
+
 @end
 
 @implementation TJBNumberJumpVC
@@ -36,7 +38,27 @@
     self.numberOfLabels = numberOfLabels;
     self.delegateCallback = delegateCallback;
     
+    [self calculateAndStoreImpliedUpperLimit];
+    
     return self;
+    
+}
+
+- (void)calculateAndStoreImpliedUpperLimit{
+    
+    int lowerLimit = [self.lowerLimit intValue];
+    int intervalSize = [self.intervalSize intValue];
+    int numberOfLabels = [self.numberOfLabels intValue];
+    
+    int iterativeValue = lowerLimit;
+    
+    for (int i = 0; i < numberOfLabels - 1; i++){
+        
+        iterativeValue += intervalSize;
+        
+    }
+    
+    self.impliedUpperLimit = @(iterativeValue);
     
 }
 
@@ -50,8 +72,6 @@
     
     UIStackView *stackView = [[UIStackView alloc] init];
     self.view = stackView;
-    
-    stackView.backgroundColor = [UIColor greenColor];
     
     stackView.distribution = UIStackViewDistributionFillEqually;
     stackView.axis = UILayoutConstraintAxisVertical;
@@ -89,9 +109,10 @@
 
 - (void)configureLabelAesthetics:(UILabel *)label{
     
-    label.font = [UIFont systemFontOfSize: 10];
+    label.font = [UIFont boldSystemFontOfSize: 10];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [[TJBAestheticsController singleton] blueButtonColor];
+    label.textAlignment = NSTextAlignmentCenter;
     
 }
 
@@ -127,7 +148,7 @@
     
     float vertPercent = [self equivalentPercentileForGR: gr];
     
-//    self.delegateCallback(@(vertPercent));
+    self.delegateCallback(@(vertPercent * [self.impliedUpperLimit floatValue]));
     
 }
 
@@ -135,7 +156,7 @@
     
     float vertPercent = [self equivalentPercentileForGR: gr];
     
-//    self.delegateCallback(@(vertPercent));
+    self.delegateCallback(@(vertPercent * [self.impliedUpperLimit floatValue]));
     
 }
 
@@ -150,8 +171,6 @@
     CGFloat totalHeight = self.view.frame.size.height;
     
     float equivPercentile = locationInView.y / totalHeight;
-    
-    NSLog(@"equiv percent: %f", equivPercentile);
     
     return equivPercentile;
     
