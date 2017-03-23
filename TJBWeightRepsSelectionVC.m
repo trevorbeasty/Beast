@@ -33,8 +33,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UIView *leftJumpBarContainer;
 @property (weak, nonatomic) IBOutlet UILabel *topBarRightLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *leftJumpBarContainer;
+@property (weak, nonatomic) IBOutlet UIView *rightJumpBarContainer;
 
 // IBAction
 
@@ -56,6 +58,11 @@
 @property (nonatomic, strong) NSString *navBarTitle;
 
 @end
+
+typedef enum {
+    WeightType,
+    RepsType,
+} TJBJumpBarType;
 
 @implementation TJBWeightRepsSelectionVC
 
@@ -97,23 +104,47 @@
     
     __weak TJBWeightRepsSelectionVC *weakSelf = self;
     
-    void (^jumpBarCallback)(NSNumber *) = ^(NSNumber *touchNumber){
+    // weight jump bar
+    
+    void (^jumpBarWeightCallback)(NSNumber *) = ^(NSNumber *touchNumber){
         
-        [weakSelf jumpBarTouchedWithNumberEquivalent: touchNumber];
+        [weakSelf jumpBarTouchedWithNumberEquivalent: touchNumber
+                                         jumpBarType: WeightType];
         
     };
     
-    TJBNumberJumpVC *jumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
+    TJBNumberJumpVC *weightJumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
                                                             numberOfLabels: @(11)
                                                               intervalSize: @(50)
-                                                          delegateCallback: jumpBarCallback];
+                                                          delegateCallback: jumpBarWeightCallback];
     
-    [self addChildViewController: jumpBar];
+    [self addChildViewController: weightJumpBar];
     
-    jumpBar.view.frame = self.leftJumpBarContainer.bounds;
-    [self.leftJumpBarContainer addSubview: jumpBar.view];
+    weightJumpBar.view.frame = self.leftJumpBarContainer.bounds;
+    [self.leftJumpBarContainer addSubview: weightJumpBar.view];
     
-    [jumpBar didMoveToParentViewController: self];
+    [weightJumpBar didMoveToParentViewController: self];
+    
+    // reps jump bar
+    
+    void (^jumpBarRepsCallback)(NSNumber *) = ^(NSNumber *touchNumber){
+        
+        [weakSelf jumpBarTouchedWithNumberEquivalent: touchNumber
+                                         jumpBarType: RepsType];
+        
+    };
+    
+    TJBNumberJumpVC *repsJumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
+                                                            numberOfLabels: @(11)
+                                                              intervalSize: @(10)
+                                                          delegateCallback: jumpBarRepsCallback];
+    
+    [self addChildViewController: repsJumpBar];
+    
+    repsJumpBar.view.frame = self.leftJumpBarContainer.bounds;
+    [self.rightJumpBarContainer addSubview: repsJumpBar.view];
+    
+    [repsJumpBar didMoveToParentViewController: self];
     
 }
 
@@ -502,32 +533,60 @@ static float const numberOfCellsPerRow = 2;
 
 #pragma mark - Jump Bars
 
-- (void)jumpBarTouchedWithNumberEquivalent:(NSNumber *)touchNumber{
+- (void)jumpBarTouchedWithNumberEquivalent:(NSNumber *)touchNumber jumpBarType:(TJBJumpBarType)type{
     
-    NSIndexPath *pathToSelect = [self pathForJumpBarTouchNumber: touchNumber];
+    NSIndexPath *pathToSelect = [self pathForJumpBarTouchNumber: touchNumber
+                                                    jumpBarType: type];
     
-    [self.weightCollectionView selectItemAtIndexPath: pathToSelect
-                                            animated: YES
-                                      scrollPosition: UICollectionViewScrollPositionCenteredVertically];
+    if (type == WeightType){
+        
+        [self.weightCollectionView selectItemAtIndexPath: pathToSelect
+                                                animated: YES
+                                          scrollPosition: UICollectionViewScrollPositionCenteredVertically];
+        
+    } else{
+        
+        [self.repsCollectionView selectItemAtIndexPath: pathToSelect
+                                              animated: YES
+                                        scrollPosition: UICollectionViewScrollPositionCenteredVertically];
+        
+    }
+    
+
     
 }
 
-- (NSIndexPath *)pathForJumpBarTouchNumber:(NSNumber *)touchNumber{
+- (NSIndexPath *)pathForJumpBarTouchNumber:(NSNumber *)touchNumber jumpBarType:(TJBJumpBarType)type{
     
     // get the value of the multiplier, designated by the segmented control
     // round the touchNumber to the lower encapsulating multiple
     // divide by the touch touch to get the row of the index path
     
-    float multValue = [self weightMultiplier];
-    NSInteger touchNum = [touchNumber intValue];
-    NSInteger lowerBoundMultiple = touchNum / multValue;
+    if (type == WeightType){
+        
+        float multValue = [self weightMultiplier];
+        NSInteger touchNum = [touchNumber intValue];
+        NSInteger lowerBoundMultiple = touchNum / multValue;
+        
+        NSIndexPath *returnPath = [NSIndexPath indexPathForRow: lowerBoundMultiple
+                                                     inSection: 0];
+        
+        return returnPath;
+        
+    } else{
+        
+        float multValue = [self repsMultiplier];
+        NSInteger touchNum = [touchNumber intValue];
+        NSInteger lowerBoundMultiple = touchNum / multValue;
+        
+        NSIndexPath *returnPath = [NSIndexPath indexPathForRow: lowerBoundMultiple
+                                                     inSection: 0];
+        
+        return returnPath;
+        
+    }
     
-    NSLog(@"weight to select: %@\nlowerBoundMult: %ld", [touchNumber stringValue], lowerBoundMultiple);
-    
-    NSIndexPath *returnPath = [NSIndexPath indexPathForRow: lowerBoundMultiple
-                                                 inSection: 0];
-    
-    return returnPath;
+
     
 }
 
