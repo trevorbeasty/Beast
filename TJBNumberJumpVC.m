@@ -165,12 +165,31 @@
 - (float)equivalentPercentileForGR:(UIGestureRecognizer *)gr{
     
     // return the location of the touch in the view as a percentage with respect to the view's height
+    // must apply some corrections to account for the fact that label text is centered
     
-    CGPoint locationInView = [gr locationInView: self.view];
-    
+    CGFloat absVertLocationInView = [gr locationInView: self.view].y;
     CGFloat totalHeight = self.view.frame.size.height;
     
-    float equivPercentile = locationInView.y / totalHeight;
+    // calculate the space between the text of labels
+    // this will be used to create a logical structure that applies appropriate adjustments
+    
+    CGFloat textToTextInterval = totalHeight / ([self.numberOfLabels floatValue] + 1.0);
+    
+    float equivPercentile;
+    
+    if (absVertLocationInView < textToTextInterval / 2.0){
+        
+        equivPercentile = 0.0;
+        
+    } else if (absVertLocationInView < totalHeight - textToTextInterval / 2.0){
+        
+        equivPercentile = (absVertLocationInView - textToTextInterval / 2.0) / (totalHeight - textToTextInterval);
+        
+    } else{
+        
+        equivPercentile = 1.0;
+        
+    }
     
     return equivPercentile;
     
