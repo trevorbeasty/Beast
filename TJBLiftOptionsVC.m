@@ -156,16 +156,6 @@
     
     tabBar.barTintColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     tabBar.tintColor = [UIColor blackColor];
-//
-//    UITabBarItem *tbItem1 = [[UITabBarItem alloc] initWithTitle: @"Active"
-//                                                          image: [UIImage imageNamed: @"titleBarHomeButton"]
-//                                                            tag: 0];
-//    
-//    UITabBarItem *tbItem2 = [[UITabBarItem alloc] initWithTitle: @"Log"
-//                                                          image: [UIImage imageNamed: @"titleBarHomeButton"]
-//                                                            tag: 1];
-//    
-//    [tabBar setItems: @[tbItem1, tbItem2]];
     
     [self presentViewController: tbc
                        animated: YES
@@ -180,12 +170,7 @@
     [self presentViewController: vc
                        animated: YES
                      completion: nil];
-    
-//    TJBRoutineSelectionTBC *tbc = [[TJBRoutineSelectionTBC alloc] init];
-//
-//    [self presentViewController: tbc
-//                       animated: YES
-//                     completion: nil];
+
     
 }
 

@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eY0-17-2pj">
-                    <rect key="frame" x="74" y="4" width="29.5" height="15"/>
+                    <rect key="frame" x="74" y="8" width="29.5" height="15"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="P2F-GK-CWd"/>
                     </constraints>
@@ -31,7 +31,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="15" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UGq-HU-Hyv">
-                    <rect key="frame" x="78" y="19" width="21.5" height="24"/>
+                    <rect key="frame" x="78" y="23" width="21.5" height="24"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -41,7 +41,7 @@
             <constraints>
                 <constraint firstItem="eY0-17-2pj" firstAttribute="centerX" secondItem="WED-IR-U8g" secondAttribute="centerX" id="0H1-Ja-CiN"/>
                 <constraint firstItem="UGq-HU-Hyv" firstAttribute="centerX" secondItem="WED-IR-U8g" secondAttribute="centerX" id="PRF-YQ-ASC"/>
-                <constraint firstItem="eY0-17-2pj" firstAttribute="top" secondItem="WED-IR-U8g" secondAttribute="top" constant="4" id="bwK-k6-4z5"/>
+                <constraint firstItem="eY0-17-2pj" firstAttribute="top" secondItem="WED-IR-U8g" secondAttribute="top" constant="8" id="bwK-k6-4z5"/>
                 <constraint firstItem="UGq-HU-Hyv" firstAttribute="top" secondItem="eY0-17-2pj" secondAttribute="bottom" id="oaq-ny-RzW"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

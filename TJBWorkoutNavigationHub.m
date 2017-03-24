@@ -101,7 +101,7 @@
 
 static const CGFloat buttonWidth = 60.0;
 static const CGFloat buttonSpacing = 0.0;
-static const CGFloat buttonHeight = 50.0;
+static const CGFloat buttonHeight = 60.0;
 
 // animation
 
