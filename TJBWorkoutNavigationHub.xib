@@ -132,6 +132,7 @@
                 <constraint firstItem="yli-0M-nMI" firstAttribute="top" secondItem="NKH-wt-CCf" secondAttribute="top" id="Wbk-1e-Y4v"/>
                 <constraint firstItem="o5g-iz-HZo" firstAttribute="trailing" secondItem="t4e-f8-R8O" secondAttribute="trailing" id="YjP-Jp-pYN"/>
                 <constraint firstItem="kfu-Yd-6by" firstAttribute="top" secondItem="wRK-QI-22E" secondAttribute="bottom" constant="1" id="Z1i-hY-OfG"/>
+                <constraint firstItem="Tty-zV-IRM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Z3Q-ah-8ia"/>
                 <constraint firstItem="o9v-ez-ddy" firstAttribute="leading" secondItem="Xyd-rd-xY1" secondAttribute="leading" id="Zdd-fd-pD6"/>
                 <constraint firstAttribute="trailing" secondItem="NrZ-JA-Y3W" secondAttribute="trailing" id="agz-eY-jps"/>
                 <constraint firstItem="o9v-ez-ddy" firstAttribute="top" secondItem="Xyd-rd-xY1" secondAttribute="top" id="bu2-p2-MJR"/>
@@ -146,10 +147,9 @@
                 <constraint firstAttribute="bottom" secondItem="NrZ-JA-Y3W" secondAttribute="bottom" id="o2N-mk-pMS"/>
                 <constraint firstItem="Tty-zV-IRM" firstAttribute="leading" secondItem="wRK-QI-22E" secondAttribute="leading" id="sEH-To-UY5"/>
                 <constraint firstItem="Tty-zV-IRM" firstAttribute="top" secondItem="Xyd-rd-xY1" secondAttribute="top" id="voX-gh-s3o"/>
-                <constraint firstItem="Tty-zV-IRM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="x9F-6F-1lN"/>
                 <constraint firstItem="o5g-iz-HZo" firstAttribute="leading" secondItem="t4e-f8-R8O" secondAttribute="leading" id="yc4-ow-od1"/>
             </constraints>
-            <point key="canvasLocation" x="100" y="83"/>
+            <point key="canvasLocation" x="65.5" y="65.5"/>
         </view>
     </objects>
     <resources>

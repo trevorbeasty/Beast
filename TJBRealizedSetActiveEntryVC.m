@@ -309,7 +309,7 @@
     
     // title labels and title buttons and container
     
-    self.thinTitleLabel.backgroundColor = [[TJBAestheticsController singleton] titleBarButtonColor];
+    self.thinTitleLabel.backgroundColor = [UIColor blackColor];
     
     self.titleLabelsContainer.backgroundColor = [UIColor darkGrayColor];
     
@@ -374,6 +374,10 @@
     UIImage *homeButtonImage = [UIImage imageNamed: @"titleBarHomeButton"];
     [self.leftBarButton setBackgroundImage: homeButtonImage
                                   forState: UIControlStateNormal];
+    
+    // shadow view
+    
+    self.shadowView.backgroundColor = [UIColor blackColor];
   
 }
 

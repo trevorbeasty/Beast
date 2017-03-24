@@ -603,22 +603,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-- (void)configureTableShadow{
-    
-    [self.view layoutIfNeeded];
-    
-    UIView *shadowView = self.shadowContainer;
-    shadowView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    shadowView.clipsToBounds = NO;
-    
-    CALayer *shadowLayer = shadowView.layer;
-    shadowLayer.masksToBounds = NO;
-    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
-    shadowLayer.shadowOpacity = 1.0;
-    shadowLayer.shadowRadius = 3.0;
-    
-}
+//- (void)configureTableShadow{
+//    
+//    [self.view layoutIfNeeded];
+//    
+//    UIView *shadowView = self.shadowContainer;
+//    shadowView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//    shadowView.clipsToBounds = NO;
+//    
+//    CALayer *shadowLayer = shadowView.layer;
+//    shadowLayer.masksToBounds = NO;
+//    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
+//    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
+//    shadowLayer.shadowOpacity = 1.0;
+//    shadowLayer.shadowRadius = 3.0;
+//    
+//}
 
 - (void)configureTableView{
     
@@ -864,7 +864,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // shadow container
     
-    [self configureTableShadow];
+//    [self configureTableShadow];
     
     // arrow background labels
     
@@ -873,7 +873,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     // scroll view
     
