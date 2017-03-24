@@ -44,24 +44,22 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t4e-f8-R8O">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t4e-f8-R8O">
                     <rect key="frame" x="315" y="20" width="60" height="60"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="m6V-w5-kRZ"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <state key="normal" title="&gt;"/>
+                    <state key="normal" image="rightDoubleArrow"/>
                     <connections>
                         <action selector="didPressRightArrow:" destination="-1" eventType="touchUpInside" id="dR6-NA-jGM"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xyd-rd-xY1">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xyd-rd-xY1">
                     <rect key="frame" x="0.0" y="20" width="60" height="60"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="wbs-mi-sxz"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                    <state key="normal" title="&lt;"/>
+                    <state key="normal" image="leftDoubleArrow"/>
                     <connections>
                         <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="Wgy-Wn-W4w"/>
                     </connections>
@@ -75,14 +73,13 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NKH-wt-CCf">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NKH-wt-CCf">
                     <rect key="frame" x="64" y="20" width="60" height="60"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="mvB-T7-nYd"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                    <state key="normal" title="Home">
+                    <state key="normal" image="titleBarHomeButton">
                         <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </state>
                     <connections>
@@ -105,12 +102,12 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yli-0M-nMI">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yli-0M-nMI">
                     <rect key="frame" x="251" y="20" width="60" height="60"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="YQU-Aj-Yh0"/>
                     </constraints>
-                    <state key="normal" title="Today"/>
+                    <state key="normal" image="today"/>
                     <connections>
                         <action selector="didPressTodayButton:" destination="-1" eventType="touchUpInside" id="lMn-2g-COC"/>
                     </connections>
@@ -155,4 +152,10 @@
             <point key="canvasLocation" x="100" y="83"/>
         </view>
     </objects>
+    <resources>
+        <image name="leftDoubleArrow" width="25" height="25"/>
+        <image name="rightDoubleArrow" width="25" height="25"/>
+        <image name="titleBarHomeButton" width="12" height="12"/>
+        <image name="today" width="25" height="25"/>
+    </resources>
 </document>

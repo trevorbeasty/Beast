@@ -46,22 +46,22 @@
 @property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
+//@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
 @property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *categorySegmentedControl;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *exerciseAdditionConstraint;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *exerciseAdditionConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
 @property (weak, nonatomic) IBOutlet UIView *exerciseAdditionContainer;
-@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+//@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIButton *addAndSelectButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *normalBrowsingExerciseSC;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 @property (weak, nonatomic) IBOutlet UILabel *searchingAllExercisesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *scToTVVertDist;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseAdditionBackButton;
 
@@ -141,6 +141,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     self.searchTextField.hidden = YES;
     self.searchingAllExercisesLabel.hidden = YES;
     
+    self.searchButton.layer.opacity = .3;
+    
     [self configureTableView];
     
     [self createFetchedResultsController];
@@ -213,10 +215,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (void)configureInitialControlPosition{
     
-    [self.view insertSubview: self.exerciseAdditionContainer
-                belowSubview: self.titleBarContainer];
-    
-    self.exerciseAdditionConstraint.constant = -1 * totalAniDist;
+//    [self.view insertSubview: self.exerciseAdditionContainer
+//                belowSubview: self.titleBarContainer];
+//    
+//    self.exerciseAdditionConstraint.constant = -1 * totalAniDist;
     
 }
 
@@ -388,26 +390,30 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     // second bar label
     
-    self.secondBarLabel.backgroundColor = [UIColor darkGrayColor];
-    self.secondBarLabel.text = @"";
+//    self.secondBarLabel.backgroundColor = [UIColor darkGrayColor];
+//    self.secondBarLabel.text = @"";
     
     // title container
     
-    self.titleBarContainer.backgroundColor = [UIColor blackColor];
+//    self.titleBarContainer.backgroundColor = [UIColor blackColor];
+    
+    // main title label
+    
+    self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 25];
     
 }
 
 - (void)configureTableView{
     
-    NSArray *titleButtons = @[self.leftBarButton, self.rightBarButton];
-    for (UIButton *button in titleButtons){
-        
-        button.backgroundColor = [UIColor darkGrayColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                     forState: UIControlStateNormal];
-        
-    }
+//    NSArray *titleButtons = @[self.leftBarButton, self.rightBarButton];
+//    for (UIButton *button in titleButtons){
+//        
+//        button.backgroundColor = [UIColor darkGrayColor];
+//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+//        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+//                     forState: UIControlStateNormal];
+//        
+//    }
     
     self.exerciseTableView.bounces = YES;
     
@@ -993,8 +999,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
         _searchIsActive = YES;
         
-        [self.searchButton setTitle: @"Back"
-                           forState: UIControlStateNormal];
+//        [self.searchButton setTitle: @"Back"
+//                           forState: UIControlStateNormal];
+        
+        self.searchButton.layer.opacity = 1.0;
         
         self.normalBrowsingExerciseSC.enabled = NO;
         self.normalBrowsingExerciseSC.layer.opacity = .4;
@@ -1013,8 +1021,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
         _searchIsActive = NO;
         
-        [self.searchButton setTitle: @"Search"
-                           forState: UIControlStateNormal];
+//        [self.searchButton setTitle: @"Search"
+//                           forState: UIControlStateNormal];
+        
+        self.searchButton.layer.opacity = .3;
         
         self.normalBrowsingExerciseSC.enabled = YES;
         self.normalBrowsingExerciseSC.layer.opacity = 1.0;

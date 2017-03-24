@@ -327,7 +327,7 @@
     self.topTopLabel.font = [UIFont boldSystemFontOfSize: 25];
     
     self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-    self.timerLabel.font = [UIFont systemFontOfSize: 40];
+    self.timerLabel.font = [UIFont systemFontOfSize: 35];
     self.timerLabel.textColor = [UIColor whiteColor];
     
 
