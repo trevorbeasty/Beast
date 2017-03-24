@@ -281,6 +281,16 @@
     
     self.bottomButtonContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
+//    [self.view insertSubview: self.bottomButtonContainer
+//                aboveSubview: self.personalRecordsTableView];
+//    CALayer *bbcLayer = self.bottomButtonContainer.layer;
+//    bbcLayer.shadowColor = [[TJBAestheticsController singleton] titleBarButtonColor].CGColor;
+//    bbcLayer.shadowOffset = CGSizeMake(0, -4.0);
+//    bbcLayer.masksToBounds = NO;
+//    bbcLayer.shadowOpacity = .4;
+//    bbcLayer.shadowRadius = 4.0;
+//    self.bottomButtonContainer.clipsToBounds = NO;
+    
     NSArray *bottomButtons = @[self.exerciseButton, self.beginNextSetButton];
     for (UIButton *butt in bottomButtons){
         

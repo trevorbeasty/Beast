@@ -138,15 +138,34 @@
     
     TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
     vc1.tabBarItem.title = @"Active";
+    vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
     
     TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
     vc2.tabBarItem.title = @"Workout Log";
+    vc2.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
     
     // tab bar controller
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
     [tbc setViewControllers: @[vc1, vc2]];
     tbc.tabBar.translucent = NO;
+    
+    // tab bar aesthetics
+    
+    UITabBar *tabBar = tbc.tabBar;
+    
+    tabBar.barTintColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    tabBar.tintColor = [UIColor blackColor];
+//
+//    UITabBarItem *tbItem1 = [[UITabBarItem alloc] initWithTitle: @"Active"
+//                                                          image: [UIImage imageNamed: @"titleBarHomeButton"]
+//                                                            tag: 0];
+//    
+//    UITabBarItem *tbItem2 = [[UITabBarItem alloc] initWithTitle: @"Log"
+//                                                          image: [UIImage imageNamed: @"titleBarHomeButton"]
+//                                                            tag: 1];
+//    
+//    [tabBar setItems: @[tbItem1, tbItem2]];
     
     [self presentViewController: tbc
                        animated: YES
