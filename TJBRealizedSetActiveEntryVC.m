@@ -302,7 +302,7 @@
         CALayer *layer = butt.layer;
         layer.borderColor = [UIColor blackColor].CGColor;
         layer.borderWidth = 1.0;
-        layer.cornerRadius = 12;
+        layer.cornerRadius = 15;
         layer.masksToBounds = YES;
         
     }
@@ -324,10 +324,10 @@
     }
     
     self.freeformTitleLabel.font = [UIFont systemFontOfSize: 15];
-    self.topTopLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.topTopLabel.font = [UIFont boldSystemFontOfSize: 25];
     
     self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-    self.timerLabel.font = [UIFont systemFontOfSize: 30];
+    self.timerLabel.font = [UIFont systemFontOfSize: 40];
     self.timerLabel.textColor = [UIColor whiteColor];
     
 
