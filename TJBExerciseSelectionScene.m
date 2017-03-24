@@ -12,6 +12,10 @@
 
 #import "CoreDataController.h"
 
+// child VC's
+
+#import "TJBExerciseAdditionChildVC.h"
+
 
 // cells
 
@@ -36,6 +40,7 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *contentExercisesArray;
+@property (strong) TJBExerciseAdditionChildVC *exerciseAdditionChildVC;
 
 // callback
 
@@ -733,10 +738,39 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - Button Actions
 
-
+#pragma mark - Exercise Addition and Related Methods
 
 - (IBAction)didPressAddNewExercise:(id)sender {
+    
+    if (_exerciseAdditionActive == NO){
         
+        _exerciseAdditionActive = YES;
+        [self.addNewExerciseButton setImage: nil
+                                   forState: UIControlStateNormal];
+        self.searchButton.hidden = YES;
+        
+        if (!self.exerciseAdditionChildVC){
+            
+            TJBExerciseAdditionChildVC *eaChildVC = [[TJBExerciseAdditionChildVC alloc] initWithExerciseAdditionCallback: nil
+                                                                                                            listCallback: nil];
+            self.exerciseAdditionChildVC = eaChildVC;
+            
+            [self addChildViewController: eaChildVC];
+            
+            self.exerciseTableView.hidden = YES;
+            eaChildVC.view.frame = self.exerciseTableView.frame;
+            [self.view addSubview: eaChildVC.view];
+            
+            [eaChildVC didMoveToParentViewController: self];
+            
+        }
+        
+    } else{
+        
+    
+        
+    }
+    
 //    _exerciseAdditionActive = YES;
 //    
 //    self.addNewExerciseButton.hidden = YES;
@@ -755,6 +789,14 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
+- (void)hideExerciseAdditionChildVCAndShowTableView{
+    
+    self.exerciseAdditionChildVC.view.hidden = YES;
+    self.exerciseTableView.hidden = NO;
+    _exerciseAdditionActive = NO;
+    
+}
+
 - (IBAction)didPressLeftBarButton:(id)sender{
     
 //    if (_searchIsActive == YES){
@@ -769,86 +811,82 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 //        
 //    }
 //    
-//    [self dismissViewControllerAnimated: YES
-//                             completion: nil];
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
     
 }
 
-- (IBAction)didPressAddButton:(id)sender{
+- (void)processUserRequestToAddExerciseWithName:(NSString *)exerciseName category:(NSString *)category{
     
-//    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
-//    
-//    // conditional actions
-//    
-//    NSString *exerciseString = self.exerciseTextField.text;
-//    
-//    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
-//                                                             style: UIAlertActionStyleDefault
-//                                                           handler: nil];
-//    
-//    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
-//    
-//    if (exerciseExists){
-//        
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-//                                                                       message: @"This exercise already exists"
-//                                                                preferredStyle: UIAlertControllerStyleAlert];
-//        
-//        [alert addAction: continueAction];
-//        
-//        [self presentViewController: alert
-//                           animated: YES
-//                         completion: nil];
-//        
-//    } else if([exerciseString isEqualToString: @""]){
-//        
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-//                                                                       message: @"Exercise entry is blank"
-//                                                                preferredStyle: UIAlertControllerStyleAlert];
-//        
-//        [alert addAction: continueAction];
-//        
-//        [self presentViewController: alert
-//                           animated: YES
-//                         completion: nil];
-//        
-//    } else{
-//        
-//        [self addNewExerciseAndClearExerciseTextField];
-//        
-//    }
+    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
+    
+    // conditional actions
+    
+    NSString *exerciseString = exerciseName;
+    
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: nil];
+    
+    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
+    
+    if (exerciseExists){
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"This exercise already exists"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        [alert addAction: continueAction];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else if([exerciseString isEqualToString: @""]){
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+                                                                       message: @"Exercise entry is blank"
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        [alert addAction: continueAction];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        
+        [self addNewExerciseWithName: exerciseName
+                            category: category];
+        
+    }
     
 }
 //
-//- (TJBExercise *)addNewExerciseAndClearExerciseTextField{
-//    
-////    //// add the new exercise leverage CoreDataController methods.  Save the context when done
-////    
-////    CoreDataController *coreDataController = [CoreDataController singleton];
-////    
-////    NSString *newExerciseName = self.exerciseTextField.text;
-////    
-////    NSNumber *wasNewlyCreated = nil;
-////    TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
-////                                                   wasNewlyCreated: &wasNewlyCreated
-////                                       createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
-////    
-////    newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
-////    
-////    [[CoreDataController singleton] saveContext];
-////    
-////    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
-////    
-////    [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
-////                                                        object: nil];
-////    
-////    // clear the exercise text field
-////    
-////    self.exerciseTextField.text = @"";
-////    
-////    return newExercise;
-//    
-//}
+- (void)addNewExerciseWithName:(NSString *)name category:(NSString *)category{
+    
+    //// add the new exercise leverage CoreDataController methods.  Save the context when done
+    
+    CoreDataController *coreDataController = [CoreDataController singleton];
+    
+    NSString *newExerciseName = name;
+    
+    
+    NSNumber *wasNewlyCreated = nil;
+    TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
+                                                   wasNewlyCreated: &wasNewlyCreated
+                                       createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
+    
+    newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: category];
+    
+    [[CoreDataController singleton] saveContext];
+    
+    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
+                                                        object: nil];
+    
+}
 //
 //- (IBAction)didPressAddAndSelect:(id)sender {
 //    
