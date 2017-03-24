@@ -86,7 +86,7 @@
     for (UILabel *lab in labels){
         
         lab.backgroundColor = [UIColor clearColor];
-        lab.font = [UIFont systemFontOfSize: 20];
+        lab.font = [UIFont boldSystemFontOfSize: 20];
         
         
     }

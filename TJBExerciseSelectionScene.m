@@ -108,37 +108,37 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 // view will appear and disappear are leveraged to have the view adjust itself when the keyboard is shown
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear: animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(keyboardWillAppear:)
-                                                 name: UIKeyboardWillShowNotification
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(keyboardWillDisappear:)
-                                                 name: UIKeyboardWillHideNotification
-                                               object: nil];
-    
-}
-
-- (void)viewWillDisappear:(BOOL)animated{
-    
-    [super viewWillDisappear: animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIKeyboardWillShowNotification
-                                                  object: nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIKeyboardWillHideNotification
-                                                  object: nil];
-    
-    
-    
-}
+//- (void)viewWillAppear:(BOOL)animated{
+//    
+//    [super viewWillAppear: animated];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(keyboardWillAppear:)
+//                                                 name: UIKeyboardWillShowNotification
+//                                               object: nil];
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(keyboardWillDisappear:)
+//                                                 name: UIKeyboardWillHideNotification
+//                                               object: nil];
+//    
+//}
+//
+//- (void)viewWillDisappear:(BOOL)animated{
+//    
+//    [super viewWillDisappear: animated];
+//    
+//    [[NSNotificationCenter defaultCenter] removeObserver: self
+//                                                    name: UIKeyboardWillShowNotification
+//                                                  object: nil];
+//    
+//    [[NSNotificationCenter defaultCenter] removeObserver: self
+//                                                    name: UIKeyboardWillHideNotification
+//                                                  object: nil];
+//    
+//    
+//    
+//}
 
 - (void)viewDidLoad{
     
@@ -748,6 +748,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         [self.addNewExerciseButton setImage: nil
                                    forState: UIControlStateNormal];
         self.searchButton.hidden = YES;
+        self.normalBrowsingExerciseSC.hidden = YES;
         
         if (!self.exerciseAdditionChildVC){
             
@@ -764,6 +765,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             [eaChildVC didMoveToParentViewController: self];
             
         }
+        
+        [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
         
     } else{
         

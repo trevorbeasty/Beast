@@ -27,28 +27,28 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Exercise Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZOj-K2-gD6" userLabel="exerciseName">
-                    <rect key="frame" x="99" y="8" width="178.5" height="24"/>
+                    <rect key="frame" x="99" y="24" width="178.5" height="24"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GFS-Jb-8GQ">
-                    <rect key="frame" x="8" y="36" width="359" height="40"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GFS-Jb-8GQ">
+                    <rect key="frame" x="8" y="56" width="359" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="G39-NZ-Qys"/>
                     </constraints>
                     <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Exercise Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xw3-xL-jsz">
-                    <rect key="frame" x="84.5" y="92" width="207.5" height="24"/>
+                    <rect key="frame" x="84.5" y="120" width="207.5" height="24"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="7AT-kJ-POh">
-                    <rect key="frame" x="16" y="120" width="343" height="29"/>
+                    <rect key="frame" x="16" y="152" width="343" height="29"/>
                     <segments>
                         <segment title="Push"/>
                         <segment title="Pull"/>
@@ -57,7 +57,7 @@
                     </segments>
                 </segmentedControl>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a9a-oR-VPA">
-                    <rect key="frame" x="4" y="164" width="145.5" height="30"/>
+                    <rect key="frame" x="4" y="220" width="145.5" height="30"/>
                     <color key="backgroundColor" red="0.042260741679999998" green="0.55925932619999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" title="Add">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -67,7 +67,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8bd-tb-STr">
-                    <rect key="frame" x="157.5" y="164" width="145.5" height="30"/>
+                    <rect key="frame" x="157.5" y="220" width="145.5" height="30"/>
                     <color key="backgroundColor" red="0.042260741679999998" green="0.55925932619999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" title="Add &amp; Select">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -77,13 +77,13 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7AB-21-rRr">
-                    <rect key="frame" x="311" y="164" width="60" height="30"/>
+                    <rect key="frame" x="311" y="220" width="60" height="30"/>
                     <color key="backgroundColor" red="0.042260741679999998" green="0.55925932619999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="RRH-2a-mn3"/>
                         <constraint firstAttribute="width" constant="60" id="cY5-oC-225"/>
                     </constraints>
-                    <state key="normal" image="listBulleted"/>
+                    <state key="normal" image="listBlack"/>
                     <connections>
                         <action selector="didPressList:" destination="-1" eventType="touchUpInside" id="gAQ-WT-jbl"/>
                     </connections>
@@ -92,10 +92,10 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="a9a-oR-VPA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="4" id="1eo-Rs-1KW"/>
-                <constraint firstItem="ZOj-K2-gD6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="8" id="6JZ-Gv-Oxm"/>
+                <constraint firstItem="ZOj-K2-gD6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="24" id="6JZ-Gv-Oxm"/>
                 <constraint firstItem="7AT-kJ-POh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="ApA-oL-rNY"/>
                 <constraint firstAttribute="trailing" secondItem="GFS-Jb-8GQ" secondAttribute="trailing" constant="8" id="En8-05-Zq3"/>
-                <constraint firstItem="7AT-kJ-POh" firstAttribute="top" secondItem="xw3-xL-jsz" secondAttribute="bottom" constant="4" id="GNg-a5-qIn"/>
+                <constraint firstItem="7AT-kJ-POh" firstAttribute="top" secondItem="xw3-xL-jsz" secondAttribute="bottom" constant="8" id="GNg-a5-qIn"/>
                 <constraint firstItem="8bd-tb-STr" firstAttribute="top" secondItem="a9a-oR-VPA" secondAttribute="top" id="Kvh-KJ-N1n"/>
                 <constraint firstItem="GFS-Jb-8GQ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="NE2-dA-2CY"/>
                 <constraint firstItem="7AB-21-rRr" firstAttribute="top" secondItem="a9a-oR-VPA" secondAttribute="top" id="QHe-ze-Woj"/>
@@ -108,14 +108,14 @@
                 <constraint firstItem="xw3-xL-jsz" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="l0I-ya-b6w"/>
                 <constraint firstItem="8bd-tb-STr" firstAttribute="bottom" secondItem="a9a-oR-VPA" secondAttribute="bottom" id="mQ7-gz-Xj9"/>
                 <constraint firstItem="8bd-tb-STr" firstAttribute="width" secondItem="a9a-oR-VPA" secondAttribute="width" id="qQm-iG-dio"/>
-                <constraint firstItem="8bd-tb-STr" firstAttribute="top" secondItem="7AT-kJ-POh" secondAttribute="bottom" constant="16" id="rAe-Su-MBt"/>
+                <constraint firstItem="8bd-tb-STr" firstAttribute="top" secondItem="7AT-kJ-POh" secondAttribute="bottom" constant="40" id="rAe-Su-MBt"/>
                 <constraint firstItem="7AB-21-rRr" firstAttribute="bottom" secondItem="a9a-oR-VPA" secondAttribute="bottom" id="tX1-Oc-eDY"/>
-                <constraint firstItem="xw3-xL-jsz" firstAttribute="top" secondItem="GFS-Jb-8GQ" secondAttribute="bottom" constant="16" id="xTI-uq-yjj"/>
-                <constraint firstItem="GFS-Jb-8GQ" firstAttribute="top" secondItem="ZOj-K2-gD6" secondAttribute="bottom" constant="4" id="zFd-lS-lT5"/>
+                <constraint firstItem="xw3-xL-jsz" firstAttribute="top" secondItem="GFS-Jb-8GQ" secondAttribute="bottom" constant="24" id="xTI-uq-yjj"/>
+                <constraint firstItem="GFS-Jb-8GQ" firstAttribute="top" secondItem="ZOj-K2-gD6" secondAttribute="bottom" constant="8" id="zFd-lS-lT5"/>
             </constraints>
         </view>
     </objects>
     <resources>
-        <image name="listBulleted" width="25" height="25"/>
+        <image name="listBlack" width="25" height="25"/>
     </resources>
 </document>
