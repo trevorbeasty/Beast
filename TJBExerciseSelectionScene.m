@@ -48,22 +48,22 @@
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
 //@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
-@property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
-@property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *categorySegmentedControl;
+//@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
+//@property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
+//@property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
+//@property (weak, nonatomic) IBOutlet UISegmentedControl *categorySegmentedControl;
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *exerciseAdditionConstraint;
-@property (weak, nonatomic) IBOutlet UIButton *addButton;
-@property (weak, nonatomic) IBOutlet UIView *exerciseAdditionContainer;
+//@property (weak, nonatomic) IBOutlet UIButton *addButton;
+//@property (weak, nonatomic) IBOutlet UIView *exerciseAdditionContainer;
 //@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
-@property (weak, nonatomic) IBOutlet UIButton *addAndSelectButton;
+//@property (weak, nonatomic) IBOutlet UIButton *addAndSelectButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *normalBrowsingExerciseSC;
 @property (weak, nonatomic) IBOutlet UIButton *searchButton;
-@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
-@property (weak, nonatomic) IBOutlet UILabel *searchingAllExercisesLabel;
+//@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+//@property (weak, nonatomic) IBOutlet UILabel *searchingAllExercisesLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scToTVVertDist;
-@property (weak, nonatomic) IBOutlet UIButton *exerciseAdditionBackButton;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scToTVVertDist;
+//@property (weak, nonatomic) IBOutlet UIButton *exerciseAdditionBackButton;
 
 
 
@@ -71,10 +71,10 @@
 
 - (IBAction)didPressAddNewExercise:(id)sender;
 - (IBAction)didPressLeftBarButton:(id)sender;
-- (IBAction)didPressAddButton:(id)sender;
-- (IBAction)didPressAddAndSelect:(id)sender;
+//- (IBAction)didPressAddButton:(id)sender;
+//- (IBAction)didPressAddAndSelect:(id)sender;
 - (IBAction)didPressSearchButton:(id)sender;
-- (IBAction)didPressExerciseAdditionBackButton:(id)sender;
+//- (IBAction)didPressExerciseAdditionBackButton:(id)sender;
 
 
 
@@ -137,11 +137,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (void)viewDidLoad{
     
-    self.exerciseAdditionContainer.hidden = YES;
-    self.searchTextField.hidden = YES;
-    self.searchingAllExercisesLabel.hidden = YES;
+//    self.exerciseAdditionContainer.hidden = YES;
+//    self.searchTextField.hidden = YES;
+//    self.searchingAllExercisesLabel.hidden = YES;
     
-    self.searchButton.layer.opacity = .3;
     
     [self configureTableView];
     
@@ -159,31 +158,31 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [self configureNormalBrowsingExerciseSC];
     
-    [self configureSearchTextFieldNotification];
+//    [self configureSearchTextFieldNotification];
     
-    [self configureExerciseAdditionSC];
-    
-}
-
-
-- (void)configureExerciseAdditionSC{
-    
-    [self.categorySegmentedControl addTarget: self
-                                      action: @selector(exerciseAdditionSCControlDidChangeValue)
-                            forControlEvents: UIControlEventValueChanged];
+//    [self configureExerciseAdditionSC];
     
 }
 
-- (void)configureSearchTextFieldNotification{
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(deriveExerciseContentBasedOnSearch)
-                                                 name: UITextFieldTextDidChangeNotification
-                                               object: self.searchTextField];
-    
-    self.searchTextField.delegate = self;
-    
-}
+
+//- (void)configureExerciseAdditionSC{
+//    
+//    [self.categorySegmentedControl addTarget: self
+//                                      action: @selector(exerciseAdditionSCControlDidChangeValue)
+//                            forControlEvents: UIControlEventValueChanged];
+//    
+//}
+
+//- (void)configureSearchTextFieldNotification{
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(deriveExerciseContentBasedOnSearch)
+//                                                 name: UITextFieldTextDidChangeNotification
+//                                               object: self.searchTextField];
+//    
+//    self.searchTextField.delegate = self;
+//    
+//}
 
 - (void)configureNormalBrowsingExerciseSC{
     
@@ -235,11 +234,6 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    
-    self.exerciseAdditionContainer.hidden = NO;
-    
-}
 
 
 
@@ -284,118 +278,30 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 }
 
 - (void)viewAesthetics{
-    
-    // searching all exercises label
-    
-    self.searchingAllExercisesLabel.backgroundColor = [UIColor clearColor];
-    self.searchingAllExercisesLabel.font = [UIFont boldSystemFontOfSize: 15];
-    self.searchingAllExercisesLabel.textColor = [UIColor whiteColor];
-    
+
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // table view
     
-    self.exerciseTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
-    // new exercise buttons
-    
-    self.addNewExerciseButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    
-    // labels
-    
-    NSArray *exerciseAdditionLabels = @[self.exerciseLabel, self.categoryLabel];
-    for (UILabel *label in exerciseAdditionLabels){
-        
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        label.textColor = [UIColor whiteColor];
-        
-    }
-    
-    // category segmented control
-    
-    self.categorySegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
-    
-    UIFont *categorySelectionFont = [UIFont boldSystemFontOfSize: 15.0];
-    
-    NSDictionary *info = [NSDictionary dictionaryWithObject: categorySelectionFont
-                                                     forKey: NSFontAttributeName];
-    
-    [self.categorySegmentedControl setTitleTextAttributes: info
-                                                 forState: UIControlStateNormal];
+    self.exerciseTableView.backgroundColor = [UIColor clearColor];
     
     // browsing segmented control
     
-    self.normalBrowsingExerciseSC.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+    self.normalBrowsingExerciseSC.tintColor = [UIColor blackColor];
     
-    // add buttons
+    // title bar buttons
     
-    NSArray *addButtons = @[self.addButton, self.addAndSelectButton, self.addNewExerciseButton, self.exerciseAdditionBackButton];
-    for (UIButton *button in addButtons){
-        
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-        [button setTitleColor: [UIColor whiteColor]
-                             forState: UIControlStateNormal];
-        
-    }
-    
-    
-    
-    // text fields and search label
-    
-    self.exerciseTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    
-    NSArray *textFields = @[self.exerciseTextField];
-    for (UITextField *tf in textFields){
-        
-        tf.backgroundColor = [UIColor clearColor];
-        
-        CALayer *layer = tf.layer;
-        layer.masksToBounds = YES;
-        layer.cornerRadius = 8.0;
-        layer.borderWidth = 1;
-        layer.borderColor = [[[TJBAestheticsController singleton] blueButtonColor] CGColor];
-        
-        tf.font = [UIFont systemFontOfSize: 20.0];
-        tf.textColor = [[TJBAestheticsController singleton] blueButtonColor];
-        
-    }
-    
-    // bar buttons
-    
-    NSArray *buttons = @[self.leftBarButton, self.searchButton];
+    NSArray *buttons = @[self.leftBarButton, self.addNewExerciseButton];
     for (UIButton *b in buttons){
         
-        b.backgroundColor = [UIColor clearColor];
-        b.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                forState: UIControlStateNormal];
+        b.backgroundColor = [UIColor darkGrayColor];
+
         
     }
     
     self.leftBarButton.backgroundColor = [UIColor darkGrayColor];
-    
-    // search text field
-    
-    self.searchTextField.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.searchTextField.layer.borderWidth = 1.0;
-    self.searchTextField.font = [UIFont systemFontOfSize: 20.0];
-    self.searchTextField.textColor = [UIColor whiteColor];
-    self.searchTextField.textAlignment = NSTextAlignmentCenter;
-    self.searchTextField.layer.cornerRadius = 8.0;
-    self.searchTextField.layer.masksToBounds = YES;
-    
-    // second bar label
-    
-//    self.secondBarLabel.backgroundColor = [UIColor darkGrayColor];
-//    self.secondBarLabel.text = @"";
-    
-    // title container
-    
-//    self.titleBarContainer.backgroundColor = [UIColor blackColor];
     
     // main title label
     
@@ -485,33 +391,33 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-- (void)deriveExerciseContentBasedOnSearch{
-    
-    NSString *searchString = self.searchTextField.text;
-    
-    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
-    
-    if ([self.searchTextField.text isEqualToString: @""]){ // if the search text field is blank, show all options
-        
-        
-        self.contentExercisesArray = allExercises;
-        
-    } else{
-        
-        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
-        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
-        
-        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
-                                                                                              searchFilterPredicate]];
-        
-        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
-        self.contentExercisesArray = [filteredExercises mutableCopy];
-        
-    }
-
-    [self.exerciseTableView reloadData];
-
-}
+//- (void)deriveExerciseContentBasedOnSearch{
+//    
+//    NSString *searchString = self.searchTextField.text;
+//    
+//    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
+//    
+//    if ([self.searchTextField.text isEqualToString: @""]){ // if the search text field is blank, show all options
+//        
+//        
+//        self.contentExercisesArray = allExercises;
+//        
+//    } else{
+//        
+//        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
+//        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
+//        
+//        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
+//                                                                                              searchFilterPredicate]];
+//        
+//        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
+//        self.contentExercisesArray = [filteredExercises mutableCopy];
+//        
+//    }
+//
+//    [self.exerciseTableView reloadData];
+//
+//}
 
 
 
@@ -819,11 +725,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - Segmented Controls
 
-- (void)exerciseAdditionSCControlDidChangeValue{
-    
-    [self.exerciseTextField becomeFirstResponder];
-    
-}
+//- (void)exerciseAdditionSCControlDidChangeValue{
+//    
+//    [self.exerciseTextField becomeFirstResponder];
+//    
+//}
 
 #pragma mark - Button Actions
 
@@ -831,385 +737,385 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (IBAction)didPressAddNewExercise:(id)sender {
         
-    _exerciseAdditionActive = YES;
-    
-    self.addNewExerciseButton.hidden = YES;
-    
-    [self.exerciseTextField becomeFirstResponder];
-    
-    [self toggleButtonControlsToAdvancedDisplay];
-    
-    self.normalBrowsingExerciseSC.hidden = YES;
-    self.searchButton.enabled = NO;
-    self.searchButton.layer.opacity = .4;
-    
-    [self.addNewExerciseButton setTitle: @"Back"
-                               forState: UIControlStateNormal];
+//    _exerciseAdditionActive = YES;
+//    
+//    self.addNewExerciseButton.hidden = YES;
+//    
+//    [self.exerciseTextField becomeFirstResponder];
+//    
+//    [self toggleButtonControlsToAdvancedDisplay];
+//    
+//    self.normalBrowsingExerciseSC.hidden = YES;
+//    self.searchButton.enabled = NO;
+//    self.searchButton.layer.opacity = .4;
+//    
+//    [self.addNewExerciseButton setTitle: @"Back"
+//                               forState: UIControlStateNormal];
 
     
 }
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
-    if (_searchIsActive == YES){
-        
-        [self.searchTextField resignFirstResponder];
-        
-    }
-    
-    if (_exerciseAdditionActive == YES){
-        
-        [self.exerciseTextField resignFirstResponder];
-        
-    }
-    
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
+//    if (_searchIsActive == YES){
+//        
+////        [self.searchTextField resignFirstResponder];
+//        
+//    }
+//    
+//    if (_exerciseAdditionActive == YES){
+//        
+////        [self.exerciseTextField resignFirstResponder];
+//        
+//    }
+//    
+//    [self dismissViewControllerAnimated: YES
+//                             completion: nil];
     
 }
 
 - (IBAction)didPressAddButton:(id)sender{
     
-    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
-    
-    // conditional actions
-    
-    NSString *exerciseString = self.exerciseTextField.text;
-    
-    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
-                                                             style: UIAlertActionStyleDefault
-                                                           handler: nil];
-    
-    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
-    
-    if (exerciseExists){
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-                                                                       message: @"This exercise already exists"
-                                                                preferredStyle: UIAlertControllerStyleAlert];
-        
-        [alert addAction: continueAction];
-        
-        [self presentViewController: alert
-                           animated: YES
-                         completion: nil];
-        
-    } else if([exerciseString isEqualToString: @""]){
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-                                                                       message: @"Exercise entry is blank"
-                                                                preferredStyle: UIAlertControllerStyleAlert];
-        
-        [alert addAction: continueAction];
-        
-        [self presentViewController: alert
-                           animated: YES
-                         completion: nil];
-        
-    } else{
-        
-        [self addNewExerciseAndClearExerciseTextField];
-        
-    }
-    
-}
-
-- (TJBExercise *)addNewExerciseAndClearExerciseTextField{
-    
-    //// add the new exercise leverage CoreDataController methods.  Save the context when done
-    
-    CoreDataController *coreDataController = [CoreDataController singleton];
-    
-    NSString *newExerciseName = self.exerciseTextField.text;
-    
-    NSNumber *wasNewlyCreated = nil;
-    TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
-                                                   wasNewlyCreated: &wasNewlyCreated
-                                       createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
-    
-    newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
-    
-    [[CoreDataController singleton] saveContext];
-    
-    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
-                                                        object: nil];
-    
-    // clear the exercise text field
-    
-    self.exerciseTextField.text = @"";
-    
-    return newExercise;
+//    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
+//    
+//    // conditional actions
+//    
+//    NSString *exerciseString = self.exerciseTextField.text;
+//    
+//    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+//                                                             style: UIAlertActionStyleDefault
+//                                                           handler: nil];
+//    
+//    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
+//    
+//    if (exerciseExists){
+//        
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+//                                                                       message: @"This exercise already exists"
+//                                                                preferredStyle: UIAlertControllerStyleAlert];
+//        
+//        [alert addAction: continueAction];
+//        
+//        [self presentViewController: alert
+//                           animated: YES
+//                         completion: nil];
+//        
+//    } else if([exerciseString isEqualToString: @""]){
+//        
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+//                                                                       message: @"Exercise entry is blank"
+//                                                                preferredStyle: UIAlertControllerStyleAlert];
+//        
+//        [alert addAction: continueAction];
+//        
+//        [self presentViewController: alert
+//                           animated: YES
+//                         completion: nil];
+//        
+//    } else{
+//        
+//        [self addNewExerciseAndClearExerciseTextField];
+//        
+//    }
     
 }
-
-- (IBAction)didPressAddAndSelect:(id)sender {
-    
-    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
-    
-    // conditional actions
-    
-    NSString *exerciseString = self.exerciseTextField.text;
-    
-    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
-                                                             style: UIAlertActionStyleDefault
-                                                           handler: nil];
-    
-    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
-    
-    if (exerciseExists){
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-                                                                       message: @"This exercise already exists"
-                                                                preferredStyle: UIAlertControllerStyleAlert];
-        
-        [alert addAction: continueAction];
-        
-        [self presentViewController: alert
-                           animated: YES
-                         completion: nil];
-        
-    } else if([exerciseString isEqualToString: @""]){
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-                                                                       message: @"Exercise entry is blank"
-                                                                preferredStyle: UIAlertControllerStyleAlert];
-        
-        [alert addAction: continueAction];
-        
-        [self presentViewController: alert
-                           animated: YES
-                         completion: nil];
-        
-    } else{
-        
-        TJBExercise *exercise = [self addNewExerciseAndClearExerciseTextField];
-        
-        [self.exerciseTextField resignFirstResponder];
-        
-        self.callbackBlock(exercise);
-        
-    }
-}
-
-- (IBAction)didPressSearchButton:(id)sender{
-    
-    if (_searchIsActive == NO){
-        
-        _searchIsActive = YES;
-        
-//        [self.searchButton setTitle: @"Back"
-//                           forState: UIControlStateNormal];
-        
-        self.searchButton.layer.opacity = 1.0;
-        
-        self.normalBrowsingExerciseSC.enabled = NO;
-        self.normalBrowsingExerciseSC.layer.opacity = .4;
-        
-        self.searchingAllExercisesLabel.hidden = NO;
-        
-        self.addNewExerciseButton.enabled = NO;
-        self.addNewExerciseButton.layer.opacity = .4;
-
-        [self deriveExerciseContentBasedOnSearch];
-        
-        self.searchTextField.hidden = NO;
-        [self.searchTextField becomeFirstResponder];
-    
-    } else{
-        
-        _searchIsActive = NO;
-        
-//        [self.searchButton setTitle: @"Search"
-//                           forState: UIControlStateNormal];
-        
-        self.searchButton.layer.opacity = .3;
-        
-        self.normalBrowsingExerciseSC.enabled = YES;
-        self.normalBrowsingExerciseSC.layer.opacity = 1.0;
-        
-        self.addNewExerciseButton.enabled = YES;
-        self.addNewExerciseButton.layer.opacity = 1.0;
-        
-        self.searchingAllExercisesLabel.hidden = YES;
-        
-        self.searchTextField.hidden = YES;
-        [self.searchTextField resignFirstResponder];
-        
-        [self browsingSCValueDidChange];
-        
-    }
-    
-}
-
-- (IBAction)didPressExerciseAdditionBackButton:(id)sender{
-    
-    [self toggleButtonControlsToDefaultDisplay];
-    
-    self.addNewExerciseButton.hidden = NO;
-    
-    [self.exerciseTextField resignFirstResponder];
-    
-    self.normalBrowsingExerciseSC.hidden = NO;
-    self.searchButton.enabled = YES;
-    self.searchButton.layer.opacity = 1;
-    
-    _exerciseAdditionActive = NO;
-    
-    [self.addNewExerciseButton setTitle: @"Add New Exercise"
-                               forState: UIControlStateNormal];
-    
-    [self browsingSCValueDidChange]; // must be called so that table view updates if new exercise was added to actively shown category
-    
-}
-
-#pragma mark - Animation
-
-static CGFloat const totalAniDist = 246.0;
-
-
-- (void)toggleButtonControlsToAdvancedDisplay{
-    
-    self.exerciseTableView.hidden = YES;
-    self.exerciseAdditionContainer.hidden = NO;
-    
-}
-
-- (void)toggleButtonControlsToDefaultDisplay{
-    
-    self.exerciseTableView.hidden = NO;
-    self.exerciseAdditionContainer.hidden = YES;
-    
-}
-
-#pragma  mark - Convenience
-
-- (NSString *)selectedCategory{
-    
-    NSString *selectedCategory;
-    
-    NSInteger categoryIndex = self.categorySegmentedControl.selectedSegmentIndex;
-    
-    switch (categoryIndex){
-        case 0:
-            selectedCategory = @"Push";
-            break;
-            
-        case 1:
-            selectedCategory = @"Pull";
-            break;
-            
-        case 2:
-            selectedCategory = @"Legs";
-            break;
-            
-        case 3:
-            selectedCategory = @"Other";
-            break;
-            
-        default:
-            break;
-            
-    }
-    
-    return selectedCategory;
-    
-}
-
-#pragma mark - Gesture Recognizer
-
-- (void)didSingleTap:(UIGestureRecognizer *)gr{
-    
-    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
-    
-    if ([self.exerciseTextField isFirstResponder]){
-        
-        [self.exerciseTextField resignFirstResponder];
-        
-    }
-    
-    if ([self.searchTextField isFirstResponder]){
-        
-        [self.searchTextField resignFirstResponder];
-        
-    }
-}
-
-#pragma mark - <UITextFieldDelegate>
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
-    [textField resignFirstResponder];
-    
-    return YES;
-    
-}
-
-
-
-#pragma mark - Core Data
-
-- (void)updateFetchedResultsController{
-    
-    //// refresh fetched managed objects and all trickle-down
-    
-    [self createFetchedResultsController];
-    
-    [self.exerciseTableView reloadData];
-    
-}
-
-#pragma mark - Keyboard View Adjustments
-
-- (void)keyboardWillAppear:(NSNotification *)notification{
-    
-    // these actions should not be taken if exercise addition is active
-    
-    if (_exerciseAdditionActive == NO){
-        
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-        
-        CGRect tableviewFrame = self.exerciseTableView.frame;
-        CGFloat tvBottomEdge = tableviewFrame.origin.y + tableviewFrame.size.height;
-        CGFloat bottomTVEdgeToScreenBounds = [UIScreen mainScreen].bounds.size.height - tvBottomEdge;
-        CGFloat reductionInTVHeight = keyboardSize.height - bottomTVEdgeToScreenBounds;
-        
-        // update the constraint that controls the vertical distance between the table view and segmented control
-        // will do so by increasing its constant by the reductionInTVHeight
-        
-        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
-        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight;
-        self.scToTVVertDist.constant = newConstrConstant;
-        
-        // hide views
-        
-        self.exerciseAdditionContainer.hidden = YES;
-        
-        [self.view layoutIfNeeded];
-        
-    }
-    
-
-    
-    
-}
-
-- (void)keyboardWillDisappear:(NSNotification *)notification{
-    
-    // these actions should not be taken if exercise addition is active
-    
-    if (_exerciseAdditionActive == NO){
-        
-        self.scToTVVertDist.constant = 8;
-        
-        [self.view layoutIfNeeded];
-        
-    }
-    
-}
-
-
+//
+//- (TJBExercise *)addNewExerciseAndClearExerciseTextField{
+//    
+////    //// add the new exercise leverage CoreDataController methods.  Save the context when done
+////    
+////    CoreDataController *coreDataController = [CoreDataController singleton];
+////    
+////    NSString *newExerciseName = self.exerciseTextField.text;
+////    
+////    NSNumber *wasNewlyCreated = nil;
+////    TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
+////                                                   wasNewlyCreated: &wasNewlyCreated
+////                                       createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
+////    
+////    newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: [self selectedCategory]];
+////    
+////    [[CoreDataController singleton] saveContext];
+////    
+////    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
+////    
+////    [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
+////                                                        object: nil];
+////    
+////    // clear the exercise text field
+////    
+////    self.exerciseTextField.text = @"";
+////    
+////    return newExercise;
+//    
+//}
+//
+//- (IBAction)didPressAddAndSelect:(id)sender {
+//    
+////    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
+////    
+////    // conditional actions
+////    
+////    NSString *exerciseString = self.exerciseTextField.text;
+////    
+////    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+////                                                             style: UIAlertActionStyleDefault
+////                                                           handler: nil];
+////    
+////    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
+////    
+////    if (exerciseExists){
+////        
+////        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+////                                                                       message: @"This exercise already exists"
+////                                                                preferredStyle: UIAlertControllerStyleAlert];
+////        
+////        [alert addAction: continueAction];
+////        
+////        [self presentViewController: alert
+////                           animated: YES
+////                         completion: nil];
+////        
+////    } else if([exerciseString isEqualToString: @""]){
+////        
+////        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
+////                                                                       message: @"Exercise entry is blank"
+////                                                                preferredStyle: UIAlertControllerStyleAlert];
+////        
+////        [alert addAction: continueAction];
+////        
+////        [self presentViewController: alert
+////                           animated: YES
+////                         completion: nil];
+////        
+////    } else{
+////        
+////        TJBExercise *exercise = [self addNewExerciseAndClearExerciseTextField];
+////        
+////        [self.exerciseTextField resignFirstResponder];
+////        
+////        self.callbackBlock(exercise);
+////        
+////    }
+//}
+//
+//- (IBAction)didPressSearchButton:(id)sender{
+//    
+//    if (_searchIsActive == NO){
+//        
+//        _searchIsActive = YES;
+//        
+////        [self.searchButton setTitle: @"Back"
+////                           forState: UIControlStateNormal];
+//        
+//        self.searchButton.layer.opacity = 1.0;
+//        
+//        self.normalBrowsingExerciseSC.enabled = NO;
+//        self.normalBrowsingExerciseSC.layer.opacity = .4;
+//        
+//        self.searchingAllExercisesLabel.hidden = NO;
+//        
+//        self.addNewExerciseButton.enabled = NO;
+//        self.addNewExerciseButton.layer.opacity = .4;
+//
+//        [self deriveExerciseContentBasedOnSearch];
+//        
+//        self.searchTextField.hidden = NO;
+//        [self.searchTextField becomeFirstResponder];
+//    
+//    } else{
+//        
+//        _searchIsActive = NO;
+//        
+////        [self.searchButton setTitle: @"Search"
+////                           forState: UIControlStateNormal];
+//        
+//        self.searchButton.layer.opacity = .3;
+//        
+//        self.normalBrowsingExerciseSC.enabled = YES;
+//        self.normalBrowsingExerciseSC.layer.opacity = 1.0;
+//        
+//        self.addNewExerciseButton.enabled = YES;
+//        self.addNewExerciseButton.layer.opacity = 1.0;
+//        
+//        self.searchingAllExercisesLabel.hidden = YES;
+//        
+//        self.searchTextField.hidden = YES;
+//        [self.searchTextField resignFirstResponder];
+//        
+//        [self browsingSCValueDidChange];
+//        
+//    }
+//    
+//}
+//
+//- (IBAction)didPressExerciseAdditionBackButton:(id)sender{
+//    
+//    [self toggleButtonControlsToDefaultDisplay];
+//    
+//    self.addNewExerciseButton.hidden = NO;
+//    
+//    [self.exerciseTextField resignFirstResponder];
+//    
+//    self.normalBrowsingExerciseSC.hidden = NO;
+//    self.searchButton.enabled = YES;
+//    self.searchButton.layer.opacity = 1;
+//    
+//    _exerciseAdditionActive = NO;
+//    
+//    [self.addNewExerciseButton setTitle: @"Add New Exercise"
+//                               forState: UIControlStateNormal];
+//    
+//    [self browsingSCValueDidChange]; // must be called so that table view updates if new exercise was added to actively shown category
+//    
+//}
+//
+//#pragma mark - Animation
+//
+//static CGFloat const totalAniDist = 246.0;
+//
+//
+//- (void)toggleButtonControlsToAdvancedDisplay{
+//    
+//    self.exerciseTableView.hidden = YES;
+//    self.exerciseAdditionContainer.hidden = NO;
+//    
+//}
+//
+//- (void)toggleButtonControlsToDefaultDisplay{
+//    
+//    self.exerciseTableView.hidden = NO;
+//    self.exerciseAdditionContainer.hidden = YES;
+//    
+//}
+//
+//#pragma  mark - Convenience
+//
+//- (NSString *)selectedCategory{
+//    
+//    NSString *selectedCategory;
+//    
+//    NSInteger categoryIndex = self.categorySegmentedControl.selectedSegmentIndex;
+//    
+//    switch (categoryIndex){
+//        case 0:
+//            selectedCategory = @"Push";
+//            break;
+//            
+//        case 1:
+//            selectedCategory = @"Pull";
+//            break;
+//            
+//        case 2:
+//            selectedCategory = @"Legs";
+//            break;
+//            
+//        case 3:
+//            selectedCategory = @"Other";
+//            break;
+//            
+//        default:
+//            break;
+//            
+//    }
+//    
+//    return selectedCategory;
+//    
+//}
+//
+//#pragma mark - Gesture Recognizer
+//
+//- (void)didSingleTap:(UIGestureRecognizer *)gr{
+//    
+//    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
+//    
+//    if ([self.exerciseTextField isFirstResponder]){
+//        
+//        [self.exerciseTextField resignFirstResponder];
+//        
+//    }
+//    
+//    if ([self.searchTextField isFirstResponder]){
+//        
+//        [self.searchTextField resignFirstResponder];
+//        
+//    }
+//}
+//
+//#pragma mark - <UITextFieldDelegate>
+//
+//- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+//    
+//    [textField resignFirstResponder];
+//    
+//    return YES;
+//    
+//}
+//
+//
+//
+//#pragma mark - Core Data
+//
+//- (void)updateFetchedResultsController{
+//    
+//    //// refresh fetched managed objects and all trickle-down
+//    
+//    [self createFetchedResultsController];
+//    
+//    [self.exerciseTableView reloadData];
+//    
+//}
+//
+//#pragma mark - Keyboard View Adjustments
+//
+//- (void)keyboardWillAppear:(NSNotification *)notification{
+//    
+//    // these actions should not be taken if exercise addition is active
+//    
+//    if (_exerciseAdditionActive == NO){
+//        
+//        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//        
+//        CGRect tableviewFrame = self.exerciseTableView.frame;
+//        CGFloat tvBottomEdge = tableviewFrame.origin.y + tableviewFrame.size.height;
+//        CGFloat bottomTVEdgeToScreenBounds = [UIScreen mainScreen].bounds.size.height - tvBottomEdge;
+//        CGFloat reductionInTVHeight = keyboardSize.height - bottomTVEdgeToScreenBounds;
+//        
+//        // update the constraint that controls the vertical distance between the table view and segmented control
+//        // will do so by increasing its constant by the reductionInTVHeight
+//        
+//        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
+//        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight;
+//        self.scToTVVertDist.constant = newConstrConstant;
+//        
+//        // hide views
+//        
+//        self.exerciseAdditionContainer.hidden = YES;
+//        
+//        [self.view layoutIfNeeded];
+//        
+//    }
+//    
+//
+//    
+//    
+//}
+//
+//- (void)keyboardWillDisappear:(NSNotification *)notification{
+//    
+//    // these actions should not be taken if exercise addition is active
+//    
+//    if (_exerciseAdditionActive == NO){
+//        
+//        self.scToTVVertDist.constant = 8;
+//        
+//        [self.view layoutIfNeeded];
+//        
+//    }
+//    
+//}
+//
+//
 
 @end
 
