@@ -30,6 +30,7 @@
 @property (nonatomic, strong, readonly) UIColor *yellowNotebookColor;
 @property (nonatomic, strong, readonly) UIColor *blueButtonColor;
 @property (nonatomic, strong, readonly) UIColor *offWhiteColor;
+@property (nonatomic, strong, readonly) UIColor *titleBarButtonColor;
 
 + (instancetype)singleton;
 

@@ -60,9 +60,7 @@
                                 <constraint firstAttribute="width" constant="60" id="3aK-Co-ZFQ"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                            <state key="normal" title="Home">
-                                <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </state>
+                            <state key="normal" title="Home"/>
                             <connections>
                                 <action selector="didPressLeftBarButton:" destination="-1" eventType="touchUpInside" id="wAz-wX-m64"/>
                             </connections>
