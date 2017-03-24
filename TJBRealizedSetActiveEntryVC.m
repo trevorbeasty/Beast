@@ -81,6 +81,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
 @property (weak, nonatomic) IBOutlet UILabel *topTopLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomButtonContainer;
+@property (weak, nonatomic) IBOutlet UILabel *thinTitleLabel;
 
 // IBAction
 
@@ -119,7 +120,7 @@
 @property (nonatomic, strong) NSNumber *targetRestTime;
 @property (nonatomic, strong) NSNumber *alertTiming;
 @property (nonatomic, strong) TJBExercise *exercise;
-@property (weak, nonatomic) IBOutlet UILabel *topBarRightLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *topBarRightLabel;
 
 //// timer and target rest time
 
@@ -298,9 +299,11 @@
     
     // title labels and title buttons and container
     
-    self.titleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] titleBarButtonColor];
+    self.thinTitleLabel.backgroundColor = [[TJBAestheticsController singleton] titleBarButtonColor];
     
-    NSArray *titleLabels = @[self.freeformTitleLabel, self.topBarRightLabel, self.topTopLabel];
+    self.titleLabelsContainer.backgroundColor = [UIColor darkGrayColor];
+    
+    NSArray *titleLabels = @[self.freeformTitleLabel, self.topTopLabel];
     
     for (UILabel *label in titleLabels){
         
@@ -342,7 +345,7 @@
                 forState: UIControlStateNormal];
         
         b.backgroundColor = [UIColor clearColor];
-        b.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+        b.titleLabel.font = [UIFont systemFontOfSize: 20];
         
     }
     
@@ -350,11 +353,17 @@
     for (UIButton *b in restTitleButtons){
         
         b.backgroundColor = [UIColor clearColor];
-        b.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
+        b.titleLabel.font = [UIFont systemFontOfSize: 15];
         [b setTitleColor: [[TJBAestheticsController singleton] titleBarButtonColor]
                 forState: UIControlStateNormal];
         
     }
+    
+    // button images
+    
+    UIImage *homeButtonImage = [UIImage imageNamed: @"titleBarHomeButton"];
+    [self.leftBarButton setBackgroundImage: homeButtonImage
+                                  forState: UIControlStateNormal];
   
 }
 
