@@ -80,6 +80,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *targetRestTitle;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
 @property (weak, nonatomic) IBOutlet UILabel *topTopLabel;
+@property (weak, nonatomic) IBOutlet UIView *bottomButtonContainer;
 
 // IBAction
 
@@ -273,24 +274,31 @@
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     // buttons
     
-    self.exerciseButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    [self.exerciseButton setTitleColor: [UIColor whiteColor]
-                              forState: UIControlStateNormal];
-    self.exerciseButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.bottomButtonContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    self.beginNextSetButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    [self.beginNextSetButton setTitleColor: [UIColor whiteColor]
-                                  forState: UIControlStateNormal];
-    self.beginNextSetButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
-
+    NSArray *bottomButtons = @[self.exerciseButton, self.beginNextSetButton];
+    for (UIButton *butt in bottomButtons){
+        
+        butt.backgroundColor = [UIColor clearColor];
+        butt.titleLabel.font = [UIFont systemFontOfSize: 20];
+        [butt setTitleColor: [UIColor blackColor]
+                   forState: UIControlStateNormal];
+        
+        CALayer *layer = butt.layer;
+        layer.borderColor = [UIColor blackColor].CGColor;
+        layer.borderWidth = 1.0;
+        layer.cornerRadius = 12;
+        layer.masksToBounds = YES;
+        
+    }
     
     // title labels and title buttons and container
     
-    self.titleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.titleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] titleBarButtonColor];
     
     NSArray *titleLabels = @[self.freeformTitleLabel, self.topBarRightLabel, self.topTopLabel];
     

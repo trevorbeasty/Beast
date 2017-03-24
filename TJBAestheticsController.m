@@ -201,9 +201,9 @@
 
 - (UIColor *)titleBarButtonColor{
     
-    return [UIColor colorWithRed: 63 / 255.0
-                           green: 255 / 255.0
-                            blue: 239 / 255.0
+    return [UIColor colorWithRed: 24 / 255.0
+                           green: 221 / 255.0
+                            blue: 255 / 255.0
                            alpha: 1.0];
     
 }
