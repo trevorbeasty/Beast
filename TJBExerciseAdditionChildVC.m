@@ -158,6 +158,12 @@
     
 }
 
+- (void)makeExerciseTFResignFirstResponder{
+    
+    [self.exerciseNameTF resignFirstResponder];
+    
+}
+
 
 
 @end

@@ -43,6 +43,14 @@ typedef enum{
     RealizedChainType
 } ChainType;
 
+typedef enum{
+    PushType,
+    PullType,
+    LegsType,
+    OtherType,
+    PlaceholderType
+}TJBExerciseCategoryType;
+
 @interface CoreDataController : NSObject
 
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
@@ -57,7 +65,7 @@ typedef enum{
 
 - (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise;
 
-- (BOOL)realizedSetExerciseExistsForName:(NSString *)name;
+- (BOOL)exerciseExistsForName:(NSString *)name;
 
 - (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;
 

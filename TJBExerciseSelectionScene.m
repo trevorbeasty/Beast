@@ -355,31 +355,60 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 }
 
 
-#pragma mark - Exercise Browsing
+#pragma mark - Exercise Browsing Segmented Control
 
-- (void)browsingSCValueDidChange{
+- (NSString *)categoryForSCIndex:(NSNumber *)scIndex{
     
-    NSString *filterString;
+    NSInteger reference = [scIndex integerValue];
+    NSString *category;
     
-    switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
+    switch (reference) {
         case 0:
-            filterString = @"Push";
+            category = @"Push";
             break;
             
         case 1:
-            filterString = @"Pull";
+            category = @"Pull";
             break;
             
         case 2:
-            filterString = @"Legs";
+            category = @"Legs";
             break;
             
         case 3:
-            filterString = @"Other";
+            category = @"Other";
             
         default:
             break;
     }
+    
+    return category;
+    
+}
+
+- (void)browsingSCValueDidChange{
+    
+    NSString *filterString = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
+    
+//    switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
+//        case 0:
+//            filterString = @"Push";
+//            break;
+//            
+//        case 1:
+//            filterString = @"Pull";
+//            break;
+//            
+//        case 2:
+//            filterString = @"Legs";
+//            break;
+//            
+//        case 3:
+//            filterString = @"Other";
+//            
+//        default:
+//            break;
+//    }
     
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     
@@ -738,6 +767,31 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - Button Actions
 
+- (IBAction)didPressLeftBarButton:(id)sender{
+    
+//        if (_searchIsActive == YES){
+//    
+//    //        [self.searchTextField resignFirstResponder];
+//    
+//        }
+//    
+//        if (_exerciseAdditionActive == YES){
+//    
+//    //        [self.exerciseTextField resignFirstResponder];
+//    
+//        }
+    
+    if (_exerciseAdditionActive == YES){
+        
+        [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
+        
+    }
+    
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
+    
+}
+
 #pragma mark - Exercise Addition and Related Methods
 
 - (IBAction)didPressAddNewExercise:(id)sender {
@@ -752,13 +806,39 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
         if (!self.exerciseAdditionChildVC){
             
-            TJBExerciseAdditionChildVC *eaChildVC = [[TJBExerciseAdditionChildVC alloc] initWithExerciseAdditionCallback: nil
-                                                                                                            listCallback: nil];
+            __weak TJBExerciseSelectionScene *weakSelf = self;
+            
+            void (^listCallback)(void) = ^{
+                
+                [self hideExerciseAdditionChildVCAndShowTableView];
+                
+            };
+            
+            void (^eaCallback)(NSString *, NSNumber *, BOOL) = ^(NSString *exerciseName, NSNumber *categoryIndex, BOOL shouldSelect){
+                
+                NSString *categoryString = [self categoryForSCIndex: categoryIndex];
+        
+                TJBExercise *newExercise = [weakSelf processUserRequestAndReturnExerciseWithName: exerciseName
+                                                                                        category: categoryString];
+                
+                if (newExercise && shouldSelect){
+                    
+                    NSLog(@"add exercise and select");
+                    
+                } else{
+                    
+                    NSLog(@"just add exercise");
+                    
+                }
+                
+            };
+            
+            TJBExerciseAdditionChildVC *eaChildVC = [[TJBExerciseAdditionChildVC alloc] initWithExerciseAdditionCallback: eaCallback
+                                                                                                            listCallback: listCallback];
             self.exerciseAdditionChildVC = eaChildVC;
             
             [self addChildViewController: eaChildVC];
             
-            self.exerciseTableView.hidden = YES;
             eaChildVC.view.frame = self.exerciseTableView.frame;
             [self.view addSubview: eaChildVC.view];
             
@@ -766,6 +846,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
         }
         
+        self.exerciseTableView.hidden = YES;
+        self.exerciseAdditionChildVC.view.hidden = NO;
         [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
         
     } else{
@@ -797,29 +879,18 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     self.exerciseAdditionChildVC.view.hidden = YES;
     self.exerciseTableView.hidden = NO;
     _exerciseAdditionActive = NO;
+    [self.addNewExerciseButton setImage: [UIImage imageNamed: @"new"]
+                               forState: UIControlStateNormal];
+    self.searchButton.hidden = NO;
+    self.normalBrowsingExerciseSC.hidden = NO;
+    
+    [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
     
 }
 
-- (IBAction)didPressLeftBarButton:(id)sender{
-    
-//    if (_searchIsActive == YES){
-//        
-////        [self.searchTextField resignFirstResponder];
-//        
-//    }
-//    
-//    if (_exerciseAdditionActive == YES){
-//        
-////        [self.exerciseTextField resignFirstResponder];
-//        
-//    }
-//    
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
-    
-}
 
-- (void)processUserRequestToAddExerciseWithName:(NSString *)exerciseName category:(NSString *)category{
+
+- (TJBExercise *)processUserRequestAndReturnExerciseWithName:(NSString *)exerciseName category:(NSString *)category{
     
     //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
     
@@ -831,7 +902,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                                                              style: UIAlertActionStyleDefault
                                                            handler: nil];
     
-    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
+    BOOL exerciseExists = [[CoreDataController singleton] exerciseExistsForName: exerciseName];
     
     if (exerciseExists){
         
@@ -845,6 +916,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                            animated: YES
                          completion: nil];
         
+        return nil;
+        
     } else if([exerciseString isEqualToString: @""]){
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
@@ -857,23 +930,26 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                            animated: YES
                          completion: nil];
         
+        return nil;
+        
     } else{
         
-        [self addNewExerciseWithName: exerciseName
-                            category: category];
+        TJBExercise *newExercise = [self addAndReturnNewExerciseWithName: exerciseName
+                                                                category: category];
+        
+        return newExercise;
         
     }
     
 }
-//
-- (void)addNewExerciseWithName:(NSString *)name category:(NSString *)category{
+
+- (TJBExercise *)addAndReturnNewExerciseWithName:(NSString *)name category:(NSString *)category{
     
     //// add the new exercise leverage CoreDataController methods.  Save the context when done
     
     CoreDataController *coreDataController = [CoreDataController singleton];
     
     NSString *newExerciseName = name;
-    
     
     NSNumber *wasNewlyCreated = nil;
     TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
@@ -888,6 +964,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
                                                         object: nil];
+    
+    return newExercise;
     
 }
 //

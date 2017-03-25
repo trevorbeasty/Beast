@@ -25,32 +25,36 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - Singleton
 
-+ (instancetype)singleton
-{
++ (instancetype)singleton{
+    
     static CoreDataController *singleton = nil;
     
-    if (!singleton)
-    {
+    if (!singleton){
+        
         singleton = [[self alloc] initPrivate];
+        
     }
+    
     return singleton;
+    
 }
 
-- (instancetype)initPrivate
-{
+- (instancetype)initPrivate{
+    
     self = [super init];
     
     self.moc = [self.persistentContainer viewContext];
     
     return self;
+    
 }
 
-- (instancetype)init
-{
+- (instancetype)init{
     
     @throw [NSException exceptionWithName: @"Singleton"
                                    reason: @"Use +[CoreDataController singleton]"
                                  userInfo: nil];
+    
 }
 
 #pragma mark - Retrieving IV's
@@ -127,8 +131,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
-- (BOOL)realizedSetExerciseExistsForName:(NSString *)name
-{
+- (BOOL)exerciseExistsForName:(NSString *)name{
+    
     NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
     fetch.predicate = predicate;
@@ -139,18 +143,20 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     NSUInteger arrayLength = [results count];
     
-    if (arrayLength == 0)
-    {
+    if (arrayLength == 0){
+        
         return NO;
-    }
-    else if (arrayLength == 1)
-    {
+        
+    } else{
+        
         return YES;
+        
     }
-    else
-    {
-        abort();
-    }
+//    else
+//    {
+//        abort();
+//    }
+    
 }
 
 - (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise{
@@ -219,37 +225,62 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
-- (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name
-{
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
+- (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name{
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    BOOL categoryNameIsApproved = [self categoryNameIsApprovedType: name]; // perform a check to make sure the input category name is one of the 5 built-in categories
     
-    fetch.predicate = predicate;
-    
-    NSError *error =  nil;
-    NSArray *results = [self.moc executeFetchRequest: fetch
-                                               error: &error];
-    
-    NSUInteger arrayLength = [results count];
-    
-    if (arrayLength == 0)
-    {
-        TJBExerciseCategory *exerciseCategory = [NSEntityDescription insertNewObjectForEntityForName: @"ExerciseCategory"
-                                                                              inManagedObjectContext: self.moc];
+    if (categoryNameIsApproved){
         
-        exerciseCategory.name = name;
+        NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
         
-        return exerciseCategory;
-    }
-    else if (arrayLength == 1)
-    {
-        return results[0];
-    }
-    else
-    {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+        
+        fetch.predicate = predicate;
+        
+        NSError *error =  nil;
+        NSArray *results = [self.moc executeFetchRequest: fetch
+                                                   error: &error];
+        
+        NSUInteger arrayLength = [results count];
+        
+        if (arrayLength == 0)
+        {
+            TJBExerciseCategory *exerciseCategory = [NSEntityDescription insertNewObjectForEntityForName: @"ExerciseCategory"
+                                                                                  inManagedObjectContext: self.moc];
+            
+            exerciseCategory.name = name;
+            
+            return exerciseCategory;
+            
+        } else{
+            
+            return results[0];
+            
+        }
+        
+    } else{
+        
         abort();
+        
     }
+
+}
+
+- (BOOL)categoryNameIsApprovedType:(NSString *)categoryName{
+    
+    NSArray *approvedNames = @[@"push", @"pull", @"legs", @"other", @"placeholder"];
+    for (NSString *an in approvedNames){
+        
+        if ([categoryName isEqualToString: an]){
+            
+            return YES;
+            
+        }
+        
+    }
+    
+    return NO; // control only reaches this point if none of the approved named matched the input string
+    
 }
 
 - (TJBRealizedChain *)realizedChainWithUniqueID:(NSString *)uniqueID{

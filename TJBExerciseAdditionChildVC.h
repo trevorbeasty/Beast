@@ -13,5 +13,6 @@
 - (instancetype)initWithExerciseAdditionCallback:(void (^)(NSString *, NSNumber *, BOOL))eaCallback listCallback:(void (^)(void))lCallback;
 
 - (void)makeExerciseTFFirstResponder;
+- (void)makeExerciseTFResignFirstResponder;
 
 @end
