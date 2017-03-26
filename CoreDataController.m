@@ -190,13 +190,9 @@ NSString * const placeholderCategoryName = @"Placeholder";
             
             isPlaceholder = NO;
             
-        } else if ([createAsPlaceholderExercise boolValue] == YES){
-            
-            isPlaceholder = YES;
-            
         } else{
             
-            abort();
+            isPlaceholder = YES;
             
         }
         
@@ -208,8 +204,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         return newExercise;
         
-    }
-    else if (arrayLength == 1){
+    } else{
         
         *wasNewlyCreated = [NSNumber numberWithBool: NO];
         
@@ -217,12 +212,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         return existingExercise;
         
-    } else {
-        
-        abort();
-        
     }
-    
 }
 
 - (TJBExerciseCategory *)exerciseCategory:(TJBExerciseCategoryType)exerciseCategory{

@@ -798,11 +798,10 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
             void (^eaCallback)(NSString *, NSNumber *, BOOL) = ^(NSString *exerciseName, NSNumber *categoryIndex, BOOL shouldSelect){
                 
-                TJBExerciseCategoryType catType = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
-                NSString *categoryString = [[CoreDataController singleton] categoryStingFromEnum: catType];
+                TJBExerciseCategoryType catType = [self categoryForSCIndex: categoryIndex];
         
                 TJBExercise *newExercise = [weakSelf processUserRequestAndReturnExerciseWithName: exerciseName
-                                                                                        category: categoryString];
+                                                                                        category: catType];
                 
                 if (newExercise && shouldSelect){
                     
@@ -833,28 +832,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         self.exerciseAdditionChildVC.view.hidden = NO;
         [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
         
-    } else{
-        
-    
-        
     }
-    
-//    _exerciseAdditionActive = YES;
-//    
-//    self.addNewExerciseButton.hidden = YES;
-//    
-//    [self.exerciseTextField becomeFirstResponder];
-//    
-//    [self toggleButtonControlsToAdvancedDisplay];
-//    
-//    self.normalBrowsingExerciseSC.hidden = YES;
-//    self.searchButton.enabled = NO;
-//    self.searchButton.layer.opacity = .4;
-//    
-//    [self.addNewExerciseButton setTitle: @"Back"
-//                               forState: UIControlStateNormal];
-
-    
 }
 
 - (void)hideExerciseAdditionChildVCAndShowTableView{
