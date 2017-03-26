@@ -225,61 +225,69 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
-- (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name{
+- (TJBExerciseCategory *)exerciseCategory:(TJBExerciseCategoryType)exerciseCategory{
     
-    BOOL categoryNameIsApproved = [self categoryNameIsApprovedType: name]; // perform a check to make sure the input category name is one of the 5 built-in categories
+    NSString *categoryString = [self categoryStingFromEnum: exerciseCategory];
     
-    if (categoryNameIsApproved){
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", categoryString];
+    
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 0)
+    {
+        TJBExerciseCategory *exerciseCategory = [NSEntityDescription insertNewObjectForEntityForName: @"ExerciseCategory"
+                                                                              inManagedObjectContext: self.moc];
         
-        NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"ExerciseCategory"];
+        exerciseCategory.name = categoryString;
         
-        NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
-        
-        fetch.predicate = predicate;
-        
-        NSError *error =  nil;
-        NSArray *results = [self.moc executeFetchRequest: fetch
-                                                   error: &error];
-        
-        NSUInteger arrayLength = [results count];
-        
-        if (arrayLength == 0)
-        {
-            TJBExerciseCategory *exerciseCategory = [NSEntityDescription insertNewObjectForEntityForName: @"ExerciseCategory"
-                                                                                  inManagedObjectContext: self.moc];
-            
-            exerciseCategory.name = name;
-            
-            return exerciseCategory;
-            
-        } else{
-            
-            return results[0];
-            
-        }
+        return exerciseCategory;
         
     } else{
         
-        abort();
+        return results[0];
         
     }
 
 }
 
-- (BOOL)categoryNameIsApprovedType:(NSString *)categoryName{
+- (NSString *)categoryStingFromEnum:(TJBExerciseCategoryType)categoryEnum{
     
-    NSArray *approvedNames = @[@"push", @"pull", @"legs", @"other", @"placeholder"];
-    for (NSString *an in approvedNames){
-        
-        if ([categoryName isEqualToString: an]){
+    NSString *categoryName;
+    
+    switch (categoryEnum) {
+        case PushType:
+            categoryName = @"Push";
+            break;
             
-            return YES;
+        case PullType:
+            categoryName = @"Pull";
+            break;
             
-        }
-        
+        case LegsType:
+            categoryName = @"Legs";
+            break;
+            
+        case OtherType:
+            categoryName = @"Other";
+            break;
+            
+        case PlaceholderType:
+            categoryName = @"Placeholder";
+            break;
+            
+        default:
+            break;
     }
     
-    return NO; // control only reaches this point if none of the approved named matched the input string
+    return categoryName;
     
 }
 
@@ -844,7 +852,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         if ([wasNewlyCreated boolValue] == YES){
             
-            TJBExerciseCategory *placeholderCategory = [self exerciseCategoryForName: placeholderCategoryName];
+            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
             
             exercise.category = placeholderCategory;
             

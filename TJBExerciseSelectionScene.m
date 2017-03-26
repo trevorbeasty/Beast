@@ -357,58 +357,40 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 #pragma mark - Exercise Browsing Segmented Control
 
-- (NSString *)categoryForSCIndex:(NSNumber *)scIndex{
+- (TJBExerciseCategoryType)categoryForSCIndex:(NSNumber *)scIndex{
     
     NSInteger reference = [scIndex integerValue];
-    NSString *category;
+    TJBExerciseCategoryType categoryEnum;
     
     switch (reference) {
         case 0:
-            category = @"Push";
+            categoryEnum = PushType;
             break;
             
         case 1:
-            category = @"Pull";
+            categoryEnum = PullType;
             break;
             
         case 2:
-            category = @"Legs";
+            categoryEnum = LegsType;
             break;
             
         case 3:
-            category = @"Other";
+            categoryEnum = OtherType;
+            break;
             
         default:
             break;
     }
     
-    return category;
+    return categoryEnum;
     
 }
 
 - (void)browsingSCValueDidChange{
     
-    NSString *filterString = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
-    
-//    switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
-//        case 0:
-//            filterString = @"Push";
-//            break;
-//            
-//        case 1:
-//            filterString = @"Pull";
-//            break;
-//            
-//        case 2:
-//            filterString = @"Legs";
-//            break;
-//            
-//        case 3:
-//            filterString = @"Other";
-//            
-//        default:
-//            break;
-//    }
+    TJBExerciseCategoryType catType = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
+    NSString *filterString = [[CoreDataController singleton] categoryStingFromEnum: catType];
     
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     
@@ -816,7 +798,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
             void (^eaCallback)(NSString *, NSNumber *, BOOL) = ^(NSString *exerciseName, NSNumber *categoryIndex, BOOL shouldSelect){
                 
-                NSString *categoryString = [self categoryForSCIndex: categoryIndex];
+                TJBExerciseCategoryType catType = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
+                NSString *categoryString = [[CoreDataController singleton] categoryStingFromEnum: catType];
         
                 TJBExercise *newExercise = [weakSelf processUserRequestAndReturnExerciseWithName: exerciseName
                                                                                         category: categoryString];
@@ -890,7 +873,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 
 
-- (TJBExercise *)processUserRequestAndReturnExerciseWithName:(NSString *)exerciseName category:(NSString *)category{
+- (TJBExercise *)processUserRequestAndReturnExerciseWithName:(NSString *)exerciseName category:(TJBExerciseCategoryType)category{
     
     //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
     
@@ -943,7 +926,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-- (TJBExercise *)addAndReturnNewExerciseWithName:(NSString *)name category:(NSString *)category{
+- (TJBExercise *)addAndReturnNewExerciseWithName:(NSString *)name category:(TJBExerciseCategoryType)category{
     
     //// add the new exercise leverage CoreDataController methods.  Save the context when done
     
@@ -956,7 +939,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                                                    wasNewlyCreated: &wasNewlyCreated
                                        createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
     
-    newExercise.category = [[CoreDataController singleton] exerciseCategoryForName: category];
+    newExercise.category = [[CoreDataController singleton] exerciseCategory: category];
     
     [[CoreDataController singleton] saveContext];
     

@@ -67,7 +67,8 @@ typedef enum{
 
 - (BOOL)exerciseExistsForName:(NSString *)name;
 
-- (TJBExerciseCategory *)exerciseCategoryForName:(NSString *)name;
+- (TJBExerciseCategory *)exerciseCategory:(TJBExerciseCategoryType)exerciseCategory;
+- (NSString *)categoryStingFromEnum:(TJBExerciseCategoryType)categoryEnum;
 
 - (TJBRealizedChain *)realizedChainWithUniqueID:(NSString *)uniqueID;
 - (TJBChainTemplate *)chainTemplateWithUniqueID:(NSString *)uniqueID;
