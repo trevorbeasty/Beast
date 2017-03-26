@@ -140,7 +140,7 @@
 
 - (IBAction)didPressAddAndSelect:(id)sender{
     
-    self.eaCallback(self.exerciseNameTF.text, @(self.exerciseCategorySC.selectedSegmentIndex), NO);
+    self.eaCallback(self.exerciseNameTF.text, @(self.exerciseCategorySC.selectedSegmentIndex), YES);
     
 }
 
@@ -161,6 +161,12 @@
 - (void)makeExerciseTFResignFirstResponder{
     
     [self.exerciseNameTF resignFirstResponder];
+    
+}
+
+- (void)clearTextField{
+    
+    self.exerciseNameTF.text = @"";
     
 }
 

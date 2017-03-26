@@ -807,9 +807,15 @@ static NSString * const cellReuseIdentifier = @"basicCell";
                     
                     NSLog(@"add exercise and select");
                     
+                    [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
+                    
+                    self.callbackBlock(newExercise);
+                    
                 } else{
                     
                     NSLog(@"just add exercise");
+                    
+                    [self.exerciseAdditionChildVC clearTextField];
                     
                 }
                 

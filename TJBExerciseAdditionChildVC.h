@@ -15,4 +15,6 @@
 - (void)makeExerciseTFFirstResponder;
 - (void)makeExerciseTFResignFirstResponder;
 
+- (void)clearTextField;
+
 @end
