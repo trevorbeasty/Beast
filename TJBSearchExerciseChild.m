@@ -18,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *listButton;
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 // IBAction
 
@@ -71,9 +72,21 @@
 
 - (void)configureViewAesthetics{
     
+    // meta view
+    
     self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
+    // search text field
+    
     self.searchTextField.backgroundColor = [UIColor clearColor];
+    
+    CALayer *stfLayer = self.searchTextField.layer;
+    stfLayer.borderColor = [UIColor blackColor].CGColor;
+    stfLayer.borderWidth = 1.0;
+    
+    // 'searching all exercises' label
+    
+    self.titleLabel.font = [UIFont systemFontOfSize: 20];
     
 }
 

@@ -956,7 +956,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
             [self addChildViewController: seChildVC];
             
-            CGFloat searchTitleHeight = 70;;
+            CGFloat searchTitleHeight = 100;
             
             CGRect childViewFrame = self.exerciseTableView.frame;
             childViewFrame.size.height = searchTitleHeight;
@@ -969,7 +969,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
         }
     
-        self.searchButton.enabled = NO;
+        self.searchButton.hidden = YES;
         self.seChildVC.view.hidden = NO;
         
         [self.exerciseTableView reloadData];
