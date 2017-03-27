@@ -70,6 +70,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
 //@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scToTVVertDist;
 //@property (weak, nonatomic) IBOutlet UIButton *exerciseAdditionBackButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewToTitleBarConstr;
 
 
 
@@ -548,7 +549,6 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
             TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
             
-//            NSInteger adjustedIndex = indexPath.row - 1;
             TJBExercise *exercise = self.contentExercisesArray[adjustedIndex];
             
             cell.exerciseNameLabel.text = exercise.name;
@@ -956,13 +956,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
             [self addChildViewController: seChildVC];
             
-            NSIndexPath *zeroethPath = [NSIndexPath indexPathForRow: 0
-                                                          inSection: 0];
-            CGFloat zeroethCellHeight = [self tableView: self.exerciseTableView
-                                heightForRowAtIndexPath: zeroethPath];
+            CGFloat searchTitleHeight = 70;;
             
             CGRect childViewFrame = self.exerciseTableView.frame;
-            childViewFrame.size.height = zeroethCellHeight;
+            childViewFrame.size.height = searchTitleHeight;
+            self.tableViewToTitleBarConstr.constant = searchTitleHeight;
             
             seChildVC.view.frame = childViewFrame;
             [self.view addSubview: seChildVC.view];
@@ -973,6 +971,8 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
         self.searchButton.enabled = NO;
         self.seChildVC.view.hidden = NO;
+        
+        [self.exerciseTableView reloadData];
         
     }
     

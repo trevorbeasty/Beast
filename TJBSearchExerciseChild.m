@@ -8,6 +8,10 @@
 
 #import "TJBSearchExerciseChild.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBSearchExerciseChild ()
 
 // IBOutlet
@@ -51,13 +55,25 @@
     
     [self configureSearchTextField];
     
+    [self configureViewAesthetics];
+    
 }
+
+#pragma mark - View Helper Methods
 
 - (void)configureSearchTextField{
     
     [self.searchTextField addTarget: self
                              action: @selector(searchTextFieldValueDidChange)
                    forControlEvents: UIControlEventValueChanged];
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    self.searchTextField.backgroundColor = [UIColor clearColor];
     
 }
 

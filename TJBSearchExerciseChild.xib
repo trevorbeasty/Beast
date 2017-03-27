@@ -36,7 +36,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ta9-tw-92O">
-                    <rect key="frame" x="8" y="68" width="473" height="30"/>
+                    <rect key="frame" x="8" y="102" width="473" height="30"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
@@ -48,7 +48,7 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Ta9-tw-92O" secondAttribute="trailing" constant="8" id="0tj-IB-YSM"/>
-                <constraint firstItem="Ta9-tw-92O" firstAttribute="top" secondItem="gyD-rI-dgb" secondAttribute="bottom" constant="40" id="BSG-tU-5LS"/>
+                <constraint firstAttribute="bottom" secondItem="Ta9-tw-92O" secondAttribute="bottom" constant="4" id="3IR-D6-I38"/>
                 <constraint firstItem="gyD-rI-dgb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="4" id="CSy-ob-O3B"/>
                 <constraint firstItem="gyD-rI-dgb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="F3y-p7-b3W"/>
                 <constraint firstAttribute="trailing" secondItem="fxy-Fk-2wd" secondAttribute="trailing" id="d8U-gq-1S5"/>
