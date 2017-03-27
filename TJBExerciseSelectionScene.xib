@@ -16,6 +16,7 @@
                 <outlet property="leftBarButton" destination="ajv-jV-md0" id="BsF-7l-vjf"/>
                 <outlet property="mainTitleLabel" destination="3TS-yz-6Zu" id="6jK-SP-Q1L"/>
                 <outlet property="normalBrowsingExerciseSC" destination="qJk-ud-aja" id="Esy-nA-8oe"/>
+                <outlet property="scToTVVertDist" destination="WUY-BD-Now" id="oB4-aC-IWE"/>
                 <outlet property="searchButton" destination="Vhm-Ed-iVh" id="Nt0-Ro-xkY"/>
                 <outlet property="tableViewToTitleBarConstr" destination="Z4m-aI-q6g" id="rqm-sf-WDl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -50,7 +51,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hdc-bj-tBP">
-                    <rect key="frame" x="0.0" y="91" width="375" height="526"/>
+                    <rect key="frame" x="0.0" y="91" width="375" height="530"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -60,7 +61,7 @@
                     </connections>
                 </tableView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qJk-ud-aja">
-                    <rect key="frame" x="8" y="627" width="359" height="31"/>
+                    <rect key="frame" x="8" y="629" width="359" height="31"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="f1e-7V-99M"/>
                     </constraints>
@@ -120,9 +121,9 @@
                 <constraint firstItem="l61-bv-oaV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Mh1-fJ-8DK"/>
                 <constraint firstItem="OEF-dg-UHB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PgD-Ga-Vew"/>
                 <constraint firstAttribute="trailing" secondItem="qJk-ud-aja" secondAttribute="trailing" constant="8" id="Qu1-FL-J3S"/>
-                <constraint firstAttribute="bottom" secondItem="qJk-ud-aja" secondAttribute="bottom" constant="10" id="SIs-bv-zyP"/>
+                <constraint firstAttribute="bottom" secondItem="qJk-ud-aja" secondAttribute="bottom" constant="8" id="SIs-bv-zyP"/>
                 <constraint firstItem="Vhm-Ed-iVh" firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" id="Tcn-pQ-lON"/>
-                <constraint firstItem="qJk-ud-aja" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" constant="10" id="WUY-BD-Now"/>
+                <constraint firstItem="qJk-ud-aja" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" constant="8" id="WUY-BD-Now"/>
                 <constraint firstItem="3TS-yz-6Zu" firstAttribute="top" secondItem="ajv-jV-md0" secondAttribute="top" id="Yhd-TQ-lU4"/>
                 <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="OEF-dg-UHB" secondAttribute="bottom" id="Z4m-aI-q6g"/>
                 <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ayG-qU-rZe"/>

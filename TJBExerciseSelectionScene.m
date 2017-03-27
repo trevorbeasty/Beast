@@ -68,7 +68,7 @@
 //@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 //@property (weak, nonatomic) IBOutlet UILabel *searchingAllExercisesLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scToTVVertDist;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scToTVVertDist;
 //@property (weak, nonatomic) IBOutlet UIButton *exerciseAdditionBackButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewToTitleBarConstr;
 
@@ -88,6 +88,12 @@
 @end
 
 static NSString * const cellReuseIdentifier = @"basicCell";
+
+typedef enum{
+    SearchState,
+    DefaultState,
+    AdditionState
+}TJBExerciseSceneState;
 
 @implementation TJBExerciseSelectionScene
 
@@ -110,44 +116,39 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 // view will appear and disappear are leveraged to have the view adjust itself when the keyboard is shown
 
-//- (void)viewWillAppear:(BOOL)animated{
-//    
-//    [super viewWillAppear: animated];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(keyboardWillAppear:)
-//                                                 name: UIKeyboardWillShowNotification
-//                                               object: nil];
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(keyboardWillDisappear:)
-//                                                 name: UIKeyboardWillHideNotification
-//                                               object: nil];
-//    
-//}
-//
-//- (void)viewWillDisappear:(BOOL)animated{
-//    
-//    [super viewWillDisappear: animated];
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver: self
-//                                                    name: UIKeyboardWillShowNotification
-//                                                  object: nil];
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver: self
-//                                                    name: UIKeyboardWillHideNotification
-//                                                  object: nil];
-//    
-//    
-//    
-//}
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear: animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(keyboardWillAppear:)
+                                                 name: UIKeyboardWillShowNotification
+                                               object: nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(keyboardWillDisappear:)
+                                                 name: UIKeyboardWillHideNotification
+                                               object: nil];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [super viewWillDisappear: animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UIKeyboardWillShowNotification
+                                                  object: nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UIKeyboardWillHideNotification
+                                                  object: nil];
+    
+    
+    
+}
 
 - (void)viewDidLoad{
-    
-//    self.exerciseAdditionContainer.hidden = YES;
-//    self.searchTextField.hidden = YES;
-//    self.searchingAllExercisesLabel.hidden = YES;
-    
     
     [self configureTableView];
     
@@ -159,15 +160,9 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
     [self configureInitialControlPosition];
     
-//    [self addTapGestureRecognizerToViewForKeyboardNotification];
-    
     [self registerForCoreDataNotifications];
     
     [self configureNormalBrowsingExerciseSC];
-    
-//    [self configureSearchTextFieldNotification];
-    
-//    [self configureExerciseAdditionSC];
     
 }
 
@@ -409,33 +404,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-//- (void)deriveExerciseContentBasedOnSearch{
-//    
-//    NSString *searchString = self.searchTextField.text;
-//    
-//    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
-//    
-//    if ([self.searchTextField.text isEqualToString: @""]){ // if the search text field is blank, show all options
-//        
-//        
-//        self.contentExercisesArray = allExercises;
-//        
-//    } else{
-//        
-//        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
-//        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
-//        
-//        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
-//                                                                                              searchFilterPredicate]];
-//        
-//        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
-//        self.contentExercisesArray = [filteredExercises mutableCopy];
-//        
-//    }
-//
-//    [self.exerciseTableView reloadData];
-//
-//}
+
 
 
 
@@ -752,21 +721,15 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
-//        if (_searchIsActive == YES){
-//    
-//    //        [self.searchTextField resignFirstResponder];
-//    
-//        }
-//    
-//        if (_exerciseAdditionActive == YES){
-//    
-//    //        [self.exerciseTextField resignFirstResponder];
-//    
-//        }
-    
     if (_exerciseAdditionActive == YES){
         
         [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
+        
+    }
+    
+    if (_searchIsActive == YES){
+        
+        [self.seChildVC makeSearchTextFieldResignFirstResponder];
         
     }
     
@@ -947,7 +910,15 @@ static NSString * const cellReuseIdentifier = @"basicCell";
         
         if (!self.seChildVC){
             
-            TJBSearchExerciseChild *seChildVC = [[TJBSearchExerciseChild alloc] initWithListButtonCallback: nil
+            __weak TJBExerciseSelectionScene *weakSelf = self;
+            
+            void (^listButtonCallback)(void) = ^{
+                
+                [weakSelf toggleFromSearchToDefaultState];
+                
+            };
+            
+            TJBSearchExerciseChild *seChildVC = [[TJBSearchExerciseChild alloc] initWithListButtonCallback: listButtonCallback
                                                                                    searchTextFieldCallback: nil];
             self.seChildVC = seChildVC;
             
@@ -956,7 +927,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
             
             [self addChildViewController: seChildVC];
             
-            CGFloat searchTitleHeight = 100;
+            CGFloat searchTitleHeight = 90;
             
             CGRect childViewFrame = self.exerciseTableView.frame;
             childViewFrame.size.height = searchTitleHeight;
@@ -971,11 +942,93 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
         self.searchButton.hidden = YES;
         self.seChildVC.view.hidden = NO;
+        [self.seChildVC makeSearchTextFieldFirstResponder];
         
         [self.exerciseTableView reloadData];
         
     }
     
+}
+
+- (void)toggleFromSearchToDefaultState{
+    
+    NSLog(@"toggle from search to default");
+    
+}
+
+- (void)deriveExerciseContentBasedOnSearch{
+
+//    NSString *searchString = self.searchTextField.text;
+//
+//    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
+//
+//    if ([self.searchTextField.text isEqualToString: @""]){ // if the search text field is blank, show all options
+//
+//
+//        self.contentExercisesArray = allExercises;
+//
+//    } else{
+//
+//        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
+//        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
+//
+//        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
+//                                                                                              searchFilterPredicate]];
+//
+//        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
+//        self.contentExercisesArray = [filteredExercises mutableCopy];
+//
+//    }
+//
+//    [self.exerciseTableView reloadData];
+
+}
+
+- (void)keyboardWillAppear:(NSNotification *)notification{
+
+    // these actions should not be taken if exercise addition is active
+
+    if (_exerciseAdditionActive == NO){
+
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+        CGRect tableviewFrame = self.exerciseTableView.frame;
+        CGFloat tvBottomEdge = tableviewFrame.origin.y + tableviewFrame.size.height;
+        CGFloat bottomTVEdgeToScreenBounds = [UIScreen mainScreen].bounds.size.height - tvBottomEdge;
+        CGFloat reductionInTVHeight = keyboardSize.height - bottomTVEdgeToScreenBounds;
+
+        // update the constraint that controls the vertical distance between the table view and segmented control
+        // will do so by increasing its constant by the reductionInTVHeight
+
+        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
+        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight;
+        self.scToTVVertDist.constant = newConstrConstant;
+
+        // hide views
+
+//        self.exerciseAdditionContainer.hidden = YES;
+
+        [self.view layoutIfNeeded];
+
+    }
+
+
+
+
+}
+
+- (void)keyboardWillDisappear:(NSNotification *)notification{
+
+    // these actions should not be taken if exercise addition is active
+
+    if (_exerciseAdditionActive == NO){
+
+        self.scToTVVertDist.constant = 8;
+
+        [self.view layoutIfNeeded];
+
+    }
+
 }
 
 
@@ -1058,54 +1111,39 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 //
 //#pragma mark - Keyboard View Adjustments
 //
-//- (void)keyboardWillAppear:(NSNotification *)notification{
-//    
-//    // these actions should not be taken if exercise addition is active
-//    
-//    if (_exerciseAdditionActive == NO){
-//        
-//        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-//        
-//        CGRect tableviewFrame = self.exerciseTableView.frame;
-//        CGFloat tvBottomEdge = tableviewFrame.origin.y + tableviewFrame.size.height;
-//        CGFloat bottomTVEdgeToScreenBounds = [UIScreen mainScreen].bounds.size.height - tvBottomEdge;
-//        CGFloat reductionInTVHeight = keyboardSize.height - bottomTVEdgeToScreenBounds;
-//        
-//        // update the constraint that controls the vertical distance between the table view and segmented control
-//        // will do so by increasing its constant by the reductionInTVHeight
-//        
-//        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
-//        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight;
-//        self.scToTVVertDist.constant = newConstrConstant;
-//        
-//        // hide views
-//        
-//        self.exerciseAdditionContainer.hidden = YES;
-//        
-//        [self.view layoutIfNeeded];
-//        
-//    }
-//    
-//
-//    
-//    
-//}
-//
-//- (void)keyboardWillDisappear:(NSNotification *)notification{
-//    
-//    // these actions should not be taken if exercise addition is active
-//    
-//    if (_exerciseAdditionActive == NO){
-//        
-//        self.scToTVVertDist.constant = 8;
-//        
-//        [self.view layoutIfNeeded];
-//        
-//    }
-//    
-//}
+
 //
 //
+
+#pragma mark - State Control
+
+- (void)configureControllerForState:(TJBExerciseSceneState)state{
+    
+    switch (state) {
+        case DefaultState:
+            
+            
+            
+            
+            break;
+            
+        case AdditionState:
+            
+            
+            break;
+            
+            
+        case SearchState:
+            
+            
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+}
 
 @end
 

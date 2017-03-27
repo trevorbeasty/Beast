@@ -12,4 +12,8 @@
 
 - (instancetype)initWithListButtonCallback:(void (^)(void))lbCallback searchTextFieldCallback:(void (^)(NSString *))stfCallback;
 
+- (void)makeSearchTextFieldFirstResponder;
+- (void)makeSearchTextFieldResignFirstResponder;
+
+
 @end

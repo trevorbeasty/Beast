@@ -83,10 +83,12 @@
     CALayer *stfLayer = self.searchTextField.layer;
     stfLayer.borderColor = [UIColor blackColor].CGColor;
     stfLayer.borderWidth = 1.0;
+    stfLayer.masksToBounds = YES;
+    stfLayer.cornerRadius = 8;
     
     // 'searching all exercises' label
     
-    self.titleLabel.font = [UIFont systemFontOfSize: 20];
+    self.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
     
 }
 
@@ -106,7 +108,19 @@
     
 }
 
+#pragma mark - API
 
+- (void)makeSearchTextFieldFirstResponder{
+    
+    [self.searchTextField becomeFirstResponder];
+    
+}
+
+- (void)makeSearchTextFieldResignFirstResponder{
+    
+    [self.searchTextField resignFirstResponder];
+    
+}
 
 
 
