@@ -744,11 +744,11 @@ typedef enum{
     
     if (_exerciseAdditionActive == NO){
         
-        _exerciseAdditionActive = YES;
-        [self.addNewExerciseButton setImage: nil
-                                   forState: UIControlStateNormal];
-        self.searchButton.hidden = YES;
-        self.normalBrowsingExerciseSC.hidden = YES;
+//        _exerciseAdditionActive = YES;
+//        [self.addNewExerciseButton setImage: nil
+//                                   forState: UIControlStateNormal];
+//        self.searchButton.hidden = YES;
+//        self.normalBrowsingExerciseSC.hidden = YES;
         
         if (!self.exerciseAdditionChildVC){
             
@@ -756,7 +756,7 @@ typedef enum{
             
             void (^listCallback)(void) = ^{
                 
-                [self hideExerciseAdditionChildVCAndShowTableView];
+                [self configureControllerForState: DefaultState];
                 
             };
             
@@ -798,26 +798,28 @@ typedef enum{
             
         }
         
-        self.exerciseTableView.hidden = YES;
-        self.exerciseAdditionChildVC.view.hidden = NO;
-        [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
+//        self.exerciseTableView.hidden = YES;
+//        self.exerciseAdditionChildVC.view.hidden = NO;
+//        [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
+        
+        [self configureControllerForState: AdditionState];
         
     }
 }
 
-- (void)hideExerciseAdditionChildVCAndShowTableView{
-    
-    self.exerciseAdditionChildVC.view.hidden = YES;
-    self.exerciseTableView.hidden = NO;
-    _exerciseAdditionActive = NO;
-    [self.addNewExerciseButton setImage: [UIImage imageNamed: @"new"]
-                               forState: UIControlStateNormal];
-    self.searchButton.hidden = NO;
-    self.normalBrowsingExerciseSC.hidden = NO;
-    
-    [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
-    
-}
+//- (void)hideExerciseAdditionChildVCAndShowTableView{
+//    
+//    self.exerciseAdditionChildVC.view.hidden = YES;
+//    self.exerciseTableView.hidden = NO;
+//    _exerciseAdditionActive = NO;
+//    [self.addNewExerciseButton setImage: [UIImage imageNamed: @"new"]
+//                               forState: UIControlStateNormal];
+//    self.searchButton.hidden = NO;
+//    self.normalBrowsingExerciseSC.hidden = NO;
+//    
+//    [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
+//    
+//}
 
 
 
@@ -906,7 +908,7 @@ typedef enum{
     
     if (_searchIsActive == NO){
         
-        _searchIsActive = YES;
+//        _searchIsActive = YES;
         
         if (!self.seChildVC){
             
@@ -914,7 +916,10 @@ typedef enum{
             
             void (^listButtonCallback)(void) = ^{
                 
-                [weakSelf toggleFromSearchToDefaultState];
+                [weakSelf configureControllerForState: DefaultState];
+                
+                self.tableViewToTitleBarConstr.constant = 0;
+                [self.view layoutIfNeeded];
                 
             };
             
@@ -939,10 +944,12 @@ typedef enum{
             [seChildVC didMoveToParentViewController: self];
             
         }
+        
+        [self configureControllerForState: SearchState];
     
-        self.searchButton.hidden = YES;
-        self.seChildVC.view.hidden = NO;
-        [self.seChildVC makeSearchTextFieldFirstResponder];
+//        self.searchButton.hidden = YES;
+//        self.seChildVC.view.hidden = NO;
+//        [self.seChildVC makeSearchTextFieldFirstResponder];
         
         [self.exerciseTableView reloadData];
         
@@ -950,11 +957,13 @@ typedef enum{
     
 }
 
-- (void)toggleFromSearchToDefaultState{
-    
-    NSLog(@"toggle from search to default");
-    
-}
+//- (void)toggleFromSearchToDefaultState{
+//    
+//    NSLog(@"toggle from search to default");
+//    
+//    [self to]
+//    
+//}
 
 - (void)deriveExerciseContentBasedOnSearch{
 
@@ -1119,30 +1128,88 @@ typedef enum{
 
 - (void)configureControllerForState:(TJBExerciseSceneState)state{
     
-    switch (state) {
-        case DefaultState:
+        switch (state) {
+            case DefaultState:
+                _searchIsActive = NO;
+                _exerciseAdditionActive = NO;
+                break;
+    
+            case AdditionState:
+                _searchIsActive = NO;
+                _exerciseAdditionActive = YES;
+                break;
+    
+            case SearchState:
+                _searchIsActive = YES;
+                _exerciseAdditionActive = NO;
+                break;
+                
+            default:
+                break;
+        }
+    
+    if (state != SearchState){
+        
+        if (self.seChildVC){
             
+            self.seChildVC.view.hidden = YES;
+            [self.seChildVC makeSearchTextFieldResignFirstResponder];
             
+        }
+        
+    } else{
+        
+        if (self.seChildVC){
             
+            self.seChildVC.view.hidden = NO;
+            [self.seChildVC makeSearchTextFieldFirstResponder];
             
-            break;
-            
-        case AdditionState:
-            
-            
-            break;
-            
-            
-        case SearchState:
-            
-            
-            
-            break;
-            
-        default:
-            break;
+        }
+        
     }
     
+    if (state != AdditionState){
+        
+        if (self.exerciseAdditionChildVC){
+            
+            self.exerciseAdditionChildVC.view.hidden = YES;
+            [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
+            self.exerciseTableView.hidden = NO;
+            self.addNewExerciseButton.enabled = YES;
+            [self.addNewExerciseButton setImage: [UIImage imageNamed: @"new"]
+                                       forState: UIControlStateNormal];
+            
+        }
+        
+    } else{
+        
+        if (self.exerciseAdditionChildVC){
+            
+            self.exerciseAdditionChildVC.view.hidden = NO;
+            [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
+            self.exerciseTableView.hidden = YES;
+            self.addNewExerciseButton.enabled = NO;
+            [self.addNewExerciseButton setImage: nil
+                                       forState: UIControlStateNormal];
+            
+        }
+        
+    }
+    
+    if (state != DefaultState){
+        
+        self.normalBrowsingExerciseSC.hidden = YES;
+        self.searchButton.hidden = YES;
+        
+    } else{
+        
+        self.normalBrowsingExerciseSC.hidden = NO;
+        self.searchButton.hidden = NO;
+        
+    }
+    
+    
+  
 }
 
 @end
