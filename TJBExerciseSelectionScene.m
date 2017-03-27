@@ -15,7 +15,7 @@
 // child VC's
 
 #import "TJBExerciseAdditionChildVC.h"
-
+#import "TJBSearchExerciseChild.h"
 
 // cells
 
@@ -41,6 +41,7 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *contentExercisesArray;
 @property (strong) TJBExerciseAdditionChildVC *exerciseAdditionChildVC;
+@property (strong) TJBSearchExerciseChild *seChildVC;
 
 // callback
 
@@ -935,146 +936,49 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     return newExercise;
     
 }
-//
-//- (IBAction)didPressAddAndSelect:(id)sender {
-//    
-////    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
-////    
-////    // conditional actions
-////    
-////    NSString *exerciseString = self.exerciseTextField.text;
-////    
-////    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
-////                                                             style: UIAlertActionStyleDefault
-////                                                           handler: nil];
-////    
-////    BOOL exerciseExists = [[CoreDataController singleton] realizedSetExerciseExistsForName: exerciseString];
-////    
-////    if (exerciseExists){
-////        
-////        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-////                                                                       message: @"This exercise already exists"
-////                                                                preferredStyle: UIAlertControllerStyleAlert];
-////        
-////        [alert addAction: continueAction];
-////        
-////        [self presentViewController: alert
-////                           animated: YES
-////                         completion: nil];
-////        
-////    } else if([exerciseString isEqualToString: @""]){
-////        
-////        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-////                                                                       message: @"Exercise entry is blank"
-////                                                                preferredStyle: UIAlertControllerStyleAlert];
-////        
-////        [alert addAction: continueAction];
-////        
-////        [self presentViewController: alert
-////                           animated: YES
-////                         completion: nil];
-////        
-////    } else{
-////        
-////        TJBExercise *exercise = [self addNewExerciseAndClearExerciseTextField];
-////        
-////        [self.exerciseTextField resignFirstResponder];
-////        
-////        self.callbackBlock(exercise);
-////        
-////    }
-//}
-//
-//- (IBAction)didPressSearchButton:(id)sender{
-//    
-//    if (_searchIsActive == NO){
-//        
-//        _searchIsActive = YES;
-//        
-////        [self.searchButton setTitle: @"Back"
-////                           forState: UIControlStateNormal];
-//        
-//        self.searchButton.layer.opacity = 1.0;
-//        
-//        self.normalBrowsingExerciseSC.enabled = NO;
-//        self.normalBrowsingExerciseSC.layer.opacity = .4;
-//        
-//        self.searchingAllExercisesLabel.hidden = NO;
-//        
-//        self.addNewExerciseButton.enabled = NO;
-//        self.addNewExerciseButton.layer.opacity = .4;
-//
-//        [self deriveExerciseContentBasedOnSearch];
-//        
-//        self.searchTextField.hidden = NO;
-//        [self.searchTextField becomeFirstResponder];
-//    
-//    } else{
-//        
-//        _searchIsActive = NO;
-//        
-////        [self.searchButton setTitle: @"Search"
-////                           forState: UIControlStateNormal];
-//        
-//        self.searchButton.layer.opacity = .3;
-//        
-//        self.normalBrowsingExerciseSC.enabled = YES;
-//        self.normalBrowsingExerciseSC.layer.opacity = 1.0;
-//        
-//        self.addNewExerciseButton.enabled = YES;
-//        self.addNewExerciseButton.layer.opacity = 1.0;
-//        
-//        self.searchingAllExercisesLabel.hidden = YES;
-//        
-//        self.searchTextField.hidden = YES;
-//        [self.searchTextField resignFirstResponder];
-//        
-//        [self browsingSCValueDidChange];
-//        
-//    }
-//    
-//}
-//
-//- (IBAction)didPressExerciseAdditionBackButton:(id)sender{
-//    
-//    [self toggleButtonControlsToDefaultDisplay];
-//    
-//    self.addNewExerciseButton.hidden = NO;
-//    
-//    [self.exerciseTextField resignFirstResponder];
-//    
-//    self.normalBrowsingExerciseSC.hidden = NO;
-//    self.searchButton.enabled = YES;
-//    self.searchButton.layer.opacity = 1;
-//    
-//    _exerciseAdditionActive = NO;
-//    
-//    [self.addNewExerciseButton setTitle: @"Add New Exercise"
-//                               forState: UIControlStateNormal];
-//    
-//    [self browsingSCValueDidChange]; // must be called so that table view updates if new exercise was added to actively shown category
-//    
-//}
-//
-//#pragma mark - Animation
-//
-//static CGFloat const totalAniDist = 246.0;
-//
-//
-//- (void)toggleButtonControlsToAdvancedDisplay{
-//    
-//    self.exerciseTableView.hidden = YES;
-//    self.exerciseAdditionContainer.hidden = NO;
-//    
-//}
-//
-//- (void)toggleButtonControlsToDefaultDisplay{
-//    
-//    self.exerciseTableView.hidden = NO;
-//    self.exerciseAdditionContainer.hidden = YES;
-//    
-//}
-//
+
+#pragma mark - Search Functionality
+
+- (IBAction)didPressSearchButton:(id)sender{
+    
+    if (_searchIsActive == NO){
+        
+        _searchIsActive = YES;
+        
+        if (!self.seChildVC){
+            
+            TJBSearchExerciseChild *seChildVC = [[TJBSearchExerciseChild alloc] initWithListButtonCallback: nil
+                                                                                   searchTextFieldCallback: nil];
+            self.seChildVC = seChildVC;
+            
+            // add as child VC and give proper frame
+            // will have this child's view overlay the first cell in the table view
+            
+            [self addChildViewController: seChildVC];
+            
+            NSIndexPath *zeroethPath = [NSIndexPath indexPathForRow: 0
+                                                          inSection: 0];
+            CGFloat zeroethCellHeight = [self tableView: self.exerciseTableView
+                                heightForRowAtIndexPath: zeroethPath];
+            
+            CGRect childViewFrame = self.exerciseTableView.frame;
+            childViewFrame.size.height = zeroethCellHeight;
+            
+            seChildVC.view.frame = childViewFrame;
+            [self.view addSubview: seChildVC.view];
+            
+            [seChildVC didMoveToParentViewController: self];
+            
+        }
+    
+        self.searchButton.enabled = NO;
+        self.seChildVC.view.hidden = NO;
+        
+    }
+    
+}
+
+
 //#pragma  mark - Convenience
 //
 //- (NSString *)selectedCategory{

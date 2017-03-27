@@ -98,6 +98,8 @@
 		0BC12E2D1E8352690041D863 /* TJBNumberJumpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E2C1E8352690041D863 /* TJBNumberJumpVC.m */; };
 		0BE970F71E85C8D400DF297E /* TJBExerciseAdditionChildVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE970F51E85C8D400DF297E /* TJBExerciseAdditionChildVC.m */; };
 		0BE970F81E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE970F61E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib */; };
+		0BE970FE1E8887E100DF297E /* TJBSearchExerciseChild.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE970FC1E8887E100DF297E /* TJBSearchExerciseChild.m */; };
+		0BE970FF1E8887E100DF297E /* TJBSearchExerciseChild.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE970FD1E8887E100DF297E /* TJBSearchExerciseChild.xib */; };
 		0BF2385B1E7A267600270059 /* TJBDetailTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF238591E7A267600270059 /* TJBDetailTitleCell.m */; };
 		0BF2385C1E7A267600270059 /* TJBDetailTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */; };
 /* End PBXBuildFile section */
@@ -250,6 +252,9 @@
 		0BE970F41E85C8D400DF297E /* TJBExerciseAdditionChildVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseAdditionChildVC.h; sourceTree = "<group>"; };
 		0BE970F51E85C8D400DF297E /* TJBExerciseAdditionChildVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBExerciseAdditionChildVC.m; sourceTree = "<group>"; };
 		0BE970F61E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseAdditionChildVC.xib; sourceTree = "<group>"; };
+		0BE970FB1E8887E100DF297E /* TJBSearchExerciseChild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBSearchExerciseChild.h; sourceTree = "<group>"; };
+		0BE970FC1E8887E100DF297E /* TJBSearchExerciseChild.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBSearchExerciseChild.m; sourceTree = "<group>"; };
+		0BE970FD1E8887E100DF297E /* TJBSearchExerciseChild.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBSearchExerciseChild.xib; sourceTree = "<group>"; };
 		0BF238581E7A267600270059 /* TJBDetailTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBDetailTitleCell.h; sourceTree = "<group>"; };
 		0BF238591E7A267600270059 /* TJBDetailTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBDetailTitleCell.m; sourceTree = "<group>"; };
 		0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBDetailTitleCell.xib; sourceTree = "<group>"; };
@@ -541,8 +546,8 @@
 		0B78E7F01E49EFC200EB216F /* Exercise Creation / Selection */ = {
 			isa = PBXGroup;
 			children = (
+				0BE970FA1E8887AB00DF297E /* Search */,
 				0BE970F91E85C8DB00DF297E /* Main */,
-				0BE970F31E85C86A00DF297E /* Search Child VC */,
 				0BE970F21E85C86600DF297E /* ExerciseAddiitonChildVC */,
 			);
 			name = "Exercise Creation / Selection";
@@ -749,13 +754,6 @@
 			name = ExerciseAddiitonChildVC;
 			sourceTree = "<group>";
 		};
-		0BE970F31E85C86A00DF297E /* Search Child VC */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Search Child VC";
-			sourceTree = "<group>";
-		};
 		0BE970F91E85C8DB00DF297E /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -764,6 +762,16 @@
 				0B1616D41E080E6F001C8F45 /* TJBExerciseSelectionScene.xib */,
 			);
 			name = Main;
+			sourceTree = "<group>";
+		};
+		0BE970FA1E8887AB00DF297E /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				0BE970FB1E8887E100DF297E /* TJBSearchExerciseChild.h */,
+				0BE970FC1E8887E100DF297E /* TJBSearchExerciseChild.m */,
+				0BE970FD1E8887E100DF297E /* TJBSearchExerciseChild.xib */,
+			);
+			name = Search;
 			sourceTree = "<group>";
 		};
 		0BF238571E7A265300270059 /* Detail Title Cell */ = {
@@ -862,6 +870,7 @@
 				0BA8ACEF1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.xib in Resources */,
 				0B86FB751E2129C4000D1B5F /* TJBNumberSelectionVC.xib in Resources */,
 				0B78E7C71E3C165900EB216F /* TJBRealizedSetCell.xib in Resources */,
+				0BE970FF1E8887E100DF297E /* TJBSearchExerciseChild.xib in Resources */,
 				0BE970F81E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
 				0B86FB7C1E217326000D1B5F /* TJBBasicCollectionViewCell.xib in Resources */,
@@ -927,6 +936,7 @@
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,
 				0B78E7D31E3D31B100EB216F /* TJBLiftOptionsVC.m in Sources */,
 				0B78E7C61E3C165900EB216F /* TJBRealizedSetCell.m in Sources */,
+				0BE970FE1E8887E100DF297E /* TJBSearchExerciseChild.m in Sources */,
 				0B36881B1E413D8F0077290C /* TJBWorkoutLogTitleCell.m in Sources */,
 				0BA8AD051E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m in Sources */,
 				0BA8ACEE1E259B4200EE10C2 /* TJBCircuitTemplateContainerVC.m in Sources */,
