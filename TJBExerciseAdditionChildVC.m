@@ -119,6 +119,7 @@
     // text field
     
     self.exerciseNameTF.backgroundColor = [UIColor clearColor];
+    self.exerciseNameTF.font = [UIFont systemFontOfSize: 20];
     CALayer *tfLayer = self.exerciseNameTF.layer;
     tfLayer.borderColor = [UIColor blackColor].CGColor;
     tfLayer.borderWidth = 1.0;

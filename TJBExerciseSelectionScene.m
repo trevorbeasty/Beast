@@ -279,7 +279,7 @@ typedef enum{
     
     // main title label
     
-    self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 25];
+    self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20];
     
 }
 
@@ -901,8 +901,6 @@ typedef enum{
 
 
 - (void)deriveExerciseContentBasedOnSearchString:(NSString *)searchString{
-    
-    NSLog(@"search string: %@", searchString);
 
     NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
 

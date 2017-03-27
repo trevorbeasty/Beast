@@ -80,6 +80,7 @@
     // search text field
     
     self.searchTextField.backgroundColor = [UIColor clearColor];
+    self.searchTextField.font = [UIFont systemFontOfSize: 20];
     
     CALayer *stfLayer = self.searchTextField.layer;
     stfLayer.borderColor = [UIColor blackColor].CGColor;
