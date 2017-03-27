@@ -64,9 +64,10 @@
 
 - (void)configureSearchTextField{
     
-    [self.searchTextField addTarget: self
-                             action: @selector(searchTextFieldValueDidChange)
-                   forControlEvents: UIControlEventValueChanged];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(searchTextFieldValueDidChange)
+                                                 name: UITextFieldTextDidChangeNotification
+                                               object: self.searchTextField];
     
 }
 
@@ -119,6 +120,12 @@
 - (void)makeSearchTextFieldResignFirstResponder{
     
     [self.searchTextField resignFirstResponder];
+    
+}
+
+- (NSString *)searchTextFieldText{
+    
+    return self.searchTextField.text;
     
 }
 

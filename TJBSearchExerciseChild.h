@@ -15,5 +15,7 @@
 - (void)makeSearchTextFieldFirstResponder;
 - (void)makeSearchTextFieldResignFirstResponder;
 
+- (NSString *)searchTextFieldText;
+
 
 @end

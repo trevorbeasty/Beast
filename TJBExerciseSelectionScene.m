@@ -152,13 +152,11 @@ typedef enum{
     
     [self configureTableView];
     
-    [self createFetchedResultsController];
+    [self fetchAllExercises];
     
     [self browsingSCValueDidChange]; // called to force the controller to create the array the table view needs
     
     [self viewAesthetics];
-    
-    [self configureInitialControlPosition];
     
     [self registerForCoreDataNotifications];
     
@@ -167,24 +165,7 @@ typedef enum{
 }
 
 
-//- (void)configureExerciseAdditionSC{
-//    
-//    [self.categorySegmentedControl addTarget: self
-//                                      action: @selector(exerciseAdditionSCControlDidChangeValue)
-//                            forControlEvents: UIControlEventValueChanged];
-//    
-//}
-
-//- (void)configureSearchTextFieldNotification{
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(deriveExerciseContentBasedOnSearch)
-//                                                 name: UITextFieldTextDidChangeNotification
-//                                               object: self.searchTextField];
-//    
-//    self.searchTextField.delegate = self;
-//    
-//}
+#pragma mark - View Helper Methods
 
 - (void)configureNormalBrowsingExerciseSC{
     
@@ -195,33 +176,24 @@ typedef enum{
 }
 
 
-- (void)addTapGestureRecognizerToViewForKeyboardNotification{
-    
-    //// add gesture recognizer to the view.  It will be used to dismiss the keyboard if the touch is not in the keyboard or text field
-    //// also register for the UIKeyboardDidShowNotification so that the frame of the keyboard can be stored for later use in analyzing touches
-    
-    // tap GR
-    
-    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                                  action: @selector(didSingleTap:)];
-    
-    singleTapGR.numberOfTapsRequired = 1;
-    singleTapGR.cancelsTouchesInView = NO;
-    singleTapGR.delaysTouchesBegan = NO;
-    singleTapGR.delaysTouchesEnded = NO;
-    
-    [self.view addGestureRecognizer: singleTapGR];
-    
-}
-
-- (void)configureInitialControlPosition{
-    
-//    [self.view insertSubview: self.exerciseAdditionContainer
-//                belowSubview: self.titleBarContainer];
+//- (void)addTapGestureRecognizerToViewForKeyboardNotification{
 //    
-//    self.exerciseAdditionConstraint.constant = -1 * totalAniDist;
-    
-}
+//    //// add gesture recognizer to the view.  It will be used to dismiss the keyboard if the touch is not in the keyboard or text field
+//    //// also register for the UIKeyboardDidShowNotification so that the frame of the keyboard can be stored for later use in analyzing touches
+//    
+//    // tap GR
+//    
+//    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
+//                                                                                  action: @selector(didSingleTap:)];
+//    
+//    singleTapGR.numberOfTapsRequired = 1;
+//    singleTapGR.cancelsTouchesInView = NO;
+//    singleTapGR.delaysTouchesBegan = NO;
+//    singleTapGR.delaysTouchesEnded = NO;
+//    
+//    [self.view addGestureRecognizer: singleTapGR];
+//    
+//}
 
 - (void)registerForCoreDataNotifications{
     
@@ -230,7 +202,7 @@ typedef enum{
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(updateFetchedResultsController)
+                                             selector: @selector(fetchAllExercises)
                                                  name: NSManagedObjectContextDidSaveNotification
                                                object: moc];
     
@@ -239,7 +211,7 @@ typedef enum{
 
 
 
-- (void)createFetchedResultsController{
+- (void)fetchAllExercises{
     
     if (self.fetchedResultsController){
         
@@ -312,16 +284,6 @@ typedef enum{
 }
 
 - (void)configureTableView{
-    
-//    NSArray *titleButtons = @[self.leftBarButton, self.rightBarButton];
-//    for (UIButton *button in titleButtons){
-//        
-//        button.backgroundColor = [UIColor darkGrayColor];
-//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-//        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-//                     forState: UIControlStateNormal];
-//        
-//    }
     
     self.exerciseTableView.bounces = YES;
     
@@ -709,13 +671,6 @@ typedef enum{
     
 }
 
-#pragma mark - Segmented Controls
-
-//- (void)exerciseAdditionSCControlDidChangeValue{
-//    
-//    [self.exerciseTextField becomeFirstResponder];
-//    
-//}
 
 #pragma mark - Button Actions
 
@@ -743,12 +698,6 @@ typedef enum{
 - (IBAction)didPressAddNewExercise:(id)sender {
     
     if (_exerciseAdditionActive == NO){
-        
-//        _exerciseAdditionActive = YES;
-//        [self.addNewExerciseButton setImage: nil
-//                                   forState: UIControlStateNormal];
-//        self.searchButton.hidden = YES;
-//        self.normalBrowsingExerciseSC.hidden = YES;
         
         if (!self.exerciseAdditionChildVC){
             
@@ -791,16 +740,15 @@ typedef enum{
             
             [self addChildViewController: eaChildVC];
             
+            self.tableViewToTitleBarConstr.constant = 0; // need to change this here in case jumping from SearchState to AdditionState because table view is shifted downward for SearchState
+            [self.view layoutIfNeeded];
+            
             eaChildVC.view.frame = self.exerciseTableView.frame;
             [self.view addSubview: eaChildVC.view];
             
             [eaChildVC didMoveToParentViewController: self];
             
         }
-        
-//        self.exerciseTableView.hidden = YES;
-//        self.exerciseAdditionChildVC.view.hidden = NO;
-//        [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
         
         [self configureControllerForState: AdditionState];
         
@@ -908,8 +856,6 @@ typedef enum{
     
     if (_searchIsActive == NO){
         
-//        _searchIsActive = YES;
-        
         if (!self.seChildVC){
             
             __weak TJBExerciseSelectionScene *weakSelf = self;
@@ -918,13 +864,16 @@ typedef enum{
                 
                 [weakSelf configureControllerForState: DefaultState];
                 
-                self.tableViewToTitleBarConstr.constant = 0;
-                [self.view layoutIfNeeded];
+            };
+            
+            void (^searchTextFieldCallback)(NSString *) = ^(NSString *string){
+                
+                [weakSelf deriveExerciseContentBasedOnSearchString: string];
                 
             };
             
             TJBSearchExerciseChild *seChildVC = [[TJBSearchExerciseChild alloc] initWithListButtonCallback: listButtonCallback
-                                                                                   searchTextFieldCallback: nil];
+                                                                                   searchTextFieldCallback: searchTextFieldCallback];
             self.seChildVC = seChildVC;
             
             // add as child VC and give proper frame
@@ -936,7 +885,6 @@ typedef enum{
             
             CGRect childViewFrame = self.exerciseTableView.frame;
             childViewFrame.size.height = searchTitleHeight;
-            self.tableViewToTitleBarConstr.constant = searchTitleHeight;
             
             seChildVC.view.frame = childViewFrame;
             [self.view addSubview: seChildVC.view];
@@ -946,50 +894,36 @@ typedef enum{
         }
         
         [self configureControllerForState: SearchState];
-    
-//        self.searchButton.hidden = YES;
-//        self.seChildVC.view.hidden = NO;
-//        [self.seChildVC makeSearchTextFieldFirstResponder];
-        
-        [self.exerciseTableView reloadData];
         
     }
     
 }
 
-//- (void)toggleFromSearchToDefaultState{
-//    
-//    NSLog(@"toggle from search to default");
-//    
-//    [self to]
-//    
-//}
 
-- (void)deriveExerciseContentBasedOnSearch{
+- (void)deriveExerciseContentBasedOnSearchString:(NSString *)searchString{
+    
+    NSLog(@"search string: %@", searchString);
 
-//    NSString *searchString = self.searchTextField.text;
-//
-//    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
-//
-//    if ([self.searchTextField.text isEqualToString: @""]){ // if the search text field is blank, show all options
-//
-//
-//        self.contentExercisesArray = allExercises;
-//
-//    } else{
-//
-//        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
-//        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
-//
-//        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
-//                                                                                              searchFilterPredicate]];
-//
-//        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
-//        self.contentExercisesArray = [filteredExercises mutableCopy];
-//
-//    }
-//
-//    [self.exerciseTableView reloadData];
+    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
+
+    if ([searchString isEqualToString: @""]){ // if the search text field is blank, show all options
+
+        self.contentExercisesArray = allExercises;
+
+    } else{
+
+        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
+        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
+
+        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
+                                                                                              searchFilterPredicate]];
+
+        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
+        self.contentExercisesArray = [filteredExercises mutableCopy];
+
+    }
+
+    [self.exerciseTableView reloadData];
 
 }
 
@@ -1010,12 +944,10 @@ typedef enum{
         // will do so by increasing its constant by the reductionInTVHeight
 
         CGFloat currentConstrConstant = self.scToTVVertDist.constant;
-        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight;
+        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight + 8;
         self.scToTVVertDist.constant = newConstrConstant;
 
         // hide views
-
-//        self.exerciseAdditionContainer.hidden = YES;
 
         [self.view layoutIfNeeded];
 
@@ -1150,6 +1082,8 @@ typedef enum{
     
     if (state != SearchState){
         
+        self.tableViewToTitleBarConstr.constant = 0;
+        
         if (self.seChildVC){
             
             self.seChildVC.view.hidden = YES;
@@ -1158,6 +1092,10 @@ typedef enum{
         }
         
     } else{
+        
+        self.tableViewToTitleBarConstr.constant = self.seChildVC.view.frame.size.height;
+        
+        [self deriveExerciseContentBasedOnSearchString: [self.seChildVC searchTextFieldText]];
         
         if (self.seChildVC){
             
@@ -1206,9 +1144,12 @@ typedef enum{
         self.normalBrowsingExerciseSC.hidden = NO;
         self.searchButton.hidden = NO;
         
+        [self browsingSCValueDidChange]; // forces table view content to be derived
+        
     }
     
-    
+    [self.exerciseTableView reloadData];
+    [self.view layoutIfNeeded];
   
 }
 
