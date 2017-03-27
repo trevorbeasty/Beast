@@ -881,7 +881,7 @@ typedef enum{
             
             [self addChildViewController: seChildVC];
             
-            CGFloat searchTitleHeight = 90;
+            CGFloat searchTitleHeight = 100;
             
             CGRect childViewFrame = self.exerciseTableView.frame;
             childViewFrame.size.height = searchTitleHeight;

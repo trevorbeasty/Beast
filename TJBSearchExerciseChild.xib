@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -23,13 +23,13 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching All Exercises" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gyD-rI-dgb">
-                    <rect key="frame" x="98" y="8" width="207" height="24"/>
+                    <rect key="frame" x="98" y="18" width="207" height="24"/>
                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Ta9-tw-92O">
-                    <rect key="frame" x="8" y="40" width="353" height="40"/>
+                    <rect key="frame" x="8" y="81" width="387" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="aMx-IX-AxG"/>
                     </constraints>
@@ -38,9 +38,10 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fxy-Fk-2wd">
-                    <rect key="frame" x="369" y="40" width="30" height="40"/>
+                    <rect key="frame" x="353" y="0.0" width="50" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="30" id="xQe-Rf-1ec"/>
+                        <constraint firstAttribute="height" constant="60" id="BV8-lR-dBI"/>
+                        <constraint firstAttribute="width" constant="50" id="xQe-Rf-1ec"/>
                     </constraints>
                     <state key="normal" title="Button" image="listBlack"/>
                     <connections>
@@ -50,14 +51,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="fxy-Fk-2wd" secondAttribute="trailing" constant="4" id="514-fL-bAX"/>
-                <constraint firstItem="Ta9-tw-92O" firstAttribute="top" secondItem="gyD-rI-dgb" secondAttribute="bottom" constant="8" id="8hG-92-IcZ"/>
-                <constraint firstItem="gyD-rI-dgb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="F3y-p7-b3W"/>
-                <constraint firstItem="fxy-Fk-2wd" firstAttribute="bottom" secondItem="Ta9-tw-92O" secondAttribute="bottom" id="PIM-7n-Hmz"/>
-                <constraint firstItem="gyD-rI-dgb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="8" id="VXT-lw-8K0"/>
-                <constraint firstItem="fxy-Fk-2wd" firstAttribute="leading" secondItem="Ta9-tw-92O" secondAttribute="trailing" constant="8" id="cJ5-Pc-743"/>
+                <constraint firstAttribute="trailing" secondItem="Ta9-tw-92O" secondAttribute="trailing" constant="8" id="FLE-qI-lEe"/>
+                <constraint firstItem="fxy-Fk-2wd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Ht9-gZ-9sl"/>
+                <constraint firstAttribute="bottom" secondItem="Ta9-tw-92O" secondAttribute="bottom" constant="4" id="OjO-31-Umz"/>
                 <constraint firstItem="Ta9-tw-92O" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="fBk-F0-Ree"/>
-                <constraint firstItem="fxy-Fk-2wd" firstAttribute="top" secondItem="Ta9-tw-92O" secondAttribute="top" id="xtM-UW-pfx"/>
+                <constraint firstAttribute="trailing" secondItem="fxy-Fk-2wd" secondAttribute="trailing" id="k46-mm-pqj"/>
+                <constraint firstItem="gyD-rI-dgb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="uus-1H-mJt"/>
+                <constraint firstItem="fxy-Fk-2wd" firstAttribute="centerY" secondItem="gyD-rI-dgb" secondAttribute="centerY" id="yeH-qu-h02"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-115.5" y="-483.5"/>

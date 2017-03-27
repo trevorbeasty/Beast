@@ -65,6 +65,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *myRoutinesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *leftArrowGrayBackgr;
 @property (weak, nonatomic) IBOutlet UILabel *rightArrowGrayBackgr;
+@property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
 
 // IBAction
 
@@ -226,11 +227,11 @@
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     // filter
     
-    self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+    self.sortBySegmentedControl.tintColor = [UIColor blackColor];
     
     // buttons
     
@@ -239,11 +240,16 @@
     
     for (UIButton *button in buttons){
         
-        UIColor *color = [[TJBAestheticsController singleton] blueButtonColor];
-        [button setBackgroundColor: color];
-        [button setTitleColor: [UIColor whiteColor]
+        [button setBackgroundColor: [UIColor clearColor]];
+        [button setTitleColor: [UIColor blackColor]
                      forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+        button.titleLabel.font = [UIFont systemFontOfSize: 20.0];
+        
+        CALayer *buttLayer = button.layer;
+        buttLayer.masksToBounds = YES;
+        buttLayer.cornerRadius = 15.0;
+        buttLayer.borderColor = [UIColor blackColor].CGColor;
+        buttLayer.borderWidth = 1.0;
         
     }
     
@@ -306,6 +312,10 @@
     self.rightArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
     [self.view insertSubview: self.rightArrowButton
                 aboveSubview: self.rightArrowGrayBackgr];
+    
+    // bottom controls container
+    
+    self.bottomControlsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 

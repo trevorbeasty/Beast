@@ -112,7 +112,7 @@
     
     //
     
-    CGPoint center = CGPointMake(_size.width / 2.0, _size.height - 6.0);
+    CGPoint center = CGPointMake(_size.width / 2.0, _size.height - 8.0);
     CGFloat radius = 3.0;
     
     UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter: center
