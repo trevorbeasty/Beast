@@ -107,7 +107,7 @@
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // labels
     
@@ -135,7 +135,11 @@
     
     // segmented control
     
-    self.comparisonTypeSegmentedControl.tintColor = [[TJBAestheticsController singleton] blueButtonColor];
+    self.comparisonTypeSegmentedControl.tintColor = [UIColor blackColor];
+    
+    // title bar container
+    
+    self.titleContainerView.backgroundColor = [UIColor blackColor];
     
 }
 

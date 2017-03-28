@@ -81,7 +81,7 @@
     
     // meta view background color
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     [self createChildViewControllersAndLayoutViews];
     

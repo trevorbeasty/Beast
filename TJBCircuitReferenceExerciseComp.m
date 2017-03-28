@@ -82,7 +82,7 @@
     for (UILabel *label in labels){
         
         label.backgroundColor = [UIColor clearColor];
-        label.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        label.textColor = [UIColor blackColor];
         label.layer.opacity = 1;
         label.font = [UIFont boldSystemFontOfSize: 35];
         
@@ -93,7 +93,7 @@
     UIButton *button = self.selectedExerciseButton;
     
     button.backgroundColor = [UIColor clearColor];
-    [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+    [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
     button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     button.layer.masksToBounds = YES;
