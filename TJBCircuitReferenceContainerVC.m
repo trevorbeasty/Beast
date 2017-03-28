@@ -28,14 +28,14 @@
 @property (weak, nonatomic) IBOutlet UIView *titleContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel2;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
+//@property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *comparisonTypeSegmentedControl;
-@property (weak, nonatomic) IBOutlet UIButton *doneButton;
+//@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 // IBAction
 
-- (IBAction)didPressEdit:(id)sender;
-- (IBAction)didPressDoneButton:(id)sender;
+//- (IBAction)didPressEdit:(id)sender;
+//- (IBAction)didPressDoneButton:(id)sender;
 
 // core
 
@@ -98,8 +98,8 @@
     
     // initial state (editing not active)
     
-    self.doneButton.enabled = NO;
-    self.doneButton.layer.opacity = .2;
+//    self.doneButton.enabled = NO;
+//    self.doneButton.layer.opacity = .2;
     
 }
 
@@ -122,16 +122,16 @@
     
     self.titleLabel2.font = [UIFont boldSystemFontOfSize: 15.0];
     
-    NSArray *buttons = @[self.editButton, self.doneButton];
-    
-    for (UIButton *button in buttons){
-        
-        button.backgroundColor = [UIColor clearColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                              forState: UIControlStateNormal];
-        
-    }
+//    NSArray *buttons = @[self.editButton, self.doneButton];
+//    
+//    for (UIButton *button in buttons){
+//        
+//        button.backgroundColor = [UIColor clearColor];
+//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+//        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+//                              forState: UIControlStateNormal];
+//        
+//    }
     
     // segmented control
     
@@ -177,33 +177,33 @@
 
 
 
-- (IBAction)didPressEdit:(id)sender{
-    
-    [self.childRoutineVC activateMode: EditingMode];
-    
-    // button state
-    
-    self.doneButton.enabled = YES;
-    self.doneButton.layer.opacity = 1.0;
-    
-    self.editButton.enabled = NO;
-    self.editButton.layer.opacity = .2;
-    
-}
-
-- (IBAction)didPressDoneButton:(id)sender{
-    
-    [self toggleComparisonMode];
-    
-    // button state
-    
-    self.doneButton.enabled = NO;
-    self.doneButton.layer.opacity = .2;
-    
-    self.editButton.enabled = YES;
-    self.editButton.layer.opacity = 1.0;
-    
-}
+//- (IBAction)didPressEdit:(id)sender{
+//    
+//    [self.childRoutineVC activateMode: EditingMode];
+//    
+//    // button state
+//    
+//    self.doneButton.enabled = YES;
+//    self.doneButton.layer.opacity = 1.0;
+//    
+//    self.editButton.enabled = NO;
+//    self.editButton.layer.opacity = .2;
+//    
+//}
+//
+//- (IBAction)didPressDoneButton:(id)sender{
+//    
+//    [self toggleComparisonMode];
+//    
+//    // button state
+//    
+//    self.doneButton.enabled = NO;
+//    self.doneButton.layer.opacity = .2;
+//    
+//    self.editButton.enabled = YES;
+//    self.editButton.layer.opacity = 1.0;
+//    
+//}
 
 - (void)toggleComparisonMode{
     
@@ -218,6 +218,10 @@
             
         case 1:
             [self.childRoutineVC activateMode: TargetsMode];
+            break;
+            
+        case 2:
+            [self.childRoutineVC activateMode: EditingMode];
             break;
             
         default:

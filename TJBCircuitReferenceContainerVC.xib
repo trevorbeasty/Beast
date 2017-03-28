@@ -13,8 +13,6 @@
             <connections>
                 <outlet property="circuitReferenceView" destination="OBm-HU-zw0" id="zQz-GI-ZsD"/>
                 <outlet property="comparisonTypeSegmentedControl" destination="QwT-0q-dsS" id="HdN-eJ-38D"/>
-                <outlet property="doneButton" destination="e9u-lF-VWt" id="LAO-9g-pXF"/>
-                <outlet property="editButton" destination="0yD-AC-hTp" id="gH5-GP-r9Q"/>
                 <outlet property="titleContainerView" destination="9y5-2C-wjz" id="KWS-L5-Jhb"/>
                 <outlet property="titleLabel1" destination="1ft-dR-6VP" id="202-Vo-oi2"/>
                 <outlet property="titleLabel2" destination="Fds-9Y-sIw" id="PMa-Cq-dKz"/>
@@ -53,48 +51,14 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e9u-lF-VWt">
-                            <rect key="frame" x="522" y="20" width="60" height="70"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="60" id="igx-o4-Pbr"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                            <state key="normal" title="Done">
-                                <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </state>
-                            <connections>
-                                <action selector="didPressDoneButton:" destination="-1" eventType="touchUpInside" id="BDP-bP-dHg"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0yD-AC-hTp">
-                            <rect key="frame" x="0.0" y="20" width="60" height="70"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="60" id="Jjz-FK-xe0"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                            <state key="normal" title="Edit">
-                                <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </state>
-                            <connections>
-                                <action selector="didPressEdit:" destination="-1" eventType="touchUpInside" id="kWE-fa-GxU"/>
-                            </connections>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="Fds-9Y-sIw" firstAttribute="leading" secondItem="9y5-2C-wjz" secondAttribute="leading" id="1Sk-fe-ysY"/>
-                        <constraint firstItem="0yD-AC-hTp" firstAttribute="leading" secondItem="9y5-2C-wjz" secondAttribute="leading" id="3PR-La-XDo"/>
-                        <constraint firstItem="e9u-lF-VWt" firstAttribute="top" secondItem="1ft-dR-6VP" secondAttribute="top" id="G2D-fc-vrc"/>
-                        <constraint firstAttribute="trailing" secondItem="e9u-lF-VWt" secondAttribute="trailing" id="IVE-Do-dRF"/>
-                        <constraint firstItem="Fds-9Y-sIw" firstAttribute="bottom" secondItem="0yD-AC-hTp" secondAttribute="bottom" id="J2F-v6-Ps3"/>
-                        <constraint firstItem="0yD-AC-hTp" firstAttribute="top" secondItem="1ft-dR-6VP" secondAttribute="top" id="Q9P-U1-nrE"/>
                         <constraint firstAttribute="height" constant="91" id="brB-cY-KRP"/>
                         <constraint firstAttribute="trailing" secondItem="1ft-dR-6VP" secondAttribute="trailing" id="kr6-gM-Qa2"/>
                         <constraint firstItem="Fds-9Y-sIw" firstAttribute="top" secondItem="1ft-dR-6VP" secondAttribute="bottom" id="o0W-oh-k1Y"/>
                         <constraint firstItem="1ft-dR-6VP" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="top" constant="20" id="sOy-3G-W8p"/>
-                        <constraint firstItem="e9u-lF-VWt" firstAttribute="bottom" secondItem="Fds-9Y-sIw" secondAttribute="bottom" id="wEn-S8-ZC8"/>
                         <constraint firstItem="1ft-dR-6VP" firstAttribute="leading" secondItem="9y5-2C-wjz" secondAttribute="leading" id="wTW-YY-0PU"/>
                         <constraint firstAttribute="trailing" secondItem="Fds-9Y-sIw" secondAttribute="trailing" id="z4w-B5-5wo"/>
                     </constraints>
@@ -107,6 +71,7 @@
                     <segments>
                         <segment title="Progress"/>
                         <segment title="Targets"/>
+                        <segment title="Edit"/>
                     </segments>
                 </segmentedControl>
             </subviews>
