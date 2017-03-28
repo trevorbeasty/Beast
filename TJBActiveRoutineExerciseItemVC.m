@@ -77,7 +77,7 @@
     
     // meta view
     
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // title labels
     
@@ -95,11 +95,6 @@
     self.titleNumberLabel.backgroundColor = [UIColor lightGrayColor];
     self.titleNumberLabel.textColor = [UIColor whiteColor];
     self.titleNumberLabel.font = [UIFont systemFontOfSize: 35];
-    
-    // curved corners of container view
-    
-//    self.containerView.layer.masksToBounds = YES;
-//    self.containerView.layer.cornerRadius = 8.0;
     
 }
 

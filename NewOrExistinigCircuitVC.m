@@ -1308,9 +1308,11 @@
         
         TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
         vc1.tabBarItem.title = @"Active";
+        vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
         
         TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
         vc3.tabBarItem.title = @"Workout Log";
+        vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
         
         TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
         vc2.tabBarItem.title = @"Progress";
@@ -1320,6 +1322,8 @@
         UITabBarController *tbc = [[UITabBarController alloc] init];
         [tbc setViewControllers: @[vc1, vc2, vc3]];
         tbc.tabBar.translucent = NO;
+        tbc.tabBar.barTintColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        tbc.tabBar.tintColor = [UIColor blackColor];
 
         
         [self presentViewController: tbc

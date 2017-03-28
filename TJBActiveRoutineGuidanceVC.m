@@ -75,12 +75,15 @@
 //@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
-@property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *nextUpLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *loadingNewTargetsLabel;
 //@property (weak, nonatomic) IBOutlet UIView *nextUpContainer;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
+@property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
+@property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
 
 // constraints for flying round and rest labes horizontally
 
@@ -274,11 +277,10 @@ static float const animationTimeUnit = .4;
 
 - (void)configureViewAesthetics{
     
-    NSArray *labels = @[self.roundTitleLabel,
-                        self.timerTitleLabel,
-                        self.mainTitle];
+    NSArray *largerFontLabels = @[self.roundTitleLabel,
+                        self.activeRoutineLabel];
     
-    for (UILabel *label in labels){
+    for (UILabel *label in largerFontLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
@@ -286,38 +288,33 @@ static float const animationTimeUnit = .4;
         
     }
     
-    NSArray *smallTextTitles = @[self.roundTopLabel,
-                                 self.remainingRestTopLabel];
-    for (UILabel *label in smallTextTitles){
-        
-        label.backgroundColor = [UIColor darkGrayColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 15.0];
+    self.timerTitleLabel.font = [UIFont systemFontOfSize: 35];
+    self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
+    self.timerTitleLabel.textColor = [UIColor whiteColor];
+    
+    NSArray *smallerFontLabels = @[self.mainTitle, self.roundTopLabel];
+    for (UILabel *lab in smallerFontLabels){
+     
+        lab.font = [UIFont systemFontOfSize: 15];
+        lab.textColor = [UIColor whiteColor];
+        lab.backgroundColor = [UIColor darkGrayColor];
         
     }
     
-    NSArray *titleButtons = @[self.leftBarButton];
+    NSArray *titleButtons = @[self.leftBarButton, self.rightBarButton];
     for (UIButton *button in titleButtons){
         
-        button.backgroundColor = [UIColor clearColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                     forState: UIControlStateNormal];
+        button.backgroundColor = [UIColor darkGrayColor];
         
     }
-    
-    // give the timer labels a red appearance to start
-    
-    self.timerTitleLabel.backgroundColor = [UIColor redColor];
-    self.remainingRestTopLabel.backgroundColor = [UIColor redColor];
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     // content container
     
-    self.contentScrollView.backgroundColor = [UIColor clearColor];
+    self.contentScrollView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // title container
     
@@ -329,7 +326,7 @@ static float const animationTimeUnit = .4;
     for (UIButton *but in alertTimingControls){
         
         but.backgroundColor = [UIColor darkGrayColor];
-        [but setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [but setTitleColor: [[TJBAestheticsController singleton] titleBarButtonColor]
                   forState: UIControlStateNormal];
         
     }
@@ -337,6 +334,19 @@ static float const animationTimeUnit = .4;
     self.alertTimingTitle.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
     self.alertTimingButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
     
+    // sequence completed button and bottomControlsContainer
+    
+    self.setCompletedButton.backgroundColor = [UIColor clearColor];
+    self.setCompletedButton.titleLabel.font = [UIFont systemFontOfSize: 20];
+    [self.setCompletedButton setTitleColor: [UIColor blackColor]
+                                  forState: UIControlStateNormal];
+    CALayer *scbLayer = self.setCompletedButton.layer;
+    scbLayer.masksToBounds = YES;
+    scbLayer.cornerRadius = 15.0;
+    scbLayer.borderColor = [UIColor blackColor].CGColor;
+    scbLayer.borderWidth = 1.0;
+    
+    self.bottomControlsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 
@@ -541,7 +551,7 @@ static NSString const *restViewKey = @"restView";
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
     
     UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
-    masterView.backgroundColor = [UIColor clearColor];
+    masterView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
     
@@ -713,7 +723,7 @@ static NSString const *restViewKey = @"restView";
     [self.contentScrollView setContentSize: CGSizeMake(width, height)];
     
     UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
-    masterView.backgroundColor = [UIColor clearColor];
+    masterView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
     
@@ -974,7 +984,7 @@ static NSString const *restViewKey = @"restView";
                 self.contentScrollView.hidden = YES;
                 
                 self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-                self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
+//                self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
                 
                 [weakSelf performSelector: @selector(showNextSetOfTargets)
                                withObject: nil
@@ -1168,12 +1178,12 @@ static NSString const *restViewKey = @"restView";
         
         if (inRedZone){
             
-            self.remainingRestTopLabel.backgroundColor = [UIColor redColor];
+//            self.remainingRestTopLabel.backgroundColor = [UIColor redColor];
             self.timerTitleLabel.backgroundColor = [UIColor redColor];
             
         } else{
             
-            self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
+//            self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
             self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
             
         }
@@ -1294,7 +1304,7 @@ static NSString const *restViewKey = @"restView";
     // give the timer non red zone colors
     
     self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-    self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
+//    self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
     
     // animate the timer and round label changes - they fly out to the sides, have their values updated, and fly back in
     
@@ -1368,7 +1378,7 @@ static NSString const *restViewKey = @"restView";
                              
                              // shift left
                              
-                             NSArray *leftShiftViews = @[weakSelf.timerTitleLabel, weakSelf.remainingRestTopLabel];
+                             NSArray *leftShiftViews = @[weakSelf.timerTitleLabel];
                              
                              for (UIView *view in leftShiftViews){
                                  
@@ -1412,7 +1422,7 @@ static NSString const *restViewKey = @"restView";
                          
                          // shift right
                          
-                         NSArray *rightShiftViews = @[weakSelf.timerTitleLabel, weakSelf.remainingRestTopLabel];
+                         NSArray *rightShiftViews = @[weakSelf.timerTitleLabel];
                          
                          for (UIView *view in rightShiftViews){
                              
