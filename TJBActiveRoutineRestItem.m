@@ -12,6 +12,10 @@
 
 #import "TJBStopwatch.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBActiveRoutineRestItem ()
 
 // IBOutlet
@@ -47,13 +51,13 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    self.restTitleLabel.backgroundColor = [UIColor lightGrayColor];
-    self.restTitleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    self.restTitleLabel.textColor = [UIColor whiteColor];
+    self.restTitleLabel.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.restTitleLabel.font = [UIFont systemFontOfSize: 20.0];
+    self.restTitleLabel.textColor = [UIColor blackColor];
     
-    self.numberLabel.backgroundColor = [UIColor lightGrayColor];
+    self.numberLabel.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     self.numberLabel.font = [UIFont systemFontOfSize: 35];
-    self.numberLabel.textColor = [UIColor whiteColor];
+    self.numberLabel.textColor = [UIColor blackColor];
     
     self.numberLabel.text = [self.number stringValue];
     

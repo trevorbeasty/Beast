@@ -542,7 +542,7 @@ static NSString const *restViewKey = @"restView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 154;
+    CGFloat exerciseCompHeight = 200;
     CGFloat restCompHeight = 62;
     CGFloat initialTopSpacing = 0;
     CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight * 2 + initialTopSpacing; // rest comp height is multiplied by two because I am now including both a rest component and a 'sequence completed' component
@@ -713,7 +713,7 @@ static NSString const *restViewKey = @"restView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 154;
+    CGFloat exerciseCompHeight = 220;
     CGFloat initialTopSpacing = 0;
     CGFloat scCompHeight = 62;
     CGFloat contentHeight = exerciseCompHeight * numberOfExerciseComps;

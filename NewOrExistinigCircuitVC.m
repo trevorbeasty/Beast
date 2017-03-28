@@ -1316,6 +1316,7 @@
         
         TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
         vc2.tabBarItem.title = @"Progress";
+        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
         
         // tab bar
         

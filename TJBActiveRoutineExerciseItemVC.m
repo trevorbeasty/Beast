@@ -31,6 +31,10 @@
 //@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleNumberLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *targetsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *previousEntriesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *thinLabel1;
+@property (weak, nonatomic) IBOutlet UILabel *thinLabel2;
 
 // core
 
@@ -79,22 +83,50 @@
     
     self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
+    // container view
+    
+    self.containerView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
     // title labels
     
     NSArray *titleLabels = @[self.titleExerciseLabel, self.targetWeightLabel, self.targetRepsLabel];
     for (UILabel *lab in titleLabels){
         
-        lab.backgroundColor = [UIColor lightGrayColor];
-        lab.textColor = [UIColor whiteColor];
-        lab.font = [UIFont boldSystemFontOfSize: 20];
+        lab.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        lab.textColor = [UIColor blackColor];
+        lab.font = [UIFont systemFontOfSize: 20];
         
     }
     
     // number label
     
-    self.titleNumberLabel.backgroundColor = [UIColor lightGrayColor];
-    self.titleNumberLabel.textColor = [UIColor whiteColor];
+    self.titleNumberLabel.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.titleNumberLabel.textColor = [UIColor blackColor];
     self.titleNumberLabel.font = [UIFont systemFontOfSize: 35];
+    
+    // table view
+    
+    CALayer *prTVLayer = self.previousEntriesTableView.layer;
+    prTVLayer.borderColor = [UIColor blackColor].CGColor;
+    prTVLayer.borderWidth = .5;
+    prTVLayer.masksToBounds = YES;
+    prTVLayer.cornerRadius = 4.0;
+    
+    // targets label
+    
+    self.previousEntriesLabel.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.previousEntriesLabel.font = [UIFont systemFontOfSize: 15];
+    self.previousEntriesLabel.textColor = [UIColor blackColor];
+    
+    // thin label
+    
+    NSArray *thinLabels = @[self.thinLabel1, self.thinLabel2];
+    for (UILabel *lab in thinLabels){
+        
+        lab.text = @"";
+        lab.backgroundColor = [UIColor blackColor];
+        
+    }
     
 }
 
