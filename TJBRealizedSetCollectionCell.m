@@ -72,7 +72,7 @@
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     df.dateStyle = NSDateFormatterNoStyle;;
     df.timeStyle = NSDateFormatterShortStyle;;
-    self.dateLabel.text = [df stringFromDate: realizedSetColleection[0].endDate];
+    self.dateLabel.text = [df stringFromDate: realizedSetColleection[0].submissionTime];
     
     //// configure the stack view.  For every exercise, create a UILabel and configure it before adding it to the stack view
     
@@ -124,8 +124,8 @@
     UILabel *repsLabel = [[UILabel alloc] init];
     UILabel *restLabel = [[UILabel alloc] init];
     
-    float weight = realizedSet.weight;
-    int reps = realizedSet.reps;
+    float weight = realizedSet.submittedWeight;
+    int reps = realizedSet.submittedReps;
     
     NSString *weightString = [NSString stringWithFormat: @"%.01f lbs", weight];
     NSString *repsString = [NSString stringWithFormat: @"%d reps", reps];
@@ -136,57 +136,59 @@
     
     // rest string
     
-    NSString *restText;
+    restLabel.text = @"";
     
-    // first, see if this is the last set of the collection.  If so, the 'finalRest' property must be used
-    
-    if (index < self.realizedSetCollection.count - 1){
-        
-        NSDate *currentSetEndDate;
-        NSDate *nextSetBeginDate;
-        
-        if (realizedSet.recordedEndDate){
-            currentSetEndDate = realizedSet.endDate;
-        } else{
-            currentSetEndDate = nil;
-        }
-        
-        if (self.realizedSetCollection[index + 1].recordedBeginDate){
-            nextSetBeginDate = self.realizedSetCollection[index+1].beginDate;
-        } else{
-            nextSetBeginDate = nil;
-        }
-        
-        // if both date are not nil, then calculate the rest
-        
-        if (currentSetEndDate && nextSetBeginDate){
-            
-            float timeDiff = [nextSetBeginDate timeIntervalSinceDate: currentSetEndDate];
-            restText = [NSString stringWithFormat: @"%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)timeDiff]];
-            restLabel.text = restText;
-            
-        } else{
-            
-            restLabel.text = @"X rest";
-            
-        }
-        
-    } else{
-        
-        // use the final rest property if there is one
-        
-        if (self.finalRest){
-            
-            restText = [NSString stringWithFormat: @"%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.finalRest intValue]]];
-            restLabel.text = restText;
-            
-        } else{
-            
-            restLabel.text = @"";
-            
-        }
-        
-    }
+//    NSString *restText;
+//    
+//    // first, see if this is the last set of the collection.  If so, the 'finalRest' property must be used
+//    
+//    if (index < self.realizedSetCollection.count - 1){
+//        
+//        NSDate *currentSetEndDate;
+//        NSDate *nextSetBeginDate;
+//        
+//        if (realizedSet.recordedEndDate){
+//            currentSetEndDate = realizedSet.endDate;
+//        } else{
+//            currentSetEndDate = nil;
+//        }
+//        
+//        if (self.realizedSetCollection[index + 1].recordedBeginDate){
+//            nextSetBeginDate = self.realizedSetCollection[index+1].beginDate;
+//        } else{
+//            nextSetBeginDate = nil;
+//        }
+//        
+//        // if both date are not nil, then calculate the rest
+//        
+//        if (currentSetEndDate && nextSetBeginDate){
+//            
+//            float timeDiff = [nextSetBeginDate timeIntervalSinceDate: currentSetEndDate];
+//            restText = [NSString stringWithFormat: @"%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)timeDiff]];
+//            restLabel.text = restText;
+//            
+//        } else{
+//            
+//            restLabel.text = @"X rest";
+//            
+//        }
+//        
+//    } else{
+//        
+//        // use the final rest property if there is one
+//        
+//        if (self.finalRest){
+//            
+//            restText = [NSString stringWithFormat: @"%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.finalRest intValue]]];
+//            restLabel.text = restText;
+//            
+//        } else{
+//            
+//            restLabel.text = @"";
+//            
+//        }
+//        
+//    }
     
     // aesthetics and layout constraints
     
