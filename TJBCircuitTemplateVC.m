@@ -87,7 +87,7 @@ static NSString * const defaultValue = @"unselected";
     
     //// this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made when allUserInputCollected is calledr
     
-    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLenght: self.chainTemplate.numberOfExercises];
+    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLength: self.chainTemplate.numberOfExercises];
     
     NSMutableOrderedSet *placeholderExerisesSet = [[NSMutableOrderedSet alloc] initWithArray: placeholderExercisesArray];
     

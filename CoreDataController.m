@@ -709,15 +709,13 @@ NSString * const placeholderCategoryName = @"Placeholder";
     chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
     chainTemplate.name = name;
     
-    //// chain template relationships
-    
-    int exerciseLimit = [numberOfExercises intValue];
-    
     // exercises
     
-    NSArray *exercisesArray = [self placeholderExerciseArrayWithLenght: exerciseLimit];
-    NSOrderedSet *exercisesOrderedSet = [[NSOrderedSet alloc] initWithArray: exercisesArray];
-    chainTemplate.exercises = exercisesOrderedSet;
+    chainTemplate.exercises = [self placeholderExerciseSetWithLength: [numberOfExercises intValue]];
+    
+//    NSArray *exercisesArray = [self placeholderExerciseArrayWithLenght: exerciseLimit];
+//    NSOrderedSet *exercisesOrderedSet = [[NSOrderedSet alloc] initWithArray: exercisesArray];
+//    chainTemplate.exercises = exercisesOrderedSet;
     
     // target units
     
@@ -783,7 +781,44 @@ NSString * const placeholderCategoryName = @"Placeholder";
 //    
 //}
 
-- (NSArray *)placeholderExerciseArrayWithLenght:(int)length{
+- (NSOrderedSet *)placeholderExerciseSetWithLength:(int)length{
+    
+    //// create a set of placeholder exercises
+    
+    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
+    
+    for (int i = 0; i < length ; i++){
+        
+        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
+        
+        NSString *placeholderExerciseDynamicName = [NSString stringWithFormat: @"%@%d",
+                                                    placeholderExerciseName,
+                                                    i];
+        
+        NSNumber *wasNewlyCreated = nil;
+        TJBExercise *exercise = [self exerciseForName: placeholderExerciseDynamicName
+                                      wasNewlyCreated: &wasNewlyCreated
+                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
+        
+        // if it was newly created, give it the placeholder category
+        
+        if ([wasNewlyCreated boolValue] == YES){
+            
+            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
+            
+            exercise.category = placeholderCategory;
+            
+        }
+        
+        [exercises addObject: exercise];
+        
+    }
+    
+    return exercises;
+    
+}
+
+- (NSArray *)placeholderExerciseArrayWithLength:(int)length{
     
     //// create a set of placeholder exercises
     
