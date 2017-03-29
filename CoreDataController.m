@@ -727,6 +727,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         TJBTargetUnitCollection *tuc = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnitCollection"
                                                                      inManagedObjectContext: moc];
         tuc.exerciseIndex = i;
+        tuc.chainTemplate = chainTemplate;
         [targetUnitCollectors addObject: tuc];
         
         NSMutableOrderedSet<TJBTargetUnit *> *iterativeTargetUnits = [[NSMutableOrderedSet alloc] init];
@@ -736,6 +737,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
             
             TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
                                                                                inManagedObjectContext: moc];
+            iterativeTargetUnit.targetUnitCollector = tuc;
             [iterativeTargetUnits addObject: iterativeTargetUnit];
             
             iterativeTargetUnit.exerciseIndex = i;
@@ -748,6 +750,10 @@ NSString * const placeholderCategoryName = @"Placeholder";
             iterativeTargetUnit.weightIsNull = YES;
             iterativeTargetUnit.repsIsNull = YES;
             iterativeTargetUnit.trailingRestIsNull = YES;
+            
+            // exercise
+            
+            iterativeTargetUnit.exercise = [self placeholderExercise];
 
         }
         
@@ -780,6 +786,29 @@ NSString * const placeholderCategoryName = @"Placeholder";
 //    return mor;
 //    
 //}
+
+- (TJBExercise *)placeholderExercise{
+    
+    NSString *placeholderExerciseName = @"Placeholder Exercise";
+    
+    NSNumber *wasNewlyCreated = nil;
+    TJBExercise *exercise = [self exerciseForName: placeholderExerciseName
+                                  wasNewlyCreated: &wasNewlyCreated
+                      createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
+    
+    // if it was newly created, give it the placeholder category
+    
+    if ([wasNewlyCreated boolValue] == YES){
+        
+        TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
+        
+        exercise.category = placeholderCategory;
+        
+    }
+    
+    return exercise;
+    
+}
 
 - (NSOrderedSet *)placeholderExerciseSetWithLength:(int)length{
     

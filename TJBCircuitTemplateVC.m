@@ -167,7 +167,7 @@ static NSString * const defaultValue = @"unselected";
         
 //    } else{
         
-        componentHeight = titleBarHeight + contentRowHeight + componentStyleSpacing;
+//        componentHeight = titleBarHeight + contentRowHeight + componentStyleSpacing;
 //    }
     
     int numberOfComponents = self.chainTemplate.numberOfExercises;
