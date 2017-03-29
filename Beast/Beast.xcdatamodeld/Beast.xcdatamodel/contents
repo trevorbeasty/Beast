@@ -28,7 +28,7 @@
         <attribute name="firstIncompleteRoundIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="realizedChains" inverseEntity="ChainTemplate" syncable="YES"/>
-        <relationship name="realizedSetCollections" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedSetCollection" inverseName="realizedChain" inverseEntity="RealizedSetCollection" syncable="YES"/>
+        <relationship name="realizedSetCollections" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSetCollection" inverseName="realizedChain" inverseEntity="RealizedSetCollection" syncable="YES"/>
     </entity>
     <entity name="RealizedSet" representedClassName="TJBRealizedSet" syncable="YES" codeGenerationType="class">
         <attribute name="exerciseIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -67,7 +67,7 @@
         <element name="ChainTemplate" positionX="-171" positionY="207" width="128" height="165"/>
         <element name="Exercise" positionX="-504" positionY="-162" width="128" height="135"/>
         <element name="ExerciseCategory" positionX="-794" positionY="-135" width="128" height="73"/>
-        <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="135"/>
+        <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="133"/>
         <element name="RealizedSet" positionX="-182" positionY="-54" width="128" height="178"/>
         <element name="TargetUnit" positionX="-774" positionY="216" width="128" height="193"/>
         <element name="TargetUnitCollection" positionX="-477" positionY="252" width="128" height="90"/>

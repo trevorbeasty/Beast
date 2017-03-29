@@ -169,28 +169,6 @@
     
 }
 
-//- (void)configureButtonMask{
-//    
-//    // establish the bezier path
-//
-//    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter: _center
-//                                                        radius: _radius
-//                                                    startAngle: 0
-//                                                      endAngle: 2 * M_PI
-//                                                     clockwise: YES];
-//    
-//    // shape layer
-//    
-//    CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-//    
-//    shapeLayer.path = path.CGPath;
-//    
-//    
-//    // button
-//    
-//    self.numberLabel.layer.mask = shapeLayer;
-//
-//}
 
 #pragma mark - General API
 
