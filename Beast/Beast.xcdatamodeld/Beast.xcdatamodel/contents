@@ -51,9 +51,12 @@
         <attribute name="isTargetingReps" attributeType="Boolean" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isTargetingTrailingRest" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isTargetingWeight" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="repsIsNull" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="repsTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="roundIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="trailingRestIsNull" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="trailingRestTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weightIsNull" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="weightTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="targetUnits" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="targetUnitCollector" maxCount="1" deletionRule="Nullify" destinationEntity="TargetUnitCollection" inverseName="targetUnits" inverseEntity="TargetUnitCollection" syncable="YES"/>
@@ -69,7 +72,7 @@
         <element name="ExerciseCategory" positionX="-794" positionY="-135" width="128" height="73"/>
         <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="133"/>
         <element name="RealizedSet" positionX="-182" positionY="-54" width="128" height="178"/>
-        <element name="TargetUnit" positionX="-774" positionY="216" width="128" height="193"/>
+        <element name="TargetUnit" positionX="-774" positionY="216" width="128" height="238"/>
         <element name="TargetUnitCollection" positionX="-477" positionY="252" width="128" height="90"/>
         <element name="RealizedSetCollection" positionX="16" positionY="-261" width="128" height="88"/>
     </elements>

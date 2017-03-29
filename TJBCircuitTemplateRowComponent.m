@@ -147,15 +147,15 @@
     
     // round label
     
-    if (self.chainTemplate.targetsVaryByRound == NO){
-        
-        self.roundLabel.text = @"All Rnds";
-        
-    } else{
-        
+//    if (self.chainTemplate.targetsVaryByRound == NO){
+//        
+//        self.roundLabel.text = @"All Rnds";
+//        
+//    } else{
+    
         self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundIndex intValue] + 1];
         
-    }
+//    }
     
     self.roundLabel.backgroundColor = [UIColor clearColor];
     self.roundLabel.textColor = [UIColor whiteColor];
@@ -183,8 +183,13 @@
         layer.cornerRadius = 8.0;
         
     };
+    
+    int eInd = [self.exerciseIndex intValue];
+    int rInd = [self.roundIndex intValue];
+    
+    TJBTargetUnit *tu = self.chainTemplate.targetUnitCollections[eInd].targetUnits[rInd];
         
-    if (self.chainTemplate.targetingWeight == YES){
+    if (tu.isTargetingWeight == YES){
             
         activeButtonConfiguration(self.weightButton);
         
@@ -193,7 +198,7 @@
         eraseButton(self.weightButton);
     }
         
-    if (self.chainTemplate.targetingReps == YES){
+    if (tu.isTargetingReps == YES){
             
         activeButtonConfiguration(self.repsButton);
         
@@ -202,7 +207,7 @@
         eraseButton(self.repsButton);
     }
         
-    if (self.chainTemplate.targetingRestTime == YES){
+    if (tu.isTargetingTrailingRest == YES){
             
         activeButtonConfiguration(self.restButton);
         
@@ -237,8 +242,12 @@
         
         // update core data.  The 'isDefaultObject' property indicates if a selection has been made for this particular target since the skeleton chain was created.  It is useful for app restoration (indicates whether or not to show the button as blue or yellow)
         
-        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
-        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
+        TJBTargetUnit *tu = self.chainTemplate.targetUnitCollections[exerciseInd].targetUnits[roundInd];
+        tu.weightTarget = [selectedNumber floatValue];
+        tu.weightIsNull = NO;
+        
+//        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+//        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         
@@ -290,8 +299,12 @@
         
         // update core data.  The 'isDefaultObject' property indicates if a selection has been made for this particular target since the skeleton chain was created.  It is useful for app restoration (indicates whether or not to show the button as blue or yellow)
         
-        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
-        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
+        TJBTargetUnit *tu = self.chainTemplate.targetUnitCollections[exerciseInd].targetUnits[roundInd];
+        tu.repsTarget = [selectedNumber floatValue];
+        tu.repsIsNull = NO;
+        
+//        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+//        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         
@@ -343,8 +356,12 @@
         
         // update core data.  The 'isDefaultObject' property indicates if a selection has been made for this particular target since the skeleton chain was created.  It is useful for app restoration (indicates whether or not to show the button as blue or yellow)
         
-        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
-        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
+        TJBTargetUnit *tu = self.chainTemplate.targetUnitCollections[exerciseInd].targetUnits[roundInd];
+        tu.trailingRestTarget = [selectedNumber floatValue];
+        tu.trailingRestIsNull = NO;
+        
+//        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+//        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         
@@ -387,7 +404,7 @@
         
         NSLog(@"began");
         
-        BOOL valueNotSelected = self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+        BOOL valueNotSelected = [self targetUnitCorrespondingToVC].weightIsNull;
         
         // only initiate the copying process if a value has been selected and the copying process is not already active
         // make sure to change state variables accordingly
@@ -396,7 +413,7 @@
             
             _isReferenceForCopying = YES;
             
-            float number = self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value;
+            float number = [self targetUnitCorrespondingToVC].weightTarget;
             
             // change the appearance of the copying reference cell
             
@@ -433,8 +450,8 @@
         
         NSLog(@"began");
         
-        BOOL valueNotSelected = self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
-        
+        BOOL valueNotSelected = [self targetUnitCorrespondingToVC].repsIsNull;
+    
         // only initiate the copying process if a value has been selected and the copying process is not already active
         // make sure to change state variables accordingly
         
@@ -442,7 +459,7 @@
             
             _isReferenceForCopying = YES;
             
-            float number = self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value;
+            float number = [self targetUnitCorrespondingToVC].repsTarget;
             
             // change the appearance of the copying reference cell
             
@@ -479,7 +496,7 @@
         
         NSLog(@"began");
         
-        BOOL valueNotSelected = self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+        BOOL valueNotSelected = [self targetUnitCorrespondingToVC].trailingRestIsNull;
         
         // only initiate the copying process if a value has been selected and the copying process is not already active
         // make sure to change state variables accordingly
@@ -488,7 +505,7 @@
             
             _isReferenceForCopying = YES;
             
-            float number = self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value;
+            float number = [self targetUnitCorrespondingToVC].trailingRestTarget;
             
             // change the appearance of the copying reference cell
             
@@ -541,8 +558,12 @@
         
         // core data
         
-        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
-        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
+        TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
+        tu.weightTarget = _valueToCopy;
+        tu.weightIsNull = NO;
+        
+//        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
+//        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         
@@ -570,8 +591,13 @@
         
         // core data
         
-        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
-        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
+        TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
+        tu.repsTarget = _valueToCopy;
+        tu.repsIsNull = NO;
+
+        
+//        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
+//        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         
@@ -599,8 +625,13 @@
         
         // core data
         
-        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
-        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
+        TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
+        tu.trailingRestTarget = _valueToCopy;
+        tu.trailingRestIsNull = NO;
+
+        
+//        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
+//        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         
@@ -651,20 +682,21 @@
     
     BOOL valueNotYetSelected;
     UIButton *button;
+    TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
     
     switch (_copyInputType) {
         case CopyWeightType:
-            valueNotYetSelected = self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+            valueNotYetSelected = tu.weightIsNull;
             button = self.weightButton;
             break;
             
         case CopyRepsType:
-            valueNotYetSelected = self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+            valueNotYetSelected = tu.repsIsNull;
             button = self.repsButton;
             break;
             
         case CopyRestType:
-            valueNotYetSelected = self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject;
+            valueNotYetSelected = tu.trailingRestIsNull;
             button = self.restButton;
             break;
             
@@ -696,7 +728,13 @@
     
 }
 
+#pragma mark - Convenience
 
+- (TJBTargetUnit *)targetUnitCorrespondingToVC{
+    
+    return  self.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]].targetUnits[[self.roundIndex intValue]];
+    
+}
 
 @end
 
