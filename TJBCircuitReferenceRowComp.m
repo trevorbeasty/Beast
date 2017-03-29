@@ -488,7 +488,7 @@
 
 - (NSString *)realizedWeightString{
     
-    NSNumber *weight = [NSNumber numberWithFloat: [self targetUnitForController].weightTarget];
+    NSNumber *weight = [NSNumber numberWithFloat: [self realizedSetForController].submittedWeight];
     
     return [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
     
@@ -496,7 +496,7 @@
 
 - (NSString *)realizedRepsString{
     
-    NSNumber *reps = [NSNumber numberWithFloat: [self targetUnitForController].repsTarget];
+    NSNumber *reps = [NSNumber numberWithFloat: [self realizedSetForController].submittedReps];
     
     return [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
     
@@ -632,6 +632,7 @@
         // reload view data
         
         [self activateMode: _activeMode];
+//        [self.view setNeedsDisplay];
         
         // presented VC
         
