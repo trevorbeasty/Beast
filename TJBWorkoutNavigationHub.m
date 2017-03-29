@@ -1052,8 +1052,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
             } else if (isRealizedChain){
                 
-                [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
-                                                                   chain: dailyListObject];
+                [[CoreDataController singleton] deleteRealizedChain: dailyListObject];
+                
+//                [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
+//                                                                   chain: dailyListObject];
                 
             } else{
                 
