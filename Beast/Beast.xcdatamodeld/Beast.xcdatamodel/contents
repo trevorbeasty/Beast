@@ -1,120 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="BeginDateComp" representedClassName="TJBBeginDateComp" syncable="YES" codeGenerationType="class">
-        <attribute name="isDefaultObject" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="owningArray" maxCount="1" deletionRule="Nullify" destinationEntity="SetBeginDateArray" inverseName="dates" inverseEntity="SetBeginDateArray" syncable="YES"/>
-    </entity>
-    <entity name="Chain" representedClassName="TJBChain" syncable="YES" codeGenerationType="class">
+    <entity name="ChainTemplate" representedClassName="TJBChainTemplate" syncable="YES" codeGenerationType="class">
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="isIncomplete" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="numberOfExercises" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="numberOfRounds" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
-        <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chains" inverseEntity="Exercise" syncable="YES"/>
-        <relationship name="repsArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RepsArray" inverseName="chain" inverseEntity="RepsArray" syncable="YES"/>
-        <relationship name="weightArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WeightArray" inverseName="chain" inverseEntity="WeightArray" syncable="YES"/>
-    </entity>
-    <entity name="ChainTemplate" representedClassName="TJBChainTemplate" parentEntity="Chain" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="targetingReps" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="targetingRestTime" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="targetingWeight" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="targetsVaryByRound" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="numberOfExercises" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="numberOfRounds" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
+        <relationship name="exercises" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chainTemplates" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="realizedChains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedChain" inverseName="chainTemplate" inverseEntity="RealizedChain" syncable="YES"/>
-        <relationship name="targetRestTimeArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TargetRestTimeArray" inverseName="chainTemplate" inverseEntity="TargetRestTimeArray" syncable="YES"/>
-        <relationship name="workoutTemplates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutTemplate" inverseName="chainTemplates" inverseEntity="WorkoutTemplate" syncable="YES"/>
-    </entity>
-    <entity name="EndDateComp" representedClassName="TJBEndDateComp" syncable="YES" codeGenerationType="class">
-        <attribute name="isDefaultObject" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <relationship name="owningArray" maxCount="1" deletionRule="Nullify" destinationEntity="SetEndDateArray" inverseName="dates" inverseEntity="SetEndDateArray" syncable="YES"/>
+        <relationship name="targetUnitCollections" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TargetUnitCollection" inverseName="chainTemplate" inverseEntity="TargetUnitCollection" syncable="YES"/>
     </entity>
     <entity name="Exercise" representedClassName="TJBExercise" syncable="YES" codeGenerationType="class">
         <attribute name="isPlaceholderExercise" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseCategory" inverseName="exercises" inverseEntity="ExerciseCategory" syncable="YES"/>
-        <relationship name="chains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Chain" inverseName="exercises" inverseEntity="Chain" syncable="YES"/>
-        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
+        <relationship name="chainTemplates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="exercises" inverseEntity="ChainTemplate" syncable="YES"/>
+        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
+        <relationship name="targetUnits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TargetUnit" inverseName="exercise" inverseEntity="TargetUnit" syncable="YES"/>
     </entity>
     <entity name="ExerciseCategory" representedClassName="TJBExerciseCategory" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="category" inverseEntity="Exercise" syncable="YES"/>
     </entity>
-    <entity name="NumberArray" representedClassName="TJBNumberArray" syncable="YES" codeGenerationType="class">
-        <relationship name="numbers" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="NumberTypeArrayComponent" inverseName="owningArray" inverseEntity="NumberTypeArrayComponent" syncable="YES"/>
-    </entity>
-    <entity name="NumberTypeArrayComponent" representedClassName="TJBNumberTypeArrayComp" syncable="YES" codeGenerationType="class">
-        <attribute name="isDefaultObject" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="owningArray" maxCount="1" deletionRule="Nullify" destinationEntity="NumberArray" inverseName="numbers" inverseEntity="NumberArray" syncable="YES"/>
-    </entity>
-    <entity name="RealizedChain" representedClassName="TJBRealizedChain" parentEntity="Chain" syncable="YES" codeGenerationType="class">
+    <entity name="RealizedChain" representedClassName="TJBRealizedChain" syncable="YES" codeGenerationType="class">
+        <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="firstIncompleteExerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="firstIncompleteRoundIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="realizedChains" inverseEntity="ChainTemplate" syncable="YES"/>
-        <relationship name="realizedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" inverseName="realizedChains" inverseEntity="RealizedWorkout" syncable="YES"/>
-        <relationship name="setBeginDateArrays" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SetBeginDateArray" inverseName="realizedChain" inverseEntity="SetBeginDateArray" syncable="YES"/>
-        <relationship name="setEndDateArrays" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="SetEndDateArray" inverseName="realizedChain" inverseEntity="SetEndDateArray" syncable="YES"/>
+        <relationship name="realizedSetCollections" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedSetCollection" inverseName="realizedChain" inverseEntity="RealizedSetCollection" syncable="YES"/>
     </entity>
     <entity name="RealizedSet" representedClassName="TJBRealizedSet" syncable="YES" codeGenerationType="class">
-        <attribute name="beginDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="exactBeginDate" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="exactEndDate" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="recordedBeginDate" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="recordedEndDate" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="reps" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="weight" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="exerciseIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="holdsNullValues" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isStandaloneSet" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="roundIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="submissionTime" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="submittedReps" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="submittedWeight" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="realizedSets" inverseEntity="Exercise" syncable="YES"/>
     </entity>
-    <entity name="RealizedWorkout" representedClassName="TJBRealizedWorkout" syncable="YES" codeGenerationType="class">
-        <attribute name="postMortem" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="realizedChains" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedChain" inverseName="realizedWorkouts" inverseEntity="RealizedChain" syncable="YES"/>
-        <relationship name="workoutTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutTemplate" inverseName="realizedWorkouts" inverseEntity="WorkoutTemplate" syncable="YES"/>
+    <entity name="RealizedSetCollection" representedClassName="TJBRealizedSetCollection" syncable="YES" codeGenerationType="class">
+        <attribute name="exerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="realizedChain" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="realizedSetCollections" inverseEntity="RealizedChain" syncable="YES"/>
+        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSet" syncable="YES"/>
     </entity>
-    <entity name="RepsArray" representedClassName="TJBRepsArray" parentEntity="NumberArray" syncable="YES" codeGenerationType="class">
-        <relationship name="chain" maxCount="1" deletionRule="Nullify" destinationEntity="Chain" inverseName="repsArrays" inverseEntity="Chain" syncable="YES"/>
+    <entity name="TargetUnit" representedClassName="TJBTargetUnit" syncable="YES" codeGenerationType="class">
+        <attribute name="exerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isTargetingReps" attributeType="Boolean" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isTargetingTrailingRest" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isTargetingWeight" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="repsTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="roundIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="trailingRestTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weightTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="targetUnits" inverseEntity="Exercise" syncable="YES"/>
+        <relationship name="targetUnitCollection" maxCount="1" deletionRule="Nullify" destinationEntity="TargetUnitCollection" inverseName="targetUnits" inverseEntity="TargetUnitCollection" syncable="YES"/>
     </entity>
-    <entity name="SetBeginDateArray" representedClassName="SetBeginDateArray" syncable="YES" codeGenerationType="class">
-        <relationship name="dates" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="BeginDateComp" inverseName="owningArray" inverseEntity="BeginDateComp" syncable="YES"/>
-        <relationship name="realizedChain" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="setBeginDateArrays" inverseEntity="RealizedChain" syncable="YES"/>
-    </entity>
-    <entity name="SetEndDateArray" representedClassName="SetEndDateArray" syncable="YES" codeGenerationType="class">
-        <relationship name="dates" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="EndDateComp" inverseName="owningArray" inverseEntity="EndDateComp" syncable="YES"/>
-        <relationship name="realizedChain" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="setEndDateArrays" inverseEntity="RealizedChain" syncable="YES"/>
-    </entity>
-    <entity name="TargetRestTimeArray" representedClassName="TJBTargetRestTimeArray" parentEntity="NumberArray" syncable="YES" codeGenerationType="class">
-        <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="targetRestTimeArrays" inverseEntity="ChainTemplate" syncable="YES"/>
-    </entity>
-    <entity name="WeightArray" representedClassName="TJBWeightArray" parentEntity="NumberArray" syncable="YES" codeGenerationType="class">
-        <relationship name="chain" maxCount="1" deletionRule="Nullify" destinationEntity="Chain" inverseName="weightArrays" inverseEntity="Chain" syncable="YES"/>
-    </entity>
-    <entity name="WorkoutTemplate" representedClassName="TJBWorkoutTemplate" syncable="YES" codeGenerationType="class">
-        <attribute name="identifier" attributeType="String" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <relationship name="chainTemplates" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ChainTemplate" inverseName="workoutTemplates" inverseEntity="ChainTemplate" syncable="YES"/>
-        <relationship name="realizedWorkouts" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedWorkout" inverseName="workoutTemplate" inverseEntity="RealizedWorkout" syncable="YES"/>
+    <entity name="TargetUnitCollection" representedClassName="TJBTargetUnitCollection" syncable="YES" codeGenerationType="class">
+        <attribute name="exerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="chainTemplate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="targetUnitCollections" inverseEntity="ChainTemplate" syncable="YES"/>
+        <relationship name="targetUnits" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TargetUnit" inverseName="targetUnitCollection" inverseEntity="TargetUnit" syncable="YES"/>
     </entity>
     <elements>
-        <element name="BeginDateComp" positionX="250" positionY="-477" width="128" height="88"/>
-        <element name="Chain" positionX="-693" positionY="-324" width="128" height="165"/>
         <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="165"/>
-        <element name="EndDateComp" positionX="-936" positionY="-477" width="128" height="88"/>
-        <element name="Exercise" positionX="-155" positionY="-63" width="128" height="120"/>
+        <element name="Exercise" positionX="-155" positionY="-63" width="128" height="135"/>
         <element name="ExerciseCategory" positionX="-396" positionY="-486" width="128" height="73"/>
-        <element name="NumberArray" positionX="90" positionY="375" width="128" height="60"/>
-        <element name="NumberTypeArrayComponent" positionX="304" positionY="450" width="128" height="90"/>
-        <element name="RealizedChain" positionX="-945" positionY="-300" width="128" height="150"/>
-        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="195"/>
-        <element name="RealizedWorkout" positionX="43" positionY="513" width="128" height="90"/>
-        <element name="RepsArray" positionX="-756" positionY="27" width="128" height="60"/>
-        <element name="SetBeginDateArray" positionX="-549" positionY="-444" width="128" height="73"/>
-        <element name="SetEndDateArray" positionX="-702" positionY="-531" width="128" height="73"/>
-        <element name="TargetRestTimeArray" positionX="61" positionY="-297" width="128" height="60"/>
-        <element name="WeightArray" positionX="594" positionY="207" width="128" height="60"/>
-        <element name="WorkoutTemplate" positionX="-477" positionY="-63" width="128" height="105"/>
+        <element name="RealizedChain" positionX="-945" positionY="-300" width="128" height="135"/>
+        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="165"/>
+        <element name="TargetUnit" positionX="-738" positionY="-333" width="128" height="195"/>
+        <element name="TargetUnitCollection" positionX="-729" positionY="-324" width="128" height="90"/>
+        <element name="RealizedSetCollection" positionX="-720" positionY="-315" width="128" height="90"/>
     </elements>
 </model>
