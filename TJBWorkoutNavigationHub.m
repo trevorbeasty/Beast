@@ -108,7 +108,7 @@ static const CGFloat buttonHeight = 60.0;
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
 
-typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
+typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 @implementation TJBWorkoutNavigationHub
 
@@ -164,14 +164,18 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
+#pragma mark - Core Data Queries
+
 - (void)configureRealizedSetFRC{
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
     
-    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"endDate"
+    NSSortDescriptor *dateSort = [NSSortDescriptor sortDescriptorWithKey: @"submissionTime"
                                                                ascending: NO];
-    
     [request setSortDescriptors: @[dateSort]];
+    
+    NSPredicate *standaloneSetPredicate = [NSPredicate predicateWithFormat: @"isStandaloneSet = YES"]; // only retrieve standalone sets. Realized chains are retrieved separately
+    request.predicate = standaloneSetPredicate;
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
@@ -227,11 +231,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 
 - (void)configureMasterList{
     
-    //// add the fetched objects of the 2 FRC's to a mutable array and reorder it appropriately.  Then, use the array to create the master list.
-    // create the interim array and sort it such that it holds realized sets and realized chains with set begin dates and chain created dates, respectively, in descending order
-    // add adjacent realized sets with the same exercise to the same TJBRealizedSetCollection.  This type is used to group and present consecutive individual sets of the same exercise in a single table view cell
-    // add all realized sets and realized chains to the same array, and then sort them by date is ascending order
-    
     NSMutableArray *interimArray1 = [[NSMutableArray alloc] init];
     
     [interimArray1 addObjectsFromArray: self.realizedSetFRC.fetchedObjects];
@@ -249,7 +248,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         if ([obj1 isKindOfClass: [TJBRealizedSet class]]){
             
             TJBRealizedSet *obj1WithClass = (TJBRealizedSet *)obj1;
-            obj1Date = obj1WithClass.endDate;
+            obj1Date = obj1WithClass.submissionTime;
             
             
         } else if([obj1 isKindOfClass: [TJBRealizedChain class]]){
@@ -264,7 +263,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         if ([obj2 isKindOfClass: [TJBRealizedSet class]]){
             
             TJBRealizedSet *obj2WithClass = (TJBRealizedSet *)obj2;
-            obj2Date = obj2WithClass.beginDate;
+            obj2Date = obj2WithClass.submissionTime;
             
             
         } else if([obj2 isKindOfClass: [TJBRealizedChain class]]){
@@ -290,7 +289,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     }];
     
     // evaluate if consecutive array objects are realized sets of the same exercises.  Group these using TJBRealizedSetCollection
-    // interim array 2 holds realized chains and TJBRealizedSetCollections
+    // interim array 2 holds realized chains and TJBRealizedSetGrouping
     
     NSMutableArray *interimArray2 = [[NSMutableArray alloc] init];
     NSMutableArray *stagingArray = [[NSMutableArray alloc] init];
@@ -331,7 +330,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                     
                     [stagingArray addObject: interimArray1[i+1]];
                     
-                    TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
                     
                     [interimArray2 addObject: rsc];
                     
@@ -339,7 +338,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                     
                     if (stagingArray.count > 1){
                         
-                        TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+                        TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
                         
                         [interimArray2 addObject: rsc];
                         
@@ -358,7 +357,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
                 if (stagingArray.count > 1){
                     
-                    TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
                     
                     [interimArray2 addObject: rsc];
                     
@@ -398,7 +397,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
             
             // give the rsc all realized sets
             
-            TJBRealizedSetCollection rsc = [NSArray arrayWithArray: stagingArray];
+            TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
             
             // add the rsc to interim array 2 and clear all objects from the staging array
             
@@ -440,7 +439,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         TJBRealizedSet *realizedSet = object;
         
-        return [[NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian] startOfDayForDate: realizedSet.beginDate];
+        return [[NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian] startOfDayForDate: realizedSet.submissionTime];
         
     } else{
         
@@ -499,39 +498,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
 - (void)viewDidAppear:(BOOL)animated{
     
     [self executeDateControlAnimation];
-    
-//    // second position
-//    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    NSInteger day = [calendar component: NSCalendarUnitDay
-//                               fromDate: self.activeDate];
-//    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
-//    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
-//    
-//    // make sure the second position will not drag the view too far, revealing a white screen beneath
-//    
-//    CGFloat viewWidth = self.view.frame.size.width;
-//    
-//    if (activeDateControlRightEdge < viewWidth){
-//        
-//        activeDateControlRightEdge = viewWidth;
-//        
-//    }
-//    
-//    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
-//    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
-//    
-//    //
-//    
-//    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
-//    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
-//    float maxAnimationTime = .5;
-//    
-//    // animation call
-//    
-//    [self scrollToOffset: secondPosition
-//       animationDuration: maxAnimationTime * percentScrollViewWidth
-//     subsequentAnimation: nil];
     
 }
 
@@ -603,22 +569,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     
 }
 
-//- (void)configureTableShadow{
-//    
-//    [self.view layoutIfNeeded];
-//    
-//    UIView *shadowView = self.shadowContainer;
-//    shadowView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//    shadowView.clipsToBounds = NO;
-//    
-//    CALayer *shadowLayer = shadowView.layer;
-//    shadowLayer.masksToBounds = NO;
-//    shadowLayer.shadowColor = [UIColor darkGrayColor].CGColor;
-//    shadowLayer.shadowOffset = CGSizeMake(0.0, 3.0);
-//    shadowLayer.shadowOpacity = 1.0;
-//    shadowLayer.shadowRadius = 3.0;
-//    
-//}
 
 - (void)configureTableView{
     
@@ -831,7 +781,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         
         TJBRealizedSet *realizedSet = object;
         
-        return realizedSet.endDate;
+        return realizedSet.submissionTime;
         
     } else if (objectIsRealizedChain){
         
@@ -845,9 +795,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
         // simply return the end date of the first realized set
         // I believe they are in asending order (by date), so I am returning the end date of the earliest set
         
-        TJBRealizedSetCollection rsc = object;
+        TJBRealizedSetGrouping rsc = object;
         
-        return rsc[0].endDate;
+        return rsc[0].submissionTime;
         
     }
     
@@ -861,10 +811,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
     [self.todayButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
                            forState: UIControlStateNormal];
     self.todayButton.backgroundColor = [UIColor clearColor];
-    
-    // shadow container
-    
-//    [self configureTableShadow];
     
     // arrow background labels
     
@@ -1278,11 +1224,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 dateFormatter.dateStyle = NSDateFormatterNoStyle;
                 dateFormatter.timeStyle = NSDateFormatterShortStyle;
-                NSString *date = [dateFormatter stringFromDate: realizedSet.endDate];
+                NSString *date = [dateFormatter stringFromDate: realizedSet.submissionTime];
                 
                 [cell configureCellWithExercise: realizedSet.exercise.name
-                                         weight: [NSNumber numberWithFloat: realizedSet.weight]
-                                           reps: [NSNumber numberWithFloat: realizedSet.reps]
+                                         weight: [NSNumber numberWithFloat: realizedSet.submittedWeight]
+                                           reps: [NSNumber numberWithFloat: realizedSet.submittedReps]
                                            rest: nil
                                            date: date
                                          number: number
@@ -1423,7 +1369,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetCollection;
                 
             } else{
                 
-                TJBRealizedSetCollection rsc = self.dailyList[adjustedIndex];
+                TJBRealizedSetGrouping rsc = self.dailyList[adjustedIndex];
                 
                 return [TJBRealizedSetCollectionCell suggestedCellHeightForRealizedSetCollection: rsc];
                 

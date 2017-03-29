@@ -10,29 +10,19 @@
 
 #import <CoreData/CoreData.h>
 
+// all core data classes
+// I want to have it so that any class that interacts with core data can simply import the CoreDataController to get all required class imports
+
 #import "TJBExercise+CoreDataProperties.h"
 #import "TJBExerciseCategory+CoreDataProperties.h"
 
-#import "TJBRealizedSet+CoreDataProperties.h"
-
 #import "TJBChainTemplate+CoreDataProperties.h"
+#import "TJBTargetUnitCollection+CoreDataProperties.h"
+#import "TJBTargetUnit+CoreDataProperties.h"
 
 #import "TJBRealizedChain+CoreDataProperties.h"
-
-#import "TJBWeightArray+CoreDataProperties.h"
-#import "TJBRepsArray+CoreDataProperties.h"
-#import "TJBTargetRestTimeArray+CoreDataProperties.h"
-#import "TJBNumberArray+CoreDataProperties.h"
-#import "TJBNumberTypeArrayComp+CoreDataClass.h"
-
-
-
-// set begin and end dates
-
-#import "SetEndDateArray+CoreDataProperties.h"
-#import "SetBeginDateArray+CoreDataProperties.h"
-#import "TJBEndDateComp+CoreDataProperties.h"
-#import "TJBBeginDateComp+CoreDataProperties.h"
+#import "TJBRealizedSetCollection+CoreDataProperties.h"
+#import "TJBRealizedSet+CoreDataProperties.h"
 
 
 extern NSString * const ExerciseDataChanged;
