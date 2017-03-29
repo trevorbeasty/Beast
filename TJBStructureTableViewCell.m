@@ -153,10 +153,11 @@
     UILabel *restLabel = [[UILabel alloc] init];
     
     TJBChainTemplate *chain = self.chainTemplate;
+    TJBTargetUnit *tu = chain.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
     
-    BOOL targetingWeight = chain.targetingWeight;
-    BOOL targetingReps = chain.targetingReps;
-    BOOL targetingRest = chain.targetingRestTime;
+    BOOL targetingWeight = tu.isTargetingWeight;
+    BOOL targetingReps = tu.isTargetingReps;
+    BOOL targetingRest = tu.isTargetingTrailingRest;
     
     NSString *weightString;
     NSString *repsString;
@@ -164,7 +165,7 @@
     
     if (targetingWeight) {
         
-        float weight = self.chainTemplate.weightArrays[exerciseIndex].numbers[roundIndex].value;
+        float weight = tu.weightTarget;
         weightString = [NSString stringWithFormat: @"%.01f lbs", weight];
         
     } else{
@@ -175,8 +176,8 @@
     
     if (targetingReps) {
         
-        int reps = (int)self.chainTemplate.repsArrays[exerciseIndex].numbers[roundIndex].value;
-        repsString = [NSString stringWithFormat: @"%d reps", reps];
+        float reps = tu.repsTarget;
+        repsString = [NSString stringWithFormat: @"%.00f reps", reps];
         
     } else{
         
@@ -186,7 +187,7 @@
     
     if (targetingRest) {
         
-        int rest = self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value;
+        int rest = (int)tu.trailingRestTarget;
         NSString *string = [NSString stringWithFormat: @"+%@ rest", [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: rest]];
         restString = string;
         

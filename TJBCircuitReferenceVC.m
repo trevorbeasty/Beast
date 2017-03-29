@@ -111,9 +111,9 @@
     
     CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
     
-    componentHeight = titleBarHeight + contentRowHeight * (self.realizedChain.numberOfRounds) + componentStyleSpacing;
+    componentHeight = titleBarHeight + contentRowHeight * (self.realizedChain.chainTemplate.numberOfRounds) + componentStyleSpacing;
     
-    int numberOfComponents = self.realizedChain.numberOfExercises;
+    int numberOfComponents = self.realizedChain.chainTemplate.numberOfExercises;
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
     
     scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight);
@@ -130,7 +130,7 @@
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: @"V:|-2-"];
     
-    for (int i = 0 ; i < self.realizedChain.numberOfExercises ; i ++){
+    for (int i = 0 ; i < self.realizedChain.chainTemplate.numberOfExercises ; i ++){
         
         TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithRealizedChain: self.realizedChain
                                                                                                exerciseIndex: i];
@@ -155,7 +155,7 @@
         
         NSString *verticalAppendString;
         
-        if (i == self.realizedChain.numberOfExercises - 1){
+        if (i == self.realizedChain.chainTemplate.numberOfExercises - 1){
             
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]",
                                     dynamicComponentName,
