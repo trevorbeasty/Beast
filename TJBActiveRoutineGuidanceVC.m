@@ -383,9 +383,12 @@ static float const animationTimeUnit = .4;
                                                    referenceRoundIndex: iterativeRealizedChain.firstIncompleteRoundIndex];
         if (setExists){
             
-            weight = iterativeRealizedChain.weightArrays[exerciseIndex].numbers[roundIndex].value;
-            reps = iterativeRealizedChain.repsArrays[exerciseIndex].numbers[roundIndex].value;
-            date = iterativeRealizedChain.dateCreated;
+            TJBRealizedSet *rs = [self realizedSetForExerciseIndex: exerciseIndex
+                                                        roundIndex: roundIndex];
+            
+            weight = rs.submittedWeight;
+            reps = rs.submittedReps;
+            date = rs.submissionTime;
             
             [previousMarksArray addObject: [NSNumber numberWithFloat: weight]];
             [previousMarksArray addObject: [NSNumber numberWithFloat: reps]];
@@ -399,6 +402,8 @@ static float const animationTimeUnit = .4;
     return returnArray;
     
 }
+
+
 
 - (void)deriveStateContent{
     
@@ -488,9 +493,12 @@ static float const animationTimeUnit = .4;
     
     [targetsCollector addObject: self.chainTemplate.exercises[exerciseIndex].name];
     
-    if (self.chainTemplate.targetingWeight){
+    TJBTargetUnit *tu = [self targetUnitForExerciseIndex: exerciseIndex
+                                              roundIndex: roundIndex];
+    
+    if (tu.isTargetingWeight){
         
-        weight = self.chainTemplate.weightArrays[exerciseIndex].numbers[roundIndex].value;
+        weight = tu.weightTarget;
         
     } else{
         
@@ -498,9 +506,9 @@ static float const animationTimeUnit = .4;
         
     }
     
-    if (self.chainTemplate.targetingReps){
+    if (tu.isTargetingReps){
         
-        reps = self.chainTemplate.repsArrays[exerciseIndex].numbers[roundIndex].value;
+        reps = tu.repsTarget;
         
     } else{
         
@@ -508,9 +516,9 @@ static float const animationTimeUnit = .4;
         
     }
     
-    if (self.chainTemplate.targetingRestTime){
+    if (tu.isTargetingTrailingRest){
         
-        rest = self.chainTemplate.targetRestTimeArrays[exerciseIndex].numbers[roundIndex].value;
+        rest = tu.trailingRestTarget;
         
     } else{
         
@@ -587,7 +595,9 @@ static NSString const *restViewKey = @"restView";
         NSString *weight;
         NSString *reps;
         
-        if (self.chainTemplate.targetingWeight){
+        NSArray *iterativeLiftTargets = self.activeLiftTargets[i];
+        
+        if ([iterativeLiftTargets[1] floatValue] != -1){
             
             weight = [self.activeLiftTargets[i][1] stringValue];
             
@@ -597,7 +607,7 @@ static NSString const *restViewKey = @"restView";
             
         }
         
-        if (self.chainTemplate.targetingReps){
+        if ([iterativeLiftTargets[2] floatValue] != -1){
             
             reps = [self.activeLiftTargets[i][2] stringValue];
             
@@ -715,150 +725,7 @@ static NSString const *restViewKey = @"restView";
     
 }
 
-//- (UIView *)scrollContentViewForTargetArraysWithoutRestItem{
-//    
-//    self.constraintMapping = [[NSMutableDictionary alloc] init];
-//    self.exerciseItemChildVCs = [[NSMutableArray alloc] init];
-//    
-//    //// create the master view and give it the appropriate frame. Set the scroll view's content area according to the masterFrame's size
-//    
-//    CGFloat width = self.contentScrollView.frame.size.width;
-//    float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-//    CGFloat exerciseCompHeight = 220;
-//    CGFloat initialTopSpacing = 0;
-//    CGFloat scCompHeight = 62;
-//    CGFloat contentHeight = exerciseCompHeight * numberOfExerciseComps;
-//    CGFloat height = contentHeight + initialTopSpacing + scCompHeight;
-//    
-//    CGRect masterFrame = CGRectMake(0, 0, width, height);
-//    [self.contentScrollView setContentSize: CGSizeMake(width, height)];
-//    
-//    UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
-//    masterView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//    
-//    //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
-//    
-//    UIStackView *guidanceStackView = [[UIStackView alloc] init];
-//    guidanceStackView.axis = UILayoutConstraintAxisVertical;
-//    guidanceStackView.distribution = UIStackViewDistributionFillEqually;
-//    guidanceStackView.alignment = UIStackViewDistributionFill;
-//    guidanceStackView.spacing = 0;
-//    guidanceStackView.backgroundColor = [UIColor clearColor];
-//    
-//    guidanceStackView.translatesAutoresizingMaskIntoConstraints = NO;
-//    
-//    // layout constraints
-//    
-//    [self.constraintMapping setObject: guidanceStackView
-//                               forKey: guidanceStackViewKey];
-//    [masterView addSubview: guidanceStackView];
-//    
-//    NSArray *guidanceStackViewHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[guidanceStackView]-0-|"
-//                                                                             options: 0
-//                                                                             metrics: nil
-//                                                                               views: self.constraintMapping];
-//    
-//    [masterView addConstraints: guidanceStackViewHorC];
-//    
-//    // add views to the guidance stack view
-//    
-//    for (int i = 0; i < self.activeLiftTargets.count; i++){
-//        
-//        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 1];
-//        NSString *exerciseName = self.activeLiftTargets[i][0];
-//        NSString *weight;
-//        NSString *reps;
-//        
-//        if (self.chainTemplate.targetingWeight){
-//            
-//            weight = [self.activeLiftTargets[i][1] stringValue];
-//            
-//        } else{
-//            
-//            weight = @"X";
-//            
-//        }
-//        
-//        if (self.chainTemplate.targetingReps){
-//            
-//            reps = [self.activeLiftTargets[i][2] stringValue];
-//            
-//        } else{
-//            
-//            reps = @"X";
-//            
-//        }
-//        
-//        // grab the previous entries to be passed to the exerciseItemVC based on the active targets index
-//        // must make sure that a sub-array exists at the index before attempting to grab it.  If info exists at a certain index, it must exist at a lesser index given how chains work.  This allows me to just evaluate chain length when determining if info exists or not
-//        
-//        NSInteger numberOfPreviousEntries = self.activePreviousMarks.count;
-//        
-//        NSArray<NSArray *> *previousEntries = nil;
-//        
-//        if (i < numberOfPreviousEntries){
-//            
-//            previousEntries = self.activePreviousMarks[i];
-//            
-//        }
-//        
-//        
-//        
-//        TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
-//                                                                                                  targetExerciseName: exerciseName
-//                                                                                                        targetWeight: weight
-//                                                                                                          targetReps: reps
-//                                                                                                     previousEntries: previousEntries];
-//        [self.exerciseItemChildVCs addObject: exerciseItemVC];
-//        [self addChildViewController: exerciseItemVC];
-//        
-//        [guidanceStackView addArrangedSubview: exerciseItemVC.view];
-//        
-//        [exerciseItemVC didMoveToParentViewController: self];
-//        
-//    }
-//    
-//    // add 'sequence completed' item
-//    // will reuse the TJBActiveRoutineRestItem class because it works for this purpose
-//    
-//    NSNumber *scTitleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 1];
-//    
-//    NSString *scText = @"Sequence Completed";
-//    
-//    TJBActiveRoutineRestItem *scItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: scTitleNumber
-//                                                                                   contentText: scText];
-//    scItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
-//    
-//    [self addChildViewController: scItemVC];
-//    
-//    // constraints
-//    
-//    [masterView addSubview: scItemVC.view];
-//    
-//    [self.constraintMapping setObject: scItemVC.view
-//                               forKey: @"scItem"];
-//    
-//    NSArray *scHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[scItem]-0-|"
-//                                                              options: 0
-//                                                              metrics: nil
-//                                                                views: self.constraintMapping];
-//    
-//    
-//    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[guidanceStackView(==%d)]-0-[scItem]-0-|",
-//                                initialTopSpacing,
-//                                (int)contentHeight];
-//    
-//    NSArray *vertConstr = [NSLayoutConstraint constraintsWithVisualFormat: verticalString
-//                                                                    options: 0
-//                                                                    metrics: nil
-//                                                                      views: self.constraintMapping];
-//
-//    [masterView addConstraints: scHorC];
-//    [masterView addConstraints: vertConstr];
-//    
-//    return masterView;
-//    
-//}
+
 
 
 #pragma mark - Button Actions
@@ -908,8 +775,8 @@ static NSString const *restViewKey = @"restView";
     
     __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
     
-    NSInteger selectionsToBeMade = self.activeLiftTargets.count;
-    BOOL isLastLocalSelection = _selectionIndex == selectionsToBeMade - 1;
+//    NSInteger selectionsToBeMade = self.activeLiftTargets.count;
+//    BOOL isLastLocalSelection = _selectionIndex == selectionsToBeMade - 1;
     
     // record first incomplete indices in case cancel block in called.  If cancel block is called, I will simply change the 'first incomplete' type properties of the realized chain.  I will not change the 'isDefaultObject' property of the weights, reps, and dates that may have been recorded.  I may have to change this later given broader system considerations
     // the cancellation restoration exercise and round objects should only exist during the selection process, they should otherwise be nil
@@ -943,28 +810,18 @@ static NSString const *restViewKey = @"restView";
             
         int exercise = [weakSelf.activeExerciseIndexForChain intValue];
         int round = [weakSelf.activeRoundIndexForChain intValue];
-            
-        weakSelf.realizedChain.weightArrays[exercise].numbers[round].value = [weight floatValue];
-        weakSelf.realizedChain.repsArrays[exercise].numbers[round].value = [reps floatValue];
         
-        weakSelf.realizedChain.weightArrays[exercise].numbers[round].isDefaultObject = NO;
-        weakSelf.realizedChain.repsArrays[exercise].numbers[round].isDefaultObject = NO;
-            
-        // set begin dates will always be default objects.  It will vary for set end dates
-            
-        weakSelf.realizedChain.setBeginDateArrays[exercise].dates[round].isDefaultObject = YES;
-            
-        if (isLastLocalSelection){
-                
-            weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].value = [NSDate date];
-            weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = NO;
-                
-        } else{
-                
-            weakSelf.realizedChain.setEndDateArrays[exercise].dates[round].isDefaultObject = YES;
-                
-        }
-            
+        TJBRealizedSet *rs = [weakSelf realizedSetForExerciseIndex: exercise
+                                                    roundIndex: round];
+        
+        rs.submittedWeight = [weight floatValue];
+        rs.submittedReps = [reps floatValue];
+        rs.holdsNullValues = NO;
+        rs.exerciseIndex = exercise;
+        rs.roundIndex = round;
+        rs.submissionTime = [NSDate date];
+        rs.isStandaloneSet = NO;
+        
         // increment the chain indices.  The first incomplete type properties of the realized chain are updated in the following method
             
         BOOL routineNotCompleted = [self incrementActiveChainIndices];
@@ -987,15 +844,9 @@ static NSString const *restViewKey = @"restView";
                 
                 // this is where the views are updated to reflect new targets. Must ensure the current run loop finishes before calling this next method so that the next method's animation is properly displayed (views only redraw when the run-loop finishes, and thus one must allow the run loop to finish in order to display some interim state
                 
-//                [self.nextUpContainer insertSubview: self.loadingNewTargetsLabel
-//                                       aboveSubview: self.nextUpLabel];
-//                self.loadingNewTargetsLabel.hidden = NO;
-//                self.nextUpLabel.hidden = YES;
-                
                 self.contentScrollView.hidden = YES;
                 
                 self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-//                self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
                 
                 [weakSelf performSelector: @selector(showNextSetOfTargets)
                                withObject: nil
@@ -1452,6 +1303,20 @@ static NSString const *restViewKey = @"restView";
                          secondAnimation();
                          
                      }];
+    
+}
+
+#pragma mark - Convenience
+
+- (TJBTargetUnit *)targetUnitForExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+    
+    return self.chainTemplate.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
+    
+}
+
+- (TJBRealizedSet *)realizedSetForExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+    
+    return self.realizedChain.realizedSetCollections[exerciseIndex].realizedSets[roundIndex];
     
 }
 

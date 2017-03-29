@@ -120,51 +120,51 @@
     
 }
 
-+ (NSOrderedSet<TJBEndDateComp *> *)previousExerciseSetEndDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex{
-    
-    //// return a set of previous set end date components based on the passed-in realized chain and exercise index
-    
-    int numberOfExercises = realizedChain.numberOfExercises;
-    
-    BOOL atFirstExercise = currentExerciseIndex == 0;
-    
-    int previousExerciseIndex;
-    
-    if (atFirstExercise){
-        
-        previousExerciseIndex = numberOfExercises - 1;
-        
-    } else{
-        
-        previousExerciseIndex = currentExerciseIndex - 1;
-        
-    }
-    
-    return realizedChain.setEndDateArrays[previousExerciseIndex].dates;
-    
-}
-
-+ (NSOrderedSet<TJBBeginDateComp *> *)nextExerciseSetBeginDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex{
-    
-    int numberOfExercises = realizedChain.numberOfExercises;
-    
-    BOOL atLastExercise = currentExerciseIndex == numberOfExercises - 1;
-    
-    int nextExerciseIndex;
-    
-    if (atLastExercise){
-        
-        nextExerciseIndex = 0;
-        
-    } else{
-        
-        nextExerciseIndex = currentExerciseIndex + 1;
-        
-    }
-    
-    return realizedChain.setBeginDateArrays[nextExerciseIndex].dates;
-    
-}
+//+ (NSOrderedSet<TJBEndDateComp *> *)previousExerciseSetEndDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex{
+//    
+//    //// return a set of previous set end date components based on the passed-in realized chain and exercise index
+//    
+//    int numberOfExercises = realizedChain.numberOfExercises;
+//    
+//    BOOL atFirstExercise = currentExerciseIndex == 0;
+//    
+//    int previousExerciseIndex;
+//    
+//    if (atFirstExercise){
+//        
+//        previousExerciseIndex = numberOfExercises - 1;
+//        
+//    } else{
+//        
+//        previousExerciseIndex = currentExerciseIndex - 1;
+//        
+//    }
+//    
+//    return realizedChain.setEndDateArrays[previousExerciseIndex].dates;
+//    
+//}
+//
+//+ (NSOrderedSet<TJBBeginDateComp *> *)nextExerciseSetBeginDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex{
+//    
+//    int numberOfExercises = realizedChain.numberOfExercises;
+//    
+//    BOOL atLastExercise = currentExerciseIndex == numberOfExercises - 1;
+//    
+//    int nextExerciseIndex;
+//    
+//    if (atLastExercise){
+//        
+//        nextExerciseIndex = 0;
+//        
+//    } else{
+//        
+//        nextExerciseIndex = currentExerciseIndex + 1;
+//        
+//    }
+//    
+//    return realizedChain.setBeginDateArrays[nextExerciseIndex].dates;
+//    
+//}
 
 @end
 

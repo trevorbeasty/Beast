@@ -118,11 +118,11 @@
     
     NSInteger iterationLimit; // establish the iteration limit. It is equal to the number of rounds unless targets do not vary by round, in which case it is 1
     
-    if (self.chainTemplate.targetsVaryByRound == NO){
-        iterationLimit = 1;
-    } else{
+//    if (self.chainTemplate.targetsVaryByRound == NO){
+//        iterationLimit = 1;
+//    } else{
         iterationLimit = self.chainTemplate.numberOfRounds;
-    }
+//    }
     
     for (int i = 0 ; i < iterationLimit ; i ++){
         
@@ -157,7 +157,7 @@
             
         }
         
-        if (self.chainTemplate.targetsVaryByRound == NO || self.chainTemplate.numberOfRounds == 1){
+        if (self.chainTemplate.numberOfRounds == 1){
             
             verticalAppendString = [NSString stringWithFormat: @"[%@]-0-|",
                                     dynamicRowName];
