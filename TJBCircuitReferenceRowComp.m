@@ -576,6 +576,11 @@
         
         [[CoreDataController singleton] saveContext];
         
+        // button
+        
+        [self.weightButton setTitle: [selectedNumber stringValue]
+                           forState: UIControlStateNormal];
+        
         // reload view data
         
         [self activateMode: _activeMode];
@@ -618,6 +623,11 @@
         [self realizedSetForController].submittedReps = [selectedNumber floatValue];
         
         [[CoreDataController singleton] saveContext];
+        
+        // button
+        
+        [self.repsButton setTitle: [selectedNumber stringValue]
+                         forState: UIControlStateNormal];
         
         // reload view data
         

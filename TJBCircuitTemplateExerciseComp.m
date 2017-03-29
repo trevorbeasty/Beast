@@ -223,6 +223,23 @@
         [self.masterController didSelectExercise: selectedExercise
                                 forExerciseIndex: [self.exerciseIndex intValue]];
         
+        // core data
+        
+//        for (TJBTargetUnit *tu in self.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]]){
+//            
+//            tu.exercise = selectedExercise;
+//            
+//        }
+        
+        TJBTargetUnitCollection *tuc = self.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]];
+        
+        for (int i = 0; i < self.chainTemplate.numberOfRounds; i++){
+            
+            TJBTargetUnit *tu = tuc.targetUnits[i];
+            tu.exercise = selectedExercise;
+            
+        }
+        
         // update the view
         
         self.selectedExerciseButton.backgroundColor = [UIColor clearColor];

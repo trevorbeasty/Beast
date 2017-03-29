@@ -381,10 +381,12 @@ static float const animationTimeUnit = .4;
                                                             roundIndex: roundIndex
                                        isPriorToReferenceExerciseIndex: iterativeRealizedChain.firstIncompleteExerciseIndex
                                                    referenceRoundIndex: iterativeRealizedChain.firstIncompleteRoundIndex];
-        if (setExists){
-            
-            TJBRealizedSet *rs = [self realizedSetForExerciseIndex: exerciseIndex
-                                                        roundIndex: roundIndex];
+        
+        TJBRealizedSet *rs = iterativeRealizedChain.realizedSetCollections[exerciseIndex].realizedSets[roundIndex];
+        
+        BOOL setIsNonnull = rs.holdsNullValues == NO;
+        
+        if (setExists && setIsNonnull){
             
             weight = rs.submittedWeight;
             reps = rs.submittedReps;
@@ -521,8 +523,6 @@ static float const animationTimeUnit = .4;
         rest = tu.trailingRestTarget;
         
     } else{
-        
-        // a value of negative one is assigned in this case so that it is nonzero and hence does not conflict with the logic used to determine how many exercise targets to collect
         
         rest = -1.0;
         
@@ -812,7 +812,7 @@ static NSString const *restViewKey = @"restView";
         int round = [weakSelf.activeRoundIndexForChain intValue];
         
         TJBRealizedSet *rs = [weakSelf realizedSetForExerciseIndex: exercise
-                                                    roundIndex: round];
+                                                        roundIndex: round];
         
         rs.submittedWeight = [weight floatValue];
         rs.submittedReps = [reps floatValue];
