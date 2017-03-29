@@ -290,17 +290,19 @@
     NSNumber *weightTarget;
     NSNumber *repsTarget;
     
-    if (chainTemplate.targetingWeight){
-        weightTarget = [NSNumber numberWithFloat: chainTemplate.weightArrays[exerciseInd].numbers[roundInd].value];
+    TJBTargetUnit *tu = chainTemplate.targetUnitCollections[exerciseInd].targetUnits[roundInd];
+    
+    if (tu.isTargetingWeight){
+        weightTarget = [NSNumber numberWithFloat: tu.weightTarget];
     }
     
-    if (chainTemplate.targetingReps){
-        repsTarget = [NSNumber numberWithFloat: chainTemplate.repsArrays[exerciseInd].numbers[roundInd].value];
+    if (tu.isTargetingReps){
+        repsTarget = [NSNumber numberWithFloat: tu.repsTarget];
     }
     
     // weight
     
-    if (chainTemplate.targetingWeight){
+    if (tu.isTargetingWeight){
         
         NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weightTarget stringValue]];
         
@@ -316,7 +318,7 @@
     
     // reps
     
-    if (chainTemplate.targetingReps){
+    if (tu.isTargetingReps){
         
         NSString *repsString = [NSString stringWithFormat: @"%@ reps", [repsTarget stringValue]];
         
@@ -429,7 +431,6 @@
 
 #pragma mark - Convenience
 
-
 - (NSString *)displayStringForRealizedNumber:(NSNumber *)realizedNumber targetNumber:(NSNumber *)targetNumber realizedNumberExists:(BOOL)realizedNumberExists targetNumberExists:(BOOL)targetNumberExists isTimeType:(BOOL)isTimeType{
     
     if (isTimeType){
@@ -479,11 +480,15 @@
     
 }
 
-
+- (TJBTargetUnit *)targetUnitForController{
+    
+    return self.realizedChain.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]].targetUnits[[self.roundIndex intValue]];
+    
+}
 
 - (NSString *)realizedWeightString{
     
-    NSNumber *weight = [NSNumber numberWithFloat: self.realizedChain.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value];
+    NSNumber *weight = [NSNumber numberWithFloat: [self targetUnitForController].weightTarget];
     
     return [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
     
@@ -491,7 +496,7 @@
 
 - (NSString *)realizedRepsString{
     
-    NSNumber *reps = [NSNumber numberWithFloat: self.realizedChain.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value];
+    NSNumber *reps = [NSNumber numberWithFloat: [self targetUnitForController].repsTarget];
     
     return [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
     
@@ -500,10 +505,11 @@
 - (NSString *)targetRestString{
     
     float rest;
+    TJBTargetUnit *tu = [self targetUnitForController];
     
-    if (self.realizedChain.chainTemplate.targetingRestTime){
+    if (tu.isTargetingTrailingRest){
         
-        rest = self.realizedChain.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value;
+        rest = tu.trailingRestTarget;
         
         NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: (int)rest];
         
@@ -545,6 +551,12 @@
 
 #pragma mark - Target Action
 
+- (TJBRealizedSet *)realizedSetForController{
+    
+    return self.realizedChain.realizedSetCollections[[self.exerciseIndex intValue]].realizedSets[[self.roundIndex intValue]];
+    
+}
+
 - (IBAction)didPressWeightButton:(id)sender{
     
     // present the single number selection scene.  If a number is chosen, update core data and refresh the view
@@ -560,10 +572,7 @@
         
         // update the realized chain and save core data changes
         
-        int exerciseInd = [self.exerciseIndex intValue];
-        int roundInd = [self.roundIndex intValue];
-        
-        self.realizedChain.weightArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+        [self realizedSetForController].submittedWeight = [selectedNumber floatValue];
         
         [[CoreDataController singleton] saveContext];
         
@@ -606,10 +615,7 @@
         
         // update the realized chain and save core data changes
         
-        int exerciseInd = [self.exerciseIndex intValue];
-        int roundInd = [self.roundIndex intValue];
-        
-        self.realizedChain.repsArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
+        [self realizedSetForController].submittedReps = [selectedNumber floatValue];
         
         [[CoreDataController singleton] saveContext];
         
