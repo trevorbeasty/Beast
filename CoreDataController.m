@@ -919,6 +919,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         TJBRealizedSetCollection *rsc = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSetCollection"
                                                                       inManagedObjectContext: moc];
         rsc.exerciseIndex = i;
+        rsc.realizedChain = realizedChain;
         [realizedSetCollectors addObject: rsc];
         
         NSMutableOrderedSet<TJBRealizedSet *> *iterativeRealizedSets = [[NSMutableOrderedSet alloc] init];
@@ -928,6 +929,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
             
             TJBRealizedSet *rs = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
                                                                inManagedObjectContext: moc];
+            rs.realizedSetCollector = rsc;
             [iterativeRealizedSets addObject: rs];
             
             rs.exerciseIndex = i;
@@ -935,6 +937,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
             
             rs.holdsNullValues = YES;
             rs.isStandaloneSet = NO;
+            
+            rs.exercise = chainTemplate.exercises[i];
             
         }
         
