@@ -69,7 +69,7 @@ typedef enum{
 
 - (NSManagedObjectContext *)moc;
 
-- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain;
+//- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain;
 
 //// chains
 
@@ -92,7 +92,7 @@ typedef enum{
 // checking if an object is a default object
 
 - (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise;
-- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp;
+//- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp;
 
 
 

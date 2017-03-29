@@ -783,28 +783,17 @@
 
 - (void)addRealizedSetToCoreData{
     
-    BOOL postMortem = FALSE;
-    
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
     TJBRealizedSet *realizedSet = [NSEntityDescription insertNewObjectForEntityForName: @"RealizedSet"
                                                                 inManagedObjectContext: moc];
     
-    realizedSet.recordedBeginDate = NO;
-    realizedSet.exactBeginDate = NO;
-
-    // set end date and associated BOOLs
-    
-    realizedSet.recordedEndDate = YES;
-    realizedSet.endDate = self.setEndDate;
-    realizedSet.exactEndDate = NO;
-    
-    // other
-    
-    realizedSet.postMortem = postMortem;
-    realizedSet.weight = [self.weight floatValue];
-    realizedSet.reps = [self.reps floatValue];
+    realizedSet.submittedWeight = [self.weight floatValue];
+    realizedSet.submittedReps = [self.reps floatValue];
     realizedSet.exercise = self.exercise;
+    realizedSet.holdsNullValues = NO;
+    realizedSet.isStandaloneSet = YES;
+    realizedSet.submissionTime = [NSDate date];
     
     [[CoreDataController singleton] saveContext];
     
@@ -1176,55 +1165,57 @@
         
         for (TJBRealizedSet *realizedSet in activeExercise.realizedSets){
             
-            TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: realizedSet.reps];
+            TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: realizedSet.submittedReps];
             
             // compare the weight of the current realized set to that of the current record to determine what should be done
             
             [self configureRepsWeightRecordPair: currentRecordForPrescribedReps
-                            withCandidateWeight: [NSNumber numberWithDouble: realizedSet.weight]
-                                  candidateDate: realizedSet.endDate];
+                            withCandidateWeight: [NSNumber numberWithDouble: realizedSet.submittedWeight]
+                                  candidateDate: realizedSet.submissionTime];
             
         }
         
-        // realized chains
+        // no longer need realized chain logic because all submissions are of type realizedSet
         
-        for (TJBRealizedChain *realizedChain in activeExercise.chains){
-            
-            if ([realizedChain isKindOfClass: [TJBChainTemplate class]]){
-                
-                continue;
-                
-            }
-            
-            NSArray *exerciseIndices = [self indicesContainingExercise: activeExercise
-                                                      forRealizedChain: realizedChain];
-            
-            int roundLimit = realizedChain.numberOfRounds;
-            
-            for (NSNumber *number in exerciseIndices){
-                
-                int exerciseIndex = [number intValue];
-                
-                for (int i = 0; i < roundLimit; i++){
-                    
-                    BOOL isDefaultEntry = realizedChain.weightArrays[exerciseIndex].numbers[i].isDefaultObject;
-                    
-                    if (!isDefaultEntry){
-                        
-                        int reps = (int)realizedChain.repsArrays[exerciseIndex].numbers[i].value;
-                        NSNumber *weight = [NSNumber numberWithDouble: realizedChain.weightArrays[exerciseIndex].numbers[i].value];
-                        NSDate *date = realizedChain.setBeginDateArrays[exerciseIndex].dates[i].value;
-                        
-                        TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: reps];
-                        
-                        [self configureRepsWeightRecordPair: currentRecordForPrescribedReps
-                                        withCandidateWeight: weight
-                                              candidateDate: date];
-                        
-                    }
-                }
-            }
-        }
+//        // realized chains
+//        
+//        for (TJBRealizedChain *realizedChain in activeExercise.chains){
+//            
+//            if ([realizedChain isKindOfClass: [TJBChainTemplate class]]){
+//                
+//                continue;
+//                
+//            }
+//            
+//            NSArray *exerciseIndices = [self indicesContainingExercise: activeExercise
+//                                                      forRealizedChain: realizedChain];
+//            
+//            int roundLimit = realizedChain.numberOfRounds;
+//            
+//            for (NSNumber *number in exerciseIndices){
+//                
+//                int exerciseIndex = [number intValue];
+//                
+//                for (int i = 0; i < roundLimit; i++){
+//                    
+//                    BOOL isDefaultEntry = realizedChain.weightArrays[exerciseIndex].numbers[i].isDefaultObject;
+//                    
+//                    if (!isDefaultEntry){
+//                        
+//                        int reps = (int)realizedChain.repsArrays[exerciseIndex].numbers[i].value;
+//                        NSNumber *weight = [NSNumber numberWithDouble: realizedChain.weightArrays[exerciseIndex].numbers[i].value];
+//                        NSDate *date = realizedChain.setBeginDateArrays[exerciseIndex].dates[i].value;
+//                        
+//                        TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: reps];
+//                        
+//                        [self configureRepsWeightRecordPair: currentRecordForPrescribedReps
+//                                        withCandidateWeight: weight
+//                                              candidateDate: date];
+//                        
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
@@ -1317,29 +1308,29 @@
     
 }
 
-- (NSArray<NSNumber *> *)indicesContainingExercise:(TJBExercise *)exercise forRealizedChain:(TJBRealizedChain *)realizedChain{
-    
-    int limit = realizedChain.numberOfExercises;
-    
-    NSMutableArray *collector = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < limit; i++){
-        
-        BOOL currentIndexContainsTargetedExercise = [realizedChain.exercises[i] isEqual: exercise];
-        
-        if (currentIndexContainsTargetedExercise){
-            
-            NSNumber *number = [NSNumber numberWithInt: i];
-            
-            [collector addObject: number];
-            
-        }
-        
-    }
-    
-    return collector;
-    
-}
+//- (NSArray<NSNumber *> *)indicesContainingExercise:(TJBExercise *)exercise forRealizedChain:(TJBRealizedChain *)realizedChain{
+//    
+//    int limit = realizedChain.numberOfExercises;
+//    
+//    NSMutableArray *collector = [[NSMutableArray alloc] init];
+//    
+//    for (int i = 0; i < limit; i++){
+//        
+//        BOOL currentIndexContainsTargetedExercise = [realizedChain.exercises[i] isEqual: exercise];
+//        
+//        if (currentIndexContainsTargetedExercise){
+//            
+//            NSNumber *number = [NSNumber numberWithInt: i];
+//            
+//            [collector addObject: number];
+//            
+//        }
+//        
+//    }
+//    
+//    return collector;
+//    
+//}
 
 #pragma mark - Core Data
 
