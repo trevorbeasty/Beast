@@ -123,13 +123,13 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
-- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp{
-    
-    //// evaluates if the component is a default object.  If so, returns YES
-    
-    return numberTypeArrayComp.isDefaultObject;
-    
-}
+//- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp{
+//    
+//    //// evaluates if the component is a default object.  If so, returns YES
+//    
+//    return numberTypeArrayComp.isDefaultObject;
+//    
+//}
 
 - (BOOL)exerciseExistsForName:(NSString *)name{
     
@@ -327,110 +327,122 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - Persistent Store Management
 
-- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain{
-    
-    // must guarantee that all trickle-down managed objects are deleted as well as the chain itself
-    // only some objects must be deleted, others should continue to exist in their own right
-    
-    // some relationships are common to both chain types, hence the motivation for not separating this method out into two methods
-    
-    NSOrderedSet *weightArrays = chain.weightArrays;
-    NSOrderedSet *repsArrays = chain.repsArrays;
-    
-    // exercises continue to exist in their own right
-    
-    // weight arrays
-    
-    for (TJBWeightArray *array in weightArrays){
-        
-        NSOrderedSet *numbers = array.numbers;
-        
-        for (TJBNumberTypeArrayComp *comp in numbers){
-            
-            [_moc deleteObject: comp];
-        }
-        
-        [_moc deleteObject: array];
-    }
-    
-    // reps arrays
-    
-    for (TJBRepsArray *array in repsArrays){
-        
-        NSOrderedSet *numbers = array.numbers;
-        
-        for (TJBNumberTypeArrayComp *comp in numbers){
-            
-            [_moc deleteObject: comp];
-        }
-        
-        [_moc deleteObject: array];
-    }
-    
-    //// chain template specific deletions
-    // need to delete target rest time arrays
-    
-    if (chainType == ChainTemplateType){
-        
-        TJBChainTemplate *chainTemplate = (TJBChainTemplate *)chain;
-        
-        NSOrderedSet *restTimeArrays = chainTemplate.targetRestTimeArrays;
-        
-        for (TJBTargetRestTimeArray *array in restTimeArrays){
-            
-            NSOrderedSet *arrayComps = array.numbers;
-            
-            for (TJBNumberTypeArrayComp *comp in arrayComps){
-                
-                [_moc deleteObject: comp];
-            }
-            
-            [_moc deleteObject: array];
-        }
-    }
-    
-    
-    if (chainType == RealizedChainType){
-        
-        // cast the chain as a realized chain
-        
-        TJBRealizedChain *realizedChain = (TJBRealizedChain *)chain;
-        
-        // date arrays
-        
-        NSOrderedSet *beginDateArrays = realizedChain.setBeginDateArrays;
-        NSOrderedSet *endDateArrays = realizedChain.setEndDateArrays;
-            
-        for (SetBeginDateArray *array in beginDateArrays){
-                
-            NSOrderedSet *dates = array.dates;
-                
-            for (TJBBeginDateComp *comp in dates){
-                    
-                [_moc deleteObject: comp];
-            }
-                
-            [_moc deleteObject: array];
-        }
-        
-        for (SetEndDateArray *array in endDateArrays){
-            
-            NSOrderedSet *dates = array.dates;
-            
-            for (TJBEndDateComp *comp in dates){
-                
-                [_moc deleteObject: comp];
-            }
-            
-            [_moc deleteObject: array];
-        }
+//- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain{
+//    
+//    // must guarantee that all trickle-down managed objects are deleted as well as the chain itself
+//    // only some objects must be deleted, others should continue to exist in their own right
+//    
+//    // some relationships are common to both chain types, hence the motivation for not separating this method out into two methods
+//    
+//    NSOrderedSet *weightArrays = chain.weightArrays;
+//    NSOrderedSet *repsArrays = chain.repsArrays;
+//    
+//    // exercises continue to exist in their own right
+//    
+//    // weight arrays
+//    
+//    for (TJBWeightArray *array in weightArrays){
+//        
+//        NSOrderedSet *numbers = array.numbers;
+//        
+//        for (TJBNumberTypeArrayComp *comp in numbers){
+//            
+//            [_moc deleteObject: comp];
+//        }
+//        
+//        [_moc deleteObject: array];
+//    }
+//    
+//    // reps arrays
+//    
+//    for (TJBRepsArray *array in repsArrays){
+//        
+//        NSOrderedSet *numbers = array.numbers;
+//        
+//        for (TJBNumberTypeArrayComp *comp in numbers){
+//            
+//            [_moc deleteObject: comp];
+//        }
+//        
+//        [_moc deleteObject: array];
+//    }
+//    
+//    //// chain template specific deletions
+//    // need to delete target rest time arrays
+//    
+//    if (chainType == ChainTemplateType){
+//        
+//        TJBChainTemplate *chainTemplate = (TJBChainTemplate *)chain;
+//        
+//        NSOrderedSet *restTimeArrays = chainTemplate.targetRestTimeArrays;
+//        
+//        for (TJBTargetRestTimeArray *array in restTimeArrays){
+//            
+//            NSOrderedSet *arrayComps = array.numbers;
+//            
+//            for (TJBNumberTypeArrayComp *comp in arrayComps){
+//                
+//                [_moc deleteObject: comp];
+//            }
+//            
+//            [_moc deleteObject: array];
+//        }
+//    }
+//    
+//    
+//    if (chainType == RealizedChainType){
+//        
+//        // cast the chain as a realized chain
+//        
+//        TJBRealizedChain *realizedChain = (TJBRealizedChain *)chain;
+//        
+//        // date arrays
+//        
+//        NSOrderedSet *beginDateArrays = realizedChain.setBeginDateArrays;
+//        NSOrderedSet *endDateArrays = realizedChain.setEndDateArrays;
+//            
+//        for (SetBeginDateArray *array in beginDateArrays){
+//                
+//            NSOrderedSet *dates = array.dates;
+//                
+//            for (TJBBeginDateComp *comp in dates){
+//                    
+//                [_moc deleteObject: comp];
+//            }
+//                
+//            [_moc deleteObject: array];
+//        }
+//        
+//        for (SetEndDateArray *array in endDateArrays){
+//            
+//            NSOrderedSet *dates = array.dates;
+//            
+//            for (TJBEndDateComp *comp in dates){
+//                
+//                [_moc deleteObject: comp];
+//            }
+//            
+//            [_moc deleteObject: array];
+//        }
+//
+//    }
+//    
+//    [_moc deleteObject: chain];
+//    
+//    NSError *error;
+//    [_moc save: &error];
+//    
+//}
 
-    }
+- (void)deleteChainTemplate:(TJBChainTemplate *)ct{
     
-    [_moc deleteObject: chain];
     
-    NSError *error;
-    [_moc save: &error];
+    
+}
+
+- (void)deleteRealizedChain:(TJBRealizedChain *)rc{
+    
+    
     
 }
 
@@ -438,107 +450,107 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 //// chain template
 
-- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate{
-    
-    int numberOfRounds = chainTemplate.numberOfRounds;
-    
-    // weight
-    
-    BOOL weightIsTargeted = chainTemplate.targetingWeight;
-    
-    NSOrderedSet <TJBWeightArray *> *weightArrays = chainTemplate.weightArrays;
-    
-    if (weightIsTargeted){
-        
-        for (TJBWeightArray *weightArray in weightArrays){
-            
-            float userSelectedValue = weightArray.numbers[0].value;
-            
-            for (int i = 1; i < numberOfRounds; i++){
-                
-                TJBNumberTypeArrayComp *arrayComp = weightArray.numbers[i];
-                arrayComp.isDefaultObject = NO;
-                arrayComp.value = userSelectedValue;
-                
-            }
-        }
-    }
-    
-}
+//- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate{
+//    
+//    int numberOfRounds = chainTemplate.numberOfRounds;
+//    
+//    // weight
+//    
+//    BOOL weightIsTargeted = chainTemplate.targetingWeight;
+//    
+//    NSOrderedSet <TJBWeightArray *> *weightArrays = chainTemplate.weightArrays;
+//    
+//    if (weightIsTargeted){
+//        
+//        for (TJBWeightArray *weightArray in weightArrays){
+//            
+//            float userSelectedValue = weightArray.numbers[0].value;
+//            
+//            for (int i = 1; i < numberOfRounds; i++){
+//                
+//                TJBNumberTypeArrayComp *arrayComp = weightArray.numbers[i];
+//                arrayComp.isDefaultObject = NO;
+//                arrayComp.value = userSelectedValue;
+//                
+//            }
+//        }
+//    }
+//    
+//}
 
-- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate{
-    
-    int numberOfRounds = chainTemplate.numberOfRounds;
-    
-    // reps
-    
-    BOOL repsIsTargeted = chainTemplate.targetingReps;
-    
-    NSOrderedSet <TJBRepsArray *> *repsArrays = chainTemplate.repsArrays;
-    
-    if (repsIsTargeted){
-        
-        for (TJBRepsArray *repsArray in repsArrays){
-            
-            float userSelectedValue = repsArray.numbers[0].value;
-            
-            for (int i = 1; i < numberOfRounds; i++){
-                
-                TJBNumberTypeArrayComp *arrayComp = repsArray.numbers[i];
-                arrayComp.isDefaultObject = NO;
-                arrayComp.value = userSelectedValue;
-                
-            }
-        }
-    }
-    
-}
+//- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate{
+//    
+//    int numberOfRounds = chainTemplate.numberOfRounds;
+//    
+//    // reps
+//    
+//    BOOL repsIsTargeted = chainTemplate.targetingReps;
+//    
+//    NSOrderedSet <TJBRepsArray *> *repsArrays = chainTemplate.repsArrays;
+//    
+//    if (repsIsTargeted){
+//        
+//        for (TJBRepsArray *repsArray in repsArrays){
+//            
+//            float userSelectedValue = repsArray.numbers[0].value;
+//            
+//            for (int i = 1; i < numberOfRounds; i++){
+//                
+//                TJBNumberTypeArrayComp *arrayComp = repsArray.numbers[i];
+//                arrayComp.isDefaultObject = NO;
+//                arrayComp.value = userSelectedValue;
+//                
+//            }
+//        }
+//    }
+//    
+//}
 
-- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate{
-    
-    int numberOfRounds = chainTemplate.numberOfRounds;
-    
-    // rest
-    
-    BOOL restIsTargeted = chainTemplate.targetingRestTime;
-    
-    NSOrderedSet <TJBTargetRestTimeArray *> *restArrays = chainTemplate.targetRestTimeArrays;
-    
-    if (restIsTargeted){
-        
-        for (TJBTargetRestTimeArray *restArray in restArrays){
-            
-            float userSelectedValue = restArray.numbers[0].value;
-            
-            for (int i = 1; i < numberOfRounds; i++){
-                
-                TJBNumberTypeArrayComp *arrayComp = restArray.numbers[i];
-                arrayComp.isDefaultObject = NO;
-                arrayComp.value = userSelectedValue;
-                
-            }
-        }
-    }
-    
-}
+//- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate{
+//    
+//    int numberOfRounds = chainTemplate.numberOfRounds;
+//    
+//    // rest
+//    
+//    BOOL restIsTargeted = chainTemplate.targetingRestTime;
+//    
+//    NSOrderedSet <TJBTargetRestTimeArray *> *restArrays = chainTemplate.targetRestTimeArrays;
+//    
+//    if (restIsTargeted){
+//        
+//        for (TJBTargetRestTimeArray *restArray in restArrays){
+//            
+//            float userSelectedValue = restArray.numbers[0].value;
+//            
+//            for (int i = 1; i < numberOfRounds; i++){
+//                
+//                TJBNumberTypeArrayComp *arrayComp = restArray.numbers[i];
+//                arrayComp.isDefaultObject = NO;
+//                arrayComp.value = userSelectedValue;
+//                
+//            }
+//        }
+//    }
+//    
+//}
 
-- (void)cloneFirstNumberForAllTargetedCategories:(TJBChainTemplate *)chainTemplate{
-    
-    //// this method is intended to be used on chain templates for which targets do not vary by round.  If the category is being targeted, this method clones the single selected value and applies it to all rounds
-    
-    // weight
-    
-    [self cloneFirstNumberForWeight: chainTemplate];
-    
-    // reps
-    
-    [self cloneFirstNumberForReps: chainTemplate];
-    
-    // rest
-    
-    [self cloneFirstNumberForRest: chainTemplate];
-
-}
+//- (void)cloneFirstNumberForAllTargetedCategories:(TJBChainTemplate *)chainTemplate{
+//    
+//    //// this method is intended to be used on chain templates for which targets do not vary by round.  If the category is being targeted, this method clones the single selected value and applies it to all rounds
+//    
+//    // weight
+//    
+//    [self cloneFirstNumberForWeight: chainTemplate];
+//    
+//    // reps
+//    
+//    [self cloneFirstNumberForReps: chainTemplate];
+//    
+//    // rest
+//    
+//    [self cloneFirstNumberForRest: chainTemplate];
+//
+//}
 
 
 
@@ -546,89 +558,49 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 - (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate{
     
-    //// checks all required categories for default values and returns NO if it finds any.  If a category is not being targeted, do not check it, and vice versa.  Always check exercises
+    NSOrderedSet<TJBTargetUnitCollection *> *targetUnitCollections = chainTemplate.targetUnitCollections;
     
-    // first, check if targets vary by round.  If they do, clone the single user input value for targeted categories
-    
-    BOOL targetsVaryByRound = chainTemplate.targetsVaryByRound;
-    
-    if (!targetsVaryByRound){
+    for (TJBTargetUnitCollection *tuc in targetUnitCollections){
         
-        [self cloneFirstNumberForAllTargetedCategories: chainTemplate];
-        
-    }
-    
-    // this is reaused throughout
-    
-    NSOrderedSet <TJBNumberTypeArrayComp *> *arrayNumbers;
-    
-    // weight
-    
-    BOOL isTargetingWeight = chainTemplate.targetingWeight;
-    
-    if (isTargetingWeight){
-        
-        NSOrderedSet<TJBWeightArray *> *weightArrays = chainTemplate.weightArrays;
-        
-        for (TJBWeightArray *weightArray in weightArrays){
+        for (TJBTargetUnit *tu in tuc.targetUnits){
             
-            arrayNumbers = weightArray.numbers;
+            // weight
             
-            BOOL containsDefaultValue = [self defaultObjectFoundInOrderedSet: arrayNumbers];
-            
-            if (containsDefaultValue){
+            if (tu.isTargetingWeight){
                 
-                NSLog(@"not all weight user input collected");
-                return NO;
+                if (tu.weightIsNull){
+                    
+                    return NO;
+                    
+                }
+                
             }
             
-        }
-        
-    }
-    
-    // reps
-    
-    BOOL isTargetingReps = chainTemplate.targetingReps;
-    
-    if (isTargetingReps){
-        
-        NSOrderedSet<TJBRepsArray *> *repsArrays = chainTemplate.repsArrays;
-        
-        for (TJBRepsArray *repsArray in repsArrays){
+            // reps
             
-            arrayNumbers = repsArray.numbers;
-            
-            BOOL containsDefaultValue = [self defaultObjectFoundInOrderedSet: arrayNumbers];
-            
-            if (containsDefaultValue){
+            if (tu.isTargetingReps){
                 
-                NSLog(@"not all reps user input collected");
-                return NO;
+                if (tu.repsIsNull){
+                    
+                    return NO;
+                    
+                }
+                
             }
             
-        }
-        
-    }
-    
-    // rest
-    
-    BOOL isTargetingRest = chainTemplate.targetingRestTime;
-    
-    if (isTargetingRest){
-        
-        NSOrderedSet<TJBTargetRestTimeArray *> *restArrays = chainTemplate.targetRestTimeArrays;
-        
-        for (TJBTargetRestTimeArray *restArray in restArrays){
+            // rest
             
-            arrayNumbers = restArray.numbers;
-            
-            BOOL containsDefaultValue = [self defaultObjectFoundInOrderedSet: arrayNumbers];
-            
-            if (containsDefaultValue){
+            if (tu.isTargetingTrailingRest){
                 
-                NSLog(@"not all rest user input collected");
-                return NO;
+                if (tu.trailingRestIsNull){
+                    
+                    return NO;
+                    
+                }
+                
             }
+            
+            
             
         }
         
@@ -641,6 +613,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     if (!exercises){
         
         return NO;
+        
     }
 
     for (TJBExercise *exercise in exercises){
@@ -659,30 +632,31 @@ NSString * const placeholderCategoryName = @"Placeholder";
     // if control reaches this point, then no default objects have been found
     
     return YES;
-}
-
-- (BOOL)defaultObjectFoundInOrderedSet:(NSOrderedSet <TJBNumberTypeArrayComp *> *)set{
-    
-    //// internal method.  Given an NSOrderedSet of NSNumberTypeArrayComponents, this method determines whether any of them are default objects and returns YES if it does.  Otherwise, returns NO
-    
-    for (TJBNumberTypeArrayComp *comp in set){
-        
-        BOOL isDefault = comp.isDefaultObject;
-        
-        if (isDefault){
-            
-            return YES;
-        }
-        
-    }
-    
-    // if control reaches this point, then no default objects have been found
-
-    return NO;
     
 }
 
-- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound{
+//- (BOOL)defaultObjectFoundInOrderedSet:(NSOrderedSet <TJBNumberTypeArrayComp *> *)set{
+//    
+//    //// internal method.  Given an NSOrderedSet of NSNumberTypeArrayComponents, this method determines whether any of them are default objects and returns YES if it does.  Otherwise, returns NO
+//    
+//    for (TJBNumberTypeArrayComp *comp in set){
+//        
+//        BOOL isDefault = comp.isDefaultObject;
+//        
+//        if (isDefault){
+//            
+//            return YES;
+//        }
+//        
+//    }
+//    
+//    // if control reaches this point, then no default objects have been found
+//
+//    return NO;
+//    
+//}
+
+- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name isTargetingWeight:(BOOL)isTargetingWeight isTargetingReps:(BOOL)isTargetingReps isTargetingTrailingRest:(BOOL)isTargetingTrailingRest{
     
     //// this method takes all necessary chain parameters as arguments and creates a skelton chain.  If a category is being targeted, it is given default objects for all exercises and rounds.  A set of placeholder exercises is assigned to the exercises relationship
     
@@ -695,21 +669,11 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     //// assign the chain template's attributes
     
-    // pertinent to Chain
-    
     chainTemplate.numberOfExercises = [numberOfExercises intValue];
     chainTemplate.numberOfRounds = [numberOfRounds intValue];
     chainTemplate.dateCreated = [NSDate date];
     chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
-    chainTemplate.isIncomplete = YES;
-    
-    // pertinent to ChainTemplate
-    
     chainTemplate.name = name;
-    chainTemplate.targetingWeight = [targetingWeight boolValue];
-    chainTemplate.targetingReps = [targetingReps boolValue];
-    chainTemplate.targetingRestTime = [targetingRest boolValue];
-    chainTemplate.targetsVaryByRound = [targetsVaryByRound boolValue];
     
     //// chain template relationships
     
@@ -718,77 +682,41 @@ NSString * const placeholderCategoryName = @"Placeholder";
     // exercises
     
     NSArray *exercisesArray = [self placeholderExerciseArrayWithLenght: exerciseLimit];
-    
     NSOrderedSet *exercisesOrderedSet = [[NSOrderedSet alloc] initWithArray: exercisesArray];
-    
     chainTemplate.exercises = exercisesOrderedSet;
     
-    // only create placeholder data structures for weight, reps, and rest if they are being targeted
+    // target units
     
-    // weight
+    NSMutableOrderedSet<TJBTargetUnitCollection *> *targetUnitCollectors = [[NSMutableOrderedSet alloc] init];
+    chainTemplate.targetUnitCollections = targetUnitCollectors;
     
-    if ([targetingWeight boolValue] == YES){
+    for (int i = 0; i < [numberOfExercises intValue]; i++){
         
-        NSMutableOrderedSet *weightArrays = [[NSMutableOrderedSet alloc] init];
+        TJBTargetUnitCollection *tuc = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnitCollection"
+                                                                     inManagedObjectContext: moc];
+        [targetUnitCollectors addObject: tuc];
         
-        for (int i = 0; i < exerciseLimit; i++){
+        NSMutableOrderedSet<TJBTargetUnit *> *iterativeTargetUnits = [[NSMutableOrderedSet alloc] init];
+        tuc.targetUnits = iterativeTargetUnits;
+        
+        for (int j = 0; j < [numberOfRounds intValue]; j++){
             
-            // create the data structure expected  by core data and assign all pertinent / non-optional property values
+            TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
+                                                                               inManagedObjectContext: moc];
             
-            TJBWeightArray *weightArray = [NSEntityDescription insertNewObjectForEntityForName: @"WeightArray"
-                                                                        inManagedObjectContext: moc];
-            weightArray.chain = chainTemplate;
-//            NSOrderedSet *numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
-            weightArray.numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
-            [weightArrays addObject: weightArray];
+            iterativeTargetUnit.exerciseIndex = i;
+            iterativeTargetUnit.roundIndex = j;
             
+            iterativeTargetUnit.isTargetingWeight = isTargetingWeight;
+            iterativeTargetUnit.isTargetingReps = isTargetingReps;
+            iterativeTargetUnit.isTargetingTrailingRest = isTargetingTrailingRest;
+            
+            iterativeTargetUnit.weightIsNull = YES;
+            iterativeTargetUnit.repsIsNull = YES;
+            iterativeTargetUnit.trailingRestIsNull = YES;
+
         }
         
-        chainTemplate.weightArrays = weightArrays;
-    }
-    
-    // reps
-    
-    if ([targetingReps boolValue] == YES){
-        
-        NSMutableOrderedSet *repsArrays = [[NSMutableOrderedSet alloc] init];
-        
-        for (int i = 0; i < exerciseLimit; i++){
-            
-            // create the data structure expected  by core data and assign all pertinent / non-optional property values
-            
-            TJBRepsArray *repsArray = [NSEntityDescription insertNewObjectForEntityForName: @"RepsArray"
-                                                                        inManagedObjectContext: moc];
-            repsArray.chain = chainTemplate;
-            repsArray.numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
-            
-            [repsArrays addObject: repsArray];
-            
-        }
-        
-        chainTemplate.repsArrays = repsArrays;
-    }
-    
-    // rest
-    
-    if ([targetingRest boolValue] == YES){
-        
-        NSMutableOrderedSet *restArrays = [[NSMutableOrderedSet alloc] init];
-        
-        for (int i = 0; i < exerciseLimit; i++){
-            
-            // create the data structure expected  by core data and assign all pertinent / non-optional property values
-            
-            TJBTargetRestTimeArray *restArray = [NSEntityDescription insertNewObjectForEntityForName: @"TargetRestTimeArray"
-                                                                        inManagedObjectContext: moc];
-            restArray.chainTemplate = chainTemplate;
-            restArray.numbers = [self defaultNumberArrayNumbersWithNumberOfRounds: numberOfRounds];
-            
-            [restArrays addObject: restArray];
-            
-        }
-        
-        chainTemplate.targetRestTimeArrays = restArrays;
     }
     
     // save the newly created skeleton chain template and return it

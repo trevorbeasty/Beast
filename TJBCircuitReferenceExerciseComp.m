@@ -112,7 +112,7 @@
     
     // exercise
     
-    [self.selectedExerciseButton setTitle: self.realizedChain.exercises[[self.exerciseIndex intValue]].name
+    [self.selectedExerciseButton setTitle: self.realizedChain.chainTemplate.exercises[[self.exerciseIndex intValue]].name
                                  forState: UIControlStateNormal];
     
     self.selectedExerciseButton.enabled = NO;
@@ -154,7 +154,7 @@
     NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
     [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", horizontalThinLabel]];
     
-    for (int i = 0 ; i < self.realizedChain.numberOfRounds; i ++){
+    for (int i = 0 ; i < self.realizedChain.chainTemplate.numberOfRounds; i ++){
         
         // create the child VC's and add their programattic constraints
         
@@ -190,7 +190,7 @@
         
         
         
-        if (i == self.realizedChain.numberOfRounds - 1)
+        if (i == self.realizedChain.chainTemplate.numberOfRounds - 1)
         {
             verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
                                     dynamicRowName,

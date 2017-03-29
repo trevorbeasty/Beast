@@ -80,11 +80,11 @@ typedef enum{
 
 - (NSArray *)placeholderExerciseArrayWithLenght:(int)length;
 
-- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate;
-- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate;
-- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate;
+//- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate;
+//- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate;
+//- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate;
 
-- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name targetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound;
+- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name isTargetingWeight:(BOOL)isTargetingWeight isTargetingReps:(BOOL)isTargetingReps isTargetingTrailingRest:(BOOL)isTargetingTrailingRest;
 
 - (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate;
 
