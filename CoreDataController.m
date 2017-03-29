@@ -436,13 +436,47 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 - (void)deleteChainTemplate:(TJBChainTemplate *)ct{
     
+    NSManagedObjectContext *moc = self.moc;
     
+    for (TJBTargetUnitCollection *tuc in ct.targetUnitCollections){
+        
+        for (TJBTargetUnit *tu in tuc.targetUnits){
+            
+            [moc deleteObject: tu];
+            
+        }
+        
+        [moc deleteObject: tuc];
+        
+    }
+    
+    [moc deleteObject: ct];
+    
+    NSError *error;
+    [moc save: &error];
     
 }
 
 - (void)deleteRealizedChain:(TJBRealizedChain *)rc{
     
+    NSManagedObjectContext *moc = self.moc;
     
+    for (TJBRealizedSetCollection *rsc in rc.realizedSetCollections){
+        
+        for (TJBRealizedSet *rs in rsc.realizedSets){
+            
+            [moc deleteObject: rs];
+            
+        }
+        
+        [moc deleteObject: rsc];
+        
+    }
+    
+    [moc deleteObject: rc];
+    
+    NSError *error;
+    [_moc save: &error];
     
 }
 
