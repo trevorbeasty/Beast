@@ -350,6 +350,7 @@ static float const animationTimeUnit = .4;
     
 }
 
+
 #pragma mark - Scroll View Content
 
 - (NSArray<NSArray *> *)extractPreviousMarksArrayForActiveIndices{
