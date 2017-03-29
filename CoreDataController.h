@@ -72,6 +72,7 @@ typedef enum{
 //- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain;
 
 - (void)deleteRealizedChain:(TJBRealizedChain *)rc;
+- (void)deleteChainTemplate:(TJBChainTemplate *)ct;
 
 //// chains
 

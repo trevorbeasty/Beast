@@ -256,7 +256,7 @@
         
         // it has been determined that the chain template is complete, so update its corresponding property and save the context
         
-        self.chainTemplate.isIncomplete = NO;
+//        self.chainTemplate.isIncomplete = NO;
         [[CoreDataController singleton] saveContext];
         
         // alert
@@ -317,12 +317,11 @@
     // must check for completeness of chain template.  If all user selections have been been made but the 'launch circuit' or '+' buttons have not been pressed, its 'isIncomplete' property will not be updated
     
     BOOL isComplete = [[CoreDataController singleton] chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
-    self.chainTemplate.isIncomplete = !isComplete;
+//    self.chainTemplate.isIncomplete = !isComplete;
     
-    if (self.chainTemplate.isIncomplete){
+    if (!isComplete){
         
-        [[CoreDataController singleton] deleteChainWithChainType: ChainTemplateType
-                                                           chain: self.chainTemplate];
+        [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
         
     }
     
@@ -343,7 +342,7 @@
         
         // it has been determined that the chain template is complete, so update its corresponding property and save the context
         
-        self.chainTemplate.isIncomplete = NO;
+//        self.chainTemplate.isIncomplete = NO;
         [[CoreDataController singleton] saveContext];
         
         // alert

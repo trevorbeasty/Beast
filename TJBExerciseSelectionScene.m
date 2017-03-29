@@ -521,58 +521,17 @@ typedef enum{
     if (realizedSetCount > 0){
         
         NSOrderedSet *realizedSets = exercise.realizedSets;
-        realizedSetDate = [[realizedSets lastObject] endDate];
+        realizedSetDate = [[realizedSets lastObject] submissionTime];
         
     }
     
-    // realized chain
-    
-    NSDate *realizedChainDate = nil;
-    NSInteger chainCount = exercise.chains.count;
-    
-    if (chainCount > 0){
-        
-        // find the realized chain at the largest index
-        // the chains property holds a mix of chain templates and realized chains, so I have to check for type
-        // no check is done to see if an exercise was actually performed - this function will return the date created for a realized chain even if no exercises were actually performed
-        
-        for (int i = (int)chainCount - 1; i >= 0; i--){
-            
-            TJBChain *chain = exercise.chains[i];
-            
-            if ([chain isKindOfClass: [TJBRealizedChain class]]){
-                
-                realizedChainDate = chain.dateCreated;
-                
-                break;
-                
-            }
-        }
-    }
-    
-    // if both dates are nonnull, return the larger one.  If only one date is nonnull, return that date.  Otherwise, return nil
-    
-    if (!realizedSetDate && !realizedChainDate){
+    if (!realizedSetDate){
         
         return nil;
         
-    } else if (realizedSetDate && !realizedChainDate){
-        
-        return realizedSetDate;
-        
-    } else if (!realizedSetDate && realizedChainDate){
-        
-        return realizedChainDate;
-        
     } else{
         
-        float timeDiff = [realizedSetDate timeIntervalSinceDate: realizedChainDate];
-        
-        if (timeDiff > 0){
-            return realizedSetDate;
-        } else{
-            return realizedChainDate;
-        }
+        return realizedSetDate;
         
     }
     

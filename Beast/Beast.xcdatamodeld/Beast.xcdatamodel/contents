@@ -15,7 +15,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseCategory" inverseName="exercises" inverseEntity="ExerciseCategory" syncable="YES"/>
         <relationship name="chainTemplates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="exercises" inverseEntity="ChainTemplate" syncable="YES"/>
-        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
+        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
         <relationship name="targetUnits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TargetUnit" inverseName="exercise" inverseEntity="TargetUnit" syncable="YES"/>
     </entity>
     <entity name="ExerciseCategory" representedClassName="TJBExerciseCategory" syncable="YES" codeGenerationType="class">
@@ -72,8 +72,8 @@
         <element name="ExerciseCategory" positionX="-794" positionY="-135" width="128" height="73"/>
         <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="133"/>
         <element name="RealizedSet" positionX="-182" positionY="-54" width="128" height="178"/>
+        <element name="RealizedSetCollection" positionX="16" positionY="-261" width="128" height="88"/>
         <element name="TargetUnit" positionX="-774" positionY="216" width="128" height="238"/>
         <element name="TargetUnitCollection" positionX="-477" positionY="252" width="128" height="90"/>
-        <element name="RealizedSetCollection" positionX="16" positionY="-261" width="128" height="88"/>
     </elements>
 </model>
