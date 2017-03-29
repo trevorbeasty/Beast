@@ -39,11 +39,12 @@
         <attribute name="submittedReps" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="submittedWeight" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="realizedSets" inverseEntity="Exercise" syncable="YES"/>
+        <relationship name="realizedSetCollector" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedSetCollection" inverseName="realizedSets" inverseEntity="RealizedSetCollection" syncable="YES"/>
     </entity>
     <entity name="RealizedSetCollection" representedClassName="TJBRealizedSetCollection" syncable="YES" codeGenerationType="class">
         <attribute name="exerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="realizedChain" maxCount="1" deletionRule="Nullify" destinationEntity="RealizedChain" inverseName="realizedSetCollections" inverseEntity="RealizedChain" syncable="YES"/>
-        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSet" syncable="YES"/>
+        <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSet" inverseName="realizedSetCollector" inverseEntity="RealizedSet" syncable="YES"/>
     </entity>
     <entity name="TargetUnit" representedClassName="TJBTargetUnit" syncable="YES" codeGenerationType="class">
         <attribute name="exerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -55,21 +56,21 @@
         <attribute name="trailingRestTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="weightTarget" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="exercise" maxCount="1" deletionRule="Nullify" destinationEntity="Exercise" inverseName="targetUnits" inverseEntity="Exercise" syncable="YES"/>
-        <relationship name="targetUnitCollection" maxCount="1" deletionRule="Nullify" destinationEntity="TargetUnitCollection" inverseName="targetUnits" inverseEntity="TargetUnitCollection" syncable="YES"/>
+        <relationship name="targetUnitCollector" maxCount="1" deletionRule="Nullify" destinationEntity="TargetUnitCollection" inverseName="targetUnits" inverseEntity="TargetUnitCollection" syncable="YES"/>
     </entity>
     <entity name="TargetUnitCollection" representedClassName="TJBTargetUnitCollection" syncable="YES" codeGenerationType="class">
         <attribute name="exerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="chainTemplate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="targetUnitCollections" inverseEntity="ChainTemplate" syncable="YES"/>
-        <relationship name="targetUnits" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TargetUnit" inverseName="targetUnitCollection" inverseEntity="TargetUnit" syncable="YES"/>
+        <relationship name="targetUnits" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TargetUnit" inverseName="targetUnitCollector" inverseEntity="TargetUnit" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ChainTemplate" positionX="-909" positionY="438" width="128" height="165"/>
-        <element name="Exercise" positionX="-155" positionY="-63" width="128" height="135"/>
-        <element name="ExerciseCategory" positionX="-396" positionY="-486" width="128" height="73"/>
-        <element name="RealizedChain" positionX="-945" positionY="-300" width="128" height="135"/>
-        <element name="RealizedSet" positionX="-153" positionY="-408" width="128" height="165"/>
-        <element name="TargetUnit" positionX="-738" positionY="-333" width="128" height="195"/>
-        <element name="TargetUnitCollection" positionX="-729" positionY="-324" width="128" height="90"/>
-        <element name="RealizedSetCollection" positionX="-720" positionY="-315" width="128" height="90"/>
+        <element name="ChainTemplate" positionX="-171" positionY="207" width="128" height="165"/>
+        <element name="Exercise" positionX="-504" positionY="-162" width="128" height="135"/>
+        <element name="ExerciseCategory" positionX="-794" positionY="-135" width="128" height="73"/>
+        <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="135"/>
+        <element name="RealizedSet" positionX="-182" positionY="-54" width="128" height="178"/>
+        <element name="TargetUnit" positionX="-774" positionY="216" width="128" height="193"/>
+        <element name="TargetUnitCollection" positionX="-477" positionY="252" width="128" height="90"/>
+        <element name="RealizedSetCollection" positionX="16" positionY="-261" width="128" height="88"/>
     </elements>
 </model>
