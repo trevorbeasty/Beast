@@ -79,17 +79,10 @@
     TJBChainTemplate *skeletonChainTemplate = [[CoreDataController singleton] createAndSaveSkeletonChainTemplateWithNumberOfExercises: numberOfExercises
                                                                                                                        numberOfRounds: numberOfRounds
                                                                                                                                  name: name
-                                                                                                                    isTargetingWeight: targetingWeight
-                                                                                                                      isTargetingReps: targetingReps
-                                                                                                              isTargetingTrailingRest: targetingRest];
+                                                                                                                    isTargetingWeight: [targetingWeight boolValue]
+                                                                                                                      isTargetingReps: [targetingReps boolValue]
+                                                                                                              isTargetingTrailingRest: [targetingReps boolValue]];
     
-//    TJBChainTemplate *skeletonChainTemplate = [[CoreDataController singleton] createAndSaveSkeletonChainTemplateWithNumberOfExercises: numberOfExercises
-//                                                                                                                       numberOfRounds: numberOfRounds
-//                                                                                                                                 name: name
-//                                                                                                                      targetingWeight: targetingWeight
-//                                                                                                                        targetingReps: targetingReps
-//                                                                                                                        targetingRest: targetingRest
-//                                                                                                                   targetsVaryByRound: targetsVaryByRound];
     self.chainTemplate = skeletonChainTemplate;
 
     return self;

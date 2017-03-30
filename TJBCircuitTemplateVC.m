@@ -159,16 +159,7 @@ static NSString * const defaultValue = @"unselected";
     
     CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
     
-//    BOOL targetsVaryByRound = self.chainTemplate.targetsVaryByRound == YES;
-//    
-//    if (targetsVaryByRound){
-        
-        componentHeight = titleBarHeight + contentRowHeight * (self.chainTemplate.numberOfRounds) + componentStyleSpacing;
-        
-//    } else{
-        
-//        componentHeight = titleBarHeight + contentRowHeight + componentStyleSpacing;
-//    }
+    componentHeight = titleBarHeight + contentRowHeight * (self.chainTemplate.numberOfRounds) + componentStyleSpacing;
     
     int numberOfComponents = self.chainTemplate.numberOfExercises;
     CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;

@@ -223,14 +223,6 @@
         [self.masterController didSelectExercise: selectedExercise
                                 forExerciseIndex: [self.exerciseIndex intValue]];
         
-        // core data
-        
-//        for (TJBTargetUnit *tu in self.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]]){
-//            
-//            tu.exercise = selectedExercise;
-//            
-//        }
-        
         TJBTargetUnitCollection *tuc = self.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]];
         
         for (int i = 0; i < self.chainTemplate.numberOfRounds; i++){

@@ -147,16 +147,8 @@
     
     // round label
     
-//    if (self.chainTemplate.targetsVaryByRound == NO){
-//        
-//        self.roundLabel.text = @"All Rnds";
-//        
-//    } else{
-    
-        self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundIndex intValue] + 1];
+    self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundIndex intValue] + 1];
         
-//    }
-    
     self.roundLabel.backgroundColor = [UIColor clearColor];
     self.roundLabel.textColor = [UIColor whiteColor];
     self.roundLabel.font = [UIFont boldSystemFontOfSize: 15];
@@ -302,9 +294,6 @@
         TJBTargetUnit *tu = self.chainTemplate.targetUnitCollections[exerciseInd].targetUnits[roundInd];
         tu.repsTarget = [selectedNumber floatValue];
         tu.repsIsNull = NO;
-        
-//        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
-//        self.chainTemplate.repsArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         

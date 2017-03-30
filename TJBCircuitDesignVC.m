@@ -286,9 +286,9 @@
         
     } else{
         
-        NSNumber *targetingWeight = [NSNumber numberWithLong: self.targetingWeightSC.selectedSegmentIndex];
-        NSNumber *targetingReps = [NSNumber numberWithLong: self.targetingRepsSC.selectedSegmentIndex];
-        NSNumber *targetingRest = [NSNumber numberWithLong: self.targetingRestSC.selectedSegmentIndex];
+        NSNumber *targetingWeight = [NSNumber numberWithBool: self.targetingWeightSC.selectedSegmentIndex];
+        NSNumber *targetingReps = [NSNumber numberWithBool: self.targetingRepsSC.selectedSegmentIndex];
+        NSNumber *targetingRest = [NSNumber numberWithBool: self.targetingRestSC.selectedSegmentIndex];
         NSNumber *targetsVaryByRound = [NSNumber numberWithLong: self.targetsVaryByRoundSC.selectedSegmentIndex];
         NSNumber *numberOfExercises = [NSNumber numberWithInt: _numberOfExercises];
         NSNumber *numberOfRounds = [NSNumber numberWithInt: _numberOfRounds];

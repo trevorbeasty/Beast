@@ -713,10 +713,6 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     chainTemplate.exercises = [self placeholderExerciseSetWithLength: [numberOfExercises intValue]];
     
-//    NSArray *exercisesArray = [self placeholderExerciseArrayWithLenght: exerciseLimit];
-//    NSOrderedSet *exercisesOrderedSet = [[NSOrderedSet alloc] initWithArray: exercisesArray];
-//    chainTemplate.exercises = exercisesOrderedSet;
-    
     // target units
     
     NSMutableOrderedSet<TJBTargetUnitCollection *> *targetUnitCollectors = [[NSMutableOrderedSet alloc] init];
