@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^TJBCompletedSetCallback)(void);
+typedef void (^TJBVoidCallback)(void);
 
 @interface TJBSetCompletedSummaryVC : UIViewController
 
-- (instancetype)initWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps callbackBlock:(TJBCompletedSetCallback)callbackBlock;
+- (instancetype)initWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps cancelCallback:(TJBVoidCallback)cancelCallback editCallback:(TJBVoidCallback)editCallback confirmCallback:(TJBVoidCallback)confirmCallback;
 
 @end

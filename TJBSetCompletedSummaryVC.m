@@ -22,14 +22,25 @@
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *pressAnywhereLabel;
 @property (weak, nonatomic) IBOutlet UILabel *setCompletedLabel;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIButton *confirmButton;
+
+// IBAction
+
+- (IBAction)didPressCancel:(id)sender;
+- (IBAction)didPressEdit:(id)sender;
+- (IBAction)didPressConfirm:(id)sender;
+
 
 // core
 
 @property (strong) NSString *exerciseName;
 @property (strong) NSNumber *weight;
 @property (strong) NSNumber *reps;
-@property (strong) TJBCompletedSetCallback callbackBlock;
-
+@property (strong) TJBVoidCallback cancelCallback;
+@property (strong) TJBVoidCallback editCallback;
+@property (strong) TJBVoidCallback confirmCallback;
 
 @end
 
@@ -37,14 +48,16 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps callbackBlock:(TJBCompletedSetCallback)callbackBlock{
+- (instancetype)initWithExerciseName:(NSString *)exerciseName weight:(NSNumber *)weight reps:(NSNumber *)reps cancelCallback:(TJBVoidCallback)cancelCallback editCallback:(TJBVoidCallback)editCallback confirmCallback:(TJBVoidCallback)confirmCallback{
     
     self = [super init];
     
     self.exerciseName = exerciseName;
     self.weight = weight;
     self.reps = reps;
-    self.callbackBlock = callbackBlock;
+    self.cancelCallback = cancelCallback;
+    self.editCallback = editCallback;
+    self.confirmCallback = confirmCallback;
     
     return self;
     
@@ -56,7 +69,7 @@
     
     [self configureViewAesthetics];
     
-    [self configureGestureRecognizer];
+//    [self configureGestureRecognizer];
     
     [self configureDisplay];
     
@@ -126,6 +139,22 @@
         
     }
     
+    // buttons
+    
+    NSArray *buttons = @[self.cancelButton, self.editButton, self.confirmButton];
+    for (UIButton *b in buttons){
+        
+        b.backgroundColor = [UIColor clearColor];
+        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                forState: UIControlStateNormal];
+        b.titleLabel.font = [UIFont systemFontOfSize: 20];
+        
+        CALayer *buttLayer = b.layer;
+        buttLayer.borderWidth = 1.0;
+        buttLayer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
+        
+    }
+    
 }
 
 - (void)configureGestureRecognizer{
@@ -145,11 +174,45 @@
 
 - (void)didTap{
     
-    self.callbackBlock();
+//    self.callbackBlock();
+    
+}
+
+#pragma mark - Button Actions
+
+- (IBAction)didPressCancel:(id)sender{
+    
+    self.cancelCallback();
+    
+}
+
+- (IBAction)didPressEdit:(id)sender{
+    
+    self.editCallback();
+    
+}
+
+- (IBAction)didPressConfirm:(id)sender{
+    
+    self.confirmCallback();
     
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

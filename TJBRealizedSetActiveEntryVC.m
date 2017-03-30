@@ -743,7 +743,7 @@
         
     } else{
 
-        [self confirmSubmission];
+        [self presentConfirmationToUser];
         
     }
 }
@@ -802,44 +802,44 @@
 
 #pragma mark - Set Completion Actions
 
-- (void)presentSubmittedSetSummary{
-    // UIAlertController
-    
-    NSString *string = [NSString stringWithFormat: @"%@: %.01f lbs for %.00f reps",
-                        self.exercise.name,
-                        [self.weight floatValue],
-                        [self.reps floatValue]];
-    
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Detail Confirmation"
-                                                                   message: string
-                                                            preferredStyle: UIAlertControllerStyleAlert];
-    
-    // capture a weak reference to self in order to avoid a strong reference cycle
-    
-    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
-    
-    void (^action1Block)(UIAlertAction *) = ^(UIAlertAction *action){
-        [weakSelf setRealizedSetParametersToNil];
-    };
-    
-    void (^action2Block)(UIAlertAction *) = ^(UIAlertAction *action){
-        [weakSelf confirmSubmission];
-    };
-    
-    UIAlertAction *action1 = [UIAlertAction actionWithTitle: @"Discard"
-                                                      style: UIAlertActionStyleDefault
-                                                    handler: action1Block];
-    UIAlertAction *action2 = [UIAlertAction actionWithTitle: @"Save"
-                                                      style: UIAlertActionStyleDefault
-                                                    handler: action2Block];
-    
-    [alert addAction: action1];
-    [alert addAction: action2];
-    
-    [self presentViewController: alert
-                       animated: YES
-                     completion: nil];
-}
+//- (void)presentSubmittedSetSummary{
+//    // UIAlertController
+//    
+//    NSString *string = [NSString stringWithFormat: @"%@: %.01f lbs for %.00f reps",
+//                        self.exercise.name,
+//                        [self.weight floatValue],
+//                        [self.reps floatValue]];
+//    
+//    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Detail Confirmation"
+//                                                                   message: string
+//                                                            preferredStyle: UIAlertControllerStyleAlert];
+//    
+//    // capture a weak reference to self in order to avoid a strong reference cycle
+//    
+//    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+//    
+//    void (^action1Block)(UIAlertAction *) = ^(UIAlertAction *action){
+//        [weakSelf setRealizedSetParametersToNil];
+//    };
+//    
+//    void (^action2Block)(UIAlertAction *) = ^(UIAlertAction *action){
+//        [weakSelf confirmSubmission];
+//    };
+//    
+//    UIAlertAction *action1 = [UIAlertAction actionWithTitle: @"Discard"
+//                                                      style: UIAlertActionStyleDefault
+//                                                    handler: action1Block];
+//    UIAlertAction *action2 = [UIAlertAction actionWithTitle: @"Save"
+//                                                      style: UIAlertActionStyleDefault
+//                                                    handler: action2Block];
+//    
+//    [alert addAction: action1];
+//    [alert addAction: action2];
+//    
+//    [self presentViewController: alert
+//                       animated: YES
+//                     completion: nil];
+//}
 
 - (void)setRealizedSetParametersToNil{
     
@@ -855,14 +855,14 @@
     
 }
 
-- (void)confirmSubmission{
-    
-    [self addRealizedSetToCoreData];
-    
-    [self presentConfirmationToUser];
-    
-    [self setRealizedSetParametersToNil];
-}
+//- (void)confirmSubmission{
+//    
+//    [self addRealizedSetToCoreData];
+//    
+//    [self presentConfirmationToUser];
+//    
+//    [self setRealizedSetParametersToNil];
+//}
 
 - (void)removeConfirmationFromViewHierarchy{
     
@@ -885,9 +885,15 @@
     
     // the callback block removes the child view from the view hierarchy
     
-    TJBCompletedSetCallback callbackBlock = ^{
+    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+    
+    TJBVoidCallback confirmCallback = ^{
         
-        [self removeConfirmationFromViewHierarchy];
+        [weakSelf removeConfirmationFromViewHierarchy];
+        
+        [weakSelf addRealizedSetToCoreData];
+        
+        [weakSelf setRealizedSetParametersToNil];
         
         [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
                                              withForwardIncrementing: YES
@@ -895,10 +901,30 @@
         
     };
     
+    TJBVoidCallback cancelCallback = ^{
+        
+        [weakSelf setRealizedSetParametersToNil];
+        
+        [weakSelf removeConfirmationFromViewHierarchy];
+        
+    };
+    
+    TJBVoidCallback editCallback = ^{
+        
+        [weakSelf setRealizedSetParametersToNil];
+        
+        [weakSelf removeConfirmationFromViewHierarchy];
+        
+        [weakSelf didPressBeginNextSet: nil];
+        
+    };
+    
     TJBSetCompletedSummaryVC *vc = [[TJBSetCompletedSummaryVC alloc] initWithExerciseName: self.exercise.name
                                                                                    weight: self.weight
                                                                                      reps: self.reps
-                                                                            callbackBlock: callbackBlock];
+                                                                            cancelCallback: cancelCallback
+                                                                             editCallback: editCallback
+                                                                          confirmCallback: confirmCallback];
     
     self.activeSetCompletedSummaryVC = vc;
     
