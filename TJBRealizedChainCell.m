@@ -179,15 +179,15 @@
         float weight = rs.submittedWeight;
         float reps = rs.submittedReps;
         
-        NSString *weightString = [NSString stringWithFormat: @"%.01f lbs", weight];
-        NSString *repsString = [NSString stringWithFormat: @"%.01f reps", reps];
+        NSString *weightString = [NSString stringWithFormat: @"%.01f", weight];
+        NSString *repsString = [NSString stringWithFormat: @"%.01f", reps];
         
         weightLabel.text = weightString;
         repsLabel.text = repsString;
         
     } else{
         
-        weightLabel.text = @"---";
+        weightLabel.text = @"-";
         repsLabel.text = @"";
         restLabel.text = @"";
         

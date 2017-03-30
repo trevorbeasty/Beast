@@ -22,21 +22,21 @@
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
-    NSString *repsString = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
+    NSString *weightString = [NSString stringWithFormat: @"%.01f", [weight floatValue]];
+    NSString *repsString = [NSString stringWithFormat: @"%.01f", [reps floatValue]];
     
     NSString *restString;
     
-    if (rest){
-        
-        NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [rest intValue]];
-        restString = [NSString stringWithFormat: @"+%@ rest", formattedRest];
-        
-    } else{
-        
+//    if (rest){
+//        
+//        NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [rest intValue]];
+//        restString = [NSString stringWithFormat: @"+%@ rest", formattedRest];
+//        
+//    } else{
+    
         restString = @"";
         
-    }
+//    }
 
     NSString *numberString = [NSString stringWithFormat: @"%@. %@",
                               [number stringValue],
