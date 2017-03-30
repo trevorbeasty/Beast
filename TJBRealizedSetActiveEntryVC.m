@@ -92,14 +92,8 @@
 - (IBAction)didPressLeftBarButton:(id)sender;
 - (IBAction)didPressAlertTimingTitle:(id)sender;
 - (IBAction)didPressTargetRestTitle:(id)sender;
-//// core data
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-
-// two fetches are required - realized chain and realized set.  The results are stored for each.  Because fetched results are not being directly fed into a table view, NSFetchedResultsController is not used
-
-//@property (nonatomic, strong) NSArray *realizedSetFetchResults;
-//@property (nonatomic, strong) NSArray *realizedChainFetchResults;
 
 // an array of TJBRepsWeightRecordPairs.  Record pairs are always held for reps values of 1 through 12.  New pairs are added as needed
 
@@ -358,12 +352,6 @@
                 forState: UIControlStateNormal];
         
     }
-    
-//    // button images
-//    
-//    UIImage *homeButtonImage = [UIImage imageNamed: @"titleBarHomeButton"];
-//    [self.leftBarButton setBackgroundImage: homeButtonImage
-//                                  forState: UIControlStateNormal];
     
     // shadow view
     
@@ -901,6 +889,10 @@
         
         [self removeConfirmationFromViewHierarchy];
         
+        [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
+                                             withForwardIncrementing: YES
+                                                      lastUpdateDate: nil]; // reset the stopwatch; when a lastUpdateDate is provided, the stopwatch will add the elapsed time (up until this moment) to the provided time (first argument)
+        
     };
     
     TJBSetCompletedSummaryVC *vc = [[TJBSetCompletedSummaryVC alloc] initWithExerciseName: self.exercise.name
@@ -1174,48 +1166,6 @@
                                   candidateDate: realizedSet.submissionTime];
             
         }
-        
-        // no longer need realized chain logic because all submissions are of type realizedSet
-        
-//        // realized chains
-//        
-//        for (TJBRealizedChain *realizedChain in activeExercise.chains){
-//            
-//            if ([realizedChain isKindOfClass: [TJBChainTemplate class]]){
-//                
-//                continue;
-//                
-//            }
-//            
-//            NSArray *exerciseIndices = [self indicesContainingExercise: activeExercise
-//                                                      forRealizedChain: realizedChain];
-//            
-//            int roundLimit = realizedChain.numberOfRounds;
-//            
-//            for (NSNumber *number in exerciseIndices){
-//                
-//                int exerciseIndex = [number intValue];
-//                
-//                for (int i = 0; i < roundLimit; i++){
-//                    
-//                    BOOL isDefaultEntry = realizedChain.weightArrays[exerciseIndex].numbers[i].isDefaultObject;
-//                    
-//                    if (!isDefaultEntry){
-//                        
-//                        int reps = (int)realizedChain.repsArrays[exerciseIndex].numbers[i].value;
-//                        NSNumber *weight = [NSNumber numberWithDouble: realizedChain.weightArrays[exerciseIndex].numbers[i].value];
-//                        NSDate *date = realizedChain.setBeginDateArrays[exerciseIndex].dates[i].value;
-//                        
-//                        TJBRepsWeightRecordPair *currentRecordForPrescribedReps = [self repsWeightRecordPairForNumberOfReps: reps];
-//                        
-//                        [self configureRepsWeightRecordPair: currentRecordForPrescribedReps
-//                                        withCandidateWeight: weight
-//                                              candidateDate: date];
-//                        
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
@@ -1308,29 +1258,6 @@
     
 }
 
-//- (NSArray<NSNumber *> *)indicesContainingExercise:(TJBExercise *)exercise forRealizedChain:(TJBRealizedChain *)realizedChain{
-//    
-//    int limit = realizedChain.numberOfExercises;
-//    
-//    NSMutableArray *collector = [[NSMutableArray alloc] init];
-//    
-//    for (int i = 0; i < limit; i++){
-//        
-//        BOOL currentIndexContainsTargetedExercise = [realizedChain.exercises[i] isEqual: exercise];
-//        
-//        if (currentIndexContainsTargetedExercise){
-//            
-//            NSNumber *number = [NSNumber numberWithInt: i];
-//            
-//            [collector addObject: number];
-//            
-//        }
-//        
-//    }
-//    
-//    return collector;
-//    
-//}
 
 #pragma mark - Core Data
 
