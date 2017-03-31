@@ -263,7 +263,13 @@ typedef enum{
     
     // browsing segmented control
     
-    self.normalBrowsingExerciseSC.tintColor = [UIColor blackColor];
+    self.normalBrowsingExerciseSC.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.normalBrowsingExerciseSC.backgroundColor = [UIColor darkGrayColor];
+    CALayer *scLayer = self.normalBrowsingExerciseSC.layer;
+    scLayer.masksToBounds = YES;
+    scLayer.cornerRadius = 25;
+    scLayer.borderWidth = 2.0;
+    scLayer.borderColor = [UIColor darkGrayColor].CGColor;
     
     // title bar buttons
     
