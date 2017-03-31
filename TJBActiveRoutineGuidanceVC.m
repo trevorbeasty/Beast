@@ -64,18 +64,23 @@
 @property (weak, nonatomic) IBOutlet UILabel *roundTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timerTitleLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
-@property (weak, nonatomic) IBOutlet UILabel *mainTitle;
+//@property (weak, nonatomic) IBOutlet UILabel *mainTitle;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-@property (weak, nonatomic) IBOutlet UIView *titleContainer;
+//@property (weak, nonatomic) IBOutlet UIView *titleContainer;
 @property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
-@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
+//@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
+@property (weak, nonatomic) IBOutlet UIView *topTitleBar;
+@property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
+@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetRestValueLabel;
+
 
 // constraints for flying round and rest labes horizontally
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundRestLabelGap;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundLabelLeadingSpace;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundRestLabelGap;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundLabelLeadingSpace;
 
 
 // IBAction
@@ -187,7 +192,7 @@ static float const animationTimeUnit = .4;
     //// title labels
     
     self.roundTitleLabel.text = [NSString stringWithFormat: @"1/%d", self.chainTemplate.numberOfRounds];
-    self.mainTitle.text = self.chainTemplate.name;
+//    self.mainTitle.text = self.chainTemplate.name;
     
     // detail title label
     
@@ -263,8 +268,13 @@ static float const animationTimeUnit = .4;
 
 - (void)configureViewAesthetics{
     
+    // title bars
+    
+    self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
+    self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
+    
     NSArray *largerFontLabels = @[self.roundTitleLabel,
-                        self.activeRoutineLabel];
+                        self.activeRoutineLabel, self.targetRestValueLabel];
     
     for (UILabel *label in largerFontLabels){
         
@@ -278,7 +288,7 @@ static float const animationTimeUnit = .4;
     self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
     self.timerTitleLabel.textColor = [UIColor whiteColor];
     
-    NSArray *smallerFontLabels = @[self.mainTitle, self.roundTopLabel];
+    NSArray *smallerFontLabels = @[self.roundTopLabel, self.targetRestLabel];
     for (UILabel *lab in smallerFontLabels){
      
         lab.font = [UIFont systemFontOfSize: 15];
@@ -287,7 +297,7 @@ static float const animationTimeUnit = .4;
         
     }
     
-    NSArray *titleButtons = @[self.leftBarButton, self.rightBarButton];
+    NSArray *titleButtons = @[self.leftBarButton];
     for (UIButton *button in titleButtons){
         
         button.backgroundColor = [UIColor darkGrayColor];
@@ -304,7 +314,7 @@ static float const animationTimeUnit = .4;
     
     // title container
     
-    self.titleContainer.backgroundColor = [UIColor clearColor];
+//    self.titleContainer.backgroundColor = [UIColor clearColor];
     
     // alert timing controls
     

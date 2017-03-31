@@ -1323,8 +1323,8 @@
         UITabBarController *tbc = [[UITabBarController alloc] init];
         [tbc setViewControllers: @[vc1, vc2, vc3]];
         tbc.tabBar.translucent = NO;
-        tbc.tabBar.barTintColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        tbc.tabBar.tintColor = [UIColor blackColor];
+        tbc.tabBar.barTintColor = [UIColor darkGrayColor];
+        tbc.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
 
         
         [self presentViewController: tbc
