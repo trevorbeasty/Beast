@@ -84,6 +84,10 @@
 //@property (weak, nonatomic) IBOutlet UILabel *thinTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
 @property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
+@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
+@property (weak, nonatomic) IBOutlet UILabel *targetRestValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *alertTimingValueLabel;
 
 // IBAction
 
@@ -268,6 +272,26 @@
 }
 
 - (void)viewAesthetics{
+    
+    // target rest and alert timing
+    
+    NSArray *restValueLabels = @[self.targetRestValueLabel, self.alertTimingValueLabel];
+    for (UILabel *lab in restValueLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.textColor = [UIColor whiteColor];
+        lab.font = [UIFont boldSystemFontOfSize: 20];
+        
+    }
+    
+    NSArray *restTitleLabels = @[self.targetRestLabel, self.alertTimingLabel];
+    for (UILabel *lab in restTitleLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.textColor = [UIColor whiteColor];
+        lab.font = [UIFont systemFontOfSize: 15];
+        
+    }
     
     // meta view
     
