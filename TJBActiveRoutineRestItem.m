@@ -53,6 +53,7 @@
     self.number = titleNumber;
     self.contentText = contentText;
     self.callback = callback;
+    _isCompletionButton = isCompletionButton;
     
     return self;
     
@@ -67,7 +68,9 @@
     [self.mainButton setTitle: self.contentText
                      forState: UIControlStateNormal];
     self.mainButton.backgroundColor = [UIColor clearColor];
-    self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 25];
+    [self.mainButton setTitleColor: [UIColor blackColor]
+                          forState: UIControlStateNormal];
     
     if (_isCompletionButton == YES){
         

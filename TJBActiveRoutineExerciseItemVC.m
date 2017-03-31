@@ -70,6 +70,7 @@
     
 }
 
+
 - (void)configureViewAesthetics{
     
     // meta view
@@ -83,19 +84,11 @@
         
         lab.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         lab.textColor = [UIColor blackColor];
-        lab.font = [UIFont systemFontOfSize: 20];
+        lab.font = [UIFont boldSystemFontOfSize: 20];
         
     }
     
     self.titleExerciseLabel.font = [UIFont boldSystemFontOfSize: 25];
-    
-    // table view
-    
-    CALayer *prTVLayer = self.previousEntriesTableView.layer;
-    prTVLayer.borderColor = [UIColor blackColor].CGColor;
-    prTVLayer.borderWidth = .5;
-    prTVLayer.masksToBounds = YES;
-    prTVLayer.cornerRadius = 4.0;
     
     // targets label
     
@@ -163,11 +156,11 @@ static NSString * previousEntryCellID = @"previousEntryCell";
     
     if (indexPath.row == 0){
         
-        return 80;
+        return 75;
         
     } else{
         
-        return 30;
+        return 40;
         
     }
     
@@ -221,7 +214,7 @@ static NSString * previousEntryCellID = @"previousEntryCell";
             
         }
         
-        cell.titleLabel.font = [UIFont systemFontOfSize: 15];
+        cell.titleLabel.font = [UIFont systemFontOfSize: 20];
         cell.titleLabel.textColor = [UIColor blackColor];
         
         cell.backgroundColor = [UIColor clearColor];
@@ -250,10 +243,9 @@ static NSString * previousEntryCellID = @"previousEntryCell";
         
     }
     
-    
-
-    
 }
+
+
 
 
 @end
