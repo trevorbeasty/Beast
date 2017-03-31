@@ -79,7 +79,7 @@
         CALayer *mainLayer = self.mainButton.layer;
         mainLayer.masksToBounds = YES;
         mainLayer.cornerRadius = 25;
-        mainLayer.borderWidth = 1.0;
+        mainLayer.borderWidth = 2.0;
         mainLayer.borderColor = [UIColor darkGrayColor].CGColor;
         
         [self.mainButton setTitleColor: [UIColor darkGrayColor]

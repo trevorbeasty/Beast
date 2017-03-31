@@ -233,10 +233,6 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     
-    // filter
-    
-//    self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    
     // buttons
     
     NSArray *buttons = @[self.launchButton,
@@ -244,16 +240,16 @@
     
     for (UIButton *button in buttons){
         
-        [button setBackgroundColor: [UIColor clearColor]];
-        [button setTitleColor: [UIColor blackColor]
+        [button setBackgroundColor: [[TJBAestheticsController singleton] paleLightBlueColor]];
+        [button setTitleColor: [UIColor darkGrayColor]
                      forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize: 20.0];
+        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
         CALayer *buttLayer = button.layer;
         buttLayer.masksToBounds = YES;
         buttLayer.cornerRadius = 15.0;
-        buttLayer.borderColor = [UIColor blackColor].CGColor;
-        buttLayer.borderWidth = 1.0;
+        buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
+        buttLayer.borderWidth = 2.0;
         
     }
     
@@ -849,7 +845,7 @@
     for (UIButton *b in buttons){
         
         b.enabled = NO;
-        b.layer.opacity = .2;
+        b.layer.opacity = .4;
         
     }
     
@@ -1301,21 +1297,21 @@
     
 }
 
-- (void)segmentedControlValueChanged{
-    
-    [self configureSelectionAsNil];
-    
-    // must rederive and layout date controls because the filter criteria for chain templates has now changed
-    
-    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
-    
-    [self configureDateControlsBasedOnDCActiveDate];
-    
-    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
-    
-    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
-    
-}
+//- (void)segmentedControlValueChanged{
+//    
+//    [self configureSelectionAsNil];
+//    
+//    // must rederive and layout date controls because the filter criteria for chain templates has now changed
+//    
+//    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
+//    
+//    [self configureDateControlsBasedOnDCActiveDate];
+//    
+//    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
+//    
+//    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
+//    
+//}
 
 - (IBAction)didPressLaunchButton:(id)sender {
     
