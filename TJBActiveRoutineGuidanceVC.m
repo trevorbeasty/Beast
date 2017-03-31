@@ -63,42 +63,24 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *roundTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timerTitleLabel;
-//@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
-@property (weak, nonatomic) IBOutlet UIButton *setCompletedButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitle;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-//@property (weak, nonatomic) IBOutlet UIButton *rightBarButtoon;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *advancedControlsConstraint;
-//@property (weak, nonatomic) IBOutlet UIView *advancedControlsContainer;
 @property (weak, nonatomic) IBOutlet UIView *titleContainer;
-//@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *remainingRestTopLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *nextUpLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *loadingNewTargetsLabel;
-//@property (weak, nonatomic) IBOutlet UIView *nextUpContainer;
-@property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
-@property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
 
 // constraints for flying round and rest labes horizontally
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundRestLabelGap;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundLabelLeadingSpace;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *restLabelTrailingSpace;
 
 
 // IBAction
 
 - (IBAction)didPressLeftBarButton:(id)sender;
-- (IBAction)didPressSetCompleted:(id)sender;
-//- (IBAction)didPressRightBarButton:(id)sender;
-//- (IBAction)didPressAlertTimingButton:(id)sender;
-
 
 // core
 
@@ -193,6 +175,10 @@ static float const animationTimeUnit = .4;
     
     [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
                                            withTimerLabel: self.timerTitleLabel];
+    
+    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
+                                         withForwardIncrementing: YES
+                                                  lastUpdateDate: nil];
     
 }
 
@@ -322,7 +308,7 @@ static float const animationTimeUnit = .4;
     
     // alert timing controls
     
-    NSArray *alertTimingControls = @[self.alertTimingTitle, self.alertTimingButton];
+    NSArray *alertTimingControls = @[self.alertTimingButton];
     for (UIButton *but in alertTimingControls){
         
         but.backgroundColor = [UIColor darkGrayColor];
@@ -331,22 +317,7 @@ static float const animationTimeUnit = .4;
         
     }
     
-    self.alertTimingTitle.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
     self.alertTimingButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
-    
-    // sequence completed button and bottomControlsContainer
-    
-    self.setCompletedButton.backgroundColor = [UIColor clearColor];
-    self.setCompletedButton.titleLabel.font = [UIFont systemFontOfSize: 20];
-    [self.setCompletedButton setTitleColor: [UIColor blackColor]
-                                  forState: UIControlStateNormal];
-    CALayer *scbLayer = self.setCompletedButton.layer;
-    scbLayer.masksToBounds = YES;
-    scbLayer.cornerRadius = 15.0;
-    scbLayer.borderColor = [UIColor blackColor].CGColor;
-    scbLayer.borderWidth = 1.0;
-    
-    self.bottomControlsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 
@@ -551,9 +522,9 @@ static NSString const *restViewKey = @"restView";
     
     CGFloat width = self.contentScrollView.frame.size.width;
     float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 220;
+    CGFloat exerciseCompHeight = 271;
     CGFloat restCompHeight = 62;
-    CGFloat initialTopSpacing = 0;
+    CGFloat initialTopSpacing = 8;
     CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight * 2 + initialTopSpacing; // rest comp height is multiplied by two because I am now including both a rest component and a 'sequence completed' component
     
     CGRect masterFrame = CGRectMake(0, 0, width, height);
@@ -590,7 +561,7 @@ static NSString const *restViewKey = @"restView";
     
     for (int i = 0; i < self.activeLiftTargets.count; i++){
         
-        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 2];
+        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 1];
         NSString *exerciseName = self.activeLiftTargets[i][0];
         NSString *weight;
         NSString *reps;
@@ -665,8 +636,12 @@ static NSString const *restViewKey = @"restView";
         
     }
     
+    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+    
     TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
-                                                                                     contentText: contentText];
+                                                                                     contentText: contentText
+                                                                              isCompletionButton: NO
+                                                                                        callback: nil];
     restItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.restItemChildVC = restItemVC;
@@ -679,8 +654,16 @@ static NSString const *restViewKey = @"restView";
     
     NSString *scText = @"Sequence Completed";
     
+    void (^callback)(void) = ^{
+        
+        [weakSelf didPressSetCompleted: nil];
+        
+    };
+    
     TJBActiveRoutineRestItem *scItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: scTitleNumber
-                                                                                   contentText: scText];
+                                                                                   contentText: scText
+                                                                            isCompletionButton: YES
+                                                                                      callback: callback];
     scItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
     
     [self addChildViewController: scItemVC];
@@ -774,9 +757,6 @@ static NSString const *restViewKey = @"restView";
 - (IBAction)didPressSetCompleted:(UIButton *)didPressSetCompleted{
     
     __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-    
-//    NSInteger selectionsToBeMade = self.activeLiftTargets.count;
-//    BOOL isLastLocalSelection = _selectionIndex == selectionsToBeMade - 1;
     
     // record first incomplete indices in case cancel block in called.  If cancel block is called, I will simply change the 'first incomplete' type properties of the realized chain.  I will not change the 'isDefaultObject' property of the weights, reps, and dates that may have been recorded.  I may have to change this later given broader system considerations
     // the cancellation restoration exercise and round objects should only exist during the selection process, they should otherwise be nil
@@ -1040,12 +1020,10 @@ static NSString const *restViewKey = @"restView";
         
         if (inRedZone){
             
-//            self.remainingRestTopLabel.backgroundColor = [UIColor redColor];
             self.timerTitleLabel.backgroundColor = [UIColor redColor];
             
         } else{
             
-//            self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
             self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
             
         }
@@ -1077,79 +1055,7 @@ static NSString const *restViewKey = @"restView";
     
 }
 
-//#pragma mark - Animation
-//
-//- (void)toggleButtonControlsToAdvancedDisplay{
-//    
-//    self.advancedControlsConstraint.constant = 0;
-//    
-//    [UIView animateWithDuration: .4
-//                     animations: ^{
-//                         
-//                         self.advancedControlsContainer.hidden = NO;
-//
-//                    NSArray *views = @[self.advancedControlsContainer];
-//                         
-//                    for (UIView *view in views){
-//                             
-//                        CGRect currentFrame = view.frame;
-//                        CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y + advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
-//                        view.frame = newFrame;
-//                             
-//                    }
-//                         
-//                    CGRect currentSVFrame = self.contentScrollView.frame;
-//                    CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y + advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height - advancedControlSlidingHeight);
-//                    self.contentScrollView.frame = newSVFrame;
-//                    
-//                    }
-//                    completion: ^(BOOL completed){
-//                         
-//                        
-//                        
-//                    }];
-//    
-//    _advancedControlsActive = YES;
-//    [self.rightBarButtoon setTitle: @"-"
-//                          forState: UIControlStateNormal];
-//    
-//    
-//}
-//
-//- (void)toggleButtonControlsToDefaultDisplay{
-//    
-//    self.advancedControlsConstraint.constant = -1 * advancedControlSlidingHeight;
-//    
-//    [UIView animateWithDuration: .4
-//                     animations: ^{
-//                         
-//                         NSArray *views = @[self.advancedControlsContainer];
-//                         
-//                         for (UIView *view in views){
-//                             
-//                             CGRect currentFrame = view.frame;
-//                             CGRect newFrame = CGRectMake(currentFrame.origin.x, currentFrame.origin.y - advancedControlSlidingHeight, currentFrame.size.width, currentFrame.size.height);
-//                             view.frame = newFrame;
-//                             
-//                         }
-//                         
-//                         CGRect currentSVFrame = self.contentScrollView.frame;
-//                         CGRect newSVFrame = CGRectMake(currentSVFrame.origin.x, currentSVFrame.origin.y - advancedControlSlidingHeight, currentSVFrame.size.width, currentSVFrame.size.height + advancedControlSlidingHeight);
-//                         self.contentScrollView.frame = newSVFrame;
-//                         
-//                     }
-//                     completion: ^(BOOL completed){
-//                         
-//                         self.advancedControlsContainer.hidden = YES;
-//                         
-//                     }];
-//    
-//    _advancedControlsActive = NO;
-//    [self.rightBarButtoon setTitle: @"+"
-//                          forState: UIControlStateNormal];
-//    
-//    
-//}
+
 
 #pragma mark - New Content Animation
 
@@ -1160,13 +1066,12 @@ static NSString const *restViewKey = @"restView";
     // timer
     
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.futureRestTarget intValue]
-                                         withForwardIncrementing: NO
+                                         withForwardIncrementing: YES
                                                   lastUpdateDate: nil];
     
     // give the timer non red zone colors
     
     self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-//    self.remainingRestTopLabel.backgroundColor = [UIColor darkGrayColor];
     
     // animate the timer and round label changes - they fly out to the sides, have their values updated, and fly back in
     
@@ -1184,33 +1089,6 @@ static NSString const *restViewKey = @"restView";
                afterDelay: animationTimeUnit * 2.0];
     
 }
-
-//- (void)nextUpLabelAnimation{
-//    
-//    // update the targets content
-//    
-//    [self configureImmediateTargets];
-//    
-//    // transition from the 'loading new data' to the 'next up' label
-//    
-//    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-//    
-//    [UIView transitionWithView: self.nextUpContainer
-//                      duration: animationTimeUnit * 2.0
-//                       options: UIViewAnimationOptionTransitionCrossDissolve
-//                    animations: ^{
-//                        
-//                        [weakSelf.nextUpContainer insertSubview: weakSelf.nextUpLabel
-//                                                   aboveSubview: weakSelf.loadingNewTargetsLabel];
-//                        
-//                        weakSelf.nextUpLabel.hidden = NO;
-//                        weakSelf.loadingNewTargetsLabel.hidden = YES;
-//                        
-//                    }
-//                    completion: nil];
-//    
-//}
-
 
 
 - (void)roundRestLabelAnimation{

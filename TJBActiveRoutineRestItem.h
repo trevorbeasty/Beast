@@ -10,6 +10,6 @@
 
 @interface TJBActiveRoutineRestItem : UIViewController
 
-- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber contentText:(NSString *)contentText;
+- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber contentText:(NSString *)contentText isCompletionButton:(BOOL)isCompletionButton callback:(void (^)(void))callback;
 
 @end

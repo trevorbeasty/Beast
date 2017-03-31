@@ -26,9 +26,9 @@
     df.dateFormat = @"MM / dd / yy";
     self.dateLabel.text = [df stringFromDate: date];
     
-    self.weightLabel.text = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
+    self.weightLabel.text = [NSString stringWithFormat: @"%@", [weight stringValue]];
     
-    self.repsLabel.text = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
+    self.repsLabel.text = [NSString stringWithFormat: @"%@", [reps stringValue]];
     
 }
 

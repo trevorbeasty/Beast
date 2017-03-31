@@ -11,6 +11,7 @@
 // table view cell
 
 #import "TJBActiveRoutineGuidancePreviousEntryCell.h"
+#import "TJBDetailTitleCell.h"
 
 // aesthetics
 
@@ -19,19 +20,11 @@
 @interface TJBActiveRoutineExerciseItemVC () <UITableViewDelegate, UITableViewDataSource>
 
 // IBOutlet
-//@property (weak, nonatomic) IBOutlet UILabel *titleNumberLabel;
+
 @property (weak, nonatomic) IBOutlet UILabel *titleExerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetWeightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetRepsLabel;
 @property (weak, nonatomic) IBOutlet UITableView *previousEntriesTableView;
-//@property (weak, nonatomic) IBOutlet UILabel *roundCornerLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *thenLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *targetsLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *previousEntriesLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *thinLineLabel;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UILabel *titleNumberLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *targetsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *previousEntriesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thinLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *thinLabel2;
@@ -83,10 +76,6 @@
     
     self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    // container view
-    
-    self.containerView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
     // title labels
     
     NSArray *titleLabels = @[self.titleExerciseLabel, self.targetWeightLabel, self.targetRepsLabel];
@@ -98,11 +87,7 @@
         
     }
     
-    // number label
-    
-    self.titleNumberLabel.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    self.titleNumberLabel.textColor = [UIColor blackColor];
-    self.titleNumberLabel.font = [UIFont systemFontOfSize: 35];
+    self.titleExerciseLabel.font = [UIFont boldSystemFontOfSize: 25];
     
     // table view
     
@@ -134,13 +119,13 @@
     
     // target labels and exercise title
     
-    NSString *titleText = [NSString stringWithFormat: @"%@",
-                           self.targetExerciseName];
     NSString *targetWeightText = [NSString stringWithFormat: @"%@ lbs", self.targetWeight];
     NSString *targetRepsText = [NSString stringWithFormat: @"%@ reps", self.targetReps];
     
-    self.titleNumberLabel.text = [NSString stringWithFormat: @"%@", self.titleNumber];
-    self.titleExerciseLabel.text = titleText;
+    self.titleExerciseLabel.text = [NSString stringWithFormat: @"%@. %@",
+                                    self.titleNumber,
+                                    self.targetExerciseName];
+                                     
     self.targetWeightLabel.text = targetWeightText;
     self.targetRepsLabel.text = targetRepsText;
     
@@ -158,6 +143,12 @@ static NSString * previousEntryCellID = @"previousEntryCell";
     [self.previousEntriesTableView registerNib: previousEntryCell
                         forCellReuseIdentifier: previousEntryCellID];
     
+    UINib *titleCell = [UINib nibWithNibName: @"TJBDetailTitleCell"
+                                      bundle: nil];
+    
+    [self.previousEntriesTableView registerNib: titleCell
+                        forCellReuseIdentifier: @"TJBDetailTitleCell"];
+    
     self.previousEntriesTableView.scrollEnabled = NO;
     
     // aesthetics
@@ -170,7 +161,16 @@ static NSString * previousEntryCellID = @"previousEntryCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return 30;
+    if (indexPath.row == 0){
+        
+        return 80;
+        
+    } else{
+        
+        return 30;
+        
+    }
+    
     
 }
 
@@ -187,29 +187,71 @@ static NSString * previousEntryCellID = @"previousEntryCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.previousEntries.count;
+    if (self.previousEntries.count > 0){
+        
+        return self.previousEntries.count + 1;
+        
+    } else{
+        
+        return 2;
+        
+    }
     
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    // in the array, the order of objects is as follows: weight, reps, date created
+    if (indexPath.row == 0){
+        
+        TJBDetailTitleCell *cell = [self.previousEntriesTableView dequeueReusableCellWithIdentifier: @"TJBDetailTitleCell"];
+        
+        cell.titleLabel.text = @"Previous Entries";
+        cell.detail1Label.text = @"date";
+        cell.detail2Label.text = @"weight (lbs)";
+        cell.detail3Label.text = @"reps";
+        cell.subtitleLabel.text = @"";
+        
+        NSArray *labels = @[cell.detail1Label, cell.detail2Label, cell.detail3Label];
+        for (UILabel *lab in labels){
+            
+            lab.font = [UIFont systemFontOfSize: 15];
+            lab.textColor = [UIColor blackColor];
+            lab.backgroundColor = [UIColor clearColor];
+            
+        }
+        
+        cell.titleLabel.font = [UIFont systemFontOfSize: 15];
+        cell.titleLabel.textColor = [UIColor blackColor];
+        
+        cell.backgroundColor = [UIColor clearColor];
+        
+        return cell;
+        
+        
+    } else{
+        
+        // in the array, the order of objects is as follows: weight, reps, date created
+        
+        TJBActiveRoutineGuidancePreviousEntryCell *cell = [self.previousEntriesTableView dequeueReusableCellWithIdentifier: previousEntryCellID];
+        
+        cell.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        // give the cell the correct data
+        
+        NSArray *data = self.previousEntries[indexPath.row - 1];
+        
+        [cell configureWithDate: data[2]
+                         weight: data[0]
+                           reps: data[1]];
+        
+        return cell;
+        
+    }
     
-    TJBActiveRoutineGuidancePreviousEntryCell *cell = [self.previousEntriesTableView dequeueReusableCellWithIdentifier: previousEntryCellID];
     
-    cell.backgroundColor = [UIColor clearColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    // give the cell the correct data
-    
-    NSArray *data = self.previousEntries[indexPath.row];
-    
-    [cell configureWithDate: data[2]
-                     weight: data[0]
-                       reps: data[1]];
-    
-    return cell;
+
     
 }
 

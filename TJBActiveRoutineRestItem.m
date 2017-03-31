@@ -18,15 +18,27 @@
 
 @interface TJBActiveRoutineRestItem ()
 
+{
+    
+    BOOL _isCompletionButton;
+    
+}
+
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UILabel *restTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *numberLabel;
+@property (weak, nonatomic) IBOutlet UIButton *mainButton;
+
+// IBAction
+
+- (IBAction)didPressMainButton:(id)sender;
+
+
 
 // core
 
 @property (nonatomic, strong) NSNumber *number;
 @property (nonatomic, strong) NSString *contentText;
+@property (copy) void (^callback)(void);
 
 @end
 
@@ -34,12 +46,13 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber contentText:(NSString *)contentText{
+- (instancetype)initWithTitleNumber:(NSNumber *)titleNumber contentText:(NSString *)contentText isCompletionButton:(BOOL)isCompletionButton callback:(void (^)(void))callback{
     
     self = [super init];
     
     self.number = titleNumber;
     self.contentText = contentText;
+    self.callback = callback;
     
     return self;
     
@@ -51,20 +64,44 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    self.restTitleLabel.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    self.restTitleLabel.font = [UIFont systemFontOfSize: 20.0];
-    self.restTitleLabel.textColor = [UIColor blackColor];
+    [self.mainButton setTitle: self.contentText
+                     forState: UIControlStateNormal];
+    self.mainButton.backgroundColor = [UIColor clearColor];
+    self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
     
-    self.numberLabel.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    self.numberLabel.font = [UIFont systemFontOfSize: 35];
-    self.numberLabel.textColor = [UIColor blackColor];
-    
-    self.numberLabel.text = [self.number stringValue];
-    
-    self.restTitleLabel.text = self.contentText;
+    if (_isCompletionButton == YES){
+        
+        CALayer *mainLayer = self.mainButton.layer;
+        mainLayer.masksToBounds = YES;
+        mainLayer.cornerRadius = 25;
+        mainLayer.borderWidth = 1.0;
+        mainLayer.borderColor = [UIColor blackColor].CGColor;
+        
+    } else{
+        
+        self.mainButton.enabled = NO;
+        
+    }
     
 }
 
+#pragma mark - IBAction
 
-
+- (IBAction)didPressMainButton:(id)sender{
+    
+    self.callback();
+    
+}
 @end
+
+
+
+
+
+
+
+
+
+
+
+
