@@ -154,8 +154,8 @@
     
     UITabBar *tabBar = tbc.tabBar;
     
-    tabBar.barTintColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    tabBar.tintColor = [UIColor blackColor];
+    tabBar.barTintColor = [UIColor darkGrayColor];
+    tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     
     [self presentViewController: tbc
                        animated: YES

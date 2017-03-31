@@ -68,20 +68,22 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
-@property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
+//@property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
-@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
+//@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
-@property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
-@property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
+//@property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
+//@property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-@property (weak, nonatomic) IBOutlet UIButton *targetRestTitle;
-@property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
+//@property (weak, nonatomic) IBOutlet UIButton *targetRestTitle;
+//@property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
 @property (weak, nonatomic) IBOutlet UILabel *topTopLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomButtonContainer;
-@property (weak, nonatomic) IBOutlet UILabel *thinTitleLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *thinTitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *topTitleBar;
+@property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
 
 // IBAction
 
@@ -271,6 +273,9 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     
+    self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
+    self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
+    
     // buttons
     
     self.bottomButtonContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
@@ -278,39 +283,39 @@
     NSArray *bottomButtons = @[self.exerciseButton, self.beginNextSetButton];
     for (UIButton *butt in bottomButtons){
         
-        butt.backgroundColor = [UIColor clearColor];
-        butt.titleLabel.font = [UIFont systemFontOfSize: 20];
-        [butt setTitleColor: [UIColor blackColor]
+        butt.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        butt.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+        [butt setTitleColor: [UIColor darkGrayColor]
                    forState: UIControlStateNormal];
         
         CALayer *layer = butt.layer;
-        layer.borderColor = [UIColor blackColor].CGColor;
-        layer.borderWidth = 1.0;
-        layer.cornerRadius = 15;
+        layer.borderColor = [UIColor darkGrayColor].CGColor;
+        layer.borderWidth = 2.0;
+        layer.cornerRadius = 25;
         layer.masksToBounds = YES;
         
     }
     
     // title labels and title buttons and container
     
-    self.thinTitleLabel.backgroundColor = [UIColor blackColor];
+//    self.thinTitleLabel.backgroundColor = [UIColor blackColor];
+//    
+//    self.titleLabelsContainer.backgroundColor = [UIColor darkGrayColor];
     
-    self.titleLabelsContainer.backgroundColor = [UIColor darkGrayColor];
-    
-    NSArray *titleLabels = @[self.freeformTitleLabel, self.topTopLabel];
+    NSArray *titleLabels = @[self.topTopLabel];
     
     for (UILabel *label in titleLabels){
         
-        label.backgroundColor = [UIColor darkGrayColor];
+        label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont boldSystemFontOfSize: 20];
         
     }
     
-    self.freeformTitleLabel.font = [UIFont systemFontOfSize: 15];
-    self.topTopLabel.font = [UIFont boldSystemFontOfSize: 25];
+//    self.freeformTitleLabel.font = [UIFont systemFontOfSize: 15];
+//    self.topTopLabel.font = [UIFont boldSystemFontOfSize: 25];
     
-    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
+    self.timerLabel.backgroundColor = [UIColor clearColor];
     self.timerLabel.font = [UIFont systemFontOfSize: 35];
     self.timerLabel.textColor = [UIColor whiteColor];
     
@@ -332,26 +337,17 @@
     
     // rest time buttons and labels
     
-    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
-    for (UIButton *b in restButtons){
-        
-        [b setTitleColor: [[TJBAestheticsController singleton] titleBarButtonColor]
-                forState: UIControlStateNormal];
-        
-        b.backgroundColor = [UIColor clearColor];
-        b.titleLabel.font = [UIFont systemFontOfSize: 20];
-        
-    }
+//    NSArray *restButtons = @[self.alertTimingButton];
+//    for (UIButton *b in restButtons){
+//        
+//        [b setTitleColor: [[TJBAestheticsController singleton] titleBarButtonColor]
+//                forState: UIControlStateNormal];
+//        
+//        b.backgroundColor = [UIColor clearColor];
+//        b.titleLabel.font = [UIFont systemFontOfSize: 20];
+//        
+//    }
     
-    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
-    for (UIButton *b in restTitleButtons){
-        
-        b.backgroundColor = [UIColor clearColor];
-        b.titleLabel.font = [UIFont systemFontOfSize: 15];
-        [b setTitleColor: [[TJBAestheticsController singleton] titleBarButtonColor]
-                forState: UIControlStateNormal];
-        
-    }
     
     // shadow view
     
@@ -525,43 +521,43 @@
 #pragma mark - Button Actions
 
 
-- (IBAction)didPressTargetRestButton:(id)sender {
-    
-    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
-    
-    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
-    
-    void (^cancelBlock)(void) = ^{
-        
-        [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-        
-    };
-    
-    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
-        
-        weakSelf.targetRestTime = selectedNumber;
-        
-        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
-        
-        [weakSelf.targetRestButton setTitle: targetRestString
-                               forState: UIControlStateNormal];
-        
-        [weakSelf dismissViewControllerAnimated: YES
-                                     completion: nil];
-        
-    };
-    
-    [self presentNumberSelectionSceneWithNumberType: TargetRestType
-                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
-                                        numberLimit: nil
-                                              title: @"Select Target Rest"
-                                        cancelBlock: cancelBlock
-                                numberSelectedBlock: numberSelectedBlock
-                                           animated: NO
-                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    
-}
+//- (IBAction)didPressTargetRestButton:(id)sender {
+//    
+//    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
+//    
+//    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+//    
+//    void (^cancelBlock)(void) = ^{
+//        
+//        [weakSelf dismissViewControllerAnimated: NO
+//                                     completion: nil];
+//        
+//    };
+//    
+//    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
+//        
+//        weakSelf.targetRestTime = selectedNumber;
+//        
+//        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
+//        
+//        [weakSelf.targetRestButton setTitle: targetRestString
+//                               forState: UIControlStateNormal];
+//        
+//        [weakSelf dismissViewControllerAnimated: YES
+//                                     completion: nil];
+//        
+//    };
+//    
+//    [self presentNumberSelectionSceneWithNumberType: TargetRestType
+//                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
+//                                        numberLimit: nil
+//                                              title: @"Select Target Rest"
+//                                        cancelBlock: cancelBlock
+//                                numberSelectedBlock: numberSelectedBlock
+//                                           animated: NO
+//                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+//    
+//}
 
 - (IBAction)didPressAlertTimingButton:(id)sender{
     
@@ -582,8 +578,8 @@
         
         NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
         
-        [weakSelf.alertTimingButton setTitle: targetRestString
-                                    forState: UIControlStateNormal];
+//        [weakSelf.alertTimingButton setTitle: targetRestString
+//                                    forState: UIControlStateNormal];
         
         [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
@@ -609,7 +605,7 @@
         
         weakSelf.exercise = selectedExercise;
         
-        self.freeformTitleLabel.text = selectedExercise.name;
+//        self.freeformTitleLabel.text = selectedExercise.name;
         
         [weakSelf fetchManagedObjectsAndDetermineRecordsForActiveExercise];
         
@@ -1101,11 +1097,11 @@
         
         if (inRedZone){
             
-            [self toggleRestControlsToRedZone];
+//            [self toggleRestControlsToRedZone];
             
         } else{
             
-            [self toggleRestControlsToDefaultState];
+//            [self toggleRestControlsToDefaultState];
             
         }
         
@@ -1113,53 +1109,53 @@
     
 }
 
-- (void)toggleRestControlsToRedZone{
-    
-    self.timerLabel.backgroundColor = [UIColor redColor];
-    
-    // rest time buttons and labels
-    
-    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
-    for (UIButton *b in restButtons){
-        
-        [b setTitleColor: [UIColor whiteColor]
-                forState: UIControlStateNormal];
-        
-    }
-    
-    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
-    for (UIButton *b in restTitleButtons){
-    
-        [b setTitleColor: [UIColor whiteColor]
-                forState: UIControlStateNormal];
-        
-    }
-    
-}
+//- (void)toggleRestControlsToRedZone{
+//    
+//    self.timerLabel.backgroundColor = [UIColor redColor];
+//    
+//    // rest time buttons and labels
+//    
+//    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
+//    for (UIButton *b in restButtons){
+//        
+//        [b setTitleColor: [UIColor whiteColor]
+//                forState: UIControlStateNormal];
+//        
+//    }
+//    
+//    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
+//    for (UIButton *b in restTitleButtons){
+//    
+//        [b setTitleColor: [UIColor whiteColor]
+//                forState: UIControlStateNormal];
+//        
+//    }
+//    
+//}
 
-- (void)toggleRestControlsToDefaultState{
-    
-    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-    
-    // rest time buttons and labels
-    
-    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
-    for (UIButton *b in restButtons){
-        
-        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
-                forState: UIControlStateNormal];
-        
-    }
-    
-    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
-    for (UIButton *b in restTitleButtons){
-        
-        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
-                forState: UIControlStateNormal];
-        
-    }
-    
-}
+//- (void)toggleRestControlsToDefaultState{
+//    
+//    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
+//    
+//    // rest time buttons and labels
+//    
+//    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
+//    for (UIButton *b in restButtons){
+//        
+//        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+//                forState: UIControlStateNormal];
+//        
+//    }
+//    
+//    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
+//    for (UIButton *b in restTitleButtons){
+//        
+//        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
+//                forState: UIControlStateNormal];
+//        
+//    }
+//    
+//}
 
 - (void)secondaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
     
