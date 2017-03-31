@@ -69,8 +69,10 @@
                      forState: UIControlStateNormal];
     self.mainButton.backgroundColor = [UIColor clearColor];
     self.mainButton.titleLabel.font = [UIFont boldSystemFontOfSize: 25];
+    
     [self.mainButton setTitleColor: [UIColor blackColor]
                           forState: UIControlStateNormal];
+
     
     if (_isCompletionButton == YES){
         
@@ -78,11 +80,18 @@
         mainLayer.masksToBounds = YES;
         mainLayer.cornerRadius = 25;
         mainLayer.borderWidth = 1.0;
-        mainLayer.borderColor = [UIColor blackColor].CGColor;
+        mainLayer.borderColor = [UIColor darkGrayColor].CGColor;
+        
+        [self.mainButton setTitleColor: [UIColor darkGrayColor]
+                              forState: UIControlStateNormal];
+        
+        self.mainButton.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
         
     } else{
         
         self.mainButton.enabled = NO;
+        
+
         
     }
     

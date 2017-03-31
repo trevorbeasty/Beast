@@ -62,10 +62,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
-@property (weak, nonatomic) IBOutlet UILabel *myRoutinesLabel;
-@property (weak, nonatomic) IBOutlet UILabel *leftArrowGrayBackgr;
-@property (weak, nonatomic) IBOutlet UILabel *rightArrowGrayBackgr;
 @property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
+@property (weak, nonatomic) IBOutlet UIView *topTitleBar;
 
 // IBAction
 
@@ -225,6 +223,8 @@
 
 - (void)viewAesthetics{
     
+    self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
+    
     // meta view
     
     self.view.backgroundColor = [UIColor blackColor];
@@ -270,16 +270,17 @@
     
     // year label
     
-    NSArray *titleLabels = @[self.yearLabel, self.myRoutinesLabel];
+    NSArray *titleLabels = @[self.yearLabel];
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
         label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20];
         
     }
     
-    self.yearLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    self.myRoutinesLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    
+//    self.myRoutinesLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
     // arrows and other bar buttons
     
@@ -303,15 +304,15 @@
         
     }
     
-    // arrow background labels
-    
-    self.leftArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
-    [self.view insertSubview: self.leftArrowButton
-                aboveSubview: self.leftArrowGrayBackgr];
-    
-    self.rightArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
-    [self.view insertSubview: self.rightArrowButton
-                aboveSubview: self.rightArrowGrayBackgr];
+//    // arrow background labels
+//    
+//    self.leftArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
+//    [self.view insertSubview: self.leftArrowButton
+//                aboveSubview: self.leftArrowGrayBackgr];
+//    
+//    self.rightArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
+//    [self.view insertSubview: self.rightArrowButton
+//                aboveSubview: self.rightArrowGrayBackgr];
     
     // bottom controls container
     
