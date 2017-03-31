@@ -54,7 +54,7 @@
 @property (strong) UITableView *activeTableView;
 @property (strong) UIScrollView *activeScrollView;
 @property (strong) UIActivityIndicatorView *activeActivityIndicator;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
+//@property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
 @property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
@@ -73,6 +73,7 @@
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
 - (IBAction)didPressViewHistory:(id)sender;
+- (IBAction)didPressToggle:(id)sender;
 
 // core
 
@@ -154,7 +155,7 @@
     
     [self viewAesthetics];
     
-    [self configureSegmentedControl];
+//    [self configureSegmentedControl];
     
     [self toggleButtonsToOffState];
     
@@ -213,15 +214,15 @@
 
 
 
-- (void)configureSegmentedControl{
-    
-    //// configure action method for segmented control
-    
-    [self.sortBySegmentedControl addTarget: self
-                                    action: @selector(segmentedControlValueChanged)
-                          forControlEvents: UIControlEventValueChanged];
-    
-}
+//- (void)configureSegmentedControl{
+//    
+//    //// configure action method for segmented control
+//    
+//    [self.sortBySegmentedControl addTarget: self
+//                                    action: @selector(segmentedControlValueChanged)
+//                          forControlEvents: UIControlEventValueChanged];
+//    
+//}
 
 
 - (void)viewAesthetics{
@@ -234,7 +235,7 @@
     
     // filter
     
-    self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+//    self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     
     // buttons
     
@@ -888,7 +889,7 @@
         TJBWorkoutLogTitleCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
         
         NSString *primaryText;
-        if (self.sortBySegmentedControl.selectedSegmentIndex == 0){
+        if (_sortByDateCreated == NO){
             primaryText = @"Routines by Date Last Executed";
         } else{
             primaryText = @"Routines by Date Created";
@@ -1109,6 +1110,7 @@
     
 }
 
+
 - (void)showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables{
     
     // show the chain options for the current tvActiveDate
@@ -1250,6 +1252,33 @@
 
 
 #pragma mark - Button Actions
+
+- (IBAction)didPressToggle:(id)sender{
+    
+    _sortByDateCreated = !_sortByDateCreated;
+    
+    [self configureSelectionAsNil];
+    
+    // must rederive and layout date controls because the filter criteria for chain templates has now changed
+    
+    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
+    
+    [self configureDateControlsBasedOnDCActiveDate];
+    
+    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
+    
+    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
+    
+    NSIndexPath *path = [NSIndexPath indexPathForRow: 0
+                                           inSection: 0];
+    
+    [self.activeTableView scrollToRowAtIndexPath: path
+                                atScrollPosition: UITableViewScrollPositionTop
+                                        animated: YES];
+
+    
+}
+
 
 
 - (IBAction)didPressBackButton:(id)sender{
@@ -1473,8 +1502,8 @@
         
     }
     
-    self.sortBySegmentedControl.enabled = NO;
-    self.sortBySegmentedControl.layer.opacity = .4;
+//    self.sortBySegmentedControl.enabled = NO;
+//    self.sortBySegmentedControl.layer.opacity = .4;
     
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
@@ -1497,8 +1526,8 @@
         
     }
     
-    self.sortBySegmentedControl.enabled = YES;
-    self.sortBySegmentedControl.layer.opacity = 1.0;
+//    self.sortBySegmentedControl.enabled = YES;
+//    self.sortBySegmentedControl.layer.opacity = 1.0;
     
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
