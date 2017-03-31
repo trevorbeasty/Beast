@@ -127,8 +127,8 @@
     
     if (_hasSelectedAppearance){
         
-        shapeLayer.strokeColor = [UIColor blackColor].CGColor;
-        shapeLayer.fillColor = [UIColor blackColor].CGColor;
+        shapeLayer.strokeColor = [UIColor darkGrayColor].CGColor;
+        shapeLayer.fillColor = [UIColor darkGrayColor].CGColor;
         
     } else{
         
@@ -190,8 +190,8 @@
     
     _hasSelectedAppearance = YES;
     
-    self.monthLabel.textColor = [UIColor blackColor];
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.monthLabel.textColor = [UIColor darkGrayColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     
     if (_isCircled){
         

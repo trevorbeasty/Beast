@@ -45,6 +45,7 @@
     // user selection flow
     
     BOOL _viewingChainHistory;
+    BOOL _sortByDateCreated;
     
 }
 
@@ -131,6 +132,8 @@
     self.restorationClass = [NewOrExistinigCircuitVC class];
     
     //
+    
+    _sortByDateCreated = YES;
     
     return self;
 }
@@ -231,7 +234,7 @@
     
     // filter
     
-    self.sortBySegmentedControl.tintColor = [UIColor blackColor];
+    self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     
     // buttons
     
@@ -279,9 +282,6 @@
         
     }
     
-    
-//    self.myRoutinesLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-    
     // arrows and other bar buttons
     
     NSArray *arrows = @[self.rightArrowButton, self.leftArrowButton];
@@ -303,16 +303,6 @@
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
         
     }
-    
-//    // arrow background labels
-//    
-//    self.leftArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
-//    [self.view insertSubview: self.leftArrowButton
-//                aboveSubview: self.leftArrowGrayBackgr];
-//    
-//    self.rightArrowGrayBackgr.backgroundColor = [UIColor darkGrayColor];
-//    [self.view insertSubview: self.rightArrowButton
-//                aboveSubview: self.rightArrowGrayBackgr];
     
     // bottom controls container
     
@@ -369,8 +359,7 @@
     //// given the chain templates in fetched results and the current sorting selection, derive the sorted content for the year designated by the reference date
     // this method independently evaluates the active index of the segmented control
     
-    NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
-    BOOL sortByDateLastExecuted = sortSelection == 0;
+    BOOL sortByDateLastExecuted = _sortByDateCreated == NO;
     
     NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
     
@@ -949,17 +938,15 @@
             TJBStructureTableViewCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.layer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
+            cell.layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
             
             [cell clearExistingEntries];
             
             NSInteger adjustedRowIndex = indexPath.row - 1;
             
             TJBChainTemplate *chainTemplate = self.tvSortedContent[adjustedRowIndex];
-            
-            NSInteger sortSelection = self.sortBySegmentedControl.selectedSegmentIndex;
-            BOOL sortByDateLastExecuted = sortSelection == 0;
-            BOOL sortByDateCreated = sortSelection == 1;
+    
+            BOOL sortByDateLastExecuted = _sortByDateCreated == NO;
             
             NSDate *date;
             
@@ -968,7 +955,7 @@
                 date = [self largestRealizeChainDateInReferenceYearForChainTemplate: chainTemplate
                                                                       referenceDate: self.tvActiveDate];
                 
-            } else if (sortByDateCreated){
+            } else{
                 
                 date = chainTemplate.dateCreated;
                 
@@ -1032,8 +1019,6 @@
     self.lastSelectedIndexPath = indexPath;
     
     // highlight the new cell
-    
-//    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
     
     TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row - 1];
     
