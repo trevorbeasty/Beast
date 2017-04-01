@@ -96,6 +96,8 @@
 		0BC12E251E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E231E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.m */; };
 		0BC12E261E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E241E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib */; };
 		0BC12E2D1E8352690041D863 /* TJBNumberJumpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E2C1E8352690041D863 /* TJBNumberJumpVC.m */; };
+		0BC12E321E8FCB9F0041D863 /* TJBClockConfigurationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E301E8FCB9F0041D863 /* TJBClockConfigurationVC.m */; };
+		0BC12E331E8FCB9F0041D863 /* TJBClockConfigurationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E311E8FCB9F0041D863 /* TJBClockConfigurationVC.xib */; };
 		0BE970F71E85C8D400DF297E /* TJBExerciseAdditionChildVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE970F51E85C8D400DF297E /* TJBExerciseAdditionChildVC.m */; };
 		0BE970F81E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE970F61E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib */; };
 		0BE970FE1E8887E100DF297E /* TJBSearchExerciseChild.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE970FC1E8887E100DF297E /* TJBSearchExerciseChild.m */; };
@@ -249,6 +251,9 @@
 		0BC12E241E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseSelectionTitleCell.xib; sourceTree = "<group>"; };
 		0BC12E2B1E8352690041D863 /* TJBNumberJumpVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNumberJumpVC.h; sourceTree = "<group>"; };
 		0BC12E2C1E8352690041D863 /* TJBNumberJumpVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNumberJumpVC.m; sourceTree = "<group>"; };
+		0BC12E2F1E8FCB9F0041D863 /* TJBClockConfigurationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBClockConfigurationVC.h; sourceTree = "<group>"; };
+		0BC12E301E8FCB9F0041D863 /* TJBClockConfigurationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBClockConfigurationVC.m; sourceTree = "<group>"; };
+		0BC12E311E8FCB9F0041D863 /* TJBClockConfigurationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBClockConfigurationVC.xib; sourceTree = "<group>"; };
 		0BE970F41E85C8D400DF297E /* TJBExerciseAdditionChildVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseAdditionChildVC.h; sourceTree = "<group>"; };
 		0BE970F51E85C8D400DF297E /* TJBExerciseAdditionChildVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBExerciseAdditionChildVC.m; sourceTree = "<group>"; };
 		0BE970F61E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseAdditionChildVC.xib; sourceTree = "<group>"; };
@@ -400,6 +405,7 @@
 		0B517BD91DF88641009981F9 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0BC12E2E1E8FCB700041D863 /* Clock Scene */,
 				0BC12E2A1E8352350041D863 /* Number Jump */,
 				0BC12E0F1E5F0FE50041D863 /* Chain Complete History */,
 				0B78E7F01E49EFC200EB216F /* Exercise Creation / Selection */,
@@ -744,6 +750,16 @@
 			name = "Number Jump";
 			sourceTree = "<group>";
 		};
+		0BC12E2E1E8FCB700041D863 /* Clock Scene */ = {
+			isa = PBXGroup;
+			children = (
+				0BC12E2F1E8FCB9F0041D863 /* TJBClockConfigurationVC.h */,
+				0BC12E301E8FCB9F0041D863 /* TJBClockConfigurationVC.m */,
+				0BC12E311E8FCB9F0041D863 /* TJBClockConfigurationVC.xib */,
+			);
+			name = "Clock Scene";
+			sourceTree = "<group>";
+		};
 		0BE970F21E85C86600DF297E /* ExerciseAddiitonChildVC */ = {
 			isa = PBXGroup;
 			children = (
@@ -879,6 +895,7 @@
 				0BC12E141E5F10950041D863 /* TJBCompleteChainHistoryVC.xib in Resources */,
 				0BA8ACF61E26561C00EE10C2 /* TJBCircuitReferenceVC.xib in Resources */,
 				0B78E8021E67654C00EB216F /* TJBExerciseSelectionCell.xib in Resources */,
+				0BC12E331E8FCB9F0041D863 /* TJBClockConfigurationVC.xib in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
 				0B78E7CE1E3C16A300EB216F /* TJBRealizedChainCell.xib in Resources */,
 				0B78E7FC1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.xib in Resources */,
@@ -908,6 +925,7 @@
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,
 				0BC12E251E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.m in Sources */,
 				0BC12E1F1E5FBE100041D863 /* TJBRealizedSetCollectionCell.m in Sources */,
+				0BC12E321E8FCB9F0041D863 /* TJBClockConfigurationVC.m in Sources */,
 				0B3688371E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m in Sources */,
 				0B3688311E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m in Sources */,
 				0B3688211E4352B80077290C /* TJBSchemeSelectionDateComp.m in Sources */,
