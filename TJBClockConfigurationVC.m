@@ -20,7 +20,7 @@
 
 #import "TJBNumberSelectionVC.h"
 
-@interface TJBClockConfigurationVC ()
+@interface TJBClockConfigurationVC () <TJBStopwatchObserver>
 
 // IBOutlet
 
@@ -87,6 +87,8 @@
     [super viewDidLoad];
     
     [self configureViewAesthetics];
+    
+    [self registerTimerValueLabelWithStopwatch];
     
 }
 
@@ -186,6 +188,8 @@
 
 - (IBAction)didPressCancel:(id)sender{
     
+    [self deregisterTimerValueLabelWithStopwatch];
+    
     [self dismissViewControllerAnimated: YES
                              completion: nil];
     
@@ -274,8 +278,41 @@
 
 - (IBAction)didPressReturn:(id)sender{
     
+    [self deregisterTimerValueLabelWithStopwatch];
+    
     [self dismissViewControllerAnimated: YES
                              completion: nil];
+    
+}
+
+
+
+#pragma mark - Stopwatch Interaction
+
+- (void)registerTimerValueLabelWithStopwatch{
+    
+    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
+                                           withTimerLabel: self.timerValueLabel];
+    
+}
+
+- (void)deregisterTimerValueLabelWithStopwatch{
+ 
+    [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerValueLabel];
+    
+}
+
+#pragma mark - TJBStopwatchObserver Protocol
+
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
+    
+    
+    
+}
+
+- (void)secondaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
+    
+    
     
 }
 

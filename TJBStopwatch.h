@@ -15,30 +15,40 @@
 
 @interface TJBStopwatch : NSObject
 
-@property (nonatomic, strong, readonly) NSNumber *primaryTimeElapsedInSeconds;
-@property (nonatomic, strong, readonly) NSNumber *secondaryTimeElapsedInSeconds;
+// singleton method
 
 + (instancetype)singleton;
 
+// getters
+
+@property (nonatomic, strong, readonly) NSNumber *primaryTimeElapsedInSeconds;
+@property (nonatomic, strong, readonly) NSNumber *secondaryTimeElapsedInSeconds;
+
+- (NSString *)primaryTimeElapsedAsString;
+- (NSString *)secondaryTimeElapsedAsString;
+
+// formatting
+
+- (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds;
+
+// observer manipulation
+
 - (void)removePrimaryStopwatchObserver:(UILabel *)timerLabel;
+
+- (void)removeAllPrimaryStopwatchObservers;
 
 - (void)addPrimaryStopwatchObserver:(UIViewController<TJBStopwatchObserver> *)viewController withTimerLabel:(UILabel *)timerLabel;
 
 - (void)addSecondaryStopwatchObserver:(UIViewController<TJBStopwatchObserver> *)viewController withTimerLabel:(UILabel *)timerLabel;
 
+// timer core values manipulation
+
 - (void)setPrimaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing lastUpdateDate:(NSDate *)lastUpdateDate;
 
 - (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing lastUpdateDate:(NSDate *)lastUpdateDate;
 
-- (NSString *)minutesAndSecondsStringFromNumberOfSeconds:(int)numberOfSeconds;
-
-- (NSString *)primaryTimeElapsedAsString;
-- (NSString *)secondaryTimeElapsedAsString;
-
-- (void)removeAllPrimaryStopwatchObservers;
-
-// direct timer manipulation
-
 - (void)resetAndPausePrimaryTimer;
+
+
 
 @end
