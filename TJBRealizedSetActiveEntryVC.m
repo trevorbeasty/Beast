@@ -314,7 +314,7 @@
         
         CALayer *layer = butt.layer;
         layer.borderColor = [UIColor darkGrayColor].CGColor;
-        layer.borderWidth = 2.0;
+        layer.borderWidth = 1.0;
         layer.cornerRadius = 25;
         layer.masksToBounds = YES;
         

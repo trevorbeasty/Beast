@@ -265,11 +265,18 @@ typedef enum{
     
     self.normalBrowsingExerciseSC.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     self.normalBrowsingExerciseSC.backgroundColor = [UIColor darkGrayColor];
+    
+    UIFont *font = [UIFont boldSystemFontOfSize: 15];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject: font
+                                                           forKey: NSFontAttributeName];
+    [self.normalBrowsingExerciseSC setTitleTextAttributes: attributes
+                                                 forState: UIControlStateNormal];
+    
     CALayer *scLayer = self.normalBrowsingExerciseSC.layer;
     scLayer.masksToBounds = YES;
     scLayer.cornerRadius = 25;
-    scLayer.borderWidth = 2.0;
-    scLayer.borderColor = [UIColor darkGrayColor].CGColor;
+    scLayer.borderWidth = 1.0;
+    scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
     // title bar buttons
     

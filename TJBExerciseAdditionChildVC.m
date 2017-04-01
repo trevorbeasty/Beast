@@ -68,12 +68,6 @@
 
 #pragma mark - Supp View Methods
 
-//- (void)configureSegmentedControl{
-//    
-//    
-//    
-//}
-
 - (void)configureViewAesthetics{
     
     // meta view
@@ -96,15 +90,15 @@
     NSArray *buttons = @[self.addButton, self.addAndSelectButton];
     for (UIButton *butt in buttons){
         
-        butt.backgroundColor = [UIColor clearColor];
-        butt.titleLabel.font = [UIFont systemFontOfSize: 20];
-        [butt setTitleColor: [UIColor blackColor]
+        butt.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        butt.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+        [butt setTitleColor: [UIColor darkGrayColor]
                    forState: UIControlStateNormal];
         
         CALayer *bLayer = butt.layer;
         bLayer.masksToBounds = YES;
         bLayer.cornerRadius = 15;
-        bLayer.borderColor = [UIColor blackColor].CGColor;
+        bLayer.borderColor = [UIColor darkGrayColor].CGColor;
         bLayer.borderWidth = 1.0;
         
     }
@@ -113,8 +107,21 @@
     
     // sc
     
-    self.exerciseCategorySC.tintColor = [UIColor blackColor];
-    self.exerciseCategorySC.backgroundColor = [UIColor clearColor];
+    self.exerciseCategorySC.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.exerciseCategorySC.backgroundColor = [UIColor darkGrayColor];
+    
+    UIFont *font = [UIFont boldSystemFontOfSize: 15];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject: font
+                                                           forKey: NSFontAttributeName];
+    [self.exerciseCategorySC setTitleTextAttributes: attributes
+                                           forState: UIControlStateNormal];
+    
+    CALayer *scLayer = self.exerciseCategorySC.layer;
+    scLayer.masksToBounds = YES;
+    scLayer.cornerRadius = 25;
+    scLayer.borderWidth = 1.0;
+    scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    
     
     // text field
     
@@ -123,7 +130,7 @@
     CALayer *tfLayer = self.exerciseNameTF.layer;
     tfLayer.borderColor = [UIColor blackColor].CGColor;
     tfLayer.borderWidth = 1.0;
-    tfLayer.cornerRadius = 4.0;
+    tfLayer.cornerRadius = 25.0;
     tfLayer.masksToBounds = YES;
     
 }

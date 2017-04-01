@@ -76,10 +76,10 @@
                     <rect key="frame" x="315" y="91" width="60" height="60"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="60" id="3mS-wz-y5T"/>
-                        <constraint firstAttribute="height" constant="60" id="k3d-aG-MPI"/>
+                        <constraint firstAttribute="height" constant="60" id="GC3-kU-bqx"/>
+                        <constraint firstAttribute="width" constant="60" id="dl3-bV-Mwi"/>
                     </constraints>
-                    <state key="normal" image="searchBlackThin"/>
+                    <state key="normal" image="searchBlue25"/>
                     <connections>
                         <action selector="didPressSearchButton:" destination="-1" eventType="touchUpInside" id="mcy-Ry-TAG"/>
                     </connections>
@@ -122,16 +122,16 @@
                 <constraint firstItem="OEF-dg-UHB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PgD-Ga-Vew"/>
                 <constraint firstAttribute="trailing" secondItem="qJk-ud-aja" secondAttribute="trailing" constant="8" id="Qu1-FL-J3S"/>
                 <constraint firstAttribute="bottom" secondItem="qJk-ud-aja" secondAttribute="bottom" constant="8" id="SIs-bv-zyP"/>
-                <constraint firstItem="Vhm-Ed-iVh" firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" id="Tcn-pQ-lON"/>
                 <constraint firstItem="qJk-ud-aja" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="bottom" constant="8" id="WUY-BD-Now"/>
                 <constraint firstItem="3TS-yz-6Zu" firstAttribute="top" secondItem="ajv-jV-md0" secondAttribute="top" id="Yhd-TQ-lU4"/>
                 <constraint firstItem="hdc-bj-tBP" firstAttribute="top" secondItem="OEF-dg-UHB" secondAttribute="bottom" id="Z4m-aI-q6g"/>
                 <constraint firstItem="hdc-bj-tBP" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ayG-qU-rZe"/>
-                <constraint firstItem="Vhm-Ed-iVh" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="top" id="eaS-Xt-ael"/>
                 <constraint firstItem="ajv-jV-md0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="erm-Xa-kTc"/>
                 <constraint firstItem="l61-bv-oaV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="exY-Pf-eo6"/>
                 <constraint firstAttribute="trailing" secondItem="XIv-ZX-jxj" secondAttribute="trailing" id="flt-hR-dfX"/>
+                <constraint firstItem="Vhm-Ed-iVh" firstAttribute="top" secondItem="hdc-bj-tBP" secondAttribute="top" id="fzr-DV-3NL"/>
                 <constraint firstItem="qJk-ud-aja" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="jaS-hD-lLf"/>
+                <constraint firstItem="Vhm-Ed-iVh" firstAttribute="trailing" secondItem="hdc-bj-tBP" secondAttribute="trailing" id="jb1-aw-wgx"/>
                 <constraint firstItem="3TS-yz-6Zu" firstAttribute="bottom" secondItem="ajv-jV-md0" secondAttribute="bottom" id="mNt-14-DZE"/>
                 <constraint firstAttribute="trailing" secondItem="l61-bv-oaV" secondAttribute="trailing" id="phl-lG-Z8q"/>
                 <constraint firstItem="XIv-ZX-jxj" firstAttribute="bottom" secondItem="3TS-yz-6Zu" secondAttribute="bottom" id="qPa-fM-2kR"/>
@@ -145,6 +145,6 @@
     <resources>
         <image name="cancel" width="32" height="32"/>
         <image name="new" width="32" height="32"/>
-        <image name="searchBlackThin" width="25" height="25"/>
+        <image name="searchBlue25" width="25" height="25"/>
     </resources>
 </document>
