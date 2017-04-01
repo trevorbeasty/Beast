@@ -48,6 +48,10 @@
 
 #import "TJBSetCompletedSummaryVC.h"
 
+// timer config
+
+#import "TJBClockConfigurationVC.h"
+
 
 @interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate, UIViewControllerRestoration, UITableViewDelegate, UITableViewDataSource>
 
@@ -651,7 +655,11 @@
 
 - (IBAction)didPressClockButton:(id)sender{
     
+    TJBClockConfigurationVC *vc = [[TJBClockConfigurationVC alloc] init];
     
+    [self presentViewController: vc
+                       animated: YES
+                     completion: nil];
     
 }
 

@@ -11,6 +11,24 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBClockConfigurationVC">
             <connections>
+                <outlet property="alertTiimingValueLabel" destination="qfO-ya-nYB" id="Fmb-kn-fJG"/>
+                <outlet property="alertTimingTitleLabel" destination="kxW-jW-vzj" id="TQw-C5-nWN"/>
+                <outlet property="bottomTitleBar" destination="tKB-RP-2sq" id="54y-vS-1SL"/>
+                <outlet property="cancelButtonTitleBar" destination="5lv-1k-xTt" id="u06-l8-VXW"/>
+                <outlet property="editButtonAlertTiming" destination="y3W-hb-C7R" id="uLF-IF-8H1"/>
+                <outlet property="editButtonTargetRest" destination="b2H-k8-HXR" id="BCi-Vt-cWl"/>
+                <outlet property="myTimerLabel" destination="ZTp-1U-1TH" id="4BX-oj-JNH"/>
+                <outlet property="pauseButton" destination="cF8-cg-yf2" id="MfY-dP-8WD"/>
+                <outlet property="playButton" destination="8kQ-cO-Xdg" id="Twf-US-mO9"/>
+                <outlet property="restartButton" destination="XL8-If-rBg" id="cMd-GE-D8b"/>
+                <outlet property="returnButton" destination="1OD-rV-EWi" id="0hs-NE-9ht"/>
+                <outlet property="soundButtonTitleBar" destination="bjS-8t-Kce" id="V07-Up-LMU"/>
+                <outlet property="targetRestTitleLabel" destination="eeA-ex-LNh" id="UDb-bf-79K"/>
+                <outlet property="targetRestValueLabel" destination="LHh-BV-EnO" id="Rs0-gI-fdi"/>
+                <outlet property="thinDividerLabel" destination="6Qx-DX-QwY" id="rgc-NN-k4Q"/>
+                <outlet property="timerValueLabel" destination="djk-1v-YcE" id="Zh2-vq-X7N"/>
+                <outlet property="titleBarContainer" destination="OB7-p7-f6f" id="MGd-wm-LCS"/>
+                <outlet property="topTitleBar" destination="6K4-Rq-0D0" id="8Qa-na-VJd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -24,15 +42,53 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6K4-Rq-0D0" userLabel="topTitleBar">
                             <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjS-8t-Kce" userLabel="soundButton">
+                                    <rect key="frame" x="328" y="9" width="32" height="32"/>
+                                    <state key="normal" image="soundBlue32"/>
+                                    <connections>
+                                        <action selector="didPressSound:" destination="-1" eventType="touchUpInside" id="D5a-hU-mYR"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lv-1k-xTt" userLabel="exitButton">
+                                    <rect key="frame" x="15" y="9" width="32" height="32"/>
+                                    <state key="normal" image="cancel"/>
+                                    <connections>
+                                        <action selector="didPressCancel:" destination="-1" eventType="touchUpInside" id="2al-dP-2wc"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Timer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTp-1U-1TH" userLabel="myExercises">
+                                    <rect key="frame" x="143" y="13.5" width="89" height="24"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstAttribute="trailing" secondItem="bjS-8t-Kce" secondAttribute="trailing" constant="15" id="3mg-Jc-sEa"/>
+                                <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="I6m-y1-vsw"/>
+                                <constraint firstItem="bjS-8t-Kce" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="J1x-vs-B2v"/>
+                                <constraint firstItem="5lv-1k-xTt" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="SkZ-V5-EHa"/>
+                                <constraint firstItem="5lv-1k-xTt" firstAttribute="leading" secondItem="6K4-Rq-0D0" secondAttribute="leading" constant="15" id="hw5-wy-qBm"/>
                                 <constraint firstAttribute="height" constant="50" id="kAy-4k-QDZ"/>
+                                <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerX" secondItem="6K4-Rq-0D0" secondAttribute="centerX" id="z76-fu-VUZ"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tKB-RP-2sq" userLabel="bottomTitleBar">
                             <rect key="frame" x="0.0" y="71" width="375" height="70"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01:56" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="djk-1v-YcE" userLabel="timerValueLabel">
+                                    <rect key="frame" x="143.5" y="14.5" width="89" height="42"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="djk-1v-YcE" firstAttribute="centerX" secondItem="tKB-RP-2sq" secondAttribute="centerX" id="VBX-jZ-CLi"/>
+                                <constraint firstItem="djk-1v-YcE" firstAttribute="centerY" secondItem="tKB-RP-2sq" secondAttribute="centerY" id="lRW-oU-hew"/>
                                 <constraint firstAttribute="height" constant="70" id="o00-Zn-JBr"/>
                             </constraints>
                         </view>
@@ -89,10 +145,16 @@
                         <constraint firstAttribute="height" constant="50" id="xNK-Wa-TQF"/>
                     </constraints>
                     <state key="normal" title="Edit"/>
+                    <connections>
+                        <action selector="didPressEditTargetRest:" destination="-1" eventType="touchUpInside" id="RAz-Ty-4s6"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3W-hb-C7R" userLabel="editRight">
                     <rect key="frame" x="204" y="292" width="155" height="50"/>
                     <state key="normal" title="Edit"/>
+                    <connections>
+                        <action selector="didPressEditAlertTiming:" destination="-1" eventType="touchUpInside" id="R2g-TA-g3c"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1OD-rV-EWi">
                     <rect key="frame" x="0.0" y="617" width="375" height="50"/>
@@ -100,18 +162,30 @@
                         <constraint firstAttribute="height" constant="50" id="BEA-3s-H0f"/>
                     </constraints>
                     <state key="normal" title="Return"/>
+                    <connections>
+                        <action selector="didPressReturn:" destination="-1" eventType="touchUpInside" id="olH-ns-2cO"/>
+                    </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XL8-If-rBg">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XL8-If-rBg" userLabel="restartButton">
                     <rect key="frame" x="0.0" y="517" width="125" height="50"/>
                     <state key="normal" image="restartBlue50"/>
+                    <connections>
+                        <action selector="didPressRestart:" destination="-1" eventType="touchUpInside" id="vmv-bk-S6D"/>
+                    </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kQ-cO-Xdg">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kQ-cO-Xdg" userLabel="playButton">
                     <rect key="frame" x="250" y="517" width="125" height="50"/>
                     <state key="normal" image="playBlue50"/>
+                    <connections>
+                        <action selector="didPressPlay:" destination="-1" eventType="touchUpInside" id="2Eu-WR-8Pe"/>
+                    </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF8-cg-yf2">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF8-cg-yf2" userLabel="pauseButton">
                     <rect key="frame" x="125" y="517" width="125" height="50"/>
                     <state key="normal" image="pauseBlue50"/>
+                    <connections>
+                        <action selector="didPressPause:" destination="-1" eventType="touchUpInside" id="w4n-aw-Mxg"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -161,8 +235,10 @@
         </view>
     </objects>
     <resources>
+        <image name="cancel" width="32" height="32"/>
         <image name="pauseBlue50" width="50" height="50"/>
         <image name="playBlue50" width="50" height="50"/>
         <image name="restartBlue50" width="50" height="50"/>
+        <image name="soundBlue32" width="32" height="32"/>
     </resources>
 </document>
