@@ -14,7 +14,6 @@
                 <outlet property="alertTiimingValueLabel" destination="qfO-ya-nYB" id="Fmb-kn-fJG"/>
                 <outlet property="alertTimingTitleLabel" destination="kxW-jW-vzj" id="TQw-C5-nWN"/>
                 <outlet property="bottomTitleBar" destination="tKB-RP-2sq" id="54y-vS-1SL"/>
-                <outlet property="cancelButtonTitleBar" destination="5lv-1k-xTt" id="u06-l8-VXW"/>
                 <outlet property="editButtonAlertTiming" destination="y3W-hb-C7R" id="uLF-IF-8H1"/>
                 <outlet property="editButtonTargetRest" destination="b2H-k8-HXR" id="BCi-Vt-cWl"/>
                 <outlet property="myTimerLabel" destination="ZTp-1U-1TH" id="4BX-oj-JNH"/>
@@ -52,13 +51,6 @@
                                         <action selector="didPressSound:" destination="-1" eventType="touchUpInside" id="D5a-hU-mYR"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lv-1k-xTt" userLabel="exitButton">
-                                    <rect key="frame" x="15" y="9" width="32" height="32"/>
-                                    <state key="normal" image="cancel"/>
-                                    <connections>
-                                        <action selector="didPressCancel:" destination="-1" eventType="touchUpInside" id="2al-dP-2wc"/>
-                                    </connections>
-                                </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Timer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTp-1U-1TH" userLabel="myExercises">
                                     <rect key="frame" x="143" y="13.5" width="89" height="24"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -71,8 +63,6 @@
                                 <constraint firstAttribute="trailing" secondItem="bjS-8t-Kce" secondAttribute="trailing" constant="15" id="3mg-Jc-sEa"/>
                                 <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="I6m-y1-vsw"/>
                                 <constraint firstItem="bjS-8t-Kce" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="J1x-vs-B2v"/>
-                                <constraint firstItem="5lv-1k-xTt" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="SkZ-V5-EHa"/>
-                                <constraint firstItem="5lv-1k-xTt" firstAttribute="leading" secondItem="6K4-Rq-0D0" secondAttribute="leading" constant="15" id="hw5-wy-qBm"/>
                                 <constraint firstAttribute="height" constant="50" id="kAy-4k-QDZ"/>
                                 <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerX" secondItem="6K4-Rq-0D0" secondAttribute="centerX" id="z76-fu-VUZ"/>
                             </constraints>
@@ -258,7 +248,6 @@
         </view>
     </objects>
     <resources>
-        <image name="cancel" width="32" height="32"/>
         <image name="pauseBlue50" width="50" height="50"/>
         <image name="playBlue50" width="50" height="50"/>
         <image name="restartBlue50" width="50" height="50"/>

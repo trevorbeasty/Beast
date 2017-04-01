@@ -33,6 +33,8 @@
 
 // observer manipulation
 
+- (void)updatePrimaryTimerLabels;
+
 - (void)removePrimaryStopwatchObserver:(UILabel *)timerLabel;
 
 - (void)removeAllPrimaryStopwatchObservers;
@@ -48,6 +50,10 @@
 - (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing lastUpdateDate:(NSDate *)lastUpdateDate;
 
 - (void)resetAndPausePrimaryTimer;
+
+- (void)resetPrimaryTimer;
+- (void)pausePrimaryTimer;
+- (void)playPrimaryTimer;
 
 
 

@@ -35,7 +35,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *editButtonTargetRest;
 @property (weak, nonatomic) IBOutlet UIButton *editButtonAlertTiming;
 
-@property (weak, nonatomic) IBOutlet UIButton *cancelButtonTitleBar;
 @property (weak, nonatomic) IBOutlet UIButton *soundButtonTitleBar;
 
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
@@ -56,7 +55,6 @@
 
 // IBAction
 
-- (IBAction)didPressCancel:(id)sender;
 - (IBAction)didPressSound:(id)sender;
 
 - (IBAction)didPressEditTargetRest:(id)sender;
@@ -89,6 +87,8 @@
     [self configureViewAesthetics];
     
     [self registerTimerValueLabelWithStopwatch];
+    [[TJBStopwatch singleton]  updatePrimaryTimerLabels];
+    
     
 }
 
@@ -139,7 +139,7 @@
     
     // buttons
     
-    NSArray *iconButtons = @[self.cancelButtonTitleBar, self.soundButtonTitleBar, self.restartButton, self.pauseButton, self.playButton];
+    NSArray *iconButtons = @[self.soundButtonTitleBar, self.restartButton, self.pauseButton, self.playButton];
     for (UIButton *butt in iconButtons){
         
         butt.backgroundColor = [UIColor clearColor];
@@ -185,15 +185,6 @@
 
 
 #pragma mark - IBAction
-
-- (IBAction)didPressCancel:(id)sender{
-    
-    [self deregisterTimerValueLabelWithStopwatch];
-    
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
-    
-}
 
 - (IBAction)didPressSound:(id)sender {
 }
@@ -267,13 +258,22 @@
     
 }
 
-- (IBAction)didPressRestart:(id)sender {
+- (IBAction)didPressRestart:(id)sender{
+    
+    [[TJBStopwatch singleton] resetPrimaryTimer];
+    
 }
 
-- (IBAction)didPressPause:(id)sender {
+- (IBAction)didPressPause:(id)sender{
+    
+    [[TJBStopwatch singleton] pausePrimaryTimer];
+    
 }
 
-- (IBAction)didPressPlay:(id)sender {
+- (IBAction)didPressPlay:(id)sender{
+    
+    [[TJBStopwatch singleton] playPrimaryTimer];
+    
 }
 
 - (IBAction)didPressReturn:(id)sender{

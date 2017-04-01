@@ -98,11 +98,7 @@
         
         [self incrementPrimaryTimer];
         
-        for (UILabel *timerLabel in self.primaryTimeObservers){
-            
-            timerLabel.text = [self minutesAndSecondsStringFromNumberOfSeconds: _primaryElapsedTimeInSeconds];
-            
-        }
+        [self updatePrimaryTimerLabels];
         
     }
     
@@ -120,11 +116,21 @@
     
 }
 
+- (void)updatePrimaryTimerLabels{
+    
+    for (UILabel *timerLabel in self.primaryTimeObservers){
+        
+        timerLabel.text = [self minutesAndSecondsStringFromNumberOfSeconds: _primaryElapsedTimeInSeconds];
+        
+    }
+    
+}
+
 - (void)incrementPrimaryTimer{
     
     // elapsed time
     
-    NSDate *currentDate = [NSDate date];
+    NSDate *now = [NSDate date];
     float elapsedTime;
     
     if (!self.dateAtLastPrimaryUpdate){
@@ -133,7 +139,7 @@
         
     } else{
         
-        elapsedTime = [currentDate timeIntervalSinceDate: self.dateAtLastPrimaryUpdate];
+        elapsedTime = [now timeIntervalSinceDate: self.dateAtLastPrimaryUpdate];
         
     }
     
@@ -149,11 +155,19 @@
         
     }
     
-    self.dateAtLastPrimaryUpdate = currentDate;
+    [self callPrimaryObserverProtocolMethod];
+    
+}
+
+- (void)callPrimaryObserverProtocolMethod{
+    
+    NSDate *now = [NSDate date];
+    
+    self.dateAtLastPrimaryUpdate = now;
     
     for (UIViewController<TJBStopwatchObserver> *vc in self.primaryStopwatchObserverVCs){
         
-        [vc primaryTimerDidUpdateWithUpdateDate: currentDate
+        [vc primaryTimerDidUpdateWithUpdateDate: now
                                      timerValue: _primaryElapsedTimeInSeconds];
         
     }
@@ -241,6 +255,27 @@
 
 #pragma mark - Stopwatch Manipulation
 
+- (void)resetPrimaryTimer{
+    
+    _primaryElapsedTimeInSeconds = 0.0;
+    
+    [self updatePrimaryTimerLabels];
+    
+}
+
+- (void)pausePrimaryTimer{
+    
+    _primaryStopwatchIsOn = NO;
+    
+}
+
+- (void)playPrimaryTimer{
+    
+    self.dateAtLastPrimaryUpdate = nil; // must nullify this IV; if not, the timer calculates the time since the last update, so it is as if the timer was never paused in the first place
+    
+    _primaryStopwatchIsOn = YES;
+    
+}
 
 
 - (void)setSecondaryStopWatchToTimeInSeconds:(int)timeInSeconds withForwardIncrementing:(BOOL)forwardIncrementing lastUpdateDate:(NSDate *)lastUpdateDate{
