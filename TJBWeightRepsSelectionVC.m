@@ -33,7 +33,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UILabel *topBarRightLabel;
+@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UIView *topTitleBar;
+@property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
 
 @property (weak, nonatomic) IBOutlet UIView *leftJumpBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *rightJumpBarContainer;
@@ -178,7 +180,10 @@ typedef enum {
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.titleBarContainer.backgroundColor = [UIColor blackColor];
+    self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
+    self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
     
     // segmented controls
     
@@ -193,7 +198,7 @@ typedef enum {
     
     [self.view layoutIfNeeded];
     
-    NSArray *titleLabels = @[self.topTitleLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel, self.topBarRightLabel];
+    NSArray *titleLabels = @[self.topTitleLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel];
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor darkGrayColor];
@@ -201,8 +206,6 @@ typedef enum {
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
-    
-    self.topBarRightLabel.text = @"";
     
     // buttons
     
@@ -216,6 +219,20 @@ typedef enum {
     self.cancelButton.titleLabel.backgroundColor = [UIColor clearColor];
     self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     self.cancelButton.backgroundColor = [UIColor darkGrayColor];
+    
+    // jump bars
+    
+    NSArray *jumpBarContainers = @[self.leftJumpBarContainer, self.rightJumpBarContainer];
+    for (UIView *view in jumpBarContainers){
+        
+        CALayer *layer = view.layer;
+        layer.masksToBounds = YES;
+        layer.cornerRadius = 25;
+        layer.borderWidth = 1.0;
+        layer.borderColor = [UIColor darkGrayColor].CGColor;
+        
+    }
+    
     
 }
 
@@ -261,28 +278,31 @@ typedef enum {
         NSNumber *weightNumber = [NSNumber numberWithFloat: indexPath.row * [self weightMultiplier]];
         
         weightCell.numberLabel.text = [weightNumber stringValue];
-        weightCell.numberLabel.textColor = [UIColor whiteColor];
-        weightCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+//        weightCell.numberLabel.textColor = [UIColor blackColor];
+//        weightCell.numberLabel.font = [UIFont systemFontOfSize: 15.0];
         weightCell.typeLabel.text = @"";
-        weightCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+//        weightCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+        
+        [self configureUnselectedCellAesthetics: weightCell];
+        
+//        CALayer *cellLayer = weightCell.layer;
         
         // the following is done so that a cell remains highlighted if it is selected, scrolled off-screen, and then scrolled back on-screen
         
-        weightCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+//        weightCell.backgroundColor = [UIColor clearColor];
         
         if (self.weightSelectedCellIndexPath){
             
             if (self.weightSelectedCellIndexPath.row == indexPath.row){
                 
-                weightCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-                weightCell.numberLabel.textColor = [UIColor blackColor];
+                [self configureSelectedCellAesthetics: weightCell];
                 
             }
             
         } 
         
-        weightCell.layer.masksToBounds = YES;
-        weightCell.layer.cornerRadius = 4.0;
+//        weightCell.layer.masksToBounds = YES;
+//        weightCell.layer.cornerRadius = 4.0;
         
         return weightCell;
         
@@ -294,30 +314,59 @@ typedef enum {
         NSNumber *repsNumber = [NSNumber numberWithFloat: indexPath.row * [self repsMultiplier]];
         
         repsCell.numberLabel.text = [repsNumber stringValue];
-        repsCell.numberLabel.textColor = [UIColor whiteColor];
-        repsCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+//        repsCell.numberLabel.textColor = [UIColor whiteColor];
+//        repsCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
         repsCell.typeLabel.text = @"";
-        repsCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+//        repsCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
         
-        repsCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        [self configureUnselectedCellAesthetics: repsCell];
+        
+//        repsCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
         
         if (self.repsSelectedCellIndexPath){
             
             if (self.repsSelectedCellIndexPath.row == indexPath.row){
                 
-                repsCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-                repsCell.numberLabel.textColor = [UIColor blackColor];
+                [self configureSelectedCellAesthetics: repsCell];
                 
             }
             
         }
         
-        repsCell.layer.masksToBounds = YES;
-        repsCell.layer.cornerRadius = 4.0;
+//        repsCell.layer.masksToBounds = YES;
+//        repsCell.layer.cornerRadius = 4.0;
         
         return repsCell;
         
     }
+}
+
+- (void)configureUnselectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
+    
+    cell.backgroundColor = [UIColor clearColor];
+    cell.numberLabel.font = [UIFont systemFontOfSize: 15];
+    cell.numberLabel.textColor = [UIColor blackColor];
+    
+    CALayer *cellLayer = cell.layer;
+    cellLayer.masksToBounds = YES;
+    cellLayer.cornerRadius = 4.0;
+    cellLayer.borderColor = [UIColor blackColor].CGColor;
+    cellLayer.borderWidth = 1.0;
+    
+}
+
+- (void)configureSelectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
+    
+    cell.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
+    cell.numberLabel.textColor = [UIColor darkGrayColor];
+    
+    CALayer *cellLayer = cell.layer;
+    cellLayer.masksToBounds = YES;
+    cellLayer.cornerRadius = 4.0;
+    cellLayer.borderColor = [UIColor darkGrayColor].CGColor;
+    cellLayer.borderWidth = 1.0;
+    
 }
 
 - (float)weightMultiplier{
@@ -384,8 +433,7 @@ typedef enum {
             
             TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.weightCollectionView cellForItemAtIndexPath: self.weightSelectedCellIndexPath];
             
-            previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-            previousCell.numberLabel.textColor = [UIColor whiteColor];
+            [self configureUnselectedCellAesthetics: previousCell];
             
         }
         
@@ -393,8 +441,7 @@ typedef enum {
         
         TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.weightCollectionView cellForItemAtIndexPath: indexPath];
         
-        currentCell.numberLabel.textColor = [UIColor blackColor];
-        currentCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        [self configureSelectedCellAesthetics: currentCell];
         
         NSNumber *weight = [NSNumber numberWithFloat: indexPath.row * [self weightMultiplier]];
         self.weightSelectedValueLabel.text = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
@@ -405,8 +452,7 @@ typedef enum {
             
             TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.repsCollectionView cellForItemAtIndexPath: self.repsSelectedCellIndexPath];
             
-            previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-            previousCell.numberLabel.textColor = [UIColor whiteColor];
+            [self configureUnselectedCellAesthetics: previousCell];
             
         }
         
@@ -414,8 +460,7 @@ typedef enum {
         
         TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.repsCollectionView cellForItemAtIndexPath: indexPath];
         
-        currentCell.numberLabel.textColor = [UIColor blackColor];
-        currentCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        [self configureSelectedCellAesthetics: currentCell];
         
         NSNumber *reps = [NSNumber numberWithFloat: indexPath.row * [self repsMultiplier]];
         self.repsSelectedValueLabel.text = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];

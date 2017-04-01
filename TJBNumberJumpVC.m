@@ -77,6 +77,13 @@
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.alignment = UIStackViewAlignmentFill;
     
+//    CALayer *stackLayer = stackView.layer;
+//    stackLayer.masksToBounds = YES;
+//    stackLayer.cornerRadius = 25;
+//    stackLayer.borderColor = [UIColor darkGrayColor].CGColor;
+//    stackLayer.borderWidth = 1.0;
+    
+    
     // add labels
     // labels are added at equal intervals
     
@@ -109,9 +116,9 @@
 
 - (void)configureLabelAesthetics:(UILabel *)label{
     
-    label.font = [UIFont boldSystemFontOfSize: 10];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [[TJBAestheticsController singleton] blueButtonColor];
+    label.font = [UIFont boldSystemFontOfSize: 15];
+    label.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    label.textColor = [UIColor darkGrayColor];
     label.textAlignment = NSTextAlignmentCenter;
     
 }
@@ -131,14 +138,14 @@
     
     [self.view addGestureRecognizer: tapGR];
     
-    // pan GR
-    
-    UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget: self
-                                                                            action: @selector(didPan:)];
-    panGR.minimumNumberOfTouches = 1;
-    panGR.maximumNumberOfTouches = 1;
-    
-    [self.view addGestureRecognizer: panGR];
+//    // pan GR
+//    
+//    UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget: self
+//                                                                            action: @selector(didPan:)];
+//    panGR.minimumNumberOfTouches = 1;
+//    panGR.maximumNumberOfTouches = 1;
+//    
+//    [self.view addGestureRecognizer: panGR];
     
 }
 
