@@ -117,8 +117,8 @@
 - (void)configureLabelAesthetics:(UILabel *)label{
     
     label.font = [UIFont boldSystemFontOfSize: 15];
-    label.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    label.textColor = [UIColor darkGrayColor];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     label.textAlignment = NSTextAlignmentCenter;
     
 }

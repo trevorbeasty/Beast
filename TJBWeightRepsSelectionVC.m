@@ -35,10 +35,11 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
-@property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
+//@property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
 
 @property (weak, nonatomic) IBOutlet UIView *leftJumpBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *rightJumpBarContainer;
+@property (weak, nonatomic) IBOutlet UILabel *thinDividerLabel;
 
 // IBAction
 
@@ -138,7 +139,7 @@ typedef enum {
     
     TJBNumberJumpVC *repsJumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
                                                             numberOfLabels: @(11)
-                                                              intervalSize: @(10)
+                                                              intervalSize: @(5)
                                                           delegateCallback: jumpBarRepsCallback];
     
     [self addChildViewController: repsJumpBar];
@@ -178,19 +179,31 @@ typedef enum {
 
 - (void)configureViewAesthetics{
     
+    // thin divider label
+    
+    self.thinDividerLabel.backgroundColor = [UIColor darkGrayColor];
+    self.thinDividerLabel.text = @"";
+    
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.view.backgroundColor = [UIColor blackColor];
     self.titleBarContainer.backgroundColor = [UIColor blackColor];
     self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
-    self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
+//    self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
     
     // segmented controls
     
     NSArray *segmentedControls = @[self.weightSegmentedControl, self.repsSegmentedControl];
     for (UISegmentedControl *sc in segmentedControls){
         
-        sc.tintColor = [UIColor lightGrayColor];
+        sc.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        sc.backgroundColor = [UIColor darkGrayColor];
+        
+        CALayer *scLayer = sc.layer;
+        scLayer.masksToBounds = YES;
+        scLayer.cornerRadius = 25;
+        scLayer.borderWidth = 1.0;
+        scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         
     }
     
@@ -198,19 +211,30 @@ typedef enum {
     
     [self.view layoutIfNeeded];
     
-    NSArray *titleLabels = @[self.topTitleLabel, self.weightSelectedValueLabel, self.repsSelectedValueLabel];
+    NSArray *titleLabels = @[self.topTitleLabel];
     for (UILabel *label in titleLabels){
         
-        label.backgroundColor = [UIColor darkGrayColor];
+        label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont boldSystemFontOfSize: 20.0];
         
     }
     
+    // selected value labels
+    
+    NSArray *selectedValueLabels = @[self.weightSelectedValueLabel, self.repsSelectedValueLabel];
+    for (UILabel *lab in selectedValueLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        lab.font = [UIFont boldSystemFontOfSize: 20];
+        
+    }
+    
     // buttons
     
-    self.submitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    [self.submitButton setTitleColor: [UIColor whiteColor]
+    self.submitButton.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    [self.submitButton setTitleColor: [UIColor darkGrayColor]
                             forState: UIControlStateNormal];
     self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
     
@@ -229,7 +253,7 @@ typedef enum {
         layer.masksToBounds = YES;
         layer.cornerRadius = 25;
         layer.borderWidth = 1.0;
-        layer.borderColor = [UIColor darkGrayColor].CGColor;
+        layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         
     }
     
@@ -343,7 +367,7 @@ typedef enum {
 
 - (void)configureUnselectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
     
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     cell.numberLabel.font = [UIFont systemFontOfSize: 15];
     cell.numberLabel.textColor = [UIColor blackColor];
     
@@ -357,15 +381,15 @@ typedef enum {
 
 - (void)configureSelectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
     
-    cell.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    cell.backgroundColor = [UIColor clearColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
-    cell.numberLabel.textColor = [UIColor darkGrayColor];
+    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;
     cellLayer.cornerRadius = 4.0;
-    cellLayer.borderColor = [UIColor darkGrayColor].CGColor;
-    cellLayer.borderWidth = 1.0;
+    cellLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    cellLayer.borderWidth = 4.0;
     
 }
 
@@ -478,7 +502,7 @@ typedef enum {
 
 #pragma mark - <UICollectionViewDelegateFlowLayout>
 
-static CGFloat const spacing = 8.0;
+static CGFloat const spacing = 1.0;
 static float const numberOfCellsPerRow = 2;
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
