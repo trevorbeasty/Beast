@@ -94,37 +94,75 @@
                     <rect key="frame" x="204" y="292" width="155" height="50"/>
                     <state key="normal" title="Edit"/>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1OD-rV-EWi">
+                    <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="BEA-3s-H0f"/>
+                    </constraints>
+                    <state key="normal" title="Return"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XL8-If-rBg">
+                    <rect key="frame" x="0.0" y="517" width="125" height="50"/>
+                    <state key="normal" image="restartBlue50"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kQ-cO-Xdg">
+                    <rect key="frame" x="250" y="517" width="125" height="50"/>
+                    <state key="normal" image="playBlue50"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF8-cg-yf2">
+                    <rect key="frame" x="125" y="517" width="125" height="50"/>
+                    <state key="normal" image="pauseBlue50"/>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="qfO-ya-nYB" firstAttribute="leading" secondItem="kxW-jW-vzj" secondAttribute="leading" id="0QU-u0-BAo"/>
+                <constraint firstItem="8kQ-cO-Xdg" firstAttribute="leading" secondItem="cF8-cg-yf2" secondAttribute="trailing" id="0YW-qm-MXh"/>
                 <constraint firstItem="y3W-hb-C7R" firstAttribute="bottom" secondItem="b2H-k8-HXR" secondAttribute="bottom" id="0m1-DJ-wf1"/>
                 <constraint firstItem="LHh-BV-EnO" firstAttribute="trailing" secondItem="eeA-ex-LNh" secondAttribute="trailing" id="2BI-a7-RIB"/>
+                <constraint firstItem="cF8-cg-yf2" firstAttribute="leading" secondItem="XL8-If-rBg" secondAttribute="trailing" id="3uC-Ig-cIx"/>
                 <constraint firstItem="OB7-p7-f6f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="46K-ut-KdB"/>
+                <constraint firstItem="8kQ-cO-Xdg" firstAttribute="width" secondItem="XL8-If-rBg" secondAttribute="width" id="4PU-gi-J7c"/>
                 <constraint firstAttribute="trailing" secondItem="y3W-hb-C7R" secondAttribute="trailing" constant="16" id="5KU-Sg-7W2"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="leading" secondItem="eeA-ex-LNh" secondAttribute="trailing" id="5Zb-6J-Sye"/>
                 <constraint firstAttribute="trailing" secondItem="OB7-p7-f6f" secondAttribute="trailing" id="5bv-0r-gYx"/>
+                <constraint firstAttribute="trailing" secondItem="1OD-rV-EWi" secondAttribute="trailing" id="5eA-Z8-Idv"/>
                 <constraint firstAttribute="trailing" secondItem="kxW-jW-vzj" secondAttribute="trailing" id="7ev-LD-gBR"/>
+                <constraint firstItem="1OD-rV-EWi" firstAttribute="top" secondItem="XL8-If-rBg" secondAttribute="bottom" constant="50" id="7ix-Wf-Qkf"/>
                 <constraint firstItem="kxW-jW-vzj" firstAttribute="leading" secondItem="6Qx-DX-QwY" secondAttribute="trailing" id="HDr-Vw-b1X"/>
                 <constraint firstItem="kxW-jW-vzj" firstAttribute="bottom" secondItem="eeA-ex-LNh" secondAttribute="bottom" id="HXz-uf-0qt"/>
                 <constraint firstItem="eeA-ex-LNh" firstAttribute="top" secondItem="OB7-p7-f6f" secondAttribute="bottom" constant="50" id="IeM-He-69Z"/>
                 <constraint firstItem="LHh-BV-EnO" firstAttribute="top" secondItem="eeA-ex-LNh" secondAttribute="bottom" constant="8" id="O3O-zk-u9e"/>
+                <constraint firstAttribute="bottom" secondItem="1OD-rV-EWi" secondAttribute="bottom" id="P5S-xf-d0G"/>
                 <constraint firstItem="qfO-ya-nYB" firstAttribute="top" secondItem="LHh-BV-EnO" secondAttribute="top" id="PeA-Ys-Yrr"/>
                 <constraint firstItem="b2H-k8-HXR" firstAttribute="top" secondItem="LHh-BV-EnO" secondAttribute="bottom" constant="50" id="Rbx-UJ-ccQ"/>
                 <constraint firstItem="LHh-BV-EnO" firstAttribute="leading" secondItem="eeA-ex-LNh" secondAttribute="leading" id="UXc-XL-S56"/>
                 <constraint firstItem="b2H-k8-HXR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="W6z-2q-WFF"/>
                 <constraint firstItem="qfO-ya-nYB" firstAttribute="bottom" secondItem="LHh-BV-EnO" secondAttribute="bottom" id="X7I-Qe-k6H"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="leading" secondItem="b2H-k8-HXR" secondAttribute="trailing" constant="16" id="Y9G-dW-cG1"/>
+                <constraint firstItem="1OD-rV-EWi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YRc-pG-pWR"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Zvl-eg-gqZ"/>
                 <constraint firstItem="y3W-hb-C7R" firstAttribute="leading" secondItem="6Qx-DX-QwY" secondAttribute="trailing" constant="16" id="aKz-ce-HhP"/>
                 <constraint firstItem="y3W-hb-C7R" firstAttribute="top" secondItem="b2H-k8-HXR" secondAttribute="top" id="dTZ-Vf-wLi"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="top" secondItem="OB7-p7-f6f" secondAttribute="bottom" id="gZg-gD-0gS"/>
+                <constraint firstItem="8kQ-cO-Xdg" firstAttribute="top" secondItem="XL8-If-rBg" secondAttribute="top" id="iH3-9p-8Jf"/>
+                <constraint firstItem="cF8-cg-yf2" firstAttribute="bottom" secondItem="XL8-If-rBg" secondAttribute="bottom" id="ie2-Ml-3kW"/>
+                <constraint firstItem="cF8-cg-yf2" firstAttribute="top" secondItem="XL8-If-rBg" secondAttribute="top" id="k1y-kb-9xG"/>
                 <constraint firstItem="kxW-jW-vzj" firstAttribute="top" secondItem="eeA-ex-LNh" secondAttribute="top" id="nUC-E8-Lsa"/>
                 <constraint firstItem="qfO-ya-nYB" firstAttribute="trailing" secondItem="kxW-jW-vzj" secondAttribute="trailing" id="pDA-0q-izs"/>
+                <constraint firstItem="8kQ-cO-Xdg" firstAttribute="bottom" secondItem="XL8-If-rBg" secondAttribute="bottom" id="pVI-MV-t5f"/>
                 <constraint firstItem="eeA-ex-LNh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="srz-Sg-oTK"/>
                 <constraint firstItem="OB7-p7-f6f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="taN-g7-8tc"/>
+                <constraint firstItem="XL8-If-rBg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vpu-Qw-Lj9"/>
+                <constraint firstAttribute="trailing" secondItem="8kQ-cO-Xdg" secondAttribute="trailing" id="wUQ-Fh-byn"/>
+                <constraint firstItem="cF8-cg-yf2" firstAttribute="width" secondItem="XL8-If-rBg" secondAttribute="width" id="wzb-es-8q6"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="54.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="pauseBlue50" width="50" height="50"/>
+        <image name="playBlue50" width="50" height="50"/>
+        <image name="restartBlue50" width="50" height="50"/>
+    </resources>
 </document>
