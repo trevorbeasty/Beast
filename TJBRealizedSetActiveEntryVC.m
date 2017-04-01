@@ -84,20 +84,21 @@
 //@property (weak, nonatomic) IBOutlet UILabel *thinTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
 @property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
-@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
-@property (weak, nonatomic) IBOutlet UILabel *targetRestValueLabel;
-@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
-@property (weak, nonatomic) IBOutlet UILabel *alertTimingValueLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *targetRestValueLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *alertTimingValueLabel;
 
 // IBAction
 
 - (IBAction)didPressBeginNextSet:(id)sender;
-- (IBAction)didPressTargetRestButton:(id)sender;
-- (IBAction)didPressAlertTimingButton:(id)sender;
+//- (IBAction)didPressTargetRestButton:(id)sender;
+//- (IBAction)didPressAlertTimingButton:(id)sender;
 - (IBAction)didPressExerciseButton:(id)sender;
 - (IBAction)didPressLeftBarButton:(id)sender;
-- (IBAction)didPressAlertTimingTitle:(id)sender;
-- (IBAction)didPressTargetRestTitle:(id)sender;
+//- (IBAction)didPressAlertTimingTitle:(id)sender;
+//- (IBAction)didPressTargetRestTitle:(id)sender;
+- (IBAction)didPressClockButton:(id)sender;
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
@@ -274,24 +275,24 @@
 - (void)viewAesthetics{
     
     // target rest and alert timing
-    
-    NSArray *restValueLabels = @[self.targetRestValueLabel, self.alertTimingValueLabel];
-    for (UILabel *lab in restValueLabels){
-        
-        lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [UIColor whiteColor];
-        lab.font = [UIFont boldSystemFontOfSize: 20];
-        
-    }
-    
-    NSArray *restTitleLabels = @[self.targetRestLabel, self.alertTimingLabel];
-    for (UILabel *lab in restTitleLabels){
-        
-        lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [UIColor whiteColor];
-        lab.font = [UIFont systemFontOfSize: 15];
-        
-    }
+//    
+//    NSArray *restValueLabels = @[self.targetRestValueLabel, self.alertTimingValueLabel];
+//    for (UILabel *lab in restValueLabels){
+//        
+//        lab.backgroundColor = [UIColor clearColor];
+//        lab.textColor = [UIColor whiteColor];
+//        lab.font = [UIFont boldSystemFontOfSize: 20];
+//        
+//    }
+//    
+//    NSArray *restTitleLabels = @[self.targetRestLabel, self.alertTimingLabel];
+//    for (UILabel *lab in restTitleLabels){
+//        
+//        lab.backgroundColor = [UIColor clearColor];
+//        lab.textColor = [UIColor whiteColor];
+//        lab.font = [UIFont systemFontOfSize: 15];
+//        
+//    }
     
     // meta view
     
@@ -583,43 +584,43 @@
 //    
 //}
 
-- (IBAction)didPressAlertTimingButton:(id)sender{
-    
-    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
-    
-    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
-    
-    void (^cancelBlock)(void) = ^{
-        
-        [weakSelf dismissViewControllerAnimated: NO
-                                     completion: nil];
-        
-    };
-    
-    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
-        
-        weakSelf.alertTiming = selectedNumber;
-        
-        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
-        
-//        [weakSelf.alertTimingButton setTitle: targetRestString
-//                                    forState: UIControlStateNormal];
-        
-        [weakSelf dismissViewControllerAnimated: YES
-                                     completion: nil];
-        
-    };
-    
-    [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
-                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
-                                        numberLimit: nil
-                                              title: @"Select Alert Timing"
-                                        cancelBlock: cancelBlock
-                                numberSelectedBlock: numberSelectedBlock
-                                           animated: NO
-                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-    
-}
+//- (IBAction)didPressAlertTimingButton:(id)sender{
+//    
+//    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
+//    
+//    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+//    
+//    void (^cancelBlock)(void) = ^{
+//        
+//        [weakSelf dismissViewControllerAnimated: NO
+//                                     completion: nil];
+//        
+//    };
+//    
+//    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
+//        
+//        weakSelf.alertTiming = selectedNumber;
+//        
+////        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
+//        
+////        [weakSelf.alertTimingButton setTitle: targetRestString
+////                                    forState: UIControlStateNormal];
+//        
+//        [weakSelf dismissViewControllerAnimated: YES
+//                                     completion: nil];
+//        
+//    };
+//    
+//    [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
+//                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
+//                                        numberLimit: nil
+//                                              title: @"Select Alert Timing"
+//                                        cancelBlock: cancelBlock
+//                                numberSelectedBlock: numberSelectedBlock
+//                                           animated: NO
+//                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
+//    
+//}
 
 - (IBAction)didPressExerciseButton:(id)sender{
     
@@ -648,6 +649,12 @@
     
 }
 
+- (IBAction)didPressClockButton:(id)sender{
+    
+    
+    
+}
+
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
@@ -663,17 +670,17 @@
     
 }
 
-- (IBAction)didPressAlertTimingTitle:(id)sender{
-    
-    [self didPressAlertTimingButton: nil];
-    
-}
+//- (IBAction)didPressAlertTimingTitle:(id)sender{
+//    
+//    [self didPressAlertTimingButton: nil];
+//    
+//}
 
-- (IBAction)didPressTargetRestTitle:(id)sender{
-    
-    [self didPressTargetRestButton: nil];
-    
-}
+//- (IBAction)didPressTargetRestTitle:(id)sender{
+//    
+//    [self didPressTargetRestButton: nil];
+//    
+//}
 
 - (void)recoverTimer{
     
@@ -1314,6 +1321,7 @@
     [self.personalRecordsTableView reloadData];
     
 }
+
 
 @end
 
