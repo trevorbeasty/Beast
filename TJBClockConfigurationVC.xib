@@ -105,10 +105,9 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Qx-DX-QwY" userLabel="thinDividerLabel">
-                    <rect key="frame" x="187" y="142" width="1" height="300"/>
+                    <rect key="frame" x="187" y="142" width="1" height="250"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="300" id="d0T-TW-rMz"/>
                         <constraint firstAttribute="width" constant="1" id="ghb-kA-71x"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -217,6 +216,7 @@
                 <constraint firstItem="1OD-rV-EWi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YRc-pG-pWR"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Zvl-eg-gqZ"/>
                 <constraint firstItem="y3W-hb-C7R" firstAttribute="leading" secondItem="6Qx-DX-QwY" secondAttribute="trailing" constant="16" id="aKz-ce-HhP"/>
+                <constraint firstItem="b2H-k8-HXR" firstAttribute="bottom" secondItem="6Qx-DX-QwY" secondAttribute="bottom" constant="-50" id="coY-05-yOV"/>
                 <constraint firstItem="y3W-hb-C7R" firstAttribute="top" secondItem="b2H-k8-HXR" secondAttribute="top" id="dTZ-Vf-wLi"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="top" secondItem="OB7-p7-f6f" secondAttribute="bottom" id="gZg-gD-0gS"/>
                 <constraint firstItem="8kQ-cO-Xdg" firstAttribute="top" secondItem="XL8-If-rBg" secondAttribute="top" id="iH3-9p-8Jf"/>

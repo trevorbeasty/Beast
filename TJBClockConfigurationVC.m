@@ -8,6 +8,10 @@
 
 #import "TJBClockConfigurationVC.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
+
 @interface TJBClockConfigurationVC ()
 
 // IBOutlet
@@ -68,14 +72,88 @@
 
 #pragma mark - View Life Cycle
 
-
+- (void)viewDidLoad{
+    
+    [super viewDidLoad];
+    
+    [self configureViewAesthetics];
+    
+}
 
 
 
 #pragma mark - View Helper Methods
 
 
-
+- (void)configureViewAesthetics{
+    
+    // title bars and container
+    
+    self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
+    self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
+    self.titleBarContainer.backgroundColor = [UIColor blackColor];
+    
+    // meta view
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    // divider label
+    
+    self.thinDividerLabel.backgroundColor = [UIColor darkGrayColor];
+    
+    // time labels
+    
+    self.timerValueLabel.backgroundColor = [UIColor clearColor];
+    self.timerValueLabel.font = [UIFont systemFontOfSize: 35];
+    self.timerValueLabel.textColor = [UIColor whiteColor];
+    
+    NSArray *restTitleLabels = @[self.targetRestTitleLabel, self.alertTimingTitleLabel];
+    for (UILabel *lab in restTitleLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.font = [UIFont boldSystemFontOfSize: 20];
+        lab.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        
+    }
+    
+    NSArray *restValueLabels = @[self.targetRestValueLabel, self.alertTiimingValueLabel];
+    for (UILabel *lab in restValueLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.font = [UIFont systemFontOfSize: 30];
+        lab.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        
+    }
+    
+    // buttons
+    
+    NSArray *iconButtons = @[self.cancelButtonTitleBar, self.soundButtonTitleBar, self.restartButton, self.pauseButton, self.playButton];
+    for (UIButton *butt in iconButtons){
+        
+        butt.backgroundColor = [UIColor clearColor];
+        
+    }
+    
+    NSArray *editButtons = @[self.editButtonTargetRest, self.editButtonAlertTiming];
+    for (UIButton *butt in editButtons){
+        
+        butt.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        [butt setTitleColor: [UIColor darkGrayColor] forState: UIControlStateNormal];
+        butt.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+        
+        CALayer *buttLayer = butt.layer;
+        buttLayer.masksToBounds = YES;
+        buttLayer.cornerRadius = 25;
+        buttLayer.borderWidth = 1.0;
+        buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
+        
+    }
+    
+    self.returnButton.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    [self.returnButton setTitleColor: [UIColor darkGrayColor] forState: UIControlStateNormal];
+    self.returnButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+}
 
 
 
