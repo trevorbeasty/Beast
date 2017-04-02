@@ -55,6 +55,10 @@
 - (void)pausePrimaryTimer;
 - (void)playPrimaryTimer;
 
+// local notifications
 
+- (void)setAlertParameters_targetRest:(NSNumber *)targetRest alertTiming:(NSNumber *)alertTiming;
+
+- (void)scheduleLocalNotification;
 
 @end

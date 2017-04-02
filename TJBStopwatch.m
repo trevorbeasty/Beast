@@ -10,6 +10,10 @@
 
 #import "TJBStopwatch.h"
 
+// local notifications
+
+#import <UserNotifications/UserNotifications.h>
+
 @interface TJBStopwatch ()
 
 {
@@ -34,6 +38,13 @@
 
 @property (nonatomic, strong) NSDate *dateAtLastPrimaryUpdate;
 @property (nonatomic, strong) NSDate *dateAtLastSecondaryUpdate;
+
+// local notifications
+
+@property (nonatomic, strong) UNNotificationRequest *notificationRequestActive;
+@property (nonatomic, strong) NSNumber *targetRest;
+@property (nonatomic, strong) NSNumber *alertTiming;
+
 
 @end
 
@@ -373,6 +384,22 @@
     
     _primaryStopwatchIsOn = NO;
     _primaryElapsedTimeInSeconds = 0;
+    
+}
+
+#pragma mark - Local Notification
+
+- (void)setAlertParameters_targetRest:(NSNumber *)targetRest alertTiming:(NSNumber *)alertTiming{
+    
+    
+    
+}
+
+- (void)scheduleLocalNotification{
+    
+//    NSTimeInterval timeInterval =
+//    
+//    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger ]
     
 }
 
