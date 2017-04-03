@@ -56,6 +56,7 @@
 // IBAction
 
 - (IBAction)didPressSound:(id)sender;
+- (IBAction)didPressExit:(id)sender;
 
 - (IBAction)didPressEditTargetRest:(id)sender;
 - (IBAction)didPressEditAlertTiming:(id)sender;
@@ -66,10 +67,16 @@
 
 - (IBAction)didPressReturn:(id)sender;
 
+
 // callback
 
 @property (copy) VoidBlock cancelBlock;
 @property (copy) AlertParametersBlock applyAlertParamBlock;
+
+// core
+
+@property (strong) NSNumber *selectedTargetRest;
+@property (strong) NSNumber *selectedAlertTiming;
 
 
 
@@ -207,9 +214,11 @@
     
     NSString *nsTitle = @"Target Rest";
     
+    __weak TJBClockConfigurationVC *weakSelf = self;
+    
     CancelBlock cancelBlock = ^{
         
-        [self dismissViewControllerAnimated: YES
+        [weakSelf dismissViewControllerAnimated: YES
                                  completion: nil];
         
     };
@@ -217,11 +226,12 @@
     NumberSelectedBlockSingle nsBlock = ^(NSNumber *selectedNumber){
         
         NSString *formattedNumber = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
-        self.targetRestValueLabel.text = formattedNumber;
+        weakSelf.targetRestValueLabel.text = formattedNumber;
+        weakSelf.selectedTargetRest = selectedNumber;
         
         // also need to notify the stopwatch of changes
         
-        [self dismissViewControllerAnimated: YES
+        [weakSelf dismissViewControllerAnimated: YES
                                  completion: nil];
         
     };
@@ -241,9 +251,11 @@
     
     NSString *nsTitle = @"Alert Timing";
     
+    __weak TJBClockConfigurationVC *weakSelf = self;
+    
     CancelBlock cancelBlock = ^{
         
-        [self dismissViewControllerAnimated: YES
+        [weakSelf dismissViewControllerAnimated: YES
                                  completion: nil];
         
     };
@@ -251,11 +263,12 @@
     NumberSelectedBlockSingle nsBlock = ^(NSNumber *selectedNumber){
         
         NSString *formattedNumber = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
-        self.alertTiimingValueLabel.text = formattedNumber;
+        weakSelf.alertTiimingValueLabel.text = formattedNumber;
+        weakSelf.selectedAlertTiming = selectedNumber;
         
         // also need to notify the stopwatch of changes
         
-        [self dismissViewControllerAnimated: YES
+        [weakSelf dismissViewControllerAnimated: YES
                                  completion: nil];
         
     };
@@ -292,10 +305,23 @@
 
 - (IBAction)didPressReturn:(id)sender{
     
-    [self deregisterTimerValueLabelWithStopwatch];
+    if (self.selectedTargetRest && self.selectedAlertTiming){
+        
+        [self deregisterTimerValueLabelWithStopwatch];
+        
+        self.applyAlertParamBlock(self.selectedTargetRest, self.selectedAlertTiming);
+        
+    }
     
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
+    
+    
+    
+    
+}
+
+- (IBAction)didPressExit:(id)sender{
+    
+    self.cancelBlock();
     
 }
 

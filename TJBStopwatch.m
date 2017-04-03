@@ -395,7 +395,8 @@
 
 - (void)setAlertParameters_targetRest:(NSNumber *)targetRest alertTiming:(NSNumber *)alertTiming{
     
-    
+    self.targetRest = targetRest;
+    self.alertTiming = alertTiming;
     
 }
 
@@ -410,6 +411,8 @@
         // schedule if the current primary stopwatch value is less than the targetStopwatchValue
         
         if (_primaryElapsedTimeInSeconds < targetStopwatchValue){
+            
+            NSLog(@"seconds until local notification = %.01f", targetStopwatchValue - _primaryElapsedTimeInSeconds);
             
             UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval: targetStopwatchValue - _primaryElapsedTimeInSeconds // this is the remaining time before the alert should sound
                                                                                                             repeats: NO];
@@ -437,7 +440,7 @@
         
     }
     
- 
+    return;
     
 }
 

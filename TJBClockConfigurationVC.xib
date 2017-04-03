@@ -60,6 +60,9 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rl-Ur-nwC">
                                     <rect key="frame" x="15" y="9" width="32" height="32"/>
                                     <state key="normal" image="cancel"/>
+                                    <connections>
+                                        <action selector="didPressExit:" destination="-1" eventType="touchUpInside" id="c0r-aY-oKA"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
