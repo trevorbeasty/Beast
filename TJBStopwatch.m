@@ -14,6 +14,10 @@
 
 #import <UserNotifications/UserNotifications.h>
 
+// stopwatch
+
+#import "TJBStopwatch.h"
+
 @interface TJBStopwatch ()
 
 {
@@ -395,11 +399,45 @@
     
 }
 
-- (void)scheduleLocalNotification{
+- (void)scheduleLocalNotificationBasedOnClassIVs{
     
-//    NSTimeInterval timeInterval =
-//    
-//    UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger ]
+    // will only schedule a notification if both the targetRest and alertTiming IV's exist
+    
+    if (self.targetRest && self.alertTiming){
+        
+        NSTimeInterval targetStopwatchValue = [self.targetRest floatValue] - [self.alertTiming floatValue];
+        
+        // schedule if the current primary stopwatch value is less than the targetStopwatchValue
+        
+        if (_primaryElapsedTimeInSeconds < targetStopwatchValue){
+            
+            UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval: targetStopwatchValue - _primaryElapsedTimeInSeconds // this is the remaining time before the alert should sound
+                                                                                                            repeats: NO];
+            
+            UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+            content.title = @"Alert";
+            NSString *formattedAlertTiming = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.alertTiming intValue]];
+            content.subtitle = [NSString stringWithFormat: @"%@ until set begin", formattedAlertTiming];
+            content.body = @"This is your scheduled Leeft alert. Please prepare for your upcoming set";
+            content.badge = @(1);
+            content.sound = [UNNotificationSound defaultSound];
+            
+            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier: @"Alert"
+                                                                                  content: content
+                                                                                  trigger: trigger];
+            
+            [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest: request
+                                                                   withCompletionHandler: nil];
+            
+            
+            
+        }
+        
+        
+        
+    }
+    
+ 
     
 }
 
