@@ -59,6 +59,6 @@
 
 - (void)setAlertParameters_targetRest:(NSNumber *)targetRest alertTiming:(NSNumber *)alertTiming;
 
-- (void)scheduleLocalNotificationBasedOnClassIVs;
+- (void)scheduleAlertBasedOnUserPermissions;
 
 @end

@@ -400,6 +400,41 @@
     
 }
 
+- (void)scheduleAlertBasedOnUserPermissions{
+    
+    UNUserNotificationCenter *nCenter = [UNUserNotificationCenter currentNotificationCenter];
+    
+    void (^alertPermissionsHandler)(UNNotificationSettings *) = ^(UNNotificationSettings *settings){
+        
+        if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined){
+            
+            void (^authorizationRequestHandler)(BOOL, NSError *) = ^(BOOL granted, NSError *error){
+                
+                [self scheduleAlertBasedOnUserPermissions];
+            
+            };
+            
+            [nCenter requestAuthorizationWithOptions: (UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
+                                   completionHandler: authorizationRequestHandler];
+            
+        } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized){
+            
+            [self scheduleLocalNotificationBasedOnClassIVs];
+            
+        }
+        
+        else{
+            
+            NSLog(@"actions for permission denied");
+            
+        }
+        
+    };
+    
+    [nCenter getNotificationSettingsWithCompletionHandler: alertPermissionsHandler];
+    
+}
+
 - (void)scheduleLocalNotificationBasedOnClassIVs{
     
     // will only schedule a notification if both the targetRest and alertTiming IV's exist
@@ -422,15 +457,21 @@
             NSString *formattedAlertTiming = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.alertTiming intValue]];
             content.subtitle = [NSString stringWithFormat: @"%@ until set begin", formattedAlertTiming];
             content.body = @"This is your scheduled Leeft alert. Please prepare for your upcoming set";
-            content.badge = @(1);
+//            content.badge = @(1);
             content.sound = [UNNotificationSound defaultSound];
             
             UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier: @"Alert"
                                                                                   content: content
                                                                                   trigger: trigger];
             
+            void (^completionHandler)(NSError *) = ^(NSError *error){
+                
+                NSLog(@"notification center completion handler");
+                
+            };
+            
             [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest: request
-                                                                   withCompletionHandler: nil];
+                                                                   withCompletionHandler: completionHandler];
             
             
             

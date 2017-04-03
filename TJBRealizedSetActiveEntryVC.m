@@ -669,7 +669,7 @@
         TJBStopwatch *stopwatch = [TJBStopwatch singleton];
         [stopwatch setAlertParameters_targetRest: targetRest
                                      alertTiming: alertTiming];
-        [stopwatch scheduleLocalNotificationBasedOnClassIVs];
+        [stopwatch scheduleAlertBasedOnUserPermissions];
         
         [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
