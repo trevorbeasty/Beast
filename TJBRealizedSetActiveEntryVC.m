@@ -655,7 +655,29 @@
 
 - (IBAction)didPressClockButton:(id)sender{
     
-    TJBClockConfigurationVC *vc = [[TJBClockConfigurationVC alloc] init];
+    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
+    
+    VoidBlock cancelCallback = ^{
+        
+        [weakSelf dismissViewControllerAnimated: YES
+                                 completion: nil];
+        
+    };
+    
+    AlertParametersBlock aapCallback = ^(NSNumber *targetRest, NSNumber *alertTiming){
+    
+        TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+        [stopwatch setAlertParameters_targetRest: targetRest
+                                     alertTiming: alertTiming];
+        [stopwatch scheduleLocalNotification];
+        
+        [weakSelf dismissViewControllerAnimated: YES
+                                     completion: nil];
+        
+    };
+    
+    TJBClockConfigurationVC *vc = [[TJBClockConfigurationVC alloc] initWithApplyAlertParametersCallback: aapCallback
+                                                                                         cancelCallback: cancelCallback];
     
     [self presentViewController: vc
                        animated: YES

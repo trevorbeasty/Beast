@@ -66,6 +66,11 @@
 
 - (IBAction)didPressReturn:(id)sender;
 
+// callback
+
+@property (copy) VoidBlock cancelBlock;
+@property (copy) AlertParametersBlock applyAlertParamBlock;
+
 
 
 @end
@@ -75,7 +80,16 @@
 #pragma mark - Instantiation
 
 
-
+- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock{
+    
+    self = [super init];
+    
+    self.cancelBlock = cancelBlock;
+    self.applyAlertParamBlock = applyAlertParamBlock;
+    
+    return self;
+    
+}
 
 
 #pragma mark - View Life Cycle

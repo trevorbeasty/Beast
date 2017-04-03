@@ -57,12 +57,18 @@
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rl-Ur-nwC">
+                                    <rect key="frame" x="15" y="9" width="32" height="32"/>
+                                    <state key="normal" image="cancel"/>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="5Rl-Ur-nwC" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="3Is-4s-F2B"/>
                                 <constraint firstAttribute="trailing" secondItem="bjS-8t-Kce" secondAttribute="trailing" constant="15" id="3mg-Jc-sEa"/>
                                 <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="I6m-y1-vsw"/>
                                 <constraint firstItem="bjS-8t-Kce" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="J1x-vs-B2v"/>
+                                <constraint firstItem="5Rl-Ur-nwC" firstAttribute="leading" secondItem="6K4-Rq-0D0" secondAttribute="leading" constant="15" id="SrE-fR-lKv"/>
                                 <constraint firstAttribute="height" constant="50" id="kAy-4k-QDZ"/>
                                 <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerX" secondItem="6K4-Rq-0D0" secondAttribute="centerX" id="z76-fu-VUZ"/>
                             </constraints>
@@ -152,7 +158,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="BEA-3s-H0f"/>
                     </constraints>
-                    <state key="normal" title="Return"/>
+                    <state key="normal" title="Apply Alert Parameters &amp; Return"/>
                     <connections>
                         <action selector="didPressReturn:" destination="-1" eventType="touchUpInside" id="olH-ns-2cO"/>
                     </connections>
@@ -248,6 +254,7 @@
         </view>
     </objects>
     <resources>
+        <image name="cancel" width="32" height="32"/>
         <image name="pauseBlue50" width="50" height="50"/>
         <image name="playBlue50" width="50" height="50"/>
         <image name="restartBlue50" width="50" height="50"/>
