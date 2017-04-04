@@ -21,6 +21,7 @@
                 <outlet property="playButton" destination="8kQ-cO-Xdg" id="Twf-US-mO9"/>
                 <outlet property="restartButton" destination="XL8-If-rBg" id="cMd-GE-D8b"/>
                 <outlet property="returnButton" destination="1OD-rV-EWi" id="0hs-NE-9ht"/>
+                <outlet property="scheduledAlertLabel" destination="6Ry-7P-3jA" id="IIh-XA-4CH"/>
                 <outlet property="soundButtonTitleBar" destination="bjS-8t-Kce" id="V07-Up-LMU"/>
                 <outlet property="targetRestTitleLabel" destination="eeA-ex-LNh" id="UDb-bf-79K"/>
                 <outlet property="targetRestValueLabel" destination="LHh-BV-EnO" id="Rs0-gI-fdi"/>
@@ -80,16 +81,24 @@
                             <rect key="frame" x="0.0" y="71" width="375" height="70"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01:56" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="djk-1v-YcE" userLabel="timerValueLabel">
-                                    <rect key="frame" x="143.5" y="14.5" width="89" height="42"/>
+                                    <rect key="frame" x="143.5" y="4" width="89" height="42"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No alert" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ry-7P-3jA">
+                                    <rect key="frame" x="157" y="48" width="61" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="6Ry-7P-3jA" firstAttribute="top" secondItem="djk-1v-YcE" secondAttribute="bottom" constant="2" id="4wI-Vn-hmp"/>
+                                <constraint firstItem="6Ry-7P-3jA" firstAttribute="centerX" secondItem="tKB-RP-2sq" secondAttribute="centerX" id="J1M-EO-YWW"/>
+                                <constraint firstItem="djk-1v-YcE" firstAttribute="top" secondItem="tKB-RP-2sq" secondAttribute="top" constant="4" id="Jee-V2-SaN"/>
                                 <constraint firstItem="djk-1v-YcE" firstAttribute="centerX" secondItem="tKB-RP-2sq" secondAttribute="centerX" id="VBX-jZ-CLi"/>
-                                <constraint firstItem="djk-1v-YcE" firstAttribute="centerY" secondItem="tKB-RP-2sq" secondAttribute="centerY" id="lRW-oU-hew"/>
                                 <constraint firstAttribute="height" constant="70" id="o00-Zn-JBr"/>
                             </constraints>
                         </view>

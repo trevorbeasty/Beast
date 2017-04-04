@@ -469,8 +469,9 @@
 - (void)scheduleLocalNotificationBasedOnClassIVs{
     
     // will only schedule a notification if both the targetRest and alertTiming IV's exist
+    // an alert should not be scheduled if the stopwatch is not running. Pressing the play button will schedule an alert
     
-    if (self.targetRest && self.alertTiming){
+    if (self.targetRest && self.alertTiming && _primaryStopwatchIsOn == YES){
         
         NSTimeInterval targetStopwatchValue = [self.targetRest floatValue] - [self.alertTiming floatValue];
         

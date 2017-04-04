@@ -51,6 +51,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *returnButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *scheduledAlertLabel;
 
 
 // IBAction
@@ -109,6 +110,8 @@
     
     [self configureViewAesthetics];
     
+    [self configureScheduledAlertLabelText];
+    
     [self copyStopwatchTargetsIfExist];
     
     [self registerTimerValueLabelWithStopwatch];
@@ -120,6 +123,21 @@
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureScheduledAlertLabelText{
+    
+    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    
+    if (stopwatch.targetRest && stopwatch.alertTiming){
+        
+        int alertValue = [stopwatch.targetRest intValue] - [stopwatch.alertTiming intValue];
+        NSString *formattedValue = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: alertValue];
+        NSString *scheduledAlertText = [NSString stringWithFormat: @"Alert at %@", formattedValue];
+        self.scheduledAlertLabel.text = scheduledAlertText;
+        
+    }
+    
+}
 
 - (void)copyStopwatchTargetsIfExist{
     
@@ -153,6 +171,12 @@
 
 
 - (void)configureViewAesthetics{
+    
+    // scheduled alert label
+    
+    self.scheduledAlertLabel.font = [UIFont systemFontOfSize: 15];
+    self.scheduledAlertLabel.backgroundColor = [UIColor clearColor];
+    self.scheduledAlertLabel.textColor = [UIColor whiteColor];
     
     // title bars and container
     
