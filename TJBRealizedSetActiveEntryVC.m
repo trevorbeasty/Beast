@@ -92,6 +92,7 @@
 //@property (weak, nonatomic) IBOutlet UILabel *targetRestValueLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
 //@property (weak, nonatomic) IBOutlet UILabel *alertTimingValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *scheduledAlertLabel;
 
 // IBAction
 
@@ -278,26 +279,6 @@
 
 - (void)viewAesthetics{
     
-    // target rest and alert timing
-//    
-//    NSArray *restValueLabels = @[self.targetRestValueLabel, self.alertTimingValueLabel];
-//    for (UILabel *lab in restValueLabels){
-//        
-//        lab.backgroundColor = [UIColor clearColor];
-//        lab.textColor = [UIColor whiteColor];
-//        lab.font = [UIFont boldSystemFontOfSize: 20];
-//        
-//    }
-//    
-//    NSArray *restTitleLabels = @[self.targetRestLabel, self.alertTimingLabel];
-//    for (UILabel *lab in restTitleLabels){
-//        
-//        lab.backgroundColor = [UIColor clearColor];
-//        lab.textColor = [UIColor whiteColor];
-//        lab.font = [UIFont systemFontOfSize: 15];
-//        
-//    }
-    
     // meta view
     
     self.view.backgroundColor = [UIColor blackColor];
@@ -325,12 +306,6 @@
         
     }
     
-    // title labels and title buttons and container
-    
-//    self.thinTitleLabel.backgroundColor = [UIColor blackColor];
-//    
-//    self.titleLabelsContainer.backgroundColor = [UIColor darkGrayColor];
-    
     NSArray *titleLabels = @[self.topTopLabel];
     
     for (UILabel *label in titleLabels){
@@ -340,9 +315,6 @@
         label.font = [UIFont boldSystemFontOfSize: 20];
         
     }
-    
-//    self.freeformTitleLabel.font = [UIFont systemFontOfSize: 15];
-//    self.topTopLabel.font = [UIFont boldSystemFontOfSize: 25];
     
     self.timerLabel.backgroundColor = [UIColor clearColor];
     self.timerLabel.font = [UIFont systemFontOfSize: 35];
@@ -364,23 +336,15 @@
     
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    // rest time buttons and labels
-    
-//    NSArray *restButtons = @[self.alertTimingButton];
-//    for (UIButton *b in restButtons){
-//        
-//        [b setTitleColor: [[TJBAestheticsController singleton] titleBarButtonColor]
-//                forState: UIControlStateNormal];
-//        
-//        b.backgroundColor = [UIColor clearColor];
-//        b.titleLabel.font = [UIFont systemFontOfSize: 20];
-//        
-//    }
-    
-    
     // shadow view
     
     self.shadowView.backgroundColor = [UIColor blackColor];
+    
+    // schedule alert label
+    
+    self.scheduledAlertLabel.textColor = [UIColor whiteColor];
+    self.scheduledAlertLabel.font = [UIFont systemFontOfSize: 15];
+    self.scheduledAlertLabel.backgroundColor = [UIColor clearColor];
   
 }
 
@@ -549,83 +513,6 @@
 
 #pragma mark - Button Actions
 
-
-//- (IBAction)didPressTargetRestButton:(id)sender {
-//    
-//    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
-//    
-//    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
-//    
-//    void (^cancelBlock)(void) = ^{
-//        
-//        [weakSelf dismissViewControllerAnimated: NO
-//                                     completion: nil];
-//        
-//    };
-//    
-//    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
-//        
-//        weakSelf.targetRestTime = selectedNumber;
-//        
-//        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
-//        
-//        [weakSelf.targetRestButton setTitle: targetRestString
-//                               forState: UIControlStateNormal];
-//        
-//        [weakSelf dismissViewControllerAnimated: YES
-//                                     completion: nil];
-//        
-//    };
-//    
-//    [self presentNumberSelectionSceneWithNumberType: TargetRestType
-//                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
-//                                        numberLimit: nil
-//                                              title: @"Select Target Rest"
-//                                        cancelBlock: cancelBlock
-//                                numberSelectedBlock: numberSelectedBlock
-//                                           animated: NO
-//                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-//    
-//}
-
-//- (IBAction)didPressAlertTimingButton:(id)sender{
-//    
-//    //// present the number selection scene.  Store the selected value as a property and display it.  This value will be used in conjuction with the timer in order to send notifications to the user when it is almost time to get into set
-//    
-//    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
-//    
-//    void (^cancelBlock)(void) = ^{
-//        
-//        [weakSelf dismissViewControllerAnimated: NO
-//                                     completion: nil];
-//        
-//    };
-//    
-//    void (^numberSelectedBlock)(NSNumber *) = ^(NSNumber *selectedNumber){
-//        
-//        weakSelf.alertTiming = selectedNumber;
-//        
-////        NSString *targetRestString = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
-//        
-////        [weakSelf.alertTimingButton setTitle: targetRestString
-////                                    forState: UIControlStateNormal];
-//        
-//        [weakSelf dismissViewControllerAnimated: YES
-//                                     completion: nil];
-//        
-//    };
-//    
-//    [self presentNumberSelectionSceneWithNumberType: TimeIntervalSelection
-//                                     numberMultiple: [NSNumber numberWithDouble: 5.0]
-//                                        numberLimit: nil
-//                                              title: @"Select Alert Timing"
-//                                        cancelBlock: cancelBlock
-//                                numberSelectedBlock: numberSelectedBlock
-//                                           animated: NO
-//                               modalTransitionStyle: UIModalTransitionStyleCoverVertical];
-//    
-//}
-
 - (IBAction)didPressExerciseButton:(id)sender{
     
     __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
@@ -633,8 +520,6 @@
     void (^callback)(TJBExercise *) = ^(TJBExercise *selectedExercise){
         
         weakSelf.exercise = selectedExercise;
-        
-//        self.freeformTitleLabel.text = selectedExercise.name;
         
         [weakSelf fetchManagedObjectsAndDetermineRecordsForActiveExercise];
         
@@ -666,10 +551,17 @@
     
     AlertParametersBlock aapCallback = ^(NSNumber *targetRest, NSNumber *alertTiming){
     
+        // update the stopwatch
         TJBStopwatch *stopwatch = [TJBStopwatch singleton];
         [stopwatch setAlertParameters_targetRest: targetRest
                                      alertTiming: alertTiming];
         [stopwatch scheduleAlertBasedOnUserPermissions];
+        
+        // update the scheduled alert label
+        int alertTimingValue = [targetRest intValue] - [alertTiming intValue];
+        NSString *formattedAlertValue = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: alertTimingValue];
+        NSString *scheduledAlertString = [NSString stringWithFormat: @"Alert at %@", formattedAlertValue];
+        weakSelf.scheduledAlertLabel.text = scheduledAlertString;
         
         [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
@@ -826,6 +718,24 @@
     
 }
 
+
+
+#pragma mark - <NewExerciseCreationDelegate>
+
+- (void)didCreateNewExercise:(TJBExercise *)exercise{
+    self.exercise = exercise;
+    
+    NSError *error = nil;
+    [self.fetchedResultsController performFetch: &error];
+    
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
+
+}
+
+#pragma mark - Set Completion Actions
+
+
 - (void)addRealizedSetToCoreData{
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
@@ -844,60 +754,6 @@
     
 }
 
-#pragma mark - <NewExerciseCreationDelegate>
-
-- (void)didCreateNewExercise:(TJBExercise *)exercise{
-    self.exercise = exercise;
-    
-    NSError *error = nil;
-    [self.fetchedResultsController performFetch: &error];
-    
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
-
-}
-
-#pragma mark - Set Completion Actions
-
-//- (void)presentSubmittedSetSummary{
-//    // UIAlertController
-//    
-//    NSString *string = [NSString stringWithFormat: @"%@: %.01f lbs for %.00f reps",
-//                        self.exercise.name,
-//                        [self.weight floatValue],
-//                        [self.reps floatValue]];
-//    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Detail Confirmation"
-//                                                                   message: string
-//                                                            preferredStyle: UIAlertControllerStyleAlert];
-//    
-//    // capture a weak reference to self in order to avoid a strong reference cycle
-//    
-//    __weak TJBRealizedSetActiveEntryVC *weakSelf = self;
-//    
-//    void (^action1Block)(UIAlertAction *) = ^(UIAlertAction *action){
-//        [weakSelf setRealizedSetParametersToNil];
-//    };
-//    
-//    void (^action2Block)(UIAlertAction *) = ^(UIAlertAction *action){
-//        [weakSelf confirmSubmission];
-//    };
-//    
-//    UIAlertAction *action1 = [UIAlertAction actionWithTitle: @"Discard"
-//                                                      style: UIAlertActionStyleDefault
-//                                                    handler: action1Block];
-//    UIAlertAction *action2 = [UIAlertAction actionWithTitle: @"Save"
-//                                                      style: UIAlertActionStyleDefault
-//                                                    handler: action2Block];
-//    
-//    [alert addAction: action1];
-//    [alert addAction: action2];
-//    
-//    [self presentViewController: alert
-//                       animated: YES
-//                     completion: nil];
-//}
-
 - (void)setRealizedSetParametersToNil{
     
     self.timeDelay = nil;
@@ -911,15 +767,6 @@
     self.timerValueForRecovery = nil;
     
 }
-
-//- (void)confirmSubmission{
-//    
-//    [self addRealizedSetToCoreData];
-//    
-//    [self presentConfirmationToUser];
-//    
-//    [self setRealizedSetParametersToNil];
-//}
 
 - (void)removeConfirmationFromViewHierarchy{
     
@@ -952,9 +799,12 @@
         
         [weakSelf setRealizedSetParametersToNil];
         
+        // reset the stopwatch appropriately
+        // maintains the rest target and alert timing values previously set
         [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
                                              withForwardIncrementing: YES
                                                       lastUpdateDate: nil]; // reset the stopwatch; when a lastUpdateDate is provided, the stopwatch will add the elapsed time (up until this moment) to the provided time (first argument)
+        [[TJBStopwatch singleton] scheduleAlertBasedOnUserPermissions];
         
     };
     

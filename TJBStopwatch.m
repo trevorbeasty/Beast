@@ -45,7 +45,7 @@
 
 // local notifications
 
-@property (nonatomic, strong) UNNotificationRequest *notificationRequestActive;
+@property (nonatomic, strong) NSString *activeLocalAlertID;
 
 
 @end
@@ -272,11 +272,27 @@
     
     _primaryElapsedTimeInSeconds = 0.0;
     
+    // local alert management
+    [self deleteActiveLocalAlert];
+    if (_primaryStopwatchIsOn == YES){
+        
+        [self scheduleAlertBasedOnUserPermissions];
+        
+    }
+    
     [self updatePrimaryTimerLabels];
     
 }
 
 - (void)pausePrimaryTimer{
+    
+    // check to see if the timer was running. If so, delete the existing local alert
+    
+    if (_primaryStopwatchIsOn == YES && self.activeLocalAlertID){
+        
+        [self deleteActiveLocalAlert];
+        
+    }
     
     _primaryStopwatchIsOn = NO;
     
@@ -284,9 +300,24 @@
 
 - (void)playPrimaryTimer{
     
+    // local alert management
+    
+    if (_primaryStopwatchIsOn == NO){
+        
+        [self scheduleAlertBasedOnUserPermissions];
+        
+    }
+    
     self.dateAtLastPrimaryUpdate = nil; // must nullify this IV; if not, the timer calculates the time since the last update, so it is as if the timer was never paused in the first place
     
     _primaryStopwatchIsOn = YES;
+    
+}
+
+- (void)deleteActiveLocalAlert{
+    
+    [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers: @[self.activeLocalAlertID]];
+    self.activeLocalAlertID = nil;
     
 }
 
@@ -459,7 +490,11 @@
             content.body = @"This is your scheduled Leeft alert. Please prepare for your upcoming set";
             content.sound = [UNNotificationSound defaultSound];
             
-            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier: @"Alert"
+            NSUUID *alertID = [NSUUID UUID];
+            NSString *alertIDString = [alertID UUIDString];
+            self.activeLocalAlertID = alertIDString;
+            
+            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier: alertIDString
                                                                                   content: content
                                                                                   trigger: trigger];
             

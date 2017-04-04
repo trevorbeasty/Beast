@@ -892,17 +892,11 @@ NSString * const placeholderCategoryName = @"Placeholder";
                                                                     inManagedObjectContext: moc];
     
     // fill managed object with default values for weight, reps, dates
-    
-//    realizedChain.numberOfRounds = chainTemplate.numberOfRounds;
-//    realizedChain.numberOfExercises = chainTemplate.numberOfExercises;
-    realizedChain.uniqueID = [[NSUUID UUID] UUIDString];
+
     realizedChain.dateCreated = [NSDate date];
-//    realizedChain.postMortem = NO;
-//    realizedChain.isIncomplete = YES;
     realizedChain.firstIncompleteRoundIndex = 0;
     realizedChain.firstIncompleteExerciseIndex = 0;
     realizedChain.chainTemplate = chainTemplate;
-//    realizedChain.exercises = chainTemplate.exercises;
     
     int exerciseLimit = chainTemplate.numberOfExercises;
     int roundLimit = chainTemplate.numberOfRounds;
