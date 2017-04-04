@@ -59,6 +59,10 @@
 
 - (void)setAlertParameters_targetRest:(NSNumber *)targetRest alertTiming:(NSNumber *)alertTiming;
 
+@property (nonatomic, strong) NSNumber *targetRest;
+@property (nonatomic, strong) NSNumber *alertTiming;
+
+
 - (void)scheduleAlertBasedOnUserPermissions;
 
 @end

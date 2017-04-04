@@ -98,6 +98,8 @@
     
 }
 
+#pragma mark - Instantiation Helper Methods
+
 
 #pragma mark - View Life Cycle
 
@@ -106,6 +108,8 @@
     [super viewDidLoad];
     
     [self configureViewAesthetics];
+    
+    [self copyStopwatchTargetsIfExist];
     
     [self registerTimerValueLabelWithStopwatch];
     [[TJBStopwatch singleton]  updatePrimaryTimerLabels];
@@ -116,6 +120,36 @@
 
 
 #pragma mark - View Helper Methods
+
+- (void)copyStopwatchTargetsIfExist{
+    
+    // have this controller start with the targets in the stopwatch, if they exist
+    
+    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    NSNumber *stopwatchRestTarget = stopwatch.targetRest;
+    NSNumber *stopwatchAlertTiming = stopwatch.alertTiming;
+    
+    if (stopwatchRestTarget){
+        
+        self.selectedAlertTiming = stopwatchRestTarget;
+        
+        NSString *formattedRest = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [stopwatchRestTarget intValue]];
+        self.targetRestValueLabel.text = formattedRest;
+        
+    }
+    
+    if (stopwatchAlertTiming){
+        
+        self.selectedTargetRest = stopwatchAlertTiming;
+        
+        NSString *formattedAlert = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [stopwatchAlertTiming intValue]];
+        self.alertTiimingValueLabel.text = formattedAlert;
+        
+    }
+    
+    
+        
+}
 
 
 - (void)configureViewAesthetics{
@@ -229,6 +263,8 @@
         weakSelf.targetRestValueLabel.text = formattedNumber;
         weakSelf.selectedTargetRest = selectedNumber;
         
+        [TJBStopwatch singleton].targetRest = selectedNumber;
+        
         // also need to notify the stopwatch of changes
         
         [weakSelf dismissViewControllerAnimated: YES
@@ -265,6 +301,8 @@
         NSString *formattedNumber = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
         weakSelf.alertTiimingValueLabel.text = formattedNumber;
         weakSelf.selectedAlertTiming = selectedNumber;
+        
+        [TJBStopwatch singleton].alertTiming = selectedNumber;
         
         // also need to notify the stopwatch of changes
         

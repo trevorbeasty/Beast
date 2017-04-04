@@ -46,8 +46,6 @@
 // local notifications
 
 @property (nonatomic, strong) UNNotificationRequest *notificationRequestActive;
-@property (nonatomic, strong) NSNumber *targetRest;
-@property (nonatomic, strong) NSNumber *alertTiming;
 
 
 @end
@@ -400,6 +398,8 @@
     
 }
 
+
+
 - (void)scheduleAlertBasedOnUserPermissions{
     
     UNUserNotificationCenter *nCenter = [UNUserNotificationCenter currentNotificationCenter];
@@ -453,11 +453,10 @@
                                                                                                             repeats: NO];
             
             UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-            content.title = @"Alert";
+            content.title = @"Leeft Timer Alert";
             NSString *formattedAlertTiming = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.alertTiming intValue]];
             content.subtitle = [NSString stringWithFormat: @"%@ until set begin", formattedAlertTiming];
             content.body = @"This is your scheduled Leeft alert. Please prepare for your upcoming set";
-//            content.badge = @(1);
             content.sound = [UNNotificationSound defaultSound];
             
             UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier: @"Alert"

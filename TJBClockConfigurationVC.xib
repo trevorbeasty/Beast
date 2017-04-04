@@ -161,7 +161,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="BEA-3s-H0f"/>
                     </constraints>
-                    <state key="normal" title="Apply Alert Parameters &amp; Return"/>
+                    <state key="normal" title="Apply &amp; Return"/>
                     <connections>
                         <action selector="didPressReturn:" destination="-1" eventType="touchUpInside" id="olH-ns-2cO"/>
                     </connections>

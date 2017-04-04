@@ -19,8 +19,16 @@
 
 #import "TJBLiftOptionsVC.h"
 
+// local notifications
 
-@interface AppDelegate ()
+#import <UserNotifications/UserNotifications.h>
+
+// stopwatch
+
+#import "TJBStopwatch.h"
+
+
+@interface AppDelegate () <UNUserNotificationCenterDelegate>
 
 
 @end
@@ -51,6 +59,10 @@
     TJBLiftOptionsVC *vc = [[TJBLiftOptionsVC alloc] init];
     self.window.rootViewController = vc;
     
+    // register as delegate of UNUserNotificationCenter
+    
+    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    
     return YES;
     
 }
@@ -72,6 +84,63 @@
     // UIKit automatically finds TJBWorkoutNavigation hub as part of its restoration effort (see view controller programming guide)
     
     return nil;
+    
+}
+
+#pragma mark - UNUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
+    
+    NSLog(@"internally received local notification");
+    
+    UIViewController *activeVC = [self topViewController];
+    
+    NSNumber *alertTiming = [TJBStopwatch singleton].alertTiming;
+    NSString *formattedAlertTiming = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [alertTiming intValue]];
+    NSString *alertMessage = [NSString stringWithFormat: @"Your next set will begin in %@. Please prepare yourself", formattedAlertTiming];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Timer Alert"
+                                                                   message: alertMessage
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                     style: UIAlertActionStyleDefault
+                                                   handler: nil];
+    
+    [alert addAction: action];
+    
+    [activeVC presentViewController: alert
+                           animated: YES
+                         completion: nil];
+    
+}
+
+#pragma mark - View Controller Hierarchy
+
+- (UIViewController *)topViewController{
+    
+    return [self topViewController: self.window.rootViewController];
+    
+}
+
+- (UIViewController *)topViewController:(UIViewController *)rootViewController{
+    
+    if (rootViewController.presentedViewController == nil){
+        
+        return  rootViewController;
+        
+    }
+    
+    if ([rootViewController.presentedViewController isKindOfClass: [UINavigationController class]]){
+        
+        UINavigationController *navCon = (UINavigationController *)rootViewController.presentedViewController;
+        UIViewController *lastVC = [[navCon viewControllers] lastObject];
+        return [self topViewController: lastVC];
+        
+    }
+    
+    UIViewController *presentedVC = rootViewController.presentedViewController;
+    return [self topViewController: presentedVC];
     
 }
 
