@@ -723,7 +723,7 @@ static NSString const *restViewKey = @"restView";
     
     // update alertValueLabel to reflect stopwatch parameters
     
-    
+    self.alertValueLabel.text = [stopwatch alertTextFromTargetValues];
     
 }
 

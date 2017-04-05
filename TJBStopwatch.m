@@ -520,6 +520,26 @@
     
 }
 
+- (NSString *)alertTextFromTargetValues{
+    
+    NSString *alertText;
+    
+    if (self.targetRest && self.alertTiming){
+        
+        int alertValue = [self.targetRest intValue] - [self.alertTiming intValue];
+        NSString *formattedValue = [self minutesAndSecondsStringFromNumberOfSeconds: alertValue];
+        alertText = [NSString stringWithFormat: @"Alert at %@", formattedValue];
+        
+    } else{
+        
+        alertText = @"No alert";
+        
+    }
+    
+    return  alertText;
+    
+}
+
 @end
 
 

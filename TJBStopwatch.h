@@ -62,7 +62,8 @@
 @property (nonatomic, strong) NSNumber *targetRest;
 @property (nonatomic, strong) NSNumber *alertTiming;
 
-
 - (void)scheduleAlertBasedOnUserPermissions;
+
+- (NSString *)alertTextFromTargetValues;
 
 @end
