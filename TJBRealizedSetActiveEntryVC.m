@@ -224,16 +224,16 @@
     
 }
 
+#pragma mark - View Helper Methods
+
 
 
 - (void)configureStartingDisplayValues{
     
-    
-        
     [self.beginNextSetButton setTitle: @"Set Completed"
                              forState: UIControlStateNormal];
-        
     
+    self.scheduledAlertLabel.text = [[TJBStopwatch singleton] alertTextFromTargetValues];
     
 }
 
@@ -570,24 +570,15 @@
     [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerLabel];
     [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
     
-    //
+    // delete the scheduled alert, if one exists, when freeform mode is exited
+    
+    [[TJBStopwatch singleton] deleteActiveLocalAlert];
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
     
 }
 
-//- (IBAction)didPressAlertTimingTitle:(id)sender{
-//    
-//    [self didPressAlertTimingButton: nil];
-//    
-//}
-
-//- (IBAction)didPressTargetRestTitle:(id)sender{
-//    
-//    [self didPressTargetRestButton: nil];
-//    
-//}
 
 - (void)recoverTimer{
     
@@ -971,8 +962,6 @@
         
         float alertValue = [self.targetRestTime floatValue] - [self.alertTiming floatValue];
         
-        BOOL inRedZone = timerValue > alertValue;
-        
         // because the stopwatch observer methods are sent every .1 seconds, the if structure must seek to match timer values over a span of .1 seconds.  Any less of a span might miss the vibration call, and any more may cause it to vibrate twice
         
         // the following is called three times so that the phone vibrates a total of three times.  The vibrate calls are spaced at equal intervals
@@ -991,67 +980,9 @@
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         }
         
-        if (inRedZone){
-            
-//            [self toggleRestControlsToRedZone];
-            
-        } else{
-            
-//            [self toggleRestControlsToDefaultState];
-            
-        }
-        
     }
     
 }
-
-//- (void)toggleRestControlsToRedZone{
-//    
-//    self.timerLabel.backgroundColor = [UIColor redColor];
-//    
-//    // rest time buttons and labels
-//    
-//    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
-//    for (UIButton *b in restButtons){
-//        
-//        [b setTitleColor: [UIColor whiteColor]
-//                forState: UIControlStateNormal];
-//        
-//    }
-//    
-//    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
-//    for (UIButton *b in restTitleButtons){
-//    
-//        [b setTitleColor: [UIColor whiteColor]
-//                forState: UIControlStateNormal];
-//        
-//    }
-//    
-//}
-
-//- (void)toggleRestControlsToDefaultState{
-//    
-//    self.timerLabel.backgroundColor = [UIColor darkGrayColor];
-//    
-//    // rest time buttons and labels
-//    
-//    NSArray *restButtons = @[self.targetRestButton, self.alertTimingButton];
-//    for (UIButton *b in restButtons){
-//        
-//        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
-//                forState: UIControlStateNormal];
-//        
-//    }
-//    
-//    NSArray *restTitleButtons = @[self.targetRestTitle, self.alertTimingTitle];
-//    for (UIButton *b in restTitleButtons){
-//        
-//        [b setTitleColor: [[TJBAestheticsController singleton] yellowNotebookColor]
-//                forState: UIControlStateNormal];
-//        
-//    }
-//    
-//}
 
 - (void)secondaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
     

@@ -63,6 +63,7 @@
 @property (nonatomic, strong) NSNumber *alertTiming;
 
 - (void)scheduleAlertBasedOnUserPermissions;
+- (void)deleteActiveLocalAlert;
 
 - (NSString *)alertTextFromTargetValues;
 

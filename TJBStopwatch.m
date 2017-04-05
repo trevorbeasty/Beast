@@ -274,6 +274,7 @@
     
     // local alert management
     [self deleteActiveLocalAlert];
+    
     if (_primaryStopwatchIsOn == YES){
         
         [self scheduleAlertBasedOnUserPermissions];
@@ -316,8 +317,12 @@
 
 - (void)deleteActiveLocalAlert{
     
-    [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers: @[self.activeLocalAlertID]];
-    self.activeLocalAlertID = nil;
+    if (self.activeLocalAlertID){
+        
+        [[UNUserNotificationCenter currentNotificationCenter] removePendingNotificationRequestsWithIdentifiers: @[self.activeLocalAlertID]];
+        self.activeLocalAlertID = nil;
+        
+    }
     
 }
 
@@ -491,6 +496,11 @@
             content.body = @"This is your scheduled Leeft alert. Please prepare for your upcoming set";
             content.sound = [UNNotificationSound defaultSound];
             
+            // delete the active alert, if one exists
+            // I never want to have 2 alerts active at the same time
+            
+            [self deleteActiveLocalAlert];
+            
             NSUUID *alertID = [NSUUID UUID];
             NSString *alertIDString = [alertID UUIDString];
             self.activeLocalAlertID = alertIDString;
@@ -507,7 +517,6 @@
             
             [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest: request
                                                                    withCompletionHandler: completionHandler];
-            
             
             
         }
