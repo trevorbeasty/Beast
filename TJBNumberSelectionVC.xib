@@ -28,7 +28,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1Oc-G7-0rK">
-                    <rect key="frame" x="58" y="140" width="313" height="407"/>
+                    <rect key="frame" x="78" y="140" width="293" height="407"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dNT-u7-CQX">
                         <size key="itemSize" width="75" height="75"/>
@@ -42,7 +42,7 @@
                     </connections>
                 </collectionView>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jxZ-1K-Udv">
-                    <rect key="frame" x="58" y="551" width="313" height="51"/>
+                    <rect key="frame" x="78" y="551" width="293" height="51"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="7dd-QB-uTV"/>
                     </constraints>
@@ -96,14 +96,14 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-hG-EUr" userLabel="jumpBarContainer">
-                    <rect key="frame" x="4" y="160" width="50" height="367"/>
+                    <rect key="frame" x="4" y="160" width="70" height="367"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="50" id="GAu-YO-yGm"/>
+                        <constraint firstAttribute="width" constant="70" id="GAu-YO-yGm"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uu7-Ji-Bvg" userLabel="selectedValueLabel">
-                    <rect key="frame" x="58" y="90" width="313" height="50"/>
+                    <rect key="frame" x="78" y="90" width="293" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="iyb-LE-0bb"/>
                     </constraints>

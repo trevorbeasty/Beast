@@ -108,15 +108,43 @@ static NSString * const reuseIdentifier = @"cell";
     
     void (^jumpBarWeightCallback)(NSNumber *) = ^(NSNumber *touchNumber){
         
-//        [weakSelf jumpBarTouchedWithNumberEquivalent: touchNumber
-//                                         jumpBarType: WeightType];
+        [weakSelf jumpBarTouchedWithNumberEquivalent: touchNumber];
         
     };
     
+    NSNumber *intervalSize;
+    BOOL isTimeType;
+    
+    switch (_numberTypeIdentifier) {
+        case WeightType:
+            intervalSize = @(50);
+            isTimeType = NO;
+            break;
+            
+        case RepsType:
+            intervalSize = @(5);
+            isTimeType = NO;
+            break;
+            
+        case TargetRestType:
+            intervalSize = @(30);
+            isTimeType = YES;
+            break;
+            
+        case TimeIntervalSelection:
+            intervalSize = @(30);
+            isTimeType = YES;
+            break;
+            
+        default:
+            break;
+    }
+    
     TJBNumberJumpVC *jumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
-                                                                  numberOfLabels: @(11)
-                                                                    intervalSize: @(50)
-                                                                delegateCallback: jumpBarWeightCallback];
+                                                            numberOfLabels: @(11)
+                                                              intervalSize: intervalSize
+                                                          delegateCallback: jumpBarWeightCallback
+                                                                isTimeType: isTimeType];
     
     [self addChildViewController: jumpBar];
     
@@ -342,12 +370,7 @@ static NSString * const reuseIdentifier = @"cell";
         
     }
     
-    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
     cell.typeLabel.text = @"";
-    cell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
-    
-    cell.layer.masksToBounds = YES;
-    cell.layer.cornerRadius = 4.0;
     
     return cell;
     
@@ -599,8 +622,32 @@ static float const numberOfCellsPerRow = 4;
         return CGSizeMake(cellWidth, cellWidth);
         
     }
-        
+    
+    
+}
 
+#pragma mark - Jump Bar
+
+- (void)jumpBarTouchedWithNumberEquivalent:(NSNumber *)number{
+    
+    NSIndexPath *path = [self pathForJumpBarTouchNumber: number];
+    
+    [self.collectionView selectItemAtIndexPath: path
+                                      animated: YES
+                                scrollPosition: UICollectionViewScrollPositionCenteredVertically];
+    
+}
+
+- (NSIndexPath *)pathForJumpBarTouchNumber:(NSNumber *)touchNumber{
+    
+    float multValue = [self multiplierValue];
+    NSInteger touchNum = [touchNumber intValue];
+    NSInteger lowerBoundMultiple = touchNum / multValue;
+    
+    NSIndexPath *returnPath = [NSIndexPath indexPathForRow: lowerBoundMultiple
+                                                 inSection: 0];
+    
+    return returnPath;
     
 }
 

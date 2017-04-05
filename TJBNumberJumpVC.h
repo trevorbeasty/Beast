@@ -11,5 +11,6 @@
 @interface TJBNumberJumpVC : UIViewController
 
 - (instancetype)initWithLowerLimit:(NSNumber *)lowerLimit numberOfLabels:(NSNumber *)numberOfLabels intervalSize:(NSNumber *)intervalSize delegateCallback:(void (^)(NSNumber *))delegateCallback;
+- (instancetype)initWithLowerLimit:(NSNumber *)lowerLimit numberOfLabels:(NSNumber *)numberOfLabels intervalSize:(NSNumber *)intervalSize delegateCallback:(void (^)(NSNumber *))delegateCallback isTimeType:(BOOL)isTimeType;
 
 @end

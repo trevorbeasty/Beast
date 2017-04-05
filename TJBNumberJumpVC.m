@@ -12,7 +12,17 @@
 
 #import "TJBAestheticsController.h"
 
+// stopwatch
+
+#import "TJBStopwatch.h"
+
 @interface TJBNumberJumpVC ()
+
+{
+    
+    BOOL _isTimeType;
+    
+}
 
 // core
 
@@ -37,6 +47,25 @@
     self.intervalSize = intervalSize;
     self.numberOfLabels = numberOfLabels;
     self.delegateCallback = delegateCallback;
+    
+    _isTimeType = NO;
+    
+    [self calculateAndStoreImpliedUpperLimit];
+    
+    return self;
+    
+}
+
+- (instancetype)initWithLowerLimit:(NSNumber *)lowerLimit numberOfLabels:(NSNumber *)numberOfLabels intervalSize:(NSNumber *)intervalSize delegateCallback:(void (^)(NSNumber *))delegateCallback isTimeType:(BOOL)isTimeType{
+    
+    self = [super init];
+    
+    self.lowerLimit = lowerLimit;
+    self.intervalSize = intervalSize;
+    self.numberOfLabels = numberOfLabels;
+    self.delegateCallback = delegateCallback;
+    
+    _isTimeType = isTimeType;
     
     [self calculateAndStoreImpliedUpperLimit];
     
@@ -77,13 +106,6 @@
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.alignment = UIStackViewAlignmentFill;
     
-//    CALayer *stackLayer = stackView.layer;
-//    stackLayer.masksToBounds = YES;
-//    stackLayer.cornerRadius = 25;
-//    stackLayer.borderColor = [UIColor darkGrayColor].CGColor;
-//    stackLayer.borderWidth = 1.0;
-    
-    
     // add labels
     // labels are added at equal intervals
     
@@ -97,7 +119,18 @@
         UILabel *label = [[UILabel alloc] init];
         [self configureLabelAesthetics: label];
         
-        NSString *text = [NSString stringWithFormat: @"%d", iterativeValue];
+        NSString *text;
+        
+        if (_isTimeType == NO){
+            
+            text = [NSString stringWithFormat: @"%d", iterativeValue];
+            
+        } else{
+            
+            text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: iterativeValue];
+            
+        }
+
         label.text = text;
         
         [stackView addArrangedSubview: label];
@@ -137,15 +170,6 @@
     tapGR.numberOfTouchesRequired = 1;
     
     [self.view addGestureRecognizer: tapGR];
-    
-//    // pan GR
-//    
-//    UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget: self
-//                                                                            action: @selector(didPan:)];
-//    panGR.minimumNumberOfTouches = 1;
-//    panGR.maximumNumberOfTouches = 1;
-//    
-//    [self.view addGestureRecognizer: panGR];
     
 }
 
