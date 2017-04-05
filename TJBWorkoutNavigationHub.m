@@ -56,12 +56,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UILabel *monthTitle;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
-@property (weak, nonatomic) IBOutlet UILabel *topTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
-@property (weak, nonatomic) IBOutlet UILabel *grayColorLeftLabel;
-@property (weak, nonatomic) IBOutlet UILabel *grayColorRight;
 @property (weak, nonatomic) IBOutlet UIButton *todayButton;
+@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 
 
 
@@ -807,49 +805,28 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     // today button
     
-    self.todayButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    [self.todayButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                           forState: UIControlStateNormal];
     self.todayButton.backgroundColor = [UIColor clearColor];
-    
-    // arrow background labels
-    
-    self.grayColorLeftLabel.backgroundColor = [UIColor darkGrayColor];
-    self.grayColorRight.backgroundColor = [UIColor darkGrayColor];
-    
+
     // meta view
     
     self.view.backgroundColor = [UIColor blackColor];
     
+    // title bar container
+    
+    self.titleBarContainer.backgroundColor = [UIColor darkGrayColor];
+    
     // scroll view
     
     self.dateScrollView.backgroundColor = [UIColor clearColor];
-    
-    // month title and arrows
-    // make sure the arrows sit above their gray background labels
-    
-    [self.view insertSubview: self.leftArrowButton aboveSubview: self.grayColorLeftLabel];
-    [self.view insertSubview: self.rightArrowButton aboveSubview: self.grayColorRight];
-    
-    NSArray *titleLabels = @[self.monthTitle, self.topTitleLabel];
-    for (UILabel *label in titleLabels){
-        
-        
-        label.backgroundColor = [UIColor darkGrayColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        
-    }
-    
-    self.monthTitle.font = [UIFont boldSystemFontOfSize: 15.0];
+ 
+    self.monthTitle.backgroundColor = [UIColor clearColor];
+    self.monthTitle.textColor = [UIColor whiteColor];
+    self.monthTitle.font = [UIFont boldSystemFontOfSize: 20];
     
     NSArray *arrowButtons = @[self.leftArrowButton, self.rightArrowButton];
     for (UIButton *button in arrowButtons){
         
         button.backgroundColor = [UIColor clearColor];
-        [button setTitleColor: [UIColor whiteColor]
-                     forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize: 40.0];
         
     }
     

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -43,7 +43,7 @@
                     <rect key="frame" x="0.0" y="601" width="375" height="66"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9q-4p-UvJ">
-                            <rect key="frame" x="4" y="8" width="180" height="50"/>
+                            <rect key="frame" x="4" y="8" width="179.5" height="50"/>
                             <color key="backgroundColor" red="1" green="0.42017299107142858" blue="0.20655691964285713" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="f8F-Dc-1sf"/>
@@ -57,7 +57,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8G-LF-5HS">
-                            <rect key="frame" x="192" y="8" width="179" height="50"/>
+                            <rect key="frame" x="191.5" y="8" width="179.5" height="50"/>
                             <state key="normal" title="View History"/>
                             <connections>
                                 <action selector="didPressViewHistory:" destination="-1" eventType="touchUpInside" id="dKW-mV-ZDz"/>
@@ -85,32 +85,32 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZY-W0-fYd">
-                            <rect key="frame" x="126" y="12" width="25" height="25"/>
-                            <state key="normal" image="leftDoubleArrow"/>
-                            <connections>
-                                <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="46V-Zq-up9"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xaz-HF-NBZ">
-                            <rect key="frame" x="30" y="12" width="25" height="25"/>
+                            <rect key="frame" x="60" y="13" width="25" height="25"/>
                             <state key="normal" image="titleBarHomeButton"/>
                             <connections>
                                 <action selector="didPressBackButton:" destination="-1" eventType="touchUpInside" id="xPy-Ra-hUc"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muu-Ne-Y0K">
-                            <rect key="frame" x="225" y="13" width="25" height="25"/>
+                            <rect key="frame" x="345" y="13" width="25" height="25"/>
                             <state key="normal" image="rightDoubleArrow"/>
                             <connections>
                                 <action selector="didPressRightArrow:" destination="-1" eventType="touchUpInside" id="Hsz-oo-Zhx"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ol6-gZ-FpW">
-                            <rect key="frame" x="313" y="10" width="32" height="32"/>
+                            <rect key="frame" x="283" y="9" width="32" height="32"/>
                             <state key="normal" image="toggle"/>
                             <connections>
                                 <action selector="didPressToggle:" destination="-1" eventType="touchUpInside" id="KCo-Gh-Bdx"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZY-W0-fYd">
+                            <rect key="frame" x="5" y="12.5" width="25" height="25"/>
+                            <state key="normal" image="leftDoubleArrow"/>
+                            <connections>
+                                <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="46V-Zq-up9"/>
                             </connections>
                         </button>
                     </subviews>
@@ -118,15 +118,15 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="1u0-OI-3Sw"/>
                         <constraint firstItem="Xaz-HF-NBZ" firstAttribute="centerY" secondItem="jJx-Ep-SFb" secondAttribute="centerY" id="297-XK-WTd"/>
-                        <constraint firstItem="yZc-c3-eUK" firstAttribute="leading" secondItem="tZY-W0-fYd" secondAttribute="trailing" constant="20" id="MHj-hW-9tC"/>
-                        <constraint firstAttribute="trailing" secondItem="Ol6-gZ-FpW" secondAttribute="trailing" constant="30" id="OcL-OP-CiB"/>
+                        <constraint firstAttribute="trailing" secondItem="muu-Ne-Y0K" secondAttribute="trailing" constant="5" id="AP3-1b-urs"/>
                         <constraint firstItem="Ol6-gZ-FpW" firstAttribute="centerY" secondItem="jJx-Ep-SFb" secondAttribute="centerY" id="Pcd-L5-xzJ"/>
                         <constraint firstItem="tZY-W0-fYd" firstAttribute="centerY" secondItem="jJx-Ep-SFb" secondAttribute="centerY" id="S6Y-YO-edP"/>
+                        <constraint firstItem="Xaz-HF-NBZ" firstAttribute="leading" secondItem="tZY-W0-fYd" secondAttribute="trailing" constant="30" id="XJh-UX-yic"/>
+                        <constraint firstItem="muu-Ne-Y0K" firstAttribute="leading" secondItem="Ol6-gZ-FpW" secondAttribute="trailing" constant="30" id="dsU-1d-iXH"/>
                         <constraint firstItem="yZc-c3-eUK" firstAttribute="centerY" secondItem="jJx-Ep-SFb" secondAttribute="centerY" id="eA1-NJ-U7b"/>
-                        <constraint firstItem="muu-Ne-Y0K" firstAttribute="leading" secondItem="yZc-c3-eUK" secondAttribute="trailing" constant="20" id="jnl-SC-q73"/>
                         <constraint firstItem="yZc-c3-eUK" firstAttribute="centerX" secondItem="jJx-Ep-SFb" secondAttribute="centerX" id="pFs-8X-HGP"/>
+                        <constraint firstItem="tZY-W0-fYd" firstAttribute="leading" secondItem="jJx-Ep-SFb" secondAttribute="leading" constant="5" id="qhO-hd-hfm"/>
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="centerY" secondItem="jJx-Ep-SFb" secondAttribute="centerY" id="rQ5-hh-TIj"/>
-                        <constraint firstItem="Xaz-HF-NBZ" firstAttribute="leading" secondItem="jJx-Ep-SFb" secondAttribute="leading" constant="30" id="xbH-jg-Ieu"/>
                     </constraints>
                 </view>
             </subviews>
