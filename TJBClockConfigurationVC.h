@@ -16,5 +16,6 @@ typedef  void(^AlertParametersBlock)(NSNumber *, NSNumber *);
 // instantiation
 
 - (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock;
+- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock restTargetIsStatic:(BOOL)restTargetIsStatic;
 
 @end

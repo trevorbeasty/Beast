@@ -22,6 +22,12 @@
 
 @interface TJBClockConfigurationVC () <TJBStopwatchObserver>
 
+{
+    
+    BOOL _restTargetIsStatic;
+    
+}
+
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *myTimerLabel;
@@ -95,6 +101,21 @@
     self.cancelBlock = cancelBlock;
     self.applyAlertParamBlock = applyAlertParamBlock;
     
+    _restTargetIsStatic = NO;
+    
+    return self;
+    
+}
+
+- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock restTargetIsStatic:(BOOL)restTargetIsStatic{
+    
+    self = [super init];
+    
+    self.cancelBlock = cancelBlock;
+    self.applyAlertParamBlock = applyAlertParamBlock;
+    
+    _restTargetIsStatic = restTargetIsStatic;
+    
     return self;
     
 }
@@ -114,6 +135,12 @@
     
     [self copyStopwatchTargetsIfExist];
     
+    if (_restTargetIsStatic == YES){
+        
+        [self hideRestTargetEditButton];
+        
+    }
+    
     [self registerTimerValueLabelWithStopwatch];
     [[TJBStopwatch singleton]  updatePrimaryTimerLabels];
     
@@ -123,6 +150,12 @@
 
 
 #pragma mark - View Helper Methods
+
+- (void)hideRestTargetEditButton{
+    
+    self.editButtonTargetRest.hidden = YES;
+    
+}
 
 - (void)configureScheduledAlertLabelText{
     

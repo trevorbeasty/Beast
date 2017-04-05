@@ -43,11 +43,15 @@
 
 #import "TJBWorkoutNavigationHub.h"
 
+// clock
+
+#import "TJBClockConfigurationVC.h"
+
 @interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
 
 {
     
-    //// state
+    // state
     
     int _selectionIndex;
     BOOL _advancedControlsActive;
@@ -73,6 +77,7 @@
 // IBAction
 
 - (IBAction)didPressLeftBarButton:(id)sender;
+- (IBAction)didPressClock:(id)sender;
 
 // core
 
@@ -147,11 +152,7 @@ static float const animationTimeUnit = .4;
 
 - (void)viewDidLoad{
     
-    // prep
-    
     [self.view layoutIfNeeded];
-    
-    //
     
     [self configureViewAesthetics];
     
@@ -175,11 +176,6 @@ static float const animationTimeUnit = .4;
 }
 
 - (void)configureInitialDisplay{
-    
-    //// title labels
-    
-//    self.roundTitleLabel.text = [NSString stringWithFormat: @"1/%d", self.chainTemplate.numberOfRounds];
-//    self.mainTitle.text = self.chainTemplate.name;
     
     // detail title label
     
@@ -223,7 +219,7 @@ static float const animationTimeUnit = .4;
         
         newView = [self scrollContentViewForTargetArrays_isInitialDisplay: YES];
         
-        _showingFirstTargets = NO;
+//        _showingFirstTargets = NO;
         
     } else{
         
@@ -737,6 +733,8 @@ static NSString const *restViewKey = @"restView";
     
 }
 
+
+
 - (IBAction)didPressSetCompleted:(UIButton *)didPressSetCompleted{
     
     __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
@@ -1044,8 +1042,9 @@ static NSString const *restViewKey = @"restView";
 
 - (void)showNextSetOfTargets{
     
-    // this method derives and displays the new targets. The transition to the new targets is animated to make it apparent to the user that a change has occurred
+    _showingFirstTargets = NO;
     
+    // this method derives and displays the new targets. The transition to the new targets is animated to make it apparent to the user that a change has occurred
     // timer
     
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.futureRestTarget intValue]
@@ -1181,6 +1180,52 @@ static NSString const *restViewKey = @"restView";
     
 }
 
+#pragma mark - Clock
+
+
+- (IBAction)didPressClock:(id)sender{
+    
+    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+    
+    CancelBlock cancelCallback = ^{
+        
+        [weakSelf dismissViewControllerAnimated: YES
+                                     completion: nil];
+        
+    };
+    
+    AlertParametersBlock apBlock = ^(NSNumber *targetRest, NSNumber *alertTiming){
+        
+        // update the stopwatch
+        TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+        [stopwatch setAlertParameters_targetRest: targetRest
+                                     alertTiming: alertTiming];
+        [stopwatch scheduleAlertBasedOnUserPermissions];
+        
+        // update the scheduled alert label
+        int alertTimingValue = [targetRest intValue] - [alertTiming intValue];
+        NSString *formattedAlertValue = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: alertTimingValue];
+        NSString *scheduledAlertString = [NSString stringWithFormat: @"Alert at %@", formattedAlertValue];
+        weakSelf.alertValueLabel.text = scheduledAlertString;
+        
+        [weakSelf dismissViewControllerAnimated: YES
+                                     completion: nil];
+        
+    };
+    
+    NSLog(@"showing first targets: %d", _showingFirstTargets);
+    
+    BOOL restTargetIsStatic = !_showingFirstTargets; // the user will be allowed to change the rest target only before the routine truly begins.  Once it has begun, rest times are dictated as per user specifications
+    
+    TJBClockConfigurationVC *clockVC = [[TJBClockConfigurationVC alloc] initWithApplyAlertParametersCallback: apBlock
+                                                                                              cancelCallback: cancelCallback
+                                                                                          restTargetIsStatic: restTargetIsStatic];
+    
+    [self presentViewController: clockVC
+                       animated: YES
+                     completion: nil];
+    
+}
 
 @end
 

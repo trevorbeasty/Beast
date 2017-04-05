@@ -79,6 +79,9 @@
                             <rect key="frame" x="320" y="12.5" width="25" height="25"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" image="clock"/>
+                            <connections>
+                                <action selector="didPressClock:" destination="-1" eventType="touchUpInside" id="6Hk-T6-gep"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
