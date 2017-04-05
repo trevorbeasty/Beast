@@ -228,10 +228,13 @@ typedef enum{
     
     request.predicate = noPlaceholderExercisesPredicate;
     
+    NSSortDescriptor *categoryNameSort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
+                                                                       ascending: YES];
+    
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
                                                                ascending: YES];
     
-    [request setSortDescriptors: @[nameSort]];
+    [request setSortDescriptors: @[categoryNameSort, nameSort]];
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
