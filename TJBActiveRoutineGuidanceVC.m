@@ -599,14 +599,24 @@ static NSString const *restViewKey = @"restView";
     
     NSNumber *titleNumber = [NSNumber numberWithInteger: 1];
     
-    NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
+    // must check the value of the rest target
+    // a value of -1 indicates that rest is not being targeted
     
     NSString *contentText;
     
     if (!isInitialContentView){
         
-        contentText = [NSString stringWithFormat: @"Rest for %@", formattedRest];
-        
+        if ([self.currentRestTarget floatValue] < 0.0){
+            
+            contentText = @"Rest until ready";
+            
+        } else{
+            
+            NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
+            contentText = [NSString stringWithFormat: @"Rest for %@", formattedRest];
+            
+        }
+ 
     } else{
         
         contentText = @"Begin when ready";
@@ -700,8 +710,15 @@ static NSString const *restViewKey = @"restView";
                                    lastUpdateDate: nil];
     
     // configure stopwatch based on current rest target
+    // if rest is not being targeted, a value of -1 is held as the active rest target
+    // do not set the stopwatch rest target when rest is not being targeted
     
-    stopwatch.targetRest = self.currentRestTarget;
+    if ([self.currentRestTarget floatValue] >= 0.0){
+        
+        stopwatch.targetRest = self.currentRestTarget;
+        
+    }
+
     [stopwatch scheduleAlertBasedOnUserPermissions];
     
     // update alertValueLabel to reflect stopwatch parameters
@@ -1234,7 +1251,29 @@ static NSString const *restViewKey = @"restView";
     
     NSLog(@"showing first targets: %d", _showingFirstTargets);
     
-    BOOL restTargetIsStatic = !_showingFirstTargets; // the user will be allowed to change the rest target only before the routine truly begins.  Once it has begun, rest times are dictated as per user specifications
+    // the user will be allowed to change the rest target only before the routine truly begins.  Once it has begun, rest times are dictated as per user specifications
+    // if there is no targeted rest, the user can
+    // a value of -1 is held as the rest target when the user is not targeting rest, hence the logic below
+    
+    BOOL restTargetIsStatic;
+    
+    if (self.currentRestTarget){
+        
+        if ([self.currentRestTarget floatValue] < 0.0){
+            
+            restTargetIsStatic = NO;
+            
+        } else{
+            
+            restTargetIsStatic = YES;
+            
+        }
+        
+    } else{
+        
+        restTargetIsStatic = NO;
+        
+    }
     
     TJBClockConfigurationVC *clockVC = [[TJBClockConfigurationVC alloc] initWithApplyAlertParametersCallback: apBlock
                                                                                               cancelCallback: cancelCallback

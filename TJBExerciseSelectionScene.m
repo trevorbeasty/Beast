@@ -730,20 +730,6 @@ typedef enum{
     }
 }
 
-//- (void)hideExerciseAdditionChildVCAndShowTableView{
-//    
-//    self.exerciseAdditionChildVC.view.hidden = YES;
-//    self.exerciseTableView.hidden = NO;
-//    _exerciseAdditionActive = NO;
-//    [self.addNewExerciseButton setImage: [UIImage imageNamed: @"new"]
-//                               forState: UIControlStateNormal];
-//    self.searchButton.hidden = NO;
-//    self.normalBrowsingExerciseSC.hidden = NO;
-//    
-//    [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
-//    
-//}
-
 
 
 - (TJBExercise *)processUserRequestAndReturnExerciseWithName:(NSString *)exerciseName category:(TJBExerciseCategoryType)category{
