@@ -61,27 +61,14 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UILabel *roundTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timerTitleLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *contentScrollView;
-//@property (weak, nonatomic) IBOutlet UILabel *mainTitle;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-//@property (weak, nonatomic) IBOutlet UIView *titleContainer;
-@property (weak, nonatomic) IBOutlet UILabel *roundTopLabel;
 @property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
-//@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
 @property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
-@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
-@property (weak, nonatomic) IBOutlet UILabel *targetRestValueLabel;
-
-
-// constraints for flying round and rest labes horizontally
-
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundRestLabelGap;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundLabelLeadingSpace;
-
+@property (weak, nonatomic) IBOutlet UILabel *alertValueLabel;
 
 // IBAction
 
@@ -191,7 +178,7 @@ static float const animationTimeUnit = .4;
     
     //// title labels
     
-    self.roundTitleLabel.text = [NSString stringWithFormat: @"1/%d", self.chainTemplate.numberOfRounds];
+//    self.roundTitleLabel.text = [NSString stringWithFormat: @"1/%d", self.chainTemplate.numberOfRounds];
 //    self.mainTitle.text = self.chainTemplate.name;
     
     // detail title label
@@ -273,29 +260,13 @@ static float const animationTimeUnit = .4;
     self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
     self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
     
-    NSArray *largerFontLabels = @[self.roundTitleLabel,
-                        self.activeRoutineLabel, self.targetRestValueLabel];
-    
-    for (UILabel *label in largerFontLabels){
-        
-        label.backgroundColor = [UIColor darkGrayColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        label.textColor = [UIColor whiteColor];
-        
-    }
+    self.activeRoutineLabel.backgroundColor = [UIColor clearColor];
+    self.activeRoutineLabel.textColor = [UIColor whiteColor];
+    self.activeRoutineLabel.font = [UIFont boldSystemFontOfSize: 20];
     
     self.timerTitleLabel.font = [UIFont systemFontOfSize: 35];
     self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
     self.timerTitleLabel.textColor = [UIColor whiteColor];
-    
-    NSArray *smallerFontLabels = @[self.roundTopLabel, self.targetRestLabel];
-    for (UILabel *lab in smallerFontLabels){
-     
-        lab.font = [UIFont systemFontOfSize: 15];
-        lab.textColor = [UIColor whiteColor];
-        lab.backgroundColor = [UIColor darkGrayColor];
-        
-    }
     
     NSArray *titleButtons = @[self.leftBarButton];
     for (UIButton *button in titleButtons){
@@ -312,10 +283,6 @@ static float const animationTimeUnit = .4;
     
     self.contentScrollView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    // title container
-    
-//    self.titleContainer.backgroundColor = [UIColor clearColor];
-    
     // alert timing controls
     
     NSArray *alertTimingControls = @[self.alertTimingButton];
@@ -328,6 +295,12 @@ static float const animationTimeUnit = .4;
     }
     
     self.alertTimingButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+    // alert value label
+    
+    self.alertValueLabel.backgroundColor = [UIColor clearColor];
+    self.alertValueLabel.textColor = [UIColor whiteColor];
+    self.alertValueLabel.font = [UIFont systemFontOfSize: 15];
     
 }
 
@@ -849,8 +822,8 @@ static NSString const *restViewKey = @"restView";
                 weakSelf.timerTitleLabel.text = @"";
                 [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
                 
-                weakSelf.roundTitleLabel.text = @"";
-                    
+//                weakSelf.roundTitleLabel.text = @"";
+                
                 // alert and dismissal
                 
                 [weakSelf dismissViewControllerAnimated: YES
@@ -1104,93 +1077,93 @@ static NSString const *restViewKey = @"restView";
 - (void)roundRestLabelAnimation{
     
     // the new text to be displayed for the timer and round label
-    
-    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
-    
-    
-    
-    NSString *newRoundText = [NSString stringWithFormat: @"%d/%d",
-                              [self.activeRoundIndexForTargets intValue] + 1,
-                              self.chainTemplate.numberOfRounds];
-    
-    // animation - fly the labels offscreen horizontally and then fly them back to original positions
-    
-    // must make the gap between the labels equal to the screen width and change both labels relationship with the screen edge appropriately so that the labels' width is maintained
-    
-    CGFloat buttonWidth = self.roundTitleLabel.bounds.size.width;
-    
-    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-    
-    void (^secondAnimation)(void) = ^{
-        
-        [UIView animateWithDuration: animationTimeUnit
-                         animations: ^{
-                             
-                             // shift left
-                             
-                             NSArray *leftShiftViews = @[weakSelf.timerTitleLabel];
-                             
-                             for (UIView *view in leftShiftViews){
-                                 
-                                 CGRect viewRect = view.frame;
-                                 
-                                 view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-                                 
-                             }
-                             
-                             // shift right
-                             
-                             NSArray *rightShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
-                             
-                             for (UIView *view in rightShiftViews){
-                                 
-                                 CGRect viewRect = view.frame;
-                                 
-                                 view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-                                 
-                             }
-                             
-                         }
-                         completion: nil];
-        
-    };
-    
-    [UIView animateWithDuration: animationTimeUnit
-                     animations: ^{
-                         
-                         // shift left
-                         
-                         NSArray *leftShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
-                         
-                         for (UIView *view in leftShiftViews){
-                             
-                             CGRect viewRect = view.frame;
-                             
-                             view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-                             
-                         }
-                         
-                         // shift right
-                         
-                         NSArray *rightShiftViews = @[weakSelf.timerTitleLabel];
-                         
-                         for (UIView *view in rightShiftViews){
-                             
-                             CGRect viewRect = view.frame;
-                             
-                             view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-                             
-                         }
-                         
-                     }
-                     completion: ^(BOOL completed){
-                         
-                         weakSelf.roundTitleLabel.text = newRoundText;
-                         weakSelf.timerTitleLabel.text = newTimerText;
-                         
-                         secondAnimation();
-                         
-                     }];
+//    
+//    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
+//    
+//    
+//    
+//    NSString *newRoundText = [NSString stringWithFormat: @"%d/%d",
+//                              [self.activeRoundIndexForTargets intValue] + 1,
+//                              self.chainTemplate.numberOfRounds];
+//    
+//    // animation - fly the labels offscreen horizontally and then fly them back to original positions
+//    
+//    // must make the gap between the labels equal to the screen width and change both labels relationship with the screen edge appropriately so that the labels' width is maintained
+//    
+////    CGFloat buttonWidth = self.roundTitleLabel.bounds.size.width;
+//    
+//    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+//    
+//    void (^secondAnimation)(void) = ^{
+//        
+//        [UIView animateWithDuration: animationTimeUnit
+//                         animations: ^{
+//                             
+//                             // shift left
+//                             
+//                             NSArray *leftShiftViews = @[weakSelf.timerTitleLabel];
+//                             
+//                             for (UIView *view in leftShiftViews){
+//                                 
+//                                 CGRect viewRect = view.frame;
+//                                 
+//                                 view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+//                                 
+//                             }
+//                             
+//                             // shift right
+//                             
+//                             NSArray *rightShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
+//                             
+//                             for (UIView *view in rightShiftViews){
+//                                 
+//                                 CGRect viewRect = view.frame;
+//                                 
+//                                 view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+//                                 
+//                             }
+//                             
+//                         }
+//                         completion: nil];
+//        
+//    };
+//    
+//    [UIView animateWithDuration: animationTimeUnit
+//                     animations: ^{
+//                         
+//                         // shift left
+//                         
+//                         NSArray *leftShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
+//                         
+//                         for (UIView *view in leftShiftViews){
+//                             
+//                             CGRect viewRect = view.frame;
+//                             
+//                             view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+//                             
+//                         }
+//                         
+//                         // shift right
+//                         
+//                         NSArray *rightShiftViews = @[weakSelf.timerTitleLabel];
+//                         
+//                         for (UIView *view in rightShiftViews){
+//                             
+//                             CGRect viewRect = view.frame;
+//                             
+//                             view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
+//                             
+//                         }
+//                         
+//                     }
+//                     completion: ^(BOOL completed){
+//                         
+//                         weakSelf.roundTitleLabel.text = newRoundText;
+//                         weakSelf.timerTitleLabel.text = newTimerText;
+//                         
+//                         secondAnimation();
+//                         
+//                     }];
     
 }
 

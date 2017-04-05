@@ -72,37 +72,22 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
-//@property (weak, nonatomic) IBOutlet UIButton *targetRestButton;
 @property (weak, nonatomic) IBOutlet UIButton *beginNextSetButton;
-//@property (weak, nonatomic) IBOutlet UIButton *alertTimingButton;
 @property (weak, nonatomic) IBOutlet UIButton *exerciseButton;
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *shadowView;
-//@property (weak, nonatomic) IBOutlet UIView *titleLabelsContainer;
-//@property (weak, nonatomic) IBOutlet UILabel *freeformTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-//@property (weak, nonatomic) IBOutlet UIButton *targetRestTitle;
-//@property (weak, nonatomic) IBOutlet UIButton *alertTimingTitle;
 @property (weak, nonatomic) IBOutlet UILabel *topTopLabel;
 @property (weak, nonatomic) IBOutlet UIView *bottomButtonContainer;
-//@property (weak, nonatomic) IBOutlet UILabel *thinTitleLabel;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
 @property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
-//@property (weak, nonatomic) IBOutlet UILabel *targetRestLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *targetRestValueLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *alertTimingLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *alertTimingValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *scheduledAlertLabel;
 
 // IBAction
 
 - (IBAction)didPressBeginNextSet:(id)sender;
-//- (IBAction)didPressTargetRestButton:(id)sender;
-//- (IBAction)didPressAlertTimingButton:(id)sender;
 - (IBAction)didPressExerciseButton:(id)sender;
 - (IBAction)didPressLeftBarButton:(id)sender;
-//- (IBAction)didPressAlertTimingTitle:(id)sender;
-//- (IBAction)didPressTargetRestTitle:(id)sender;
 - (IBAction)didPressClockButton:(id)sender;
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
