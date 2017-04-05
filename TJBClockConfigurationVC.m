@@ -369,16 +369,32 @@
     
     if (self.selectedTargetRest && self.selectedAlertTiming){
         
-        [self deregisterTimerValueLabelWithStopwatch];
+        float restLessAlert = [self.selectedTargetRest floatValue] - [self.selectedAlertTiming floatValue];
         
-        self.applyAlertParamBlock(self.selectedTargetRest, self.selectedAlertTiming);
-        
+        if (restLessAlert > 0.0){
+            
+            [self deregisterTimerValueLabelWithStopwatch];
+            
+            self.applyAlertParamBlock(self.selectedTargetRest, self.selectedAlertTiming);
+            
+        } else{
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Selections"
+                                                                           message: @"Alert timing must be less than target rest"
+                                                                    preferredStyle: UIAlertControllerStyleAlert];
+            
+            UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: nil];
+            
+            [alert addAction: action];
+            
+            [self presentViewController: alert
+                                   animated: YES
+                                 completion: nil];
+            
+        }
     }
-    
-    
-    
-    
-    
 }
 
 - (IBAction)didPressExit:(id)sender{
