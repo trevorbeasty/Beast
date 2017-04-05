@@ -137,7 +137,7 @@
     
     if (_restTargetIsStatic == YES){
         
-        [self hideRestTargetEditButton];
+        [self configureForStaticRestTarget];
         
     }
     
@@ -151,9 +151,10 @@
 
 #pragma mark - View Helper Methods
 
-- (void)hideRestTargetEditButton{
+- (void)configureForStaticRestTarget{
     
     self.editButtonTargetRest.hidden = YES;
+    self.selectedTargetRest = [TJBStopwatch singleton].targetRest;
     
 }
 

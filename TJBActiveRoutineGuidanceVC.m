@@ -219,8 +219,6 @@ static float const animationTimeUnit = .4;
         
         newView = [self scrollContentViewForTargetArrays_isInitialDisplay: YES];
         
-//        _showingFirstTargets = NO;
-        
     } else{
         
         newView = [self scrollContentViewForTargetArrays_isInitialDisplay: NO];
@@ -683,11 +681,34 @@ static NSString const *restViewKey = @"restView";
     
     [restItemVC didMoveToParentViewController: self];
     
+    // stopwatch config
+    
+    [self configureStopwatchBasedOnCurrentTargets];
+    
     return masterView;
     
 }
 
-
+- (void)configureStopwatchBasedOnCurrentTargets{
+    
+    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    
+    // reset timer
+    
+    [stopwatch setPrimaryStopWatchToTimeInSeconds: 0
+                          withForwardIncrementing: YES
+                                   lastUpdateDate: nil];
+    
+    // configure stopwatch based on current rest target
+    
+    stopwatch.targetRest = self.currentRestTarget;
+    [stopwatch scheduleAlertBasedOnUserPermissions];
+    
+    // update alertValueLabel to reflect stopwatch parameters
+    
+    
+    
+}
 
 
 #pragma mark - Button Actions
@@ -819,8 +840,6 @@ static NSString const *restViewKey = @"restView";
                     
                 weakSelf.timerTitleLabel.text = @"";
                 [[TJBStopwatch singleton] removeAllPrimaryStopwatchObservers];
-                
-//                weakSelf.roundTitleLabel.text = @"";
                 
                 // alert and dismissal
                 
@@ -1047,17 +1066,17 @@ static NSString const *restViewKey = @"restView";
     // this method derives and displays the new targets. The transition to the new targets is animated to make it apparent to the user that a change has occurred
     // timer
     
-    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.futureRestTarget intValue]
-                                         withForwardIncrementing: YES
-                                                  lastUpdateDate: nil];
+//    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.futureRestTarget intValue]
+//                                         withForwardIncrementing: YES
+//                                                  lastUpdateDate: nil];
     
     // give the timer non red zone colors
     
-    self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
+//    self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
     
     // animate the timer and round label changes - they fly out to the sides, have their values updated, and fly back in
     
-    [self roundRestLabelAnimation];
+//    [self roundRestLabelAnimation];
     
     // nullify the cancellation restoration exercise index and round index
     
