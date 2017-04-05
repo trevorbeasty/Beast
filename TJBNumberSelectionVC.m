@@ -20,6 +20,10 @@
 
 #import "TJBAestheticsController.h"
 
+// jump bar
+
+#import "TJBNumberJumpVC.h"
+
 @interface TJBNumberSelectionVC () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
 {
@@ -37,13 +41,12 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UILabel *topLabel1;
-
-
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-//@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *selectedValueLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *multiplierSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
+@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UIView *jumpBarContainer;
+@property (weak, nonatomic) IBOutlet UILabel *selectedValueLabel;
 
 // IBAction
 
@@ -88,6 +91,39 @@ static NSString * const reuseIdentifier = @"cell";
     [self configureSegmentedControl];
     
     [self configureDisplay];
+    
+    [self configureJumpBar];
+    
+}
+
+#pragma mark - View Helper Methods
+
+- (void)configureJumpBar{
+    
+    [self.view layoutIfNeeded];
+    
+    __weak TJBNumberSelectionVC *weakSelf = self;
+    
+    // weight jump bar
+    
+    void (^jumpBarWeightCallback)(NSNumber *) = ^(NSNumber *touchNumber){
+        
+//        [weakSelf jumpBarTouchedWithNumberEquivalent: touchNumber
+//                                         jumpBarType: WeightType];
+        
+    };
+    
+    TJBNumberJumpVC *jumpBar = [[TJBNumberJumpVC alloc] initWithLowerLimit: @(0)
+                                                                  numberOfLabels: @(11)
+                                                                    intervalSize: @(50)
+                                                                delegateCallback: jumpBarWeightCallback];
+    
+    [self addChildViewController: jumpBar];
+    
+    jumpBar.view.frame = self.jumpBarContainer.bounds;
+    [self.jumpBarContainer addSubview: jumpBar.view];
+    
+    [jumpBar didMoveToParentViewController: self];
     
 }
 
@@ -184,32 +220,51 @@ static NSString * const reuseIdentifier = @"cell";
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
-    self.multiplierSegmentedControl.tintColor = [UIColor lightGrayColor];
+    // title bar container
     
-    // type label
+    self.titleBarContainer.backgroundColor = [UIColor darkGrayColor];
     
-    NSArray *labels = @[self.topLabel1, self.selectedValueLabel];
-    for (UILabel *label in labels){
-        
-        label.backgroundColor = [UIColor darkGrayColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 20];
-        
-    }
+    // segmented control
+    
+    self.multiplierSegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.multiplierSegmentedControl.backgroundColor = [UIColor darkGrayColor];
+    CALayer *scLayer = self.multiplierSegmentedControl.layer;
+    scLayer.masksToBounds = YES;
+    scLayer.cornerRadius = 25.0;
+    scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    scLayer.borderWidth = 1.0;
+    
+    // title label
+    
+    self.topLabel1.backgroundColor = [UIColor clearColor];
+    self.topLabel1.textColor = [UIColor whiteColor];
+    self.topLabel1.font = [UIFont boldSystemFontOfSize: 20];
     
     // buttons
     
-    [self.cancelButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                            forState: UIControlStateNormal];
-    self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
     self.cancelButton.backgroundColor = [UIColor clearColor];
     
-    self.submitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    self.submitButton.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
-    [self.submitButton setTitleColor: [UIColor whiteColor]
+    [self.submitButton setTitleColor: [UIColor darkGrayColor]
                             forState: UIControlStateNormal];
+    
+    // selected value label
+    
+    self.selectedValueLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.selectedValueLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.selectedValueLabel.backgroundColor = [UIColor clearColor];
+    
+    // jump bar container
+    
+    self.jumpBarContainer.backgroundColor = [UIColor clearColor];
+    CALayer *jbLayer = self.jumpBarContainer.layer;
+    jbLayer.masksToBounds = YES;
+    jbLayer.cornerRadius = 25;
+    jbLayer.borderWidth = 1.0;
+    jbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
 }
 
@@ -251,15 +306,13 @@ static NSString * const reuseIdentifier = @"cell";
         
     }
     
-    cell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    cell.numberLabel.textColor = [UIColor whiteColor];
+    [self configureUnselectedCellAppearance: cell];
     
     if (self.selectedCellIndexPath){
         
         if (self.selectedCellIndexPath.row == indexPath.row){
             
-            cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-            cell.numberLabel.textColor = [UIColor blackColor];
+            [self configureSelectedCellAppearanceForCell: cell];
             
         }
         
@@ -297,6 +350,34 @@ static NSString * const reuseIdentifier = @"cell";
     cell.layer.cornerRadius = 4.0;
     
     return cell;
+    
+}
+
+- (void)configureSelectedCellAppearanceForCell:(TJBWeightRepsSelectionCell *)cell{
+    
+    cell.backgroundColor = [UIColor clearColor];
+    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
+    
+    CALayer *cellLayer = cell.layer;
+    cellLayer.masksToBounds = YES;
+    cellLayer.cornerRadius = 4.0;
+    cellLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    cellLayer.borderWidth = 4.0;
+    
+}
+
+- (void)configureUnselectedCellAppearance:(TJBWeightRepsSelectionCell *)cell{
+    
+    cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    cell.numberLabel.font = [UIFont systemFontOfSize: 15];
+    cell.numberLabel.textColor = [UIColor blackColor];
+    
+    CALayer *cellLayer = cell.layer;
+    cellLayer.masksToBounds = YES;
+    cellLayer.cornerRadius = 4.0;
+    cellLayer.borderColor = [UIColor blackColor].CGColor;
+    cellLayer.borderWidth = 1.0;
     
 }
 
@@ -374,8 +455,7 @@ static NSString * const reuseIdentifier = @"cell";
             
         TJBWeightRepsSelectionCell *previousCell = (TJBWeightRepsSelectionCell *)[self.collectionView cellForItemAtIndexPath: self.selectedCellIndexPath];
             
-        previousCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-        previousCell.numberLabel.textColor = [UIColor whiteColor];
+        [self configureUnselectedCellAppearance: previousCell];
             
     }
         
@@ -383,8 +463,7 @@ static NSString * const reuseIdentifier = @"cell";
         
     TJBWeightRepsSelectionCell *currentCell = (TJBWeightRepsSelectionCell *)[self.collectionView cellForItemAtIndexPath: indexPath];
         
-    currentCell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    currentCell.numberLabel.textColor = [UIColor blackColor];
+    [self configureSelectedCellAppearanceForCell: currentCell];
     
     NSNumber *number;
     if (_numberTypeIdentifier == TargetRestType){
@@ -479,7 +558,7 @@ static NSString * const reuseIdentifier = @"cell";
 
 #pragma mark - <UICollectionViewDelegateFlowLayout>
 
-static CGFloat const spacing = 8.0;
+static CGFloat const spacing = 1.0;
 static float const numberOfCellsPerRow = 4;
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
@@ -513,7 +592,7 @@ static float const numberOfCellsPerRow = 4;
     
     if (_numberTypeIdentifier == TargetRestType && indexPath.row == 0){
         
-        return CGSizeMake(collectionViewWidth, cellWidth / 2.0);
+        return CGSizeMake(collectionViewWidth, cellWidth);
         
     } else{
         

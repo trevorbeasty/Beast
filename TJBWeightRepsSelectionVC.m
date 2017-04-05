@@ -189,7 +189,6 @@ typedef enum {
     self.view.backgroundColor = [UIColor blackColor];
     self.titleBarContainer.backgroundColor = [UIColor blackColor];
     self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
-//    self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
     
     // segmented controls
     
