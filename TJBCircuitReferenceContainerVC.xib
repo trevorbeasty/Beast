@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -15,7 +15,6 @@
                 <outlet property="comparisonTypeSegmentedControl" destination="QwT-0q-dsS" id="HdN-eJ-38D"/>
                 <outlet property="titleContainerView" destination="9y5-2C-wjz" id="KWS-L5-Jhb"/>
                 <outlet property="titleLabel1" destination="1ft-dR-6VP" id="202-Vo-oi2"/>
-                <outlet property="titleLabel2" destination="Fds-9Y-sIw" id="PMa-Cq-dKz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -25,53 +24,38 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBm-HU-zw0">
-                    <rect key="frame" x="8" y="91" width="566" height="626"/>
+                    <rect key="frame" x="8" y="71" width="566" height="618"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9y5-2C-wjz" userLabel="titleContainer">
-                    <rect key="frame" x="0.0" y="0.0" width="582" height="91"/>
+                    <rect key="frame" x="0.0" y="0.0" width="582" height="71"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active Routine Progress" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ft-dR-6VP">
-                            <rect key="frame" x="0.0" y="20" width="582" height="35"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Routine Progress" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ft-dR-6VP">
+                            <rect key="frame" x="0.0" y="20" width="582" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="35" id="X1u-Tt-fz5"/>
-                            </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Routine Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fds-9Y-sIw">
-                            <rect key="frame" x="0.0" y="55" width="582" height="35"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="35" id="LxE-NO-ZKr"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="Fds-9Y-sIw" firstAttribute="leading" secondItem="9y5-2C-wjz" secondAttribute="leading" id="1Sk-fe-ysY"/>
-                        <constraint firstAttribute="height" constant="91" id="brB-cY-KRP"/>
+                        <constraint firstAttribute="bottom" secondItem="1ft-dR-6VP" secondAttribute="bottom" constant="1" id="aj2-kl-Dni"/>
+                        <constraint firstAttribute="height" constant="71" id="brB-cY-KRP"/>
                         <constraint firstAttribute="trailing" secondItem="1ft-dR-6VP" secondAttribute="trailing" id="kr6-gM-Qa2"/>
-                        <constraint firstItem="Fds-9Y-sIw" firstAttribute="top" secondItem="1ft-dR-6VP" secondAttribute="bottom" id="o0W-oh-k1Y"/>
                         <constraint firstItem="1ft-dR-6VP" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="top" constant="20" id="sOy-3G-W8p"/>
                         <constraint firstItem="1ft-dR-6VP" firstAttribute="leading" secondItem="9y5-2C-wjz" secondAttribute="leading" id="wTW-YY-0PU"/>
-                        <constraint firstAttribute="trailing" secondItem="Fds-9Y-sIw" secondAttribute="trailing" id="z4w-B5-5wo"/>
                     </constraints>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QwT-0q-dsS">
-                    <rect key="frame" x="4" y="717" width="574" height="31"/>
+                    <rect key="frame" x="4" y="689" width="574" height="51"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="tuc-c9-aVd"/>
+                        <constraint firstAttribute="height" constant="50" id="tuc-c9-aVd"/>
                     </constraints>
                     <segments>
                         <segment title="Progress"/>
                         <segment title="Targets"/>
-                        <segment title="Edit"/>
+                        <segment title="Edit Progress"/>
                     </segments>
                 </segmentedControl>
             </subviews>
@@ -79,7 +63,7 @@
             <constraints>
                 <constraint firstItem="OBm-HU-zw0" firstAttribute="top" secondItem="9y5-2C-wjz" secondAttribute="bottom" id="2vi-MV-A9K"/>
                 <constraint firstAttribute="trailing" secondItem="QwT-0q-dsS" secondAttribute="trailing" constant="4" id="5Bv-4P-yZB"/>
-                <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="8" id="I0N-vl-keb"/>
+                <constraint firstAttribute="bottom" secondItem="QwT-0q-dsS" secondAttribute="bottom" constant="16" id="I0N-vl-keb"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Iue-Tv-NOF"/>
                 <constraint firstAttribute="trailing" secondItem="9y5-2C-wjz" secondAttribute="trailing" id="aqZ-s8-tpg"/>
                 <constraint firstItem="QwT-0q-dsS" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="4" id="eqc-Dg-hKC"/>

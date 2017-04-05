@@ -27,15 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIView *circuitReferenceView;
 @property (weak, nonatomic) IBOutlet UIView *titleContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel2;
-//@property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *comparisonTypeSegmentedControl;
-//@property (weak, nonatomic) IBOutlet UIButton *doneButton;
-
-// IBAction
-
-//- (IBAction)didPressEdit:(id)sender;
-//- (IBAction)didPressDoneButton:(id)sender;
 
 // core
 
@@ -76,8 +68,6 @@
     
     [self configureViewAesthetics];
     
-    [self configureDisplayData];
-    
     [self configureSegmentedControl];
     
 }
@@ -92,50 +82,27 @@
     
 }
 
-- (void)configureDisplayData{
-    
-    self.titleLabel2.text = self.realizedChain.chainTemplate.name;
-    
-    // initial state (editing not active)
-    
-//    self.doneButton.enabled = NO;
-//    self.doneButton.layer.opacity = .2;
-    
-}
-
 - (void)configureViewAesthetics{
     
     // meta view
     
     self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    // labels
-    
-    NSArray *titleLabels = @[self.titleLabel1, self.titleLabel2];
-    for (UILabel *label in titleLabels){
-        
-        label.backgroundColor = [UIColor darkGrayColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        label.textColor = [UIColor whiteColor];
-        
-    }
-    
-    self.titleLabel2.font = [UIFont boldSystemFontOfSize: 15.0];
-    
-//    NSArray *buttons = @[self.editButton, self.doneButton];
-//    
-//    for (UIButton *button in buttons){
-//        
-//        button.backgroundColor = [UIColor clearColor];
-//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-//        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-//                              forState: UIControlStateNormal];
-//        
-//    }
+    // title label
+
+    self.titleLabel1.backgroundColor = [UIColor darkGrayColor];
+    self.titleLabel1.textColor = [UIColor whiteColor];
+    self.titleLabel1.font = [UIFont boldSystemFontOfSize: 20];
     
     // segmented control
     
-    self.comparisonTypeSegmentedControl.tintColor = [UIColor blackColor];
+    self.comparisonTypeSegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.comparisonTypeSegmentedControl.backgroundColor = [UIColor darkGrayColor];
+    CALayer *scLayer = self.comparisonTypeSegmentedControl.layer;
+    scLayer.masksToBounds = YES;
+    scLayer.cornerRadius = 25;
+    scLayer.borderWidth = 1.0;
+    scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
     // title bar container
     
@@ -174,36 +141,6 @@
 
 #pragma mark - <UIViewControllerRestoration>
 
-
-
-
-//- (IBAction)didPressEdit:(id)sender{
-//    
-//    [self.childRoutineVC activateMode: EditingMode];
-//    
-//    // button state
-//    
-//    self.doneButton.enabled = YES;
-//    self.doneButton.layer.opacity = 1.0;
-//    
-//    self.editButton.enabled = NO;
-//    self.editButton.layer.opacity = .2;
-//    
-//}
-//
-//- (IBAction)didPressDoneButton:(id)sender{
-//    
-//    [self toggleComparisonMode];
-//    
-//    // button state
-//    
-//    self.doneButton.enabled = NO;
-//    self.doneButton.layer.opacity = .2;
-//    
-//    self.editButton.enabled = YES;
-//    self.editButton.layer.opacity = 1.0;
-//    
-//}
 
 - (void)toggleComparisonMode{
     
