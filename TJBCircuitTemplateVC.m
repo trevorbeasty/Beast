@@ -34,7 +34,15 @@
     // state
     
     NSInteger _activeNumberOfExercises;
-    NSInteger _activeNumberOfRounds;
+//    NSInteger _activeNumberOfRounds;
+    
+    // layout
+    
+    CGFloat _rowHeight;
+    CGFloat _exerciseRowHeight;
+    CGFloat _switchRowHeight;
+    CGFloat _topExerciseComponentSpacing;
+    CGFloat _interimExerciseComponentSpacing;
     
     
 }
@@ -140,18 +148,35 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
+- (void)initializeStateVariables{
+    
+    _activeNumberOfExercises = 0;
+    
+}
+
 #pragma mark - View Life Cycle
 
 - (void)loadView{
     
-    // this must be called when creating the view programatically
+//    // this must be called when creating the view programatically
+//    
+////    float viewWidth = _viewSize.width;
+////    float viewHeight = _viewSize.height;
+////    UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
+//    UIView *view = [[UIView alloc] init];
+////    view.backgroundColor = [UIColor clearColor];
+//    self.view = view;
     
-//    float viewWidth = _viewSize.width;
-//    float viewHeight = _viewSize.height;
-//    UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
-    UIView *view = [[UIView alloc] init];
-//    view.backgroundColor = [UIColor clearColor];
-    self.view = view;
+    // the root view is a scroll view
+    // a container view must be added to the scroll view because scroll view does not interact well with auto layout
+    // must track these views so that their dimensions can be changed as the number of exercises and rows change
+    
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    
+    // calculate the contentSize
+    // the container view will assume dimensions consistent with the contentSize
+    
+    
     
 }
 
@@ -162,9 +187,32 @@ static NSString * const defaultValue = @"unselected";
 }
 
 
+
+
 #pragma mark - Exercise Component
 
 - (void)creatingStartingComponents{
+    
+    for (NSInteger i = 0; i < [self.startingNumberOfExercises integerValue]; i++){
+        
+        [self appendNewExerciseComponentToExistingStructure];
+        
+    }
+    
+    
+    
+}
+
+- (void)appendNewExerciseComponentToExistingStructure{
+    
+    // if no exercise components yet exist, must treat autolayout differently
+    
+    NSInteger exerciseIndex = _activeNumberOfExercises + 1;
+    
+    TJBCircuitTemplateExerciseComp *exComp = [[TJBCircuitTemplateExerciseComp alloc] initWithChainTemplate: self.chainTemplate
+                                                                                             exerciseIndex: (int)exerciseIndex
+                                                                                          masterController: self];
+    [self.childExerciseComponentControllers addObject: exComp];
     
     
     
@@ -172,7 +220,7 @@ static NSString * const defaultValue = @"unselected";
 
 
 
-
+#pragma mark - Layout Math
 
 
 
