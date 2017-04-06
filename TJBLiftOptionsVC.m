@@ -34,7 +34,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *freeformButton;
 @property (weak, nonatomic) IBOutlet UIButton *designedButton;
-@property (weak, nonatomic) IBOutlet UIButton *createNewRoutineButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel2;
 @property (weak, nonatomic) IBOutlet UILabel *analysisOptionsLabel;
@@ -47,7 +46,6 @@
 
 - (IBAction)didPressFreeformButton:(id)sender;
 - (IBAction)didPressDesignedButton:(id)sender;
-- (IBAction)didPressCreateNewRoutine:(id)sender;
 - (IBAction)didPressViewWorkoutLog:(id)sender;
 
 
@@ -87,7 +85,6 @@
     
     NSArray *buttons = @[self.freeformButton,
                          self.designedButton,
-                         self.createNewRoutineButton,
                          self.viewWorkoutLogButton];
     
     for (UIButton *button in buttons){

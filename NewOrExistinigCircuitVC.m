@@ -1120,7 +1120,7 @@
     
     _viewingChainHistory = NO;
     
-    [self.previousMarkButton setTitle: @"View History"
+    [self.previousMarkButton setTitle: @"History"
                              forState: UIControlStateNormal];
     
 }
@@ -1170,7 +1170,7 @@
     
     // update button title
     
-    [self.previousMarkButton setTitle: @"Back"
+    [self.previousMarkButton setTitle: @"Routines"
                              forState: UIControlStateNormal];
     
     // get rid of the activity indicator and old table view content. The content will be reloaded if it is later required

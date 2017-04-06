@@ -278,17 +278,17 @@
     // delete the chain template from the persistent store if it is incomplete
     
     // must check for completeness of chain template.  If all user selections have been been made but the 'launch circuit' or '+' buttons have not been pressed, its 'isIncomplete' property will not be updated
+//    
+//    BOOL isComplete = [[CoreDataController singleton] chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
+////    self.chainTemplate.isIncomplete = !isComplete;
+//    
+//    if (!isComplete){
+//        
+//        [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
+//        
+//    }
     
-    BOOL isComplete = [[CoreDataController singleton] chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
-//    self.chainTemplate.isIncomplete = !isComplete;
-    
-    if (!isComplete){
-        
-        [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
-        
-    }
-    
-    [self dismissViewControllerAnimated: NO
+    [self dismissViewControllerAnimated: YES
                              completion: nil];
     
 }
@@ -297,48 +297,48 @@
 
 - (IBAction)didPressAdd:(id)sender{
     
-    //// this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
-    
-    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
-    
-    if (requisiteUserInputCollected){
-        
-        // it has been determined that the chain template is complete, so update its corresponding property and save the context
-        
-//        self.chainTemplate.isIncomplete = NO;
-        [[CoreDataController singleton] saveContext];
-        
-        // alert
-        
-        NSString *message = [NSString stringWithFormat: @"New routine added to My Routines"];
-        
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Successfully Saved"
-                                                                       message: message
-                                                                preferredStyle: UIAlertControllerStyleAlert];
-        
-        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
-            
-            UIViewController *homeVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-            
-            [homeVC dismissViewControllerAnimated: YES
-                                       completion: nil];
-            
-        };
-        
-        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
-                                                         style: UIAlertActionStyleDefault
-                                                       handler: alertBlock];
-        [alert addAction: action];
-        
-        [self presentViewController: alert
-                           animated: YES
-                         completion: nil];
-        
-    } else{
-        
-        [self alertUserInputIncomplete];
-        
-    }
+//    //// this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
+//    
+//    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
+//    
+//    if (requisiteUserInputCollected){
+//        
+//        // it has been determined that the chain template is complete, so update its corresponding property and save the context
+//        
+////        self.chainTemplate.isIncomplete = NO;
+//        [[CoreDataController singleton] saveContext];
+//        
+//        // alert
+//        
+//        NSString *message = [NSString stringWithFormat: @"New routine added to My Routines"];
+//        
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Successfully Saved"
+//                                                                       message: message
+//                                                                preferredStyle: UIAlertControllerStyleAlert];
+//        
+//        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
+//            
+//            UIViewController *homeVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+//            
+//            [homeVC dismissViewControllerAnimated: YES
+//                                       completion: nil];
+//            
+//        };
+//        
+//        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+//                                                         style: UIAlertActionStyleDefault
+//                                                       handler: alertBlock];
+//        [alert addAction: action];
+//        
+//        [self presentViewController: alert
+//                           animated: YES
+//                         completion: nil];
+//        
+//    } else{
+//        
+//        [self alertUserInputIncomplete];
+//        
+//    }
 }
 
 #pragma mark - <UIViewControllerRestoration>
