@@ -13,8 +13,10 @@
             <connections>
                 <outlet property="backButton" destination="a2A-HH-h48" id="sej-b3-y2k"/>
                 <outlet property="containerView" destination="ddm-83-lU1" id="zmL-Qx-OVD"/>
+                <outlet property="controlsContainer" destination="XPt-E1-GwX" id="JlA-cR-lV3"/>
                 <outlet property="mainTitleLabel" destination="4sq-W5-vNc" id="CnU-d0-Q57"/>
                 <outlet property="rightTitleButton" destination="VD7-7W-J65" id="j8z-Mp-aww"/>
+                <outlet property="titleBarContainer" destination="b3K-3X-CZg" id="DVW-az-Pa4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -29,7 +31,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XPt-E1-GwX" userLabel="controlsContainer">
                     <rect key="frame" x="0.0" y="467" width="375" height="200"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="200" id="4i6-qI-bOk"/>
                     </constraints>
@@ -39,27 +41,25 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Routine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4sq-W5-vNc">
                             <rect key="frame" x="126.5" y="13" width="122" height="24"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2A-HH-h48">
-                            <rect key="frame" x="30" y="10" width="30" height="30"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                            <state key="normal">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2A-HH-h48">
+                            <rect key="frame" x="30" y="12.5" width="25" height="25"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <state key="normal" image="trashBlue25">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
                             <connections>
                                 <action selector="didPressBack:" destination="-1" eventType="touchUpInside" id="OTC-VL-sE0"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VD7-7W-J65">
-                            <rect key="frame" x="315" y="10" width="30" height="30"/>
-                            <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                            <state key="normal">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VD7-7W-J65">
+                            <rect key="frame" x="320" y="13" width="25" height="25"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <state key="normal" image="saveBlue25">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
                             <connections>
@@ -67,7 +67,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="4sq-W5-vNc" firstAttribute="centerX" secondItem="b3K-3X-CZg" secondAttribute="centerX" id="3BH-jQ-gup"/>
                         <constraint firstItem="4sq-W5-vNc" firstAttribute="centerY" secondItem="b3K-3X-CZg" secondAttribute="centerY" id="8E9-Vp-bdZ"/>
@@ -79,7 +79,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="ddm-83-lU1" firstAttribute="top" secondItem="b3K-3X-CZg" secondAttribute="bottom" id="3bt-z4-FP3"/>
                 <constraint firstItem="XPt-E1-GwX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7YX-TC-Y1Z"/>
@@ -95,4 +95,8 @@
             <point key="canvasLocation" x="-185.5" y="97.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="saveBlue25" width="25" height="25"/>
+        <image name="trashBlue25" width="25" height="25"/>
+    </resources>
 </document>

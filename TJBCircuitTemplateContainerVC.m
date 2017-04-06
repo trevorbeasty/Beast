@@ -32,17 +32,17 @@
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UIView *containerView;
-//@property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
-//@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *roundsLabel;
+
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *rightTitleButton;
 
+@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UIView *controlsContainer;
+
 // IBAction
 
-//- (IBAction)didPressLaunchCircuit:(id)sender;
 - (IBAction)didPressBack:(id)sender;
 - (IBAction)didPressAdd:(id)sender;
 
@@ -104,19 +104,19 @@
 
 - (void)viewDidLoad{
     
-    [self setRestorationProperties];
-    
-    [self configureViewAesthetics];
+//    [self setRestorationProperties];
+//    
+//    [self configureViewAesthetics];
 
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     
-    if (!self.circuitTemplateVC){
-        
-        [self configureContainerView];
-        
-    }
+//    if (!self.circuitTemplateVC){
+//        
+//        [self configureContainerView];
+//        
+//    }
     
 }
 
@@ -125,73 +125,32 @@
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] offWhiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
-    // title bar
+    // title container
+    
+    self.titleBarContainer.backgroundColor = [UIColor darkGrayColor];
+    
+    // title bar items
     
     NSArray *titleButtons = @[self.backButton, self.rightTitleButton];
     for (UIButton *button in titleButtons){
         
-        button.backgroundColor = [UIColor darkGrayColor];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                     forState: UIControlStateNormal];
+        button.backgroundColor = [UIColor clearColor];
         
     }
     
-//    NSArray *titleLabels = @[self.mainTitleLabel, self.titleLabel];
-//    for (UILabel *label in titleLabels){
-//        
-//        label.backgroundColor = [UIColor darkGrayColor];
-//        label.textColor = [UIColor whiteColor];
-//        label.font = [UIFont boldSystemFontOfSize: 20.0];
-//        
-//    }
-    
-    self.mainTitleLabel.backgroundColor = [UIColor darkGrayColor];
+    self.mainTitleLabel.backgroundColor = [UIColor clearColor];
     self.mainTitleLabel.textColor = [UIColor whiteColor];
     self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20];
     
-//    self.roundsLabel.font = [UIFont systemFontOfSize:15.0];
+    // content container
     
-    // launch button
+    self.containerView.backgroundColor = [UIColor clearColor];
     
-//    self.launchCircuitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-//    [self.launchCircuitButton setTitleColor: [UIColor whiteColor]
-//                                   forState: UIControlStateNormal];
-//    self.launchCircuitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+    // controls container
     
-    // title labels text
-    
-//    self.titleLabel.text = self.chainTemplate.name;
-    
-    NSString *word;
-    int number = self.chainTemplate.numberOfRounds;
-    if (number == 1){
-    
-        word = @"round";
-    
-    } else{
-    
-        word = @"rounds";
-            
-    }
-    
-    NSString *exerciseWord;
-    int exerciseNumber = self.chainTemplate.numberOfExercises;
-    if (exerciseNumber == 1){
-        exerciseWord = @"exercise";
-    } else{
-        exerciseWord = @"exercises";
-    }
-    
-    NSString *roundsText = [NSString stringWithFormat: @"%d %@, %d %@",
-                            self.chainTemplate.numberOfExercises,
-                            exerciseWord,
-                            self.chainTemplate.numberOfRounds,
-                            word];
-    
-//    self.roundsLabel.text = roundsText;
+    self.controlsContainer.backgroundColor = [UIColor clearColor];
     
 }
 

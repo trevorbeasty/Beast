@@ -19,6 +19,7 @@
 #import "TJBWorkoutNavigationHub.h"
 #import "TJBCircuitReferenceContainerVC.h"
 #import "TJBCompleteChainHistoryVC.h"
+#import "TJBCircuitTemplateContainerVC.h"
 
 // views
 
@@ -1255,7 +1256,14 @@
     
 }
 
-- (IBAction)didPressNewRoutineButton:(id)sender {
+- (IBAction)didPressNewRoutineButton:(id)sender{
+    
+    TJBCircuitTemplateContainerVC *ctcVC = [[TJBCircuitTemplateContainerVC alloc] init];
+    
+    [self presentViewController: ctcVC
+                       animated: YES
+                     completion: nil];
+    
 }
 
 
