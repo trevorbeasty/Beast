@@ -51,10 +51,7 @@
 
 // IBOutlet
 
-@property (strong) UITableView *activeTableView;
-@property (strong) UIScrollView *activeScrollView;
 @property (strong) UIActivityIndicatorView *activeActivityIndicator;
-//@property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *launchButton;
 @property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
@@ -65,6 +62,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
+@property (weak, nonatomic) IBOutlet UIButton *buttonNewRoutine;
 
 // IBAction
 
@@ -74,10 +72,14 @@
 - (IBAction)didPressBackButton:(id)sender;
 - (IBAction)didPressViewHistory:(id)sender;
 - (IBAction)didPressToggle:(id)sender;
+- (IBAction)didPressNewRoutineButton:(id)sender;
+
 
 // core
 
 @property (nonatomic, strong) NSFetchedResultsController *frc;
+@property (strong) UITableView *activeTableView;
+@property (strong) UIScrollView *activeScrollView;
 
 //// state
 // these are the content arrays. Due to algorithmic considerations, the sortedContent is such that the 0th array is December and the 11th array is January
@@ -151,17 +153,11 @@
 
 - (void)viewDidLoad{
     
-    // must sort content first so that the date control can easily know which months have content
-    
     [self viewAesthetics];
-    
-//    [self configureSegmentedControl];
     
     [self toggleButtonsToOffState];
     
     [self configureNotifications];
-    
-    //
     
     [self deriveSupportArraysAndConfigureInitialDisplay];
     
@@ -208,23 +204,6 @@
 }
 
 
-
-
-
-
-
-
-//- (void)configureSegmentedControl{
-//    
-//    //// configure action method for segmented control
-//    
-//    [self.sortBySegmentedControl addTarget: self
-//                                    action: @selector(segmentedControlValueChanged)
-//                          forControlEvents: UIControlEventValueChanged];
-//    
-//}
-
-
 - (void)viewAesthetics{
     
     self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
@@ -236,7 +215,8 @@
     // buttons
     
     NSArray *buttons = @[self.launchButton,
-                         self.previousMarkButton];
+                         self.previousMarkButton,
+                         self.buttonNewRoutine];
     
     for (UIButton *button in buttons){
         
@@ -1275,6 +1255,9 @@
     
 }
 
+- (IBAction)didPressNewRoutineButton:(id)sender {
+}
+
 
 
 - (IBAction)didPressBackButton:(id)sender{
@@ -1296,22 +1279,6 @@
 
     
 }
-
-//- (void)segmentedControlValueChanged{
-//    
-//    [self configureSelectionAsNil];
-//    
-//    // must rederive and layout date controls because the filter criteria for chain templates has now changed
-//    
-//    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
-//    
-//    [self configureDateControlsBasedOnDCActiveDate];
-//    
-//    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
-//    
-//    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
-//    
-//}
 
 - (IBAction)didPressLaunchButton:(id)sender {
     

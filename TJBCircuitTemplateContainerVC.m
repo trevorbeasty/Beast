@@ -33,16 +33,16 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *roundsLabel;
+//@property (weak, nonatomic) IBOutlet UIButton *launchCircuitButton;
+//@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *roundsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *rightTitleButton;
 
 // IBAction
 
-- (IBAction)didPressLaunchCircuit:(id)sender;
+//- (IBAction)didPressLaunchCircuit:(id)sender;
 - (IBAction)didPressBack:(id)sender;
 - (IBAction)didPressAdd:(id)sender;
 
@@ -139,27 +139,31 @@
         
     }
     
-    NSArray *titleLabels = @[self.mainTitleLabel, self.roundsLabel, self.titleLabel];
-    for (UILabel *label in titleLabels){
-        
-        label.backgroundColor = [UIColor darkGrayColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont boldSystemFontOfSize: 20.0];
-        
-    }
+//    NSArray *titleLabels = @[self.mainTitleLabel, self.titleLabel];
+//    for (UILabel *label in titleLabels){
+//        
+//        label.backgroundColor = [UIColor darkGrayColor];
+//        label.textColor = [UIColor whiteColor];
+//        label.font = [UIFont boldSystemFontOfSize: 20.0];
+//        
+//    }
     
-    self.roundsLabel.font = [UIFont systemFontOfSize:15.0];
+    self.mainTitleLabel.backgroundColor = [UIColor darkGrayColor];
+    self.mainTitleLabel.textColor = [UIColor whiteColor];
+    self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+//    self.roundsLabel.font = [UIFont systemFontOfSize:15.0];
     
     // launch button
     
-    self.launchCircuitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    [self.launchCircuitButton setTitleColor: [UIColor whiteColor]
-                                   forState: UIControlStateNormal];
-    self.launchCircuitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+//    self.launchCircuitButton.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+//    [self.launchCircuitButton setTitleColor: [UIColor whiteColor]
+//                                   forState: UIControlStateNormal];
+//    self.launchCircuitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
     
     // title labels text
     
-    self.titleLabel.text = self.chainTemplate.name;
+//    self.titleLabel.text = self.chainTemplate.name;
     
     NSString *word;
     int number = self.chainTemplate.numberOfRounds;
@@ -187,7 +191,7 @@
                             self.chainTemplate.numberOfRounds,
                             word];
     
-    self.roundsLabel.text = roundsText;
+//    self.roundsLabel.text = roundsText;
     
 }
 
@@ -210,8 +214,8 @@
     [self addChildViewController: vc];
     
     [self.containerView addSubview: vc.view];
-    [self.view insertSubview: self.launchCircuitButton
-                aboveSubview: vc.view];
+//    [self.view insertSubview: self.launchCircuitButton
+//                aboveSubview: vc.view];
     
     [vc didMoveToParentViewController: self];
     
