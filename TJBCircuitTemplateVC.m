@@ -31,6 +31,12 @@
     
     CGSize _viewSize;
     
+    // state
+    
+    NSInteger _activeNumberOfExercises;
+    NSInteger _activeNumberOfRounds;
+    
+    
 }
 
 // core data
@@ -38,14 +44,16 @@
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 @property (nonatomic, strong) NSMutableOrderedSet *selectedExercises;
 
-//// core
-// keeps track of its children rows and exercise components to facillitate delegate functionality
+
+// object tracking
 
 @property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateExerciseComp *> *childExerciseComponentControllers;
 @property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *childRowControllers;
 
-// for views
+// views
 
+@property (strong) NSNumber *startingNumberOfExercises;
+@property (strong) NSNumber *startingNumberOfRounds;
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @end
@@ -74,7 +82,7 @@ static NSString * const defaultValue = @"unselected";
     
     //// for core data
     
-    [self prepareSelectedExercisesSetForUserInput];
+    [self createPlaceholderArrayForSelectedExercises];
     
     //
     
@@ -83,7 +91,25 @@ static NSString * const defaultValue = @"unselected";
     return self;
 }
 
-- (void)prepareSelectedExercisesSetForUserInput{
+- (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate startingNumberOfExercises:(NSNumber *)startingNumberOfExercises startingNumberOfRounds:(NSNumber *)startingNumberOfRounds{
+    
+    self = [super init];
+    
+    self.chainTemplate = skeletonChainTemplate;
+    self.startingNumberOfExercises = startingNumberOfExercises;
+    self.startingNumberOfRounds = startingNumberOfRounds;
+    
+    [self createPlaceholderArrayForSelectedExercises];
+    
+    [self createSkeletonArrayForChildExeriseAndRowControllers];
+    
+    return self;
+    
+}
+
+#pragma mark - Init Helper Methods
+
+- (void)createPlaceholderArrayForSelectedExercises{
     
     //// this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made when allUserInputCollected is calledr
     
@@ -102,28 +128,6 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
-#pragma mark - View Life Cycle
-
-- (void)loadView{
-    
-    // this must be called when creating the view programatically
-    
-    float viewWidth = _viewSize.width;
-    float viewHeight = _viewSize.height;
-    UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
-    view.backgroundColor = [UIColor clearColor];
-    self.view = view;
-    
-}
-
-- (void)viewDidLoad{
-    
-    [self createChildViewControllersAndLayoutViews];
-    
-}
-
-
-
 - (void)createSkeletonArrayForChildExeriseAndRowControllers{
     
     // child row controllers
@@ -135,6 +139,44 @@ static NSString * const defaultValue = @"unselected";
     self.childExerciseComponentControllers = [[NSMutableArray alloc] init];
     
 }
+
+#pragma mark - View Life Cycle
+
+- (void)loadView{
+    
+    // this must be called when creating the view programatically
+    
+//    float viewWidth = _viewSize.width;
+//    float viewHeight = _viewSize.height;
+//    UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
+    UIView *view = [[UIView alloc] init];
+//    view.backgroundColor = [UIColor clearColor];
+    self.view = view;
+    
+}
+
+- (void)viewDidLoad{
+    
+    [self createChildViewControllersAndLayoutViews];
+    
+}
+
+
+#pragma mark - Exercise Component
+
+- (void)creatingStartingComponents{
+    
+    
+    
+}
+
+
+
+
+
+
+
+
 
 - (void)createChildViewControllersAndLayoutViews{
     
