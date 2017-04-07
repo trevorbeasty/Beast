@@ -131,6 +131,18 @@
 
 #pragma mark - View Helper Methods
 
+- (void)configureStepperActions{
+    
+    [self.numberExercisesStepper addTarget: self
+                                    action: @selector(didChangeExerciseStepperValue)
+                          forControlEvents: UIControlEventValueChanged];
+    
+    [self.numberRoundsStepper addTarget: self
+                                 action: @selector(didChangeRoundStepperValue)
+                       forControlEvents: UIControlEventValueChanged];
+    
+}
+
 
 - (void)configureViewAesthetics{
     
@@ -213,7 +225,19 @@
     
 }
 
+#pragma mark - Stepper Actions
 
+- (void)didChangeExerciseStepperValue{
+    
+    
+    
+}
+
+- (void)didChangeRoundStepperValue{
+    
+    
+    
+}
 
 #pragma mark - Button Actions
 
