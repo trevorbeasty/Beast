@@ -348,6 +348,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     _activeNumberOfRounds += 1;
     
     [self configureVerticalConstraintsForNewSpecifications];
+    [self resetContentSize];
     
     for (TJBCircuitTemplateExerciseComp *exComp in self.childExerciseComponentControllers){
         
@@ -386,7 +387,17 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-
+- (void)resetContentSize{
+    
+    CGFloat width = [self scrollViewContentWidth];
+    CGFloat height = [self scrollViewContentHeight];
+    
+    UIScrollView *sv = (UIScrollView *)self.view;
+    sv.contentSize = CGSizeMake(width, height);
+    
+    self.scrollViewContentContainer.frame = CGRectMake(0, 0, width, height);
+    
+}
 
 
 
