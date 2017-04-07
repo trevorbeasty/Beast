@@ -356,6 +356,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
         [exComp addRoundRowForExerciseIndex: newRoundRowIndex];
         
     }
+
     
     return;
     
@@ -376,6 +377,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
                                                                       options: 0
                                                                       metrics: nil
                                                                         views: self.constraintMapping];
+        
+        [self.currentVerticalConstraints addObjectsFromArray: verConstrs];
         
         [self.scrollViewContentContainer addConstraints: verConstrs];
         
