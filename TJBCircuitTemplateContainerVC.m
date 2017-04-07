@@ -28,7 +28,14 @@
 
 #import "CoreDataController.h"
 
-@interface TJBCircuitTemplateContainerVC () 
+@interface TJBCircuitTemplateContainerVC ()
+
+{
+    
+    float _previousExercisesStepperValue;
+    float _previousRoundsStepperValue;
+    
+}
 
 // IBOutlet
 
@@ -64,6 +71,19 @@
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @end
+
+
+
+#pragma mark - Constants
+
+static int const _startingNumberExercises = 2;
+static int const _startingNumberRounds = 3;
+
+
+
+
+
+
 
 @implementation TJBCircuitTemplateContainerVC
 
@@ -116,22 +136,20 @@
     [self configureViewAesthetics];
     
     [self configureStartingContent];
+    
+    [self configureSteppers];
 
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     
-//    if (!self.circuitTemplateVC){
-//        
-//        [self configureContainerView];
-//        
-//    }
+
     
 }
 
 #pragma mark - View Helper Methods
 
-- (void)configureStepperActions{
+- (void)configureSteppers{
     
     [self.numberExercisesStepper addTarget: self
                                     action: @selector(didChangeExerciseStepperValue)
@@ -140,6 +158,18 @@
     [self.numberRoundsStepper addTarget: self
                                  action: @selector(didChangeRoundStepperValue)
                        forControlEvents: UIControlEventValueChanged];
+    
+    NSArray *steppers = @[self.numberExercisesStepper, self.numberRoundsStepper];
+    for (UIStepper *step in steppers){
+        
+        step.minimumValue = 1;
+        step.maximumValue = 10;
+        step.autorepeat = NO;
+        step.stepValue = 1.0;
+        step.continuous = YES;
+        step.wraps = NO;
+        
+    }
     
 }
 
@@ -207,11 +237,22 @@
 
 - (void)configureStartingContent{
     
-    //// create the TJBCircuitTemplateVC
+    // initial exercise and round values defined here
+    
+    NSNumber *startingNumberExercises = @(_startingNumberExercises);
+    NSNumber *startingNumberRounds = @(_startingNumberRounds);
+    
+    self.numberExercisesValue.text = [startingNumberExercises stringValue];
+    self.numberRoundsValue.text = [startingNumberRounds stringValue];
+    
+    _previousExercisesStepperValue = [startingNumberExercises floatValue];
+    _previousRoundsStepperValue = [startingNumberRounds floatValue];
+    
+    // create the TJBCircuitTemplateVC
     
     TJBCircuitTemplateVC *ctVC = [[TJBCircuitTemplateVC alloc] initWithSkeletonChainTemplate: self.chainTemplate
-                                                                   startingNumberOfExercises: @(2)
-                                                                      startingNumberOfRounds: @(3)];
+                                                                   startingNumberOfExercises: startingNumberExercises
+                                                                      startingNumberOfRounds: startingNumberRounds];
     
     self.circuitTemplateVC = ctVC;
     
@@ -229,13 +270,47 @@
 
 - (void)didChangeExerciseStepperValue{
     
+    // local label
     
+    NSNumber *stepValue = @(self.numberExercisesStepper.value);
+    self.numberExercisesValue.text = [stepValue stringValue];
+    
+    // TJBCircuitTemplateVCProtocol
+    
+    if ([stepValue floatValue] > _previousExercisesStepperValue){
+        
+        [self.circuitTemplateVC didIncrementNumberOfExercisesInUpDirection: YES];
+        
+    } else{
+        
+        [self.circuitTemplateVC didIncrementNumberOfExercisesInUpDirection: NO];
+        
+    }
+    
+    _previousExercisesStepperValue = [stepValue floatValue];
     
 }
 
 - (void)didChangeRoundStepperValue{
     
+    // local label
     
+    NSNumber *stepValue = @(self.numberRoundsStepper.value);
+    self.numberRoundsValue.text = [stepValue stringValue];
+    
+    // TJBCircuitTemplateVCProtocol
+    
+    if ([stepValue floatValue] > _previousRoundsStepperValue){
+        
+        [self.circuitTemplateVC didIncrementNumberOfRoundsInUpDirection: YES];
+        
+    } else{
+        
+        [self.circuitTemplateVC didIncrementNumberOfRoundsInUpDirection: NO];
+        
+    }
+    
+    _previousRoundsStepperValue = [stepValue floatValue];
     
 }
 

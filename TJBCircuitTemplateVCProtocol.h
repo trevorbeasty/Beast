@@ -41,4 +41,10 @@
 - (void)deactivateCopyingState;
 - (void)didDragAcrossPointInView:(CGPoint)dragPoint copyInputType:(TJBCopyInputType)copyInputType;
 
+// incrementing # exercises / rounds
+
+- (void)didIncrementNumberOfExercisesInUpDirection:(BOOL)upDirection;
+- (void)didIncrementNumberOfRoundsInUpDirection:(BOOL)upDirection;
+
+
 @end

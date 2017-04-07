@@ -487,7 +487,17 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
+- (void)didIncrementNumberOfRoundsInUpDirection:(BOOL)upDirection{
+    
+    
+    
+}
 
+- (void)didIncrementNumberOfExercisesInUpDirection:(BOOL)upDirection{
+    
+    
+    
+}
 
 
 @end
