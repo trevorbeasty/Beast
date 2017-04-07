@@ -326,6 +326,8 @@ static NSString * const placeholderName = @"placeholderName";
     
     if ([stepValue floatValue] > _previousRoundsStepperValue){
         
+        [[CoreDataController singleton] appendRoundToChainTemplate: self.chainTemplate];
+        
         [self.circuitTemplateVC didIncrementNumberOfRoundsInUpDirection: YES];
         
     } else{

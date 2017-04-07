@@ -98,7 +98,9 @@ typedef enum{
 - (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise;
 //- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp;
 
+// existing chain template manipulation
 
+- (void)appendRoundToChainTemplate:(TJBChainTemplate *)chainTemplate;
 
 @end
 

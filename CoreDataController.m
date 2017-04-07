@@ -923,6 +923,45 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
+#pragma mark - Chain Template Manipulation
+
+- (void)appendRoundToChainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    int previousNumberRounds = chainTemplate.numberOfRounds;
+    chainTemplate.numberOfRounds = previousNumberRounds + 1;
+    
+    for (TJBTargetUnitCollection *tuc in chainTemplate.targetUnitCollections){
+        
+        NSMutableOrderedSet *targetUnitsCopy = [tuc.targetUnits mutableCopy];
+        
+        TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
+                                                                           inManagedObjectContext: [self moc]];
+        iterativeTargetUnit.targetUnitCollector = tuc;
+        [targetUnitsCopy addObject: iterativeTargetUnit];
+        
+        TJBTargetUnit *zeroethTargetUnit = targetUnitsCopy[0];
+        
+        iterativeTargetUnit.exerciseIndex = zeroethTargetUnit.exerciseIndex;
+        iterativeTargetUnit.roundIndex = zeroethTargetUnit.roundIndex;
+        
+        iterativeTargetUnit.isTargetingWeight = zeroethTargetUnit.isTargetingWeight;
+        iterativeTargetUnit.isTargetingReps = zeroethTargetUnit.isTargetingReps;
+        iterativeTargetUnit.isTargetingTrailingRest = zeroethTargetUnit.isTargetingTrailingRest;
+        
+        iterativeTargetUnit.weightIsNull = YES;
+        iterativeTargetUnit.repsIsNull = YES;
+        iterativeTargetUnit.trailingRestIsNull = YES;
+        
+        iterativeTargetUnit.exercise = zeroethTargetUnit.exercise;
+        
+        tuc.targetUnits = targetUnitsCopy;
+        
+    }
+    
+    [self saveContext];
+    
+}
+
 @end
 
 
