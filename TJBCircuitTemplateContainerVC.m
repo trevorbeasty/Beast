@@ -76,8 +76,8 @@
 
 #pragma mark - Constants
 
-static int const _startingNumberExercises = 2;
-static int const _startingNumberRounds = 3;
+static int const _startingNumberExercises = 4;
+static int const _startingNumberRounds = 4;
 
 
 

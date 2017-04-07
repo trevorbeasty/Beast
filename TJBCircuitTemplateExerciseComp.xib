@@ -44,17 +44,6 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9GY-RM-qzL" userLabel="thinVertLabel">
-                    <rect key="frame" x="74" y="57" width="1" height="4"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="1" id="N1q-II-fiB"/>
-                        <constraint firstAttribute="height" constant="4" id="jGU-uG-GGB"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pbk-G5-LH0">
                     <rect key="frame" x="0.0" y="2" width="74" height="50"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -77,11 +66,9 @@
                 <constraint firstAttribute="trailing" secondItem="VS1-DP-des" secondAttribute="trailing" constant="2" id="QhQ-JQ-Aj0"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="bottom" secondItem="pbk-G5-LH0" secondAttribute="bottom" id="Rv0-6D-smh"/>
                 <constraint firstAttribute="trailing" secondItem="Ida-mq-fQL" secondAttribute="trailing" id="Uqd-pu-amT"/>
-                <constraint firstItem="9GY-RM-qzL" firstAttribute="top" secondItem="E2K-H1-c4D" secondAttribute="bottom" id="WID-V6-Rpi"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="leading" secondItem="pbk-G5-LH0" secondAttribute="trailing" id="a4L-ko-6G1"/>
                 <constraint firstItem="E2K-H1-c4D" firstAttribute="leading" secondItem="zaK-yu-xvx" secondAttribute="leading" constant="74" id="g58-iO-AiN"/>
                 <constraint firstItem="Ida-mq-fQL" firstAttribute="leading" secondItem="zaK-yu-xvx" secondAttribute="leading" id="iGr-Lp-73R"/>
-                <constraint firstItem="9GY-RM-qzL" firstAttribute="leading" secondItem="E2K-H1-c4D" secondAttribute="leading" id="rYn-ik-rhI"/>
                 <constraint firstAttribute="bottom" secondItem="Ida-mq-fQL" secondAttribute="bottom" id="xCW-vd-pWE"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

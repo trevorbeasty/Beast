@@ -201,7 +201,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     self.scrollViewContentContainer = svContentContainer;
     [scrollView addSubview: svContentContainer];
     
-    svContentContainer.backgroundColor = [UIColor redColor];
+    scrollView.backgroundColor = [UIColor clearColor];
+    svContentContainer.backgroundColor = [UIColor clearColor];
     
 }
 
@@ -342,7 +343,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (CGFloat)scrollViewContentHeight{
     
-    return _activeNumberOfExercises * [self exerciseComponentHeight] + (_activeNumberOfExercises - 1) * interimExerciseComponentSpacing + topExerciseComponentSpacing + switchRowHeight;
+    return _activeNumberOfExercises * [self exerciseComponentHeight] + (_activeNumberOfExercises - 1) * interimExerciseComponentSpacing + topExerciseComponentSpacing;
     
 }
 
@@ -354,7 +355,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (CGFloat)exerciseComponentHeight{
     
-    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * _activeNumberOfRounds;
+    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * _activeNumberOfRounds + switchRowHeight;
     
     return height;
     
