@@ -33,19 +33,15 @@
     
     // state
     
-    NSInteger _activeNumberOfExercises;
-//    NSInteger _activeNumberOfRounds;
+    float _activeNumberOfExercises; // defined as floats to facillitate view math (which involves CGFloats)
+    float _activeNumberOfRounds;
     
-    // layout
-    
-    CGFloat _rowHeight;
-    CGFloat _exerciseRowHeight;
-    CGFloat _switchRowHeight;
-    CGFloat _topExerciseComponentSpacing;
-    CGFloat _interimExerciseComponentSpacing;
+
     
     
 }
+
+// instantiation
 
 // core data
 
@@ -60,13 +56,31 @@
 
 // views
 
-@property (strong) NSNumber *startingNumberOfExercises;
-@property (strong) NSNumber *startingNumberOfRounds;
+@property (strong) UIView *scrollViewContentContainer;
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 @end
 
+
+// private constants
+
+
+
 static NSString * const defaultValue = @"unselected";
+
+// layout
+
+static CGFloat const roundRowHeight = 44.0;
+static CGFloat const exerciseRowHeight = 50.0;
+static CGFloat const switchRowHeight = 44.0;
+static CGFloat const topExerciseComponentSpacing = 8.0;
+static CGFloat const interimExerciseComponentSpacing = 24.0;
+static CGFloat const exerciseComponentStyleSpacing = 7.0;
+
+
+
+
+
 
 @implementation TJBCircuitTemplateVC
 
@@ -103,9 +117,13 @@ static NSString * const defaultValue = @"unselected";
     
     self = [super init];
     
+    // IVs
+    
     self.chainTemplate = skeletonChainTemplate;
-    self.startingNumberOfExercises = startingNumberOfExercises;
-    self.startingNumberOfRounds = startingNumberOfRounds;
+    _activeNumberOfExercises = [startingNumberOfExercises floatValue];
+    _activeNumberOfRounds = [startingNumberOfRounds floatValue];
+    
+    // instantiation helper methods
     
     [self createPlaceholderArrayForSelectedExercises];
     
@@ -154,37 +172,46 @@ static NSString * const defaultValue = @"unselected";
     
 }
 
+
+
+
+
+
+
 #pragma mark - View Life Cycle
 
 - (void)loadView{
     
-//    // this must be called when creating the view programatically
-//    
-////    float viewWidth = _viewSize.width;
-////    float viewHeight = _viewSize.height;
-////    UIView *view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, viewWidth,  viewHeight)];
-//    UIView *view = [[UIView alloc] init];
-////    view.backgroundColor = [UIColor clearColor];
-//    self.view = view;
+    CGFloat contentWidth = [self scrollViewContentWidth];
+    CGFloat contentHeight = [self scrollViewContentHeight];
     
-    // the root view is a scroll view
-    // a container view must be added to the scroll view because scroll view does not interact well with auto layout
-    // must track these views so that their dimensions can be changed as the number of exercises and rows change
+    // scroll view
     
     UIScrollView *scrollView = [[UIScrollView alloc] init];
+    self.view = scrollView;
+    scrollView.contentSize = CGSizeMake(contentWidth, contentHeight);
     
-    // calculate the contentSize
-    // the container view will assume dimensions consistent with the contentSize
+    // scroll view content container
     
+    UIView *svContentContainer = [[UIView alloc] initWithFrame: CGRectMake(0, 0, contentWidth, contentHeight)];
+    self.scrollViewContentContainer = svContentContainer;
+    [scrollView addSubview: svContentContainer];
     
+    svContentContainer.backgroundColor = [UIColor redColor];
     
 }
 
 - (void)viewDidLoad{
     
-    [self createChildViewControllersAndLayoutViews];
+//    [self createChildViewControllersAndLayoutViews];
     
 }
+
+
+
+
+
+
 
 
 
@@ -193,7 +220,7 @@ static NSString * const defaultValue = @"unselected";
 
 - (void)creatingStartingComponents{
     
-    for (NSInteger i = 0; i < [self.startingNumberOfExercises integerValue]; i++){
+    for (NSInteger i = 0; i < (int)_activeNumberOfExercises; i++){
         
         [self appendNewExerciseComponentToExistingStructure];
         
@@ -222,8 +249,25 @@ static NSString * const defaultValue = @"unselected";
 
 #pragma mark - Layout Math
 
+- (CGFloat)scrollViewContentHeight{
+    
+    return _activeNumberOfExercises * [self exerciseComponentHeight] + (_activeNumberOfExercises - 1) * interimExerciseComponentSpacing + topExerciseComponentSpacing + switchRowHeight;
+    
+}
 
+- (CGFloat)scrollViewContentWidth{
+    
+    return [UIScreen mainScreen].bounds.size.width;
+    
+}
 
+- (CGFloat)exerciseComponentHeight{
+    
+    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * _activeNumberOfRounds;
+    
+    return height;
+    
+}
 
 
 - (void)createChildViewControllersAndLayoutViews{

@@ -238,9 +238,6 @@
         tu.weightTarget = [selectedNumber floatValue];
         tu.weightIsNull = NO;
         
-//        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
-//        self.chainTemplate.weightArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
-        
         [[CoreDataController singleton] saveContext];
         
         // configure the button
