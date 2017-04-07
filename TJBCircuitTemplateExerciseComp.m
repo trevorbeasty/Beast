@@ -82,6 +82,10 @@
     
 }
 
+#pragma mark - Init Helper Methods
+
+
+
 #pragma mark - View Life Cycle
 
 
@@ -90,117 +94,14 @@
     
     [self viewAesthetics];
     
-    //// major functionality includeing row child VC's and layout constraints
-    
-    self.constraintMapping = [[NSMutableDictionary alloc] init];
-    
-    // number label text
-    
     self.exerciseNumberLabel.text = [NSString stringWithFormat: @"%d", [self.exerciseIndex intValue] + 1];
     
-    NSString *exerciseButton = @"exerciseButton";
-    [self.constraintMapping setObject: self.selectedExerciseButton
-                               forKey: exerciseButton];
-    
-    NSString *horizontalThinLabel = @"horzThin";
-    [self.constraintMapping setObject: self.horizontalThinLabel
-                               forKey: horizontalThinLabel];
-    
-    NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: [NSString stringWithFormat: @"V:[%@]-2-", horizontalThinLabel]];
-    
-    NSInteger iterationLimit; // establish the iteration limit. It is equal to the number of rounds unless targets do not vary by round, in which case it is 1
-    
-    //    if (self.chainTemplate.targetsVaryByRound == NO){
-    //        iterationLimit = 1;
-    //    } else{
-    iterationLimit = self.chainTemplate.numberOfRounds;
-    //    }
-    
-    for (int i = 0 ; i < iterationLimit ; i ++){
+    for (int i = 0 ; i < _activeNumberOfRounds ; i ++){
         
-        TJBCircuitTemplateRowComponent *rowVC = [[TJBCircuitTemplateRowComponent alloc] initWithChainTemplate: self.chainTemplate
-                                                                                             masterController: self.masterController
-                                                                                                exerciseIndex: [self.exerciseIndex intValue]
-                                                                                                   roundIndex: i];
+        [self appendNewRoundComponentToExistingStructureWithRoundIndex: i];
         
-        // add the newly created row component to the master controller's child collection
-        
-        [self.masterController addChildRowController: rowVC];
-        
-        rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        [self addChildViewController: rowVC];
-        
-        [self.view addSubview: rowVC.view];
-        
-        NSString *dynamicRowName = [NSString stringWithFormat: @"rowComponent%d",
-                                    i];
-        
-        [self.constraintMapping setObject: rowVC.view
-                                   forKey: dynamicRowName];
-        
-        // vertical constraints
-        
-        NSString *verticalAppendString;
-        
-        if (i == 0){ // the row components have the same height. I specify that all row components have height equal to the first row component. This is not specified for the first row component
-            
-            self.firstRowKey = dynamicRowName;
-            
-        }
-        
-        if (self.chainTemplate.numberOfRounds == 1){
-            
-            verticalAppendString = [NSString stringWithFormat: @"[%@]-0-|",
-                                    dynamicRowName];
-            
-        } else if (i == 0){
-            
-            verticalAppendString = [NSString stringWithFormat: @"[%@]-0-",
-                                    dynamicRowName];
-            
-            
-        } else if (i == iterationLimit - 1){
-            
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-|",
-                                    dynamicRowName,
-                                    self.firstRowKey];
-            
-        } else{
-            
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==%@)]-0-",
-                                    dynamicRowName,
-                                    self.firstRowKey];
-            
-        }
-        
-        [verticalLayoutConstraintsString appendString: verticalAppendString];
-        
-        // horizontal constraints
-        
-        NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
-                                                       dynamicRowName];
-        
-        NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horizontalLayoutConstraintsString
-                                                                                       options: 0
-                                                                                       metrics: nil
-                                                                                         views: self.constraintMapping];
-        
-        [self.view addConstraints: horizontalLayoutConstraints];
     }
-    
-    NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
-                                                                                 options: 0
-                                                                                 metrics: nil
-                                                                                   views: self.constraintMapping];
-    
-    [self.view addConstraints: verticalLayoutConstraints];
-    
-    for (TJBCircuitTemplateRowComponent *child in self.childViewControllers)
-    {
-        [child didMoveToParentViewController: self];
-    }
+
 }
 
 
@@ -243,10 +144,36 @@
     CALayer *layer = button.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8;
+    
 }
 
 
 
+    
+    
+    
+#pragma mark - Content Generation
+    
+- (void)appendNewRoundComponentToExistingStructureWithRoundIndex:(int)roundIndex{
+    
+    TJBCircuitTemplateRowComponent *rowVC = [[TJBCircuitTemplateRowComponent alloc] initWithChainTemplate: self.chainTemplate
+                                                                                         masterController: self.masterController
+                                                                                            exerciseIndex: [self.exerciseIndex intValue]
+                                                                                               roundIndex: roundIndex];
+    
+    // add the newly created row component to the master controller's child collection
+    
+    [self.masterController addChildRowController: rowVC];
+    
+    rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self addChildViewController: rowVC];
+    
+    [self.rowCompStackView addArrangedSubview: rowVC.view];
+
+    [rowVC didMoveToParentViewController: self];
+    
+}
 
 
 

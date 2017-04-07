@@ -313,7 +313,9 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
         
     } else{
         
-        return [NSString stringWithFormat:  @"V:|-%d-[%@]", (int)interimExerciseComponentSpacing, dynamicComponentName];
+        NSString *previousDynamicComponentName = [self dynamicComponentNameForExerciseIndex: exerciseIndex - 1];
+        
+        return [NSString stringWithFormat:  @"V:[%@]-%d-[%@]", previousDynamicComponentName, (int)interimExerciseComponentSpacing, dynamicComponentName];
         
     }
     

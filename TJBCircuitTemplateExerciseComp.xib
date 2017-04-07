@@ -62,7 +62,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ida-mq-fQL">
-                    <rect key="frame" x="74" y="57" width="496" height="158"/>
+                    <rect key="frame" x="0.0" y="57" width="570" height="158"/>
                 </stackView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -71,16 +71,16 @@
                 <constraint firstItem="VS1-DP-des" firstAttribute="top" secondItem="pbk-G5-LH0" secondAttribute="top" id="5Pm-qw-JeH"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="top" secondItem="zaK-yu-xvx" secondAttribute="top" constant="2" id="7Jn-cU-ZqU"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="leading" secondItem="E2K-H1-c4D" secondAttribute="leading" id="9uW-rL-Qaq"/>
-                <constraint firstItem="Ida-mq-fQL" firstAttribute="trailing" secondItem="E2K-H1-c4D" secondAttribute="trailing" id="AoC-GP-yg6"/>
                 <constraint firstItem="E2K-H1-c4D" firstAttribute="top" secondItem="VS1-DP-des" secondAttribute="bottom" constant="4" id="Byb-af-smW"/>
                 <constraint firstAttribute="trailing" secondItem="E2K-H1-c4D" secondAttribute="trailing" id="IH5-F5-WKF"/>
                 <constraint firstItem="pbk-G5-LH0" firstAttribute="leading" secondItem="zaK-yu-xvx" secondAttribute="leading" id="LKT-Of-ALd"/>
                 <constraint firstAttribute="trailing" secondItem="VS1-DP-des" secondAttribute="trailing" constant="2" id="QhQ-JQ-Aj0"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="bottom" secondItem="pbk-G5-LH0" secondAttribute="bottom" id="Rv0-6D-smh"/>
-                <constraint firstItem="Ida-mq-fQL" firstAttribute="leading" secondItem="E2K-H1-c4D" secondAttribute="leading" id="TZO-UE-LoM"/>
+                <constraint firstAttribute="trailing" secondItem="Ida-mq-fQL" secondAttribute="trailing" id="Uqd-pu-amT"/>
                 <constraint firstItem="9GY-RM-qzL" firstAttribute="top" secondItem="E2K-H1-c4D" secondAttribute="bottom" id="WID-V6-Rpi"/>
                 <constraint firstItem="VS1-DP-des" firstAttribute="leading" secondItem="pbk-G5-LH0" secondAttribute="trailing" id="a4L-ko-6G1"/>
                 <constraint firstItem="E2K-H1-c4D" firstAttribute="leading" secondItem="zaK-yu-xvx" secondAttribute="leading" constant="74" id="g58-iO-AiN"/>
+                <constraint firstItem="Ida-mq-fQL" firstAttribute="leading" secondItem="zaK-yu-xvx" secondAttribute="leading" id="iGr-Lp-73R"/>
                 <constraint firstItem="9GY-RM-qzL" firstAttribute="leading" secondItem="E2K-H1-c4D" secondAttribute="leading" id="rYn-ik-rhI"/>
                 <constraint firstAttribute="bottom" secondItem="Ida-mq-fQL" secondAttribute="bottom" id="xCW-vd-pWE"/>
             </constraints>
