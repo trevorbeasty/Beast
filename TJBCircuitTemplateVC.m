@@ -92,23 +92,21 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     self = [super init];
     
-    // core
-    
-    self.chainTemplate = skeletonChainTemplate;
-    
-    _viewSize = viewSize;
-    
-    // for restoration
-    
-    [self setRestorationProperties];
-    
-    //// for core data
-    
-    [self createPlaceholderArrayForSelectedExercises];
-    
-    //
-    
-    [self createSkeletonArrayForChildExeriseAndRowControllers];
+//    // core
+//    
+//    self.chainTemplate = skeletonChainTemplate;
+//    
+//    _viewSize = viewSize;
+//    
+//    // for restoration
+//    
+//    //// for core data
+//    
+//    [self createPlaceholderArrayForSelectedExercises];
+//    
+//    //
+//    
+//    [self createSkeletonArrayForChildExeriseAndRowControllers];
     
     return self;
 }
@@ -127,11 +125,20 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     [self createPlaceholderArrayForSelectedExercises];
     
-    [self createSkeletonArrayForChildExeriseAndRowControllers];
+    [self initializeCollectors];
     
     return self;
     
 }
+
+
+
+
+
+
+
+
+
 
 #pragma mark - Init Helper Methods
 
@@ -139,7 +146,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     //// this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made when allUserInputCollected is calledr
     
-    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLength: self.chainTemplate.numberOfExercises];
+    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLength: (int)_activeNumberOfExercises];
     
     NSMutableOrderedSet *placeholderExerisesSet = [[NSMutableOrderedSet alloc] initWithArray: placeholderExercisesArray];
     
@@ -147,14 +154,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-- (void)setRestorationProperties{
-    
-    self.restorationIdentifier = @"TJBCircuitTemplateVC";
-    self.restorationClass = [TJBCircuitTemplateVC class];
-    
-}
 
-- (void)createSkeletonArrayForChildExeriseAndRowControllers{
+- (void)initializeCollectors{
     
     // child row controllers
     
@@ -164,13 +165,16 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     self.childExerciseComponentControllers = [[NSMutableArray alloc] init];
     
+    // constraint mapping
+    
+    self.constraintMapping = [[NSMutableDictionary alloc] init];
+    
 }
 
-- (void)initializeStateVariables{
-    
-    _activeNumberOfExercises = 0;
-    
-}
+
+
+
+
 
 
 
@@ -203,7 +207,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (void)viewDidLoad{
     
-//    [self createChildViewControllersAndLayoutViews];
+    [self createStartingViewControllerHierarchy];
     
 }
 
@@ -216,13 +220,99 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 
 
-#pragma mark - Exercise Component
 
-- (void)creatingStartingComponents{
+
+
+
+#pragma mark - Content Generation
+
+- (void)createStartingViewControllerHierarchy{
     
-    for (NSInteger i = 0; i < (int)_activeNumberOfExercises; i++){
+    for (int i = 0; i < (int)_activeNumberOfExercises; i++){
+            
+        [self appendNewExerciseComponentToExistingStructureWithExerciseIndex: i];
         
-        [self appendNewExerciseComponentToExistingStructure];
+    }
+    
+}
+
+
+
+
+- (void)appendNewExerciseComponentToExistingStructureWithExerciseIndex:(int)exerciseIndex{
+    
+    TJBCircuitTemplateExerciseComp *exComp = [[TJBCircuitTemplateExerciseComp alloc] initWithChainTemplate: self.chainTemplate
+                                                                                             exerciseIndex: exerciseIndex
+                                                                                          masterController: self];  // add active number of rounds to init method
+    
+    // vc & view hierarchies
+    
+    [self.childExerciseComponentControllers addObject: exComp];
+    
+    [self addChildViewController: exComp];
+    
+    [self.scrollViewContentContainer addSubview: exComp.view];
+    
+    // layout constraints
+    
+    NSString *dynamicComponentName = [self dynamicComponentNameForExerciseIndex: exerciseIndex];
+    [self.constraintMapping setObject: exComp.view
+                               forKey: dynamicComponentName];
+    
+    exComp.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // horizontal
+    
+    NSString *horVFL = [self horVFLForExerciseIndex: exerciseIndex];
+    
+    NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horVFL
+                                                                                   options: 0
+                                                                                   metrics: nil
+                                                                                     views: self.constraintMapping];
+    
+    [self.scrollViewContentContainer addConstraints: horizontalLayoutConstraints];
+    
+    // vertical
+    
+    NSString *verVFL = [self verVFLForExerciseIndex: exerciseIndex];
+    
+    NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verVFL
+                                                                                 options: 0
+                                                                                 metrics: nil
+                                                                                   views: self.constraintMapping];
+    
+    [self.scrollViewContentContainer addConstraints: verticalLayoutConstraints];
+    
+    // height anchor
+    
+    [exComp.view.heightAnchor constraintEqualToConstant: [self exerciseComponentHeight]];
+    
+    // vc hierachy
+    
+    [exComp didMoveToParentViewController: self];
+    
+}
+
+
+- (NSString *)horVFLForExerciseIndex:(int)exerciseIndex{
+    
+    NSString *dynamicComponentName = [self dynamicComponentNameForExerciseIndex: exerciseIndex];
+        
+    return [NSString stringWithFormat: @"H:|-0-[%@]-0-|", dynamicComponentName];
+
+}
+
+- (NSString *)verVFLForExerciseIndex:(int)exerciseIndex{
+    
+    NSString *dynamicComponentName = [self dynamicComponentNameForExerciseIndex: exerciseIndex];
+    
+    if (exerciseIndex == 0){
+        
+        return [NSString stringWithFormat: @"V:|-%d-[%@]", (int)topExerciseComponentSpacing, dynamicComponentName];
+        
+    } else{
+        
+        return [NSString stringWithFormat:  @"V:|-%d-[%@]", (int)interimExerciseComponentSpacing, dynamicComponentName];
         
     }
     
@@ -230,20 +320,18 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-- (void)appendNewExerciseComponentToExistingStructure{
+
+- (NSString *)dynamicComponentNameForExerciseIndex:(int)exerciseIndex{
     
-    // if no exercise components yet exist, must treat autolayout differently
-    
-    NSInteger exerciseIndex = _activeNumberOfExercises + 1;
-    
-    TJBCircuitTemplateExerciseComp *exComp = [[TJBCircuitTemplateExerciseComp alloc] initWithChainTemplate: self.chainTemplate
-                                                                                             exerciseIndex: (int)exerciseIndex
-                                                                                          masterController: self];
-    [self.childExerciseComponentControllers addObject: exComp];
-    
-    
+    return [NSString stringWithFormat: @"exerciseComponent%d",
+            exerciseIndex];
     
 }
+
+
+
+
+
 
 
 
@@ -269,6 +357,15 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
+
+
+
+
+
+
+
+
+#pragma mark - Old
 
 - (void)createChildViewControllersAndLayoutViews{
     
