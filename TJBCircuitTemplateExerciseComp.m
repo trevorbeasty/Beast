@@ -27,7 +27,14 @@
 
 @interface TJBCircuitTemplateExerciseComp ()
 
+{
+    
+    int _activeNumberOfRounds;
+    
+}
+
 // core
+
 @property (nonatomic, strong) NSNumber *exerciseIndex;
 @property (nonatomic, weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
@@ -37,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *selectedExerciseButton;
 @property (weak, nonatomic) IBOutlet UILabel *horizontalThinLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseNumberLabel;
+@property (weak, nonatomic) IBOutlet UIStackView *rowCompStackView;
 
 // auto layout
 
@@ -61,40 +69,25 @@
     
 }
 
-#pragma mark - View Life Cycle
-
-- (void)viewAesthetics{
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController numberOfRounds:(int)numberOfRounds{
     
-    self.view.backgroundColor = [UIColor clearColor];
+    self = [super init];
     
-    // selected exercise button
+    self.chainTemplate = chainTemplate;
+    self.masterController = masterController;
+    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
+    _activeNumberOfRounds = numberOfRounds;
     
-    UIButton *button = self.selectedExerciseButton;
-        
-    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
-    [button setTitleColor: color
-                 forState: UIControlStateNormal];
+    return self;
     
-    button.titleLabel.numberOfLines = 0;
-    button.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
-    
-    // number label
-    
-    self.exerciseNumberLabel.font = [UIFont boldSystemFontOfSize: 35];
-    self.exerciseNumberLabel.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    self.exerciseNumberLabel.backgroundColor = [UIColor clearColor];
-    
-    
-    // selected exercise button layer
-    
-    CALayer *layer = button.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
 }
 
-- (void)viewDidLoad
-{
+#pragma mark - View Life Cycle
+
+
+
+- (void)viewDidLoad{
+    
     [self viewAesthetics];
     
     //// major functionality includeing row child VC's and layout constraints
@@ -118,11 +111,11 @@
     
     NSInteger iterationLimit; // establish the iteration limit. It is equal to the number of rounds unless targets do not vary by round, in which case it is 1
     
-//    if (self.chainTemplate.targetsVaryByRound == NO){
-//        iterationLimit = 1;
-//    } else{
-        iterationLimit = self.chainTemplate.numberOfRounds;
-//    }
+    //    if (self.chainTemplate.targetsVaryByRound == NO){
+    //        iterationLimit = 1;
+    //    } else{
+    iterationLimit = self.chainTemplate.numberOfRounds;
+    //    }
     
     for (int i = 0 ; i < iterationLimit ; i ++){
         
@@ -209,6 +202,60 @@
         [child didMoveToParentViewController: self];
     }
 }
+
+
+
+
+
+
+
+
+
+
+#pragma mark - View Helper Methods
+
+
+- (void)viewAesthetics{
+    
+    self.view.backgroundColor = [UIColor clearColor];
+    
+    // selected exercise button
+    
+    UIButton *button = self.selectedExerciseButton;
+    
+    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
+    [button setTitleColor: color
+                 forState: UIControlStateNormal];
+    
+    button.titleLabel.numberOfLines = 0;
+    button.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+    // number label
+    
+    self.exerciseNumberLabel.font = [UIFont boldSystemFontOfSize: 35];
+    self.exerciseNumberLabel.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.exerciseNumberLabel.backgroundColor = [UIColor clearColor];
+    
+    
+    // selected exercise button layer
+    
+    CALayer *layer = button.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+}
+
+
+
+
+
+
+
+#pragma mark - Old
+
+
+
+
 
 #pragma mark - Button Actions
 

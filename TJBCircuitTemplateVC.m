@@ -243,7 +243,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     TJBCircuitTemplateExerciseComp *exComp = [[TJBCircuitTemplateExerciseComp alloc] initWithChainTemplate: self.chainTemplate
                                                                                              exerciseIndex: exerciseIndex
-                                                                                          masterController: self];  // add active number of rounds to init method
+                                                                                          masterController: self
+                                                                                            numberOfRounds: _activeNumberOfRounds];
     
     // vc & view hierarchies
     
