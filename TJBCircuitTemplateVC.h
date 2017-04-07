@@ -16,4 +16,6 @@
 
 - (instancetype)initWithSkeletonChainTemplate:(TJBChainTemplate *)skeletonChainTemplate startingNumberOfExercises:(NSNumber *)startingNumberOfExercises startingNumberOfRounds:(NSNumber *)startingNumberOfRounds;
 
+@property (strong, readonly) NSNumber *numberOfRounds;
+
 @end

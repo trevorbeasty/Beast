@@ -58,6 +58,7 @@
 
 @property (strong) UIView *scrollViewContentContainer;
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
+@property (strong) NSMutableArray *currentVerticalConstraints; // constraints are tracked here so they can be removed when the number of exercises or rounds changes
 
 @end
 
@@ -70,9 +71,8 @@ static NSString * const defaultValue = @"unselected";
 
 // layout
 
-static CGFloat const roundRowHeight = 44.0;
+static CGFloat const roundRowHeight = 34.0;
 static CGFloat const exerciseRowHeight = 50.0;
-static CGFloat const switchRowHeight = 44.0;
 static CGFloat const topExerciseComponentSpacing = 8.0;
 static CGFloat const interimExerciseComponentSpacing = 24.0;
 static CGFloat const exerciseComponentStyleSpacing = 7.0;
@@ -169,6 +169,10 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     
+    // vertical constraints
+    
+    self.currentVerticalConstraints = [[NSMutableArray alloc] init];
+    
 }
 
 
@@ -244,8 +248,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     TJBCircuitTemplateExerciseComp *exComp = [[TJBCircuitTemplateExerciseComp alloc] initWithChainTemplate: self.chainTemplate
                                                                                              exerciseIndex: exerciseIndex
-                                                                                          masterController: self
-                                                                                            numberOfRounds: _activeNumberOfRounds];
+                                                                                          masterController: self];
     
     // vc & view hierarchies
     
@@ -283,11 +286,9 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
                                                                                  metrics: nil
                                                                                    views: self.constraintMapping];
     
+    [self.currentVerticalConstraints addObjectsFromArray: verticalLayoutConstraints];
+    
     [self.scrollViewContentContainer addConstraints: verticalLayoutConstraints];
-    
-    // height anchor
-    
-    [exComp.view.heightAnchor constraintEqualToConstant: [self exerciseComponentHeight]];
     
     // vc hierachy
     
@@ -307,16 +308,24 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 - (NSString *)verVFLForExerciseIndex:(int)exerciseIndex{
     
     NSString *dynamicComponentName = [self dynamicComponentNameForExerciseIndex: exerciseIndex];
+    float exCompHeight = [self exerciseComponentHeight];
     
     if (exerciseIndex == 0){
         
-        return [NSString stringWithFormat: @"V:|-%d-[%@]", (int)topExerciseComponentSpacing, dynamicComponentName];
+        return [NSString stringWithFormat: @"V:|-%f-[%@(==%f)]",
+                topExerciseComponentSpacing,
+                dynamicComponentName,
+                exCompHeight];
         
     } else{
         
         NSString *previousDynamicComponentName = [self dynamicComponentNameForExerciseIndex: exerciseIndex - 1];
         
-        return [NSString stringWithFormat:  @"V:[%@]-%d-[%@]", previousDynamicComponentName, (int)interimExerciseComponentSpacing, dynamicComponentName];
+        return [NSString stringWithFormat:  @"V:[%@]-%f-[%@(==%f)]",
+                previousDynamicComponentName,
+                interimExerciseComponentSpacing,
+                dynamicComponentName,
+                exCompHeight];
         
     }
     
@@ -332,7 +341,47 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
+#pragma mark - Row Addition
 
+- (void)addRowToExistingStructure{
+    
+    _activeNumberOfRounds += 1;
+    
+    [self configureVerticalConstraintsForNewSpecifications];
+    
+    for (TJBCircuitTemplateExerciseComp *exComp in self.childExerciseComponentControllers){
+        
+        int newRoundRowIndex = (int)(_activeNumberOfRounds - 1);
+        
+        [exComp addRoundRowForExerciseIndex: newRoundRowIndex];
+        
+    }
+    
+    return;
+    
+}
+
+- (void)configureVerticalConstraintsForNewSpecifications{
+    
+    [NSLayoutConstraint deactivateConstraints: self.currentVerticalConstraints];
+    self.currentVerticalConstraints = [[NSMutableArray alloc] init];
+    
+    for (TJBCircuitTemplateExerciseComp *exComp in self.childExerciseComponentControllers){
+        
+        int i = (int)[self.childExerciseComponentControllers indexOfObject: exComp];
+        
+        NSString *vertVFL = [self verVFLForExerciseIndex: i];
+        
+        NSArray *verConstrs = [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
+                                                                      options: 0
+                                                                      metrics: nil
+                                                                        views: self.constraintMapping];
+        
+        [self.scrollViewContentContainer addConstraints: verConstrs];
+        
+    }
+    
+}
 
 
 
@@ -355,7 +404,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (CGFloat)exerciseComponentHeight{
     
-    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * _activeNumberOfRounds + switchRowHeight;
+    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * (_activeNumberOfRounds + 1); // the switch row is given the same height as the rounds rows
     
     return height;
     
@@ -588,11 +637,6 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-- (void)didIncrementNumberOfRoundsInUpDirection:(BOOL)upDirection{
-    
-    
-    
-}
 
 - (void)didIncrementNumberOfExercisesInUpDirection:(BOOL)upDirection{
     
@@ -600,6 +644,26 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
+- (void)didIncrementNumberOfRoundsInUpDirection:(BOOL)upDirection{
+    
+    if (upDirection == YES){
+        
+        [self addRowToExistingStructure];
+        
+    } else{
+        
+        
+    }
+    
+}
+
+#pragma mark - API
+
+- (NSNumber *)numberOfRounds{
+    
+    return  @(_activeNumberOfRounds);
+    
+}
 
 @end
 

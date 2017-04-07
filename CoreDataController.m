@@ -763,25 +763,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
-//- (NSOrderedSet *)defaultNumberArrayNumbersWithNumberOfRounds:(NSNumber *)numberOfRounds{
-//    
-//    int roundLimit = [numberOfRounds intValue];
-//    
-//    NSMutableOrderedSet *mor = [[NSMutableOrderedSet alloc] init];
-//    
-//    for (int i = 0; i < roundLimit; i++){
-//        
-//        TJBNumberTypeArrayComp *numberTypeArrayComp = [NSEntityDescription insertNewObjectForEntityForName: @"NumberTypeArrayComponent"
-//                                                                                    inManagedObjectContext: self.moc];
-//        numberTypeArrayComp.isDefaultObject = YES;
-//        
-//        [mor addObject: numberTypeArrayComp];
-//        
-//    }
-//    
-//    return mor;
-//    
-//}
+
 
 - (TJBExercise *)placeholderExercise{
     

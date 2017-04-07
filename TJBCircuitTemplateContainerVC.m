@@ -79,7 +79,7 @@
 static int const _startingNumberExercises = 4;
 static int const _startingNumberRounds = 4;
 
-
+static NSString * const placeholderName = @"placeholderName";
 
 
 
@@ -118,12 +118,33 @@ static int const _startingNumberRounds = 4;
     
 }
 
-- (void)setRestorationProperties{
+- (instancetype)init{
     
-    //// set the properties necessary for state restoration
+    self = [super init];
     
-    self.restorationClass = [TJBCircuitTemplateContainerVC class];
-    self.restorationIdentifier = @"TJBCircuitTemplateContainerVC";
+    [self createPlaceholderChainTemplate];
+    
+    
+    
+    
+    
+    return self;
+    
+}
+
+
+#pragma mark - Init Helper Methods
+
+- (void)createPlaceholderChainTemplate{
+    
+    TJBChainTemplate *chainTemplate = [[CoreDataController singleton] createAndSaveSkeletonChainTemplateWithNumberOfExercises: @(_startingNumberExercises)
+                                                                                                               numberOfRounds: @(_startingNumberRounds)
+                                                                                                                         name: placeholderName
+                                                                                                            isTargetingWeight: YES
+                                                                                                              isTargetingReps: YES
+                                                                                                      isTargetingTrailingRest: YES];
+    
+    self.chainTemplate = chainTemplate;
     
 }
 
@@ -170,6 +191,9 @@ static int const _startingNumberRounds = 4;
         step.wraps = NO;
         
     }
+    
+    self.numberExercisesStepper.value = (float)_startingNumberExercises;
+    self.numberRoundsStepper.value = (float)_startingNumberRounds;
     
 }
 
@@ -309,6 +333,9 @@ static int const _startingNumberRounds = 4;
         [self.circuitTemplateVC didIncrementNumberOfRoundsInUpDirection: NO];
         
     }
+    
+    [self.view updateConstraintsIfNeeded]; // needs to be called to update views when existing constraints have been changed
+    [self.view layoutIfNeeded];
     
     _previousRoundsStepperValue = [stepValue floatValue];
     

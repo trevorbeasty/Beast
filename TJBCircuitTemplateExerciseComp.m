@@ -27,12 +27,6 @@
 
 @interface TJBCircuitTemplateExerciseComp ()
 
-{
-    
-    int _activeNumberOfRounds;
-    
-}
-
 // core
 
 @property (nonatomic, strong) NSNumber *exerciseIndex;
@@ -57,6 +51,18 @@
 
 #pragma mark - Instantiation
 
+//- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
+//    
+//    self = [super init];
+//    
+//    self.chainTemplate = chainTemplate;
+//    self.masterController = masterController;
+//    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
+//    
+//    return self;
+//    
+//}
+
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
     
     self = [super init];
@@ -64,19 +70,6 @@
     self.chainTemplate = chainTemplate;
     self.masterController = masterController;
     self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
-    
-    return self;
-    
-}
-
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController numberOfRounds:(int)numberOfRounds{
-    
-    self = [super init];
-    
-    self.chainTemplate = chainTemplate;
-    self.masterController = masterController;
-    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
-    _activeNumberOfRounds = numberOfRounds;
     
     return self;
     
@@ -94,9 +87,13 @@
     
     [self viewAesthetics];
     
+    [self configureStackView];
+    
     self.exerciseNumberLabel.text = [NSString stringWithFormat: @"%d", [self.exerciseIndex intValue] + 1];
     
-    for (int i = 0 ; i < _activeNumberOfRounds ; i ++){
+    int numberRounds = [[self.masterController numberOfRounds] intValue];
+    
+    for (int i = 0 ; i < numberRounds ; i ++){
         
         [self appendNewRoundComponentToExistingStructureWithRoundIndex: i];
         
@@ -114,6 +111,12 @@
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureStackView{
+    
+    self.rowCompStackView.distribution = UIStackViewDistributionFillEqually;
+    
+}
 
 
 - (void)viewAesthetics{
@@ -175,7 +178,13 @@
     
 }
 
+#pragma  mark - API
 
+- (void)addRoundRowForExerciseIndex:(int)exerciseIndex{
+    
+    [self appendNewRoundComponentToExistingStructureWithRoundIndex: exerciseIndex];
+    
+}
 
 
 #pragma mark - Old
