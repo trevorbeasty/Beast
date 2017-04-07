@@ -332,6 +332,8 @@ static NSString * const placeholderName = @"placeholderName";
         
     } else{
         
+        [[CoreDataController singleton] deleteLastRoundInChainTemplate: self.chainTemplate];
+        
         [self.circuitTemplateVC didIncrementNumberOfRoundsInUpDirection: NO];
         
     }
@@ -427,18 +429,7 @@ static NSString * const placeholderName = @"placeholderName";
 
 - (IBAction)didPressBack:(id)sender{
     
-    // delete the chain template from the persistent store if it is incomplete
-    
-    // must check for completeness of chain template.  If all user selections have been been made but the 'launch circuit' or '+' buttons have not been pressed, its 'isIncomplete' property will not be updated
-//    
-//    BOOL isComplete = [[CoreDataController singleton] chainTemplateHasCollectedAllRequisiteUserInput: self.chainTemplate];
-////    self.chainTemplate.isIncomplete = !isComplete;
-//    
-//    if (!isComplete){
-//        
-//        [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
-//        
-//    }
+    [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
     
     [self dismissViewControllerAnimated: YES
                              completion: nil];

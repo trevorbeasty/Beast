@@ -327,112 +327,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - Persistent Store Management
 
-//- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain{
-//    
-//    // must guarantee that all trickle-down managed objects are deleted as well as the chain itself
-//    // only some objects must be deleted, others should continue to exist in their own right
-//    
-//    // some relationships are common to both chain types, hence the motivation for not separating this method out into two methods
-//    
-//    NSOrderedSet *weightArrays = chain.weightArrays;
-//    NSOrderedSet *repsArrays = chain.repsArrays;
-//    
-//    // exercises continue to exist in their own right
-//    
-//    // weight arrays
-//    
-//    for (TJBWeightArray *array in weightArrays){
-//        
-//        NSOrderedSet *numbers = array.numbers;
-//        
-//        for (TJBNumberTypeArrayComp *comp in numbers){
-//            
-//            [_moc deleteObject: comp];
-//        }
-//        
-//        [_moc deleteObject: array];
-//    }
-//    
-//    // reps arrays
-//    
-//    for (TJBRepsArray *array in repsArrays){
-//        
-//        NSOrderedSet *numbers = array.numbers;
-//        
-//        for (TJBNumberTypeArrayComp *comp in numbers){
-//            
-//            [_moc deleteObject: comp];
-//        }
-//        
-//        [_moc deleteObject: array];
-//    }
-//    
-//    //// chain template specific deletions
-//    // need to delete target rest time arrays
-//    
-//    if (chainType == ChainTemplateType){
-//        
-//        TJBChainTemplate *chainTemplate = (TJBChainTemplate *)chain;
-//        
-//        NSOrderedSet *restTimeArrays = chainTemplate.targetRestTimeArrays;
-//        
-//        for (TJBTargetRestTimeArray *array in restTimeArrays){
-//            
-//            NSOrderedSet *arrayComps = array.numbers;
-//            
-//            for (TJBNumberTypeArrayComp *comp in arrayComps){
-//                
-//                [_moc deleteObject: comp];
-//            }
-//            
-//            [_moc deleteObject: array];
-//        }
-//    }
-//    
-//    
-//    if (chainType == RealizedChainType){
-//        
-//        // cast the chain as a realized chain
-//        
-//        TJBRealizedChain *realizedChain = (TJBRealizedChain *)chain;
-//        
-//        // date arrays
-//        
-//        NSOrderedSet *beginDateArrays = realizedChain.setBeginDateArrays;
-//        NSOrderedSet *endDateArrays = realizedChain.setEndDateArrays;
-//            
-//        for (SetBeginDateArray *array in beginDateArrays){
-//                
-//            NSOrderedSet *dates = array.dates;
-//                
-//            for (TJBBeginDateComp *comp in dates){
-//                    
-//                [_moc deleteObject: comp];
-//            }
-//                
-//            [_moc deleteObject: array];
-//        }
-//        
-//        for (SetEndDateArray *array in endDateArrays){
-//            
-//            NSOrderedSet *dates = array.dates;
-//            
-//            for (TJBEndDateComp *comp in dates){
-//                
-//                [_moc deleteObject: comp];
-//            }
-//            
-//            [_moc deleteObject: array];
-//        }
-//
-//    }
-//    
-//    [_moc deleteObject: chain];
-//    
-//    NSError *error;
-//    [_moc save: &error];
-//    
-//}
+
 
 - (void)deleteChainTemplate:(TJBChainTemplate *)ct{
     
@@ -481,111 +376,6 @@ NSString * const placeholderCategoryName = @"Placeholder";
 }
 
 #pragma mark - Chains
-
-//// chain template
-
-//- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate{
-//    
-//    int numberOfRounds = chainTemplate.numberOfRounds;
-//    
-//    // weight
-//    
-//    BOOL weightIsTargeted = chainTemplate.targetingWeight;
-//    
-//    NSOrderedSet <TJBWeightArray *> *weightArrays = chainTemplate.weightArrays;
-//    
-//    if (weightIsTargeted){
-//        
-//        for (TJBWeightArray *weightArray in weightArrays){
-//            
-//            float userSelectedValue = weightArray.numbers[0].value;
-//            
-//            for (int i = 1; i < numberOfRounds; i++){
-//                
-//                TJBNumberTypeArrayComp *arrayComp = weightArray.numbers[i];
-//                arrayComp.isDefaultObject = NO;
-//                arrayComp.value = userSelectedValue;
-//                
-//            }
-//        }
-//    }
-//    
-//}
-
-//- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate{
-//    
-//    int numberOfRounds = chainTemplate.numberOfRounds;
-//    
-//    // reps
-//    
-//    BOOL repsIsTargeted = chainTemplate.targetingReps;
-//    
-//    NSOrderedSet <TJBRepsArray *> *repsArrays = chainTemplate.repsArrays;
-//    
-//    if (repsIsTargeted){
-//        
-//        for (TJBRepsArray *repsArray in repsArrays){
-//            
-//            float userSelectedValue = repsArray.numbers[0].value;
-//            
-//            for (int i = 1; i < numberOfRounds; i++){
-//                
-//                TJBNumberTypeArrayComp *arrayComp = repsArray.numbers[i];
-//                arrayComp.isDefaultObject = NO;
-//                arrayComp.value = userSelectedValue;
-//                
-//            }
-//        }
-//    }
-//    
-//}
-
-//- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate{
-//    
-//    int numberOfRounds = chainTemplate.numberOfRounds;
-//    
-//    // rest
-//    
-//    BOOL restIsTargeted = chainTemplate.targetingRestTime;
-//    
-//    NSOrderedSet <TJBTargetRestTimeArray *> *restArrays = chainTemplate.targetRestTimeArrays;
-//    
-//    if (restIsTargeted){
-//        
-//        for (TJBTargetRestTimeArray *restArray in restArrays){
-//            
-//            float userSelectedValue = restArray.numbers[0].value;
-//            
-//            for (int i = 1; i < numberOfRounds; i++){
-//                
-//                TJBNumberTypeArrayComp *arrayComp = restArray.numbers[i];
-//                arrayComp.isDefaultObject = NO;
-//                arrayComp.value = userSelectedValue;
-//                
-//            }
-//        }
-//    }
-//    
-//}
-
-//- (void)cloneFirstNumberForAllTargetedCategories:(TJBChainTemplate *)chainTemplate{
-//    
-//    //// this method is intended to be used on chain templates for which targets do not vary by round.  If the category is being targeted, this method clones the single selected value and applies it to all rounds
-//    
-//    // weight
-//    
-//    [self cloneFirstNumberForWeight: chainTemplate];
-//    
-//    // reps
-//    
-//    [self cloneFirstNumberForReps: chainTemplate];
-//    
-//    // rest
-//    
-//    [self cloneFirstNumberForRest: chainTemplate];
-//
-//}
-
 
 
 
@@ -953,6 +743,28 @@ NSString * const placeholderCategoryName = @"Placeholder";
         iterativeTargetUnit.trailingRestIsNull = YES;
         
         iterativeTargetUnit.exercise = zeroethTargetUnit.exercise;
+        
+        tuc.targetUnits = targetUnitsCopy;
+        
+    }
+    
+    [self saveContext];
+    
+}
+
+- (void)deleteLastRoundInChainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    int previousNumberRounds = chainTemplate.numberOfRounds;
+    chainTemplate.numberOfRounds = previousNumberRounds - 1;
+    
+    for (TJBTargetUnitCollection *tuc in chainTemplate.targetUnitCollections){
+        
+        NSMutableOrderedSet *targetUnitsCopy = [tuc.targetUnits mutableCopy];
+        
+        TJBTargetUnit *tu = [targetUnitsCopy objectAtIndex: previousNumberRounds - 1];
+        
+        [[self moc] deleteObject: tu];
+        [targetUnitsCopy removeObject: tu];
         
         tuc.targetUnits = targetUnitsCopy;
         

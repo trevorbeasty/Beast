@@ -51,18 +51,6 @@
 
 #pragma mark - Instantiation
 
-//- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
-//    
-//    self = [super init];
-//    
-//    self.chainTemplate = chainTemplate;
-//    self.masterController = masterController;
-//    self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
-//    
-//    return self;
-//    
-//}
-
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
     
     self = [super init];
@@ -166,7 +154,8 @@
     
     // add the newly created row component to the master controller's child collection
     
-    [self.masterController addChildRowController: rowVC];
+    [self.masterController addChildRowController: rowVC
+                    correspondingToExerciseIndex: [self.exerciseIndex intValue]];
     
     rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
     
@@ -183,6 +172,16 @@
 - (void)addRoundRowForExerciseIndex:(int)exerciseIndex{
     
     [self appendNewRoundComponentToExistingStructureWithRoundIndex: exerciseIndex];
+    
+}
+
+- (void)deleteRowCorrespondingToRowComponent:(TJBCircuitTemplateRowComponent *)rowComponent{
+    
+    [rowComponent willMoveToParentViewController: nil];
+    
+    [self.rowCompStackView removeArrangedSubview: rowComponent.view];
+    
+    [rowComponent removeFromParentViewController];
     
 }
 

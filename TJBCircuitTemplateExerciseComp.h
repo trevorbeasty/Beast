@@ -23,8 +23,9 @@
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate exerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController;
 
-// row addition
+// row addition / deletion
 
 - (void)addRoundRowForExerciseIndex:(int)exerciseIndex;
+- (void)deleteRowCorrespondingToRowComponent:(TJBCircuitTemplateRowComponent *)rowComponent;
 
 @end

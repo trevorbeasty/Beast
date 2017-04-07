@@ -52,7 +52,7 @@
 // object tracking
 
 @property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateExerciseComp *> *childExerciseComponentControllers;
-@property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *childRowControllers;
+@property (nonatomic, strong) NSMutableArray <NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *> * childRowControllers;
 
 // views
 
@@ -160,6 +160,14 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     // child row controllers
     
     self.childRowControllers = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < (int)_activeNumberOfExercises; i++){
+        
+        NSMutableArray *iterativeArray = [[NSMutableArray alloc] init];
+        
+        [self.childRowControllers addObject: iterativeArray];
+        
+    }
     
     // child exercise controllers
     
@@ -341,7 +349,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-#pragma mark - Row Addition
+#pragma mark - Row Addition / Deletion
 
 - (void)addRowToExistingStructure{
     
@@ -360,6 +368,29 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
     
     return;
+    
+}
+
+- (void)removeLastRowFromExistingStructure{
+    
+    int previousNumberRounds = _activeNumberOfRounds;
+    _activeNumberOfRounds -= 1;
+    
+    [self configureVerticalConstraintsForNewSpecifications];
+    [self resetContentSize];
+    
+    int rowToDeleteIndex = previousNumberRounds - 1;
+    
+    for (int i = 0; i < (int)_activeNumberOfExercises; i++){
+        
+        TJBCircuitTemplateRowComponent *rowComp = self.childRowControllers[i][rowToDeleteIndex];
+        [self.childRowControllers[i] removeObject: rowComp];
+        
+        TJBCircuitTemplateExerciseComp *exComp = self.childExerciseComponentControllers[i];
+        
+        [exComp deleteRowCorrespondingToRowComponent: rowComp];
+        
+    }
     
 }
 
@@ -402,6 +433,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 
 
+
+
 #pragma mark - Layout Math
 
 - (CGFloat)scrollViewContentHeight{
@@ -418,7 +451,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (CGFloat)exerciseComponentHeight{
     
-    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * (_activeNumberOfRounds + 1); // the switch row is given the same height as the rounds rows
+    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * (_activeNumberOfRounds); // the switch row is given the same height as the rounds rows
     
     return height;
     
@@ -633,9 +666,9 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController{
+- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController correspondingToExerciseIndex:(int)exerciseIndex{
     
-    [self.childRowControllers addObject: rowController];
+    [self.childRowControllers[exerciseIndex] addObject: rowController];
     
 }
 
@@ -666,7 +699,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
         
     } else{
         
-        
+        [self removeLastRowFromExistingStructure];
     }
     
 }

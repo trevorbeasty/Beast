@@ -29,7 +29,7 @@
 
 // for keeping track of child VC's
 
-- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController;
+- (void)addChildRowController:(TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *)rowController correspondingToExerciseIndex:(int)exerciseIndex;
 
 // input validation
 
