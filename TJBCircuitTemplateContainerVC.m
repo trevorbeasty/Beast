@@ -39,7 +39,16 @@
 
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet UIView *controlsContainer;
+@property (weak, nonatomic) IBOutlet UIView *leftControlsContainer;
+@property (weak, nonatomic) IBOutlet UIView *rightControlsContainer;
+
+@property (weak, nonatomic) IBOutlet UILabel *numberExercisesTitle;
+@property (weak, nonatomic) IBOutlet UILabel *numberExercisesValue;
+@property (weak, nonatomic) IBOutlet UILabel *numberRoundsTitle;
+@property (weak, nonatomic) IBOutlet UILabel *numberRoundsValue;
+@property (weak, nonatomic) IBOutlet UIStepper *numberExercisesStepper;
+@property (weak, nonatomic) IBOutlet UIStepper *numberRoundsStepper;
+
 
 // IBAction
 
@@ -150,9 +159,37 @@
     
     self.containerView.backgroundColor = [UIColor clearColor];
     
-    // controls container
+    // controls containers
     
-    self.controlsContainer.backgroundColor = [UIColor clearColor];
+    self.leftControlsContainer.backgroundColor = [UIColor clearColor];
+    self.rightControlsContainer.backgroundColor = [UIColor clearColor];
+    
+    // control labels and steppers
+    
+    NSArray *controlTitleLabels = @[self.numberExercisesTitle, self.numberRoundsTitle];
+    for (UILabel *lab in controlTitleLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.font = [UIFont systemFontOfSize: 20];
+        lab.textColor = [UIColor whiteColor];
+        
+    }
+    
+    NSArray *controlValueLabels = @[self.numberExercisesValue, self.numberRoundsValue];
+    for (UILabel *lab in controlValueLabels){
+        
+        lab.backgroundColor = [UIColor clearColor];
+        lab.font = [UIFont boldSystemFontOfSize: 25];
+        lab.textColor = [UIColor whiteColor];
+        
+    }
+    
+    NSArray *steppers = @[self.numberExercisesStepper, self.numberRoundsStepper];
+    for (UIStepper *step in steppers){
+        
+        step.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        
+    }
     
 }
 
