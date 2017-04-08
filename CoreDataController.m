@@ -451,14 +451,19 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 - (void)appendPlaceholderExerciseToSelectedExercisesSet:(NSMutableOrderedSet<TJBExercise *> *)exercises{
     
-    TJBExercise *placeholderExercise = [self placeholderExercise];
+    int exerciseIndex = (int)exercises.count;
+    TJBExercise *placeholderExercise = [self placeholderExerciseForExerciseIndex: exerciseIndex];
     [exercises addObject: placeholderExercise];
     
 }
 
-- (TJBExercise *)placeholderExercise{
+- (TJBExercise *)placeholderExerciseForExerciseIndex:(int)exerciseIndex{
     
-    NSString *name = placeholderExerciseName;
+    // must append a number to make names distinct, otherwise orderedSet will not allow additional placeholder exercises to be added
+    
+    NSString *name = [NSString stringWithFormat: @"%@%d",
+                      placeholderExerciseName,
+                      exerciseIndex];
     
     NSNumber *wasNewlyCreated = nil;
     TJBExercise *exercise = [self exerciseForName: name
@@ -489,22 +494,20 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
         
-        NSString *name = placeholderExerciseName;
-        
-        NSNumber *wasNewlyCreated = nil;
-        TJBExercise *exercise = [self exerciseForName: name
-                                      wasNewlyCreated: &wasNewlyCreated
-                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
+//        NSString *name = placeholderExerciseName;
+//        
+//        NSNumber *wasNewlyCreated = nil;
+        TJBExercise *exercise = [self placeholderExerciseForExerciseIndex: i];
         
         // if it was newly created, give it the placeholder category
         
-        if ([wasNewlyCreated boolValue] == YES){
-            
-            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
-            
-            exercise.category = placeholderCategory;
-            
-        }
+//        if ([wasNewlyCreated boolValue] == YES){
+//            
+//            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
+//            
+//            exercise.category = placeholderCategory;
+//            
+//        }
         
         [exercises addObject: exercise];
         
@@ -710,7 +713,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
             
             // exercise
             
-            iterativeTargetUnit.exercise = [self placeholderExercise];
+            iterativeTargetUnit.exercise = [self placeholderExerciseForExerciseIndex: i];
             
         }
         
@@ -793,7 +796,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     // add a placeholder exercise to exercises
     
     NSMutableOrderedSet *exercisesCopy = [chainTemplate.exercises mutableCopy];
-    TJBExercise *placeholderExercise = [self placeholderExercise];
+    TJBExercise *placeholderExercise = [self placeholderExerciseForExerciseIndex: previousNumberExercises];
     [exercisesCopy addObject: placeholderExercise];
     chainTemplate.exercises = exercisesCopy;
     
