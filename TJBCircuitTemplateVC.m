@@ -499,7 +499,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (CGFloat)scrollViewContentHeight{
     
-    return _activeNumberOfExercises * [self exerciseComponentHeight] + (_activeNumberOfExercises - 1) * interimExerciseComponentSpacing + topExerciseComponentSpacing;
+    return _activeNumberOfExercises * [self exerciseComponentHeight] + (_activeNumberOfExercises - 1) * interimExerciseComponentSpacing + topExerciseComponentSpacing + [UIScreen mainScreen].bounds.size.height / 2.0;
     
 }
 
@@ -516,8 +516,6 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     return height;
     
 }
-
-
 
 
 
