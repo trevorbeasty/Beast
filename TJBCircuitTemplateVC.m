@@ -391,7 +391,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
         [exComp deleteRowCorrespondingToRowComponent: rowComp];
         
     }
-    
+ 
 }
 
 - (void)configureVerticalConstraintsForNewSpecifications{

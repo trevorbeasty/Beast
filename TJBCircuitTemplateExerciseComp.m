@@ -157,8 +157,6 @@
     [self.masterController addChildRowController: rowVC
                     correspondingToExerciseIndex: [self.exerciseIndex intValue]];
     
-    rowVC.view.translatesAutoresizingMaskIntoConstraints = NO;
-    
     [self addChildViewController: rowVC];
     
     [self.rowCompStackView addArrangedSubview: rowVC.view];
@@ -179,7 +177,8 @@
     
     [rowComponent willMoveToParentViewController: nil];
     
-    [self.rowCompStackView removeArrangedSubview: rowComponent.view];
+//    [self.rowCompStackView removeArrangedSubview: rowComponent.view];
+    [rowComponent.view removeFromSuperview];
     
     [rowComponent removeFromParentViewController];
     
