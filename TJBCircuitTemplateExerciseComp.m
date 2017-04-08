@@ -177,7 +177,6 @@
     
     [rowComponent willMoveToParentViewController: nil];
     
-//    [self.rowCompStackView removeArrangedSubview: rowComponent.view];
     [rowComponent.view removeFromSuperview];
     
     [rowComponent removeFromParentViewController];

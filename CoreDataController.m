@@ -492,22 +492,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     for (int i = 0; i < length ; i++){
         
-        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
-        
-//        NSString *name = placeholderExerciseName;
-//        
-//        NSNumber *wasNewlyCreated = nil;
         TJBExercise *exercise = [self placeholderExerciseForExerciseIndex: i];
-        
-        // if it was newly created, give it the placeholder category
-        
-//        if ([wasNewlyCreated boolValue] == YES){
-//            
-//            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
-//            
-//            exercise.category = placeholderCategory;
-//            
-//        }
         
         [exercises addObject: exercise];
         
@@ -525,26 +510,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     for (int i = 0; i < length ; i++){
         
-        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
-        
-        NSString *placeholderExerciseDynamicName = [NSString stringWithFormat: @"%@%d",
-                                                    placeholderExerciseName,
-                                                    i];
-        
-        NSNumber *wasNewlyCreated = nil;
-        TJBExercise *exercise = [self exerciseForName: placeholderExerciseDynamicName
-                                      wasNewlyCreated: &wasNewlyCreated
-                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
-        
-        // if it was newly created, give it the placeholder category
-        
-        if ([wasNewlyCreated boolValue] == YES){
-            
-            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
-            
-            exercise.category = placeholderCategory;
-            
-        }
+        TJBExercise *exercise = [self placeholderExerciseForExerciseIndex: i];
         
         [exercises addObject: exercise];
         

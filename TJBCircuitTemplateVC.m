@@ -412,13 +412,47 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 }
 
 
--  (void)deleteLastExerciseFromExistingStructure{
+-  (void)removeLastExerciseFromExistingStructure{
     
+    int previousNumberOfExercises = _activeNumberOfExercises;
+    _activeNumberOfExercises -= 1;
     
+    [self.childRowControllers removeLastObject]; // b/c child row controllers are tracked with array of 2-dimensions, must delete a mutable array to account for exercise removal
+    
+    [self.selectedExercises removeObjectAtIndex: previousNumberOfExercises - 1];
+    
+    [self removeExerciseFromVCHierarchyCorrespondingToExerciseIndex: previousNumberOfExercises - 1];
+    [self configureVerticalConstraintsForNewSpecifications];
+    [self resetContentSize];
+    
+    return;
     
 }
 
 #pragma mark - Row & Exercise Addition / Deletion Helper Methods
+
+- (void)removeExerciseFromVCHierarchyCorrespondingToExerciseIndex:(int)exerciseIndex{
+    
+    TJBCircuitTemplateExerciseComp *exCompToDelete = self.childExerciseComponentControllers[exerciseIndex];
+    
+    // constraint mapping
+    
+    NSString *dynamicComponentName = [self dynamicComponentNameForExerciseIndex: exerciseIndex];
+    [self.constraintMapping removeObjectForKey: dynamicComponentName];
+    
+    // VC & view
+    
+    [exCompToDelete willMoveToParentViewController: nil];
+    
+    [exCompToDelete.view removeFromSuperview];
+    
+    [exCompToDelete removeFromParentViewController];
+    
+    // tracking array
+    
+    [self.childExerciseComponentControllers removeObject: exCompToDelete];
+    
+}
 
 - (void)configureVerticalConstraintsForNewSpecifications{
     
@@ -730,7 +764,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
         
     } else{
         
-        [self removeLastRowFromExistingStructure];
+        [self removeLastExerciseFromExistingStructure];
     }
     
 }
