@@ -303,9 +303,13 @@ static NSString * const placeholderName = @"placeholderName";
     
     if ([stepValue floatValue] > _previousExercisesStepperValue){
         
+        [[CoreDataController singleton] appendExerciseToChainTemplate: self.chainTemplate];
+        
         [self.circuitTemplateVC didIncrementNumberOfExercisesInUpDirection: YES];
         
     } else{
+        
+        [[CoreDataController singleton] deleteLastExercisefromChainTemplate: self.chainTemplate];
         
         [self.circuitTemplateVC didIncrementNumberOfExercisesInUpDirection: NO];
         
@@ -486,46 +490,7 @@ static NSString * const placeholderName = @"placeholderName";
 
 #pragma mark - <UIViewControllerRestoration>
 
-//+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-//    
-//    //// the only thing that needs to be done here is to restore the chain template that was being used and call the normal init method.  The decoder will be responsible for kicking off the process that updates all the views to their previous state
-//    
-//    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: @"chainTemplateUniqueID"];
-//    
-//    // have CoreDataController retrieve the appropriate chain template
-//    
-//    TJBChainTemplate *chainTemplate = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
-//    
-//    // create the TJBCircuitTemplateContainerVC and return it
-//    
-//    TJBCircuitTemplateContainerVC *vc = [[TJBCircuitTemplateContainerVC alloc] initWithChainTemplate: chainTemplate];
-//    
-//    return vc;
-//    
-//}
-//
-//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    [super decodeRestorableStateWithCoder: coder];
-//    
-//    // tell the child VC to populate its views with all user selected input
-//    
-//    [self.circuitTemplateVC populateChildVCViewsWithUserSelectedValues];
-//    
-//}
-//
-//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    //// all that needs to be done here is to record the unique ID of the chain template so that the CoreDataConroller can reload the correct chain template
-//    
-//    [super encodeRestorableStateWithCoder: coder];
-//    
-//    NSString *chainTemplateUniqueID = self.chainTemplate.uniqueID;
-//    
-//    [coder encodeObject: chainTemplateUniqueID
-//                 forKey: @"chainTemplateUniqueID"];
-//    
-//}
+
 
 
 

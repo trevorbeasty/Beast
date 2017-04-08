@@ -480,78 +480,6 @@ NSString * const placeholderCategoryName = @"Placeholder";
 //    
 //}
 
-- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name isTargetingWeight:(BOOL)isTargetingWeight isTargetingReps:(BOOL)isTargetingReps isTargetingTrailingRest:(BOOL)isTargetingTrailingRest{
-    
-    //// this method takes all necessary chain parameters as arguments and creates a skelton chain.  If a category is being targeted, it is given default objects for all exercises and rounds.  A set of placeholder exercises is assigned to the exercises relationship
-    
-    NSManagedObjectContext *moc = [self moc];
-    
-    // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
-    
-    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
-                                                                    inManagedObjectContext: moc];
-    
-    //// assign the chain template's attributes
-    
-    chainTemplate.numberOfExercises = [numberOfExercises intValue];
-    chainTemplate.numberOfRounds = [numberOfRounds intValue];
-    chainTemplate.dateCreated = [NSDate date];
-    chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
-    chainTemplate.name = name;
-    
-    // exercises
-    
-    chainTemplate.exercises = [self placeholderExerciseSetWithLength: [numberOfExercises intValue]];
-    
-    // target units
-    
-    NSMutableOrderedSet<TJBTargetUnitCollection *> *targetUnitCollectors = [[NSMutableOrderedSet alloc] init];
-    chainTemplate.targetUnitCollections = targetUnitCollectors;
-    
-    for (int i = 0; i < [numberOfExercises intValue]; i++){
-        
-        TJBTargetUnitCollection *tuc = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnitCollection"
-                                                                     inManagedObjectContext: moc];
-        tuc.exerciseIndex = i;
-        tuc.chainTemplate = chainTemplate;
-        [targetUnitCollectors addObject: tuc];
-        
-        NSMutableOrderedSet<TJBTargetUnit *> *iterativeTargetUnits = [[NSMutableOrderedSet alloc] init];
-        tuc.targetUnits = iterativeTargetUnits;
-        
-        for (int j = 0; j < [numberOfRounds intValue]; j++){
-            
-            TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
-                                                                               inManagedObjectContext: moc];
-            iterativeTargetUnit.targetUnitCollector = tuc;
-            [iterativeTargetUnits addObject: iterativeTargetUnit];
-            
-            iterativeTargetUnit.exerciseIndex = i;
-            iterativeTargetUnit.roundIndex = j;
-            
-            iterativeTargetUnit.isTargetingWeight = isTargetingWeight;
-            iterativeTargetUnit.isTargetingReps = isTargetingReps;
-            iterativeTargetUnit.isTargetingTrailingRest = isTargetingTrailingRest;
-            
-            iterativeTargetUnit.weightIsNull = YES;
-            iterativeTargetUnit.repsIsNull = YES;
-            iterativeTargetUnit.trailingRestIsNull = YES;
-            
-            // exercise
-            
-            iterativeTargetUnit.exercise = [self placeholderExercise];
-
-        }
-        
-    }
-    
-    // save the newly created skeleton chain template and return it
-    
-    [[CoreDataController singleton] saveContext];
-    
-    return chainTemplate;
-    
-}
 
 
 
@@ -715,6 +643,80 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - Chain Template Manipulation
 
+
+- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name isTargetingWeight:(BOOL)isTargetingWeight isTargetingReps:(BOOL)isTargetingReps isTargetingTrailingRest:(BOOL)isTargetingTrailingRest{
+    
+    //// this method takes all necessary chain parameters as arguments and creates a skelton chain.  If a category is being targeted, it is given default objects for all exercises and rounds.  A set of placeholder exercises is assigned to the exercises relationship
+    
+    NSManagedObjectContext *moc = [self moc];
+    
+    // create the chain template and NSMutableOrderedSets to capture information that will eventually be stored as relationships of the chain template
+    
+    TJBChainTemplate *chainTemplate = [NSEntityDescription insertNewObjectForEntityForName: @"ChainTemplate"
+                                                                    inManagedObjectContext: moc];
+    
+    //// assign the chain template's attributes
+    
+    chainTemplate.numberOfExercises = [numberOfExercises intValue];
+    chainTemplate.numberOfRounds = [numberOfRounds intValue];
+    chainTemplate.dateCreated = [NSDate date];
+    chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
+    chainTemplate.name = name;
+    
+    // exercises
+    
+    chainTemplate.exercises = [self placeholderExerciseSetWithLength: [numberOfExercises intValue]];
+    
+    // target units
+    
+    NSMutableOrderedSet<TJBTargetUnitCollection *> *targetUnitCollectors = [[NSMutableOrderedSet alloc] init];
+    chainTemplate.targetUnitCollections = targetUnitCollectors;
+    
+    for (int i = 0; i < [numberOfExercises intValue]; i++){
+        
+        TJBTargetUnitCollection *tuc = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnitCollection"
+                                                                     inManagedObjectContext: moc];
+        tuc.exerciseIndex = i;
+        tuc.chainTemplate = chainTemplate;
+        [targetUnitCollectors addObject: tuc];
+        
+        NSMutableOrderedSet<TJBTargetUnit *> *iterativeTargetUnits = [[NSMutableOrderedSet alloc] init];
+        tuc.targetUnits = iterativeTargetUnits;
+        
+        for (int j = 0; j < [numberOfRounds intValue]; j++){
+            
+            TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
+                                                                               inManagedObjectContext: moc];
+            iterativeTargetUnit.targetUnitCollector = tuc;
+            [iterativeTargetUnits addObject: iterativeTargetUnit];
+            
+            iterativeTargetUnit.exerciseIndex = i;
+            iterativeTargetUnit.roundIndex = j;
+            
+            iterativeTargetUnit.isTargetingWeight = isTargetingWeight;
+            iterativeTargetUnit.isTargetingReps = isTargetingReps;
+            iterativeTargetUnit.isTargetingTrailingRest = isTargetingTrailingRest;
+            
+            iterativeTargetUnit.weightIsNull = YES;
+            iterativeTargetUnit.repsIsNull = YES;
+            iterativeTargetUnit.trailingRestIsNull = YES;
+            
+            // exercise
+            
+            iterativeTargetUnit.exercise = [self placeholderExercise];
+            
+        }
+        
+    }
+    
+    // save the newly created skeleton chain template and return it
+    
+    [[CoreDataController singleton] saveContext];
+    
+    return chainTemplate;
+    
+}
+
 - (void)appendRoundToChainTemplate:(TJBChainTemplate *)chainTemplate{
     
     int previousNumberRounds = chainTemplate.numberOfRounds;
@@ -769,6 +771,78 @@ NSString * const placeholderCategoryName = @"Placeholder";
         tuc.targetUnits = targetUnitsCopy;
         
     }
+    
+    [self saveContext];
+    
+}
+
+- (void)appendExerciseToChainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    int previousNumberExercises = chainTemplate.numberOfExercises;
+    chainTemplate.numberOfExercises = previousNumberExercises + 1;
+    
+    int numberOfRounds = chainTemplate.numberOfRounds;
+    
+    TJBTargetUnitCollection *tuc = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnitCollection"
+                                                                 inManagedObjectContext: [self moc]];
+    tuc.exerciseIndex = previousNumberExercises;
+    tuc.chainTemplate = chainTemplate;
+    NSMutableOrderedSet<TJBTargetUnit *> *iterativeTargetUnits = [[NSMutableOrderedSet alloc] init];
+    tuc.targetUnits = iterativeTargetUnits;
+    
+    NSMutableOrderedSet *targetUnitCollectorCopy = [chainTemplate.targetUnitCollections mutableCopy];
+    [targetUnitCollectorCopy addObject: tuc];
+    
+    for (int i = 0; i < numberOfRounds; i++){
+        
+        TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
+                                                                           inManagedObjectContext: [self moc]];
+        iterativeTargetUnit.targetUnitCollector = tuc;
+        [iterativeTargetUnits addObject: iterativeTargetUnit];
+        
+        iterativeTargetUnit.exerciseIndex = previousNumberExercises;
+        iterativeTargetUnit.roundIndex = i;
+        
+        iterativeTargetUnit.isTargetingWeight = YES;
+        iterativeTargetUnit.isTargetingReps = YES;
+        iterativeTargetUnit.isTargetingTrailingRest = YES;
+        
+        iterativeTargetUnit.weightIsNull = YES;
+        iterativeTargetUnit.repsIsNull = YES;
+        iterativeTargetUnit.trailingRestIsNull = YES;
+        
+        // exercise
+        
+        iterativeTargetUnit.exercise = [self placeholderExercise];
+        
+    }
+    
+    chainTemplate.targetUnitCollections = targetUnitCollectorCopy;
+    
+    [self saveContext];
+    
+}
+
+
+
+- (void)deleteLastExercisefromChainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    int previousNumberExercises = chainTemplate.numberOfExercises;
+    chainTemplate.numberOfExercises = previousNumberExercises - 1;
+    
+    TJBTargetUnitCollection *tuc = chainTemplate.targetUnitCollections[previousNumberExercises - 1];
+    
+    for (TJBTargetUnit *tu in tuc.targetUnits){
+        
+        [[self moc] deleteObject: tu];
+        
+    }
+    
+    NSMutableOrderedSet *targetUnitCollectionsCopy = [chainTemplate.targetUnitCollections mutableCopy];
+    [targetUnitCollectionsCopy removeObject: tuc];
+    chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
+    
+    [[self moc] deleteObject: tuc];
     
     [self saveContext];
     

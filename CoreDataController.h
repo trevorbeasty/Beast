@@ -103,6 +103,9 @@ typedef enum{
 - (void)appendRoundToChainTemplate:(TJBChainTemplate *)chainTemplate;
 - (void)deleteLastRoundInChainTemplate:(TJBChainTemplate *)chainTemplate;
 
+- (void)appendExerciseToChainTemplate:(TJBChainTemplate *)chainTemplate;
+- (void)deleteLastExercisefromChainTemplate:(TJBChainTemplate *)chainTemplate;
+
 @end
 
 
