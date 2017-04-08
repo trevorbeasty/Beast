@@ -12,6 +12,7 @@
 
 #import "TJBCircuitTemplateVC.h"
 #import "TJBCircuitTemplateRowComponent.h"
+#import "TJBSwitchRow.h"
 
 // core data
 
@@ -86,6 +87,8 @@
         [self appendNewRoundComponentToExistingStructureWithRoundIndex: i];
         
     }
+    
+    [self appendSwitchRowComponentToExistingStructure];
 
 }
 
@@ -162,6 +165,20 @@
     [self.rowCompStackView addArrangedSubview: rowVC.view];
 
     [rowVC didMoveToParentViewController: self];
+    
+}
+
+- (void)appendSwitchRowComponentToExistingStructure{
+    
+    TJBSwitchRow *sr = [[TJBSwitchRow alloc] init];
+    
+    // add the newly created switch row to the master controller's child collection
+    
+    [self addChildViewController: sr];
+    
+    [self.rowCompStackView addArrangedSubview: sr.view];
+    
+    [sr didMoveToParentViewController: self];
     
 }
 

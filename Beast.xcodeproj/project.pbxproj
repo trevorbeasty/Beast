@@ -100,6 +100,8 @@
 		0BE970F81E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE970F61E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib */; };
 		0BE970FE1E8887E100DF297E /* TJBSearchExerciseChild.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE970FC1E8887E100DF297E /* TJBSearchExerciseChild.m */; };
 		0BE970FF1E8887E100DF297E /* TJBSearchExerciseChild.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE970FD1E8887E100DF297E /* TJBSearchExerciseChild.xib */; };
+		0BE971041E99469400DF297E /* TJBSwitchRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE971021E99469400DF297E /* TJBSwitchRow.m */; };
+		0BE971051E99469400DF297E /* TJBSwitchRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE971031E99469400DF297E /* TJBSwitchRow.xib */; };
 		0BF2385B1E7A267600270059 /* TJBDetailTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF238591E7A267600270059 /* TJBDetailTitleCell.m */; };
 		0BF2385C1E7A267600270059 /* TJBDetailTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */; };
 /* End PBXBuildFile section */
@@ -255,6 +257,9 @@
 		0BE970FB1E8887E100DF297E /* TJBSearchExerciseChild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBSearchExerciseChild.h; sourceTree = "<group>"; };
 		0BE970FC1E8887E100DF297E /* TJBSearchExerciseChild.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBSearchExerciseChild.m; sourceTree = "<group>"; };
 		0BE970FD1E8887E100DF297E /* TJBSearchExerciseChild.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBSearchExerciseChild.xib; sourceTree = "<group>"; };
+		0BE971011E99469400DF297E /* TJBSwitchRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBSwitchRow.h; sourceTree = "<group>"; };
+		0BE971021E99469400DF297E /* TJBSwitchRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBSwitchRow.m; sourceTree = "<group>"; };
+		0BE971031E99469400DF297E /* TJBSwitchRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBSwitchRow.xib; sourceTree = "<group>"; };
 		0BF238581E7A267600270059 /* TJBDetailTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBDetailTitleCell.h; sourceTree = "<group>"; };
 		0BF238591E7A267600270059 /* TJBDetailTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBDetailTitleCell.m; sourceTree = "<group>"; };
 		0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBDetailTitleCell.xib; sourceTree = "<group>"; };
@@ -648,6 +653,7 @@
 		0B86FB7D1E256D4A000D1B5F /* Circuit Template */ = {
 			isa = PBXGroup;
 			children = (
+				0BE971001E99466000DF297E /* Switch Row */,
 				0BA8ACF01E25BC5300EE10C2 /* TJBCircuitTemplateVCProtocol.h */,
 				0B86FB7E1E257310000D1B5F /* TJBCircuitTemplateVC.h */,
 				0B86FB7F1E257310000D1B5F /* TJBCircuitTemplateVC.m */,
@@ -774,6 +780,16 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
+		0BE971001E99466000DF297E /* Switch Row */ = {
+			isa = PBXGroup;
+			children = (
+				0BE971011E99469400DF297E /* TJBSwitchRow.h */,
+				0BE971021E99469400DF297E /* TJBSwitchRow.m */,
+				0BE971031E99469400DF297E /* TJBSwitchRow.xib */,
+			);
+			name = "Switch Row";
+			sourceTree = "<group>";
+		};
 		0BF238571E7A265300270059 /* Detail Title Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -882,6 +898,7 @@
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
 				0B78E7CE1E3C16A300EB216F /* TJBRealizedChainCell.xib in Resources */,
 				0B78E7FC1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.xib in Resources */,
+				0BE971051E99469400DF297E /* TJBSwitchRow.xib in Resources */,
 				0B36881C1E413D8F0077290C /* TJBWorkoutLogTitleCell.xib in Resources */,
 				0BC12E0E1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib in Resources */,
 				0BF2385C1E7A267600270059 /* TJBDetailTitleCell.xib in Resources */,
@@ -919,6 +936,7 @@
 				0BF2385B1E7A267600270059 /* TJBDetailTitleCell.m in Sources */,
 				0BA8ACF51E26561C00EE10C2 /* TJBCircuitReferenceVC.m in Sources */,
 				0BE970F71E85C8D400DF297E /* TJBExerciseAdditionChildVC.m in Sources */,
+				0BE971041E99469400DF297E /* TJBSwitchRow.m in Sources */,
 				0BA8AD001E26636E00EE10C2 /* TJBCircuitReferenceRowComp.m in Sources */,
 				0BC12E0D1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m in Sources */,
 				0B78E7EC1E462F8500EB216F /* TJBWeightRepsSelectionCell.m in Sources */,

@@ -37,6 +37,10 @@
     float _valueToCopy;
     TJBCopyInputType _copyInputType;
     
+    BOOL _isTargetingWeight;
+    BOOL _isTargetingReps;
+    BOOL _isTargetingTrailingRest;
+    
 }
 
 // core
@@ -74,6 +78,10 @@
     self.roundIndex = [NSNumber numberWithInt: roundIndex];
     self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
     self.masterController = masterController;
+    
+    _isTargetingWeight = YES;
+    _isTargetingReps = YES;
+    _isTargetingTrailingRest = YES;
     
     return self;
     
@@ -719,6 +727,26 @@
 - (TJBTargetUnit *)targetUnitCorrespondingToVC{
     
     return  self.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]].targetUnits[[self.roundIndex intValue]];
+    
+}
+
+#pragma mark - Targeting State
+
+- (void)toggleWeightTargetingStateToActive:(BOOL)targetingStateActive{
+    
+    
+    
+}
+
+- (void)toggleRepsTargetingStateToActive:(BOOL)targetingStateActive{
+    
+    
+    
+}
+
+- (void)toggleTrailingRestTargetingStateToActive:(BOOL)targetingStateActive{
+    
+    
     
 }
 
