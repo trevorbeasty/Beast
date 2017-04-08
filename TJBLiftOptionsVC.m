@@ -13,7 +13,7 @@
 #import "TJBWorkoutNavigationHub.h"
 #import "TJBRealizedSetActiveEntryVC.h"
 #import "NewOrExistinigCircuitVC.h"
-#import "TJBCircuitDesignVC.h"
+
 
 // tbc's
 
@@ -171,15 +171,7 @@
     
 }
 
-- (IBAction)didPressCreateNewRoutine:(id)sender{
-    
-    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
-    
-    [self presentViewController: vc
-                       animated: YES
-                     completion: nil];
-    
-}
+
 
 
 

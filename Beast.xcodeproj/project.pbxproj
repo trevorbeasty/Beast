@@ -60,8 +60,6 @@
 		0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843C8E1DFB24C70093F057 /* TJBStopwatch.m */; };
 		0B843CAA1DFEF8E50093F057 /* TJBWorkoutNavigationHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */; };
 		0B843CAB1DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */; };
-		0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */; };
-		0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */; };
 		0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */; };
 		0B86FB721E11638E000D1B5F /* NewOrExistinigCircuitVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B86FB701E11638E000D1B5F /* NewOrExistinigCircuitVC.m */; };
 		0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B86FB711E11638E000D1B5F /* NewOrExistinigCircuitVC.xib */; };
@@ -191,9 +189,6 @@
 		0B843CA71DFEF8E50093F057 /* TJBWorkoutNavigationHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBWorkoutNavigationHub.h; sourceTree = "<group>"; };
 		0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBWorkoutNavigationHub.m; sourceTree = "<group>"; };
 		0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBWorkoutNavigationHub.xib; sourceTree = "<group>"; };
-		0B843CB31DFF65110093F057 /* TJBCircuitDesignVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitDesignVC.h; sourceTree = "<group>"; };
-		0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircuitDesignVC.m; sourceTree = "<group>"; };
-		0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircuitDesignVC.xib; sourceTree = "<group>"; };
 		0B86FB6B1E102921000D1B5F /* TJBAestheticsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBAestheticsController.h; sourceTree = "<group>"; };
 		0B86FB6C1E102921000D1B5F /* TJBAestheticsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBAestheticsController.m; sourceTree = "<group>"; };
 		0B86FB6F1E11638E000D1B5F /* NewOrExistinigCircuitVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewOrExistinigCircuitVC.h; sourceTree = "<group>"; };
@@ -302,16 +297,6 @@
 				0B1616CF1E06D72F001C8F45 /* TJBGlobalParameters.m */,
 			);
 			name = General;
-			sourceTree = "<group>";
-		};
-		0B1616D71E0819BD001C8F45 /* Template Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				0B843CB31DFF65110093F057 /* TJBCircuitDesignVC.h */,
-				0B843CB41DFF65110093F057 /* TJBCircuitDesignVC.m */,
-				0B843CB51DFF65110093F057 /* TJBCircuitDesignVC.xib */,
-			);
-			name = "Template Configuration";
 			sourceTree = "<group>";
 		};
 		0B26199F1E0DC94B006FB2D9 /* Active Guidance */ = {
@@ -638,7 +623,6 @@
 		0B843CB21DFF64BD0093F057 /* Designed Lift */ = {
 			isa = PBXGroup;
 			children = (
-				0B1616D71E0819BD001C8F45 /* Template Configuration */,
 				0B86FB7D1E256D4A000D1B5F /* Circuit Template */,
 				0BA8ACF71E26562300EE10C2 /* Circuit Reference */,
 				0B86FB6E1E116360000D1B5F /* New or Existing Selection  */,
@@ -868,7 +852,6 @@
 				0BC12E261E7AAB8A0041D863 /* TJBExerciseSelectionTitleCell.xib in Resources */,
 				0B3688381E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib in Resources */,
 				0B78E7E71E462B6300EB216F /* TJBWeightRepsSelectionVC.xib in Resources */,
-				0B843CB71DFF65110093F057 /* TJBCircuitDesignVC.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
 				0B78E7ED1E462F8500EB216F /* TJBWeightRepsSelectionCell.xib in Resources */,
 				0B78E7DA1E3F5D3C00EB216F /* TJBPersonalRecordCell.xib in Resources */,
@@ -918,7 +901,6 @@
 				0B78E8011E67654C00EB216F /* TJBExerciseSelectionCell.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B78E7CD1E3C16A300EB216F /* TJBRealizedChainCell.m in Sources */,
-				0B843CB61DFF65110093F057 /* TJBCircuitDesignVC.m in Sources */,
 				0B870E5D1E31008900E38C46 /* TJBRepsWeightRecordPair.m in Sources */,
 				0B78E7F31E61236300EB216F /* TJBCellFetchingOperation.m in Sources */,
 				0B78E7E61E462B6300EB216F /* TJBWeightRepsSelectionVC.m in Sources */,

@@ -14,7 +14,6 @@
 
 // VC's to present
 
-#import "TJBCircuitDesignVC.h"
 #import "TJBActiveRoutineGuidanceVC.h"
 #import "TJBWorkoutNavigationHub.h"
 #import "TJBCircuitReferenceContainerVC.h"
@@ -158,7 +157,7 @@
     
     [self toggleButtonsToOffState];
     
-    [self configureNotifications];
+//    [self configureNotifications];
     
     [self deriveSupportArraysAndConfigureInitialDisplay];
     
@@ -194,15 +193,15 @@
     
 }
 
-- (void)configureNotifications{
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(fetchCoreData)
-                                                 name: NSManagedObjectContextDidSaveNotification
-                                               object: [[CoreDataController singleton] moc]];
-    
-    
-}
+//- (void)configureNotifications{
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver: self
+//                                             selector: @selector(fetchCoreData)
+//                                                 name: NSManagedObjectContextDidSaveNotification
+//                                               object: [[CoreDataController singleton] moc]];
+//    
+//    
+//}
 
 
 - (void)viewAesthetics{
@@ -1260,7 +1259,18 @@
 
 - (IBAction)didPressNewRoutineButton:(id)sender{
     
-    TJBCircuitTemplateContainerVC *ctcVC = [[TJBCircuitTemplateContainerVC alloc] init];
+    __weak NewOrExistinigCircuitVC *weakSelf = self;
+    
+    TJBVoidCallback callback = ^{
+        
+        [weakSelf dismissViewControllerAnimated: YES
+                                     completion: nil];
+        
+        [weakSelf deriveSupportArraysAndConfigureInitialDisplay];
+        
+    };
+    
+    TJBCircuitTemplateContainerVC *ctcVC = [[TJBCircuitTemplateContainerVC alloc] initWithCallback: callback];
     
     [self presentViewController: ctcVC
                        animated: YES
@@ -1277,18 +1287,6 @@
     
 }
 
-
-
-- (IBAction)didPressRightNewButton:(id)sender{
-    
-    TJBCircuitDesignVC *vc = [[TJBCircuitDesignVC alloc] init];
-    
-    [self.presentingViewController presentViewController: vc
-                                        animated: NO
-                                      completion: nil];
-
-    
-}
 
 - (IBAction)didPressLaunchButton:(id)sender {
     

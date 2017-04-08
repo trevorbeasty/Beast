@@ -65,6 +65,7 @@
 // core
 
 @property (nonatomic, strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *circuitTemplateVC;
+@property (copy) TJBVoidCallback callback;
 
 // pertinent chainTemplate
 
@@ -89,44 +90,13 @@ static NSString * const placeholderName = @"placeholderName";
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate{
-    
-    self = [super init];
-    
-    self.chainTemplate = chainTemplate;
-    
-    return self;
-    
-}
-
-- (instancetype)initWithTargetingWeight:(NSNumber *)targetingWeight targetingReps:(NSNumber *)targetingReps targetingRest:(NSNumber *)targetingRest targetsVaryByRound:(NSNumber *)targetsVaryByRound numberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name{
-    
-    self = [super init];
-    
-    // chain template
-    
-    TJBChainTemplate *skeletonChainTemplate = [[CoreDataController singleton] createAndSaveSkeletonChainTemplateWithNumberOfExercises: numberOfExercises
-                                                                                                                       numberOfRounds: numberOfRounds
-                                                                                                                                 name: name
-                                                                                                                    isTargetingWeight: [targetingWeight boolValue]
-                                                                                                                      isTargetingReps: [targetingReps boolValue]
-                                                                                                              isTargetingTrailingRest: [targetingReps boolValue]];
-    
-    self.chainTemplate = skeletonChainTemplate;
-
-    return self;
-    
-}
-
-- (instancetype)init{
+- (id)initWithCallback:(TJBVoidCallback)callback{
     
     self = [super init];
     
     [self createPlaceholderChainTemplate];
     
-    
-    
-    
+    self.callback = callback;
     
     return self;
     
@@ -447,13 +417,9 @@ static NSString * const placeholderName = @"placeholderName";
 
 - (IBAction)didPressAdd:(id)sender{
     
-//    //// this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
-//    
     BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
-//
+
     if (requisiteUserInputCollected){
-        
-        // it has been determined that the chain template is complete, so update its corresponding property and save the context
         
         [[CoreDataController singleton] saveContext];
         
@@ -469,8 +435,7 @@ static NSString * const placeholderName = @"placeholderName";
         
         void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
             
-            [weakSelf dismissViewControllerAnimated: YES
-                                         completion: nil];
+            weakSelf.callback();
             
         };
         
