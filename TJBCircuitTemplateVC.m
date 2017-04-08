@@ -71,7 +71,7 @@ static NSString * const defaultValue = @"unselected";
 
 // layout
 
-static CGFloat const roundRowHeight = 34.0;
+static CGFloat const roundRowHeight = 44.0;
 static CGFloat const exerciseRowHeight = 50.0;
 static CGFloat const topExerciseComponentSpacing = 8.0;
 static CGFloat const interimExerciseComponentSpacing = 24.0;
@@ -585,45 +585,46 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     UIView *hitTestView = [self.view hitTest: dragPoint
                                    withEvent: nil];
-    
-    for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
+    for (NSMutableArray *muteArray in self.childRowControllers){
         
-        switch (copyInputType) {
-            case CopyWeightType:
-                
-                if ([rowComp.weightButton isEqual: hitTestView]){
+        for (TJBCircuitTemplateRowComponent *rowComp in muteArray){
+            
+            switch (copyInputType) {
+                case CopyWeightType:
                     
-                    [rowComp copyValueForWeightButton];
+                    if ([rowComp.weightButton isEqual: hitTestView]){
+                        
+                        [rowComp copyValueForWeightButton];
+                        
+                    }
                     
-                }
-                
-                break;
-                
-            case CopyRepsType:
-                
-                if ([rowComp.repsButton isEqual: hitTestView]){
+                    break;
                     
-                    [rowComp copyValueForRepsButton];
+                case CopyRepsType:
                     
-                }
-                
-                break;
-                
-            case CopyRestType:
-                
-                if ([rowComp.restButton isEqual: hitTestView]){
+                    if ([rowComp.repsButton isEqual: hitTestView]){
+                        
+                        [rowComp copyValueForRepsButton];
+                        
+                    }
                     
-                    [rowComp copyValueForRestButton];
+                    break;
                     
-                }
-                
-                break;
-                
-            default:
-                break;
+                case CopyRestType:
+                    
+                    if ([rowComp.restButton isEqual: hitTestView]){
+                        
+                        [rowComp copyValueForRestButton];
+                        
+                    }
+                    
+                    break;
+                    
+                default:
+                    break;
+            }
+            
         }
-        
-
         
     }
     
@@ -633,10 +634,15 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     // activate the copying state in all row components for the given number
     
-    for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
+    for (NSMutableArray *muteArray in self.childRowControllers){
         
-        [rowComp activeCopyingStateForNumber: number
-                               copyInputType: copyInputType];
+        for (TJBCircuitTemplateRowComponent *rowComp in muteArray){
+            
+
+            [rowComp activeCopyingStateForNumber: number
+                                   copyInputType: copyInputType];
+            
+        }
         
     }
     
@@ -646,9 +652,14 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     // deactivate the copying state in all row components
     
-    for (TJBCircuitTemplateRowComponent *rowComp in self.childRowControllers){
+    for (NSMutableArray *muteArray in self.childRowControllers){
         
-        [rowComp deactivateCopyingState];
+        for (TJBCircuitTemplateRowComponent *rowComp in muteArray){
+            
+            
+            [rowComp deactivateCopyingState];
+            
+        }
         
     }
     
