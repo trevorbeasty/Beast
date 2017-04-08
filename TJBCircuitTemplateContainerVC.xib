@@ -36,47 +36,47 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XPt-E1-GwX" userLabel="leftControlsContainer">
-                    <rect key="frame" x="16" y="555" width="343" height="112"/>
+                    <rect key="frame" x="16" y="551" width="343" height="116"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Exercises" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycf-eU-09C">
-                            <rect key="frame" x="40" y="11" width="88" height="21"/>
+                            <rect key="frame" x="40" y="15" width="88" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.97479108169999995" green="1" blue="0.97058398140000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9a-9s-ukM" userLabel="numberExercisesValue">
-                            <rect key="frame" x="0.0" y="36" width="167.5" height="24"/>
+                            <rect key="frame" x="0.0" y="40" width="167.5" height="24"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="1gT-dx-0IG">
-                            <rect key="frame" x="37" y="68" width="94" height="29"/>
+                            <rect key="frame" x="37" y="72" width="94" height="29"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="Vff-Kw-PW5"/>
                             </constraints>
                         </stepper>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJz-j4-7Dv">
-                            <rect key="frame" x="175.5" y="36" width="167.5" height="24"/>
+                            <rect key="frame" x="175.5" y="40" width="167.5" height="24"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Rounds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bnC-eb-6yL">
-                            <rect key="frame" x="223" y="11" width="73" height="21"/>
+                            <rect key="frame" x="223" y="15" width="73" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="zhL-u0-9Sc">
-                            <rect key="frame" x="212.5" y="68" width="94" height="29"/>
+                            <rect key="frame" x="212.5" y="72" width="94" height="29"/>
                         </stepper>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="1gT-dx-0IG" secondAttribute="bottom" constant="4" id="1UK-Su-Y6V"/>
                         <constraint firstItem="dJz-j4-7Dv" firstAttribute="leading" secondItem="D9a-9s-ukM" secondAttribute="trailing" constant="8" id="31L-xf-Wny"/>
-                        <constraint firstAttribute="height" constant="112" id="4i6-qI-bOk"/>
+                        <constraint firstAttribute="height" constant="116" id="4i6-qI-bOk"/>
                         <constraint firstItem="bnC-eb-6yL" firstAttribute="bottom" secondItem="Ycf-eU-09C" secondAttribute="bottom" id="6xe-Pt-w6u"/>
                         <constraint firstItem="dJz-j4-7Dv" firstAttribute="top" secondItem="D9a-9s-ukM" secondAttribute="top" id="E1N-SC-Owp"/>
                         <constraint firstItem="bnC-eb-6yL" firstAttribute="centerX" secondItem="dJz-j4-7Dv" secondAttribute="centerX" id="F3e-Rb-fD6"/>

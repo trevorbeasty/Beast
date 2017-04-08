@@ -511,7 +511,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (CGFloat)exerciseComponentHeight{
     
-    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * (_activeNumberOfRounds); // the switch row is given the same height as the rounds rows
+    CGFloat height = exerciseComponentStyleSpacing + exerciseRowHeight + roundRowHeight * (_activeNumberOfRounds + 1); // the switch row is given the same height as the rounds rows and is responsible for the '+ 1'
     
     return height;
     

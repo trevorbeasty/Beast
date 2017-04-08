@@ -48,6 +48,10 @@
 
 - (void)configureViewAesthetics{
     
+    // meta view
+    
+    self.view.backgroundColor = [UIColor clearColor];
+    
     // container views
     
     NSArray *containerViews = @[self.weightSwitchContainer, self.repsSwitchContainer, self.trailingRestSwitchContainer];
