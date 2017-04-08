@@ -939,6 +939,8 @@
                 
             }
             
+            NSLog(@"chain template\nnumber of exercises: %d\nnumber of target collectors: %lu", chainTemplate.numberOfExercises, [chainTemplate.targetUnitCollections count]);
+            
             [cell configureWithChainTemplate: chainTemplate
                                         date: date
                                       number: [NSNumber numberWithInteger: indexPath.row]];

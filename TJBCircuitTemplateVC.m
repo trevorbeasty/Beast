@@ -399,6 +399,9 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     int previousNumberOfExercises = _activeNumberOfExercises;
     _activeNumberOfExercises += 1;
     
+    NSMutableArray *muteArray = [[NSMutableArray alloc] init];
+    [self.childRowControllers addObject: muteArray]; // b/c child row controllers are tracked with array of 2-dimensions, must add a mutable array to account for new exercise
+    
     [self appendNewExerciseComponentToExistingStructureWithExerciseIndex: previousNumberOfExercises];
     [self resetContentSize];
     

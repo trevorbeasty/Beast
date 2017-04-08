@@ -783,15 +783,23 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     int numberOfRounds = chainTemplate.numberOfRounds;
     
+    // add a placeholder exercise to exercises
+    
+    NSMutableOrderedSet *exercisesCopy = [chainTemplate.exercises mutableCopy];
+    TJBExercise *placeholderExercise = [self placeholderExercise];
+    [exercisesCopy addObject: placeholderExercise];
+    chainTemplate.exercises = exercisesCopy;
+    
+    // add an target unit collection to targetUnitCollections
+    
     TJBTargetUnitCollection *tuc = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnitCollection"
                                                                  inManagedObjectContext: [self moc]];
     tuc.exerciseIndex = previousNumberExercises;
     tuc.chainTemplate = chainTemplate;
     NSMutableOrderedSet<TJBTargetUnit *> *iterativeTargetUnits = [[NSMutableOrderedSet alloc] init];
-    tuc.targetUnits = iterativeTargetUnits;
     
-    NSMutableOrderedSet *targetUnitCollectorCopy = [chainTemplate.targetUnitCollections mutableCopy];
-    [targetUnitCollectorCopy addObject: tuc];
+    NSMutableOrderedSet *targetUnitCollectionsCopy = [chainTemplate.targetUnitCollections mutableCopy];
+    [targetUnitCollectionsCopy addObject: tuc];
     
     for (int i = 0; i < numberOfRounds; i++){
         
@@ -813,11 +821,14 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         // exercise
         
-        iterativeTargetUnit.exercise = [self placeholderExercise];
+        iterativeTargetUnit.exercise = placeholderExercise;
         
     }
     
-    chainTemplate.targetUnitCollections = targetUnitCollectorCopy;
+    NSLog(@"tu collections copy has # elements: %lu", [targetUnitCollectionsCopy count]);
+    
+    tuc.targetUnits = iterativeTargetUnits;
+    chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
     
     [self saveContext];
     
