@@ -315,6 +315,9 @@ static NSString * const placeholderName = @"placeholderName";
         
     }
     
+    [self.view updateConstraintsIfNeeded]; // needs to be called to update views when existing constraints have been changed
+    [self.view layoutIfNeeded];
+    
     _previousExercisesStepperValue = [stepValue floatValue];
     
 }

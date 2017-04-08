@@ -349,7 +349,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-#pragma mark - Row Addition / Deletion
+#pragma mark - Row & Exercise Addition / Deletion
 
 - (void)addRowToExistingStructure{
     
@@ -393,6 +393,27 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     }
  
 }
+
+- (void)addExerciseToExistingStructure{
+    
+    int previousNumberOfExercises = _activeNumberOfExercises;
+    _activeNumberOfExercises += 1;
+    
+    [self appendNewExerciseComponentToExistingStructureWithExerciseIndex: previousNumberOfExercises];
+    [self resetContentSize];
+    
+    return;
+    
+}
+
+
+-  (void)deleteLastExerciseFromExistingStructure{
+    
+    
+    
+}
+
+#pragma mark - Row & Exercise Addition / Deletion Helper Methods
 
 - (void)configureVerticalConstraintsForNewSpecifications{
     
@@ -698,7 +719,14 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (void)didIncrementNumberOfExercisesInUpDirection:(BOOL)upDirection{
     
-    
+    if (upDirection == YES){
+        
+        [self addExerciseToExistingStructure];
+        
+    } else{
+        
+        [self removeLastRowFromExistingStructure];
+    }
     
 }
 
