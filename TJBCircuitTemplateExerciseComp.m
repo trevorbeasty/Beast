@@ -162,7 +162,6 @@
     
     [self addChildViewController: rowVC];
     
-//    [self.rowCompStackView addArrangedSubview: rowVC.view];
     [self.rowCompStackView insertArrangedSubview: rowVC.view
                                          atIndex: roundIndex];
 

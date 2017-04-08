@@ -12,6 +12,10 @@
 
 #import "TJBAestheticsController.h"
 
+// master controller
+
+#import "TJBCircuitTemplateVC.h"
+
 @interface TJBSwitchRow ()
 
 // IBOutlet
@@ -26,11 +30,27 @@
 @property (weak, nonatomic) IBOutlet UISwitch *repsSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *trailingRestSwitch;
 
+// core
 
+@property (strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
+@property (strong) NSNumber *exerciseIndex;
 
 @end
 
 @implementation TJBSwitchRow
+
+#pragma mark - Instantiation
+
+- (instancetype)initWithExerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
+    
+    self = [super init];
+    
+    self.masterController = masterController;
+    self.exerciseIndex = @(exerciseIndex);
+    
+    return self;
+    
+}
 
 #pragma mark - View Life Cycle
 
@@ -99,7 +119,9 @@
 
 - (void)weightSwitchValueDidChange{
     
-    
+    [self.masterController configureRowsForExerciseIndex: [self.exerciseIndex intValue]
+                                              switchType: WeightSwitch
+                                               activated: self.weightSwitch.on];
     
 }
 

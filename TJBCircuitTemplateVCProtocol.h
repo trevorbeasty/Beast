@@ -23,6 +23,12 @@
 
 #import "TJBGlobalParameters.h"
 
+typedef enum {
+    WeightSwitch,
+    RepsSwitch,
+    TrailingRestSwitch
+} TJBSwitchType;
+
 @protocol TJBCircuitTemplateVCProtocol <NSObject>
 
 - (void)didSelectExercise:(TJBExercise *)exercise forExerciseIndex:(int)exerciseIndex;
@@ -48,5 +54,31 @@
 
 // layout math
 
+// switches
+
+- (void)configureRowsForExerciseIndex:(int)exerciseIndex switchType:(TJBSwitchType)switchType activated:(BOOL)activated;
+
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

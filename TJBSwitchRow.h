@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+// master controller
+
+@class TJBCircuitTemplateVC;
+#import "TJBCircuitTemplateVCProtocol.h"
+
 @interface TJBSwitchRow : UIViewController
+
+- (instancetype)initWithExerciseIndex:(int)exerciseIndex masterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController;
 
 @end

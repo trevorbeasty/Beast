@@ -780,6 +780,33 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
+- (void)configureRowsForExerciseIndex:(int)exerciseIndex switchType:(TJBSwitchType)switchType activated:(BOOL)activated{
+    
+    NSArray *relevantRowControllers = self.childRowControllers[exerciseIndex];
+    
+    for (TJBCircuitTemplateRowComponent *rowComp in relevantRowControllers){
+        
+        switch (switchType) {
+            case WeightSwitch:
+                [rowComp toggleWeightTargetingStateToActive: activated];
+                break;
+                
+            case RepsSwitch:
+                [rowComp toggleRepsTargetingStateToActive: activated];
+                
+            case TrailingRestSwitch:
+                [rowComp toggleTrailingRestTargetingStateToActive: activated];
+                
+            default:
+                break;
+        }
+        
+    }
+    
+
+    
+}
+
 #pragma mark - API
 
 - (NSNumber *)numberOfRounds{

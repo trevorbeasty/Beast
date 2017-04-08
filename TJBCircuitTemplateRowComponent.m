@@ -147,8 +147,6 @@
 
 - (void)viewAesthetics{
     
-    TJBAestheticsController *aesthetics = [TJBAestheticsController singleton];
-    
     // background
     
     self.view.backgroundColor = [UIColor clearColor];
@@ -161,29 +159,6 @@
     self.roundLabel.textColor = [UIColor whiteColor];
     self.roundLabel.font = [UIFont boldSystemFontOfSize: 15];
     
-    // button appearance
-    
-    void (^eraseButton)(UIButton *) = ^(UIButton *button){
-        button.backgroundColor = [UIColor clearColor];
-        [button setTitle: @""
-                forState: UIControlStateNormal];
-        button.enabled = NO;
-    };
-    
-        
-    void (^activeButtonConfiguration)(UIButton *) = ^(UIButton *button){
-        
-        button.backgroundColor = [aesthetics blueButtonColor];
-        [button setTitleColor: [UIColor whiteColor]
-                     forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
-        
-        CALayer *layer = button.layer;
-        layer.masksToBounds = YES;
-        layer.cornerRadius = 8.0;
-        
-    };
-    
     int eInd = [self.exerciseIndex intValue];
     int rInd = [self.roundIndex intValue];
     
@@ -191,31 +166,53 @@
         
     if (tu.isTargetingWeight == YES){
             
-        activeButtonConfiguration(self.weightButton);
+        [self giveButtonActiveConfig: self.weightButton];
         
     } else{
             
-        eraseButton(self.weightButton);
+        [self giveButtonInactiveConfig: self.weightButton];
     }
         
     if (tu.isTargetingReps == YES){
             
-        activeButtonConfiguration(self.repsButton);
+        [self giveButtonActiveConfig: self.repsButton];
         
     } else{
             
-        eraseButton(self.repsButton);
+        [self giveButtonInactiveConfig: self.repsButton];
     }
         
     if (tu.isTargetingTrailingRest == YES){
             
-        activeButtonConfiguration(self.restButton);
+        [self giveButtonActiveConfig: self.restButton];
         
     } else{
             
-        eraseButton(self.restButton);
+        [self giveButtonInactiveConfig: self.restButton];
     }
         
+    
+}
+
+- (void)giveButtonActiveConfig:(UIButton *)button{
+    
+    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+    [button setTitleColor: [UIColor whiteColor]
+                 forState: UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
+    
+    CALayer *layer = button.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8.0;
+    
+}
+
+- (void)giveButtonInactiveConfig:(UIButton *)button{
+    
+    button.backgroundColor = [UIColor clearColor];
+    [button setTitle: @""
+            forState: UIControlStateNormal];
+    button.enabled = NO;
     
 }
 
@@ -734,19 +731,43 @@
 
 - (void)toggleWeightTargetingStateToActive:(BOOL)targetingStateActive{
     
-    
+    if (targetingStateActive == YES){
+        
+        [self giveButtonInactiveConfig: self.weightButton];
+        
+    } else{
+        
+        [self giveButtonInactiveConfig: self.weightButton];
+        
+    }
     
 }
 
 - (void)toggleRepsTargetingStateToActive:(BOOL)targetingStateActive{
     
-    
+    if (targetingStateActive == YES){
+        
+        [self giveButtonActiveConfig: self.repsButton];
+        
+    } else{
+        
+        [self giveButtonInactiveConfig: self.repsButton];
+        
+    }
     
 }
 
 - (void)toggleTrailingRestTargetingStateToActive:(BOOL)targetingStateActive{
     
-    
+    if (targetingStateActive == YES){
+        
+        [self giveButtonActiveConfig: self.restButton];
+        
+    } else{
+        
+        [self giveButtonInactiveConfig: self.restButton];
+        
+    }
     
 }
 

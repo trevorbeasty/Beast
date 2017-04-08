@@ -23,6 +23,8 @@
 - (void)copyValueForRepsButton;
 - (void)copyValueForRestButton;
 
+// switches
+
 - (void)toggleWeightTargetingStateToActive:(BOOL)targetingStateActive;
 - (void)toggleRepsTargetingStateToActive:(BOOL)targetingStateActive;
 - (void)toggleTrailingRestTargetingStateToActive:(BOOL)targetingStateActive;
