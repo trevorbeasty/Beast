@@ -115,105 +115,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - Queries and Inquiries
 
-- (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise{
-    
-    //// evaluates if the exercise object is a default object.  If so, returns YES
-    
-    return exercise.isPlaceholderExercise;
-    
-}
 
-//- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp{
-//    
-//    //// evaluates if the component is a default object.  If so, returns YES
-//    
-//    return numberTypeArrayComp.isDefaultObject;
-//    
-//}
 
-- (BOOL)exerciseExistsForName:(NSString *)name{
-    
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
-    fetch.predicate = predicate;
-    
-    NSError *error =  nil;
-    NSArray *results = [self.moc executeFetchRequest: fetch
-                                               error: &error];
-    
-    NSUInteger arrayLength = [results count];
-    
-    if (arrayLength == 0){
-        
-        return NO;
-        
-    } else{
-        
-        return YES;
-        
-    }
-//    else
-//    {
-//        abort();
-//    }
-    
-}
-
-- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise{
-    
-    //// returns an exercise with the passed name and indicates whether it was newly created or not
-    
-    // IMPORTANT - this class does not accept a category as an argument and thus does not assign a category to the created exercise.  Exercises are required to have a category as defined in the core data model.  It is the job of the calling class to assign a category and save the context if the exercise object was newly created
-    
-    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
-    fetch.predicate = predicate;
-    
-    NSError *error =  nil;
-    NSArray *results = [self.moc executeFetchRequest: fetch
-                                               error: &error];
-    
-    NSUInteger arrayLength = [results count];
-    
-    if (arrayLength == 0){
-        
-        TJBExercise *newExercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
-                                                              inManagedObjectContext: self.moc];
-        
-        newExercise.name = name;
-        
-        // placeholder property
-        
-        BOOL isPlaceholder;
-        
-        if (!createAsPlaceholderExercise || [createAsPlaceholderExercise boolValue] == NO){
-            
-            isPlaceholder = NO;
-            
-        } else{
-            
-            isPlaceholder = YES;
-            
-        }
-        
-        newExercise.isPlaceholderExercise = isPlaceholder;
-        
-        // pass by reference
-        
-        *wasNewlyCreated = [NSNumber numberWithBool: YES];
-        
-        return newExercise;
-        
-    } else{
-        
-        *wasNewlyCreated = [NSNumber numberWithBool: NO];
-        
-        TJBExercise *existingExercise = results[0];
-        
-        return existingExercise;
-        
-    }
-}
 
 - (TJBExerciseCategory *)exerciseCategory:(TJBExerciseCategoryType)exerciseCategory{
     
@@ -483,103 +386,6 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 
 
-- (TJBExercise *)placeholderExercise{
-    
-    NSString *placeholderExerciseName = @"Placeholder Exercise";
-    
-    NSNumber *wasNewlyCreated = nil;
-    TJBExercise *exercise = [self exerciseForName: placeholderExerciseName
-                                  wasNewlyCreated: &wasNewlyCreated
-                      createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
-    
-    // if it was newly created, give it the placeholder category
-    
-    if ([wasNewlyCreated boolValue] == YES){
-        
-        TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
-        
-        exercise.category = placeholderCategory;
-        
-    }
-    
-    return exercise;
-    
-}
-
-- (NSOrderedSet *)placeholderExerciseSetWithLength:(int)length{
-    
-    //// create a set of placeholder exercises
-    
-    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
-    
-    for (int i = 0; i < length ; i++){
-        
-        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
-        
-        NSString *placeholderExerciseDynamicName = [NSString stringWithFormat: @"%@%d",
-                                                    placeholderExerciseName,
-                                                    i];
-        
-        NSNumber *wasNewlyCreated = nil;
-        TJBExercise *exercise = [self exerciseForName: placeholderExerciseDynamicName
-                                      wasNewlyCreated: &wasNewlyCreated
-                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
-        
-        // if it was newly created, give it the placeholder category
-        
-        if ([wasNewlyCreated boolValue] == YES){
-            
-            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
-            
-            exercise.category = placeholderCategory;
-            
-        }
-        
-        [exercises addObject: exercise];
-        
-    }
-    
-    return exercises;
-    
-}
-
-- (NSArray *)placeholderExerciseArrayWithLength:(int)length{
-    
-    //// create a set of placeholder exercises
-    
-    NSMutableArray *exercises = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < length ; i++){
-        
-        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
-        
-        NSString *placeholderExerciseDynamicName = [NSString stringWithFormat: @"%@%d",
-                                                    placeholderExerciseName,
-                                                    i];
-        
-        NSNumber *wasNewlyCreated = nil;
-        TJBExercise *exercise = [self exerciseForName: placeholderExerciseDynamicName
-                                      wasNewlyCreated: &wasNewlyCreated
-                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
-        
-        // if it was newly created, give it the placeholder category
-        
-        if ([wasNewlyCreated boolValue] == YES){
-            
-            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
-            
-            exercise.category = placeholderCategory;
-            
-        }
-        
-        [exercises addObject: exercise];
-        
-    }
-    
-    return exercises;
-    
-}
-
 //// realized chain
 
 - (TJBRealizedChain *)createAndSaveSkeletonRealizedChainForChainTemplate:(TJBChainTemplate *)chainTemplate{
@@ -640,6 +446,207 @@ NSString * const placeholderCategoryName = @"Placeholder";
     return realizedChain;
     
 }
+
+#pragma mark - TJBExercise
+
+- (void)appendPlaceholderExerciseToSelectedExercisesSet:(NSMutableOrderedSet<TJBExercise *> *)exercises{
+    
+    TJBExercise *placeholderExercise = [self placeholderExercise];
+    [exercises addObject: placeholderExercise];
+    
+}
+
+- (TJBExercise *)placeholderExercise{
+    
+    NSString *name = placeholderExerciseName;
+    
+    NSNumber *wasNewlyCreated = nil;
+    TJBExercise *exercise = [self exerciseForName: name
+                                  wasNewlyCreated: &wasNewlyCreated
+                      createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
+    
+    // if it was newly created, give it the placeholder category
+    
+    if ([wasNewlyCreated boolValue] == YES){
+        
+        TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
+        
+        exercise.category = placeholderCategory;
+        
+    }
+    
+    return exercise;
+    
+}
+
+- (NSMutableOrderedSet *)placeholderExerciseSetWithLength:(int)length{
+    
+    // create a set of placeholder exercises
+    
+    NSMutableOrderedSet *exercises = [[NSMutableOrderedSet alloc] init];
+    
+    for (int i = 0; i < length ; i++){
+        
+        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
+        
+        NSString *name = placeholderExerciseName;
+        
+        NSNumber *wasNewlyCreated = nil;
+        TJBExercise *exercise = [self exerciseForName: name
+                                      wasNewlyCreated: &wasNewlyCreated
+                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
+        
+        // if it was newly created, give it the placeholder category
+        
+        if ([wasNewlyCreated boolValue] == YES){
+            
+            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
+            
+            exercise.category = placeholderCategory;
+            
+        }
+        
+        [exercises addObject: exercise];
+        
+    }
+    
+    return exercises;
+    
+}
+
+- (NSMutableArray *)placeholderExerciseArrayWithLength:(int)length{
+    
+    //// create a set of placeholder exercises
+    
+    NSMutableArray *exercises = [[NSMutableArray alloc] init];
+    
+    for (int i = 0; i < length ; i++){
+        
+        // the placeholder name must change with every iteration.  Otherwise, the exercise objects will not be unique and only 1 of them will be added to the set (because sets only add unique objects)
+        
+        NSString *placeholderExerciseDynamicName = [NSString stringWithFormat: @"%@%d",
+                                                    placeholderExerciseName,
+                                                    i];
+        
+        NSNumber *wasNewlyCreated = nil;
+        TJBExercise *exercise = [self exerciseForName: placeholderExerciseDynamicName
+                                      wasNewlyCreated: &wasNewlyCreated
+                          createAsPlaceholderExercise: [NSNumber numberWithBool: YES]];
+        
+        // if it was newly created, give it the placeholder category
+        
+        if ([wasNewlyCreated boolValue] == YES){
+            
+            TJBExerciseCategory *placeholderCategory = [self exerciseCategory: PlaceholderType];
+            
+            exercise.category = placeholderCategory;
+            
+        }
+        
+        [exercises addObject: exercise];
+        
+    }
+    
+    return exercises;
+    
+}
+
+
+
+
+- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise{
+    
+    //// returns an exercise with the passed name and indicates whether it was newly created or not
+    
+    // IMPORTANT - this class does not accept a category as an argument and thus does not assign a category to the created exercise.  Exercises are required to have a category as defined in the core data model.  It is the job of the calling class to assign a category and save the context if the exercise object was newly created
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 0){
+        
+        TJBExercise *newExercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
+                                                                 inManagedObjectContext: self.moc];
+        
+        newExercise.name = name;
+        
+        // placeholder property
+        
+        BOOL isPlaceholder;
+        
+        if (!createAsPlaceholderExercise || [createAsPlaceholderExercise boolValue] == NO){
+            
+            isPlaceholder = NO;
+            
+        } else{
+            
+            isPlaceholder = YES;
+            
+        }
+        
+        newExercise.isPlaceholderExercise = isPlaceholder;
+        
+        // pass by reference
+        
+        *wasNewlyCreated = [NSNumber numberWithBool: YES];
+        
+        return newExercise;
+        
+    } else{
+        
+        *wasNewlyCreated = [NSNumber numberWithBool: NO];
+        
+        TJBExercise *existingExercise = results[0];
+        
+        return existingExercise;
+        
+    }
+}
+
+- (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise{
+    
+    //// evaluates if the exercise object is a default object.  If so, returns YES
+    
+    return exercise.isPlaceholderExercise;
+    
+}
+
+
+- (BOOL)exerciseExistsForName:(NSString *)name{
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 0){
+        
+        return NO;
+        
+    } else{
+        
+        return YES;
+        
+    }
+    
+}
+
+
+
+
+
 
 #pragma mark - Chain Template Manipulation
 

@@ -69,8 +69,6 @@ typedef enum{
 
 - (NSManagedObjectContext *)moc;
 
-//- (void)deleteChainWithChainType:(ChainType)chainType chain:(TJBChain *)chain;
-
 - (void)deleteRealizedChain:(TJBRealizedChain *)rc;
 - (void)deleteChainTemplate:(TJBChainTemplate *)ct;
 
@@ -78,12 +76,8 @@ typedef enum{
 
 // chain template
 
-- (NSOrderedSet *)placeholderExerciseSetWithLength:(int)length;
-- (NSArray *)placeholderExerciseArrayWithLength:(int)length;
-
-//- (void)cloneFirstNumberForWeight:(TJBChainTemplate *)chainTemplate;
-//- (void)cloneFirstNumberForReps:(TJBChainTemplate *)chainTemplate;
-//- (void)cloneFirstNumberForRest:(TJBChainTemplate *)chainTemplate;
+- (NSMutableOrderedSet *)placeholderExerciseSetWithLength:(int)length;
+- (NSMutableArray *)placeholderExerciseArrayWithLength:(int)length;
 
 - (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name isTargetingWeight:(BOOL)isTargetingWeight isTargetingReps:(BOOL)isTargetingReps isTargetingTrailingRest:(BOOL)isTargetingTrailingRest;
 
@@ -96,7 +90,6 @@ typedef enum{
 // checking if an object is a default object
 
 - (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise;
-//- (BOOL)numberTypeArrayCompIsDefaultObject:(TJBNumberTypeArrayComp *)numberTypeArrayComp;
 
 // existing chain template manipulation
 
@@ -105,6 +98,8 @@ typedef enum{
 
 - (void)appendExerciseToChainTemplate:(TJBChainTemplate *)chainTemplate;
 - (void)deleteLastExercisefromChainTemplate:(TJBChainTemplate *)chainTemplate;
+
+- (void)appendPlaceholderExerciseToSelectedExercisesSet:(NSMutableOrderedSet <TJBExercise *> *)exercises;
 
 @end
 

@@ -123,8 +123,6 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     // instantiation helper methods
     
-    [self createPlaceholderArrayForSelectedExercises];
-    
     [self initializeCollectors];
     
     return self;
@@ -144,11 +142,9 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (void)createPlaceholderArrayForSelectedExercises{
     
-    //// this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made when allUserInputCollected is calledr
+    // this set will collect the exercises the user chooses and will eventually be assigned to the chain template after all user selections have been made when allUserInputCollected is calledr
     
-    NSArray *placeholderExercisesArray = [[CoreDataController singleton] placeholderExerciseArrayWithLength: (int)_activeNumberOfExercises];
-    
-    NSMutableOrderedSet *placeholderExerisesSet = [[NSMutableOrderedSet alloc] initWithArray: placeholderExercisesArray];
+    NSMutableOrderedSet *placeholderExerisesSet = [[CoreDataController singleton] placeholderExerciseSetWithLength: (int)_activeNumberOfExercises];
     
     self.selectedExercises = placeholderExerisesSet;
     
@@ -180,6 +176,10 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     // vertical constraints
     
     self.currentVerticalConstraints = [[NSMutableArray alloc] init];
+    
+    // exercises
+    
+    [self createPlaceholderArrayForSelectedExercises];
     
 }
 
@@ -401,6 +401,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     NSMutableArray *muteArray = [[NSMutableArray alloc] init];
     [self.childRowControllers addObject: muteArray]; // b/c child row controllers are tracked with array of 2-dimensions, must add a mutable array to account for new exercise
+    
+    [[CoreDataController singleton] appendPlaceholderExerciseToSelectedExercisesSet: self.selectedExercises];
     
     [self appendNewExerciseComponentToExistingStructureWithExerciseIndex: previousNumberOfExercises];
     [self resetContentSize];
