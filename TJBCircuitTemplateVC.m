@@ -54,6 +54,8 @@
 
 @property (nonatomic, strong) NSMutableArray <TJBCircuitTemplateExerciseComp *> *childExerciseComponentControllers;
 @property (nonatomic, strong) NSMutableArray <NSMutableArray <TJBCircuitTemplateRowComponent<TJBCircuitTemplateRowComponentProtocol> *> *> * childRowControllers;
+@property (nonatomic, strong) TJBRoutineNameVC *routineNameVC;
+@property (nonatomic, strong) NSString *routineName;
 
 // views
 
@@ -240,7 +242,8 @@ static NSString * const nameVCKey = @"TJBRoutineNameVC";
 
 - (void)appendRoutineNameVCToExistingStructure{
     
-    TJBRoutineNameVC *nameVC = [[TJBRoutineNameVC alloc] init];
+    TJBRoutineNameVC *nameVC = [[TJBRoutineNameVC alloc] initWithMasterController: self];
+    self.routineNameVC = nameVC;
     
     // vc & view hierarchies
     
@@ -841,7 +844,12 @@ static NSString * const nameVCKey = @"TJBRoutineNameVC";
         
     }
     
+}
 
+
+- (void)dismissKeyboard{
+    
+    [self.routineNameVC dismissKeyboard];
     
 }
 
@@ -850,6 +858,16 @@ static NSString * const nameVCKey = @"TJBRoutineNameVC";
 - (NSNumber *)numberOfRounds{
     
     return  @(_activeNumberOfRounds);
+    
+}
+
+- (void)routineNameDidUpdate:(NSString *)routineName{
+    
+    self.routineName = routineName;
+    
+    self.chainTemplate.name = routineName;
+    
+    [[CoreDataController singleton] saveContext];
     
 }
 

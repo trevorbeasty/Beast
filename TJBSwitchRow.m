@@ -32,7 +32,7 @@
 
 // core
 
-@property (strong) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
+@property (weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
 @property (strong) NSNumber *exerciseIndex;
 
 @end

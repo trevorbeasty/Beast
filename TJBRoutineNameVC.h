@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+#import "TJBCircuitTemplateVCProtocol.h"
+@class TJBCircuitTemplateVC;
+
+
 @interface TJBRoutineNameVC : UIViewController
+
+- (instancetype)initWithMasterController:(TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *)masterController;
+
+// text field / keyboard
+
+- (void)dismissKeyboard;
 
 @end

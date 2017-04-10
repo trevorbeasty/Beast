@@ -12,17 +12,37 @@
 
 #import "TJBAestheticsController.h"
 
-@interface TJBRoutineNameVC ()
+// master controller
+
+#import "TJBCircuitTemplateVC.h"
+
+@interface TJBRoutineNameVC () <UITextFieldDelegate>
 
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
+// core
+
+@property (weak) TJBCircuitTemplateVC <TJBCircuitTemplateVCProtocol> *masterController;
+
 
 @end
 
 @implementation TJBRoutineNameVC
+
+#pragma mark - Instantiation
+
+- (instancetype)initWithMasterController:(TJBCircuitTemplateVC<TJBCircuitTemplateVCProtocol> *)masterController{
+
+    self = [super init];
+    
+    self.masterController = masterController;
+    
+    return self;
+
+}
 
 #pragma mark - View Life Cycle
 
@@ -55,4 +75,66 @@
     
 }
 
+- (void)configureTextFieldFunctionality{
+    
+    [self.nameTextField addTarget: self
+                           action: @selector(routineNameDidChange)
+                 forControlEvents: UIControlEventValueChanged];
+    
+    self.nameTextField.delegate = self;
+    
+}
+
+#pragma mark - Actions
+
+- (void)routineNameDidChange{
+    
+    [self.masterController routineNameDidUpdate: self.nameTextField.text];
+    
+}
+
+- (void)dismissKeyboard{
+    
+    [self.nameTextField resignFirstResponder];
+    
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    [self dismissKeyboard];
+    
+    return YES;
+    
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField{
+    
+    return YES;
+    
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
+    
+    return YES;
+    
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

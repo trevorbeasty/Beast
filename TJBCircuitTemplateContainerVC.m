@@ -407,6 +407,8 @@ static NSString * const placeholderName = @"placeholderName";
 
 - (IBAction)didPressBack:(id)sender{
     
+    [self.circuitTemplateVC dismissKeyboard];
+    
     [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
     
     [self dismissViewControllerAnimated: YES

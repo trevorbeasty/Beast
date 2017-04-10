@@ -58,6 +58,13 @@ typedef enum {
 
 - (void)configureRowsForExerciseIndex:(int)exerciseIndex switchType:(TJBSwitchType)switchType activated:(BOOL)activated;
 
+// routine name
+
+- (void)routineNameDidUpdate:(NSString *)routineName;
+
+// keyboard
+
+- (void)dismissKeyboard;
 
 @end
 
