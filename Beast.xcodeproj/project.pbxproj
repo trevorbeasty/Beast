@@ -102,6 +102,8 @@
 		0BE970FF1E8887E100DF297E /* TJBSearchExerciseChild.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE970FD1E8887E100DF297E /* TJBSearchExerciseChild.xib */; };
 		0BE971041E99469400DF297E /* TJBSwitchRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE971021E99469400DF297E /* TJBSwitchRow.m */; };
 		0BE971051E99469400DF297E /* TJBSwitchRow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE971031E99469400DF297E /* TJBSwitchRow.xib */; };
+		0BE9710A1E9BABCA00DF297E /* TJBRoutineNameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BE971081E9BABCA00DF297E /* TJBRoutineNameVC.m */; };
+		0BE9710B1E9BABCA00DF297E /* TJBRoutineNameVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BE971091E9BABCA00DF297E /* TJBRoutineNameVC.xib */; };
 		0BF2385B1E7A267600270059 /* TJBDetailTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF238591E7A267600270059 /* TJBDetailTitleCell.m */; };
 		0BF2385C1E7A267600270059 /* TJBDetailTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */; };
 /* End PBXBuildFile section */
@@ -260,6 +262,9 @@
 		0BE971011E99469400DF297E /* TJBSwitchRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBSwitchRow.h; sourceTree = "<group>"; };
 		0BE971021E99469400DF297E /* TJBSwitchRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBSwitchRow.m; sourceTree = "<group>"; };
 		0BE971031E99469400DF297E /* TJBSwitchRow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBSwitchRow.xib; sourceTree = "<group>"; };
+		0BE971071E9BABCA00DF297E /* TJBRoutineNameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRoutineNameVC.h; sourceTree = "<group>"; };
+		0BE971081E9BABCA00DF297E /* TJBRoutineNameVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRoutineNameVC.m; sourceTree = "<group>"; };
+		0BE971091E9BABCA00DF297E /* TJBRoutineNameVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRoutineNameVC.xib; sourceTree = "<group>"; };
 		0BF238581E7A267600270059 /* TJBDetailTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBDetailTitleCell.h; sourceTree = "<group>"; };
 		0BF238591E7A267600270059 /* TJBDetailTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBDetailTitleCell.m; sourceTree = "<group>"; };
 		0BF2385A1E7A267600270059 /* TJBDetailTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBDetailTitleCell.xib; sourceTree = "<group>"; };
@@ -653,6 +658,7 @@
 		0B86FB7D1E256D4A000D1B5F /* Circuit Template */ = {
 			isa = PBXGroup;
 			children = (
+				0BE971061E9BAB8900DF297E /* Routine Name */,
 				0BE971001E99466000DF297E /* Switch Row */,
 				0BA8ACF01E25BC5300EE10C2 /* TJBCircuitTemplateVCProtocol.h */,
 				0B86FB7E1E257310000D1B5F /* TJBCircuitTemplateVC.h */,
@@ -790,6 +796,16 @@
 			name = "Switch Row";
 			sourceTree = "<group>";
 		};
+		0BE971061E9BAB8900DF297E /* Routine Name */ = {
+			isa = PBXGroup;
+			children = (
+				0BE971071E9BABCA00DF297E /* TJBRoutineNameVC.h */,
+				0BE971081E9BABCA00DF297E /* TJBRoutineNameVC.m */,
+				0BE971091E9BABCA00DF297E /* TJBRoutineNameVC.xib */,
+			);
+			name = "Routine Name";
+			sourceTree = "<group>";
+		};
 		0BF238571E7A265300270059 /* Detail Title Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -888,6 +904,7 @@
 				0BE970FF1E8887E100DF297E /* TJBSearchExerciseChild.xib in Resources */,
 				0BE970F81E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
+				0BE9710B1E9BABCA00DF297E /* TJBRoutineNameVC.xib in Resources */,
 				0B86FB7C1E217326000D1B5F /* TJBBasicCollectionViewCell.xib in Resources */,
 				0B86FB851E258032000D1B5F /* TJBCircuitTemplateExerciseComp.xib in Resources */,
 				0B3687DD1E38DB530077290C /* TJBStructureTableViewCell.xib in Resources */,
@@ -949,6 +966,7 @@
 				0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */,
 				0B78E7E01E454DE400EB216F /* TJBNoDataCell.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
+				0BE9710A1E9BABCA00DF297E /* TJBRoutineNameVC.m in Sources */,
 				0BC12E191E5F20560041D863 /* TJBRealizedChainHistoryCell.m in Sources */,
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,

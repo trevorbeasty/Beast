@@ -47,8 +47,6 @@
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIView *leftControlsContainer;
-//@property (weak, nonatomic) IBOutlet UIView *rightControlsContainer;
-//@property (weak, nonatomic) IBOutlet UIView *routineNameContainer;
 
 @property (weak, nonatomic) IBOutlet UILabel *numberExercisesTitle;
 @property (weak, nonatomic) IBOutlet UILabel *numberExercisesValue;
@@ -56,8 +54,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *numberRoundsValue;
 @property (weak, nonatomic) IBOutlet UIStepper *numberExercisesStepper;
 @property (weak, nonatomic) IBOutlet UIStepper *numberRoundsStepper;
-//@property (weak, nonatomic) IBOutlet UITextField *textFieldRoutineName;
-//@property (weak, nonatomic) IBOutlet UILabel *titleRoutineName;
+
 
 
 // IBAction
@@ -80,8 +77,8 @@
 
 #pragma mark - Constants
 
-static int const _startingNumberExercises = 4;
-static int const _startingNumberRounds = 4;
+static int const _startingNumberExercises = 2;
+static int const _startingNumberRounds = 3;
 
 static NSString * const placeholderName = @"placeholderName";
 
@@ -198,25 +195,8 @@ static NSString * const placeholderName = @"placeholderName";
     
     self.containerView.backgroundColor = [UIColor clearColor];
     
-    // controls containers
-    
-//    NSArray *controlsContainers = @[self.leftControlsContainer, self.rightControlsContainer, self.routineNameContainer];
-//    for (UIView *contView in controlsContainers){
-//        
-//        contView.backgroundColor = [UIColor clearColor];
-//        CALayer *layer = contView.layer;
-//        layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
-//        layer.borderWidth = 2.0;
-//    }
-    
-//    self.routineNameContainer.hidden = YES;
-    
     self.leftControlsContainer.backgroundColor = [UIColor blackColor];
     CALayer *ccLayer = self.leftControlsContainer.layer;
-//    ccLayer.masksToBounds = NO;
-//    ccLayer.shadowOffset = CGSizeMake(0, -3);
-//    ccLayer.shadowColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
-//    ccLayer.shadowOpacity = .8;
     ccLayer.borderWidth = 2.0;
     ccLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     ccLayer.masksToBounds = YES;
@@ -247,21 +227,6 @@ static NSString * const placeholderName = @"placeholderName";
         step.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
         
     }
-    
-    // name container subviews
-    
-//    self.titleRoutineName.textColor = [UIColor whiteColor];
-//    self.titleRoutineName.font = [UIFont systemFontOfSize: 20];
-//    self.titleRoutineName.backgroundColor = [UIColor clearColor];
-//    
-//    self.textFieldRoutineName.backgroundColor = [UIColor clearColor];
-//    self.textFieldRoutineName.font = [UIFont systemFontOfSize: 20];
-//    self.textFieldRoutineName.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-//    CALayer *nameTFLayer = self.textFieldRoutineName.layer;
-//    nameTFLayer.masksToBounds = YES;
-//    nameTFLayer.cornerRadius = 20;
-//    nameTFLayer.borderWidth = 1.0;
-//    nameTFLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
 }
 
