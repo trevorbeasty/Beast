@@ -420,9 +420,12 @@ static NSString * const placeholderName = @"placeholderName";
 
 - (IBAction)didPressAdd:(id)sender{
     
+    [self.circuitTemplateVC dismissKeyboard];
+    
     BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
+    BOOL routineNameBlank = [self.circuitTemplateVC nameIsBlank];
 
-    if (requisiteUserInputCollected){
+    if (requisiteUserInputCollected && !routineNameBlank){
         
         [[CoreDataController singleton] saveContext];
         

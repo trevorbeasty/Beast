@@ -40,6 +40,7 @@ typedef enum {
 // input validation
 
 - (BOOL)allUserInputCollected;
+- (BOOL)nameIsBlank;
 
 // advanced user input
 

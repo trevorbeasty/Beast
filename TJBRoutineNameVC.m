@@ -50,6 +50,8 @@
     
     [self configureViewAesthetics];
     
+    [self configureTextFieldFunctionality];
+    
 }
 
 
@@ -77,9 +79,10 @@
 
 - (void)configureTextFieldFunctionality{
     
-    [self.nameTextField addTarget: self
-                           action: @selector(routineNameDidChange)
-                 forControlEvents: UIControlEventValueChanged];
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(routineNameDidChange)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object: self.nameTextField];
     
     self.nameTextField.delegate = self;
     
@@ -118,6 +121,18 @@
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
     
     return YES;
+    
+}
+
+#pragma mark - Deallocation
+
+- (void)dealloc{
+    
+    // not sure it this is completely necessary but likely isn't the worst practice
+    
+    [[NSNotificationCenter defaultCenter] removeObserver: self
+                                                    name: UITextFieldTextDidChangeNotification
+                                                  object: self.nameTextField];
     
 }
 

@@ -853,6 +853,14 @@ static NSString * const nameVCKey = @"TJBRoutineNameVC";
     
 }
 
+- (BOOL)nameIsBlank{
+    
+    BOOL nameIsBlank = [self.routineName isEqualToString: @""] || !self.routineName;;
+    
+    return nameIsBlank;
+    
+}
+
 #pragma mark - API
 
 - (NSNumber *)numberOfRounds{
