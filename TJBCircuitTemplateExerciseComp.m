@@ -171,7 +171,8 @@
 
 - (void)appendSwitchRowComponentToExistingStructure{
     
-    TJBSwitchRow *sr = [[TJBSwitchRow alloc] init];
+    TJBSwitchRow *sr = [[TJBSwitchRow alloc] initWithExerciseIndex: [self.exerciseIndex intValue]
+                                                  masterController: self.masterController];
     
     // add the newly created switch row to the master controller's child collection
     

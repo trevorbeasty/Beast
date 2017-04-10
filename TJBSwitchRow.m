@@ -127,13 +127,17 @@
 
 - (void)repsSwitchValueDidChange{
     
-    
+    [self.masterController configureRowsForExerciseIndex: [self.exerciseIndex intValue]
+                                              switchType: RepsSwitch
+                                               activated: self.repsSwitch.on];
     
 }
 
 - (void)trailingRestSwitchValueDidChange{
     
-    
+    [self.masterController configureRowsForExerciseIndex: [self.exerciseIndex intValue]
+                                              switchType: TrailingRestSwitch
+                                               activated: self.trailingRestSwitch.on];
     
 }
 

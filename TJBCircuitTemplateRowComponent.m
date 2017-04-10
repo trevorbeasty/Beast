@@ -733,11 +733,11 @@
     
     if (targetingStateActive == YES){
         
-        [self giveButtonInactiveConfig: self.weightButton];
+        self.weightButton.hidden = NO;
         
     } else{
         
-        [self giveButtonInactiveConfig: self.weightButton];
+        self.weightButton.hidden = YES;
         
     }
     
@@ -747,11 +747,11 @@
     
     if (targetingStateActive == YES){
         
-        [self giveButtonActiveConfig: self.repsButton];
+        self.repsButton.hidden = NO;
         
     } else{
         
-        [self giveButtonInactiveConfig: self.repsButton];
+        self.repsButton.hidden = YES;
         
     }
     
@@ -761,11 +761,11 @@
     
     if (targetingStateActive == YES){
         
-        [self giveButtonActiveConfig: self.restButton];
+        self.restButton.hidden = NO;
         
     } else{
         
-        [self giveButtonInactiveConfig: self.restButton];
+        self.restButton.hidden = YES;
         
     }
     

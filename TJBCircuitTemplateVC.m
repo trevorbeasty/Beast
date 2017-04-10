@@ -793,9 +793,11 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
                 
             case RepsSwitch:
                 [rowComp toggleRepsTargetingStateToActive: activated];
+                break;
                 
             case TrailingRestSwitch:
                 [rowComp toggleTrailingRestTargetingStateToActive: activated];
+                break;
                 
             default:
                 break;
