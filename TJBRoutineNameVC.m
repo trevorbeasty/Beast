@@ -26,7 +26,11 @@
 
 #pragma mark - View Life Cycle
 
-
+- (void)viewDidLoad{
+    
+    [self configureViewAesthetics];
+    
+}
 
 
 
@@ -46,8 +50,8 @@
     CALayer *ntfLayer = self.nameTextField.layer;
     ntfLayer.masksToBounds = YES;
     ntfLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
-    ntfLayer.borderWidth = 1.0;
-    ntfLayer.cornerRadius = 25;
+    ntfLayer.borderWidth = 2.0;
+    ntfLayer.cornerRadius = 8;
     
 }
 

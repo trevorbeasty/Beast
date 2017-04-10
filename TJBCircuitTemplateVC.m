@@ -12,6 +12,7 @@
 
 #import "TJBCircuitTemplateExerciseComp.h"
 #import "TJBCircuitTemplateRowComponent.h"
+#import "TJBRoutineNameVC.h"
 
 #import "TJBAestheticsController.h"
 
@@ -73,11 +74,13 @@ static NSString * const defaultValue = @"unselected";
 
 static CGFloat const roundRowHeight = 44.0;
 static CGFloat const exerciseRowHeight = 50.0;
-static CGFloat const topExerciseComponentSpacing = 8.0;
+static CGFloat const topExerciseComponentSpacing = 24.0;
+static CGFloat const topNameVCSpacing = 8.0;
+static CGFloat const nameVCHeight = 50;
 static CGFloat const interimExerciseComponentSpacing = 24.0;
 static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
-
+static NSString * const nameVCKey = @"TJBRoutineNameVC";
 
 
 
@@ -91,22 +94,6 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     // call to super
     
     self = [super init];
-    
-//    // core
-//    
-//    self.chainTemplate = skeletonChainTemplate;
-//    
-//    _viewSize = viewSize;
-//    
-//    // for restoration
-//    
-//    //// for core data
-//    
-//    [self createPlaceholderArrayForSelectedExercises];
-//    
-//    //
-//    
-//    [self createSkeletonArrayForChildExeriseAndRowControllers];
     
     return self;
 }
@@ -241,6 +228,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (void)createStartingViewControllerHierarchy{
     
+    [self appendRoutineNameVCToExistingStructure];
+    
     for (int i = 0; i < (int)_activeNumberOfExercises; i++){
             
         [self appendNewExerciseComponentToExistingStructureWithExerciseIndex: i];
@@ -249,7 +238,53 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
 }
 
-
+- (void)appendRoutineNameVCToExistingStructure{
+    
+    TJBRoutineNameVC *nameVC = [[TJBRoutineNameVC alloc] init];
+    
+    // vc & view hierarchies
+    
+    [self addChildViewController: nameVC];
+    
+    [self.scrollViewContentContainer addSubview: nameVC.view];
+    
+    // layout constraints
+    
+    [self.constraintMapping setObject: nameVC.view
+                               forKey: nameVCKey];
+    
+    nameVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    // horizontal
+    
+    NSString *horVFL = [NSString stringWithFormat: @"H:|-0-[%@]-0-|", nameVCKey];
+    
+    NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horVFL
+                                                                                   options: 0
+                                                                                   metrics: nil
+                                                                                     views: self.constraintMapping];
+    
+    [self.scrollViewContentContainer addConstraints: horizontalLayoutConstraints];
+    
+    // vertical
+    
+    NSString *verVFL = [NSString stringWithFormat: @"V:|-%f-[%@(==%f)]",
+                        topNameVCSpacing,
+                        nameVCKey,
+                        nameVCHeight];
+    
+    NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verVFL
+                                                                                 options: 0
+                                                                                 metrics: nil
+                                                                                   views: self.constraintMapping];
+    
+    [self.scrollViewContentContainer addConstraints: verticalLayoutConstraints];
+    
+    // vc hierachy
+    
+    [nameVC didMoveToParentViewController: self];
+    
+}
 
 
 - (void)appendNewExerciseComponentToExistingStructureWithExerciseIndex:(int)exerciseIndex{
@@ -320,7 +355,8 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
     
     if (exerciseIndex == 0){
         
-        return [NSString stringWithFormat: @"V:|-%f-[%@(==%f)]",
+        return [NSString stringWithFormat: @"V:[%@]-%f-[%@(==%f)]",
+                nameVCKey,
                 topExerciseComponentSpacing,
                 dynamicComponentName,
                 exCompHeight];
@@ -499,7 +535,7 @@ static CGFloat const exerciseComponentStyleSpacing = 7.0;
 
 - (CGFloat)scrollViewContentHeight{
     
-    return _activeNumberOfExercises * [self exerciseComponentHeight] + (_activeNumberOfExercises - 1) * interimExerciseComponentSpacing + topExerciseComponentSpacing + [UIScreen mainScreen].bounds.size.height / 2.0;
+    return _activeNumberOfExercises * [self exerciseComponentHeight] + (_activeNumberOfExercises - 1) * interimExerciseComponentSpacing + topExerciseComponentSpacing + nameVCHeight + topNameVCSpacing + [UIScreen mainScreen].bounds.size.height / 2.0;
     
 }
 
