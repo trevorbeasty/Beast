@@ -741,6 +741,9 @@
         
     }
     
+    [self updateChainTemplateForSwitchType: WeightSwitch
+                               isTargeting: targetingStateActive];
+    
 }
 
 - (void)toggleRepsTargetingStateToActive:(BOOL)targetingStateActive{
@@ -755,6 +758,9 @@
         
     }
     
+    [self updateChainTemplateForSwitchType: RepsSwitch
+                               isTargeting: targetingStateActive];
+    
 }
 
 - (void)toggleTrailingRestTargetingStateToActive:(BOOL)targetingStateActive{
@@ -768,6 +774,32 @@
         self.restButton.hidden = YES;
         
     }
+    
+    [self updateChainTemplateForSwitchType: TrailingRestSwitch
+                               isTargeting: targetingStateActive];
+    
+}
+
+- (void)updateChainTemplateForSwitchType:(TJBSwitchType)switchType isTargeting:(BOOL)isTargeting{
+    
+    TJBTargetUnit *relevantTU = self.chainTemplate.targetUnitCollections[[self.exerciseIndex intValue]].targetUnits[[self.roundIndex intValue]];
+    
+    switch (switchType) {
+        case WeightSwitch:
+            relevantTU.isTargetingWeight = isTargeting;
+            break;
+            
+        case RepsSwitch:
+            relevantTU.isTargetingReps = isTargeting;
+            
+        case TrailingRestSwitch:
+            relevantTU.isTargetingTrailingRest = isTargeting;
+            
+        default:
+            break;
+    }
+    
+    [[CoreDataController singleton] saveContext];
     
 }
 
