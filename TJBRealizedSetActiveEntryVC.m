@@ -209,17 +209,17 @@
     self.scheduledAlertLabel.font = [UIFont systemFontOfSize: 15];
     self.scheduledAlertLabel.backgroundColor = [UIColor clearColor];
     
-    self.mainContentContainer.backgroundColor = [UIColor clearColor];
+    self.mainContentContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     NSArray *exerciseLabels = @[self.exerciseValueLabel, self.activeExerciseLabel];
     for (UILabel *lab in exerciseLabels){
         
-        lab.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        lab.textColor = [UIColor blackColor];
         lab.backgroundColor = [UIColor clearColor];
         
     }
     
-    self.activeExerciseLabel.font = [UIFont boldSystemFontOfSize: 25];
+    self.activeExerciseLabel.font = [UIFont boldSystemFontOfSize: 20];
     self.exerciseValueLabel.font = [UIFont systemFontOfSize: 35];
   
 }

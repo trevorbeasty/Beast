@@ -16,6 +16,9 @@
 
 #import "TJBRepsWeightRecordPair.h"
 
+// aesthetics
+
+#import "TJBAestheticsController.h"
 
 // table view cells
 
@@ -28,6 +31,8 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
+@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
 
 // core
 
@@ -78,6 +83,8 @@
     
     [self configureTableView];
     
+    [self viewAesthetics];
+    
 }
 
 #pragma mark - View Helper Methods
@@ -103,6 +110,20 @@
                         forCellReuseIdentifier: @"TJBNoDataCell"];
     
     self.personalRecordsTableView.bounces = YES;
+    
+}
+
+- (void)viewAesthetics{
+    
+    self.view.backgroundColor = [UIColor blackColor];
+    
+    self.titleBarContainer.backgroundColor = [UIColor darkGrayColor];
+    
+    self.mainTitleLabel.backgroundColor = [UIColor clearColor];
+    self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.mainTitleLabel.textColor = [UIColor whiteColor];
+    
+    self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 
@@ -153,17 +174,9 @@
         
         TJBDetailTitleCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBDetailTitleCell"];
         
-        if (self.exercise){
-            
-            cell.subtitleLabel.text = self.exercise.name;
-            
-        } else{
-            
-            cell.subtitleLabel.text = @"Select an exercise";
-            
-        }
+        cell.subtitleLabel.text = @"";
         
-        cell.titleLabel.text = @"Personal Records";
+        cell.titleLabel.text = self.exercise.name;
         cell.detail1Label.text = @"reps";
         cell.detail2Label.text = @"weight";
         cell.detail3Label.text = @"date";
@@ -218,7 +231,7 @@
         return self.personalRecordsTableView.frame.size.height;
     }
     
-    CGFloat titleHeight = 90;
+    CGFloat titleHeight = 80;
     
     if (indexPath.row == 0){
         

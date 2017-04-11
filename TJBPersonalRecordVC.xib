@@ -11,7 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBPersonalRecordVC">
             <connections>
+                <outlet property="mainTitleLabel" destination="Mbl-YT-3uP" id="0rA-DH-zrb"/>
                 <outlet property="personalRecordsTableView" destination="TPz-Ek-eJm" id="tOC-nC-Aa3"/>
+                <outlet property="titleBarContainer" destination="ELR-yD-Xrs" id="Q2V-gQ-szr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -40,6 +42,10 @@
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TPz-Ek-eJm" userLabel="personalRecordsTableView">
                     <rect key="frame" x="0.0" y="90" width="375" height="577"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="LAB-as-s6V"/>
+                        <outlet property="delegate" destination="-1" id="tcH-0Z-0pi"/>
+                    </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

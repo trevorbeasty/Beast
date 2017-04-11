@@ -99,13 +99,13 @@
                     <rect key="frame" x="0.0" y="141" width="375" height="526"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="---" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fND-ud-fFm">
-                            <rect key="frame" x="176" y="212.5" width="23" height="21"/>
+                            <rect key="frame" x="176" y="192.5" width="23" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active Exercise" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLt-Xg-TLJ">
-                            <rect key="frame" x="129.5" y="175.5" width="116" height="21"/>
+                            <rect key="frame" x="129.5" y="167.5" width="116" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -132,14 +132,14 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="fND-ud-fFm" firstAttribute="top" secondItem="oLt-Xg-TLJ" secondAttribute="bottom" constant="16" id="Enu-u0-nE9"/>
+                        <constraint firstItem="fND-ud-fFm" firstAttribute="top" secondItem="oLt-Xg-TLJ" secondAttribute="bottom" constant="4" id="Enu-u0-nE9"/>
                         <constraint firstItem="sWv-BT-UWM" firstAttribute="width" secondItem="LEG-Nx-SbA" secondAttribute="width" id="G7N-Xe-qJ9"/>
                         <constraint firstItem="oLt-Xg-TLJ" firstAttribute="centerX" secondItem="2p1-Tc-V3s" secondAttribute="centerX" id="KAm-UX-076"/>
                         <constraint firstItem="LEG-Nx-SbA" firstAttribute="leading" secondItem="2p1-Tc-V3s" secondAttribute="leading" constant="4" id="Qjc-fu-x9s"/>
                         <constraint firstItem="sWv-BT-UWM" firstAttribute="bottom" secondItem="LEG-Nx-SbA" secondAttribute="bottom" id="VLY-hD-vuO"/>
                         <constraint firstItem="sWv-BT-UWM" firstAttribute="top" secondItem="LEG-Nx-SbA" secondAttribute="top" id="Vt1-Oj-yIV"/>
                         <constraint firstItem="sWv-BT-UWM" firstAttribute="leading" secondItem="LEG-Nx-SbA" secondAttribute="trailing" constant="8" id="We4-0z-wQ1"/>
-                        <constraint firstItem="fND-ud-fFm" firstAttribute="centerY" secondItem="2p1-Tc-V3s" secondAttribute="centerY" constant="-40" id="XKC-di-XKb"/>
+                        <constraint firstItem="fND-ud-fFm" firstAttribute="centerY" secondItem="2p1-Tc-V3s" secondAttribute="centerY" constant="-60" id="XKC-di-XKb"/>
                         <constraint firstAttribute="bottom" secondItem="LEG-Nx-SbA" secondAttribute="bottom" constant="16" id="ita-lO-wzZ"/>
                         <constraint firstAttribute="trailing" secondItem="sWv-BT-UWM" secondAttribute="trailing" constant="4" id="mWJ-Zd-lha"/>
                         <constraint firstItem="fND-ud-fFm" firstAttribute="centerX" secondItem="2p1-Tc-V3s" secondAttribute="centerX" id="qf9-bD-b80"/>

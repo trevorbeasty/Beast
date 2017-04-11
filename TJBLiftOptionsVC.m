@@ -136,7 +136,7 @@
     
     TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *vc2 = [[TJBPersonalRecordVC alloc] init];
     vc2.tabBarItem.title = @"PR's";
-    
+    vc2.tabBarItem.image = [UIImage imageNamed: @"trophyBlue25"];
     [vc1 configureSiblingPersonalRecordsVC: vc2];
     
     TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
@@ -146,7 +146,7 @@
     // tab bar controller
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
-    [tbc setViewControllers: @[vc1, vc2]];
+    [tbc setViewControllers: @[vc1, vc2, vc3]];
     tbc.tabBar.translucent = NO;
     
     // tab bar aesthetics
