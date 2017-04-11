@@ -28,10 +28,10 @@
 
 #import "TJBAestheticsController.h"
 
-// personal records
+// personal records / exercise history
 
 #import "TJBPersonalRecordVC.h"
-#import "TJBPersonalRecordsVCProtocol.h"
+#import "TJBExerciseHistoryVC.h"
 
 
 
@@ -96,6 +96,7 @@
 // personal records sibling
 
 @property (weak) TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *personalRecordsVC;
+@property (weak) TJBExerciseHistoryVC <TJBExerciseHistoryProtocol> *exerciseHistoryVC;
 
 // state
 
@@ -260,6 +261,7 @@
         weakSelf.exerciseValueLabel.text = selectedExercise.name;
         
         [weakSelf.personalRecordsVC activeExerciseDidUpdate: selectedExercise];
+        [weakSelf.exerciseHistoryVC activeExerciseDidUpdate: selectedExercise];
     
         [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
@@ -566,6 +568,12 @@
 - (void)configureSiblingPersonalRecordsVC:(TJBPersonalRecordVC<TJBPersonalRecordsVCProtocol> *)personalRecordsVC{
     
     self.personalRecordsVC = personalRecordsVC;
+    
+}
+
+- (void)configureSiblingExerciseHistoryVC:(TJBExerciseHistoryVC<TJBExerciseHistoryProtocol> *)exerciseHistoryVC{
+    
+    self.exerciseHistoryVC = exerciseHistoryVC;
     
 }
 

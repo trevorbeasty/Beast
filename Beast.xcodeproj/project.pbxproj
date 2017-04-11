@@ -360,6 +360,16 @@
 			name = "Exercise History";
 			sourceTree = "<group>";
 		};
+		0B2B6BBB1E9C9D6800927A18 /* Active Entry */ = {
+			isa = PBXGroup;
+			children = (
+				0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */,
+				0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */,
+				0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */,
+			);
+			name = "Active Entry";
+			sourceTree = "<group>";
+		};
 		0B3688171E413D500077290C /* Title Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -638,11 +648,9 @@
 		0B843C901DFB7E9C0093F057 /* Freeform Lift */ = {
 			isa = PBXGroup;
 			children = (
+				0B2B6BBB1E9C9D6800927A18 /* Active Entry */,
 				0B2B6BAE1E9C715500927A18 /* Exercise History */,
 				0B2B6BAD1E9C714800927A18 /* PR's */,
-				0B843C7B1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.h */,
-				0B843C7C1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m */,
-				0B843C7D1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib */,
 				0B870E5B1E31008900E38C46 /* TJBRepsWeightRecordPair.h */,
 				0B870E5C1E31008900E38C46 /* TJBRepsWeightRecordPair.m */,
 				0B78E7F71E65BE1100EB216F /* Confirmation Scene */,

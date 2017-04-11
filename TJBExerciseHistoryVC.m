@@ -190,7 +190,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
             
             if (objectsAreRealizedSetsOfSameDay){
                 
-                groupSize += 2;
+                groupSize += 1;
                 
                 id object = [self objectForSourceArray: collector
                                      iterationPosition: i + 1

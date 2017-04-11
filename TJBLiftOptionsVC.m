@@ -15,6 +15,8 @@
 #import "NewOrExistinigCircuitVC.h"
 #import "TJBPersonalRecordVC.h"
 #import "TJBPersonalRecordsVCProtocol.h"
+#import "TJBExerciseHistoryVC.h"
+#import "TJBExerciseHistoryProtocol.h"
 
 // aesthetics
 
@@ -139,14 +141,18 @@
     vc2.tabBarItem.image = [UIImage imageNamed: @"trophyBlue25"];
     [vc1 configureSiblingPersonalRecordsVC: vc2];
     
-    TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
-    vc3.tabBarItem.title = @"Workout Log";
-    vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
+    TJBExerciseHistoryVC <TJBExerciseHistoryProtocol> *vc3 = [[TJBExerciseHistoryVC alloc] init];
+    vc3.tabBarItem.title = @"History";
+    [vc1 configureSiblingExerciseHistoryVC: vc3];
+    
+    TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
+    vc4.tabBarItem.title = @"Workout Log";
+    vc4.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
     
     // tab bar controller
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
-    [tbc setViewControllers: @[vc1, vc2, vc3]];
+    [tbc setViewControllers: @[vc1, vc2, vc3, vc4]];
     tbc.tabBar.translucent = NO;
     
     // tab bar aesthetics

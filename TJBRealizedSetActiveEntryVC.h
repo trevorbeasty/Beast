@@ -12,15 +12,19 @@
 
 #import "TJBStopwatchObserver.h"
 
-// sibling personal records VC
+// sibling personal records / exercise history VC's
 
 #import "TJBPersonalRecordsVCProtocol.h"
 @class TJBPersonalRecordVC;
+
+#import "TJBExerciseHistoryProtocol.h"
+@class TJBExerciseHistoryVC;
 
 @interface TJBRealizedSetActiveEntryVC : UIViewController <TJBStopwatchObserver>
 
 #pragma mark - Sibling VC's
 
 - (void)configureSiblingPersonalRecordsVC:(TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *)personalRecordsVC;
+- (void)configureSiblingExerciseHistoryVC:(TJBExerciseHistoryVC <TJBExerciseHistoryProtocol> *)exerciseHistoryVC;
 
 @end
