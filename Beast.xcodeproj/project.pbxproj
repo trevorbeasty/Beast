@@ -125,6 +125,7 @@
 		0B2B6BB51E9C719900927A18 /* TJBExerciseHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBExerciseHistoryVC.m; sourceTree = "<group>"; };
 		0B2B6BB61E9C719900927A18 /* TJBExerciseHistoryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseHistoryVC.xib; sourceTree = "<group>"; };
 		0B2B6BB91E9C775800927A18 /* TJBPersonalRecordsVCProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBPersonalRecordsVCProtocol.h; sourceTree = "<group>"; };
+		0B2B6BBA1E9C867700927A18 /* TJBExerciseHistoryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseHistoryProtocol.h; sourceTree = "<group>"; };
 		0B3687D91E38DB530077290C /* TJBStructureTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBStructureTableViewCell.h; sourceTree = "<group>"; };
 		0B3687DA1E38DB530077290C /* TJBStructureTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBStructureTableViewCell.m; sourceTree = "<group>"; };
 		0B3687DB1E38DB530077290C /* TJBStructureTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBStructureTableViewCell.xib; sourceTree = "<group>"; };
@@ -354,6 +355,7 @@
 				0B2B6BB41E9C719900927A18 /* TJBExerciseHistoryVC.h */,
 				0B2B6BB51E9C719900927A18 /* TJBExerciseHistoryVC.m */,
 				0B2B6BB61E9C719900927A18 /* TJBExerciseHistoryVC.xib */,
+				0B2B6BBA1E9C867700927A18 /* TJBExerciseHistoryProtocol.h */,
 			);
 			name = "Exercise History";
 			sourceTree = "<group>";

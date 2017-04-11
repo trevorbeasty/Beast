@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TJBExerciseHistoryVC : UIViewController
+// protocol
+
+#import "TJBExerciseHistoryProtocol.h"
+
+@interface TJBExerciseHistoryVC : UIViewController <TJBExerciseHistoryProtocol>
 
 @end
