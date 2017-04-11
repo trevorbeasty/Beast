@@ -20,8 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
-@property (weak, nonatomic) IBOutlet UILabel *pressAnywhereLabel;
-@property (weak, nonatomic) IBOutlet UILabel *setCompletedLabel;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UIButton *confirmButton;
@@ -69,8 +67,6 @@
     
     [self configureViewAesthetics];
     
-//    [self configureGestureRecognizer];
-    
     [self configureDisplay];
     
 }
@@ -91,6 +87,12 @@
     [self.view addSubview: visualEffectView];
     
     [visualEffectView.contentView addSubview: self.contentContainerView];
+    NSArray *buttons = @[self.cancelButton, self.editButton, self.confirmButton];
+    for (UIButton *butt in buttons){
+        
+        [visualEffectView.contentView addSubview: butt];
+        
+    }
     
 }
 
@@ -108,25 +110,11 @@
 
 - (void)configureViewAesthetics{
     
-    // content container
+    self.view.backgroundColor = [UIColor clearColor];
     
+    self.contentContainerView.backgroundColor = [UIColor blackColor];
     self.contentContainerView.layer.masksToBounds = YES;
-    self.contentContainerView.layer.cornerRadius = 4.0;
-    
-    self.contentContainerView.backgroundColor = [UIColor lightGrayColor];
-    
-    // title labels
-    
-    NSArray *titleLabels = @[self.setCompletedLabel, self.pressAnywhereLabel];
-    for (UILabel *lab in titleLabels){
-        
-        lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [UIColor whiteColor];
-        
-    }
-    
-    self.exerciseLabel.font = [UIFont boldSystemFontOfSize: 20];
-    self.pressAnywhereLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.contentContainerView.layer.cornerRadius = 4;
     
     // detail labels
     
@@ -145,36 +133,17 @@
     for (UIButton *b in buttons){
         
         b.backgroundColor = [UIColor clearColor];
-        [b setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [b setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                 forState: UIControlStateNormal];
         b.titleLabel.font = [UIFont systemFontOfSize: 20];
         
         CALayer *buttLayer = b.layer;
-        buttLayer.borderWidth = 1.0;
-        buttLayer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
+        buttLayer.borderWidth = 2.0;
+        buttLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+        buttLayer.masksToBounds = YES;
+        buttLayer.cornerRadius = 25;
         
     }
-    
-}
-
-- (void)configureGestureRecognizer{
-    
-    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
-                                                                            action: @selector(didTap)];
-    
-    tapGR.numberOfTouchesRequired = 1;
-    tapGR.numberOfTapsRequired = 1;
-    
-    
-    [self.view addGestureRecognizer: tapGR];
-
-}
-
-#pragma mark - Tap GR
-
-- (void)didTap{
-    
-//    self.callbackBlock();
     
 }
 

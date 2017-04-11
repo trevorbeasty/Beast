@@ -22,7 +22,9 @@
 #import "TJBMasterCell.h"
 
 
+// aesthetics
 
+#import "TJBAestheticsController.h"
 
 
 
@@ -35,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UIView *titleBar;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseDetailLabel;
 
 // core
 
@@ -61,7 +64,31 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 #pragma mark - Instantiation
 
 
+- (instancetype)init{
+    
+    self = [super init];
+    
+    [self configureNotifications];
+    
+    return self;
+    
+}
 
+
+
+
+#pragma mark - Init Helper Methods
+
+- (void)configureNotifications{
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(coreDataDidUpdate)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: moc];
+    
+}
 
 #pragma mark - View Life Cycle
 
@@ -72,6 +99,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     [self configureTableView];
     
     [self viewAesthetics];
+    
+    if (self.exercise){
+        self.exerciseDetailLabel.text = self.exercise.name;
+    }
     
 }
 
@@ -120,7 +151,19 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)viewAesthetics{
     
+    self.view.backgroundColor = [UIColor blackColor];
     
+    self.titleBar.backgroundColor = [UIColor darkGrayColor];
+    
+    self.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.titleLabel.backgroundColor = [UIColor clearColor];
+    self.titleLabel.textColor = [UIColor whiteColor];
+    
+    self.exerciseDetailLabel.font = [UIFont systemFontOfSize: 15];
+    self.exerciseDetailLabel.backgroundColor = [UIColor clearColor];
+    self.exerciseDetailLabel.textColor = [UIColor whiteColor];
+    
+    self.tableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
 
@@ -145,6 +188,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
             [collector addObject: rc];
             
         }
+        
+    }
+    
+    // if there is only one entry of fewer, assign the sortedContent and return
+    
+    if (collector.count <= 1){
+        
+        self.sortedContent = collector;
+        
+        return;
         
     }
     
@@ -253,7 +306,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
         for (NSInteger i = iterationPosition - (groupSize - 1); i <= iterationPosition; i++){
             
-            [collector addObject: array[iterationPosition + i]];
+            [collector addObject: array[i]];
             
         }
         
@@ -328,6 +381,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 - (void)activeExerciseDidUpdate:(TJBExercise *)exercise{
     
     self.exercise = exercise;
+    self.exerciseDetailLabel.text = exercise.name;
     
     [self deriveContentForActiveExercise];
     
@@ -349,11 +403,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     if (self.sortedContent.count == 0){
         
-        return 2;
+        return 1;
         
     } else{
         
-        return self.sortedContent.count + 1;
+        return self.sortedContent.count;
         
     }
     
@@ -364,107 +418,90 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    if (indexPath.row == 0){
+    if (self.sortedContent.count == 0){
         
-        TJBWorkoutLogTitleCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+        TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
         
+        cell.mainLabel.text = @"No Entries";
+        cell.backgroundColor = [UIColor clearColor];
         cell.referenceIndexPath = indexPath;
         
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-        
-        cell.secondaryLabel.text = @"";
-        cell.primaryLabel.text = @"My Workout Log";
-        cell.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
         
     } else{
         
-        if (self.sortedContent.count == 0){
+        NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
+        
+        int rowIndex = (int)indexPath.row;
+        
+        BOOL isRealizedSet = [self.sortedContent[rowIndex] isKindOfClass: [TJBRealizedSet class]];
+        BOOL isRealizedChain = [self.sortedContent[rowIndex] isKindOfClass: [TJBRealizedChain class]];
+        
+        if (isRealizedSet){
             
-            TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+            TJBRealizedSet *realizedSet = self.sortedContent[rowIndex];
             
-            cell.mainLabel.text = @"No Entries";
+            // dequeue the realizedSetCell
+            
+            TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
+            
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            dateFormatter.dateStyle = NSDateFormatterNoStyle;
+            dateFormatter.timeStyle = NSDateFormatterShortStyle;
+            NSString *date = [dateFormatter stringFromDate: realizedSet.submissionTime];
+            
+            [cell configureCellWithExercise: realizedSet.exercise.name
+                                     weight: [NSNumber numberWithFloat: realizedSet.submittedWeight]
+                                       reps: [NSNumber numberWithFloat: realizedSet.submittedReps]
+                                       rest: nil
+                                       date: date
+                                     number: number
+                         referenceIndexPath: indexPath];
+            
             cell.backgroundColor = [UIColor clearColor];
-            cell.referenceIndexPath = indexPath;
             
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+            
+        } else if (isRealizedChain){
+            
+            TJBRealizedChain *realizedChain = self.sortedContent[rowIndex];
+            
+            // dequeue the realizedSetCell
+            
+            TJBRealizedChainCell *cell = nil;
+            
+            cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            
+            [cell clearExistingEntries];
+            
+            [cell configureWithRealizedChain: realizedChain
+                                      number: number
+                                   finalRest: nil
+                          referenceIndexPath: indexPath];
+            
+            cell.backgroundColor = [UIColor clearColor];
             
             return cell;
             
         } else{
             
-            NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
+            // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
             
-            int rowIndex = (int)indexPath.row - 1;
+            TJBRealizedSetCollectionCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCollectionCell"];
             
-            BOOL isRealizedSet = [self.sortedContent[rowIndex] isKindOfClass: [TJBRealizedSet class]];
-            BOOL isRealizedChain = [self.sortedContent[rowIndex] isKindOfClass: [TJBRealizedChain class]];
+            [cell clearExistingEntries];
             
-            if (isRealizedSet){
-                
-                TJBRealizedSet *realizedSet = self.sortedContent[rowIndex];
-                
-                // dequeue the realizedSetCell
-                
-                TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
-                
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                dateFormatter.dateStyle = NSDateFormatterNoStyle;
-                dateFormatter.timeStyle = NSDateFormatterShortStyle;
-                NSString *date = [dateFormatter stringFromDate: realizedSet.submissionTime];
-                
-                [cell configureCellWithExercise: realizedSet.exercise.name
-                                         weight: [NSNumber numberWithFloat: realizedSet.submittedWeight]
-                                           reps: [NSNumber numberWithFloat: realizedSet.submittedReps]
-                                           rest: nil
-                                           date: date
-                                         number: number
-                             referenceIndexPath: indexPath];
-                
-                cell.backgroundColor = [UIColor clearColor];
-                
-                return cell;
-                
-            } else if (isRealizedChain){
-                
-                TJBRealizedChain *realizedChain = self.sortedContent[rowIndex];
-                
-                // dequeue the realizedSetCell
-                
-                TJBRealizedChainCell *cell = nil;
-             
-                cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-                
-                [cell clearExistingEntries];
-                
-                [cell configureWithRealizedChain: realizedChain
-                                          number: number
-                                       finalRest: nil
-                              referenceIndexPath: indexPath];
-                
-                cell.backgroundColor = [UIColor clearColor];
-                
-                return cell;
-                
-            } else{
-                
-                // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
-                
-                TJBRealizedSetCollectionCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCollectionCell"];
-                
-                [cell clearExistingEntries];
-                
-                cell.backgroundColor = [UIColor clearColor];
-                
-                [cell configureWithRealizedSetCollection: self.sortedContent[rowIndex]
-                                                  number: number
-                                               finalRest: nil
-                                      referenceIndexPath: indexPath];
-                
-                return cell;
-                
-            }
+            cell.backgroundColor = [UIColor clearColor];
+            
+            [cell configureWithRealizedSetCollection: self.sortedContent[rowIndex]
+                                              number: number
+                                           finalRest: nil
+                                  referenceIndexPath: indexPath];
+            
+            return cell;
+            
         }
     }
     
@@ -483,53 +520,54 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 60.0;
-    
-    if (indexPath.row == 0){
+    if (self.sortedContent.count == 0){
         
-        return titleHeight;
+        [self.view layoutIfNeeded];
+        
+        return self.tableView.frame.size.height;
         
     } else{
         
-        if (self.sortedContent.count == 0){
+        NSInteger adjustedIndex = indexPath.row;
+        
+        BOOL isRealizedSet = [self.sortedContent[adjustedIndex] isKindOfClass: [TJBRealizedSet class]];
+        BOOL isRealizedChain = [self.sortedContent[adjustedIndex] isKindOfClass: [TJBRealizedChain class]];
+        
+        
+        if (isRealizedSet){
             
-            [self.view layoutIfNeeded];
+            return 60;
             
-            return self.tableView.frame.size.height - titleHeight;
+        } else if (isRealizedChain) {
+            
+            TJBRealizedChain *realizedChain = self.sortedContent[adjustedIndex];
+            
+            return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
             
         } else{
             
-            NSInteger adjustedIndex = indexPath.row - 1;
+            TJBRealizedSetGrouping rsc = self.sortedContent[adjustedIndex];
             
-            BOOL isRealizedSet = [self.sortedContent[adjustedIndex] isKindOfClass: [TJBRealizedSet class]];
-            BOOL isRealizedChain = [self.sortedContent[adjustedIndex] isKindOfClass: [TJBRealizedChain class]];
+            return [TJBRealizedSetCollectionCell suggestedCellHeightForRealizedSetCollection: rsc];
             
-            
-            if (isRealizedSet){
-                
-                return 60;
-                
-            } else if (isRealizedChain) {
-                
-                TJBRealizedChain *realizedChain = self.sortedContent[adjustedIndex];
-                
-                return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
-                
-            } else{
-                
-                TJBRealizedSetGrouping rsc = self.sortedContent[adjustedIndex];
-                
-                return [TJBRealizedSetCollectionCell suggestedCellHeightForRealizedSetCollection: rsc];
-                
-            }
         }
     }
-    
-    
-    
-    
+  
 }
 
+
+
+
+
+#pragma mark - Core Data
+
+- (void)coreDataDidUpdate{
+    
+    [self deriveContentForActiveExercise];
+    
+    [self.tableView reloadData];
+    
+}
 
 
 

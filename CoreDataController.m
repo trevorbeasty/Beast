@@ -801,8 +801,6 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
     }
     
-    NSLog(@"tu collections copy has # elements: %lu", [targetUnitCollectionsCopy count]);
-    
     tuc.targetUnits = iterativeTargetUnits;
     chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
     

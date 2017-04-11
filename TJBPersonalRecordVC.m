@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseValueSubtitle;
 
 // core
 
@@ -85,9 +86,14 @@
     
     [self viewAesthetics];
     
+    if (self.exercise){
+        self.exerciseValueSubtitle.text = self.exercise.name;
+    }
+    
 }
 
 #pragma mark - View Helper Methods
+
 
 - (void)configureTableView{
     
@@ -123,6 +129,10 @@
     self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20];
     self.mainTitleLabel.textColor = [UIColor whiteColor];
     
+    self.exerciseValueSubtitle.backgroundColor = [UIColor clearColor];
+    self.exerciseValueSubtitle.font = [UIFont systemFontOfSize: 15];
+    self.exerciseValueSubtitle.textColor = [UIColor whiteColor];
+    
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
 }
@@ -137,19 +147,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    //// add 1 to account for title cell
-    
-    if (!self.exercise){
-        return 1;
-    }
-    
-    if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0){
+    if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0 || !self.exercise){
         
-        return 2;
+        return 1;
         
     } else{
         
-        return self.repsWeightRecordPairs.count + 1;
+        return self.repsWeightRecordPairs.count;
         
     }
     
@@ -157,30 +161,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (!self.exercise){
+    
+    if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0 || !self.exercise){
         
         TJBNoDataCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
         
-        cell.mainLabel.text = @"No Exercise Selected";
-        cell.backgroundColor = [UIColor clearColor];
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        return cell;
-        
-    }
-    
-    if (indexPath.row == 0){
-        
-        TJBDetailTitleCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBDetailTitleCell"];
-        
-        cell.subtitleLabel.text = @"";
-        
-        cell.titleLabel.text = self.exercise.name;
-        cell.detail1Label.text = @"reps";
-        cell.detail2Label.text = @"weight";
-        cell.detail3Label.text = @"date";
-        
+        cell.mainLabel.text = @"No Entries";
         cell.backgroundColor = [UIColor clearColor];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -189,35 +175,19 @@
         
     } else{
         
-        if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0){
-            
-            TJBNoDataCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
-            
-            cell.mainLabel.text = @"No Personal Records";
-            cell.backgroundColor = [UIColor clearColor];
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
-            
-        } else{
-            
-            NSInteger adjustedRowIndex = indexPath.row - 1;
-            
-            TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
-            
-            TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[adjustedRowIndex];
-            
-            [cell configureWithReps: repsWeightRecordPair.reps
-                             weight: repsWeightRecordPair.weight
-                               date: repsWeightRecordPair.date];
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
-            
-        }
+        NSInteger adjustedRowIndex = indexPath.row;
         
+        TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
+        
+        TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[adjustedRowIndex];
+        
+        [cell configureWithReps: repsWeightRecordPair.reps
+                         weight: repsWeightRecordPair.weight
+                           date: repsWeightRecordPair.date];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
         
     }
     
@@ -227,28 +197,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (!self.exercise){
-        return self.personalRecordsTableView.frame.size.height;
-    }
-    
-    CGFloat titleHeight = 80;
-    
-    if (indexPath.row == 0){
+    if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count == 0 || !self.exercise){
         
-        return titleHeight;
+        return tableView.frame.size.height;
         
     } else{
         
-        if (!self.repsWeightRecordPairs || self.repsWeightRecordPairs.count ==0){
-            
-            return self.personalRecordsTableView.frame.size.height - titleHeight;
-            
-        } else{
-            
-            return 60;
-            
-        }
+        return 60;
+        
     }
+
 }
 
 #pragma mark - Core Data
@@ -384,6 +342,7 @@
 - (void)activeExerciseDidUpdate:(TJBExercise *)exercise{
     
     self.exercise = exercise;
+    self.exerciseValueSubtitle.text = exercise.name;
     
     [self fetchManagedObjectsAndDetermineRecordsForActiveExercise];
     
