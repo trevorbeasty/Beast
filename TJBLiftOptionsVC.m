@@ -13,11 +13,8 @@
 #import "TJBWorkoutNavigationHub.h"
 #import "TJBRealizedSetActiveEntryVC.h"
 #import "NewOrExistinigCircuitVC.h"
-
-
-// tbc's
-
-//#import "TJBRoutineSelectionTBC.h"
+#import "TJBPersonalRecordVC.h"
+#import "TJBPersonalRecordsVCProtocol.h"
 
 // aesthetics
 
@@ -137,9 +134,14 @@
     vc1.tabBarItem.title = @"Active";
     vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
     
-    TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
-    vc2.tabBarItem.title = @"Workout Log";
-    vc2.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
+    TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *vc2 = [[TJBPersonalRecordVC alloc] init];
+    vc2.tabBarItem.title = @"PR's";
+    
+    [vc1 configureSiblingPersonalRecordsVC: vc2];
+    
+    TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
+    vc3.tabBarItem.title = @"Workout Log";
+    vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
     
     // tab bar controller
     
