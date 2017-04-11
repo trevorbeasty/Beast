@@ -143,6 +143,7 @@
     
     TJBExerciseHistoryVC <TJBExerciseHistoryProtocol> *vc3 = [[TJBExerciseHistoryVC alloc] init];
     vc3.tabBarItem.title = @"History";
+    vc3.tabBarItem.image = [UIImage imageNamed: @"colosseumBlue25"];
     [vc1 configureSiblingExerciseHistoryVC: vc3];
     
     TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
