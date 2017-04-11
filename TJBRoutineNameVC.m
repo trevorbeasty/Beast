@@ -71,7 +71,7 @@
     self.nameTextField.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     CALayer *ntfLayer = self.nameTextField.layer;
     ntfLayer.masksToBounds = YES;
-    ntfLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    ntfLayer.borderColor = [UIColor whiteColor].CGColor;
     ntfLayer.borderWidth = 2.0;
     ntfLayer.cornerRadius = 8;
     

@@ -118,27 +118,30 @@
     
     UIButton *button = self.selectedExerciseButton;
     
-    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
-    [button setTitleColor: color
+    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//    button.backgroundColor = [UIColor clearColor];
+//    UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
+//    [button setTitleColor: color
+//                 forState: UIControlStateNormal];
+    [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
     
     button.titleLabel.numberOfLines = 0;
     button.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+    CALayer *layer = button.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8;
+//    layer.borderWidth = 1.0;
+//    layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
     // number label
     
     self.exerciseNumberLabel.font = [UIFont boldSystemFontOfSize: 35];
     self.exerciseNumberLabel.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     self.exerciseNumberLabel.backgroundColor = [UIColor clearColor];
-    
-    
-    // selected exercise button layer
-    
-    CALayer *layer = button.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8;
-    
+
+
 }
 
 
@@ -234,7 +237,7 @@
         // update the view
         
         self.selectedExerciseButton.backgroundColor = [UIColor clearColor];
-        [self.selectedExerciseButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [self.selectedExerciseButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                                           forState: UIControlStateNormal];
         
         [self.selectedExerciseButton setTitle: selectedExercise.name

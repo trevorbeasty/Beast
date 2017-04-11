@@ -325,10 +325,20 @@ static NSString * const placeholderName = @"placeholderName";
 
 #pragma mark - Button Actions
 
-- (void)alertUserInputIncomplete{
+- (void)alertUserInputIncomplete_nameIsBlank:(BOOL)nameIsBlank requisiteUserInputNotCollected:(BOOL)requisiteUserInputNotCollected{
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Required Selections Incomplete"
-                                                                   message: @"Please make all available selections"
+    NSString *message;
+    
+    if (nameIsBlank && requisiteUserInputNotCollected){
+        message = @"Please enter a routine name and make all active selections";
+    } else if (nameIsBlank){
+        message = @"Please enter a routine name";
+    } else{
+        message = @"Please make all active selections";
+    }
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Design Incomplete"
+                                                                   message: message
                                                             preferredStyle: UIAlertControllerStyleAlert];
     
     UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
@@ -341,69 +351,7 @@ static NSString * const placeholderName = @"placeholderName";
     
 }
 
-- (IBAction)didPressLaunchCircuit:(id)sender{
-//    
-//    // this VC and the circuit template VC share the same chain template.  Only the circuit template VC has the user-selected exercises, thus, it must be asked if all user input has been collected.  If it has all been collected, the circuit template VC will add the user-selected exercises to the chain template.
-//    
-//    BOOL requisiteUserInputCollected = [self.circuitTemplateVC allUserInputCollected];
-//    
-//    if (requisiteUserInputCollected){
-//        
-//        // it has been determined that the chain template is complete, so update its corresponding property and save the context
-//        
-////        self.chainTemplate.isIncomplete = NO;
-//        [[CoreDataController singleton] saveContext];
-//        
-//        // alert
-//        
-//        NSString *message = [NSString stringWithFormat: @"'%@' has been successfully saved",
-//                             self.chainTemplate.name];
-//        
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Circuit Saved"
-//                                                                       message: message
-//                                                                preferredStyle: UIAlertControllerStyleAlert];
-//        
-//        void (^alertBlock)(UIAlertAction *) = ^(UIAlertAction *action){
-//            
-//            TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.chainTemplate];
-//            vc1.tabBarItem.title = @"Active";
-//            
-//            TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
-//            vc3.tabBarItem.title = @"Workout Log";
-//            
-//            TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
-//            vc2.tabBarItem.title = @"Progress";
-//            
-//            // tab bar
-//            
-//            UITabBarController *tbc = [[UITabBarController alloc] init];
-//            [tbc setViewControllers: @[vc1, vc2, vc3]];
-//            tbc.tabBar.translucent = NO;
-//            
-//            
-//            [self presentViewController: tbc
-//                               animated: NO
-//                             completion: nil];
-//            
-//
-//            
-//        };
-//        
-//        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
-//                                                         style: UIAlertActionStyleDefault
-//                                                       handler: alertBlock];
-//        [alert addAction: action];
-//        
-//        [self presentViewController: alert
-//                           animated: YES
-//                         completion: nil];
-//    } else{
-//        
-//    [self alertUserInputIncomplete];
-//        
-//    }
-    
-}
+
 
 - (IBAction)didPressBack:(id)sender{
     
@@ -415,8 +363,6 @@ static NSString * const placeholderName = @"placeholderName";
                              completion: nil];
     
 }
-
-
 
 - (IBAction)didPressAdd:(id)sender{
     
@@ -456,7 +402,8 @@ static NSString * const placeholderName = @"placeholderName";
         
     } else{
         
-        [self alertUserInputIncomplete];
+        [self alertUserInputIncomplete_nameIsBlank: routineNameBlank
+                    requisiteUserInputNotCollected: !requisiteUserInputCollected];
         
     }
 }

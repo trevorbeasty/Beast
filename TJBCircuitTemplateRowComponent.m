@@ -196,14 +196,17 @@
 
 - (void)giveButtonActiveConfig:(UIButton *)button{
     
-    button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
-    [button setTitleColor: [UIColor whiteColor]
+    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//    button.backgroundColor = [UIColor clearColor];
+    [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     
     CALayer *layer = button.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8.0;
+//    layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+//    layer.borderWidth = 1.0;
     
 }
 
@@ -248,7 +251,7 @@
         // configure the button
         
         self.weightButton.backgroundColor = [UIColor clearColor];
-        [self.weightButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [self.weightButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                                 forState: UIControlStateNormal];
         
         NSString *weightText = [NSString stringWithFormat: @"%@ lbs", [selectedNumber stringValue]];
@@ -302,7 +305,7 @@
         // configure the button
         
         self.repsButton.backgroundColor = [UIColor clearColor];
-        [self.repsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [self.repsButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                                 forState: UIControlStateNormal];
         
         NSString *repsText = [NSString stringWithFormat: @"%@ reps", [selectedNumber stringValue]];
@@ -359,7 +362,7 @@
         // configure the button
         
         self.restButton.backgroundColor = [UIColor clearColor];
-        [self.restButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [self.restButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                               forState: UIControlStateNormal];
         
         NSString *formattedTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
@@ -408,9 +411,7 @@
             
             // change the appearance of the copying reference cell
             
-            self.weightButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-            [self.weightButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                                    forState: UIControlStateNormal];
+            [self giveButtonCopyingAppearance: self.weightButton];
             
             [self.masterController activateCopyingStateForNumber: number
                                                    copyInputType: CopyWeightType];
@@ -454,9 +455,7 @@
             
             // change the appearance of the copying reference cell
             
-            self.repsButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-            [self.repsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                                  forState: UIControlStateNormal];
+            [self giveButtonCopyingAppearance: self.repsButton];
             
             [self.masterController activateCopyingStateForNumber: number
                                                    copyInputType: CopyRepsType];
@@ -500,9 +499,7 @@
             
             // change the appearance of the copying reference cell
             
-            self.restButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-            [self.restButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                                  forState: UIControlStateNormal];
+            [self giveButtonCopyingAppearance: self.restButton];
             
             [self.masterController activateCopyingStateForNumber: number
                                                    copyInputType: CopyRestType];
@@ -527,6 +524,14 @@
     
 }
 
+- (void)giveButtonCopyingAppearance:(UIButton *)button{
+    
+    button.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    [button setTitleColor: [UIColor blackColor]
+                 forState: UIControlStateNormal];
+    
+}
+
 #pragma mark - Protocol
 
 - (void)copyValueForWeightButton{
@@ -542,9 +547,8 @@
         [self.weightButton setTitle: weightText
                            forState: UIControlStateNormal];
         
-        self.weightButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        [self.weightButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                                forState: UIControlStateNormal];
+        [self giveButtonCopyingAppearance: self.weightButton];
+        
         self.weightButton.layer.opacity = 1.0;
         
         // core data
@@ -575,9 +579,8 @@
         [self.repsButton setTitle: repsText
                            forState: UIControlStateNormal];
         
-        self.repsButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        [self.repsButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                              forState: UIControlStateNormal];
+        [self giveButtonCopyingAppearance: self.repsButton];
+        
         self.repsButton.layer.opacity = 1.0;
         
         // core data
@@ -586,10 +589,6 @@
         tu.repsTarget = _valueToCopy;
         tu.repsIsNull = NO;
 
-        
-//        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
-//        self.chainTemplate.repsArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
-        
         [[CoreDataController singleton] saveContext];
         
     }
@@ -609,9 +608,8 @@
         [self.restButton setTitle: restText
                          forState: UIControlStateNormal];
         
-        self.restButton.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        [self.restButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                                forState: UIControlStateNormal];
+        [self giveButtonCopyingAppearance: self.restButton];
+        
         self.restButton.layer.opacity = 1.0;
         
         // core data
@@ -619,10 +617,6 @@
         TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
         tu.trailingRestTarget = _valueToCopy;
         tu.trailingRestIsNull = NO;
-
-        
-//        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
-//        self.chainTemplate.targetRestTimeArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
         
         [[CoreDataController singleton] saveContext];
         
@@ -697,14 +691,14 @@
     
     if (valueNotYetSelected){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
+        button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         [button setTitleColor: [UIColor whiteColor]
                             forState: UIControlStateNormal];
         
     } else{
         
         button.backgroundColor = [UIColor clearColor];
-        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        [button setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                      forState: UIControlStateNormal];
         
     }
