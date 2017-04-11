@@ -194,30 +194,7 @@
     
 }
 
-- (void)giveButtonActiveConfig:(UIButton *)button{
-    
-    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//    button.backgroundColor = [UIColor clearColor];
-    [button setTitleColor: [UIColor blackColor]
-                 forState: UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
-    
-    CALayer *layer = button.layer;
-    layer.masksToBounds = YES;
-    layer.cornerRadius = 8.0;
-//    layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
-//    layer.borderWidth = 1.0;
-    
-}
 
-- (void)giveButtonInactiveConfig:(UIButton *)button{
-    
-    button.backgroundColor = [UIColor clearColor];
-    [button setTitle: @""
-            forState: UIControlStateNormal];
-    button.enabled = NO;
-    
-}
 
 
 #pragma mark - Button Actions
@@ -524,11 +501,43 @@
     
 }
 
+#pragma mark - Button Appearances
+
 - (void)giveButtonCopyingAppearance:(UIButton *)button{
     
     button.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
+    
+}
+
+- (void)giveButtonSelectedAppearance:(UIButton *)button{
+    
+    
+    button.backgroundColor = [UIColor clearColor];
+    [button setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
+                 forState: UIControlStateNormal];
+}
+
+- (void)giveButtonActiveConfig:(UIButton *)button{
+    
+    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    [button setTitleColor: [UIColor blackColor]
+                 forState: UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
+    
+    CALayer *layer = button.layer;
+    layer.masksToBounds = YES;
+    layer.cornerRadius = 8.0;
+    
+}
+
+- (void)giveButtonInactiveConfig:(UIButton *)button{
+    
+    button.backgroundColor = [UIColor clearColor];
+    [button setTitle: @""
+            forState: UIControlStateNormal];
+    button.enabled = NO;
     
 }
 
@@ -691,15 +700,11 @@
     
     if (valueNotYetSelected){
         
-        button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        [button setTitleColor: [UIColor whiteColor]
-                            forState: UIControlStateNormal];
+        [self giveButtonActiveConfig: button];
         
     } else{
         
-        button.backgroundColor = [UIColor clearColor];
-        [button setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
-                     forState: UIControlStateNormal];
+        [self giveButtonSelectedAppearance: button];
         
     }
     

@@ -177,7 +177,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     for (TJBRealizedSet *set in self.exercise.realizedSets){
         
-        [collector addObject: set];
+        // only add the set if it is not associated with a routine. Otherwise, sets will be counted twice
+        
+        if (set.realizedSetCollector == nil){
+            
+            [collector addObject: set];
+            
+        }
+        
+
         
     }
     
