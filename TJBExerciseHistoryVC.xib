@@ -11,6 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBExerciseHistoryVC">
             <connections>
+                <outlet property="tableView" destination="nzS-RV-Iiy" id="Ph2-t1-2AN"/>
+                <outlet property="titleBar" destination="UNt-d2-voy" id="VS4-Za-Ktx"/>
+                <outlet property="titleLabel" destination="Pzn-DM-nZU" id="v46-pb-FYi"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
