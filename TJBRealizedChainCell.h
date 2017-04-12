@@ -13,7 +13,7 @@
 // core data
 
 @class TJBRealizedChain;
-
+@class TJBChainTemplate;
 
 
 typedef enum{
@@ -36,6 +36,7 @@ typedef enum{
 #pragma mark - API
 
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain;
++ (float)suggestedCellHeightForChainTemplate:(TJBChainTemplate *)chainTemplate;
 
 - (void)clearExistingEntries;
 

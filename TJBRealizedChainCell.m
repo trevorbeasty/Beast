@@ -142,7 +142,32 @@ typedef enum{
         
     } else if (_cellType == ChainTemplateCell){
         
+        TJBChainTemplate *ct = self.contentObject;
         
+        for (int i = 0; i < ct.numberOfExercises; i++){
+            
+            for (int j = 0; j < ct.numberOfRounds; j++){
+                
+                currentTopView = [self addContentRowCorrespondingToExerciseIndex: i
+                                                                      roundIndex: j
+                                                                  currentTopView: currentTopView
+                                                                   maxRoundIndex: ct.numberOfRounds - 1];
+                
+            }
+            
+            // an entire row section has just been added (corresponding to an exercise)
+            // now an exercise label must be created before creating the next row section
+            // do not create an exercise label if at the max exercise index
+            
+            BOOL atMaxExerciseIndex = i == ct.numberOfExercises - 1;
+            
+            if (atMaxExerciseIndex == NO){
+                
+                currentTopView = [self addContentExerciseLabelCorrespondingToExerciseIndex: i + 1
+                                                                            currentTopView: currentTopView];
+                
+            }
+        }
         
         
         
@@ -618,9 +643,7 @@ typedef enum{
         
     }
     
-    
     NSNumber *number;
-    
     
     if (_cellType == RealizedChainCell){
         
@@ -634,7 +657,7 @@ typedef enum{
             
         } else{
             
-            switch (dynamicLabelType) {
+            switch (dynamicLabelType){
                 case TJBWeightType:
                     number = @(rs.submittedWeight);
                     break;
@@ -650,10 +673,34 @@ typedef enum{
                 default:
                     break;
             }
-            
         }
         
-
+    } else if (_cellType == ChainTemplateCell){
+        
+        TJBChainTemplate *ct = self.contentObject;
+        TJBTargetUnit *tu = ct.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
+        
+        switch (dynamicLabelType){
+            case TJBWeightType:
+                if (tu.isTargetingWeight == YES){
+                    number = @(tu.weightTarget);
+                }
+                break;
+                
+            case TJBRepsType:
+                if (tu.isTargetingReps == YES){
+                    number = @(tu.repsTarget);
+                }
+                break;
+                
+            case TJBRestType:
+                if (tu.isTargetingTrailingRest == YES){
+                    number = @(tu.trailingRestTarget);
+                }
+                
+            default:
+                break;
+        }
         
     }
     
@@ -914,11 +961,25 @@ typedef enum{
 }
 
 
-#pragma mark - API
+#pragma mark - Prescribed Cell Height
 
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain{
     
     TJBChainTemplate *ct = realizedChain.chainTemplate;
+    
+    return  [self heightForChainTemplate: ct];
+    
+
+    
+}
+
++ (float)suggestedCellHeightForChainTemplate:(TJBChainTemplate *)chainTemplate{
+    
+    return [self heightForChainTemplate: chainTemplate];
+    
+}
+
++ (float)heightForChainTemplate:(TJBChainTemplate *)ct{
     
     // I assume labels with intrinsic content sizes determining heights are 25 tall
     
@@ -932,15 +993,7 @@ typedef enum{
     
 }
 
-
-//static CGFloat const rowHeight = 30;
-//static CGFloat const topSpacing = 8;
-//static CGFloat const bottomSpacing = 16;
-//static CGFloat const leadingSpace = 32;
-//static CGFloat const trailingSpace = 0;
-//static CGFloat const interimVertRowSpacing = 0;
-//static CGFloat const interimHorzRowSpacing = 0;
-//static CGFloat const exerciseLeadingSpace = 8;
+#pragma mark - Clear Content
 
 - (void)clearExistingEntries{
     

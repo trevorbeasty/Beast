@@ -37,18 +37,15 @@
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cna-Rm-Pq1" userLabel="mainContainer">
-                    <rect key="frame" x="0.0" y="122" width="375" height="479"/>
+                    <rect key="frame" x="0.0" y="122" width="375" height="489"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LfV-Yt-FC1" userLabel="bottomControlContainer">
-                    <rect key="frame" x="0.0" y="601" width="375" height="66"/>
+                    <rect key="frame" x="0.0" y="611" width="375" height="56"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M9q-4p-UvJ">
-                            <rect key="frame" x="4" y="8" width="117" height="50"/>
+                            <rect key="frame" x="4" y="8" width="117" height="40"/>
                             <color key="backgroundColor" red="1" green="0.42017299107142858" blue="0.20655691964285713" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="50" id="f8F-Dc-1sf"/>
-                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <state key="normal" title="Launch">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -58,14 +55,14 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8G-LF-5HS">
-                            <rect key="frame" x="129" y="8" width="117" height="50"/>
+                            <rect key="frame" x="129" y="8" width="117" height="40"/>
                             <state key="normal" title="History"/>
                             <connections>
                                 <action selector="didPressViewHistory:" destination="-1" eventType="touchUpInside" id="dKW-mV-ZDz"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2mG-8G-qFH">
-                            <rect key="frame" x="254" y="8" width="117" height="50"/>
+                            <rect key="frame" x="254" y="8" width="117" height="40"/>
                             <state key="normal" title="New"/>
                             <connections>
                                 <action selector="didPressNewRoutineButton:" destination="-1" eventType="touchUpInside" id="9E9-Gn-LhS"/>
@@ -80,9 +77,10 @@
                         <constraint firstItem="M9q-4p-UvJ" firstAttribute="leading" secondItem="LfV-Yt-FC1" secondAttribute="leading" constant="4" id="9k3-am-c6K"/>
                         <constraint firstItem="2mG-8G-qFH" firstAttribute="width" secondItem="M9q-4p-UvJ" secondAttribute="width" id="9oZ-vG-yIt"/>
                         <constraint firstItem="X8G-LF-5HS" firstAttribute="top" secondItem="M9q-4p-UvJ" secondAttribute="top" id="KT8-ud-zsW"/>
+                        <constraint firstItem="M9q-4p-UvJ" firstAttribute="top" secondItem="LfV-Yt-FC1" secondAttribute="top" constant="8" id="abc-hT-oDg"/>
                         <constraint firstItem="X8G-LF-5HS" firstAttribute="width" secondItem="M9q-4p-UvJ" secondAttribute="width" id="iqz-Cb-OaN"/>
                         <constraint firstItem="2mG-8G-qFH" firstAttribute="bottom" secondItem="M9q-4p-UvJ" secondAttribute="bottom" id="mMQ-Tu-Q0W"/>
-                        <constraint firstAttribute="height" constant="66" id="qNp-K0-nrl"/>
+                        <constraint firstAttribute="height" constant="56" id="qNp-K0-nrl"/>
                         <constraint firstItem="2mG-8G-qFH" firstAttribute="top" secondItem="M9q-4p-UvJ" secondAttribute="top" id="rYs-xV-5Um"/>
                         <constraint firstItem="X8G-LF-5HS" firstAttribute="bottom" secondItem="M9q-4p-UvJ" secondAttribute="bottom" id="riz-dr-QDD"/>
                         <constraint firstItem="X8G-LF-5HS" firstAttribute="leading" secondItem="M9q-4p-UvJ" secondAttribute="trailing" constant="8" id="sr5-T9-Qqx"/>

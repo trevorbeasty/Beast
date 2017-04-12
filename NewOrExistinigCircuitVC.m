@@ -30,7 +30,8 @@
 
 // table view cell
 
-#import "TJBStructureTableViewCell.h"
+//#import "TJBStructureTableViewCell.h"
+#import "TJBRealizedChainCell.h"
 #import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
 
@@ -227,7 +228,7 @@
         
         CALayer *buttLayer = button.layer;
         buttLayer.masksToBounds = YES;
-        buttLayer.cornerRadius = 15.0;
+        buttLayer.cornerRadius = 20.0;
         buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
         buttLayer.borderWidth = 2.0;
         
@@ -912,7 +913,7 @@
                 
             }
             
-            TJBStructureTableViewCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBStructureTableViewCell"];
+            TJBRealizedChainCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
@@ -938,9 +939,10 @@
                 
             }
             
-            [cell configureWithChainTemplate: chainTemplate
-                                        date: date
-                                      number: [NSNumber numberWithInteger: indexPath.row]];
+            [cell configureWithContentObject: chainTemplate
+                                    cellType: ChainTemplateCell
+                                dateTimeType: TJBDayInYear
+                                 titleNumber: @(indexPath.row)];
             
             // configure border width and background color according to whether or not the cell is selected
             
@@ -988,7 +990,7 @@
     
     // deal with unhighlighting
 
-    TJBStructureTableViewCell *lastSelectedCell = [tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+    TJBRealizedChainCell *lastSelectedCell = [tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
     
     lastSelectedCell.backgroundColor = [UIColor clearColor];
     lastSelectedCell.layer.borderWidth = 0.0;
@@ -1005,7 +1007,7 @@
     
     // add blue border to selected cell
     
-    TJBStructureTableViewCell *selectedCell = [tableView cellForRowAtIndexPath: indexPath];
+    TJBRealizedChainCell *selectedCell = [tableView cellForRowAtIndexPath: indexPath];
     
     selectedCell.backgroundColor = [UIColor clearColor];
     
@@ -1037,7 +1039,7 @@
             
             TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row -1];
             
-            return [TJBStructureTableViewCell suggestedCellHeightForChainTemplate: chainTemplate];
+            return [TJBRealizedChainCell suggestedCellHeightForChainTemplate: chainTemplate];
             
         }
         
@@ -1350,7 +1352,7 @@
     
     if (self.lastSelectedIndexPath){
         
-        TJBStructureTableViewCell *cell = [self.activeTableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+        TJBRealizedChainCell *cell = [self.activeTableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
         cell.layer.borderWidth = 0.0;
         cell.backgroundColor = [UIColor clearColor];
         self.lastSelectedIndexPath = nil;
@@ -1644,11 +1646,11 @@
     
     // cells
     
-    UINib *nib = [UINib nibWithNibName: @"TJBStructureTableViewCell"
+    UINib *nib = [UINib nibWithNibName: @"TJBRealizedChainCell"
                                 bundle: nil];
     
     [tableView registerNib: nib
-               forCellReuseIdentifier: @"TJBStructureTableViewCell"];
+               forCellReuseIdentifier: @"TJBRealizedChainCell"];
     
     UINib *nib2 = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
                                  bundle: nil];
