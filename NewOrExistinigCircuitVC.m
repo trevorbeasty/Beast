@@ -194,15 +194,6 @@
     
 }
 
-//- (void)configureNotifications{
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver: self
-//                                             selector: @selector(fetchCoreData)
-//                                                 name: NSManagedObjectContextDidSaveNotification
-//                                               object: [[CoreDataController singleton] moc]];
-//    
-//    
-//}
 
 
 - (void)viewAesthetics{
@@ -867,7 +858,7 @@
         
         NSString *primaryText;
         if (_sortByDateCreated == NO){
-            primaryText = @"Routines by Date Last Executed";
+            primaryText = @"Routines by Last Completion";
         } else{
             primaryText = @"Routines by Date Created";
         }
@@ -882,7 +873,10 @@
         NSString *secondaryText = [df stringFromDate: titleDate];
         
         cell.primaryLabel.text = primaryText;
+        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
+        
         cell.secondaryLabel.text = secondaryText;
+        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
         
         cell.backgroundColor = [UIColor clearColor];
         
@@ -1019,7 +1013,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 60.0;
+    CGFloat titleHeight = 80.0;
     
     if (indexPath.row == 0){
         

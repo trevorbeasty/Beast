@@ -481,10 +481,12 @@ typedef enum{
 
 - (void)configureViewAesthetics{
     
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     // basic formatting
     
     self.dateTimeLabel.backgroundColor = [UIColor clearColor];
-    self.dateTimeLabel.font = [UIFont systemFontOfSize: 12];
+    self.dateTimeLabel.font = [UIFont systemFontOfSize: 15];
     self.dateTimeLabel.textColor = [UIColor blackColor];
     
     self.titleNumberLabel.font = [UIFont systemFontOfSize: 40];

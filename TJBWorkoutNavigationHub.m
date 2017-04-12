@@ -99,7 +99,7 @@
 
 static const CGFloat buttonWidth = 60.0;
 static const CGFloat buttonSpacing = 0.0;
-static const CGFloat buttonHeight = 50.0;
+static const CGFloat buttonHeight = 55.0;
 
 // animation
 
@@ -1165,7 +1165,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         }
         
         cell.primaryLabel.text = @"My Workout Log";
+        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
+        
+        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
+        
         cell.backgroundColor = [UIColor clearColor];
+        
         
         return cell;
         
@@ -1323,7 +1328,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 60.0;
+    CGFloat titleHeight = 80.0;
     
     if (indexPath.row == 0){
         
