@@ -111,6 +111,22 @@
     self.firstExerciseLabel.textColor = [UIColor blackColor];
     self.firstExerciseLabel.font = [UIFont systemFontOfSize: 15];
     
+    // detail drawing
+    
+//    [self.contentView layoutIfNeeded];
+    
+    NSArray *verticalDividerLabels = @[self.columnHeader1Label,
+                                       self.columnHeader2Label,
+                                       self.columnHeader3Label];
+    for (UILabel *lab in verticalDividerLabels){
+        
+        [self drawVerticalDividerToRightOfLabel: lab
+                               horizontalOffset: 2
+                                      thickness: 10
+                                 verticalOffset: 2];
+        
+    }
+    
 }
 
 - (void)configureBasicLabelText{
@@ -264,6 +280,46 @@
     }
     
     return date;
+    
+}
+
+#pragma mark - Detailed Drawing
+
+- (void)drawVerticalDividerToRightOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff{
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
+    CGPoint bottomRightCorner = CGPointMake(topRightCorner.x, topRightCorner.y + labelSize.height);
+    
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: CGPointMake(topRightCorner.x + horOff, topRightCorner.y - vertOff)];
+
+    CGPoint endPoint = CGPointMake(bottomRightCorner.x + horOff,  bottomRightCorner.y - vertOff);
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    label.layer.masksToBounds = NO;
+    [label.layer addSublayer: sl];
     
 }
 
