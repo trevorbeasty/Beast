@@ -53,15 +53,31 @@
 @property (strong) id contentObject;
 @property (strong) NSNumber *titleNumber;
 
+// layout
+
+@property (strong) NSMutableDictionary *constraintMapping;
 
 
 
 
 @end
 
+// layout constants
+
+static CGFloat const rowHeight = 30;
+static CGFloat const topSpacing = 8;
+static CGFloat const bottomSpacing = 16;
+static CGFloat const exerciseHeight = 50;
+static CGFloat const leadingSpace = 32;
+static CGFloat const trailingSpace = 0;
+static CGFloat const interimVertRowSpacing = 0;
+static CGFloat const interimHorzRowSpacing = 0;
+
+
+
 @implementation TJBRealizedChainCell
 
-#pragma mark - Instantiation
+#pragma mark - Main Method
 
 - (void)configureWithContentObject:(id)contentObject cellType:(TJBAdvancedCellType)cellType dateTimeType:(TJBDateTimeType)dateTimeType titleNumber:(NSNumber *)titleNumber{
     
@@ -72,9 +88,218 @@
     
     [self configureBasicLabelText];
     [self configureViewAesthetics];
+    [self createAndLayoutDynamicContent];
+    
+}
+
+
+#pragma mark - Dynamic Content
+
+- (void)createAndLayoutDynamicContent{
+    
+    self.constraintMapping = [[NSMutableDictionary alloc] init];
+    [self.constraintMapping setObject: self.firstExerciseLabel
+                               forKey: @"initialTopView"];
+    UIView *currentTopView = self.firstExerciseLabel;
+    
+    if (_cellType == RealizedChainCell){
+        
+        TJBRealizedChain *rc = self.contentObject;
+        
+        for (int i = 0; i < rc.chainTemplate.numberOfExercises; i++){
+            
+            for (int j = 0; j < rc.chainTemplate.numberOfRounds; j++){
+                
+                currentTopView = [self addContentRowCorrespondingToExerciseIndex: i
+                                                                      roundIndex: j
+                                                                  currentTopView: currentTopView];
+                
+            }
+            
+            break;
+            
+        }
+        
+    } else if (_cellType == ChainTemplateCell){
+        
+        
+        
+        
+        
+        
+    }
     
     
     
+}
+
+
+- (UIView *)addContentRowCorrespondingToExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex currentTopView:(UIView *)currentTopView{
+    
+    NSString *topViewKey = [self.constraintMapping allKeysForObject: currentTopView][0];
+    
+    // round / set #
+    
+    UILabel *roundLabel = [[UILabel alloc] init];
+    NSString *roundUniqueID = [NSString stringWithFormat: @"roundLabel%d%d", exerciseIndex, roundIndex];
+    [self.constraintMapping setObject: roundLabel
+                          forKey: roundUniqueID];
+    [self.contentView addSubview: roundLabel];
+    
+    roundLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSString *roundVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
+                                                     bottomViewKey: roundUniqueID
+                                               isFirstRowInSection: roundIndex == 0];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: roundVertVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    NSString *roundHorzVFL = [self horizontalConstraintVFLForLeftViewKey: nil
+                                                         rightViewKey: roundUniqueID
+                                                        isLeadingView: YES
+                                                       isTrailingView: NO];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: roundHorzVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    
+    
+    roundLabel.text = @"round";
+    
+    // weight
+    
+    UILabel *weightLabel = [[UILabel alloc] init];
+    NSString *weightUniqueID = [NSString stringWithFormat: @"weightLabel%d%d", exerciseIndex, roundIndex];
+    [self.constraintMapping setObject: weightLabel
+                               forKey: weightUniqueID];
+    [self.contentView addSubview: weightLabel];
+    
+    weightLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSString *weightVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
+                                                     bottomViewKey: weightUniqueID
+                                               isFirstRowInSection: roundIndex == 0];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: weightVertVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    NSString *weightHorzVFL = [self horizontalConstraintVFLForLeftViewKey: roundUniqueID
+                                                         rightViewKey: weightUniqueID
+                                                        isLeadingView: NO
+                                                       isTrailingView: NO];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: weightHorzVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    
+    
+    weightLabel.text = @"weight";
+
+    // reps
+    
+    UILabel *repsLabel = [[UILabel alloc] init];
+    NSString *repsUniqueID = [NSString stringWithFormat: @"repsLabel%d%d", exerciseIndex, roundIndex];
+    [self.constraintMapping setObject: repsLabel
+                               forKey: repsUniqueID];
+    [self.contentView addSubview: repsLabel];
+    
+    repsLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSString *repsVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
+                                                         bottomViewKey: repsUniqueID
+                                                   isFirstRowInSection: roundIndex == 0];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: repsVertVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    NSString *repsHorzVFL = [self horizontalConstraintVFLForLeftViewKey: weightUniqueID
+                                                             rightViewKey: repsUniqueID
+                                                            isLeadingView: NO
+                                                           isTrailingView: NO];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: repsHorzVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    
+    
+    repsLabel.text = @"reps";
+
+    // rest
+    
+    UILabel *restLabel = [[UILabel alloc] init];
+    NSString *restUniqueID = [NSString stringWithFormat: @"restLabel%d%d", exerciseIndex, roundIndex];
+    [self.constraintMapping setObject: restLabel
+                               forKey: restUniqueID];
+    [self.contentView addSubview: restLabel];
+    
+    restLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSString *restVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
+                                                       bottomViewKey: restUniqueID
+                                                 isFirstRowInSection: roundIndex == 0];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: restVertVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    NSString *restHorzVFL = [self horizontalConstraintVFLForLeftViewKey: repsUniqueID
+                                                           rightViewKey: restUniqueID
+                                                          isLeadingView: NO
+                                                         isTrailingView: YES];
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: restHorzVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    
+    
+    restLabel.text = @"rest";
+    
+    return  roundLabel;
+    
+}
+
+- (NSString *)horizontalConstraintVFLForLeftViewKey:(NSString *)leftViewKey rightViewKey:(NSString *)rightViewKey isLeadingView:(BOOL)isLeadingView isTrailingView:(BOOL)isTrailingView{
+    
+    float horzSpacing = isLeadingView ? leadingSpace : interimHorzRowSpacing;
+    
+    NSString *horzVFLStr;
+    
+    if (isLeadingView){
+        
+        horzVFLStr = [NSString stringWithFormat: @"H:|-%f-[%@]",
+                      horzSpacing,
+                      rightViewKey];
+        
+    } else if (isTrailingView){
+        
+        horzVFLStr = [NSString stringWithFormat: @"H:[%@]-%f-[%@(==%@)]-%f-|",
+                      leftViewKey,
+                      horzSpacing,
+                      rightViewKey,
+                      leftViewKey,
+                      trailingSpace];
+        
+    } else{
+        
+        horzVFLStr = [NSString stringWithFormat: @"H:[%@]-%f-[%@(==%@)]",
+                      leftViewKey,
+                      horzSpacing,
+                      rightViewKey,
+                      leftViewKey];
+        
+    }
+
+    return horzVFLStr;
+    
+}
+
+- (NSString *)verticalConstraintVFLForTopViewKey:(NSString *)topViewKey bottomViewKey:(NSString *)bottomViewKey isFirstRowInSection:(BOOL)isFirstRowInSection{
+    
+    float vertSpacing = isFirstRowInSection ? topSpacing : 0;
+    
+    NSString *vertVFLStr = [NSString stringWithFormat: @"V:[%@]-%f-[%@(==%f)]",
+                            topViewKey,
+                            vertSpacing,
+                            bottomViewKey,
+                            rowHeight];
+    
+    return vertVFLStr;
     
 }
 
@@ -190,10 +415,6 @@
             break;
     }
     
-//    NSString *ntString = [NSString stringWithFormat: @"%@ - %@",
-//                          [self.titleNumber stringValue],
-//                          type];
-//    self.numberTypeLabel.text = ntString;
     self.titleNumberLabel.text = [self.titleNumber stringValue];
     self.typeLabel.text = type;
     
