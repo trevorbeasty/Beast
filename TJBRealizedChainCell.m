@@ -67,7 +67,6 @@
 static CGFloat const rowHeight = 30;
 static CGFloat const topSpacing = 8;
 static CGFloat const bottomSpacing = 16;
-static CGFloat const exerciseHeight = 50;
 static CGFloat const leadingSpace = 32;
 static CGFloat const trailingSpace = 0;
 static CGFloat const interimVertRowSpacing = 0;
@@ -189,7 +188,7 @@ typedef enum{
                                    exercise.name];
     exerciseLabel.text = exerciseLabelText;
     
-    exerciseLabel.font = [UIFont systemFontOfSize: 15];
+    [self configureExerciseLabel: exerciseLabel];
     
     return exerciseLabel;
     
@@ -402,7 +401,7 @@ typedef enum{
     
     // common aesthetics
     
-    label.font = [UIFont systemFontOfSize: 12];
+    label.font = [UIFont systemFontOfSize: 15];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor blackColor];
     label.textAlignment = NSTextAlignmentCenter;
@@ -463,7 +462,7 @@ typedef enum{
     self.dateTimeLabel.font = [UIFont systemFontOfSize: 12];
     self.dateTimeLabel.textColor = [UIColor blackColor];
     
-    self.titleNumberLabel.font = [UIFont systemFontOfSize: 35];
+    self.titleNumberLabel.font = [UIFont systemFontOfSize: 40];
     self.titleNumberLabel.backgroundColor = [UIColor clearColor];
     self.titleNumberLabel.textColor = [UIColor blackColor];
     
@@ -471,7 +470,7 @@ typedef enum{
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize: 15];
+        label.font = [UIFont boldSystemFontOfSize: 20];
         label.textColor = [UIColor blackColor];
         
     }
@@ -490,9 +489,7 @@ typedef enum{
         
     }
     
-    self.firstExerciseLabel.backgroundColor = [UIColor clearColor];
-    self.firstExerciseLabel.textColor = [UIColor blackColor];
-    self.firstExerciseLabel.font = [UIFont systemFontOfSize: 15];
+    [self configureExerciseLabel: self.firstExerciseLabel];
     
     // detail drawing
     
@@ -513,11 +510,21 @@ typedef enum{
     [self drawHookLineUnderLabel1: self.titleNumberLabel
                            label2: self.nameLabel
                    verticalOffset: 2
-                        thickness: 1];
+                        thickness: 1
+                       hookLength: 16];
     [self drawHookLineUnderLabel1: self.titleNumberLabel
                            label2: self.nameLabel
                    verticalOffset: 5
-                        thickness: 1];
+                        thickness: 1
+                       hookLength: 16];
+    
+}
+
+- (void)configureExerciseLabel:(UILabel *)label{
+    
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont boldSystemFontOfSize: 15];
+    label.textColor = [UIColor blackColor];
     
 }
 
@@ -797,7 +804,7 @@ typedef enum{
     
 }
 
-- (void)drawHookLineUnderLabel1:(UILabel *)label1 label2:(UILabel *)label2 verticalOffset:(CGFloat)vertOff thickness:(CGFloat)thickness{
+- (void)drawHookLineUnderLabel1:(UILabel *)label1 label2:(UILabel *)label2 verticalOffset:(CGFloat)vertOff thickness:(CGFloat)thickness hookLength:(CGFloat)hookLength{
     
     // vertical offset describes the distance under the label's bottom edge that the hook line is drawn
     
@@ -817,7 +824,7 @@ typedef enum{
     
     CGPoint startPoint = CGPointMake(label1.frame.origin.x, label2.frame.origin.y + label2.frame.size.height + vertOff);
     CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width, startPoint.y);
-    CGPoint endPoint = CGPointMake(interimPoint.x + 16,  interimPoint.y - 16);
+    CGPoint endPoint = CGPointMake(interimPoint.x + hookLength,  interimPoint.y - hookLength);
     
     UIBezierPath *bp = [[UIBezierPath alloc] init];
     [bp moveToPoint: startPoint];
@@ -911,12 +918,29 @@ typedef enum{
 
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain{
     
-
+    TJBChainTemplate *ct = realizedChain.chainTemplate;
     
-    return 600;
- 
+    // I assume labels with intrinsic content sizes determining heights are 25 tall
+    
+    CGFloat estimatedHeaderAreaHeight = 137;
+    
+    CGFloat remainingHeight = ct.numberOfExercises * (((ct.numberOfRounds - 1) * interimVertRowSpacing) + ct.numberOfRounds * rowHeight + topSpacing) + (ct.numberOfExercises - 1) * (25 + bottomSpacing);
+    
+    CGFloat breatherRoom = 32;
+    
+    return estimatedHeaderAreaHeight + remainingHeight + breatherRoom;
+    
 }
 
+
+//static CGFloat const rowHeight = 30;
+//static CGFloat const topSpacing = 8;
+//static CGFloat const bottomSpacing = 16;
+//static CGFloat const leadingSpace = 32;
+//static CGFloat const trailingSpace = 0;
+//static CGFloat const interimVertRowSpacing = 0;
+//static CGFloat const interimHorzRowSpacing = 0;
+//static CGFloat const exerciseLeadingSpace = 8;
 
 - (void)clearExistingEntries{
     
