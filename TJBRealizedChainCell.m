@@ -267,7 +267,7 @@ typedef enum{
     
     [self.contentView layoutSubviews];
     
-    [self configureLabelAesthetics: roundLabel
+    [self configureLabelAestheticsAndContent: roundLabel
                     isLeadingLabel: YES
                    isTrailingLabel: NO
                           isTopRow: isTopRow
@@ -276,7 +276,7 @@ typedef enum{
                         roundIndex: roundIndex
                   dynamicLabelType: TJBRoundType];
     
-    [self configureLabelAesthetics: weightLabel
+    [self configureLabelAestheticsAndContent: weightLabel
                     isLeadingLabel: NO
                    isTrailingLabel: NO
                           isTopRow: isTopRow
@@ -285,7 +285,7 @@ typedef enum{
                         roundIndex: roundIndex
                   dynamicLabelType: TJBWeightType];
     
-    [self configureLabelAesthetics: repsLabel
+    [self configureLabelAestheticsAndContent: repsLabel
                     isLeadingLabel: NO
                    isTrailingLabel: NO
                           isTopRow: isTopRow
@@ -294,7 +294,7 @@ typedef enum{
                         roundIndex: roundIndex
                   dynamicLabelType: TJBRepsType];
     
-    [self configureLabelAesthetics: restLabel
+    [self configureLabelAestheticsAndContent: restLabel
                     isLeadingLabel: NO
                    isTrailingLabel: YES
                           isTopRow: isTopRow
@@ -358,7 +358,7 @@ typedef enum{
 
 #pragma mark - Dynamic Content Aesthetics
 
-- (void)configureLabelAesthetics:(UILabel *)label isLeadingLabel:(BOOL)isLeadingLabel isTrailingLabel:(BOOL)isTrailingLabel isTopRow:(BOOL)isTopRow isBottomRow:(BOOL)isBottomRow exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex dynamicLabelType:(TJBDynamicLabelType)dynamicLabelType{
+- (void)configureLabelAestheticsAndContent:(UILabel *)label isLeadingLabel:(BOOL)isLeadingLabel isTrailingLabel:(BOOL)isTrailingLabel isTopRow:(BOOL)isTopRow isBottomRow:(BOOL)isBottomRow exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex dynamicLabelType:(TJBDynamicLabelType)dynamicLabelType{
     
     // common aesthetics
     
@@ -372,16 +372,28 @@ typedef enum{
                                    dynamicLabelType: dynamicLabelType];
     NSString *text;
     
-    if (number){
-        if (dynamicLabelType == TJBRestType){
-            text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
-        } else{
-            text = [number stringValue];
-        }
-    } else{
+    if ([number intValue] == -1){
+        
+        text = @"-";
+        
+    } else if (number == nil){
+        
         text = @"X";
+        
+    } else{
+        
+        if (dynamicLabelType == TJBRestType){
+            
+            text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+            
+        } else{
+            
+            text = [number stringValue];
+            
+        }
+        
     }
-    
+
     label.text = text;
     
     if (isTrailingLabel == NO){
@@ -550,7 +562,18 @@ typedef enum{
 
 - (NSNumber *)numberForExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex dynamicLabelType:(TJBDynamicLabelType)dynamicLabelType{
     
+    // return -1 if the element is part of an incomplete realized set (will show '-')
+    // return nil if the element is not being targeted (will show 'X')
+
+    if (dynamicLabelType == TJBRoundType){ // no advanced logic is needed for the round number, which is simply always the round number
+        
+        return  @(roundIndex + 1);
+        
+    }
+    
+    
     NSNumber *number;
+    
     
     if (_cellType == RealizedChainCell){
         
@@ -558,30 +581,32 @@ typedef enum{
         TJBRealizedSet *rs = rc.realizedSetCollections[exerciseIndex].realizedSets[roundIndex];
         TJBTargetUnit *tu = rc.chainTemplate.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
         
-        switch (dynamicLabelType) {
-            case TJBRoundType:
-                number = @(roundIndex);
-                break;
-                
-            case TJBWeightType:
-                number = @(rs.submittedWeight);
-                break;
-                
-            case TJBRepsType:
-                number = @(rs.submittedReps);
-                break;
-                
-            case TJBRestType:
-                
-                if (tu.isTargetingTrailingRest == YES){
+        if (rs.holdsNullValues == YES){
+            
+            number = @(-1);
+            
+        } else{
+            
+            switch (dynamicLabelType) {
+                case TJBWeightType:
+                    number = @(rs.submittedWeight);
+                    break;
+                    
+                case TJBRepsType:
+                    number = @(rs.submittedReps);
+                    break;
+                    
+                case TJBRestType:
                     number = @(tu.trailingRestTarget);
-                }
-                
-                break;
-                
-            default:
-                break;
+                    break;
+                    
+                default:
+                    break;
+            }
+            
         }
+        
+
         
     }
     
