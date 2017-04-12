@@ -72,6 +72,7 @@ static CGFloat const leadingSpace = 32;
 static CGFloat const trailingSpace = 0;
 static CGFloat const interimVertRowSpacing = 0;
 static CGFloat const interimHorzRowSpacing = 0;
+static CGFloat const exerciseLeadingSpace = 8;
 
 
 typedef enum{
@@ -104,6 +105,8 @@ typedef enum{
 
 - (void)createAndLayoutDynamicContent{
     
+    // views are stacked from top to bottom.  It is thus necessary that new views know which view they should position themselves beneath.  This communication is achieved via the currentTopView
+    
     self.constraintMapping = [[NSMutableDictionary alloc] init];
     [self.constraintMapping setObject: self.firstExerciseLabel
                                forKey: @"initialTopView"];
@@ -124,23 +127,19 @@ typedef enum{
                 
             }
             
-            break;
+            // an entire row section has just been added (corresponding to an exercise)
+            // now an exercise label must be created before creating the next row section
+            // do not create an exercise label if at the max exercise index
             
+            BOOL atMaxExerciseIndex = i == rc.chainTemplate.numberOfExercises - 1;
+            
+            if (atMaxExerciseIndex == NO){
+                
+                currentTopView = [self addContentExerciseLabelCorrespondingToExerciseIndex: i + 1
+                                                                            currentTopView: currentTopView];
+                
+            }
         }
-        
-//        [self.contentView layoutSubviews]; // must iterate through again because borders will not draw unless views are laid out
-//        
-//        for (int i = 0; i < rc.chainTemplate.numberOfExercises; i++){
-//            
-//            for (int j = 0; j < rc.chainTemplate.numberOfRounds; j++){
-//                
-//                [
-//                
-//            }
-//            
-//            break;
-//            
-//        }
         
     } else if (_cellType == ChainTemplateCell){
         
@@ -152,6 +151,47 @@ typedef enum{
     }
     
     
+    
+}
+
+- (UIView *)addContentExerciseLabelCorrespondingToExerciseIndex:(int)exerciseIndex currentTopView:(UIView *)currentTopView{
+    
+    NSString *topViewKey = [self.constraintMapping allKeysForObject: currentTopView][0];
+    
+    UILabel *exerciseLabel = [[UILabel alloc] init];
+    NSString *exerciseUniqueID = [NSString stringWithFormat: @"exercise%d", exerciseIndex];
+    [self.constraintMapping setObject: exerciseLabel
+                               forKey: exerciseUniqueID];
+    [self.contentView addSubview: exerciseLabel];
+    
+    exerciseLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSString *exerciseVertVFL = [NSString stringWithFormat: @"V:[%@]-%f-[%@]",
+                                 topViewKey,
+                                 bottomSpacing,
+                                 exerciseUniqueID];
+    
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: exerciseVertVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    NSString *exerciseHorzVFL = [NSString stringWithFormat: @"H:|-%f-[%@]",
+                              exerciseLeadingSpace,
+                              exerciseUniqueID];
+    
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: exerciseHorzVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    
+    TJBExercise *exercise = [self exerciseForExerciseIndex: exerciseIndex];
+    NSString *exerciseLabelText = [NSString stringWithFormat: @"Exercise #%d: %@",
+                                   exerciseIndex + 1,
+                                   exercise.name];
+    exerciseLabel.text = exerciseLabelText;
+    
+    exerciseLabel.font = [UIFont systemFontOfSize: 15];
+    
+    return exerciseLabel;
     
 }
 
@@ -344,7 +384,7 @@ typedef enum{
 
 - (NSString *)verticalConstraintVFLForTopViewKey:(NSString *)topViewKey bottomViewKey:(NSString *)bottomViewKey isFirstRowInSection:(BOOL)isFirstRowInSection{
     
-    float vertSpacing = isFirstRowInSection ? topSpacing : 0;
+    float vertSpacing = isFirstRowInSection ? topSpacing : interimVertRowSpacing;
     
     NSString *vertVFLStr = [NSString stringWithFormat: @"V:[%@]-%f-[%@(==%f)]",
                             topViewKey,
@@ -873,7 +913,7 @@ typedef enum{
     
 
     
-    return 300;
+    return 600;
  
 }
 
