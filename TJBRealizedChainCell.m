@@ -128,6 +128,20 @@ typedef enum{
             
         }
         
+//        [self.contentView layoutSubviews]; // must iterate through again because borders will not draw unless views are laid out
+//        
+//        for (int i = 0; i < rc.chainTemplate.numberOfExercises; i++){
+//            
+//            for (int j = 0; j < rc.chainTemplate.numberOfRounds; j++){
+//                
+//                [
+//                
+//            }
+//            
+//            break;
+//            
+//        }
+        
     } else if (_cellType == ChainTemplateCell){
         
         
@@ -174,16 +188,6 @@ typedef enum{
                                                                               metrics: nil
                                                                                 views: self.constraintMapping]];
     
-    
-    [self configureLabelAesthetics: roundLabel
-                    isLeadingLabel: YES
-                   isTrailingLabel: NO
-                          isTopRow: isTopRow
-                       isBottomRow: isBottomRow
-                     exerciseIndex: exerciseIndex
-                        roundIndex: roundIndex
-                  dynamicLabelType: TJBRoundType];
-    
     // weight
     
     UILabel *weightLabel = [[UILabel alloc] init];
@@ -208,16 +212,6 @@ typedef enum{
                                                                               options: 0
                                                                               metrics: nil
                                                                                 views: self.constraintMapping]];
-    
-    
-    [self configureLabelAesthetics: weightLabel
-                    isLeadingLabel: NO
-                   isTrailingLabel: NO
-                          isTopRow: isTopRow
-                       isBottomRow: isBottomRow
-                     exerciseIndex: exerciseIndex
-                        roundIndex: roundIndex
-                  dynamicLabelType: TJBWeightType];
 
     // reps
     
@@ -243,16 +237,6 @@ typedef enum{
                                                                               options: 0
                                                                               metrics: nil
                                                                                 views: self.constraintMapping]];
-    
-    
-    [self configureLabelAesthetics: repsLabel
-                    isLeadingLabel: NO
-                   isTrailingLabel: NO
-                          isTopRow: isTopRow
-                       isBottomRow: isBottomRow
-                     exerciseIndex: exerciseIndex
-                        roundIndex: roundIndex
-                  dynamicLabelType: TJBRepsType];
 
     // rest
     
@@ -279,6 +263,36 @@ typedef enum{
                                                                               metrics: nil
                                                                                 views: self.constraintMapping]];
     
+    // must forcibly layout views before attempting to add borders
+    
+    [self.contentView layoutSubviews];
+    
+    [self configureLabelAesthetics: roundLabel
+                    isLeadingLabel: YES
+                   isTrailingLabel: NO
+                          isTopRow: isTopRow
+                       isBottomRow: isBottomRow
+                     exerciseIndex: exerciseIndex
+                        roundIndex: roundIndex
+                  dynamicLabelType: TJBRoundType];
+    
+    [self configureLabelAesthetics: weightLabel
+                    isLeadingLabel: NO
+                   isTrailingLabel: NO
+                          isTopRow: isTopRow
+                       isBottomRow: isBottomRow
+                     exerciseIndex: exerciseIndex
+                        roundIndex: roundIndex
+                  dynamicLabelType: TJBWeightType];
+    
+    [self configureLabelAesthetics: repsLabel
+                    isLeadingLabel: NO
+                   isTrailingLabel: NO
+                          isTopRow: isTopRow
+                       isBottomRow: isBottomRow
+                     exerciseIndex: exerciseIndex
+                        roundIndex: roundIndex
+                  dynamicLabelType: TJBRepsType];
     
     [self configureLabelAesthetics: restLabel
                     isLeadingLabel: NO
@@ -369,6 +383,20 @@ typedef enum{
     }
     
     label.text = text;
+    
+    if (isTrailingLabel == NO){
+        
+        [self addVerticalBorderToRight: label
+                             thickness: .5];
+        
+    }
+    
+    if (isBottomRow == NO){
+        
+        [self addHorizontalBorderBeneath: label
+                               thickness: .5];
+        
+    }
     
 }
 
@@ -638,13 +666,69 @@ typedef enum{
 
 - (void)addVerticalBorderToRight:(UILabel *)label thickness:(CGFloat)thickness{
     
+    CAShapeLayer *sl = [CAShapeLayer layer];
     
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+
+    CGPoint startPoint = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
+    CGPoint endPoint = CGPointMake(startPoint.x, startPoint.y + labelSize.height);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [self.contentView.layer addSublayer: sl];
     
 }
 
 - (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness{
     
+    CAShapeLayer *sl = [CAShapeLayer layer];
     
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint startPoint = CGPointMake(labelOrigin.x, labelOrigin.y + labelSize.height);
+    CGPoint endPoint = CGPointMake(startPoint.x + labelSize.width,  startPoint.y);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [self.contentView.layer addSublayer: sl];
     
 }
 
