@@ -14,12 +14,29 @@
 
 @class TJBRealizedChain;
 
+
+
+typedef enum{
+    RealizedSetCollectionCell,
+    ChainTemplateCell,
+    RealizedChainCell
+}TJBAdvancedCellType;
+
+typedef enum{
+    TJBDayInYear,
+    TJBTimeOfDay
+}TJBDateTimeType;
+
 @interface TJBRealizedChainCell : TJBMasterCell
 
-- (void)clearExistingEntries;
 
-- (void)configureWithRealizedChain:(TJBRealizedChain *)realizedChain number:(NSNumber *)number finalRest:(NSNumber *)finalRest referenceIndexPath:(NSIndexPath *)path;
+
+- (void)configureWithContentObject:(id)contentObject cellType:(TJBAdvancedCellType)cellType dateTimeType:(TJBDateTimeType)dateTimeType titleNumber:(NSNumber *)titleNumber;
+
+#pragma mark - API
 
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain;
+
+- (void)clearExistingEntries;
 
 @end

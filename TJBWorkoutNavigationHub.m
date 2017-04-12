@@ -1242,10 +1242,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
  
                 [cell clearExistingEntries];
                 
-                [cell configureWithRealizedChain: realizedChain
-                                          number: number
-                                       finalRest: nil
-                              referenceIndexPath: indexPath];
+//                [cell configureWithRealizedChain: realizedChain
+//                                          number: number
+//                                       finalRest: nil
+//                              referenceIndexPath: indexPath];
+                
+                [cell configureWithContentObject: realizedChain
+                                        cellType: RealizedChainCell
+                                    dateTimeType: TJBTimeOfDay
+                                     titleNumber: number];
                 
                 cell.backgroundColor = [UIColor clearColor];
                 

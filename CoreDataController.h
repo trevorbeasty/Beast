@@ -41,6 +41,8 @@ typedef enum{
     PlaceholderType
 }TJBExerciseCategoryType;
 
+typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
+
 @interface CoreDataController : NSObject
 
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
