@@ -38,7 +38,6 @@
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *dateTimeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *numberTypeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UIView *columnHeaderContainer;
 @property (weak, nonatomic) IBOutlet UILabel *columnHeader1Label;
@@ -46,6 +45,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *columnHeader3Label;
 @property (weak, nonatomic) IBOutlet UILabel *columnHeader4Label;
 @property (weak, nonatomic) IBOutlet UILabel *firstExerciseLabel;
+@property (weak, nonatomic) IBOutlet UILabel *titleNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 
 // core
 
@@ -86,7 +87,11 @@
     self.dateTimeLabel.font = [UIFont systemFontOfSize: 12];
     self.dateTimeLabel.textColor = [UIColor blackColor];
     
-    NSArray *titleLabels = @[self.numberTypeLabel, self.nameLabel];
+    self.titleNumberLabel.font = [UIFont systemFontOfSize: 30];
+    self.titleNumberLabel.backgroundColor = [UIColor clearColor];
+    self.titleNumberLabel.textColor = [UIColor blackColor];
+    
+    NSArray *titleLabels = @[self.typeLabel, self.nameLabel];
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor clearColor];
@@ -128,6 +133,15 @@
                                  verticalOffset: 7.5];
         
     }
+    
+    [self drawHookLineUnderLabel1: self.titleNumberLabel
+                           label2: self.nameLabel
+                   verticalOffset: 2
+                        thickness: 1];
+    [self drawHookLineUnderLabel1: self.titleNumberLabel
+                           label2: self.nameLabel
+                   verticalOffset: 5
+                        thickness: 1];
     
 }
 
@@ -174,10 +188,12 @@
             break;
     }
     
-    NSString *ntString = [NSString stringWithFormat: @"%@ - %@",
-                          [self.titleNumber stringValue],
-                          type];
-    self.numberTypeLabel.text = ntString;
+//    NSString *ntString = [NSString stringWithFormat: @"%@ - %@",
+//                          [self.titleNumber stringValue],
+//                          type];
+//    self.numberTypeLabel.text = ntString;
+    self.titleNumberLabel.text = [self.titleNumber stringValue];
+    self.typeLabel.text = type;
     
     // name title label
     
@@ -286,6 +302,41 @@
 }
 
 #pragma mark - Detailed Drawing
+
+- (void)drawHookLineUnderLabel1:(UILabel *)label1 label2:(UILabel *)label2 verticalOffset:(CGFloat)vertOff thickness:(CGFloat)thickness{
+    
+    // vertical offset describes the distance under the label's bottom edge that the hook line is drawn
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint startPoint = CGPointMake(label1.frame.origin.x, label1.frame.origin.y + label1.frame.size.height + vertOff);
+    CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width, startPoint.y);
+    CGPoint endPoint = CGPointMake(interimPoint.x + 16,  interimPoint.y - 16);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: interimPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [self.contentView.layer addSublayer: sl];
+    
+}
 
 - (void)drawVerticalDividerToRightOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff{
     
