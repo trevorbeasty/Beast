@@ -105,6 +105,7 @@
         label.backgroundColor = [UIColor clearColor];
         label.font = [UIFont systemFontOfSize: 12];
         label.textColor = [UIColor blackColor];
+        label.textAlignment = NSTextAlignmentCenter;
         
     }
     
@@ -122,9 +123,9 @@
     for (UILabel *lab in verticalDividerLabels){
         
         [self drawVerticalDividerToRightOfLabel: lab
-                               horizontalOffset: 2
-                                      thickness: 2
-                                 verticalOffset: 4];
+                               horizontalOffset: 0
+                                      thickness: 1
+                                 verticalOffset: 7.5];
         
     }
     
@@ -308,8 +309,45 @@
     CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
     CGPoint bottomRightCorner = CGPointMake(topRightCorner.x, topRightCorner.y + labelSize.height);
     
-    CGPoint startPoint = CGPointMake(topRightCorner.x + horOff, topRightCorner.y - vertOff);
+    CGPoint startPoint = CGPointMake(topRightCorner.x + horOff, topRightCorner.y + vertOff);
     CGPoint endPoint = CGPointMake(bottomRightCorner.x + horOff,  bottomRightCorner.y - vertOff);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [self.columnHeaderContainer.layer addSublayer: sl];
+    
+}
+
+- (void)drawVerticalDividerToLeftOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff{
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint topLeftCorner = labelOrigin;
+    CGPoint bottomLeftCorner = CGPointMake(topLeftCorner.x, topLeftCorner.y + labelSize.height);
+    
+    CGPoint startPoint = CGPointMake(topLeftCorner.x - horOff, topLeftCorner.y + vertOff);
+    CGPoint endPoint = CGPointMake(bottomLeftCorner.x - horOff,  bottomLeftCorner.y - vertOff);
     
     UIBezierPath *bp = [[UIBezierPath alloc] init];
     [bp moveToPoint: startPoint];

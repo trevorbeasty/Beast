@@ -1249,6 +1249,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
 //                [self.tableView layoutIfNeeded];
                 
+//                [self.tableView layoutSubviews];
+                
                 [cell configureWithContentObject: realizedChain
                                         cellType: RealizedChainCell
                                     dateTimeType: TJBTimeOfDay
