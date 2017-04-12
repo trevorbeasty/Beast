@@ -636,6 +636,18 @@ typedef enum{
 
 #pragma mark - Detailed Drawing
 
+- (void)addVerticalBorderToRight:(UILabel *)label thickness:(CGFloat)thickness{
+    
+    
+    
+}
+
+- (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness{
+    
+    
+    
+}
+
 - (void)drawHookLineUnderLabel1:(UILabel *)label1 label2:(UILabel *)label2 verticalOffset:(CGFloat)vertOff thickness:(CGFloat)thickness{
     
     // vertical offset describes the distance under the label's bottom edge that the hook line is drawn
