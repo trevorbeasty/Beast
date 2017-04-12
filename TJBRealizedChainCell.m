@@ -74,6 +74,13 @@ static CGFloat const interimVertRowSpacing = 0;
 static CGFloat const interimHorzRowSpacing = 0;
 
 
+typedef enum{
+    TJBRoundType,
+    TJBWeightType,
+    TJBRepsType,
+    TJBRestType
+}TJBDynamicLabelType;
+
 
 @implementation TJBRealizedChainCell
 
@@ -112,7 +119,8 @@ static CGFloat const interimHorzRowSpacing = 0;
                 
                 currentTopView = [self addContentRowCorrespondingToExerciseIndex: i
                                                                       roundIndex: j
-                                                                  currentTopView: currentTopView];
+                                                                  currentTopView: currentTopView
+                                                                   maxRoundIndex: rc.chainTemplate.numberOfRounds - 1];
                 
             }
             
@@ -134,7 +142,10 @@ static CGFloat const interimHorzRowSpacing = 0;
 }
 
 
-- (UIView *)addContentRowCorrespondingToExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex currentTopView:(UIView *)currentTopView{
+- (UIView *)addContentRowCorrespondingToExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex currentTopView:(UIView *)currentTopView maxRoundIndex:(int)maxRoundIndex{
+    
+    BOOL isTopRow = roundIndex == 0;
+    BOOL isBottomRow = roundIndex == maxRoundIndex;
     
     NSString *topViewKey = [self.constraintMapping allKeysForObject: currentTopView][0];
     
@@ -149,7 +160,7 @@ static CGFloat const interimHorzRowSpacing = 0;
     roundLabel.translatesAutoresizingMaskIntoConstraints = NO;
     NSString *roundVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
                                                      bottomViewKey: roundUniqueID
-                                               isFirstRowInSection: roundIndex == 0];
+                                               isFirstRowInSection: isTopRow];
     [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: roundVertVFL
                                                                               options: 0
                                                                               metrics: nil
@@ -164,7 +175,14 @@ static CGFloat const interimHorzRowSpacing = 0;
                                                                                 views: self.constraintMapping]];
     
     
-    roundLabel.text = @"round";
+    [self configureLabelAesthetics: roundLabel
+                    isLeadingLabel: YES
+                   isTrailingLabel: NO
+                          isTopRow: isTopRow
+                       isBottomRow: isBottomRow
+                     exerciseIndex: exerciseIndex
+                        roundIndex: roundIndex
+                  dynamicLabelType: TJBRoundType];
     
     // weight
     
@@ -177,7 +195,7 @@ static CGFloat const interimHorzRowSpacing = 0;
     weightLabel.translatesAutoresizingMaskIntoConstraints = NO;
     NSString *weightVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
                                                      bottomViewKey: weightUniqueID
-                                               isFirstRowInSection: roundIndex == 0];
+                                               isFirstRowInSection: isTopRow];
     [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: weightVertVFL
                                                                               options: 0
                                                                               metrics: nil
@@ -192,7 +210,14 @@ static CGFloat const interimHorzRowSpacing = 0;
                                                                                 views: self.constraintMapping]];
     
     
-    weightLabel.text = @"weight";
+    [self configureLabelAesthetics: weightLabel
+                    isLeadingLabel: NO
+                   isTrailingLabel: NO
+                          isTopRow: isTopRow
+                       isBottomRow: isBottomRow
+                     exerciseIndex: exerciseIndex
+                        roundIndex: roundIndex
+                  dynamicLabelType: TJBWeightType];
 
     // reps
     
@@ -205,7 +230,7 @@ static CGFloat const interimHorzRowSpacing = 0;
     repsLabel.translatesAutoresizingMaskIntoConstraints = NO;
     NSString *repsVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
                                                          bottomViewKey: repsUniqueID
-                                                   isFirstRowInSection: roundIndex == 0];
+                                                   isFirstRowInSection: isTopRow];
     [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: repsVertVFL
                                                                               options: 0
                                                                               metrics: nil
@@ -220,7 +245,14 @@ static CGFloat const interimHorzRowSpacing = 0;
                                                                                 views: self.constraintMapping]];
     
     
-    repsLabel.text = @"reps";
+    [self configureLabelAesthetics: repsLabel
+                    isLeadingLabel: NO
+                   isTrailingLabel: NO
+                          isTopRow: isTopRow
+                       isBottomRow: isBottomRow
+                     exerciseIndex: exerciseIndex
+                        roundIndex: roundIndex
+                  dynamicLabelType: TJBRepsType];
 
     // rest
     
@@ -233,7 +265,7 @@ static CGFloat const interimHorzRowSpacing = 0;
     restLabel.translatesAutoresizingMaskIntoConstraints = NO;
     NSString *restVertVFL = [self verticalConstraintVFLForTopViewKey: topViewKey
                                                        bottomViewKey: restUniqueID
-                                                 isFirstRowInSection: roundIndex == 0];
+                                                 isFirstRowInSection: isTopRow];
     [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: restVertVFL
                                                                               options: 0
                                                                               metrics: nil
@@ -248,7 +280,14 @@ static CGFloat const interimHorzRowSpacing = 0;
                                                                                 views: self.constraintMapping]];
     
     
-    restLabel.text = @"rest";
+    [self configureLabelAesthetics: restLabel
+                    isLeadingLabel: NO
+                   isTrailingLabel: YES
+                          isTopRow: isTopRow
+                       isBottomRow: isBottomRow
+                     exerciseIndex: exerciseIndex
+                        roundIndex: roundIndex
+                  dynamicLabelType: TJBRestType];
     
     return  roundLabel;
     
@@ -300,6 +339,36 @@ static CGFloat const interimHorzRowSpacing = 0;
                             rowHeight];
     
     return vertVFLStr;
+    
+}
+
+#pragma mark - Dynamic Content Aesthetics
+
+- (void)configureLabelAesthetics:(UILabel *)label isLeadingLabel:(BOOL)isLeadingLabel isTrailingLabel:(BOOL)isTrailingLabel isTopRow:(BOOL)isTopRow isBottomRow:(BOOL)isBottomRow exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex dynamicLabelType:(TJBDynamicLabelType)dynamicLabelType{
+    
+    // common aesthetics
+    
+    label.font = [UIFont systemFontOfSize: 12];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor blackColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    NSNumber *number = [self numberForExerciseIndex: exerciseIndex
+                                         roundIndex: roundIndex
+                                   dynamicLabelType: dynamicLabelType];
+    NSString *text;
+    
+    if (number){
+        if (dynamicLabelType == TJBRestType){
+            text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
+        } else{
+            text = [number stringValue];
+        }
+    } else{
+        text = @"X";
+    }
+    
+    label.text = text;
     
 }
 
@@ -450,6 +519,47 @@ static CGFloat const interimHorzRowSpacing = 0;
 }
 
 #pragma mark - Content Object Access
+
+- (NSNumber *)numberForExerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex dynamicLabelType:(TJBDynamicLabelType)dynamicLabelType{
+    
+    NSNumber *number;
+    
+    if (_cellType == RealizedChainCell){
+        
+        TJBRealizedChain *rc = self.contentObject;
+        TJBRealizedSet *rs = rc.realizedSetCollections[exerciseIndex].realizedSets[roundIndex];
+        TJBTargetUnit *tu = rc.chainTemplate.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
+        
+        switch (dynamicLabelType) {
+            case TJBRoundType:
+                number = @(roundIndex);
+                break;
+                
+            case TJBWeightType:
+                number = @(rs.submittedWeight);
+                break;
+                
+            case TJBRepsType:
+                number = @(rs.submittedReps);
+                break;
+                
+            case TJBRestType:
+                
+                if (tu.isTargetingTrailingRest == YES){
+                    number = @(tu.trailingRestTarget);
+                }
+                
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    return number;
+    
+}
 
 - (TJBExercise *)firstExercise{
     
