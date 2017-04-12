@@ -74,6 +74,8 @@
     [self configureViewAesthetics];
     
     
+    
+    
 }
 
 
@@ -87,7 +89,7 @@
     self.dateTimeLabel.font = [UIFont systemFontOfSize: 12];
     self.dateTimeLabel.textColor = [UIColor blackColor];
     
-    self.titleNumberLabel.font = [UIFont systemFontOfSize: 30];
+    self.titleNumberLabel.font = [UIFont systemFontOfSize: 35];
     self.titleNumberLabel.backgroundColor = [UIColor clearColor];
     self.titleNumberLabel.textColor = [UIColor blackColor];
     
@@ -321,7 +323,7 @@
     // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
     // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
     
-    CGPoint startPoint = CGPointMake(label1.frame.origin.x, label1.frame.origin.y + label1.frame.size.height + vertOff);
+    CGPoint startPoint = CGPointMake(label1.frame.origin.x, label2.frame.origin.y + label2.frame.size.height + vertOff);
     CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width, startPoint.y);
     CGPoint endPoint = CGPointMake(interimPoint.x + 16,  interimPoint.y - 16);
     
