@@ -75,6 +75,7 @@
     
 }
 
+
 #pragma mark - View Helper Methods
 
 - (void)configureViewAesthetics{
@@ -113,7 +114,7 @@
     
     // detail drawing
     
-//    [self.contentView layoutIfNeeded];
+    [self.contentView layoutSubviews]; // must be called, otherwise the dimensions of the xib file and not the 'dimensions with layout applied' will be used
     
     NSArray *verticalDividerLabels = @[self.columnHeader1Label,
                                        self.columnHeader2Label,
@@ -122,8 +123,8 @@
         
         [self drawVerticalDividerToRightOfLabel: lab
                                horizontalOffset: 2
-                                      thickness: 10
-                                 verticalOffset: 2];
+                                      thickness: 2
+                                 verticalOffset: 4];
         
     }
     
@@ -307,19 +308,18 @@
     CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
     CGPoint bottomRightCorner = CGPointMake(topRightCorner.x, topRightCorner.y + labelSize.height);
     
+    CGPoint startPoint = CGPointMake(topRightCorner.x + horOff, topRightCorner.y - vertOff);
+    CGPoint endPoint = CGPointMake(bottomRightCorner.x + horOff,  bottomRightCorner.y - vertOff);
     
     UIBezierPath *bp = [[UIBezierPath alloc] init];
-    [bp moveToPoint: CGPointMake(topRightCorner.x + horOff, topRightCorner.y - vertOff)];
-
-    CGPoint endPoint = CGPointMake(bottomRightCorner.x + horOff,  bottomRightCorner.y - vertOff);
+    [bp moveToPoint: startPoint];
     [bp addLineToPoint: endPoint];
     
     sl.path = bp.CGPath;
     
     // label layer
     
-    label.layer.masksToBounds = NO;
-    [label.layer addSublayer: sl];
+    [self.columnHeaderContainer.layer addSublayer: sl];
     
 }
 
