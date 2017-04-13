@@ -43,6 +43,7 @@
 
 @property (strong) TJBExercise *exercise;
 @property (strong) NSArray *sortedContent;
+@property (strong) NSMutableArray *preloadedCells;
 
 // optimization
 
@@ -388,12 +389,37 @@
 
 - (void)activeExerciseDidUpdate:(TJBExercise *)exercise{
     
+    [self loadViewIfNeeded];
+    [self replaceTableView];
+    
     self.exercise = exercise;
     self.exerciseDetailLabel.text = exercise.name;
     
     [self deriveContentForActiveExercise];
     
+    // as is done with the table view, cells are preloaded to combat poor table view performance
+    
+    [self preloadCellsForActiveContent];
+    
     [self.tableView reloadData];
+    
+    return;
+    
+}
+
+- (void)replaceTableView{
+    
+    // this is done so that fresh cells are returned and true dequeuing does not occur
+    
+    UITableView *tv = [[UITableView alloc] init];
+    tv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    tv.frame = self.tableView.frame;
+    [self.view insertSubview: tv
+                aboveSubview: self.tableView];
+    [self.tableView removeFromSuperview];
+    
+    self.tableView = tv;
+    [self configureTableView];
     
 }
 
@@ -423,10 +449,48 @@
 }
 
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    if (self.preloadedCells.count == 0){
+        
+        NSIndexPath *zeroethPth = [NSIndexPath indexPathForRow: 0
+                                                     inSection: 0];
+        
+        return  [self cellForIndexPath: zeroethPth];
+        
+    }
     
-    if (self.sortedContent.count == 0){
+    return self.preloadedCells[indexPath.row];
+    
+}
+
+
+
+#pragma mark - Cell Preloading
+
+- (void)preloadCellsForActiveContent{
+    
+    self.preloadedCells = [[NSMutableArray alloc] init];
+    
+    NSInteger limit = [self tableView: self.tableView
+                numberOfRowsInSection: 0];
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        UITableViewCell *cell = [self cellForIndexPath: path];
+        [self.preloadedCells addObject: cell];
+        
+    }
+    
+}
+
+- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath{
+    
+    if (self.sortedContent.count == 0 || !self.sortedContent){
         
         TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
         
@@ -440,7 +504,7 @@
         
     } else{
         
-        NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
+        NSNumber *number = [NSNumber numberWithInteger: indexPath.row + 1];
         
         int rowIndex = (int)indexPath.row;
         
@@ -478,16 +542,11 @@
             
             // dequeue the realizedSetCell
             
-            TJBRealizedChainCell *cell = nil;
+//            TJBRealizedChainCell *cell = [[TJBRealizedChainCell alloc] init];;
             
-            cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
             
-            [cell clearExistingEntries];
-            
-//            [cell configureWithRealizedChain: realizedChain
-//                                      number: number
-//                                   finalRest: nil
-//                          referenceIndexPath: indexPath];
+//            [cell clearExistingEntries];
             
             [cell configureWithContentObject: realizedChain
                                     cellType: RealizedChainCell
@@ -519,10 +578,6 @@
     }
     
 }
-
-
-
-
 
 
 
@@ -577,6 +632,8 @@
 - (void)coreDataDidUpdate{
     
     [self deriveContentForActiveExercise];
+    
+    [self preloadCellsForActiveContent];
     
     [self.tableView reloadData];
     
