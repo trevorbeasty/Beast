@@ -60,10 +60,6 @@
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
 @property (weak, nonatomic) IBOutlet UIButton *todayButton;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
-@property (weak, nonatomic) IBOutlet UILabel *workoutLogTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *workoutLogSimpleTitle;
-
-
 
 // IBAction
 
@@ -831,19 +827,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         button.backgroundColor = [UIColor clearColor];
         
     }
-    
-    // workout log title label
-    
-    NSArray *titleLabels = @[self.workoutLogTitleLabel, self.workoutLogSimpleTitle];
-    for (UILabel *label in titleLabels){
-        
-        label.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        label.textColor = [UIColor blackColor];
-        label.font = [UIFont boldSystemFontOfSize: 15];
-        
-    }
-    
-    self.workoutLogTitleLabel.text = [self workoutLogTitleText];
+
     
 }
 
@@ -1019,111 +1003,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - <UITableViewDataSource>
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    // a callback block is created here so that animations are not interrupted
-    // deleting an object in core data has a trickle down effect that removes it from the master list.  Notifications cause the daily list to be derived and table view data reloaded upon core data saving
-    // delete the managed object and cell designated by the index path
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete){
-        
-        CGPoint initialScrollPosition = self.tableViewScrollContainer.contentOffset; // this is stored so that the table view's scroll position is maintained after the activity indicator disappears
-        self.scrollPositionForUpdate = @(initialScrollPosition.y); // if this object exists when the table view is reloaded, the container scroll view will be given this 'y' value for its content offset
-        
-        // CATransition allows me to control certain animation properties that are otherwise not accessible through the API
-        // it is used here to create a completion block, which is not possible otherwise
-        
-        __weak TJBWorkoutNavigationHub *weakSelf = self;
-        
-        [CATransaction begin];
 
-        BOOL oneContentCell = self.dailyList.count == 1; // if only one content cell remains, must insert a no data cell because the cell count will still be 2, because the no data cell will take the place of the previous cell corresponding to a core data object
-    
-        id dailyListObject = weakSelf.dailyList[indexPath.row -1]; // must adjust the indexing because the daily list only accounts for core data objects
-        
-        [self.dailyList removeObject: dailyListObject]; // even though the activeCells array is the direct data source for the table view, other methods still rely on the daily list and so it must be updated
-        
-        [CATransaction setCompletionBlock: ^{
-            
-            BOOL isRealizedSet = [dailyListObject isKindOfClass: [TJBRealizedSet class]];
-            BOOL isRealizedChain = [dailyListObject isKindOfClass: [TJBRealizedChain class]];
-            
-            if (isRealizedSet){
-                
-                [[[CoreDataController singleton] moc] deleteObject: dailyListObject];
-                
-            } else if (isRealizedChain){
-                
-                [[CoreDataController singleton] deleteRealizedChain: dailyListObject];
-                
-//                [[CoreDataController singleton] deleteChainWithChainType: RealizedChainType
-//                                                                   chain: dailyListObject];
-                
-            } else{
-                
-                // it must be a collection of realized sets in this case
-                
-                for (TJBRealizedSet *realizedSet in dailyListObject){
-                    
-                    [[[CoreDataController singleton] moc] deleteObject: realizedSet];
-                    
-                }
-            }
-            
-            // when core data is saved, a notification is sent that invokes the 'mocDidSave' method of this controller. That method fetches core data objects anew and refreshes the master list. The dailyList and activeCells are derived when the date object selection method is called
-            
-            [[CoreDataController singleton] saveContext];
-            
-            // this later part of the callback must only run if more content remains after a deletion (because that content must then be renumbered). Thus, this callback immediately returns if only one content cell exists to begin with
-            
-            if (oneContentCell) return;
-            
-            NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
-            
-            [self didSelectObjectWithIndex: @(dayAsIndex)
-                           representedDate: self.activeDate];
-            
-        }];
-        
-        // these are the core messages that delete the row
-        
-        [self.tableView beginUpdates];
-        
-        [self.activeTableViewCells removeObjectAtIndex: indexPath.row]; // the daily list contains only core data objects (or collections of them), but the activeTableViewCells array contains cells for all indexes. No index correction is needed
-        
-        [self.tableView deleteRowsAtIndexPaths: @[indexPath]
-                              withRowAnimation: UITableViewRowAnimationNone];
-        
-        if (oneContentCell){
-            
-            // insert cell
-            
-            NSIndexPath *path = [NSIndexPath indexPathForRow: 1
-                                                   inSection: 0];
-            
-            [self.tableView insertRowsAtIndexPaths: @[path]
-                                  withRowAnimation: UITableViewRowAnimationNone];
-            
-            // must also add the no data cell to the activeCells array. I do this by calling my cellForIndexPath method.  Because the dailyList is current, this method will return the correct cell
-            
-            UITableViewCell *noDataCell = [self cellForIndexPath: path
-                                                   shouldDequeue: YES];
-            
-            [self.activeTableViewCells addObject: noDataCell];
-            
-            // the dot must be erased from the appropriate date control if the last content cell was deleted
-            
-            NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
-            [self.circleDateChildren[dayAsIndex] getRidOfContentDot];
-            
-        }
-        
-        [self.tableView endUpdates];
-        
-        [CATransaction commit];
-        
-    }
-}
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -1149,57 +1029,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (TJBMasterCell *)cellForIndexPath:(NSIndexPath *)indexPath shouldDequeue:(BOOL)shouldDequeue{
     
-//    //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
-//    // if the row index is 0, it is the title cell
-//    
-//    if (indexPath.row == 0){
-//        
-//        TJBWorkoutLogTitleCell *cell = nil;
-//        
-//        if (shouldDequeue){
-//            
-//            cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
-//            
-//        } else{
-//            
-//            UINib *cellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-//                                            bundle: nil];
-//            NSArray *topLevelNibObjects = [cellNib instantiateWithOwner: nil
-//                                                                options: nil];
-//            
-//            cell = topLevelNibObjects[0];
-//            
-//        }
-//        
-//        cell.referenceIndexPath = indexPath;
-//        
-//        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-//        BOOL isToday = [calendar isDate: self.activeDate
-//                        inSameDayAsDate: [NSDate date]];
-//        
-//        if (isToday){
-//            
-//            cell.secondaryLabel.text = @"Today";
-//            
-//        } else{
-//            
-//            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//            df.dateFormat = @"EEEE, MMMM d, yyyy";
-//            cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
-//            
-//        }
-//        
-//        cell.primaryLabel.text = @"My Workout Log";
-//        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
-//        
-//        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
-//        
-//        cell.backgroundColor = [UIColor clearColor];
-//        
-//        
-//        return cell;
-//        
-//    } else{
+
     
         if (self.dailyList.count == 0){
             
@@ -1215,7 +1045,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
             
         } else{
             
-            NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
+            NSNumber *number = [NSNumber numberWithInteger: indexPath.row + 1];
             
             int rowIndex = (int)indexPath.row;
             
@@ -1232,7 +1062,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
                 [cell configureWithContentObject: realizedSet
                                         cellType: RealizedSetCollectionCell
-                                    dateTimeType: TJBTimeOfDay
+                                    dateTimeType: TJBMaxDetailDate
                                      titleNumber: number];
                 
                 cell.backgroundColor = [UIColor clearColor];
@@ -1264,7 +1094,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
                 [cell configureWithContentObject: realizedChain
                                         cellType: RealizedChainCell
-                                    dateTimeType: TJBTimeOfDay
+                                    dateTimeType: TJBMaxDetailDate
                                      titleNumber: number];
                 
                 cell.backgroundColor = [UIColor clearColor];
@@ -1283,28 +1113,17 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
                 [cell configureWithContentObject: rsg
                                         cellType: RealizedSetCollectionCell
-                                    dateTimeType: TJBTimeOfDay
+                                    dateTimeType: TJBMaxDetailDate
                                      titleNumber: number];
                 
                 return cell;
                 
             }
         }
-//    }
+
     
 }
 
-
-- (BOOL)indexForPrefetchOperation:(TJBCellFetchingOperation *)operation matchesIndex:(NSIndexPath *)indexPath{
-    
-    BOOL sectionMatch = operation.indexPath.section == indexPath.section;
-    BOOL rowMatch = operation.indexPath.row == indexPath.row;
-    
-    // if it is not a match, return FALSE.  Otherwise, return TRUE
-    
-    return sectionMatch && rowMatch;
-    
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -1314,33 +1133,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - <UITableViewDelegate>
 
-//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    if (self.dailyList.count == 0){
-//        
-//        return UITableViewCellEditingStyleNone;
-//        
-//    } else if (indexPath.row == 0){
-//        
-//        return UITableViewCellEditingStyleNone;
-//        
-//    } else{
-//        
-//        return UITableViewCellEditingStyleDelete;
-//        
-//    }
-//    
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-//    CGFloat titleHeight = 80.0;
-//    
-//    if (indexPath.row == 0){
-//        
-//        return titleHeight;
-//        
-//    } else{
+
     
         if (self.dailyList.count == 0){
             
@@ -1374,7 +1169,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
             }
         }
-//    }
+
     
 }
 

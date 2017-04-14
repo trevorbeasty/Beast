@@ -611,12 +611,15 @@ typedef enum{
     
     switch (_dateTimeType) {
         case TJBDayInYear:
-            df.dateFormat = @"MMM d, yyyy";
+            df.dateFormat = @"EEEE, MMMM d, yyyy";
             break;
             
         case TJBTimeOfDay:
             df.dateFormat = @"h:mm a";
             break;
+            
+        case TJBMaxDetailDate:
+            df.dateFormat = @"EEEE, MMMM d, yyyy - h:mm a";
             
         default:
             break;

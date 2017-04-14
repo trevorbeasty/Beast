@@ -23,7 +23,8 @@ typedef enum{
 
 typedef enum{
     TJBDayInYear,
-    TJBTimeOfDay
+    TJBTimeOfDay,
+    TJBMaxDetailDate
 }TJBDateTimeType;
 
 @interface TJBRealizedChainCell : TJBMasterCell
