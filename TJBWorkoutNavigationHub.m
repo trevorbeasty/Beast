@@ -34,6 +34,17 @@
 
 #import "TJBCellFetchingOperation.h"
 
+
+// state
+
+typedef enum{
+    TJBToolbarHidden,
+    TJBToolbarNotHidden
+}TJBToolbarState;
+
+
+
+
 @interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate>
 
 {
@@ -42,6 +53,7 @@
     int _activeSelectionIndex;
     BOOL _includesHomeButton;
     BOOL _cellsNeedUpdating; // used to indicate that core data has saved during this controller's lifetime while a different tab of the tab bar controller was selected
+    TJBToolbarState _toolbarState;
     
 }
 
@@ -67,12 +79,17 @@
 @property (weak, nonatomic) IBOutlet UILabel *activeDateLabel;
 @property (weak, nonatomic) IBOutlet UIButton *toolbarControlArrow;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomToContainerConstr;
+
+
 
 // IBAction
 
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressHomeButton:(id)sender;
+
+- (IBAction)didPressToolbarControlArrow:(id)sender;
 
 
 // circle dates
@@ -102,6 +119,10 @@
 
 @end
 
+
+
+
+
 // button specification constants
 
 static const CGFloat buttonWidth = 60.0;
@@ -116,6 +137,10 @@ typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
 
 typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
+
+
+
+
 
 @implementation TJBWorkoutNavigationHub
 
@@ -135,6 +160,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSDate *today = [NSDate date];
     self.workoutLogActiveDay = today;
     self.dateControlActiveDate = today;
+    
+    _toolbarState = TJBToolbarNotHidden;
     
     [self configureNotifications];
     
@@ -676,9 +703,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSArray *titleLabels = @[self.myWorkoutLogLabel, self.activeDateLabel];
     for (UILabel *lab in titleLabels){
         
-        lab.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//        lab.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        lab.backgroundColor = [UIColor grayColor];
         lab.font = [UIFont boldSystemFontOfSize: 15];
-        lab.textColor = [UIColor blackColor];
+        lab.textColor = [UIColor whiteColor];
         
     }
     
@@ -1319,8 +1347,43 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     
 }
-                                   
 
+- (void)toggleToolBarPositionAndUpdateRelevantControls{
+    
+    if (_toolbarState == TJBToolbarNotHidden){
+        
+        [self animateToolbarToHiddenState];
+        
+        [self.toolbarControlArrow setImage: [UIImage imageNamed: @"doubleUpArrowBlue32"]
+                                  forState: UIControlStateNormal];
+        
+        _toolbarState = TJBToolbarHidden;
+        
+    } else{
+        
+        [self animateToolbarToNotHiddenState];
+        
+        [self.toolbarControlArrow setImage: [UIImage imageNamed: @"doubleDownArrowBlue32"]
+                                  forState: UIControlStateNormal];
+        
+        _toolbarState = TJBToolbarNotHidden;
+        
+    }
+    
+}
+                                   
+- (void)animateToolbarToHiddenState{
+    
+    
+    
+}
+
+
+- (void)animateToolbarToNotHiddenState{
+    
+    
+    
+}
 
 
 #pragma mark - Core Data Notification
@@ -1392,6 +1455,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self dismissViewControllerAnimated: NO
                              completion: nil];
+    
+}
+
+- (IBAction)didPressToolbarControlArrow:(id)sender {
+    
+    [self toggleToolBarPositionAndUpdateRelevantControls];
     
 }
 

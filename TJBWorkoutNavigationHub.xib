@@ -25,6 +25,7 @@
                 <outlet property="titleBarContainer" destination="H9i-29-7aZ" id="vyu-Zf-5BC"/>
                 <outlet property="todayButton" destination="N5s-kc-Pde" id="UND-Vp-YYc"/>
                 <outlet property="toolbar" destination="EFI-cn-6pj" id="akh-Vk-Gtn"/>
+                <outlet property="toolbarBottomToContainerConstr" destination="tsO-C0-5zD" id="eNR-ot-IQS"/>
                 <outlet property="toolbarControlArrow" destination="czS-vj-ufW" id="uye-Tm-Ayr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -66,6 +67,9 @@
                                 <constraint firstAttribute="width" constant="50" id="fxa-8g-1md"/>
                             </constraints>
                             <state key="normal" image="doubleDownArrowBlue32"/>
+                            <connections>
+                                <action selector="didPressToolbarControlArrow:" destination="-1" eventType="touchUpInside" id="cCn-Jh-wiM"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.99626137070235543" green="1" blue="0.7588937688929247" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
