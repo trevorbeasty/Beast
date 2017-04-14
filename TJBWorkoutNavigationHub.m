@@ -60,6 +60,8 @@
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
 @property (weak, nonatomic) IBOutlet UIButton *todayButton;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UILabel *workoutLogTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *workoutLogSimpleTitle;
 
 
 
@@ -830,6 +832,29 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
     }
     
+    // workout log title label
+    
+    NSArray *titleLabels = @[self.workoutLogTitleLabel, self.workoutLogSimpleTitle];
+    for (UILabel *label in titleLabels){
+        
+        label.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        label.textColor = [UIColor blackColor];
+        label.font = [UIFont boldSystemFontOfSize: 15];
+        
+    }
+    
+    self.workoutLogTitleLabel.text = [self workoutLogTitleText];
+    
+}
+
+- (NSString *)workoutLogTitleText{
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"MMM d, yyyy";
+    NSString *formattedDate = [df stringFromDate: self.activeDate];
+    
+    return  [NSString stringWithFormat: @"%@", formattedDate];
+    
 }
 
 #pragma mark - Core Data
@@ -1112,11 +1137,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     if (self.dailyList.count == 0){
         
-        return 2;
+        return 1;
         
     } else{
         
-        return self.dailyList.count + 1;
+        return self.dailyList.count;
         
     }
     
@@ -1124,58 +1149,58 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (TJBMasterCell *)cellForIndexPath:(NSIndexPath *)indexPath shouldDequeue:(BOOL)shouldDequeue{
     
-    //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
-    // if the row index is 0, it is the title cell
+//    //// for now, just give the cell text a dynamic name indicating whether it is a a RealizedSet or RealizedChain plus the date
+//    // if the row index is 0, it is the title cell
+//    
+//    if (indexPath.row == 0){
+//        
+//        TJBWorkoutLogTitleCell *cell = nil;
+//        
+//        if (shouldDequeue){
+//            
+//            cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+//            
+//        } else{
+//            
+//            UINib *cellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+//                                            bundle: nil];
+//            NSArray *topLevelNibObjects = [cellNib instantiateWithOwner: nil
+//                                                                options: nil];
+//            
+//            cell = topLevelNibObjects[0];
+//            
+//        }
+//        
+//        cell.referenceIndexPath = indexPath;
+//        
+//        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+//        BOOL isToday = [calendar isDate: self.activeDate
+//                        inSameDayAsDate: [NSDate date]];
+//        
+//        if (isToday){
+//            
+//            cell.secondaryLabel.text = @"Today";
+//            
+//        } else{
+//            
+//            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//            df.dateFormat = @"EEEE, MMMM d, yyyy";
+//            cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
+//            
+//        }
+//        
+//        cell.primaryLabel.text = @"My Workout Log";
+//        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
+//        
+//        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
+//        
+//        cell.backgroundColor = [UIColor clearColor];
+//        
+//        
+//        return cell;
+//        
+//    } else{
     
-    if (indexPath.row == 0){
-        
-        TJBWorkoutLogTitleCell *cell = nil;
-        
-        if (shouldDequeue){
-            
-            cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
-            
-        } else{
-            
-            UINib *cellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-                                            bundle: nil];
-            NSArray *topLevelNibObjects = [cellNib instantiateWithOwner: nil
-                                                                options: nil];
-            
-            cell = topLevelNibObjects[0];
-            
-        }
-        
-        cell.referenceIndexPath = indexPath;
-        
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-        BOOL isToday = [calendar isDate: self.activeDate
-                        inSameDayAsDate: [NSDate date]];
-        
-        if (isToday){
-            
-            cell.secondaryLabel.text = @"Today";
-            
-        } else{
-            
-            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-            df.dateFormat = @"EEEE, MMMM d, yyyy";
-            cell.secondaryLabel.text = [df stringFromDate: self.activeDate];
-            
-        }
-        
-        cell.primaryLabel.text = @"My Workout Log";
-        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
-        
-        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
-        
-        cell.backgroundColor = [UIColor clearColor];
-        
-        
-        return cell;
-        
-    } else{
-        
         if (self.dailyList.count == 0){
             
             TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
@@ -1192,7 +1217,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
             
             NSNumber *number = [NSNumber numberWithInteger: indexPath.row];
             
-            int rowIndex = (int)indexPath.row - 1;
+            int rowIndex = (int)indexPath.row;
             
             BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
             BOOL isRealizedChain = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedChain class]];
@@ -1265,7 +1290,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
             }
         }
-    }
+//    }
     
 }
 
@@ -1289,43 +1314,43 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - <UITableViewDelegate>
 
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (self.dailyList.count == 0){
-        
-        return UITableViewCellEditingStyleNone;
-        
-    } else if (indexPath.row == 0){
-        
-        return UITableViewCellEditingStyleNone;
-        
-    } else{
-        
-        return UITableViewCellEditingStyleDelete;
-        
-    }
-    
-}
+//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    if (self.dailyList.count == 0){
+//        
+//        return UITableViewCellEditingStyleNone;
+//        
+//    } else if (indexPath.row == 0){
+//        
+//        return UITableViewCellEditingStyleNone;
+//        
+//    } else{
+//        
+//        return UITableViewCellEditingStyleDelete;
+//        
+//    }
+//    
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 80.0;
+//    CGFloat titleHeight = 80.0;
+//    
+//    if (indexPath.row == 0){
+//        
+//        return titleHeight;
+//        
+//    } else{
     
-    if (indexPath.row == 0){
-        
-        return titleHeight;
-        
-    } else{
-        
         if (self.dailyList.count == 0){
             
             [self.view layoutIfNeeded];
             
-            return self.shadowContainer.frame.size.height - titleHeight;
+            return self.shadowContainer.frame.size.height;
             
         } else{
             
-            NSInteger adjustedIndex = indexPath.row - 1;
+            NSInteger adjustedIndex = indexPath.row;
             
             BOOL isRealizedSet = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedSet class]];
             BOOL isRealizedChain = [self.dailyList[adjustedIndex] isKindOfClass: [TJBRealizedChain class]];
@@ -1349,7 +1374,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
             }
         }
-    }
+//    }
     
 }
 
@@ -1504,11 +1529,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     if (self.dailyList.count == 0){
         
-        limit = 2;
+        limit = 1;
         
     } else{
         
-        limit = self.dailyList.count + 1;
+        limit = self.dailyList.count;
         
     }
     
