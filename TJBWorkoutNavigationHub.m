@@ -65,6 +65,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *myWorkoutLogLabel;
 @property (weak, nonatomic) IBOutlet UILabel *activeDateLabel;
+@property (weak, nonatomic) IBOutlet UIButton *toolbarControlArrow;
 
 
 // IBAction
@@ -680,6 +681,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         lab.textColor = [UIColor blackColor];
         
     }
+    
+    // toolbar control arrow
+    
+    self.toolbarControlArrow.backgroundColor = [UIColor grayColor];
+    CALayer *tcaLayer = self.toolbarControlArrow.layer;
+    tcaLayer.masksToBounds = YES;
+    tcaLayer.cornerRadius = 25;
+    tcaLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    tcaLayer.borderWidth = 1;
 
     
 }

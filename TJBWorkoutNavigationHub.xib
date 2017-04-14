@@ -25,6 +25,7 @@
                 <outlet property="titleBarContainer" destination="H9i-29-7aZ" id="vyu-Zf-5BC"/>
                 <outlet property="todayButton" destination="N5s-kc-Pde" id="UND-Vp-YYc"/>
                 <outlet property="toolbar" destination="EFI-cn-6pj" id="akh-Vk-Gtn"/>
+                <outlet property="toolbarControlArrow" destination="czS-vj-ufW" id="uye-Tm-Ayr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -43,7 +44,7 @@
                     <rect key="frame" x="0.0" y="157.5" width="375" height="509.5"/>
                     <subviews>
                         <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFI-cn-6pj">
-                            <rect key="frame" x="16" y="457.5" width="343" height="44"/>
+                            <rect key="frame" x="74" y="457.5" width="285" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Nfv-Ag-fN3"/>
                             </constraints>
@@ -59,12 +60,22 @@
                                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="NSr-PC-48J"/>
                             </items>
                         </toolbar>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czS-vj-ufW">
+                            <rect key="frame" x="8" y="457" width="50" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="fxa-8g-1md"/>
+                            </constraints>
+                            <state key="normal" image="doubleDownArrowBlue32"/>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.99626137070235543" green="1" blue="0.7588937688929247" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
-                        <constraint firstItem="EFI-cn-6pj" firstAttribute="leading" secondItem="NrZ-JA-Y3W" secondAttribute="leading" constant="16" id="1ZL-4D-Ca2"/>
+                        <constraint firstItem="EFI-cn-6pj" firstAttribute="bottom" secondItem="czS-vj-ufW" secondAttribute="bottom" id="8Ef-DL-Hf4"/>
+                        <constraint firstItem="EFI-cn-6pj" firstAttribute="top" secondItem="czS-vj-ufW" secondAttribute="top" id="NND-N4-7gB"/>
                         <constraint firstAttribute="trailing" secondItem="EFI-cn-6pj" secondAttribute="trailing" constant="16" id="Tpk-U6-KJE"/>
+                        <constraint firstItem="EFI-cn-6pj" firstAttribute="leading" secondItem="czS-vj-ufW" secondAttribute="trailing" constant="16" id="k6h-cE-cJe"/>
                         <constraint firstAttribute="bottom" secondItem="EFI-cn-6pj" secondAttribute="bottom" constant="8" id="tsO-C0-5zD"/>
+                        <constraint firstItem="czS-vj-ufW" firstAttribute="leading" secondItem="NrZ-JA-Y3W" secondAttribute="leading" constant="8" id="wH8-rQ-hEZ"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H9i-29-7aZ">
@@ -165,6 +176,7 @@
         </view>
     </objects>
     <resources>
+        <image name="doubleDownArrowBlue32" width="32" height="32"/>
         <image name="editBlue32" width="32" height="32"/>
         <image name="garbageBlue32" width="32" height="32"/>
         <image name="jumpToLastBlue32" width="32" height="32"/>
