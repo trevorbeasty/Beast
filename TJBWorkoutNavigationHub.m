@@ -151,20 +151,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     return self;
 }
 
-- (void)configureNotifications{
-    
-    //// configure managed context notification for updating
-    
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                            selector: @selector(mocDidSave)
-                                                name: NSManagedObjectContextDidSaveNotification
-                                               object: moc];
-    
-}
 
-#pragma mark - Core Data Queries
+#pragma mark - Init Helper Methods
+
+
+
+#pragma mark - Core Data Queries And Algorithms
 
 - (void)configureRealizedSetFRC{
     
@@ -429,6 +421,31 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
+- (void)deriveDailyList{
+    
+    //// creats the dailyList from the masterList based on the active date and updates the table view
+    
+    self.dailyList = [[NSMutableArray alloc] init];
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (NSObject *object in self.masterList){
+        
+        NSDate *objectDate = [self dateForRecordObject: object];
+        
+        BOOL recordIsForActiveDate = [calendar isDate: objectDate
+                                      inSameDayAsDate: self.activeDate];
+        
+        if (recordIsForActiveDate){
+            
+            [self.dailyList addObject: object];
+            
+        }
+        
+    }
+    
+}
+
 - (NSDate *)dayBeginDateForObject:(id)object{
     
     //// evaluates whether the object is a realized set or realized chain and returns the corresponding day begin date.  For realized sets this in the 'beginDate' and for realized chains this is the 'dateCreated'.  Date created is used as opposed to set begin dates because the former is always going to exist while the latter may not
@@ -446,307 +463,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         TJBRealizedChain *realizedChain = object;
         
         return [[NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian] startOfDayForDate: realizedChain.dateCreated];
-        
-    }
-    
-}
-
-#pragma mark - View Life Cycle
-
-// viewWillAppear and viewDidAppear are used to handle the animation that slides the date scroll view from right to left when the workout log becomes visible
-
-- (void)viewWillAppear:(BOOL)animated{
-
-    //// animation calculations
-    // first position
-    
-    [self configureInitialDateControlAnimationPosition];
-    
-//    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
-//    CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
-//    self.dateScrollView.contentOffset = firstPosition;
-    
-    // the following is used to update the cells if core data was updated while this controller existed but was not the active view controller (in the tab bar controller). The core data update will have prompted this controller to refetch core data objects and derive the master list. The following logic will then derive the daily list and active cells, showing the activity indicator while doing so
-    
-    if (_cellsNeedUpdating){
-        
-        NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
-        
-        [self didSelectObjectWithIndex: @(dayAsIndex)
-                       representedDate: self.activeDate];
-        
-        // the date controls should also be reloaded, in case a day that previously had not content now contains content
-        
-        [self configureDateControlsAndSelectActiveDate: YES];
-        
-        // update the state variable to reflect that cells no longer need updating
-        
-        _cellsNeedUpdating = NO;
-        
-    }
-    
-}
-
-- (void)configureInitialDateControlAnimationPosition{
-    
-    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
-    CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
-    self.dateScrollView.contentOffset = firstPosition;
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    
-    [self executeDateControlAnimation];
-    
-}
-
-- (void)executeDateControlAnimation{
-    
-    // second position
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSInteger day = [calendar component: NSCalendarUnitDay
-                               fromDate: self.activeDate];
-    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
-    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
-    
-    // make sure the second position will not drag the view too far, revealing a white screen beneath
-    
-    CGFloat viewWidth = self.view.frame.size.width;
-    
-    if (activeDateControlRightEdge < viewWidth){
-        
-        activeDateControlRightEdge = viewWidth;
-        
-    }
-    
-    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
-    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
-    
-    //
-    
-    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
-    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
-    float maxAnimationTime = .5;
-    
-    // animation call
-    
-    [self scrollToOffset: secondPosition
-       animationDuration: maxAnimationTime * percentScrollViewWidth
-     subsequentAnimation: nil];
-    
-}
-
-- (void)viewDidLoad{
-    
-    [self configureViewAesthetics];
-    
-    [self configureToolBarAndBarButtons];
-    
-    [self configureDateControlsAndSelectActiveDate: YES];
-    
-    [self configureOptionalHomeButton];
-    
-    [self artificiallySelectToday];
-    
-    return;
-    
-}
-
-- (void)configureOptionalHomeButton{
-    
-    if (_includesHomeButton){
-        
-        self.homeButton.backgroundColor = [UIColor clearColor];
-        self.homeButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-        [self.homeButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                              forState: UIControlStateNormal];
-        
-        
-    } else{
-        
-        self.homeButton.enabled = NO;
-        self.homeButton.hidden = YES;
-        
-    }
-    
-}
-
-
-- (void)configureTableView{
-    
-    //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
-    
-    // for prefetching
-    
-    UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
-                                           bundle: nil];
-    
-    [self.tableView registerNib: realizedSetNib
-         forCellReuseIdentifier: @"TJBRealizedSetCell"];
-    
-    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
-                                             bundle: nil];
-    
-    [self.tableView registerNib: realizedChainNib
-         forCellReuseIdentifier: @"TJBRealizedChainCell"];
-    
-    UINib *titleCellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-                                         bundle: nil];
-    
-    [self.tableView registerNib: titleCellNib
-         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
-    
-    UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
-                                       bundle: nil];
-    
-    [self.tableView registerNib: noDataCell
-         forCellReuseIdentifier: @"TJBNoDataCell"];
-    
-    UINib *realizedSetCollectionCell = [UINib nibWithNibName: @"TJBRealizedSetCollectionCell"
-                                                      bundle: nil];
-    
-    [self.tableView registerNib: realizedSetCollectionCell
-         forCellReuseIdentifier: @"TJBRealizedSetCollectionCell"];
-    
-}
-
-
-- (void)clearTransitoryDateControlObjects{
-    
-    //// must clear the children view controller array as well as remove the stack view from the scroll view
-    
-    if (self.dateStackView){
-        
-        for (TJBCircleDateVC *vc in self.circleDateChildren){
-            
-            [vc willMoveToParentViewController: nil];
-            [vc removeFromParentViewController];
-            
-        }
-        
-        [self.dateStackView removeFromSuperview];
-        self.dateStackView = nil;
-        
-    }
-    
-    self.circleDateChildren = [[NSMutableArray alloc] init];
-    
-}
-
-
-
-
-
-- (void)configureDateControlsAndSelectActiveDate:(BOOL)shouldSelectActiveDate{
-    
-    //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
-    
-    [self clearTransitoryDateControlObjects];
-    
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    
-    //// month title
-    
-    df.dateFormat = @"MMMM yyyy";
-    NSString *monthTitle = [df stringFromDate: self.firstDayOfDateControlMonth];
-    self.monthTitle.text = monthTitle;
-    
-    //// stack view and child VC's
-    
-    // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
-                                                inUnit: NSCalendarUnitMonth
-                                               forDate: self.firstDayOfDateControlMonth];
-    
-
-    
-    const CGFloat stackViewWidth = [self dateSVWidthGivenButtonSpecifications];
-    
-    CGRect stackViewRect = CGRectMake(0, 0, stackViewWidth, buttonHeight);
-    
-    // create the stack view with the proper dimensions and also set the content size of the scroll view
-    
-    UIStackView *stackView = [[UIStackView alloc] initWithFrame: stackViewRect];
-    self.dateStackView = stackView;
-    
-    self.dateScrollView.contentSize = stackViewRect.size;
-    
-    [self.dateScrollView addSubview: stackView];
-    
-    // configure the stack view's layout properties
-    
-    stackView.alignment = UIStackViewAlignmentFill;
-    stackView.distribution = UIStackViewDistributionFillEqually;
-    stackView.spacing = buttonSpacing;
-    
-    // give the stack view it's content.  All items preceding the for loop are used in the for loop
-    
-    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                              fromDate: self.firstDayOfDateControlMonth];
-    
-    NSDate *iterativeDate;
-    
-    CGSize buttonSize = CGSizeMake(buttonWidth, buttonHeight);
-    
-    NSDate *today = [NSDate date];
-    
-    for (int i = 0; i < daysInCurrentMonth.length; i++){
-        
-        // must get the day of the week from the calendar. The day number is simply the iterator plus one
-        
-        [dateComps setDay: i + 1];
-        iterativeDate = [calendar dateFromComponents: dateComps];
-        
-        df.dateFormat = @"E";
-        NSString *dayTitle = [df stringFromDate: iterativeDate];
-        
-        df.dateFormat = @"d";
-        
-        // create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
-        
-        BOOL iterativeDateGreaterThanToday = [iterativeDate timeIntervalSinceDate: today] > 0;
-        BOOL isTheActiveDate = NO;
-        
-        if (shouldSelectActiveDate){
-
-            isTheActiveDate = [calendar isDate: iterativeDate
-                               inSameDayAsDate: self.activeDate];
-            
-            if (isTheActiveDate){
-                
-                self.selectedDateButtonIndex = [NSNumber numberWithInt: i];
-                
-            }
-            
-        }
-        
-        
-
-        BOOL recordExistsForIterativeDate = [self recordExistsForDate: iterativeDate];
-        
-        
-    
-        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithDayIndex: [NSNumber numberWithInt: i]
-                                                                         dayTitle: dayTitle
-                                                                             size: buttonSize
-                                                            hasSelectedAppearance: isTheActiveDate
-                                                                        isEnabled: YES
-                                                                        isCircled: recordExistsForIterativeDate
-                                                                 masterController: self
-                                                                  representedDate: [calendar dateFromComponents: dateComps]
-                                                            representsHistoricDay: !iterativeDateGreaterThanToday];
-        
-        [self.circleDateChildren addObject: circleDateVC];
-        
-        [self addChildViewController: circleDateVC];
-        
-        [stackView addArrangedSubview: circleDateVC.view];
-        
-        [circleDateVC didMoveToParentViewController: self];
         
     }
     
@@ -807,6 +523,129 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
+#pragma mark - View Life Cycle
+
+// viewWillAppear and viewDidAppear are used to handle the animation that slides the date scroll view from right to left when the workout log becomes visible
+
+- (void)viewWillAppear:(BOOL)animated{
+
+    //// animation calculations
+    // first position
+    
+    [self configureInitialDateControlAnimationPosition];
+    
+    // the following is used to update the cells if core data was updated while this controller existed but was not the active view controller (in the tab bar controller). The core data update will have prompted this controller to refetch core data objects and derive the master list. The following logic will then derive the daily list and active cells, showing the activity indicator while doing so
+    
+    if (_cellsNeedUpdating){
+        
+        NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
+        
+        [self didSelectObjectWithIndex: @(dayAsIndex)
+                       representedDate: self.activeDate];
+        
+        // the date controls should also be reloaded, in case a day that previously had not content now contains content
+        
+        [self configureDateControlsAndSelectActiveDate: YES];
+        
+        // update the state variable to reflect that cells no longer need updating
+        
+        _cellsNeedUpdating = NO;
+        
+    }
+    
+}
+
+
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [self executeDateControlAnimation];
+    
+}
+
+
+
+- (void)viewDidLoad{
+    
+    [self configureViewAesthetics];
+    
+    [self configureToolBarAndBarButtons];
+    
+    [self configureDateControlsAndSelectActiveDate: YES];
+    
+    [self configureOptionalHomeButton];
+    
+    [self artificiallySelectToday];
+    
+    return;
+    
+}
+
+#pragma mark - View Helper Methods
+
+- (void)configureOptionalHomeButton{
+    
+    if (_includesHomeButton){
+        
+        self.homeButton.backgroundColor = [UIColor clearColor];
+        self.homeButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+        [self.homeButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+                              forState: UIControlStateNormal];
+        
+        
+    } else{
+        
+        self.homeButton.enabled = NO;
+        self.homeButton.hidden = YES;
+        
+    }
+    
+}
+
+
+- (void)configureTableView{
+    
+    //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
+    
+    // for prefetching
+    
+    UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
+                                           bundle: nil];
+    
+    [self.tableView registerNib: realizedSetNib
+         forCellReuseIdentifier: @"TJBRealizedSetCell"];
+    
+    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
+                                             bundle: nil];
+    
+    [self.tableView registerNib: realizedChainNib
+         forCellReuseIdentifier: @"TJBRealizedChainCell"];
+    
+    UINib *titleCellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+                                         bundle: nil];
+    
+    [self.tableView registerNib: titleCellNib
+         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
+    
+    UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
+                                       bundle: nil];
+    
+    [self.tableView registerNib: noDataCell
+         forCellReuseIdentifier: @"TJBNoDataCell"];
+    
+    UINib *realizedSetCollectionCell = [UINib nibWithNibName: @"TJBRealizedSetCollectionCell"
+                                                      bundle: nil];
+    
+    [self.tableView registerNib: realizedSetCollectionCell
+         forCellReuseIdentifier: @"TJBRealizedSetCollectionCell"];
+    
+}
+
+
+
+
+
+
 - (void)configureViewAesthetics{
 
     // meta view
@@ -845,6 +684,566 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
+
+#pragma mark - Date Control Action Methods
+
+- (void)clearTransitoryDateControlObjects{
+    
+    //// must clear the children view controller array as well as remove the stack view from the scroll view
+    
+    if (self.dateStackView){
+        
+        for (TJBCircleDateVC *vc in self.circleDateChildren){
+            
+            [vc willMoveToParentViewController: nil];
+            [vc removeFromParentViewController];
+            
+        }
+        
+        [self.dateStackView removeFromSuperview];
+        self.dateStackView = nil;
+        
+    }
+    
+    self.circleDateChildren = [[NSMutableArray alloc] init];
+    
+}
+
+
+
+
+
+- (void)configureDateControlsAndSelectActiveDate:(BOOL)shouldSelectActiveDate{
+    
+    //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
+    
+    [self clearTransitoryDateControlObjects];
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    
+    //// month title
+    
+    df.dateFormat = @"MMMM yyyy";
+    NSString *monthTitle = [df stringFromDate: self.firstDayOfDateControlMonth];
+    self.monthTitle.text = monthTitle;
+    
+    //// stack view and child VC's
+    
+    // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
+                                                inUnit: NSCalendarUnitMonth
+                                               forDate: self.firstDayOfDateControlMonth];
+    
+    
+    
+    const CGFloat stackViewWidth = [self dateSVWidthGivenButtonSpecifications];
+    
+    CGRect stackViewRect = CGRectMake(0, 0, stackViewWidth, buttonHeight);
+    
+    // create the stack view with the proper dimensions and also set the content size of the scroll view
+    
+    UIStackView *stackView = [[UIStackView alloc] initWithFrame: stackViewRect];
+    self.dateStackView = stackView;
+    
+    self.dateScrollView.contentSize = stackViewRect.size;
+    
+    [self.dateScrollView addSubview: stackView];
+    
+    // configure the stack view's layout properties
+    
+    stackView.alignment = UIStackViewAlignmentFill;
+    stackView.distribution = UIStackViewDistributionFillEqually;
+    stackView.spacing = buttonSpacing;
+    
+    // give the stack view it's content.  All items preceding the for loop are used in the for loop
+    
+    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                              fromDate: self.firstDayOfDateControlMonth];
+    
+    NSDate *iterativeDate;
+    
+    CGSize buttonSize = CGSizeMake(buttonWidth, buttonHeight);
+    
+    NSDate *today = [NSDate date];
+    
+    for (int i = 0; i < daysInCurrentMonth.length; i++){
+        
+        // must get the day of the week from the calendar. The day number is simply the iterator plus one
+        
+        [dateComps setDay: i + 1];
+        iterativeDate = [calendar dateFromComponents: dateComps];
+        
+        df.dateFormat = @"E";
+        NSString *dayTitle = [df stringFromDate: iterativeDate];
+        
+        df.dateFormat = @"d";
+        
+        // create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
+        
+        BOOL iterativeDateGreaterThanToday = [iterativeDate timeIntervalSinceDate: today] > 0;
+        BOOL isTheActiveDate = NO;
+        
+        if (shouldSelectActiveDate){
+            
+            isTheActiveDate = [calendar isDate: iterativeDate
+                               inSameDayAsDate: self.activeDate];
+            
+            if (isTheActiveDate){
+                
+                self.selectedDateButtonIndex = [NSNumber numberWithInt: i];
+                
+            }
+            
+        }
+        
+        
+        
+        BOOL recordExistsForIterativeDate = [self recordExistsForDate: iterativeDate];
+        
+        
+        
+        TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithDayIndex: [NSNumber numberWithInt: i]
+                                                                         dayTitle: dayTitle
+                                                                             size: buttonSize
+                                                            hasSelectedAppearance: isTheActiveDate
+                                                                        isEnabled: YES
+                                                                        isCircled: recordExistsForIterativeDate
+                                                                 masterController: self
+                                                                  representedDate: [calendar dateFromComponents: dateComps]
+                                                            representsHistoricDay: !iterativeDateGreaterThanToday];
+        
+        [self.circleDateChildren addObject: circleDateVC];
+        
+        [self addChildViewController: circleDateVC];
+        
+        [stackView addArrangedSubview: circleDateVC.view];
+        
+        [circleDateVC didMoveToParentViewController: self];
+        
+    }
+    
+}
+
+- (void)configureInitialDateControlAnimationPosition{
+    
+    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
+    CGPoint firstPosition = CGPointMake(firstPositionOffsetX, 0);
+    self.dateScrollView.contentOffset = firstPosition;
+    
+}
+
+- (void)incrementDateControlMonthAndUpdateDateControlsInForwardDirection:(BOOL)inForwardDirection{
+    
+    // changing the month represented by the date controls does not automatically select a new date. Thus, the preloaded cells should not be nullified at this point
+    
+    NSInteger monthDelta;
+    
+    if (inForwardDirection){
+        monthDelta = 1;
+    } else{
+        monthDelta = -1;
+    }
+    
+    NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+                                              fromDate: self.firstDayOfDateControlMonth];
+    dateComps.month += monthDelta;
+    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
+    
+    [self configureDateControlsAndSelectActiveDate: NO];
+    
+}
+
+
+
+
+- (void)setTitlesAccordingToDate:(NSDate *)date isLargestDate:(BOOL)isLargestDate{
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
+    NSDate *newSmallDate;
+    
+    if (isLargestDate){
+        
+        dateComps.day = -6;
+        newSmallDate = [calendar dateByAddingComponents: dateComps
+                                                 toDate: date
+                                                options: 0];
+        
+    } else{
+        
+        newSmallDate = self.activeDate;
+        
+    }
+    
+    int limit = 7;
+    NSDateFormatter *dayNameDF = [[NSDateFormatter alloc] init];
+    dayNameDF.dateFormat = @"E";
+    NSDateFormatter *dayNumberDF = [[NSDateFormatter alloc] init];
+    dayNumberDF.dateFormat = @"d";
+    
+    for (int i = 0; i < limit; i++){
+        
+        TJBCircleDateVC *activeVC = self.circleDateChildren[i];
+        
+        dateComps.day = i;
+        NSDate *activeDate = [calendar dateByAddingComponents: dateComps
+                                                       toDate: newSmallDate
+                                                      options: 0];
+        
+        NSString *dayName = [dayNameDF stringFromDate: activeDate];
+        NSString *dayNumber = [dayNumberDF stringFromDate: activeDate];
+        [activeVC configureWithDayTitle: dayName
+                            buttonTitle: dayNumber];
+        
+    }
+    
+}
+
+
+- (void)executeDateControlAnimation{
+    
+    // second position
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSInteger day = [calendar component: NSCalendarUnitDay
+                               fromDate: self.activeDate];
+    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
+    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
+    
+    // make sure the second position will not drag the view too far, revealing a white screen beneath
+    
+    CGFloat viewWidth = self.view.frame.size.width;
+    
+    if (activeDateControlRightEdge < viewWidth){
+        
+        activeDateControlRightEdge = viewWidth;
+        
+    }
+    
+    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
+    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
+    
+    //
+    
+    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
+    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
+    float maxAnimationTime = .5;
+    
+    // animation call
+    
+    [self scrollToOffset: secondPosition
+       animationDuration: maxAnimationTime * percentScrollViewWidth
+     subsequentAnimation: nil];
+    
+}
+
+- (void)artificiallySelectToday{
+    
+    // extract the day component to back solve for the date object index
+    
+    NSDate *today = [NSDate date];
+    
+    NSInteger dayAsIndex = [self dayIndexForDate: today];
+    
+    [self didSelectObjectWithIndex: @(dayAsIndex)
+                   representedDate: today];
+    
+}
+
+
+#pragma mark - Date Control Algorithms and Convenience Methods
+
+- (NSInteger)dayIndexForDate:(NSDate *)date{
+    
+    // extract the day component to back solve for the date object index
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSInteger day = [calendar component: NSCalendarUnitDay
+                               fromDate: date];
+    
+    // correct for indexing
+    
+    day -= 1;
+    
+    return day;
+    
+}
+
+#pragma mark - Date Controls - Circle Date Selection Action Sequence
+
+- (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
+    
+    if (!self.activityIndicatorView){
+        
+        [self createAndPresentActivityIndicator];
+        
+    }
+    
+    // immediately change the colors of the previously selected and newly selected controls
+    
+    [self selectDateObjectCorrespondingToIndex: index];
+    
+    [self disableControlsAndGiveInactiveAppearance];
+    
+    // state
+    
+    self.selectedDateButtonIndex = index;
+    self.activeDate = representedDate;
+    
+    // the next method is called with a delay so that the stack empties and views are updated (and thus the activity indicator is show)
+    // a delay of .2 seconds is given to assure that the presentation of the activity indicator is clear and doesn't come off as glitchy
+    
+    [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
+               withObject: nil
+               afterDelay: .2];
+    
+    [self.view setNeedsDisplay];
+    
+}
+
+
+
+
+- (void)deriveActiveCellsAndCreateTableView{
+    
+    // derive the active cells - the 'limit' describes the number of cells that will be shown based on the daily list
+    
+    NSInteger limit;
+    
+    if (self.dailyList.count == 0){
+        
+        limit = 1;
+        
+    } else{
+        
+        limit = self.dailyList.count;
+        
+    }
+    
+    // calculate and assign the table view container (scroll view) content size as well
+    // must create the new table view first so that the cellForIndexPath method has a valid table to dequeue
+    
+    UITableView *newTableView = [[UITableView alloc] init];
+    newTableView.dataSource = self;
+    newTableView.delegate = self;
+    newTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    newTableView.scrollEnabled = YES;
+    newTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    newTableView.separatorColor = [UIColor blackColor];
+    
+    // make sure to remove the old table view from the view hierarchy or else it will not deallocate
+    
+    [self.tableView removeFromSuperview];
+    self.tableView = newTableView;
+    [self configureTableView];
+    
+    self.activeTableViewCells = [[NSMutableArray alloc] init];
+    
+    CGFloat totalHeight = 0;
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        TJBMasterCell *cell = [self cellForIndexPath: path
+                                       shouldDequeue: YES];
+        
+        [self.activeTableViewCells addObject: cell];
+        
+        // height calc
+        
+        CGFloat iterativeHeight = [self tableView: self.tableView
+                          heightForRowAtIndexPath: path];
+        totalHeight += iterativeHeight;
+        
+    }
+    
+    // make sure the total height is as least as long as the table view container
+    
+    [self.view layoutIfNeeded];
+    
+    CGFloat minHeight = self.shadowContainer.frame.size.height;
+    
+    if (totalHeight < minHeight){
+        
+        totalHeight = minHeight;
+        
+    }
+    
+    // give the scroll view the correct dimensions and create a new table view
+    
+    CGFloat breatherRoom = [UIScreen mainScreen].bounds.size.height / 2.0;
+    
+    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight + breatherRoom);
+    
+    // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
+    
+    UIScrollView *sv = [[UIScrollView alloc] init];
+    self.tableViewScrollContainer = sv;
+    
+    sv.frame = CGRectMake(0, 0, contentSize.width, self.shadowContainer.frame.size.height);
+    sv.contentSize = contentSize;
+    sv.bounces = YES;
+    
+    // if there is an object for the scrollPositionForUpdate property, use that value to derive the correct CGPoint
+    
+    CGPoint newScrollPosition;
+    
+    if (self.scrollPositionForUpdate){
+        
+        newScrollPosition = CGPointMake(0, [self.scrollPositionForUpdate floatValue]);
+        
+        self.scrollPositionForUpdate = nil; // the logic is structured such that this object should be nullified once used.  Other objects will recreate it if they would like to influence scroll position
+        
+    } else{
+        
+        newScrollPosition = CGPointZero;
+        
+    }
+    
+    sv.contentOffset = newScrollPosition;
+    
+    sv.layer.masksToBounds = YES;
+    sv.scrollEnabled = YES;
+    
+    newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    
+    [sv addSubview: newTableView];
+    [self.shadowContainer insertSubview: sv
+                           belowSubview: self.toolbar];
+    
+    return;
+    
+}
+
+
+
+- (void)prepareNewContentCellsAndRemoveActivityIndicator{
+    
+    [self deriveDailyList];
+    
+    // call the table view cellForIndexPath method for all daily list cells and store the results
+    
+    [self deriveActiveCellsAndCreateTableView];
+    
+    [self.tableView reloadData];
+    
+    // remove activity indicator and give the buttons active appearance / functionality
+    
+    [self removeActivityIndicator];
+    
+    [self enableControlsAndGiveActiveAppearance];
+    
+}
+
+
+
+
+
+#pragma mark - Date Controls - Circle Date Selection Helper Methods
+
+
+
+
+
+
+- (void)enableControlsAndGiveActiveAppearance{
+    
+    for (TJBCircleDateVC *circVC in self.circleDateChildren){
+        
+        [circVC configureEnabledAppearance];
+        
+    }
+    
+    NSArray *buttons = @[self.homeButton];
+    for (UIButton *b in buttons){
+        
+        b.enabled = YES;
+        b.layer.opacity = 1.0;
+        
+    }
+    
+    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *b in arrows){
+        
+        b.enabled = YES;
+        b.layer.opacity = 1.0;
+        
+    }
+    
+}
+
+- (void)disableControlsAndGiveInactiveAppearance{
+    
+    NSArray *buttons = @[self.homeButton];
+    for (UIButton *b in buttons){
+        
+        b.enabled = NO;
+        b.layer.opacity = .4;
+        
+    }
+    
+    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *b in arrows){
+        
+        b.enabled = NO;
+        b.layer.opacity = .4;
+        
+    }
+    
+}
+
+- (void)selectDateObjectCorrespondingToIndex:(NSNumber *)index{
+    
+    if (self.selectedDateButtonIndex){
+        
+        [self.circleDateChildren[[self.selectedDateButtonIndex intValue]] configureButtonAsNotSelected];
+        
+    }
+    
+    [self.circleDateChildren[[index intValue]] configureButtonAsSelected];
+    
+    // reduce opacity of buttons and disable them until the cells have loaded
+    
+    for (TJBCircleDateVC *circVC in self.circleDateChildren){
+        
+        [circVC configureDisabledAppearance];
+        
+    }
+    
+}
+
+- (void)createAndPresentActivityIndicator{
+    
+    UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    
+    aiView.frame = self.shadowContainer.frame;
+    aiView.hidesWhenStopped = YES;
+    aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    aiView.layer.opacity = .9;
+    
+    self.activityIndicatorView = aiView;
+    
+    [self.view addSubview: aiView];
+    
+    [self.activityIndicatorView startAnimating];
+    
+}
+
+- (void)removeActivityIndicator{
+    
+    [self.activityIndicatorView removeFromSuperview];
+    self.activityIndicatorView = nil;
+    
+}
+
+
+
 #pragma mark - Toolbar
 
 - (void)configureToolBarAndBarButtons{
@@ -859,38 +1258,26 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     tbLayer.masksToBounds = YES;
     tbLayer.cornerRadius = 25;
     
-    return;
-    
-
     
 }
                                    
-- (void)didPressDelete{
-                                       
-                                       
-                                       
-}
 
-- (void)didPressEdit{
-    
-    
-    
-}
 
-- (void)didPressJumpToLast{
-    
-    
-    
-}
 
-- (void)didPressToday{
+#pragma mark - Core Data Notification
+
+- (void)configureNotifications{
     
+    //// configure managed context notification for updating
     
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(mocDidSave)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: moc];
     
 }
-
-
-#pragma mark - Core Data
 
 - (void)mocDidSave{
     
@@ -982,73 +1369,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
-- (void)incrementDateControlMonthAndUpdateDateControlsInForwardDirection:(BOOL)inForwardDirection{
-    
-    // changing the month represented by the date controls does not automatically select a new date. Thus, the preloaded cells should not be nullified at this point
-    
-    NSInteger monthDelta;
-    
-    if (inForwardDirection){
-        monthDelta = 1;
-    } else{
-        monthDelta = -1;
-    }
-    
-    NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                              fromDate: self.firstDayOfDateControlMonth];
-    dateComps.month += monthDelta;
-    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
-    
-    [self configureDateControlsAndSelectActiveDate: NO];
-    
-}
 
-
-
-
-- (void)setTitlesAccordingToDate:(NSDate *)date isLargestDate:(BOOL)isLargestDate{
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [[NSDateComponents alloc] init];
-    NSDate *newSmallDate;
-    
-    if (isLargestDate){
-        
-        dateComps.day = -6;
-        newSmallDate = [calendar dateByAddingComponents: dateComps
-                                                 toDate: date
-                                                options: 0];
-        
-    } else{
-        
-        newSmallDate = self.activeDate;
-        
-    }
-    
-    int limit = 7;
-    NSDateFormatter *dayNameDF = [[NSDateFormatter alloc] init];
-    dayNameDF.dateFormat = @"E";
-    NSDateFormatter *dayNumberDF = [[NSDateFormatter alloc] init];
-    dayNumberDF.dateFormat = @"d";
-    
-    for (int i = 0; i < limit; i++){
-        
-        TJBCircleDateVC *activeVC = self.circleDateChildren[i];
-        
-        dateComps.day = i;
-        NSDate *activeDate = [calendar dateByAddingComponents: dateComps
-                                                       toDate: newSmallDate
-                                                      options: 0];
-        
-        NSString *dayName = [dayNameDF stringFromDate: activeDate];
-        NSString *dayNumber = [dayNumberDF stringFromDate: activeDate];
-        [activeVC configureWithDayTitle: dayName
-                            buttonTitle: dayNumber];
-        
-    }
-    
-}
 
 #pragma mark - <UITableViewDataSource>
 
@@ -1223,286 +1544,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 }
 
 
-#pragma mark - <TJBDateSelectionMaster>
-
-- (void)artificiallySelectToday{
-
-    // extract the day component to back solve for the date object index
-    
-    NSDate *today = [NSDate date];
-    
-    NSInteger dayAsIndex = [self dayIndexForDate: today];
-
-    [self didSelectObjectWithIndex: @(dayAsIndex)
-                   representedDate: today];
-    
-}
-
-- (NSInteger)dayIndexForDate:(NSDate *)date{
-    
-    // extract the day component to back solve for the date object index
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSInteger day = [calendar component: NSCalendarUnitDay
-                               fromDate: date];
-    
-    // correct for indexing
-    
-    day -= 1;
-    
-    return day;
-    
-}
-
-- (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
-    
-    // present an activity indicator and also dull the date selection options and home button
-    // I am disabling user interaction while cell content is being loaded because I have no better alternative.  All UI objects must be manipulated on the main thread, which is the thread that serially handles user interaction.  The cells take a relatively long time to prepare (a second or two) when the daily list for a particular day is very long (about 40+ chain objects).  This is the major work being done when a user presses a date control button - the daily list is derived in addition to loading all cells, but the derivation of the daily list takes relatively no time.  Even if I try to create an operation object and dispatch it in a background queue, the odds that the user will be able to press a date before the main queue begins loading cells is almost zero.  Essentialy, I would need to find a way to drastically reduce the amount of UI work that needs to be done if I want to increase app responsiveness and leave the main thread open to accept and process new events
-    
-    if (!self.activityIndicatorView){
-        
-        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-        
-        aiView.frame = self.shadowContainer.frame;
-        aiView.hidesWhenStopped = YES;
-        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        
-        aiView.layer.opacity = .9;
-        
-        self.activityIndicatorView = aiView;
-        
-        [self.view addSubview: aiView];
-        
-        [self.activityIndicatorView startAnimating];
-        
-    }
-    
-    // immediately change the colors of the previously selected and newly selected controls
-    
-    if (self.selectedDateButtonIndex){
-        
-        [self.circleDateChildren[[self.selectedDateButtonIndex intValue]] configureButtonAsNotSelected];
-        
-    }
-    
-    [self.circleDateChildren[[index intValue]] configureButtonAsSelected];
-    
-    // reduce opacity of buttons and disable them until the cells have loaded
-    
-    for (TJBCircleDateVC *circVC in self.circleDateChildren){
-        
-        [circVC configureDisabledAppearance];
-        
-    }
-    
-    NSArray *buttons = @[self.homeButton];
-    for (UIButton *b in buttons){
-        
-        b.enabled = NO;
-        b.layer.opacity = .4;
-        
-    }
-    
-    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-    for (UIButton *b in arrows){
-        
-        b.enabled = NO;
-        b.layer.opacity = .4;
-        
-    }
-    
-    // state
-    
-    self.selectedDateButtonIndex = index;
-    self.activeDate = representedDate;
-    
-    [self.view layoutIfNeeded];
-    
-    [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
-               withObject: nil
-               afterDelay: .2];
-    
-    [self.view setNeedsDisplay];
-    
-}
-
-- (void)prepareNewContentCellsAndRemoveActivityIndicator{
-    
-    [self deriveDailyList];
-    
-    // call the table view cellForIndexPath method for all daily list cells and store the results
-    
-    [self deriveActiveCellsAndCreateTableView];
-    
-    [self.tableView reloadData];
-    
-    // remove activity indicator and give the buttons active appearance / functionality
-    
-    [self.activityIndicatorView removeFromSuperview];
-    self.activityIndicatorView = nil;
-    
-    for (TJBCircleDateVC *circVC in self.circleDateChildren){
-        
-        [circVC configureEnabledAppearance];
-        
-    }
-    
-    NSArray *buttons = @[self.homeButton];
-    for (UIButton *b in buttons){
-        
-        b.enabled = YES;
-        b.layer.opacity = 1.0;
-        
-    }
-    
-    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-    for (UIButton *b in arrows){
-        
-        b.enabled = YES;
-        b.layer.opacity = 1.0;
-        
-    }
-    
-}
-
-- (void)deriveActiveCellsAndCreateTableView{
-    
-    // derive the active cells - the 'limit' describes the number of cells that will be shown based on the daily list
-    
-    NSInteger limit;
-    
-    if (self.dailyList.count == 0){
-        
-        limit = 1;
-        
-    } else{
-        
-        limit = self.dailyList.count;
-        
-    }
-    
-    // calculate and assign the table view container (scroll view) content size as well
-    // must create the new table view first so that the cellForIndexPath method has a valid table to dequeue
-    
-    UITableView *newTableView = [[UITableView alloc] init];
-    newTableView.dataSource = self;
-    newTableView.delegate = self;
-    newTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    newTableView.scrollEnabled = YES;
-    newTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    newTableView.separatorColor = [UIColor blackColor];
-    
-    // make sure to remove the old table view from the view hierarchy or else it will not deallocate
-    
-    [self.tableView removeFromSuperview];
-    self.tableView = newTableView;
-    [self configureTableView];
-    
-    self.activeTableViewCells = [[NSMutableArray alloc] init];
-    
-    CGFloat totalHeight = 0;
-    
-    for (int i = 0; i < limit; i++){
-        
-        NSIndexPath *path = [NSIndexPath indexPathForRow: i
-                                               inSection: 0];
-        
-        TJBMasterCell *cell = [self cellForIndexPath: path
-                                       shouldDequeue: YES];
-        
-        [self.activeTableViewCells addObject: cell];
-        
-        // height calc
-        
-        CGFloat iterativeHeight = [self tableView: self.tableView
-                          heightForRowAtIndexPath: path];
-        totalHeight += iterativeHeight;
-        
-    }
-    
-    // make sure the total height is as least as long as the table view container
-    
-    [self.view layoutIfNeeded];
-    
-    CGFloat minHeight = self.shadowContainer.frame.size.height;
-    
-    if (totalHeight < minHeight){
-        
-        totalHeight = minHeight;
-        
-    }
-    
-    // give the scroll view the correct dimensions and create a new table view
-    
-    CGFloat breatherRoom = [UIScreen mainScreen].bounds.size.height / 2.0;
-    
-    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight + breatherRoom);
-    
-    // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
-    
-    UIScrollView *sv = [[UIScrollView alloc] init];
-    self.tableViewScrollContainer = sv;
-    
-    sv.frame = CGRectMake(0, 0, contentSize.width, self.shadowContainer.frame.size.height);
-    sv.contentSize = contentSize;
-    sv.bounces = YES;
-    
-    // if there is an object for the scrollPositionForUpdate property, use that value to derive the correct CGPoint
-    
-    CGPoint newScrollPosition;
-    
-    if (self.scrollPositionForUpdate){
-        
-        newScrollPosition = CGPointMake(0, [self.scrollPositionForUpdate floatValue]);
-        
-        self.scrollPositionForUpdate = nil; // the logic is structured such that this object should be nullified once used.  Other objects will recreate it if they would like to influence scroll position
-        
-    } else{
-        
-        newScrollPosition = CGPointZero;
-        
-    }
-    
-    sv.contentOffset = newScrollPosition;
-    
-    sv.layer.masksToBounds = YES;
-    sv.scrollEnabled = YES;
-    
-    newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
-    
-    [sv addSubview: newTableView];
-    [self.shadowContainer insertSubview: sv
-                           belowSubview: self.toolbar];
-    
-    return;
-    
-}
 
 
-- (void)deriveDailyList{
-    
-    //// creats the dailyList from the masterList based on the active date and updates the table view
-    
-    self.dailyList = [[NSMutableArray alloc] init];
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    
-    for (NSObject *object in self.masterList){
-        
-        NSDate *objectDate = [self dateForRecordObject: object];
-        
-        BOOL recordIsForActiveDate = [calendar isDate: objectDate
-                                      inSameDayAsDate: self.activeDate];
-        
-        if (recordIsForActiveDate){
-            
-            [self.dailyList addObject: object];
-            
-        }
-        
-    }
-    
-}
+
+
 
 #pragma mark - Animations and Date SV Calcs
 
