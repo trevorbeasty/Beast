@@ -58,16 +58,19 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *dateScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
-@property (weak, nonatomic) IBOutlet UIButton *todayButton;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *jumpToLastButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *todayButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 
 // IBAction
 
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressHomeButton:(id)sender;
-- (IBAction)didPressTodayButton:(id)sender;
 
 
 // circle dates
@@ -539,13 +542,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self configureViewAesthetics];
     
-    [self configureToolBar];
+    [self configureToolBarAndBarButtons];
     
     [self configureDateControlsAndSelectActiveDate: YES];
     
     [self configureOptionalHomeButton];
     
     [self artificiallySelectToday];
+    
+    return;
     
 }
 
@@ -803,10 +808,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 }
 
 - (void)configureViewAesthetics{
-    
-    // today button
-    
-    self.todayButton.backgroundColor = [UIColor clearColor];
 
     // meta view
     
@@ -846,50 +847,21 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - Toolbar
 
-- (void)configureToolBar{
-    
-    // delete item
-    
-    UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"garbageBlue32"]
-                                                                   style: UIBarButtonItemStylePlain
-                                                                  target: self
-                                                                  action: @selector(didPressDelete)];
-    [deleteItem setTintColor: [[TJBAestheticsController singleton] paleLightBlueColor]];
-//    deleteItem.title = @"Delete";
-    
-    
-    // edit item
-    
-//    UIBarItem *editItem = [[UIBarItem alloc] init];
-//    editItem.title = @"Edit";
-//    
-//    
-//    // today item
-//    
-//    UIBarItem *todayItem = [[UIBarItem alloc] init];
-//    todayItem.title = @"Today";
-//    
-//    
-//    
-//    // jump-to-last item
-//    
-//    UIBarItem *jumpToLastItem = [[UIBarItem alloc] init];
-//    jumpToLastItem.title = @"Last";
+- (void)configureToolBarAndBarButtons{
     
     // tool bar
     
-    self.toolbar.barTintColor = [UIColor darkGrayColor];
+    self.toolbar.barTintColor = [UIColor grayColor];
+    self.toolbar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     CALayer *tbLayer = self.toolbar.layer;
     tbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     tbLayer.borderWidth = 1.0;
     tbLayer.masksToBounds = YES;
     tbLayer.cornerRadius = 25;
     
-    NSArray *items = @[deleteItem];
-    [self.toolbar setItems: items];
+    return;
     
-    
-    
+
     
 }
                                    
@@ -898,6 +870,25 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                                        
                                        
 }
+
+- (void)didPressEdit{
+    
+    
+    
+}
+
+- (void)didPressJumpToLast{
+    
+    
+    
+}
+
+- (void)didPressToday{
+    
+    
+    
+}
+
 
 #pragma mark - Core Data
 
@@ -1304,7 +1295,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
     }
     
-    NSArray *buttons = @[self.homeButton, self.todayButton];
+    NSArray *buttons = @[self.homeButton];
     for (UIButton *b in buttons){
         
         b.enabled = NO;
@@ -1356,7 +1347,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
     }
     
-    NSArray *buttons = @[self.homeButton, self.todayButton];
+    NSArray *buttons = @[self.homeButton];
     for (UIButton *b in buttons){
         
         b.enabled = YES;
@@ -1443,7 +1434,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     // give the scroll view the correct dimensions and create a new table view
     
-    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight);
+    CGFloat breatherRoom = [UIScreen mainScreen].bounds.size.height / 2.0;
+    
+    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight + breatherRoom);
     
     // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
     
