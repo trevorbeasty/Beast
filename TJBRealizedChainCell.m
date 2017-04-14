@@ -455,15 +455,20 @@ typedef enum{
     label.textAlignment = NSTextAlignmentCenter;
     
     // borders
+    // for realized set collection one less column is shown (rest) and thus additional consideration must be had
     
-    if (isTrailingLabel == NO){
+    BOOL isRepsLabelForRealizedSetCollection = dynamicLabelType == TJBRepsType && _cellType == RealizedSetCollectionCell;
+    
+    if (isTrailingLabel == NO && !isRepsLabelForRealizedSetCollection){
         
         [self addVerticalBorderToRight: label
                              thickness: .5];
         
     }
     
-    if (isBottomRow == NO){
+    BOOL isRestLabelForRealizedSetCollection = dynamicLabelType == TJBRestType && _cellType == RealizedSetCollectionCell;
+    
+    if (isBottomRow == NO && !isRestLabelForRealizedSetCollection){
         
         [self addHorizontalBorderBeneath: label
                                thickness: .5];
@@ -473,7 +478,7 @@ typedef enum{
     
     // for realized sets and realized set grouping, the rest label is blank
     
-    if (dynamicLabelType == RealizedSetCollectionCell && dynamicLabelType == TJBRestType){
+    if (dynamicLabelType == TJBRestType && _cellType == RealizedSetCollectionCell){
         
         label.text = @"";
         
@@ -523,7 +528,7 @@ typedef enum{
     // basic formatting
     
     self.dateTimeLabel.backgroundColor = [UIColor clearColor];
-    self.dateTimeLabel.font = [UIFont systemFontOfSize: 15];
+    self.dateTimeLabel.font = [UIFont systemFontOfSize: 12];
     self.dateTimeLabel.textColor = [UIColor blackColor];
     
     self.titleNumberLabel.font = [UIFont systemFontOfSize: 40];
@@ -559,9 +564,15 @@ typedef enum{
     
     [self.contentView layoutSubviews]; // must be called, otherwise the dimensions of the xib file and not the 'dimensions with layout applied' will be used
     
-    NSArray *verticalDividerLabels = @[self.columnHeader1Label,
-                                       self.columnHeader2Label,
-                                       self.columnHeader3Label];
+    NSMutableArray *verticalDividerLabels = [[NSMutableArray alloc] init];
+    [verticalDividerLabels addObjectsFromArray: @[self.columnHeader1Label, self.columnHeader2Label]];
+    
+    // for realized set collections, rest column header is hidden, and thus, there should be one less vertical line drawn
+    
+    if (_cellType != RealizedSetCollectionCell){
+        [verticalDividerLabels addObject: self.columnHeader3Label];
+    }
+    
     for (UILabel *lab in verticalDividerLabels){
         
         [self drawVerticalDividerToRightOfLabel: lab

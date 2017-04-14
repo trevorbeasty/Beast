@@ -1333,7 +1333,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
             
             if (isRealizedSet){
                 
-                return 60;
+                return [TJBRealizedChainCell suggestedHeightForRealizedSet];
                 
             } else if (isRealizedChain) {
                 
@@ -1343,9 +1343,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
             } else{
                 
-                TJBRealizedSetGrouping rsc = self.dailyList[adjustedIndex];
+                TJBRealizedSetGrouping rsg = self.dailyList[adjustedIndex];
                 
-                return [TJBRealizedSetCollectionCell suggestedCellHeightForRealizedSetCollection: rsc];
+                return [TJBRealizedChainCell suggestedHeightForRealizedSetGrouping: rsg];
                 
             }
         }
