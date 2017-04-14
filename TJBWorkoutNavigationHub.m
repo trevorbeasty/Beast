@@ -1094,7 +1094,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     // give the scroll view the correct dimensions and create a new table view
     
-    CGFloat breatherRoom = [UIScreen mainScreen].bounds.size.height / 2.0;
+    [self.view layoutSubviews];
+    
+    CGFloat breatherRoom = self.shadowContainer.frame.size.height - self.toolbar.frame.origin.y + 8;
     
     CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight + breatherRoom);
     
