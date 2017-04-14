@@ -231,9 +231,8 @@ typedef enum{
                                                                                 views: self.constraintMapping]];
     
     TJBExercise *exercise = [self exerciseForExerciseIndex: exerciseIndex];
-    NSString *exerciseLabelText = [NSString stringWithFormat: @"Exercise #%d: %@",
-                                   exerciseIndex + 1,
-                                   exercise.name];
+    NSString *exerciseLabelText = [self exerciseLabelTextForExercise: exercise
+                                                       exerciseIndex: exerciseIndex];
     exerciseLabel.text = exerciseLabelText;
     
     [self configureExerciseLabel: exerciseLabel];
@@ -616,7 +615,7 @@ typedef enum{
             break;
             
         case TJBTimeOfDay:
-            df.dateFormat = @"HH:mm";
+            df.dateFormat = @"h:mm a";
             break;
             
         default:
@@ -635,7 +634,7 @@ typedef enum{
             break;
             
         case RealizedChainCell:
-            type = @"Completed Routine";
+            type = @"Routine";
             break;
             
         case RealizedSetCollectionCell:
@@ -675,8 +674,26 @@ typedef enum{
     // exercise #1 label
     
     TJBExercise *exercise = [self firstExercise];
-    NSString *e1Text = [NSString stringWithFormat: @"Exercise #1: %@", exercise.name];
-    self.firstExerciseLabel.text = e1Text;
+    self.firstExerciseLabel.text = [self exerciseLabelTextForExercise: exercise
+                                                        exerciseIndex: 0];
+    
+}
+
+- (NSString *)exerciseLabelTextForExercise:(TJBExercise *)exercise exerciseIndex:(int)exerciseIndex{
+    
+    NSString *text;
+    
+    if (_cellType == ChainTemplateAdvCell){
+        text = [NSString stringWithFormat: @"Targets for Exercise #%d: %@",
+                exerciseIndex + 1,
+                exercise.name];
+    } else{
+        text = [NSString stringWithFormat: @"Entries for Exercise #%d: %@",
+                exerciseIndex + 1,
+                exercise.name];
+    }
+    
+    return text;
     
 }
 
@@ -1162,7 +1179,7 @@ typedef enum{
     
     // I assume labels with intrinsic content sizes determining heights are 25 tall
     
-    CGFloat estimatedHeaderAreaHeight = 137;
+    CGFloat estimatedHeaderAreaHeight = 142;
     CGFloat breatherRoom = 32;
     
     return  estimatedHeaderAreaHeight + breatherRoom;

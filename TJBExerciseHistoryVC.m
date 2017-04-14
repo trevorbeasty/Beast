@@ -517,20 +517,12 @@
             
             // dequeue the realizedSetCell
             
-            TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
-            
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            dateFormatter.dateStyle = NSDateFormatterNoStyle;
-            dateFormatter.timeStyle = NSDateFormatterShortStyle;
-            NSString *date = [dateFormatter stringFromDate: realizedSet.submissionTime];
-            
-            [cell configureCellWithExercise: realizedSet.exercise.name
-                                     weight: [NSNumber numberWithFloat: realizedSet.submittedWeight]
-                                       reps: [NSNumber numberWithFloat: realizedSet.submittedReps]
-                                       rest: nil
-                                       date: date
-                                     number: number
-                         referenceIndexPath: indexPath];
+            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+
+            [cell configureWithContentObject: realizedSet
+                                    cellType: RealizedSetCollectionCell
+                                dateTimeType: TJBDayInYear
+                                 titleNumber: number];
             
             cell.backgroundColor = [UIColor clearColor];
             
@@ -541,12 +533,8 @@
             TJBRealizedChain *realizedChain = self.sortedContent[rowIndex];
             
             // dequeue the realizedSetCell
-            
-//            TJBRealizedChainCell *cell = [[TJBRealizedChainCell alloc] init];;
-            
+
             TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-            
-//            [cell clearExistingEntries];
             
             [cell configureWithContentObject: realizedChain
                                     cellType: RealizedChainCell
@@ -561,16 +549,16 @@
             
             // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
             
-            TJBRealizedSetCollectionCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCollectionCell"];
-            
-            [cell clearExistingEntries];
+            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
             
             cell.backgroundColor = [UIColor clearColor];
             
-            [cell configureWithRealizedSetCollection: self.sortedContent[rowIndex]
-                                              number: number
-                                           finalRest: nil
-                                  referenceIndexPath: indexPath];
+            TJBRealizedSetGrouping rsg = self.sortedContent[rowIndex];
+            
+            [cell configureWithContentObject: rsg
+                                    cellType: RealizedSetCollectionCell
+                                dateTimeType: TJBDayInYear
+                                 titleNumber: number];
             
             return cell;
             
@@ -604,7 +592,7 @@
         
         if (isRealizedSet){
             
-            return 60;
+            return [TJBRealizedChainCell suggestedHeightForRealizedSet];
             
         } else if (isRealizedChain) {
             
@@ -614,9 +602,9 @@
             
         } else{
             
-            TJBRealizedSetGrouping rsc = self.sortedContent[adjustedIndex];
+            TJBRealizedSetGrouping rsg = self.sortedContent[adjustedIndex];
             
-            return [TJBRealizedSetCollectionCell suggestedCellHeightForRealizedSetCollection: rsc];
+            return [TJBRealizedChainCell suggestedHeightForRealizedSetGrouping: rsg];
             
         }
     }
