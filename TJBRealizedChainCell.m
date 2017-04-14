@@ -527,7 +527,7 @@ typedef enum{
     // basic formatting
     
     self.dateTimeLabel.backgroundColor = [UIColor clearColor];
-    self.dateTimeLabel.font = [UIFont systemFontOfSize: 12];
+    self.dateTimeLabel.font = [UIFont boldSystemFontOfSize: 12];
     self.dateTimeLabel.textColor = [UIColor blackColor];
     
     self.titleNumberLabel.font = [UIFont systemFontOfSize: 40];
@@ -551,7 +551,7 @@ typedef enum{
     for (UILabel *label in columnHeaderLabels){
         
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont systemFontOfSize: 12];
+        label.font = [UIFont boldSystemFontOfSize: 12];
         label.textColor = [UIColor blackColor];
         label.textAlignment = NSTextAlignmentCenter;
         

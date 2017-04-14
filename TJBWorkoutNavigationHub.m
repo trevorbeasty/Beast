@@ -848,8 +848,55 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)configureToolBar{
     
+    // delete item
+    
+    UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"garbageBlue32"]
+                                                                   style: UIBarButtonItemStylePlain
+                                                                  target: self
+                                                                  action: @selector(didPressDelete)];
+    [deleteItem setTintColor: [[TJBAestheticsController singleton] paleLightBlueColor]];
+//    deleteItem.title = @"Delete";
     
     
+    // edit item
+    
+//    UIBarItem *editItem = [[UIBarItem alloc] init];
+//    editItem.title = @"Edit";
+//    
+//    
+//    // today item
+//    
+//    UIBarItem *todayItem = [[UIBarItem alloc] init];
+//    todayItem.title = @"Today";
+//    
+//    
+//    
+//    // jump-to-last item
+//    
+//    UIBarItem *jumpToLastItem = [[UIBarItem alloc] init];
+//    jumpToLastItem.title = @"Last";
+    
+    // tool bar
+    
+    self.toolbar.barTintColor = [UIColor darkGrayColor];
+    CALayer *tbLayer = self.toolbar.layer;
+    tbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    tbLayer.borderWidth = 1.0;
+    tbLayer.masksToBounds = YES;
+    tbLayer.cornerRadius = 25;
+    
+    NSArray *items = @[deleteItem];
+    [self.toolbar setItems: items];
+    
+    
+    
+    
+}
+                                   
+- (void)didPressDelete{
+                                       
+                                       
+                                       
 }
 
 #pragma mark - Core Data
@@ -1431,7 +1478,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
     
     [sv addSubview: newTableView];
-    [self.shadowContainer addSubview: sv];
+    [self.shadowContainer insertSubview: sv
+                           belowSubview: self.toolbar];
     
     return;
     
