@@ -107,6 +107,8 @@ static const CGFloat buttonWidth = 60.0;
 static const CGFloat buttonSpacing = 0.0;
 static const CGFloat buttonHeight = 55.0;
 
+static const CGFloat toolBarToContentBottomCushion = 8;
+
 // animation
 
 typedef void (^AnimationBlock)(void);
@@ -692,6 +694,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
+#pragma mark - View Calculations
+
+- (CGFloat)toolBarHeightFromBottomOfScreen{
+    
+    [self.view layoutSubviews];
+    
+    return self.shadowContainer.frame.size.height - self.toolbar.frame.origin.y ;
+    
+}
+
 
 #pragma mark - Date Control Action Methods
 
@@ -1096,8 +1108,18 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self.view layoutSubviews];
     
-    CGFloat breatherRoom = self.shadowContainer.frame.size.height - self.toolbar.frame.origin.y + 8;
+    CGFloat breatherRoom;
     
+    if (self.dailyList.count == 0){
+        
+        breatherRoom = 0;
+        
+    } else{
+        
+        breatherRoom = [self toolBarHeightFromBottomOfScreen] + toolBarToContentBottomCushion;
+        
+    }
+
     CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight + breatherRoom);
     
     // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
@@ -1544,7 +1566,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
             
             [self.view layoutIfNeeded];
             
-            return self.shadowContainer.frame.size.height;
+            CGFloat heightDeduction = [self toolBarHeightFromBottomOfScreen] + toolBarToContentBottomCushion;
+            
+            return self.shadowContainer.frame.size.height - heightDeduction;
             
         } else{
             
