@@ -8,9 +8,7 @@
 
 #import "TJBRealizedChainCell.h"
 
-// core data
 
-#import "CoreDataController.h"
 
 // aesthetics
 
@@ -67,8 +65,8 @@
 static CGFloat const rowHeight = 30;
 static CGFloat const topSpacing = 8;
 static CGFloat const bottomSpacing = 16;
-static CGFloat const leadingSpace = 32;
-static CGFloat const trailingSpace = 0;
+static CGFloat const leadingSpace = 36;
+static CGFloat const trailingSpace = 8;
 static CGFloat const interimVertRowSpacing = 0;
 static CGFloat const interimHorzRowSpacing = 0;
 static CGFloat const exerciseLeadingSpace = 8;
@@ -171,7 +169,29 @@ typedef enum{
 
     } else{
         
+        // this class accepts both TJBRealizedSetGrouping and TJBRealizedSet; must check for type
         
+        if ([self.contentObject isKindOfClass: [NSArray class]]){
+            
+            TJBRealizedSetGrouping rsg = self.contentObject;
+            
+            for (int i = 0; i < rsg.count; i++){
+             
+               currentTopView = [self addContentRowCorrespondingToExerciseIndex: 0
+                                                                     roundIndex: i
+                                                                 currentTopView: currentTopView
+                                                                  maxRoundIndex: (int)rsg.count - 1];
+                
+            }
+            
+        } else{
+            
+            [self addContentRowCorrespondingToExerciseIndex: 0
+                                                 roundIndex: 0
+                                             currentTopView: currentTopView
+                                              maxRoundIndex: 0];
+            
+        }
         
     }
     
@@ -432,6 +452,33 @@ typedef enum{
     label.textColor = [UIColor blackColor];
     label.textAlignment = NSTextAlignmentCenter;
     
+    // borders
+    
+    if (isTrailingLabel == NO){
+        
+        [self addVerticalBorderToRight: label
+                             thickness: .5];
+        
+    }
+    
+    if (isBottomRow == NO){
+        
+        [self addHorizontalBorderBeneath: label
+                               thickness: .5];
+        
+    }
+
+    
+    // for realized sets and realized set grouping, the rest label is blank
+    
+    if (dynamicLabelType == RealizedSetCollectionCell && dynamicLabelType == TJBRestType){
+        
+        label.text = @"";
+        
+        return;
+        
+    }
+    
     NSNumber *number = [self numberForExerciseIndex: exerciseIndex
                                          roundIndex: roundIndex
                                    dynamicLabelType: dynamicLabelType];
@@ -461,19 +508,6 @@ typedef enum{
 
     label.text = text;
     
-    if (isTrailingLabel == NO){
-        
-        [self addVerticalBorderToRight: label
-                             thickness: .5];
-        
-    }
-    
-    if (isBottomRow == NO){
-        
-        [self addHorizontalBorderBeneath: label
-                               thickness: .5];
-        
-    }
     
 }
 
@@ -651,32 +685,11 @@ typedef enum{
     if (_cellType == RealizedChainCell){
         
         TJBRealizedChain *rc = self.contentObject;
-        TJBRealizedSet *rs = rc.realizedSetCollections[exerciseIndex].realizedSets[roundIndex];
-        TJBTargetUnit *tu = rc.chainTemplate.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
-        
-        if (rs.holdsNullValues == YES){
-            
-            number = @(-1);
-            
-        } else{
-            
-            switch (dynamicLabelType){
-                case TJBWeightType:
-                    number = @(rs.submittedWeight);
-                    break;
-                    
-                case TJBRepsType:
-                    number = @(rs.submittedReps);
-                    break;
-                    
-                case TJBRestType:
-                    number = @(tu.trailingRestTarget);
-                    break;
-                    
-                default:
-                    break;
-            }
-        }
+       
+        number = [self numberForRealizedChain: rc
+                             dynamicLabelType: dynamicLabelType
+                                exerciseIndex: exerciseIndex
+                                   roundIndex: roundIndex];
         
     } else if (_cellType == ChainTemplateCell){
         
@@ -705,6 +718,93 @@ typedef enum{
                 break;
         }
         
+    } else{
+        
+        // this class accepts both TJBRealizedSetGrouping and TJBRealizedSet; must check for type
+        
+        if ([self.contentObject isKindOfClass: [NSArray class]]){
+            
+            TJBRealizedSetGrouping rsg = self.contentObject;
+            TJBRealizedSet *rs = rsg[roundIndex];
+
+            number = [self numberForRealizedSet: rs
+                               dynamicLabelType: dynamicLabelType];
+            
+        } else{
+            
+            TJBRealizedSet *rs = self.contentObject;
+            
+            number = [self numberForRealizedSet: rs
+                               dynamicLabelType: dynamicLabelType];
+            
+        }
+        
+    }
+    
+    return number;
+    
+}
+
+- (NSNumber *)numberForRealizedSet:(TJBRealizedSet *)rs dynamicLabelType:(TJBDynamicLabelType)dlt{
+    
+    NSNumber *number;
+    
+    if (rs.holdsNullValues == YES){
+        
+        number = @(-1);
+        
+    } else{
+        
+        // the switch does not account for TJBRestType because realized sets have @"" as their text
+        // the preceeding logic is structured such that this method should never be called for a realized set's rest label
+        
+        switch (dlt){
+            case TJBWeightType:
+                number = @(rs.submittedWeight);
+                break;
+                
+            case TJBRepsType:
+                number = @(rs.submittedReps);
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    return number;
+    
+}
+
+- (NSNumber *)numberForRealizedChain:(TJBRealizedChain *)rc dynamicLabelType:(TJBDynamicLabelType)dlt exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+    
+    NSNumber *number;
+    
+    TJBRealizedSet *rs = rc.realizedSetCollections[exerciseIndex].realizedSets[roundIndex];
+    TJBTargetUnit *tu = rc.chainTemplate.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
+    
+    if (rs.holdsNullValues == YES){
+        
+        number = @(-1);
+        
+    } else{
+        
+        switch (dlt){
+            case TJBWeightType:
+                number = @(rs.submittedWeight);
+                break;
+                
+            case TJBRepsType:
+                number = @(rs.submittedReps);
+                break;
+                
+            case TJBRestType:
+                number = @(tu.trailingRestTarget);
+                break;
+                
+            default:
+                break;
+        }
     }
     
     return number;
@@ -966,6 +1066,22 @@ typedef enum{
 
 #pragma mark - Prescribed Cell Height
 
++ (float)suggestedHeightForRealizedSet{
+    
+    CGFloat remainingHeight = rowHeight + topSpacing;
+    
+    return  [self estimatedHeaderHeightPlusBreatherRoom] + remainingHeight;
+    
+}
+
++ (float)suggestedHeightForRealizedSetGrouping:(TJBRealizedSetGrouping)rsg{
+    
+    CGFloat remainingHeight =  (rsg.count - 1) * interimVertRowSpacing + rsg.count * rowHeight + topSpacing;
+    
+    return remainingHeight + [self estimatedHeaderHeightPlusBreatherRoom];
+    
+}
+
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain{
     
     TJBChainTemplate *ct = realizedChain.chainTemplate;
@@ -984,15 +1100,20 @@ typedef enum{
 
 + (float)heightForChainTemplate:(TJBChainTemplate *)ct{
     
+    CGFloat remainingHeight = ct.numberOfExercises * (((ct.numberOfRounds - 1) * interimVertRowSpacing) + ct.numberOfRounds * rowHeight + topSpacing) + (ct.numberOfExercises - 1) * (25 + bottomSpacing);
+    
+    return remainingHeight + [self estimatedHeaderHeightPlusBreatherRoom];
+    
+}
+
++ (float)estimatedHeaderHeightPlusBreatherRoom{
+    
     // I assume labels with intrinsic content sizes determining heights are 25 tall
     
     CGFloat estimatedHeaderAreaHeight = 137;
-    
-    CGFloat remainingHeight = ct.numberOfExercises * (((ct.numberOfRounds - 1) * interimVertRowSpacing) + ct.numberOfRounds * rowHeight + topSpacing) + (ct.numberOfExercises - 1) * (25 + bottomSpacing);
-    
     CGFloat breatherRoom = 32;
     
-    return estimatedHeaderAreaHeight + remainingHeight + breatherRoom;
+    return  estimatedHeaderAreaHeight + breatherRoom;
     
 }
 

@@ -12,8 +12,7 @@
 
 // core data
 
-@class TJBRealizedChain;
-@class TJBChainTemplate;
+#import "CoreDataController.h"
 
 
 typedef enum{
@@ -37,6 +36,8 @@ typedef enum{
 
 + (float)suggestedCellHeightForRealizedChain:(TJBRealizedChain *)realizedChain;
 + (float)suggestedCellHeightForChainTemplate:(TJBChainTemplate *)chainTemplate;
++ (float)suggestedHeightForRealizedSet;
++ (float)suggestedHeightForRealizedSetGrouping:(TJBRealizedSetGrouping)rsg;
 
 - (void)clearExistingEntries;
 
