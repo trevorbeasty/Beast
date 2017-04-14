@@ -19,6 +19,7 @@
                 <outlet property="shadowContainer" destination="NrZ-JA-Y3W" id="Uz9-Bv-gj3"/>
                 <outlet property="titleBarContainer" destination="H9i-29-7aZ" id="vyu-Zf-5BC"/>
                 <outlet property="todayButton" destination="yli-0M-nMI" id="0Hl-Z6-u1h"/>
+                <outlet property="toolbar" destination="EFI-cn-6pj" id="akh-Vk-Gtn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -34,7 +35,7 @@
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NrZ-JA-Y3W" userLabel="shadowContainer">
-                    <rect key="frame" x="0.0" y="127" width="375" height="540"/>
+                    <rect key="frame" x="0.0" y="127" width="375" height="496"/>
                     <color key="backgroundColor" red="0.99626137070235543" green="1" blue="0.7588937688929247" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H9i-29-7aZ">
@@ -93,19 +94,31 @@
                         <constraint firstAttribute="height" constant="50" id="ycV-NS-DHN"/>
                     </constraints>
                 </view>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFI-cn-6pj">
+                    <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Nfv-Ag-fN3"/>
+                    </constraints>
+                    <items>
+                        <barButtonItem title="Item" id="HdK-HL-Vdc"/>
+                    </items>
+                </toolbar>
             </subviews>
             <color key="backgroundColor" red="0.96516424417495728" green="0.98296421766281128" blue="0.97962504625320435" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="H9i-29-7aZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="64n-2A-mkX"/>
                 <constraint firstItem="H9i-29-7aZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E5k-1R-6TX"/>
                 <constraint firstItem="NrZ-JA-Y3W" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="FFg-uj-yfh"/>
+                <constraint firstAttribute="trailing" secondItem="EFI-cn-6pj" secondAttribute="trailing" id="HBy-5a-FEc"/>
                 <constraint firstItem="NrZ-JA-Y3W" firstAttribute="top" secondItem="kfu-Yd-6by" secondAttribute="bottom" constant="1" id="JNW-cm-xb8"/>
                 <constraint firstAttribute="trailing" secondItem="kfu-Yd-6by" secondAttribute="trailing" id="PZB-fH-vxf"/>
                 <constraint firstAttribute="trailing" secondItem="H9i-29-7aZ" secondAttribute="trailing" id="RQh-Yl-paB"/>
                 <constraint firstItem="kfu-Yd-6by" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Rr7-k3-gaF"/>
                 <constraint firstItem="kfu-Yd-6by" firstAttribute="top" secondItem="H9i-29-7aZ" secondAttribute="bottom" constant="1" id="TuM-Tu-nfk"/>
+                <constraint firstItem="EFI-cn-6pj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="a8C-fj-bpX"/>
                 <constraint firstAttribute="trailing" secondItem="NrZ-JA-Y3W" secondAttribute="trailing" id="agz-eY-jps"/>
-                <constraint firstAttribute="bottom" secondItem="NrZ-JA-Y3W" secondAttribute="bottom" id="o2N-mk-pMS"/>
+                <constraint firstItem="EFI-cn-6pj" firstAttribute="top" secondItem="NrZ-JA-Y3W" secondAttribute="bottom" id="b5q-s5-kDT"/>
+                <constraint firstAttribute="bottom" secondItem="EFI-cn-6pj" secondAttribute="bottom" id="pZB-fK-eR7"/>
             </constraints>
             <point key="canvasLocation" x="65.5" y="65.5"/>
         </view>

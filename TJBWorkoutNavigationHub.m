@@ -60,6 +60,7 @@
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
 @property (weak, nonatomic) IBOutlet UIButton *todayButton;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 // IBAction
 
@@ -538,6 +539,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self configureViewAesthetics];
     
+    [self configureToolBar];
+    
     [self configureDateControlsAndSelectActiveDate: YES];
     
     [self configureOptionalHomeButton];
@@ -838,6 +841,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSString *formattedDate = [df stringFromDate: self.activeDate];
     
     return  [NSString stringWithFormat: @"%@", formattedDate];
+    
+}
+
+#pragma mark - Toolbar
+
+- (void)configureToolBar{
+    
+    
     
 }
 
