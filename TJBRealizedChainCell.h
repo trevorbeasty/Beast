@@ -17,7 +17,7 @@
 
 typedef enum{
     RealizedSetCollectionCell,
-    ChainTemplateCell,
+    ChainTemplateAdvCell,
     RealizedChainCell
 }TJBAdvancedCellType;
 

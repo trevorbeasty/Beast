@@ -95,6 +95,8 @@ typedef enum{
     [self configureViewAesthetics];
     [self createAndLayoutDynamicContent];
     
+    return;
+    
 }
 
 
@@ -138,7 +140,7 @@ typedef enum{
             }
         }
         
-    } else if (_cellType == ChainTemplateCell){
+    } else if (_cellType == ChainTemplateAdvCell){
         
         TJBChainTemplate *ct = self.contentObject;
         
@@ -617,7 +619,7 @@ typedef enum{
     NSString *type = nil;
     
     switch (_cellType) {
-        case ChainTemplateCell:
+        case ChainTemplateAdvCell:
             type = @"Routine Template";
             break;
             
@@ -647,7 +649,7 @@ typedef enum{
     self.columnHeader2Label.text = @"weight \n(lbs)";
     self.columnHeader3Label.text = @"reps";
     
-    if (_cellType == ChainTemplateCell || _cellType == RealizedChainCell){
+    if (_cellType == ChainTemplateAdvCell || _cellType == RealizedChainCell){
         
         self.columnHeader1Label.text = @"round #";
         self.columnHeader4Label.text = @"rest";
@@ -691,7 +693,7 @@ typedef enum{
                                 exerciseIndex: exerciseIndex
                                    roundIndex: roundIndex];
         
-    } else if (_cellType == ChainTemplateCell){
+    } else if (_cellType == ChainTemplateAdvCell){
         
         TJBChainTemplate *ct = self.contentObject;
         TJBTargetUnit *tu = ct.targetUnitCollections[exerciseIndex].targetUnits[roundIndex];
@@ -826,16 +828,27 @@ typedef enum{
         TJBRealizedChain *rc = self.contentObject;
         exercise = rc.chainTemplate.exercises[exerciseIndex];
         
-    } else if (_cellType == ChainTemplateCell){
+    } else if (_cellType == ChainTemplateAdvCell){
         
         TJBChainTemplate *ct = self.contentObject;
         exercise = ct.exercises[exerciseIndex];
         
     } else{
         
-        TJBRealizedSetGrouping rsg = self.contentObject;
-        TJBRealizedSet *rs = rsg[0];
-        exercise = rs.exercise;
+        if ([self.contentObject isKindOfClass: [NSArray class]]){
+            
+            TJBRealizedSetGrouping rsg = self.contentObject;
+            TJBRealizedSet *rs = rsg[0];
+            exercise = rs.exercise;
+            
+        } else{
+            
+            TJBRealizedSet *rs = self.contentObject;
+            exercise = rs.exercise;
+            
+        }
+        
+
         
     }
     
@@ -852,16 +865,25 @@ typedef enum{
         TJBRealizedChain *rc = self.contentObject;
         name = rc.chainTemplate.name;
         
-    } else if (_cellType == ChainTemplateCell){
+    } else if (_cellType == ChainTemplateAdvCell){
         
         TJBChainTemplate *ct = self.contentObject;
         name = ct.name;
         
     } else{
         
-        TJBRealizedSetGrouping rsg = self.contentObject;
-        TJBRealizedSet *rs = rsg[0];
-        name = rs.exercise.name;
+        if ([self.contentObject isKindOfClass: [NSArray class]]){
+            
+            TJBRealizedSetGrouping rsg = self.contentObject;
+            TJBRealizedSet *rs = rsg[0];
+            name = rs.exercise.name;
+            
+        } else{
+            
+            TJBRealizedSet *rs = self.contentObject;
+            name = rs.exercise.name;
+            
+        }
         
     }
     
@@ -877,6 +899,25 @@ typedef enum{
         
         TJBRealizedChain *rc = self.contentObject;
         date = rc.dateCreated;
+        
+    } else if (_cellType == ChainTemplateAdvCell){
+        
+        TJBChainTemplate *ct = self.contentObject;
+        date = ct.dateCreated;
+        
+    } else{
+        
+        if ([self.contentObject isKindOfClass: [NSArray class]]){
+            
+            TJBRealizedSetGrouping rsg = self.contentObject;
+            date = rsg[0].submissionTime;
+            
+        } else{
+            
+            TJBRealizedSet *rs = self.contentObject;
+            date = rs.submissionTime;
+            
+        }
         
     }
     

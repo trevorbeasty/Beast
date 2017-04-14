@@ -934,7 +934,7 @@
             }
             
             [cell configureWithContentObject: chainTemplate
-                                    cellType: ChainTemplateCell
+                                    cellType: ChainTemplateAdvCell
                                 dateTimeType: TJBDayInYear
                                  titleNumber: @(indexPath.row)];
             

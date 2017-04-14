@@ -1203,20 +1203,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
                 // dequeue the realizedSetCell
                 
-                TJBRealizedSetCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCell"];
-                
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                dateFormatter.dateStyle = NSDateFormatterNoStyle;
-                dateFormatter.timeStyle = NSDateFormatterShortStyle;
-                NSString *date = [dateFormatter stringFromDate: realizedSet.submissionTime];
-                
-                [cell configureCellWithExercise: realizedSet.exercise.name
-                                         weight: [NSNumber numberWithFloat: realizedSet.submittedWeight]
-                                           reps: [NSNumber numberWithFloat: realizedSet.submittedReps]
-                                           rest: nil
-                                           date: date
-                                         number: number
-                             referenceIndexPath: indexPath];
+                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+    
+                [cell configureWithContentObject: realizedSet
+                                        cellType: RealizedSetCollectionCell
+                                    dateTimeType: TJBTimeOfDay
+                                     titleNumber: number];
                 
                 cell.backgroundColor = [UIColor clearColor];
                 
@@ -1244,17 +1236,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                     cell = topLevelNibObjects[0];
                     
                 }
- 
-                [cell clearExistingEntries];
-                
-//                [cell configureWithRealizedChain: realizedChain
-//                                          number: number
-//                                       finalRest: nil
-//                              referenceIndexPath: indexPath];
-                
-//                [self.tableView layoutIfNeeded];
-                
-//                [self.tableView layoutSubviews];
                 
                 [cell configureWithContentObject: realizedChain
                                         cellType: RealizedChainCell
@@ -1269,16 +1250,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
                 // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
                 
-                TJBRealizedSetCollectionCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedSetCollectionCell"];
-                
-                [cell clearExistingEntries];
+                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
                 
                 cell.backgroundColor = [UIColor clearColor];
                 
-                [cell configureWithRealizedSetCollection: self.dailyList[rowIndex]
-                                                  number: number
-                                               finalRest: nil
-                                      referenceIndexPath: indexPath];
+                TJBRealizedSetGrouping rsg = self.dailyList[rowIndex];
+                
+                [cell configureWithContentObject: rsg
+                                        cellType: RealizedSetCollectionCell
+                                    dateTimeType: TJBTimeOfDay
+                                     titleNumber: number];
                 
                 return cell;
                 
