@@ -22,12 +22,9 @@
 
 // table view cells
 
-#import "TJBRealizedSetCell.h"
 #import "TJBRealizedChainCell.h"
-#import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
-#import "TJBRealizedSetCollectionCell.h"
-#import "TJBMasterCell.h"
+
 
 // presented VC's
 
@@ -66,6 +63,10 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *myWorkoutLogLabel;
+@property (weak, nonatomic) IBOutlet UILabel *activeDateLabel;
+
+
 // IBAction
 
 - (IBAction)didPressLeftArrow:(id)sender;
@@ -80,11 +81,14 @@
 
 // state
 
-@property (strong) NSDate *activeDate;
-@property (strong) NSDate *firstDayOfDateControlMonth;
+@property (strong) NSDate *workoutLogActiveDay;
+@property (strong) NSDate *dateControlActiveDate;
 @property (strong) NSNumber *selectedDateButtonIndex;
 @property (strong) UIActivityIndicatorView *activityIndicatorView;
 @property (strong) NSNumber *scrollPositionForUpdate;
+
+@property (strong) NSIndexPath *currentlySelectedPath;
+@property (strong) NSIndexPath *lastSelectedPath;
 
 // core data
 
@@ -124,17 +128,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     self.restorationIdentifier = @"TJBWorkoutNavigationHub";
     
     // state
-    // set the active date as well of the first day of the month for date control
     
     NSDate *today = [NSDate date];
-    
-    self.activeDate = today;
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                              fromDate: today];
-    [dateComps setDay: 1];
-    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
+    self.workoutLogActiveDay = today;
+    self.dateControlActiveDate = today;
     
     [self configureNotifications];
     
@@ -434,7 +431,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         NSDate *objectDate = [self dateForRecordObject: object];
         
         BOOL recordIsForActiveDate = [calendar isDate: objectDate
-                                      inSameDayAsDate: self.activeDate];
+                                      inSameDayAsDate: self.workoutLogActiveDay];
         
         if (recordIsForActiveDate){
             
@@ -538,14 +535,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     if (_cellsNeedUpdating){
         
-        NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
+        NSInteger dayAsIndex = [self dayIndexForDate: self.workoutLogActiveDay];
         
         [self didSelectObjectWithIndex: @(dayAsIndex)
-                       representedDate: self.activeDate];
+                       representedDate: self.workoutLogActiveDay];
         
         // the date controls should also be reloaded, in case a day that previously had not content now contains content
         
-        [self configureDateControlsAndSelectActiveDate: YES];
+        [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
         
         // update the state variable to reflect that cells no longer need updating
         
@@ -571,11 +568,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self configureToolBarAndBarButtons];
     
-    [self configureDateControlsAndSelectActiveDate: YES];
+    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
     
     [self configureOptionalHomeButton];
     
-    [self artificiallySelectToday];
+    [self artificiallySelectDate: [NSDate date]];
     
     return;
     
@@ -609,11 +606,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     // for prefetching
     
-    UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
-                                           bundle: nil];
-    
-    [self.tableView registerNib: realizedSetNib
-         forCellReuseIdentifier: @"TJBRealizedSetCell"];
+//    UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
+//                                           bundle: nil];
+//    
+//    [self.tableView registerNib: realizedSetNib
+//         forCellReuseIdentifier: @"TJBRealizedSetCell"];
     
     UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
                                              bundle: nil];
@@ -621,11 +618,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     [self.tableView registerNib: realizedChainNib
          forCellReuseIdentifier: @"TJBRealizedChainCell"];
     
-    UINib *titleCellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-                                         bundle: nil];
-    
-    [self.tableView registerNib: titleCellNib
-         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
+//    UINib *titleCellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+//                                         bundle: nil];
+//    
+//    [self.tableView registerNib: titleCellNib
+//         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
     
     UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
                                        bundle: nil];
@@ -633,11 +630,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     [self.tableView registerNib: noDataCell
          forCellReuseIdentifier: @"TJBNoDataCell"];
     
-    UINib *realizedSetCollectionCell = [UINib nibWithNibName: @"TJBRealizedSetCollectionCell"
-                                                      bundle: nil];
-    
-    [self.tableView registerNib: realizedSetCollectionCell
-         forCellReuseIdentifier: @"TJBRealizedSetCollectionCell"];
+//    UINib *realizedSetCollectionCell = [UINib nibWithNibName: @"TJBRealizedSetCollectionCell"
+//                                                      bundle: nil];
+//    
+//    [self.tableView registerNib: realizedSetCollectionCell
+//         forCellReuseIdentifier: @"TJBRealizedSetCollectionCell"];
     
 }
 
@@ -670,6 +667,17 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         button.backgroundColor = [UIColor clearColor];
         
     }
+    
+    // workout log and active date label
+    
+    NSArray *titleLabels = @[self.myWorkoutLogLabel, self.activeDateLabel];
+    for (UILabel *lab in titleLabels){
+        
+        lab.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        lab.font = [UIFont boldSystemFontOfSize: 15];
+        lab.textColor = [UIColor blackColor];
+        
+    }
 
     
 }
@@ -678,7 +686,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     df.dateFormat = @"MMM d, yyyy";
-    NSString *formattedDate = [df stringFromDate: self.activeDate];
+    NSString *formattedDate = [df stringFromDate: self.workoutLogActiveDay];
     
     return  [NSString stringWithFormat: @"%@", formattedDate];
     
@@ -713,10 +721,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 
 
-- (void)configureDateControlsAndSelectActiveDate:(BOOL)shouldSelectActiveDate{
-    
-    //// configures the date controls according to the day stored in firstDayOfDateControlMonth.  Must be sure to first clear existing date control objects if they exist
-    
+- (void)configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay:(BOOL)shouldSelectActiveDateControlDay{
+
     [self clearTransitoryDateControlObjects];
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
@@ -724,7 +730,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     //// month title
     
     df.dateFormat = @"MMMM yyyy";
-    NSString *monthTitle = [df stringFromDate: self.firstDayOfDateControlMonth];
+    NSString *monthTitle = [df stringFromDate: self.dateControlActiveDate];
     self.monthTitle.text = monthTitle;
     
     //// stack view and child VC's
@@ -734,7 +740,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
                                                 inUnit: NSCalendarUnitMonth
-                                               forDate: self.firstDayOfDateControlMonth];
+                                               forDate: self.dateControlActiveDate];
     
     
     
@@ -760,7 +766,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     // give the stack view it's content.  All items preceding the for loop are used in the for loop
     
     NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                              fromDate: self.firstDayOfDateControlMonth];
+                                              fromDate: self.dateControlActiveDate];
     
     NSDate *iterativeDate;
     
@@ -785,10 +791,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         BOOL iterativeDateGreaterThanToday = [iterativeDate timeIntervalSinceDate: today] > 0;
         BOOL isTheActiveDate = NO;
         
-        if (shouldSelectActiveDate){
+        if (shouldSelectActiveDateControlDay){
             
             isTheActiveDate = [calendar isDate: iterativeDate
-                               inSameDayAsDate: self.activeDate];
+                               inSameDayAsDate: self.workoutLogActiveDay];
             
             if (isTheActiveDate){
                 
@@ -848,11 +854,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                              fromDate: self.firstDayOfDateControlMonth];
+                                              fromDate: self.dateControlActiveDate];
     dateComps.month += monthDelta;
-    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateComps];
+    dateComps.day = 1;
+    self.dateControlActiveDate = [calendar dateFromComponents: dateComps];
     
-    [self configureDateControlsAndSelectActiveDate: NO];
+    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: NO];
     
 }
 
@@ -874,7 +881,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
     } else{
         
-        newSmallDate = self.activeDate;
+        newSmallDate = self.workoutLogActiveDay;
         
     }
     
@@ -909,7 +916,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSInteger day = [calendar component: NSCalendarUnitDay
-                               fromDate: self.activeDate];
+                               fromDate: self.workoutLogActiveDay];
     TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
     CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
     
@@ -940,16 +947,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
-- (void)artificiallySelectToday{
+- (void)artificiallySelectDate:(NSDate *)date{
     
     // extract the day component to back solve for the date object index
     
-    NSDate *today = [NSDate date];
-    
-    NSInteger dayAsIndex = [self dayIndexForDate: today];
+    NSInteger dayAsIndex = [self dayIndexForDate: date];
     
     [self didSelectObjectWithIndex: @(dayAsIndex)
-                   representedDate: today];
+                   representedDate: date];
     
 }
 
@@ -972,6 +977,17 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
+//- (NSDate *)firstDayOfActiveMonth{
+//    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+//                                              fromDate: self.workoutLogActiveDay];
+//    [dateComps setDay: 1];
+//    
+//    return [calendar dateFromComponents: dateComps];
+//    
+//}
+
 #pragma mark - Date Controls - Circle Date Selection Action Sequence
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
@@ -988,10 +1004,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self disableControlsAndGiveInactiveAppearance];
     
+    [self updateActiveDateLabelWithDate: representedDate];
+    
     // state
     
     self.selectedDateButtonIndex = index;
-    self.activeDate = representedDate;
+    self.workoutLogActiveDay = representedDate;
     
     // the next method is called with a delay so that the stack empties and views are updated (and thus the activity indicator is show)
     // a delay of .2 seconds is given to assure that the presentation of the activity indicator is clear and doesn't come off as glitchy
@@ -1147,7 +1165,14 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 #pragma mark - Date Controls - Circle Date Selection Helper Methods
 
 
-
+- (void)updateActiveDateLabelWithDate:(NSDate *)date{
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"MMMM d, yyyy";
+    
+    self.activeDateLabel.text = [df stringFromDate: date];
+    
+}
 
 
 
@@ -1338,29 +1363,29 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (IBAction)didPressTodayButton:(id)sender{
     
-    NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSDate *today = [NSDate date];
     
     // the date controls are governed by the 'firstDayOfDateControlMonth' property. Get the first day of the current month and assign it to this property. Then call 'configureDateControlsAndSelectActiveDate'
     
     
-    NSDateComponents *dateControlComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-                                                     fromDate: today];
+//    NSDateComponents *dateControlComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
+//                                                     fromDate: today];
+//    
+//    dateControlComps.day = 1;
     
-    dateControlComps.day = 1;
+    self.dateControlActiveDate = today;
     
-    self.firstDayOfDateControlMonth = [calendar dateFromComponents: dateControlComps];
-    
-    [self configureDateControlsAndSelectActiveDate: NO];
+    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: NO];
     
     // make today the active date and load the proper date controls and artificially select today
     
-    self.activeDate = today;
+    self.workoutLogActiveDay = today;
     
-    NSInteger dayAsIndex = [self dayIndexForDate: self.activeDate];
+    NSInteger dayAsIndex = [self dayIndexForDate: self.workoutLogActiveDay];
     
     [self didSelectObjectWithIndex: @(dayAsIndex)
-                   representedDate: self.activeDate];
+                   representedDate: self.workoutLogActiveDay];
     
     // date control animation
     
@@ -1432,7 +1457,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
                 [cell configureWithContentObject: realizedSet
                                         cellType: RealizedSetCollectionCell
-                                    dateTimeType: TJBMaxDetailDate
+                                    dateTimeType: TJBTimeOfDay
                                      titleNumber: number];
                 
                 cell.backgroundColor = [UIColor clearColor];
@@ -1464,7 +1489,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
                 [cell configureWithContentObject: realizedChain
                                         cellType: RealizedChainCell
-                                    dateTimeType: TJBMaxDetailDate
+                                    dateTimeType: TJBTimeOfDay
                                      titleNumber: number];
                 
                 cell.backgroundColor = [UIColor clearColor];
@@ -1483,7 +1508,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                 
                 [cell configureWithContentObject: rsg
                                         cellType: RealizedSetCollectionCell
-                                    dateTimeType: TJBMaxDetailDate
+                                    dateTimeType: TJBTimeOfDay
                                      titleNumber: number];
                 
                 return cell;
@@ -1503,6 +1528,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - <UITableViewDelegate>
 
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
@@ -1545,9 +1576,47 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 
 
+#pragma mark - Table View Cell Selection
+
+- (void)jumpToLastSelection{
+    
+    
+    
+}
+
+- (void)updateStateVariablesAndCellAppearanceBasedOnSelectedPath:(NSIndexPath *)selectedPath{
+    
+    [self giveCellAtIndexPathSelectedAppearance: selectedPath];
+    
+    if (self.currentlySelectedPath){
+        [self giveCellAtIndexPathUnselectedAppearance: self.currentlySelectedPath];
+    }
+    
+    self.lastSelectedPath = self.currentlySelectedPath;
+    self.currentlySelectedPath = selectedPath;
+    
+}
+
+- (void)giveCellAtIndexPathSelectedAppearance:(NSIndexPath *)path{
+    
+    TJBRealizedChainCell *cell = [self.tableView cellForRowAtIndexPath: path];
+    
+    CALayer *cLayer = cell.layer;
+    cLayer.borderWidth = 4;
+    cLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    
+}
 
 
-
+- (void)giveCellAtIndexPathUnselectedAppearance:(NSIndexPath *)path{
+    
+    TJBRealizedChainCell *cell = [self.tableView cellForRowAtIndexPath: path];
+    
+    CALayer *cLayer = cell.layer;
+    cLayer.borderWidth = 0;
+    cLayer.borderColor = [UIColor clearColor].CGColor;
+    
+}
 
 #pragma mark - Animations and Date SV Calcs
 
@@ -1568,7 +1637,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSRange daysInCurrentMonth = [calendar rangeOfUnit: NSCalendarUnitDay
                                                 inUnit: NSCalendarUnitMonth
-                                               forDate: self.firstDayOfDateControlMonth];
+                                               forDate: self.dateControlActiveDate];
     
     return buttonWidth * daysInCurrentMonth.length + (daysInCurrentMonth.length - 1) * buttonSpacing;
     
