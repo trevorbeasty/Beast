@@ -637,7 +637,7 @@ typedef enum{
             break;
             
         case RealizedChainCell:
-            type = @"Routine";
+            type = @"Completed Routine";
             break;
             
         case RealizedSetCollectionCell:

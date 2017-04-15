@@ -106,7 +106,10 @@ typedef enum{
 @property (strong) NSNumber *scrollPositionForUpdate;
 
 @property (strong) NSIndexPath *currentlySelectedPath;
-@property (strong) NSIndexPath *lastSelectedPath;
+//@property (strong) NSIndexPath *lastSelectedPath;
+
+@property (strong) NSDate *lastSelectedWorkoutLogDate;
+@property (strong) NSDate *currentlySelectedWorkoutLogDate;
 
 // core data
 
@@ -143,6 +146,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 
 @implementation TJBWorkoutNavigationHub
+
+#pragma mark - Master Notes
+
+// ACTIVE DATE CONTROL DATE
+
+// 1 - dateControlActiveDate is only set upon instantiation or when one of the arrows is pressed. This is true because these are the only two events that can impact the active date control date
+
+// TABLE VIEW CELL SELECTION
+
+// 1 - currentlySelectedWorkoutLogDate and its counterpart require granularity at the day level. These properties are used to jump between different workout logs, which are specified by a month and a day.  The month informs the date control bar of what content should be displayed, while the day informs the date control bar of which day should be selected
+
+// 2 - the previous table view is destroyed when a new date control object is selected, so it is not necessary to manually deselect the previously selected cell
+
+// STATE VARIABLES
+
+// 1 - currentlySelectedWorkoutLogDate and workoutLogActiveDay may seem redundant, but they are necessary to handle selection transitions. The former is specific to cell selections while the latter is specific to only date control bar selections
 
 #pragma mark - Instantiation
 
@@ -598,6 +617,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self configureToolBarAndBarButtons];
     
+    [self configureToolbarAppearanceAccordingToStateVariables];
+    
     [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
     
     [self configureOptionalHomeButton];
@@ -632,39 +653,17 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)configureTableView{
     
-    //// register the appropriate table view cells with the table view.  Realized chain and realized set get their own cell types because they display slighty different information
-    
-    // for prefetching
-    
-//    UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
-//                                           bundle: nil];
-//    
-//    [self.tableView registerNib: realizedSetNib
-//         forCellReuseIdentifier: @"TJBRealizedSetCell"];
-    
     UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
                                              bundle: nil];
     
     [self.tableView registerNib: realizedChainNib
          forCellReuseIdentifier: @"TJBRealizedChainCell"];
     
-//    UINib *titleCellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-//                                         bundle: nil];
-//    
-//    [self.tableView registerNib: titleCellNib
-//         forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
-    
     UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
                                        bundle: nil];
     
     [self.tableView registerNib: noDataCell
          forCellReuseIdentifier: @"TJBNoDataCell"];
-    
-//    UINib *realizedSetCollectionCell = [UINib nibWithNibName: @"TJBRealizedSetCollectionCell"
-//                                                      bundle: nil];
-//    
-//    [self.tableView registerNib: realizedSetCollectionCell
-//         forCellReuseIdentifier: @"TJBRealizedSetCollectionCell"];
     
 }
 
@@ -906,8 +905,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
                                               fromDate: self.dateControlActiveDate];
     dateComps.month += monthDelta;
-    dateComps.day = 1;
+    dateComps.day = 1; // the day is set to one to ensure that the date is valid (for example, February 30th is not a valid date but February 1st is)
+    
     self.dateControlActiveDate = [calendar dateFromComponents: dateComps];
+    
     
     [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: NO];
     
@@ -1027,16 +1028,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
-//- (NSDate *)firstDayOfActiveMonth{
-//    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-//                                              fromDate: self.workoutLogActiveDay];
-//    [dateComps setDay: 1];
-//    
-//    return [calendar dateFromComponents: dateComps];
-//    
-//}
 
 #pragma mark - Date Controls - Circle Date Selection Action Sequence
 
@@ -1061,6 +1052,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     self.selectedDateButtonIndex = index;
     self.workoutLogActiveDay = representedDate;
     
+    [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: representedDate];
+    [self configureToolbarAppearanceAccordingToStateVariables];
+    
     // the next method is called with a delay so that the stack empties and views are updated (and thus the activity indicator is show)
     // a delay of .2 seconds is given to assure that the presentation of the activity indicator is clear and doesn't come off as glitchy
     
@@ -1073,6 +1067,41 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 }
 
 
+
+- (void)updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate:(NSDate *)representedDate{
+    
+    // cell selection state
+    
+    self.currentlySelectedPath = nil;
+    
+    // date control date
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+    BOOL currentWorkoutLogDayDifferentThanPrevious;
+    
+    if (self.currentlySelectedWorkoutLogDate){
+        
+        currentWorkoutLogDayDifferentThanPrevious = ![calendar isDate: representedDate
+                                                          equalToDate: self.currentlySelectedWorkoutLogDate
+                                                    toUnitGranularity: NSCalendarUnitDay];
+        
+        
+        
+        if (currentWorkoutLogDayDifferentThanPrevious){
+            
+            self.lastSelectedWorkoutLogDate = self.currentlySelectedWorkoutLogDate;
+            self.currentlySelectedWorkoutLogDate = representedDate;
+            
+        }
+        
+    } else{
+        
+        self.currentlySelectedWorkoutLogDate = representedDate;
+        
+    }
+
+    
+}
 
 
 - (void)deriveActiveCellsAndCreateTableView{
@@ -1187,7 +1216,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     sv.contentOffset = newScrollPosition;
     
-    sv.layer.masksToBounds = YES;
+//    sv.layer.masksToBounds = YES;
     sv.scrollEnabled = YES;
     
     newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
@@ -1385,6 +1414,56 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
+- (void)configureToolbarAppearanceAccordingToStateVariables{
+    
+    // toolbar items have dependencies on state variables
+    // some of them make no sense if the corresponding state variable does not exist
+    
+    // jump-to-last button
+    
+    if (self.lastSelectedWorkoutLogDate){
+        
+        [self configureActiveStateForToolbarButton: self.jumpToLastButton];
+        
+    } else{
+        
+        [self configureInactiveStateForToolbarButton: self.jumpToLastButton];
+        
+    }
+    
+    // delete and edit buttons
+    
+    NSArray *deleteEditButtons = @[self.deleteButton, self.editButton];
+    for (UIBarButtonItem *bbi in deleteEditButtons){
+        
+        if (self.currentlySelectedPath){
+            
+            [self configureActiveStateForToolbarButton: bbi];
+            
+        } else{
+            
+            [self configureInactiveStateForToolbarButton: bbi];
+            
+        }
+        
+    }
+    
+}
+
+- (void)configureActiveStateForToolbarButton:(UIBarButtonItem *)bbi{
+    
+    bbi.enabled = YES;
+    bbi.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    
+}
+
+- (void)configureInactiveStateForToolbarButton:(UIBarButtonItem *)bbi{
+    
+    bbi.enabled = NO;
+    bbi.tintColor = [UIColor grayColor];
+    
+}
+
 
 #pragma mark - Core Data Notification
 
@@ -1470,12 +1549,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSDate *today = [NSDate date];
     
     // the date controls are governed by the 'firstDayOfDateControlMonth' property. Get the first day of the current month and assign it to this property. Then call 'configureDateControlsAndSelectActiveDate'
-    
-    
-//    NSDateComponents *dateControlComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay)
-//                                                     fromDate: today];
-//    
-//    dateControlComps.day = 1;
     
     self.dateControlActiveDate = today;
     
@@ -1632,8 +1705,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 #pragma mark - <UITableViewDelegate>
 
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    [self updateStateVariablesAndCellAppearanceBasedOnSelectedPath: indexPath];
     
     
 }
@@ -1691,14 +1765,56 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)updateStateVariablesAndCellAppearanceBasedOnSelectedPath:(NSIndexPath *)selectedPath{
     
-    [self giveCellAtIndexPathSelectedAppearance: selectedPath];
+    // only perform selection actions if the new selection is different than the previous (or there is no previous)
+    // also only select if content exists
+
+    
+    // content
+    
+    BOOL dailyListContainsContent = self.dailyList.count > 0;
+    
+    // selected index
+    
+    BOOL newSelectionIndexRowDifferentThanPrevious;
     
     if (self.currentlySelectedPath){
-        [self giveCellAtIndexPathUnselectedAppearance: self.currentlySelectedPath];
+        
+        newSelectionIndexRowDifferentThanPrevious = selectedPath.row != self.currentlySelectedPath.row;
+        
+    } else{
+        
+        newSelectionIndexRowDifferentThanPrevious = YES;
+        
     }
     
-    self.lastSelectedPath = self.currentlySelectedPath;
-    self.currentlySelectedPath = selectedPath;
+
+    // actionable selection logic
+    
+    if (dailyListContainsContent &&  newSelectionIndexRowDifferentThanPrevious){
+        
+        NSLog(@"%@", selectedPath);
+        
+        // cell selection appearance
+        
+        if (self.currentlySelectedPath){
+            [self giveCellAtIndexPathUnselectedAppearance: self.currentlySelectedPath];
+        }
+        
+        [self giveCellAtIndexPathSelectedAppearance: selectedPath];
+        
+        // state variables
+        
+        self.currentlySelectedPath = selectedPath;
+    
+        // toolbar appearance
+        
+        [self configureToolbarAppearanceAccordingToStateVariables];
+        
+        
+        
+    }
+    
+
     
 }
 
