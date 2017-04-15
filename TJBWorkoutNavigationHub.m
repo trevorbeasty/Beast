@@ -632,7 +632,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 //    [self artificiallySelectDate: [NSDate date]];
     
-    [self showWorkoutLogForDate: [NSDate date]];
+    [self showWorkoutLogForDate: [NSDate date]
+          animateDateControlBar: YES
+                      withDelay: .1];
     
     return;
     
@@ -714,7 +716,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSArray *titleLabels = @[self.myWorkoutLogLabel, self.activeDateLabel];
     for (UILabel *lab in titleLabels){
         
-//        lab.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         lab.backgroundColor = [UIColor grayColor];
         lab.font = [UIFont boldSystemFontOfSize: 15];
         lab.textColor = [UIColor whiteColor];
@@ -755,14 +756,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - Meta Workout Log Methods
 
-- (void)showWorkoutLogForDate:(NSDate *)date{
+- (void)showWorkoutLogForDate:(NSDate *)date animateDateControlBar:(BOOL)shouldAnimate withDelay:(NSTimeInterval)delay{
     
     self.dateControlActiveDate = date;
     self.workoutLogActiveDay = date;
     
     [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
+    [self artificiallySelectDate: date];
     
-    [self artificiallySelectDate: [NSDate date]];
+    if (shouldAnimate){
+        
+        [self configureInitialDateControlAnimationPosition];
+        [self performSelector: @selector(executeDateControlAnimation)
+                   withObject: self
+                   afterDelay: delay];
+        
+    }
     
 }
 
@@ -987,6 +996,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 
 - (void)executeDateControlAnimation{
+    
+//    [self.view layoutSubviews];
     
     // second position
     
@@ -1494,33 +1505,19 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (IBAction)didPressJumpToLast:(id)sender{
     
-    
-    
+    [self showWorkoutLogForDate: self.lastSelectedWorkoutLogDate
+          animateDateControlBar: NO
+                      withDelay: 0];
     
 }
 
 - (IBAction)didPressToday:(id)sender{
+
+    [self showWorkoutLogForDate: [NSDate date]
+          animateDateControlBar: YES
+                      withDelay: .1];
     
-    NSDate *today = [NSDate date];
-    
-    self.dateControlActiveDate = today;
-    
-    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: NO];
-    
-    // make today the active date and load the proper date controls and artificially select today
-    
-    self.workoutLogActiveDay = today;
-    
-    NSInteger dayAsIndex = [self dayIndexForDate: self.workoutLogActiveDay];
-    
-    [self didSelectObjectWithIndex: @(dayAsIndex)
-                   representedDate: self.workoutLogActiveDay];
-    
-    // date control animation
-    
-    [self configureInitialDateControlAnimationPosition];
-    [self executeDateControlAnimation];
-    
+
     
 }
 
@@ -1620,11 +1617,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
-- (IBAction)didPressTodayButton:(id)sender{
-    
-
-    
-}
 
 
 
