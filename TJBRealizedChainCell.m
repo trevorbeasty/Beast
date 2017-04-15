@@ -178,8 +178,8 @@ typedef enum{
             TJBRealizedSetGrouping rsg = self.contentObject;
             
             for (int i = 0; i < rsg.count; i++){
-             
-               currentTopView = [self addContentRowCorrespondingToExerciseIndex: 0
+
+                currentTopView = [self addContentRowCorrespondingToExerciseIndex: 0
                                                                      roundIndex: i
                                                                  currentTopView: currentTopView
                                                                   maxRoundIndex: (int)rsg.count - 1];
@@ -757,8 +757,11 @@ typedef enum{
         
         if ([self.contentObject isKindOfClass: [NSArray class]]){
             
+            // items in the content array are in time-descending order so must reverse index access
+            
             TJBRealizedSetGrouping rsg = self.contentObject;
-            TJBRealizedSet *rs = rsg[roundIndex];
+            int reversedIndex = (int)(rsg.count - 1) - roundIndex;
+            TJBRealizedSet *rs = rsg[reversedIndex];
 
             number = [self numberForRealizedSet: rs
                                dynamicLabelType: dynamicLabelType];
