@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 // core data
 
@@ -20,10 +21,23 @@
 
 + (BOOL)previousExerciseAndRoundIndicesForCurrentExerciseIndex:(int)currentExerciseIndex currentRoundIndex:(int)currentRoundIndex numberOfExercises:(int)numberOfExercises numberOfRounds:(int)numberOfRounds roundIndexReference:(NSNumber **)roundIndexReference exerciseIndexReference:(NSNumber **)exerciseIndexReference;
 
-//+ (NSOrderedSet <TJBEndDateComp *> *)previousExerciseSetEndDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex;
-//
-//+ (NSOrderedSet <TJBBeginDateComp *> *)nextExerciseSetBeginDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex;
 
 + (BOOL)indiceWithExerciseIndex:(int)currentExerciseIndex roundIndex:(int)currentRoundIndex isPriorToReferenceExerciseIndex:(int)referenceExerciseIndex referenceRoundIndex:(int)referenceRoundIndex;
+
+#pragma mark - Detailed Drawing
+
++ (void)addVerticalBorderToRight:(UILabel *)label thickness:(CGFloat)thickness metaView:(UIView *)metaView;
+
++ (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness metaView:(UIView *)metaView;
+
++ (void)drawHookLineUnderLabel1:(UILabel *)label1 label2:(UILabel *)label2 verticalOffset:(CGFloat)vertOff thickness:(CGFloat)thickness hookLength:(CGFloat)hookLength metaView:(UIView *)metaView;
+
++ (void)drawVerticalDividerToRightOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff metaView:(UIView *)metaView;
+
++ (void)drawVerticalDividerToLeftOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff metaView:(UIView *)metaView;
+
+
+
+
 
 @end

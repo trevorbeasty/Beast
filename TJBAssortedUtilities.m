@@ -8,6 +8,7 @@
 
 #import "TJBAssortedUtilities.h"
 
+
 // core data
 
 #import "CoreDataController.h"
@@ -120,51 +121,188 @@
     
 }
 
-//+ (NSOrderedSet<TJBEndDateComp *> *)previousExerciseSetEndDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex{
-//    
-//    //// return a set of previous set end date components based on the passed-in realized chain and exercise index
-//    
-//    int numberOfExercises = realizedChain.numberOfExercises;
-//    
-//    BOOL atFirstExercise = currentExerciseIndex == 0;
-//    
-//    int previousExerciseIndex;
-//    
-//    if (atFirstExercise){
-//        
-//        previousExerciseIndex = numberOfExercises - 1;
-//        
-//    } else{
-//        
-//        previousExerciseIndex = currentExerciseIndex - 1;
-//        
-//    }
-//    
-//    return realizedChain.setEndDateArrays[previousExerciseIndex].dates;
-//    
-//}
-//
-//+ (NSOrderedSet<TJBBeginDateComp *> *)nextExerciseSetBeginDatesForRealizedChain:(TJBRealizedChain *)realizedChain currentExerciseIndex:(int)currentExerciseIndex{
-//    
-//    int numberOfExercises = realizedChain.numberOfExercises;
-//    
-//    BOOL atLastExercise = currentExerciseIndex == numberOfExercises - 1;
-//    
-//    int nextExerciseIndex;
-//    
-//    if (atLastExercise){
-//        
-//        nextExerciseIndex = 0;
-//        
-//    } else{
-//        
-//        nextExerciseIndex = currentExerciseIndex + 1;
-//        
-//    }
-//    
-//    return realizedChain.setBeginDateArrays[nextExerciseIndex].dates;
-//    
-//}
+
+
+#pragma mark - Detailed Drawing
+
++ (void)addVerticalBorderToRight:(UILabel *)label thickness:(CGFloat)thickness metaView:(UIView *)metaView{
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint startPoint = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
+    CGPoint endPoint = CGPointMake(startPoint.x, startPoint.y + labelSize.height);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [metaView.layer addSublayer: sl];
+    
+}
+
++ (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness metaView:(UIView *)metaView{
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint startPoint = CGPointMake(labelOrigin.x, labelOrigin.y + labelSize.height);
+    CGPoint endPoint = CGPointMake(startPoint.x + labelSize.width,  startPoint.y);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [metaView.layer addSublayer: sl];
+    
+}
+
++ (void)drawHookLineUnderLabel1:(UILabel *)label1 label2:(UILabel *)label2 verticalOffset:(CGFloat)vertOff thickness:(CGFloat)thickness hookLength:(CGFloat)hookLength metaView:(UIView *)metaView{
+    
+    // vertical offset describes the distance under the label's bottom edge that the hook line is drawn
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint startPoint = CGPointMake(label1.frame.origin.x, label2.frame.origin.y + label2.frame.size.height + vertOff);
+    CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width, startPoint.y);
+    CGPoint endPoint = CGPointMake(interimPoint.x + hookLength,  interimPoint.y - hookLength);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: interimPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [metaView.layer addSublayer: sl];
+    
+}
+
++ (void)drawVerticalDividerToRightOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff metaView:(UIView *)metaView{
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
+    CGPoint bottomRightCorner = CGPointMake(topRightCorner.x, topRightCorner.y + labelSize.height);
+    
+    CGPoint startPoint = CGPointMake(topRightCorner.x + horOff, topRightCorner.y + vertOff);
+    CGPoint endPoint = CGPointMake(bottomRightCorner.x + horOff,  bottomRightCorner.y - vertOff);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [metaView.layer addSublayer: sl];
+    
+}
+
++ (void)drawVerticalDividerToLeftOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff metaView:(UIView *)metaView{
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint topLeftCorner = labelOrigin;
+    CGPoint bottomLeftCorner = CGPointMake(topLeftCorner.x, topLeftCorner.y + labelSize.height);
+    
+    CGPoint startPoint = CGPointMake(topLeftCorner.x - horOff, topLeftCorner.y + vertOff);
+    CGPoint endPoint = CGPointMake(bottomLeftCorner.x - horOff,  bottomLeftCorner.y - vertOff);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [metaView.layer addSublayer: sl];
+    
+}
+
+
 
 @end
 
