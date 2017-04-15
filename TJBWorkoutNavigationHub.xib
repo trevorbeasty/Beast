@@ -51,13 +51,29 @@
                             </constraints>
                             <items>
                                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="0Cs-5d-bLg"/>
-                                <barButtonItem image="jumpToLastBlue32" id="bmd-QN-P6s"/>
+                                <barButtonItem image="jumpToLastBlue32" id="bmd-QN-P6s">
+                                    <connections>
+                                        <action selector="didPressJumpToLast:" destination="-1" id="Zou-t9-Yzb"/>
+                                    </connections>
+                                </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="mBi-to-Xgx"/>
-                                <barButtonItem image="todayBlue32" id="N5s-kc-Pde"/>
+                                <barButtonItem image="todayBlue32" id="N5s-kc-Pde">
+                                    <connections>
+                                        <action selector="didPressToday:" destination="-1" id="jIP-7y-euv"/>
+                                    </connections>
+                                </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="64S-wJ-eiD"/>
-                                <barButtonItem image="garbageBlue32" id="vuc-EV-hRy"/>
+                                <barButtonItem image="garbageBlue32" id="vuc-EV-hRy">
+                                    <connections>
+                                        <action selector="didPressDelete:" destination="-1" id="Kpr-oT-2gY"/>
+                                    </connections>
+                                </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="Nq8-sx-R2l"/>
-                                <barButtonItem image="editBlue32" id="4EO-Jf-1Lb"/>
+                                <barButtonItem image="editBlue32" id="4EO-Jf-1Lb">
+                                    <connections>
+                                        <action selector="didPressEdit:" destination="-1" id="ebO-a9-qLa"/>
+                                    </connections>
+                                </barButtonItem>
                                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="NSr-PC-48J"/>
                             </items>
                         </toolbar>

@@ -89,7 +89,15 @@ typedef enum{
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressHomeButton:(id)sender;
 
+// toolbar actions
+
 - (IBAction)didPressToolbarControlArrow:(id)sender;
+
+- (IBAction)didPressJumpToLast:(id)sender;
+- (IBAction)didPressToday:(id)sender;
+- (IBAction)didPressDelete:(id)sender;
+- (IBAction)didPressEdit:(id)sender;
+
 
 
 // circle dates
@@ -106,7 +114,6 @@ typedef enum{
 @property (strong) NSNumber *scrollPositionForUpdate;
 
 @property (strong) NSIndexPath *currentlySelectedPath;
-//@property (strong) NSIndexPath *lastSelectedPath;
 
 @property (strong) NSDate *lastSelectedWorkoutLogDate;
 @property (strong) NSDate *currentlySelectedWorkoutLogDate;
@@ -176,10 +183,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     // state
     
-    NSDate *today = [NSDate date];
-    self.workoutLogActiveDay = today;
-    self.dateControlActiveDate = today;
-    
+//    NSDate *today = [NSDate date];
+//    self.workoutLogActiveDay = today;
+//    self.dateControlActiveDate = today;
+//    
     _toolbarState = TJBToolbarNotHidden;
     
     [self configureNotifications];
@@ -617,17 +624,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self configureToolBarAndBarButtons];
     
-    [self configureToolbarAppearanceAccordingToStateVariables];
+//    [self configureToolbarAppearanceAccordingToStateVariables];
     
-    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
+//    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
     
     [self configureOptionalHomeButton];
     
-    [self artificiallySelectDate: [NSDate date]];
+//    [self artificiallySelectDate: [NSDate date]];
+    
+    [self showWorkoutLogForDate: [NSDate date]];
     
     return;
     
 }
+
+
+
 
 #pragma mark - View Helper Methods
 
@@ -738,6 +750,19 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     [self.view layoutSubviews];
     
     return self.shadowContainer.frame.size.height - self.toolbar.frame.origin.y ;
+    
+}
+
+#pragma mark - Meta Workout Log Methods
+
+- (void)showWorkoutLogForDate:(NSDate *)date{
+    
+    self.dateControlActiveDate = date;
+    self.workoutLogActiveDay = date;
+    
+    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
+    
+    [self artificiallySelectDate: [NSDate date]];
     
 }
 
@@ -1465,6 +1490,57 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 }
 
 
+#pragma mark - Toolbar Button Actions
+
+- (IBAction)didPressJumpToLast:(id)sender{
+    
+    
+    
+    
+}
+
+- (IBAction)didPressToday:(id)sender{
+    
+    NSDate *today = [NSDate date];
+    
+    self.dateControlActiveDate = today;
+    
+    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: NO];
+    
+    // make today the active date and load the proper date controls and artificially select today
+    
+    self.workoutLogActiveDay = today;
+    
+    NSInteger dayAsIndex = [self dayIndexForDate: self.workoutLogActiveDay];
+    
+    [self didSelectObjectWithIndex: @(dayAsIndex)
+                   representedDate: self.workoutLogActiveDay];
+    
+    // date control animation
+    
+    [self configureInitialDateControlAnimationPosition];
+    [self executeDateControlAnimation];
+    
+    
+}
+
+- (IBAction)didPressDelete:(id)sender{
+    
+    
+    
+    
+}
+
+- (IBAction)didPressEdit:(id)sender{
+    
+    
+    
+    
+    
+}
+
+
+
 #pragma mark - Core Data Notification
 
 - (void)configureNotifications{
@@ -1537,6 +1613,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
+
 - (IBAction)didPressToolbarControlArrow:(id)sender {
     
     [self toggleToolBarPositionAndUpdateRelevantControls];
@@ -1545,28 +1622,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (IBAction)didPressTodayButton:(id)sender{
     
-//    NSCalendar * calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDate *today = [NSDate date];
-    
-    // the date controls are governed by the 'firstDayOfDateControlMonth' property. Get the first day of the current month and assign it to this property. Then call 'configureDateControlsAndSelectActiveDate'
-    
-    self.dateControlActiveDate = today;
-    
-    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: NO];
-    
-    // make today the active date and load the proper date controls and artificially select today
-    
-    self.workoutLogActiveDay = today;
-    
-    NSInteger dayAsIndex = [self dayIndexForDate: self.workoutLogActiveDay];
-    
-    [self didSelectObjectWithIndex: @(dayAsIndex)
-                   representedDate: self.workoutLogActiveDay];
-    
-    // date control animation
-    
-    [self configureInitialDateControlAnimationPosition];
-    [self executeDateControlAnimation];
+
     
 }
 
