@@ -71,6 +71,7 @@ static CGFloat const trailingSpace = 8;
 static CGFloat const interimVertRowSpacing = 0;
 static CGFloat const interimHorzRowSpacing = 0;
 static CGFloat const exerciseLeadingSpace = 8;
+static CGFloat const exerciseLabelsInterimSpacing = 8;
 
 
 typedef enum{
@@ -212,11 +213,21 @@ typedef enum{
                                forKey: exerciseUniqueID];
     [self.contentView addSubview: exerciseLabel];
     
+    UILabel *exerciseNameLabel = [[UILabel alloc] init];
+    NSString *exerciseNameUniqueID = [NSString stringWithFormat: @"exerciseName%d", exerciseIndex];
+    [self.constraintMapping setObject: exerciseNameLabel
+                               forKey: exerciseNameUniqueID];
+    [self.contentView addSubview: exerciseNameLabel];
+    
     exerciseLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    NSString *exerciseVertVFL = [NSString stringWithFormat: @"V:[%@]-%f-[%@]",
+    exerciseNameLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSString *exerciseVertVFL = [NSString stringWithFormat: @"V:[%@]-%f-[%@]-%f-[%@]",
                                  topViewKey,
                                  bottomSpacing,
-                                 exerciseUniqueID];
+                                 exerciseUniqueID,
+                                 exerciseLabelsInterimSpacing,
+                                 exerciseNameUniqueID];
     
     [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: exerciseVertVFL
                                                                               options: 0
@@ -231,13 +242,25 @@ typedef enum{
                                                                               metrics: nil
                                                                                 views: self.constraintMapping]];
     
+    NSString *exerciseNameHorzVFL = [NSString stringWithFormat: @"H:|-%f-[%@]-%f-|",
+                                     leadingSpace,
+                                     exerciseNameUniqueID,
+                                     trailingSpace];
+    
+    [self.contentView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: exerciseNameHorzVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: self.constraintMapping]];
+    
     TJBExercise *exercise = [self exerciseForExerciseIndex: exerciseIndex];
     NSString *exerciseLabelText = [self exerciseTitleTextForExerciseIndex: exerciseIndex];
     exerciseLabel.text = exerciseLabelText;
+    exerciseNameLabel.text = exercise.name;
     
     [self configureExerciseLabel: exerciseLabel];
+    [self configureExerciseNameLabel: exerciseNameLabel];
     
-    return exerciseLabel;
+    return exerciseNameLabel;
     
 }
 
@@ -595,9 +618,6 @@ typedef enum{
                         thickness: 1
                        hookLength: 16];
     
-//    [self addHorizontalBorderBeneath: self.firstExerciseLabel
-//                           thickness: .5];
-    
 }
 
 - (void)configureExerciseLabel:(UILabel *)label{
@@ -613,6 +633,10 @@ typedef enum{
     label.font = [UIFont boldSystemFontOfSize: 15];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor blackColor];
+    
+    label.textAlignment = NSTextAlignmentCenter;
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
     
 }
 
@@ -1197,7 +1221,7 @@ typedef enum{
     
     // I assume labels with intrinsic content sizes determining heights are 25 tall
     
-    CGFloat estimatedHeaderAreaHeight = 142;
+    CGFloat estimatedHeaderAreaHeight = 189;
     CGFloat breatherRoom = 32;
     
     return  estimatedHeaderAreaHeight + breatherRoom;

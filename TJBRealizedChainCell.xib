@@ -102,7 +102,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Llc-cI-Uv6">
-                        <rect key="frame" x="36" y="147.5" width="313" height="21"/>
+                        <rect key="frame" x="36" y="151.5" width="313" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -121,7 +121,7 @@
                     <constraint firstItem="ejX-E4-HQ4" firstAttribute="bottom" secondItem="cS4-Cl-YWi" secondAttribute="bottom" id="QmB-GF-ZgW"/>
                     <constraint firstItem="PGb-Ld-Leu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="T8X-zy-TGF"/>
                     <constraint firstItem="ejX-E4-HQ4" firstAttribute="top" secondItem="fGo-eL-4v7" secondAttribute="bottom" id="bhe-Hq-px4"/>
-                    <constraint firstItem="Llc-cI-Uv6" firstAttribute="top" secondItem="D5E-IV-cI2" secondAttribute="bottom" constant="4" id="cEj-ld-r27"/>
+                    <constraint firstItem="Llc-cI-Uv6" firstAttribute="top" secondItem="D5E-IV-cI2" secondAttribute="bottom" constant="8" id="cEj-ld-r27"/>
                     <constraint firstItem="D5E-IV-cI2" firstAttribute="top" secondItem="iBX-iq-zGD" secondAttribute="bottom" constant="8" id="dOn-NK-KrQ"/>
                     <constraint firstAttribute="trailingMargin" secondItem="ejX-E4-HQ4" secondAttribute="trailing" constant="32" id="e2v-Ik-K6V"/>
                     <constraint firstItem="ejX-E4-HQ4" firstAttribute="leading" secondItem="fGo-eL-4v7" secondAttribute="leading" id="nQ7-0c-PnM"/>
