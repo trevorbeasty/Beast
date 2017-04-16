@@ -31,7 +31,7 @@
 // table view cell
 
 #import "TJBRealizedChainCell.h"
-#import "TJBWorkoutLogTitleCell.h"
+//#import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
 
 // date control
@@ -52,17 +52,17 @@
 // IBOutlet
 
 @property (strong) UIActivityIndicatorView *activeActivityIndicator;
-@property (weak, nonatomic) IBOutlet UIButton *launchButton;
-@property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
+//@property (weak, nonatomic) IBOutlet UIButton *launchButton;
+//@property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
 @property (weak, nonatomic) IBOutlet UILabel *yearLabel;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
-@property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
+//@property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
-@property (weak, nonatomic) IBOutlet UIButton *buttonNewRoutine;
+//@property (weak, nonatomic) IBOutlet UIButton *buttonNewRoutine;
 
 @property (weak, nonatomic) IBOutlet UILabel *routinesByLabel;
 @property (weak, nonatomic) IBOutlet UILabel *monthYearTitleLabel;
@@ -165,6 +165,8 @@
     
     [self deriveSupportArraysAndConfigureInitialDisplay];
     
+    return;
+    
 }
 
 - (void)deriveSupportArraysAndConfigureInitialDisplay{
@@ -209,24 +211,24 @@
     
     // buttons
     
-    NSArray *buttons = @[self.launchButton,
-                         self.previousMarkButton,
-                         self.buttonNewRoutine];
-    
-    for (UIButton *button in buttons){
-        
-        [button setBackgroundColor: [[TJBAestheticsController singleton] paleLightBlueColor]];
-        [button setTitleColor: [UIColor darkGrayColor]
-                     forState: UIControlStateNormal];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-        
-        CALayer *buttLayer = button.layer;
-        buttLayer.masksToBounds = YES;
-        buttLayer.cornerRadius = 20.0;
-        buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
-        buttLayer.borderWidth = 2.0;
-        
-    }
+//    NSArray *buttons = @[self.launchButton,
+//                         self.previousMarkButton,
+//                         self.buttonNewRoutine];
+//    
+//    for (UIButton *button in buttons){
+//        
+//        [button setBackgroundColor: [[TJBAestheticsController singleton] paleLightBlueColor]];
+//        [button setTitleColor: [UIColor darkGrayColor]
+//                     forState: UIControlStateNormal];
+//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
+//        
+//        CALayer *buttLayer = button.layer;
+//        buttLayer.masksToBounds = YES;
+//        buttLayer.cornerRadius = 20.0;
+//        buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
+//        buttLayer.borderWidth = 2.0;
+//        
+//    }
     
     // container view shadow
     
@@ -278,7 +280,7 @@
     
     // bottom controls container
     
-    self.bottomControlsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//    self.bottomControlsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // title labels
     
@@ -808,35 +810,35 @@
 
 - (void)toggleButtonsToOnStateWithViewHistoryEnabled:(BOOL)viewHistoryEnabled{
     
-    NSArray *buttons = @[self.launchButton];
-    
-    for (UIButton *b in buttons){
-        
-        b.enabled = YES;
-        b.layer.opacity = 1.0;
-        
-    }
-    
-    if (viewHistoryEnabled){
-        
-        self.previousMarkButton.enabled = YES;
-        self.previousMarkButton.layer.opacity = 1.0;
-        
-    }
+//    NSArray *buttons = @[self.launchButton];
+//    
+//    for (UIButton *b in buttons){
+//        
+//        b.enabled = YES;
+//        b.layer.opacity = 1.0;
+//        
+//    }
+//    
+//    if (viewHistoryEnabled){
+//        
+//        self.previousMarkButton.enabled = YES;
+//        self.previousMarkButton.layer.opacity = 1.0;
+//        
+//    }
     
 }
 
 - (void)toggleButtonsToOffState{
     
-    NSArray *buttons = @[self.launchButton,
-                         self.previousMarkButton];
-    
-    for (UIButton *b in buttons){
-        
-        b.enabled = NO;
-        b.layer.opacity = .4;
-        
-    }
+//    NSArray *buttons = @[self.launchButton,
+//                         self.previousMarkButton];
+//    
+//    for (UIButton *b in buttons){
+//        
+//        b.enabled = NO;
+//        b.layer.opacity = .4;
+//        
+//    }
     
 }
 
@@ -857,11 +859,11 @@
     
     if (rowCount == 0){
         
-        return 2;
+        return 1;
         
     } else{
         
-        return rowCount + 1;
+        return rowCount;
         
     }
     
@@ -869,39 +871,39 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (indexPath.row == 0){
-        
-        TJBWorkoutLogTitleCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
-        
-        NSString *primaryText;
-        if (_sortByDateCreated == NO){
-            primaryText = @"Routines by Last Completion";
-        } else{
-            primaryText = @"Routines by Date Created";
-        }
-        
-        NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-        NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
-                                                  fromDate: self.tvActiveDate];
-        [dateComps setMonth: [self.selectedDateObjectIndex intValue] + 1];
-        NSDate *titleDate = [calendar dateFromComponents: dateComps];
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        df.dateFormat = @"MMMM, yyyy";
-        NSString *secondaryText = [df stringFromDate: titleDate];
-        
-        cell.primaryLabel.text = primaryText;
-        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
-        
-        cell.secondaryLabel.text = secondaryText;
-        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
-        
-        cell.backgroundColor = [UIColor clearColor];
-        
-        return cell;
-        
-        
-    } else{
-        
+//    if (indexPath.row == 0){
+//        
+//        TJBWorkoutLogTitleCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
+//        
+//        NSString *primaryText;
+//        if (_sortByDateCreated == NO){
+//            primaryText = @"Routines by Last Completion";
+//        } else{
+//            primaryText = @"Routines by Date Created";
+//        }
+//        
+//        NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//        NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
+//                                                  fromDate: self.tvActiveDate];
+//        [dateComps setMonth: [self.selectedDateObjectIndex intValue] + 1];
+//        NSDate *titleDate = [calendar dateFromComponents: dateComps];
+//        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//        df.dateFormat = @"MMMM, yyyy";
+//        NSString *secondaryText = [df stringFromDate: titleDate];
+//        
+//        cell.primaryLabel.text = primaryText;
+//        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
+//        
+//        cell.secondaryLabel.text = secondaryText;
+//        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
+//        
+//        cell.backgroundColor = [UIColor clearColor];
+//        
+//        return cell;
+//        
+//        
+//    } else{
+    
         NSInteger chainCount = self.tvSortedContent.count;
         
         if (chainCount == 0){
@@ -931,7 +933,7 @@
             
             [cell clearExistingEntries];
             
-            NSInteger adjustedRowIndex = indexPath.row - 1;
+            NSInteger adjustedRowIndex = indexPath.row ;
             
             TJBChainTemplate *chainTemplate = self.tvSortedContent[adjustedRowIndex];
     
@@ -953,7 +955,7 @@
             [cell configureWithContentObject: chainTemplate
                                     cellType: ChainTemplateAdvCell
                                 dateTimeType: TJBDayInYear
-                                 titleNumber: @(indexPath.row)];
+                                 titleNumber: @(indexPath.row + 1)];
             
             // configure border width and background color according to whether or not the cell is selected
             
@@ -973,7 +975,7 @@
             
         }
         
-    }
+//    }
     
 }
 
@@ -981,17 +983,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSInteger chainCount = self.tvSortedContent.count;
-    
-    if (indexPath.row == 0 || chainCount == 0){
-        
-        return NO;
-        
-    } else{
-        
-        return YES;
-        
-    }
+    return YES;
     
 }
 
@@ -1010,7 +1002,7 @@
     
     // highlight the new cell
     
-    TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row - 1];
+    TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row];
     
     BOOL realizationsExist = chainTemplate.realizedChains.count > 0;
     
@@ -1030,31 +1022,31 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 80.0;
+//    CGFloat titleHeight = 80.0;
+//    
+//    if (indexPath.row == 0){
+//        
+//        return titleHeight;
+//        
+//    } else{
     
-    if (indexPath.row == 0){
-        
-        return titleHeight;
-        
-    } else{
-        
         NSInteger chainCount = self.tvSortedContent.count;
         
         if (chainCount == 0){
             
             [self.view layoutIfNeeded];
             
-            return self.activeTableView.frame.size.height - titleHeight;
+            return self.activeTableView.frame.size.height;
             
         } else{
             
-            TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row -1];
+            TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row];
             
             return [TJBRealizedChainCell suggestedCellHeightForChainTemplate: chainTemplate];
             
         }
         
-    }
+//    }
     
 }
 
@@ -1132,8 +1124,8 @@
     
     _viewingChainHistory = NO;
     
-    [self.previousMarkButton setTitle: @"History"
-                             forState: UIControlStateNormal];
+//    [self.previousMarkButton setTitle: @"History"
+//                             forState: UIControlStateNormal];
     
 }
 
@@ -1182,8 +1174,8 @@
     
     // update button title
     
-    [self.previousMarkButton setTitle: @"Routines"
-                             forState: UIControlStateNormal];
+//    [self.previousMarkButton setTitle: @"Routines"
+//                             forState: UIControlStateNormal];
     
     // get rid of the activity indicator and old table view content. The content will be reloaded if it is later required
     
@@ -1547,6 +1539,8 @@
     
     [self giveControlsEnabledConfiguration];
     
+    return;
+    
 }
 
 - (void)addEmbeddedTableViewToViewHierarchy{
@@ -1592,6 +1586,8 @@
     // activity indicator
     
     [self removeActivityIndicatorIfExists];
+    
+    return;
 
 }
 
@@ -1616,11 +1612,11 @@
     
     if (self.tvSortedContent.count == 0){
         
-        iterationLimit = 2;
+        iterationLimit = 1;
         
     } else{
         
-        iterationLimit = self.tvSortedContent.count + 1;
+        iterationLimit = self.tvSortedContent.count;
         
     }
     
