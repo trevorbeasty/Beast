@@ -1256,6 +1256,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 - (void)prepareNewContentCellsAndRemoveActivityIndicator{
     
     [self deriveDailyList];
+    [self updateNumberOfEntriesLabel: @(self.dailyList.count)];
     
     // call the table view cellForIndexPath method for all daily list cells and store the results
     
@@ -1287,9 +1288,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
-- (void)updateNumberOfEntriesLabel{
+- (void)updateNumberOfEntriesLabel:(NSNumber *)number{
     
+    BOOL hasOneEntry = [number intValue] == 1;
+    NSString *entriesWord = hasOneEntry ? @"Entry" : @"Entries";
     
+    NSString *text = [NSString stringWithFormat: @"%@ %@",
+                      [number stringValue],
+                      entriesWord];
+    
+    self.numberOfEntriesLabel.text = text;
     
 }
 
@@ -1978,8 +1986,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     // actionable selection logic
     
     if (dailyListContainsContent &&  newSelectionIndexRowDifferentThanPrevious){
-        
-        NSLog(@"%@", selectedPath);
         
         // cell selection appearance
         
