@@ -70,6 +70,7 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UIButton *homeButton;
 @property (weak, nonatomic) IBOutlet UIView *shadowContainer;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfEntriesLabel;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *jumpToLastButton;
@@ -698,7 +699,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     // workout log and active date label
     
-    NSArray *titleLabels = @[self.myWorkoutLogLabel, self.activeDateLabel];
+    NSArray *titleLabels = @[self.myWorkoutLogLabel, self.activeDateLabel, self.numberOfEntriesLabel];
     for (UILabel *lab in titleLabels){
         
         lab.backgroundColor = [UIColor grayColor];
@@ -1280,9 +1281,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 - (void)updateActiveDateLabelWithDate:(NSDate *)date{
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MMMM d, yyyy";
+    df.dateFormat = @"MMM d, yyyy";
     
     self.activeDateLabel.text = [df stringFromDate: date];
+    
+}
+
+- (void)updateNumberOfEntriesLabel{
+    
+    
     
 }
 

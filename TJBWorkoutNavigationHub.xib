@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -20,6 +20,7 @@
                 <outlet property="leftArrowButton" destination="Xyd-rd-xY1" id="Mcv-NY-SCb"/>
                 <outlet property="monthTitle" destination="wRK-QI-22E" id="dqm-bf-fxx"/>
                 <outlet property="myWorkoutLogLabel" destination="hCI-UQ-IGw" id="YiO-oA-vie"/>
+                <outlet property="numberOfEntriesLabel" destination="FMO-lj-C2v" id="juT-7x-YfD"/>
                 <outlet property="rightArrowButton" destination="t4e-f8-R8O" id="dCP-e8-tVz"/>
                 <outlet property="shadowContainer" destination="NrZ-JA-Y3W" id="Uz9-Bv-gj3"/>
                 <outlet property="titleBarContainer" destination="H9i-29-7aZ" id="vyu-Zf-5BC"/>
@@ -156,8 +157,8 @@
                         <constraint firstItem="NKH-wt-CCf" firstAttribute="top" secondItem="H9i-29-7aZ" secondAttribute="top" id="zrf-wF-xpT"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Workout Log" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCI-UQ-IGw">
-                    <rect key="frame" x="0.0" y="127" width="187" height="30"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Workout Log" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hCI-UQ-IGw">
+                    <rect key="frame" x="0.0" y="127" width="124.5" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="tOk-s3-2up"/>
                     </constraints>
@@ -166,7 +167,13 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="active date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="52i-Hi-rt1">
-                    <rect key="frame" x="188" y="127" width="187" height="30"/>
+                    <rect key="frame" x="125.5" y="127" width="124.5" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Entries" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FMO-lj-C2v">
+                    <rect key="frame" x="250.5" y="127" width="124.5" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -177,6 +184,8 @@
                 <constraint firstItem="52i-Hi-rt1" firstAttribute="top" secondItem="hCI-UQ-IGw" secondAttribute="top" id="3aV-8X-Tpr"/>
                 <constraint firstItem="H9i-29-7aZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="64n-2A-mkX"/>
                 <constraint firstItem="52i-Hi-rt1" firstAttribute="leading" secondItem="hCI-UQ-IGw" secondAttribute="trailing" constant="0.5" id="6bZ-cV-OJM"/>
+                <constraint firstAttribute="trailing" secondItem="FMO-lj-C2v" secondAttribute="trailing" id="7AZ-Qw-1ck"/>
+                <constraint firstItem="FMO-lj-C2v" firstAttribute="leading" secondItem="52i-Hi-rt1" secondAttribute="trailing" constant="0.5" id="9Xw-y2-hMO"/>
                 <constraint firstItem="hCI-UQ-IGw" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="AXu-3N-ery"/>
                 <constraint firstItem="52i-Hi-rt1" firstAttribute="width" secondItem="hCI-UQ-IGw" secondAttribute="width" id="E0z-gA-7FN"/>
                 <constraint firstItem="H9i-29-7aZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="E5k-1R-6TX"/>
@@ -188,9 +197,11 @@
                 <constraint firstItem="kfu-Yd-6by" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Rr7-k3-gaF"/>
                 <constraint firstItem="kfu-Yd-6by" firstAttribute="top" secondItem="H9i-29-7aZ" secondAttribute="bottom" constant="1" id="TuM-Tu-nfk"/>
                 <constraint firstItem="NrZ-JA-Y3W" firstAttribute="top" secondItem="hCI-UQ-IGw" secondAttribute="bottom" constant="0.5" id="WGG-10-Plh"/>
+                <constraint firstItem="FMO-lj-C2v" firstAttribute="width" secondItem="hCI-UQ-IGw" secondAttribute="width" id="ac3-u0-r7I"/>
                 <constraint firstAttribute="trailing" secondItem="NrZ-JA-Y3W" secondAttribute="trailing" id="agz-eY-jps"/>
                 <constraint firstItem="hCI-UQ-IGw" firstAttribute="top" secondItem="kfu-Yd-6by" secondAttribute="bottom" constant="1" id="bvU-cP-Up0"/>
-                <constraint firstAttribute="trailing" secondItem="52i-Hi-rt1" secondAttribute="trailing" id="f7h-vq-Iom"/>
+                <constraint firstItem="FMO-lj-C2v" firstAttribute="top" secondItem="hCI-UQ-IGw" secondAttribute="top" id="fl6-PN-iP0"/>
+                <constraint firstItem="FMO-lj-C2v" firstAttribute="bottom" secondItem="hCI-UQ-IGw" secondAttribute="bottom" id="lx8-Lk-5fI"/>
             </constraints>
             <point key="canvasLocation" x="-7" y="64"/>
         </view>
