@@ -1503,6 +1503,50 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (IBAction)didPressDelete:(id)sender{
     
+    // alert controller
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Proceed with Delete?"
+                                                                   message: @"This action is permanent. Submissions cannot be ressurected following deletion"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    __weak TJBWorkoutNavigationHub *weakSelf = self;
+    
+    // confirm action
+    
+    void (^confirmAction)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        [weakSelf deleteCurrentlySelectedCell];
+        
+    };
+    
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle: @"Delete"
+                                                      style: UIAlertActionStyleDestructive
+                                                    handler: confirmAction];
+    
+    // cancel action
+    
+    void (^cancelAction)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        return;
+        
+    };
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle: @"Cancel"
+                                                     style: UIAlertActionStyleCancel
+                                                   handler: cancelAction];
+    
+    [alert addAction: cancel];
+    [alert addAction: confirm];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
+    
+    
+}
+
+- (void)deleteCurrentlySelectedCell{
+    
     [self.tableView beginUpdates];
     
     [self.tableView deleteRowsAtIndexPaths: @[self.currentlySelectedPath]
@@ -1510,9 +1554,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self.activeTableViewCells removeObjectAtIndex: self.currentlySelectedPath.row];
     
+    if (self.dailyList.count == 1){
+        
+        [self.activeTableViewCells addObject: [self noDataCell]];
+        
+        [self.tableView insertRowsAtIndexPaths: @[self.currentlySelectedPath]
+                              withRowAnimation: UITableViewRowAnimationRight];
+        
+    }
+    
+
+    
     [self deleteCoreDataObjectsForIndexPath: self.currentlySelectedPath];
     
     [self.tableView endUpdates];
+    
+    
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
@@ -1525,6 +1582,22 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
     });
     
+}
+
+- (TJBNoDataCell *)noDataCell{
+    
+    TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+    
+    cell.mainLabel.text = @"No Entries";
+    cell.backgroundColor = [UIColor clearColor];
+    
+    NSIndexPath *path = [NSIndexPath indexPathForRow: 0
+                                           inSection: 0];
+    cell.referenceIndexPath = path;
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
     
 }
 
@@ -1532,8 +1605,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     for (int i = 0; i < self.activeTableViewCells.count; i++){
         
-        TJBRealizedChainCell *cell = self.activeTableViewCells[i];
-        [cell updateTitleNumber: @(i + 1)];
+        UITableViewCell *cell = self.activeTableViewCells[i];
+        
+        if ([cell isKindOfClass: [TJBRealizedChainCell class]]){
+            
+            TJBRealizedChainCell *rcCell = (TJBRealizedChainCell *)cell;
+            
+            [rcCell updateTitleNumber: @(i + 1)];
+            
+        }
         
     }
     
