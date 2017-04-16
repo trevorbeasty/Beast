@@ -55,6 +55,8 @@ typedef enum{
     BOOL _cellsNeedUpdating; // used to indicate that core data has saved during this controller's lifetime while a different tab of the tab bar controller was selected
     TJBToolbarState _toolbarState;
     
+    BOOL _advancedControlsActive;
+    
 }
 
 // IBOutlet
@@ -172,6 +174,13 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (instancetype)initWithHomeButton:(BOOL)includeHomeButton{
     
+    return  [self initWithHomeButton: includeHomeButton
+              advancedControlsActive: YES];
+    
+}
+
+- (instancetype)initWithHomeButton:(BOOL)includeHomeButton advancedControlsActive:(BOOL)advancedControlsActive{
+    
     self = [super init];
     
     // for restoration
@@ -180,14 +189,15 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     self.restorationIdentifier = @"TJBWorkoutNavigationHub";
     
     // state
-
+    
     _toolbarState = TJBToolbarNotHidden;
     
     [self configureNotifications];
     
-    // home button
+    // controls
     
     _includesHomeButton = includeHomeButton;
+    _advancedControlsActive = advancedControlsActive;
     
     // core data
     
@@ -592,13 +602,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self configureToolBarAndBarButtons];
     
-//    [self configureToolbarAppearanceAccordingToStateVariables];
-    
-//    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
-    
-    [self configureOptionalHomeButton];
-    
-//    [self artificiallySelectDate: [NSDate date]];
+    [self configureControlsAccordingToState];
     
     [self showWorkoutLogForDate: [NSDate date]
           animateDateControlBar: YES
@@ -612,6 +616,19 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureControlsAccordingToState{
+    
+    [self configureOptionalHomeButton];
+    
+    if (_advancedControlsActive == NO){
+        
+        self.toolbar.hidden = YES;
+        self.toolbarControlArrow.hidden = YES;
+        
+    }
+    
+}
 
 - (void)configureOptionalHomeButton{
     

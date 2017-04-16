@@ -1290,7 +1290,8 @@
         vc1.tabBarItem.title = @"Active";
         vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
         
-        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
+        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
+                                                                    advancedControlsActive: NO];
         vc3.tabBarItem.title = @"Workout Log";
         vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
         

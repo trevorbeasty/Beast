@@ -45,6 +45,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *firstExerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *titleNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *firstExerciseNameLabel;
 
 // core
 
@@ -107,9 +108,9 @@ typedef enum{
     // views are stacked from top to bottom.  It is thus necessary that new views know which view they should position themselves beneath.  This communication is achieved via the currentTopView
     
     self.constraintMapping = [[NSMutableDictionary alloc] init];
-    [self.constraintMapping setObject: self.firstExerciseLabel
+    [self.constraintMapping setObject: self.firstExerciseNameLabel
                                forKey: @"initialTopView"];
-    UIView *currentTopView = self.firstExerciseLabel;
+    UIView *currentTopView = self.firstExerciseNameLabel;
     
     if (_cellType == RealizedChainCell){
         
@@ -231,8 +232,7 @@ typedef enum{
                                                                                 views: self.constraintMapping]];
     
     TJBExercise *exercise = [self exerciseForExerciseIndex: exerciseIndex];
-    NSString *exerciseLabelText = [self exerciseLabelTextForExercise: exercise
-                                                       exerciseIndex: exerciseIndex];
+    NSString *exerciseLabelText = [self exerciseTitleTextForExerciseIndex: exerciseIndex];
     exerciseLabel.text = exerciseLabelText;
     
     [self configureExerciseLabel: exerciseLabel];
@@ -538,10 +538,12 @@ typedef enum{
     for (UILabel *label in titleLabels){
         
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont boldSystemFontOfSize: 20];
         label.textColor = [UIColor blackColor];
         
     }
+    
+    self.nameLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.typeLabel.font = [UIFont systemFontOfSize: 15];
     
     self.columnHeaderContainer.backgroundColor = [UIColor clearColor];
     NSArray *columnHeaderLabels = @[self.columnHeader1Label,
@@ -558,6 +560,7 @@ typedef enum{
     }
     
     [self configureExerciseLabel: self.firstExerciseLabel];
+    [self configureExerciseNameLabel: self.firstExerciseNameLabel];
     
     // detail drawing
     
@@ -592,12 +595,23 @@ typedef enum{
                         thickness: 1
                        hookLength: 16];
     
+//    [self addHorizontalBorderBeneath: self.firstExerciseLabel
+//                           thickness: .5];
+    
 }
 
 - (void)configureExerciseLabel:(UILabel *)label{
     
     label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont systemFontOfSize: 15];
+    label.textColor = [UIColor blackColor];
+    
+}
+
+- (void)configureExerciseNameLabel:(UILabel *)label{
+    
     label.font = [UIFont boldSystemFontOfSize: 15];
+    label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor blackColor];
     
 }
@@ -677,23 +691,21 @@ typedef enum{
     // exercise #1 label
     
     TJBExercise *exercise = [self firstExercise];
-    self.firstExerciseLabel.text = [self exerciseLabelTextForExercise: exercise
-                                                        exerciseIndex: 0];
+    self.firstExerciseLabel.text = [self exerciseTitleTextForExerciseIndex: 0];
+    self.firstExerciseNameLabel.text = exercise.name;
     
 }
 
-- (NSString *)exerciseLabelTextForExercise:(TJBExercise *)exercise exerciseIndex:(int)exerciseIndex{
+- (NSString *)exerciseTitleTextForExerciseIndex:(int)exerciseIndex{
     
     NSString *text;
     
     if (_cellType == ChainTemplateAdvCell){
-        text = [NSString stringWithFormat: @"Targets for Exercise #%d: %@",
-                exerciseIndex + 1,
-                exercise.name];
+        text = [NSString stringWithFormat: @"Targets for Exercise #%d:",
+                exerciseIndex + 1];
     } else{
-        text = [NSString stringWithFormat: @"Entries for Exercise #%d: %@",
-                exerciseIndex + 1,
-                exercise.name];
+        text = [NSString stringWithFormat: @"Entries for Exercise #%d:",
+                exerciseIndex + 1];
     }
     
     return text;
