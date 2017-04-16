@@ -1510,9 +1510,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self.activeTableViewCells removeObjectAtIndex: self.currentlySelectedPath.row];
     
-    // the daily list determines the table view row count so must be updated to prevent an exception from being thrown
-    
-    [self.dailyList removeObjectAtIndex: self.currentlySelectedPath.row];
+    [self deleteCoreDataObjectsForIndexPath: self.currentlySelectedPath];
     
     [self.tableView endUpdates];
     
@@ -1520,7 +1518,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
         [self updateCellTitleNumbers];
         
-        [self deleteCoreDataObjectsForIndexPath: self.currentlySelectedPath];
         [self fetchManagedObjectsAndDeriveMasterList];
         
         self.currentlySelectedPath = nil;
