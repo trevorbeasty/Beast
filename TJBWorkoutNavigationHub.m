@@ -83,6 +83,7 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UIButton *toolbarControlArrow;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomToContainerConstr;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftArrowLeadingSpaceConstr;
 
 
 
@@ -144,6 +145,7 @@ static const CGFloat buttonHeight = 55.0;
 // animation
 
 static const CGFloat toolbarToBottomSpacing = 8;
+static const CGFloat toolbarAnimationTime = .2;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
@@ -625,12 +627,29 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self configureOptionalHomeButton];
     
-    if (_advancedControlsActive == NO){
+    if (_includesHomeButton == NO){
         
-        self.toolbar.hidden = YES;
-        self.toolbarControlArrow.hidden = YES;
+        [self modifyLeftDateControlArrowConstraint];
         
     }
+    
+}
+
+- (void)modifyLeftDateControlArrowConstraint{
+    
+    [self.titleBarContainer removeConstraint: self.leftArrowLeadingSpaceConstr];
+    
+    NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
+    NSString *leftArrowKey = @"leftDateControlArrow";
+    [constraintMapping setObject: self.leftArrowButton
+                          forKey: leftArrowKey];
+    
+    NSString *arrowLeadingSpaceConstr = [NSString stringWithFormat: @"H:|-0-[%@]", leftArrowKey];
+    
+    [self.titleBarContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: arrowLeadingSpaceConstr
+                                                                                    options: 0
+                                                                                    metrics: nil
+                                                                                      views: constraintMapping]];
     
 }
 
@@ -1200,17 +1219,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self.view layoutSubviews];
     
-//    CGFloat breatherRoom;
-//    
-////    if (self.dailyList.count == 0){
-////        
-////        breatherRoom = 0;
-//    
-////    } else{
-//    
-//        breatherRoom = self.toolbar.frame.size.height + toolbarToBottomSpacing + 8;
-//        
-////    }
+
 
     CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight + [self contentBreatherRoom]);
     
@@ -1446,7 +1455,9 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                                    
 - (void)animateToolbarToHiddenState{
     
-    [UIView animateWithDuration: .3
+    self.toolbarControlArrow.enabled = NO;
+    
+    [UIView animateWithDuration: toolbarAnimationTime
                      animations: ^{
                          
                          CGRect currentToolbarRect = self.toolbar.frame;
@@ -1460,8 +1471,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
                      }
                      completion: ^(BOOL finished){
                          
-                         CGFloat newConstrConst = self.toolbar.frame.size.height + toolbarToBottomSpacing;
+                         CGFloat newConstrConst = self.toolbar.frame.size.height;
                          self.toolbarBottomToContainerConstr.constant = -1 * newConstrConst;
+                         
+                         self.toolbarControlArrow.enabled = YES;
                          
                      }];
     
@@ -1470,7 +1483,27 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)animateToolbarToNotHiddenState{
     
+    self.toolbarControlArrow.enabled = NO;
     
+    [UIView animateWithDuration: toolbarAnimationTime
+                     animations: ^{
+                         
+                         CGRect currentToolbarRect = self.toolbar.frame;
+                         
+                         CGPoint toolbarOrigin = currentToolbarRect.origin;
+                         CGPoint newOrigin = CGPointMake(toolbarOrigin.x, toolbarOrigin.y - currentToolbarRect.size.height - toolbarToBottomSpacing);
+                         CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, currentToolbarRect.size.width, currentToolbarRect.size.height);
+                         
+                         self.toolbar.frame = newFrame;
+                         
+                     }
+                     completion: ^(BOOL finished){
+                         
+                         self.toolbarBottomToContainerConstr.constant = toolbarToBottomSpacing;
+                         
+                         self.toolbarControlArrow.enabled = YES;
+                         
+                     }];
     
 }
 
@@ -1494,11 +1527,20 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     // delete and edit buttons
     
     NSArray *deleteEditButtons = @[self.deleteButton, self.editButton];
+
     for (UIBarButtonItem *bbi in deleteEditButtons){
         
-        if (self.currentlySelectedPath){
+        if (_advancedControlsActive == YES){
             
-            [self configureActiveStateForToolbarButton: bbi];
+            if (self.currentlySelectedPath){
+                
+                [self configureActiveStateForToolbarButton: bbi];
+                
+            } else{
+                
+                [self configureInactiveStateForToolbarButton: bbi];
+                
+            }
             
         } else{
             
@@ -1507,7 +1549,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         }
         
     }
-    
+
 }
 
 - (void)configureActiveStateForToolbarButton:(UIBarButtonItem *)bbi{
@@ -1926,8 +1968,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [self updateStateVariablesAndCellAppearanceBasedOnSelectedPath: indexPath];
-    
+    if (_advancedControlsActive == YES){
+        
+        [self updateStateVariablesAndCellAppearanceBasedOnSelectedPath: indexPath];
+        
+    }
     
 }
 

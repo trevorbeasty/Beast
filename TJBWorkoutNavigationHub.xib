@@ -18,6 +18,7 @@
                 <outlet property="homeButton" destination="NKH-wt-CCf" id="2K7-UD-oEB"/>
                 <outlet property="jumpToLastButton" destination="bmd-QN-P6s" id="Fgi-3f-Twg"/>
                 <outlet property="leftArrowButton" destination="Xyd-rd-xY1" id="Mcv-NY-SCb"/>
+                <outlet property="leftArrowLeadingSpaceConstr" destination="yIm-EJ-jfK" id="PUy-Nh-k3X"/>
                 <outlet property="monthTitle" destination="wRK-QI-22E" id="dqm-bf-fxx"/>
                 <outlet property="myWorkoutLogLabel" destination="hCI-UQ-IGw" id="YiO-oA-vie"/>
                 <outlet property="numberOfEntriesLabel" destination="FMO-lj-C2v" id="juT-7x-YfD"/>
