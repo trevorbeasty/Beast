@@ -79,7 +79,7 @@
                             </items>
                         </toolbar>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czS-vj-ufW">
-                            <rect key="frame" x="8" y="457" width="50" height="44"/>
+                            <rect key="frame" x="8" y="457.5" width="50" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="fxa-8g-1md"/>
                             </constraints>
@@ -91,8 +91,8 @@
                     </subviews>
                     <color key="backgroundColor" red="0.99626137070235543" green="1" blue="0.7588937688929247" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
-                        <constraint firstItem="EFI-cn-6pj" firstAttribute="bottom" secondItem="czS-vj-ufW" secondAttribute="bottom" id="8Ef-DL-Hf4"/>
-                        <constraint firstItem="EFI-cn-6pj" firstAttribute="top" secondItem="czS-vj-ufW" secondAttribute="top" id="NND-N4-7gB"/>
+                        <constraint firstItem="czS-vj-ufW" firstAttribute="height" secondItem="EFI-cn-6pj" secondAttribute="height" id="E4p-72-1LW"/>
+                        <constraint firstAttribute="bottom" secondItem="czS-vj-ufW" secondAttribute="bottom" constant="8" id="Ggk-oh-72I"/>
                         <constraint firstAttribute="trailing" secondItem="EFI-cn-6pj" secondAttribute="trailing" constant="16" id="Tpk-U6-KJE"/>
                         <constraint firstItem="EFI-cn-6pj" firstAttribute="leading" secondItem="czS-vj-ufW" secondAttribute="trailing" constant="16" id="k6h-cE-cJe"/>
                         <constraint firstAttribute="bottom" secondItem="EFI-cn-6pj" secondAttribute="bottom" constant="8" id="tsO-C0-5zD"/>
