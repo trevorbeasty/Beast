@@ -8,29 +8,63 @@
 
 #import "TJBPersonalRecordCell.h"
 
+#import "TJBAssortedUtilities.h"
+
 @implementation TJBPersonalRecordCell
 
 - (void)configureWithReps:(NSNumber *)reps weight:(NSNumber *)weight date:(NSDate *)date{
     
-    NSString *repsWord;
-    if ([reps intValue] == 1){
-        repsWord = @"rep";
-    } else{
-        repsWord = @"reps";
-    }
-    NSString *repsText = [NSString stringWithFormat: @"%@ %@",
-                          [reps stringValue],
-                          repsWord];
-    self.repsLabel.text = repsText;
+    // view data
+
+    self.repsLabel.text = [reps stringValue];
     
-    NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weight stringValue]];
-    self.weightLabel.text = weightString;
+    self.weightLabel.text = [weight stringValue];
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MMMM d, yyyy";
+    df.dateFormat = @"MMM d, yyyy";
     self.dateLabel.text = [df stringFromDate: date];
     
-    self.backgroundColor = [UIColor clearColor];
+    // aesthetics
+    
+    [self configureViewAesthetics];
+    
+}
+
+- (void)configureViewAesthetics{
+    
+    self.contentView.backgroundColor = [UIColor clearColor];
+    
+    self.repsLabel.font = [UIFont systemFontOfSize: 30];
+    self.repsLabel.textColor = [UIColor blackColor];
+    self.repsLabel.backgroundColor = [UIColor clearColor];
+    
+    NSArray *otherLabels = @[self.weightLabel, self.dateLabel];
+    for (UILabel *lab in otherLabels){
+        
+        lab.font = [UIFont systemFontOfSize: 20];
+        lab.backgroundColor = [UIColor clearColor];
+        lab.textColor = [UIColor blackColor];
+        
+    }
+    
+    // detailed lines
+    
+    [self drawDetaiLines];
+    
+}
+
+- (void)drawDetaiLines{
+    
+//    [self.contentView layoutSubviews];
+//    
+//    [TJBAssortedUtilities drawHookLineUnderLabel1: self.weightLabel
+//                                           label2: self.dateLabel
+//                                   verticalOffset: 2.0
+//                                        thickness: 1.0
+//                                       hookLength: 16
+//                                         metaView: self.contentView];
+//    
+//    self.repsLabel
     
 }
 

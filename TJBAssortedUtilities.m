@@ -211,9 +211,14 @@
     // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
     // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
     
-    CGPoint startPoint = CGPointMake(label1.frame.origin.x, label2.frame.origin.y + label2.frame.size.height + vertOff);
-    CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width, startPoint.y);
-    CGPoint endPoint = CGPointMake(interimPoint.x + hookLength,  interimPoint.y - hookLength);
+//    CGPoint startPoint = CGPointMake(label1.frame.origin.x, label2.frame.origin.y + label2.frame.size.height + vertOff);
+//    CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width, startPoint.y);
+//    CGPoint endPoint = CGPointMake(interimPoint.x + hookLength,  interimPoint.y - hookLength);
+    
+        CGPoint startPoint = CGPointMake(0, label1.frame.size.height + vertOff);
+        CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width - label1.frame.origin.x, startPoint.y);
+        CGPoint endPoint = CGPointMake(interimPoint.x + hookLength,  interimPoint.y - hookLength);
+    
     
     UIBezierPath *bp = [[UIBezierPath alloc] init];
     [bp moveToPoint: startPoint];
@@ -224,7 +229,9 @@
     
     // label layer
     
-    [metaView.layer addSublayer: sl];
+    label1.layer.masksToBounds = NO;
+    
+    [label1.layer addSublayer: sl];
     
 }
 

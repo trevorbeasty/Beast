@@ -42,4 +42,21 @@ typedef enum{
 
 - (void)clearExistingEntries;
 
+
+- (void)updateTitleNumber:(NSNumber *)number;
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

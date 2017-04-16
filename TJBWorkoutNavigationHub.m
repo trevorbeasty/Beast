@@ -120,8 +120,6 @@ typedef enum{
 
 // core data
 
-@property (strong) NSFetchedResultsController *realizedSetFRC;
-@property (strong) NSFetchedResultsController *realizeChainFRC;
 @property (strong) NSMutableArray *masterList;
 @property (strong) NSMutableArray *dailyList;
 
@@ -182,11 +180,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     self.restorationIdentifier = @"TJBWorkoutNavigationHub";
     
     // state
-    
-//    NSDate *today = [NSDate date];
-//    self.workoutLogActiveDay = today;
-//    self.dateControlActiveDate = today;
-//    
+
     _toolbarState = TJBToolbarNotHidden;
     
     [self configureNotifications];
@@ -197,9 +191,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     // core data
     
-    [self configureRealizedSetFRC];
-    [self configureRealizedChainFRC];
-    [self configureMasterList];
+    [self fetchManagedObjectsAndDeriveMasterList];
     
     return self;
 }
@@ -209,9 +201,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 
 
+
 #pragma mark - Core Data Queries And Algorithms
 
-- (void)configureRealizedSetFRC{
+- (NSFetchRequest *)realizedSetRequest{
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedSet"];
     
@@ -222,30 +215,12 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     NSPredicate *standaloneSetPredicate = [NSPredicate predicateWithFormat: @"isStandaloneSet = YES"]; // only retrieve standalone sets. Realized chains are retrieved separately
     request.predicate = standaloneSetPredicate;
     
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                          managedObjectContext: moc
-                                                                            sectionNameKeyPath: nil
-                                                                                     cacheName: nil];
-    frc.delegate = nil;
-    
-    self.realizedSetFRC = frc;
-    
-    NSError *error = nil;
-    
-    if (![frc performFetch: &error]){
-        
-        abort();
-        
-    }
-    
-    return;
+    return  request;
     
 }
 
 
-- (void)configureRealizedChainFRC{
+- (NSFetchRequest *)realizedChainRequest{
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"RealizedChain"];
     
@@ -254,32 +229,25 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [request setSortDescriptors: @[dateSort]];
     
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                          managedObjectContext: moc
-                                                                            sectionNameKeyPath: nil
-                                                                                     cacheName: nil];
-    frc.delegate = nil;
-    
-    self.realizeChainFRC = frc;
-    
-    NSError *error = nil;
-    
-    if (![frc performFetch: &error]){
-        
-        abort();
-        
-    }
+    return request;
     
 }
 
-- (void)configureMasterList{
+- (void)fetchManagedObjectsAndDeriveMasterList{
     
     NSMutableArray *interimArray1 = [[NSMutableArray alloc] init];
     
-    [interimArray1 addObjectsFromArray: self.realizedSetFRC.fetchedObjects];
-    [interimArray1 addObjectsFromArray: self.realizeChainFRC.fetchedObjects];
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    NSError *error;
+    
+    NSArray *fetchedSets = [moc executeFetchRequest: [self realizedSetRequest]
+                                              error: &error];
+    NSArray *fetchedChains = [moc executeFetchRequest: [self realizedChainRequest]
+                                                error: &error];
+    
+    [interimArray1 addObjectsFromArray: fetchedSets];
+    [interimArray1 addObjectsFromArray: fetchedChains];
     
     [interimArray1 sortUsingComparator: ^(id obj1, id obj2){
         
@@ -1521,18 +1489,72 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
-- (IBAction)didPressDelete:(id)sender{
-    
-    
-    
-    
-}
+
 
 - (IBAction)didPressEdit:(id)sender{
     
     
     
     
+    
+}
+
+#pragma mark - Toolbar Delete Methods
+
+- (IBAction)didPressDelete:(id)sender{
+    
+    [self.tableView beginUpdates];
+    
+    [self.tableView deleteRowsAtIndexPaths: @[self.currentlySelectedPath]
+                          withRowAnimation: UITableViewRowAnimationLeft];
+    
+    [self.activeTableViewCells removeObjectAtIndex: self.currentlySelectedPath.row];
+    
+    // the daily list determines the table view row count so must be updated to prevent an exception from being thrown
+    
+    [self.dailyList removeObjectAtIndex: self.currentlySelectedPath.row];
+    
+    [self.tableView endUpdates];
+    
+    [self performSelector: @selector(updateCellTitleNumbers)
+               withObject: nil
+               afterDelay: 0];
+    
+    
+}
+
+- (void)updateCellTitleNumbers{
+    
+    for (int i = 0; i < self.activeTableViewCells.count; i++){
+        
+        TJBRealizedChainCell *cell = self.activeTableViewCells[i];
+        [cell updateTitleNumber: @(i + 1)];
+        
+    }
+    
+}
+
+- (void)deleteCoreDataObjectsForIndexPath:(NSIndexPath *)indexPath{
+    
+    id dailyListObject = self.dailyList[indexPath.row];
+    
+    if ([dailyListObject isKindOfClass: [TJBRealizedChain class]]){
+        
+        TJBRealizedChain *rc = dailyListObject;
+        [self.dailyList removeObject: rc];
+        [self.masterList removeObject: rc];
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    [self fetchManagedObjectsAndDeriveMasterList];
     
 }
 
@@ -1558,9 +1580,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     //// refresh fetched managed objects and all trickle-down
     // the daily list is derived whenever a date control object is selected. Even when a date control object is not explicitly selected by the user, I programmatically make the selection to select the desired day.
     
-    [self configureRealizedSetFRC];
-    [self configureRealizedChainFRC];
-    [self configureMasterList];
+    [self fetchManagedObjectsAndDeriveMasterList];
     
     if (self.tabBarController){
         
@@ -1647,9 +1667,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 }
 
 - (TJBMasterCell *)cellForIndexPath:(NSIndexPath *)indexPath shouldDequeue:(BOOL)shouldDequeue{
-    
 
-    
         if (self.dailyList.count == 0){
             
             TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];

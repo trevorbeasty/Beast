@@ -25,6 +25,11 @@
 #import "TJBRealizedSet+CoreDataProperties.h"
 
 
+
+
+
+
+
 extern NSString * const ExerciseDataChanged;
 extern NSString * const placeholderExerciseName;
 
@@ -43,57 +48,65 @@ typedef enum{
 
 typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
+
+
+
+
+
+
+
 @interface CoreDataController : NSObject
 
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
 
+
+#pragma mark - Meta Items
+
 + (instancetype)singleton;
 
-// specific queries and inquiries
+- (void)saveContext;
+- (NSManagedObjectContext *)moc;
 
-// the following assigns the value of TJBExercise via pass by reference because it also must report whether the object was newly created
-// if newly created, it is the job of the calling class to assign the new exercise a category
-// if a category is not assigned, an error will occur when attemting to save managed object changes
+#pragma mark - Managed Object Queries
 
-- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise;
+// exercises and categories
 
+- (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise;
 - (BOOL)exerciseExistsForName:(NSString *)name;
-
 - (TJBExerciseCategory *)exerciseCategory:(TJBExerciseCategoryType)exerciseCategory;
 - (NSString *)categoryStingFromEnum:(TJBExerciseCategoryType)categoryEnum;
 
-- (TJBRealizedChain *)realizedChainWithUniqueID:(NSString *)uniqueID;
-- (TJBChainTemplate *)chainTemplateWithUniqueID:(NSString *)uniqueID;
-
-//
-
-- (void)saveContext;
-
-- (NSManagedObjectContext *)moc;
-
-- (void)deleteRealizedChain:(TJBRealizedChain *)rc;
-- (void)deleteChainTemplate:(TJBChainTemplate *)ct;
-
-//// chains
-
 // chain template
 
-- (NSMutableOrderedSet *)placeholderExerciseSetWithLength:(int)length;
-- (NSMutableArray *)placeholderExerciseArrayWithLength:(int)length;
-
-- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name isTargetingWeight:(BOOL)isTargetingWeight isTargetingReps:(BOOL)isTargetingReps isTargetingTrailingRest:(BOOL)isTargetingTrailingRest;
-
 - (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate;
+- (TJBChainTemplate *)chainTemplateWithUniqueID:(NSString *)uniqueID;
+
+// realized chain
+
+- (TJBRealizedChain *)realizedChainWithUniqueID:(NSString *)uniqueID;
+
+#pragma mark - Managed Object Creation
 
 // realized chain
 
 - (TJBRealizedChain *)createAndSaveSkeletonRealizedChainForChainTemplate:(TJBChainTemplate *)chainTemplate;
 
-// checking if an object is a default object
+// chain template
 
-- (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise;
+- (TJBChainTemplate *)createAndSaveSkeletonChainTemplateWithNumberOfExercises:(NSNumber *)numberOfExercises numberOfRounds:(NSNumber *)numberOfRounds name:(NSString *)name isTargetingWeight:(BOOL)isTargetingWeight isTargetingReps:(BOOL)isTargetingReps isTargetingTrailingRest:(BOOL)isTargetingTrailingRest;
 
-// existing chain template manipulation
+// exercises
+
+- (NSMutableOrderedSet *)placeholderExerciseSetWithLength:(int)length;
+- (NSMutableArray *)placeholderExerciseArrayWithLength:(int)length;
+- (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise;
+
+#pragma mark - Managed Object Deletion
+
+- (void)deleteRealizedChain:(TJBRealizedChain *)rc;
+- (void)deleteChainTemplate:(TJBChainTemplate *)ct;
+
+#pragma mark - Chain Template Manipulation
 
 - (void)appendRoundToChainTemplate:(TJBChainTemplate *)chainTemplate;
 - (void)deleteLastRoundInChainTemplate:(TJBChainTemplate *)chainTemplate;

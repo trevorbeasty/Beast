@@ -1201,6 +1201,16 @@ typedef enum{
     
 }
 
+
+#pragma mark - Dynamic Updates
+
+- (void)updateTitleNumber:(NSNumber *)number{
+    
+    self.titleNumberLabel.text = [number stringValue];
+    self.titleNumber = number;
+    
+}
+
 @end
 
 
