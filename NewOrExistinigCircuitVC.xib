@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -18,8 +18,11 @@
                 <outlet property="launchButton" destination="M9q-4p-UvJ" id="1Io-BL-YJx"/>
                 <outlet property="leftArrowButton" destination="tZY-W0-fYd" id="5QH-nU-cw4"/>
                 <outlet property="mainContainer" destination="cna-Rm-Pq1" id="Tag-5Q-JMD"/>
+                <outlet property="monthYearTitleLabel" destination="Xgb-Ii-eNq" id="8Dp-VK-5hX"/>
+                <outlet property="numberOfRecordsLabel" destination="4Qa-r8-4d0" id="R9a-jA-LwW"/>
                 <outlet property="previousMarkButton" destination="X8G-LF-5HS" id="dEF-rf-bdd"/>
                 <outlet property="rightArrowButton" destination="muu-Ne-Y0K" id="fY0-rH-Nyj"/>
+                <outlet property="routinesByLabel" destination="Zf5-hU-YP4" id="a39-Bj-YOA"/>
                 <outlet property="topTitleBar" destination="jJx-Ep-SFb" id="6zS-tR-nMP"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yearLabel" destination="yZc-c3-eUK" id="gpZ-IA-MuZ"/>
@@ -37,7 +40,7 @@
                     </constraints>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cna-Rm-Pq1" userLabel="mainContainer">
-                    <rect key="frame" x="0.0" y="122" width="375" height="489"/>
+                    <rect key="frame" x="0.0" y="152.5" width="375" height="458.5"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LfV-Yt-FC1" userLabel="bottomControlContainer">
@@ -139,22 +142,54 @@
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="centerY" secondItem="jJx-Ep-SFb" secondAttribute="centerY" id="rQ5-hh-TIj"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-Ii-eNq">
+                    <rect key="frame" x="150" y="122" width="112.5" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Routines by" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-hU-YP4">
+                    <rect key="frame" x="0.0" y="122" width="150" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="2Cv-bm-2zU"/>
+                        <constraint firstAttribute="width" constant="150" id="VH5-Zr-K4f"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Records" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qa-r8-4d0">
+                    <rect key="frame" x="263" y="122" width="112" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="4Qa-r8-4d0" firstAttribute="bottom" secondItem="Zf5-hU-YP4" secondAttribute="bottom" id="0gp-lx-3A8"/>
                 <constraint firstAttribute="bottom" secondItem="LfV-Yt-FC1" secondAttribute="bottom" id="7a8-q7-ajo"/>
                 <constraint firstItem="cna-Rm-Pq1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CFD-ZS-ub0"/>
                 <constraint firstAttribute="trailing" secondItem="LfV-Yt-FC1" secondAttribute="trailing" id="EDI-fE-ogl"/>
                 <constraint firstItem="jJx-Ep-SFb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="IZ7-KQ-3YP"/>
                 <constraint firstItem="iB7-75-csB" firstAttribute="top" secondItem="jJx-Ep-SFb" secondAttribute="bottom" constant="1" id="IgF-h1-znP"/>
+                <constraint firstItem="4Qa-r8-4d0" firstAttribute="top" secondItem="Zf5-hU-YP4" secondAttribute="top" id="JC6-Qm-1uG"/>
                 <constraint firstItem="jJx-Ep-SFb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="K3r-sn-67Q"/>
+                <constraint firstItem="cna-Rm-Pq1" firstAttribute="top" secondItem="4Qa-r8-4d0" secondAttribute="bottom" constant="0.5" id="ML7-44-ZYY"/>
+                <constraint firstItem="Xgb-Ii-eNq" firstAttribute="bottom" secondItem="Zf5-hU-YP4" secondAttribute="bottom" id="RTB-hq-wel"/>
+                <constraint firstItem="Zf5-hU-YP4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="UaI-ch-w6y"/>
                 <constraint firstAttribute="trailing" secondItem="cna-Rm-Pq1" secondAttribute="trailing" id="Xgt-y7-ps3"/>
+                <constraint firstAttribute="trailing" secondItem="4Qa-r8-4d0" secondAttribute="trailing" id="Yjs-sD-VJq"/>
+                <constraint firstItem="4Qa-r8-4d0" firstAttribute="width" secondItem="Xgb-Ii-eNq" secondAttribute="width" id="abl-3P-Mc8"/>
+                <constraint firstItem="Xgb-Ii-eNq" firstAttribute="leading" secondItem="Zf5-hU-YP4" secondAttribute="trailing" constant="0.5" id="am1-L2-Kxv"/>
                 <constraint firstAttribute="trailing" secondItem="jJx-Ep-SFb" secondAttribute="trailing" id="dYG-c6-DwM"/>
+                <constraint firstItem="Zf5-hU-YP4" firstAttribute="top" secondItem="iB7-75-csB" secondAttribute="bottom" constant="1" id="fmE-u6-YwE"/>
                 <constraint firstAttribute="trailing" secondItem="iB7-75-csB" secondAttribute="trailing" id="g5M-Im-CAh"/>
-                <constraint firstItem="cna-Rm-Pq1" firstAttribute="top" secondItem="iB7-75-csB" secondAttribute="bottom" constant="1" id="gKD-ht-HBC"/>
+                <constraint firstItem="Xgb-Ii-eNq" firstAttribute="top" secondItem="Zf5-hU-YP4" secondAttribute="top" id="k0c-Kq-rfS"/>
                 <constraint firstItem="iB7-75-csB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kTW-VG-1GL"/>
                 <constraint firstItem="LfV-Yt-FC1" firstAttribute="top" secondItem="cna-Rm-Pq1" secondAttribute="bottom" id="vpS-Yu-KIZ"/>
                 <constraint firstItem="LfV-Yt-FC1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wKF-6d-pub"/>
+                <constraint firstItem="4Qa-r8-4d0" firstAttribute="leading" secondItem="Xgb-Ii-eNq" secondAttribute="trailing" constant="0.5" id="xHF-si-ECW"/>
             </constraints>
             <point key="canvasLocation" x="11.5" y="60.5"/>
         </view>

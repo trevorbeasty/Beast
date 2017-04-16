@@ -30,7 +30,6 @@
 
 // table view cell
 
-//#import "TJBStructureTableViewCell.h"
 #import "TJBRealizedChainCell.h"
 #import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
@@ -64,6 +63,10 @@
 @property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
 @property (weak, nonatomic) IBOutlet UIButton *buttonNewRoutine;
+
+@property (weak, nonatomic) IBOutlet UILabel *routinesByLabel;
+@property (weak, nonatomic) IBOutlet UILabel *monthYearTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfRecordsLabel;
 
 // IBAction
 
@@ -276,6 +279,20 @@
     // bottom controls container
     
     self.bottomControlsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    // title labels
+    
+    NSArray *grayBarTitleLabels = @[self.routinesByLabel, self.monthYearTitleLabel, self.numberOfRecordsLabel];
+    for (UILabel *lab in grayBarTitleLabels){
+        
+        lab.backgroundColor = [UIColor grayColor];
+        lab.textColor = [UIColor whiteColor];
+        lab.font = [UIFont boldSystemFontOfSize: 15];
+        
+    }
+
+    
+
     
 }
 

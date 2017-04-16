@@ -1524,32 +1524,39 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         
     }
     
-    // delete and edit buttons
+    // edit button
     
-    NSArray *deleteEditButtons = @[self.deleteButton, self.editButton];
-
-    for (UIBarButtonItem *bbi in deleteEditButtons){
+    if (self.currentlySelectedPath){
         
-        if (_advancedControlsActive == YES){
+        [self configureActiveStateForToolbarButton: self.editButton];
+        
+    } else{
+        
+        [self configureInactiveStateForToolbarButton: self.editButton];
+        
+    }
+    
+    // delete buttons
+    // deleting is disallowed when workout log is part of tab bar controller (active entry scenes)
+    
+    if (_advancedControlsActive == YES){
+        
+        if (self.currentlySelectedPath){
             
-            if (self.currentlySelectedPath){
-                
-                [self configureActiveStateForToolbarButton: bbi];
-                
-            } else{
-                
-                [self configureInactiveStateForToolbarButton: bbi];
-                
-            }
+            [self configureActiveStateForToolbarButton: self.deleteButton];
             
         } else{
             
-            [self configureInactiveStateForToolbarButton: bbi];
+            [self configureInactiveStateForToolbarButton: self.deleteButton];
             
         }
         
+    } else{
+        
+        [self configureInactiveStateForToolbarButton: self.deleteButton];
+        
     }
-
+    
 }
 
 - (void)configureActiveStateForToolbarButton:(UIBarButtonItem *)bbi{
@@ -1967,12 +1974,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    if (_advancedControlsActive == YES){
         
-        [self updateStateVariablesAndCellAppearanceBasedOnSelectedPath: indexPath];
-        
-    }
+    [self updateStateVariablesAndCellAppearanceBasedOnSelectedPath: indexPath];
     
 }
 
