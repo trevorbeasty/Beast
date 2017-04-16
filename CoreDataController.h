@@ -105,6 +105,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)deleteRealizedChain:(TJBRealizedChain *)rc;
 - (void)deleteChainTemplate:(TJBChainTemplate *)ct;
+- (void)deleteRealizeSet:(TJBRealizedSet *)rs;
 
 #pragma mark - Chain Template Manipulation
 

@@ -278,6 +278,14 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
+- (void)deleteRealizeSet:(TJBRealizedSet *)rs{
+    
+    [self.moc deleteObject: rs];
+    
+    [self saveContext];
+    
+}
+
 #pragma mark - Chains
 
 

@@ -1516,9 +1516,17 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self.tableView endUpdates];
     
-    [self performSelector: @selector(updateCellTitleNumbers)
-               withObject: nil
-               afterDelay: 0];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self updateCellTitleNumbers];
+        
+        [self deleteCoreDataObjectsForIndexPath: self.currentlySelectedPath];
+        [self fetchManagedObjectsAndDeriveMasterList];
+        
+        self.currentlySelectedPath = nil;
+        [self configureToolbarAppearanceAccordingToStateVariables];
+        
+    });
     
     
 }
@@ -1544,17 +1552,29 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         [self.dailyList removeObject: rc];
         [self.masterList removeObject: rc];
         
+        [[CoreDataController singleton] deleteRealizedChain: rc];
         
+    } else if ([dailyListObject isKindOfClass: [NSArray class]]){
+        
+        TJBRealizedSetGrouping rsg = dailyListObject;
+        [self.dailyList removeObject: rsg];
+        [self.masterList removeObject: rsg];
+        
+        for (TJBRealizedSet *rs in rsg){
+            
+            [[CoreDataController singleton] deleteRealizeSet: rs];
+            
+        }
+
+    } else if ([dailyListObject isKindOfClass: [TJBRealizedSet class]]){
+        
+        TJBRealizedSet *rs = dailyListObject;
+        [self.dailyList removeObject: rs];
+        [self.masterList removeObject: rs];
+        
+        [[CoreDataController singleton] deleteRealizeSet: rs];
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    [self fetchManagedObjectsAndDeriveMasterList];
     
 }
 
