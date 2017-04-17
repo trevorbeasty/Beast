@@ -686,6 +686,20 @@ typedef enum{
             break;
     }
     
+    // append the type string to include number of completions for chain templates
+    
+    if (_cellType == ChainTemplateAdvCell){
+        
+        TJBChainTemplate *ct = self.contentObject;
+        NSNumber *numberOfCompletions = @(ct.realizedChains.count);
+        NSString *executionsWord = [numberOfCompletions intValue] == 1 ? @"execution" : @"executions";
+        type = [NSString stringWithFormat: @"%@ (%@ %@)",
+                type,
+                [numberOfCompletions stringValue],
+                executionsWord];
+        
+    }
+    
     self.titleNumberLabel.text = [self.titleNumber stringValue];
     self.typeLabel.text = type;
     

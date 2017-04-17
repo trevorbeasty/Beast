@@ -1459,8 +1459,6 @@
     
     _viewingChainHistory = NO;
     
-//    [self.previousMarkButton setTitle: @"History"
-//                             forState: UIControlStateNormal];
     
 }
 
@@ -1469,6 +1467,7 @@
     // get rid of all table views before adding current table view
     
     [self clearAllTableViewsAndDirectlyAssociatedObjects];
+    [self hideAllBottomControls];
     
     // history table view
     
@@ -1506,11 +1505,6 @@
     // update state
     
     _viewingChainHistory = YES;
-    
-    // update button title
-    
-//    [self.previousMarkButton setTitle: @"Routines"
-//                             forState: UIControlStateNormal];
     
     // get rid of the activity indicator and old table view content. The content will be reloaded if it is later required
     
@@ -1646,7 +1640,7 @@
 
 
 
-#pragma mark - Controls Appearance / State (enabled or not)
+#pragma mark - Controls Appearance / State
 
 - (void)giveControlsDisabledConfiguration{
     
@@ -1749,7 +1743,27 @@
     
 }
 
+- (void)hideAllBottomControls{
+    
+    NSArray *views = @[self.toolbar, self.sortBySegmentedControl, self.sortByBottomLabel, self.arrowControlButton];
+    for (UIView *v in views){
+        
+        v.hidden = YES;
+        
+    }
+    
+}
 
+- (void)unhideAllBottomControls{
+    
+    NSArray *views = @[self.toolbar, self.sortBySegmentedControl, self.sortByBottomLabel, self.arrowControlButton];
+    for (UIView *v in views){
+        
+        v.hidden = NO;
+        
+    }
+    
+}
 
 #pragma mark - Toolbar
 

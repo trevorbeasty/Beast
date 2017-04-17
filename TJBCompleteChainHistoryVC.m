@@ -14,7 +14,8 @@
 
 // table view cells
 
-#import "TJBRealizedChainHistoryCell.h"
+//#import "TJBRealizedChainHistoryCell.h"
+#import "TJBRealizedChainCell.h"
 #import "TJBWorkoutLogTitleCell.h"
 
 // aesthetics
@@ -64,12 +65,12 @@
     
 }
 
-static NSString *realizedChainCellID = @"TJBRealizedChainHistoryCell";
+static NSString *realizedChainCellID = @"TJBRealizedChainCell";
 static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 - (void)configureTableView{
     
-    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainHistoryCell"
+    UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
                                              bundle: nil];
     
     [self.chainHistoryTV registerNib: realizedChainNib
@@ -125,11 +126,7 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         
         // dequeue the cell
         
-        TJBRealizedChainHistoryCell *chainCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: realizedChainCellID];
-        
-        // clear the cell's previous content
-        
-        [chainCell clearExistingEntries];
+        TJBRealizedChainCell *chainCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: realizedChainCellID];
         
         // grab the appropriate realized chain
         
@@ -137,8 +134,10 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         
         // configure the cell
         
-        [chainCell configureWithRealizedChain: chain
-                                       number: [NSNumber numberWithInteger: adjIndex + 1]];
+        [chainCell configureWithContentObject: chain
+                                     cellType: RealizedChainCell
+                                 dateTimeType: TJBDayInYear
+                                  titleNumber: @(indexPath.row)];
         
         chainCell.backgroundColor = [UIColor clearColor];
         
@@ -159,7 +158,7 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 60.0;
+    CGFloat titleHeight = 80.0;
     
     if (indexPath.row == 0){
         
@@ -171,7 +170,7 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
         
         TJBRealizedChain *realizedChain = self.chainTemplate.realizedChains[adjIndex];
         
-        return [TJBRealizedChainHistoryCell suggestedCellHeightForRealizedChain: realizedChain];
+        return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
         
     }
     
