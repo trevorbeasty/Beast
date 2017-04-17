@@ -174,13 +174,23 @@
     
     [self viewAesthetics];
     
-    [self toggleButtonsToOffState];
+    [self configureLabelCorrespondingToSegmentedControl];
     
-//    [self configureNotifications];
+    [self toggleButtonsToOffState];
     
     [self deriveSupportArraysAndConfigureInitialDisplay];
     
     return;
+    
+}
+
+#pragma mark - View Helper Methods
+
+- (void)configureSegmentedControlNotifications{
+    
+    [self.sortBySegmentedControl addTarget: self
+                                    action: @selector(segmentedControlValueDidChange)
+                          forControlEvents: UIControlEventValueChanged];
     
 }
 
@@ -317,7 +327,7 @@
 }
 
 
-
+#pragma mark - Core Data
 
 - (void)fetchCoreData{
     
@@ -365,7 +375,7 @@
     //// given the chain templates in fetched results and the current sorting selection, derive the sorted content for the year designated by the reference date
     // this method independently evaluates the active index of the segmented control
     
-    BOOL sortByDateLastExecuted = _sortByDateCreated == NO;
+    BOOL sortByDateLastExecuted = self.sortBySegmentedControl.selectedSegmentIndex == 1;
     
     NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
     
@@ -1729,7 +1739,27 @@
 }
 
 
+#pragma mark - Segmented Control 
 
+- (void)segmentedControlValueDidChange{
+    
+    
+    
+}
+
+- (void)configureLabelCorrespondingToSegmentedControl{
+    
+    if (self.sortBySegmentedControl.selectedSegmentIndex == 0){
+        
+        self.routinesByLabel.text = @"Routines by Date Created";
+        
+    } else{
+        
+        self.routinesByLabel.text = @"Routines by Date Executed";
+        
+    }
+    
+}
 
 
 
