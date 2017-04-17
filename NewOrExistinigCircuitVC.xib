@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -13,7 +13,11 @@
             <connections>
                 <outlet property="arrowControlButton" destination="tzj-yM-dAu" id="jhN-IG-UJH"/>
                 <outlet property="backButton" destination="Xaz-HF-NBZ" id="PPY-Lj-LpY"/>
+                <outlet property="createNewButton" destination="X5h-d9-jX3" id="9wU-Jg-D7Q"/>
                 <outlet property="dateControlScrollView" destination="iB7-75-csB" id="Ikp-4J-AuY"/>
+                <outlet property="deleteButton" destination="bkd-iD-1mf" id="7gU-DB-VVm"/>
+                <outlet property="historyButton" destination="kbO-B9-c26" id="qQd-y5-uCZ"/>
+                <outlet property="launchButton" destination="YoN-2F-rTq" id="I3Z-Ub-eKd"/>
                 <outlet property="leftArrowButton" destination="tZY-W0-fYd" id="5QH-nU-cw4"/>
                 <outlet property="mainContainer" destination="cna-Rm-Pq1" id="Tag-5Q-JMD"/>
                 <outlet property="monthYearTitleLabel" destination="Xgb-Ii-eNq" id="8Dp-VK-5hX"/>

@@ -45,24 +45,20 @@
     // user selection flow
     
     BOOL _viewingChainHistory;
-//    BOOL _sortByDateCreated;
     
 }
 
 // IBOutlet
 
 @property (strong) UIActivityIndicatorView *activeActivityIndicator;
-//@property (weak, nonatomic) IBOutlet UIButton *launchButton;
-//@property (weak, nonatomic) IBOutlet UIButton *previousMarkButton;
+
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
 @property (weak, nonatomic) IBOutlet UILabel *yearLabel;
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UIScrollView *dateControlScrollView;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
-//@property (weak, nonatomic) IBOutlet UIView *bottomControlsContainer;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
-//@property (weak, nonatomic) IBOutlet UIButton *buttonNewRoutine;
 
 @property (weak, nonatomic) IBOutlet UILabel *routinesByLabel;
 @property (weak, nonatomic) IBOutlet UILabel *monthYearTitleLabel;
@@ -73,16 +69,19 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *arrowControlButton;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *launchButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *historyButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *createNewButton;
+
+
 
 // IBAction
 
-//- (IBAction)didPressLaunchButton:(id)sender;
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
-//- (IBAction)didPressViewHistory:(id)sender;
-//- (IBAction)didPressToggle:(id)sender;
-//- (IBAction)didPressNewRoutineButton:(id)sender;
+
 
 // toolbar button actions
 
@@ -170,7 +169,7 @@
     [self configureLabelCorrespondingToSegmentedControl];
     [self configureSegmentedControlNotifications];
     
-    [self toggleButtonsToOffState];
+//    [self toggleButtonsToOffState];
     
     
     [self selectDateControlCorrespondingToDate: [NSDate date]];
@@ -450,9 +449,11 @@
     
     [self addEmbeddedTableViewToViewHierarchy];
     
-    // enable all buttons and give enabled appearance
+    // controls state
     
     [self giveControlsEnabledConfiguration];
+    [self configureToolbarButtonsAccordingToActiveState];
+    
     
     return;
     
@@ -463,18 +464,25 @@
 
 - (void)addEmbeddedTableViewToViewHierarchy{
     
+    [self.view layoutSubviews];
+    
     //// returns a table view embedded inside a scroll view. This is done so that the table view is forced to layout all its content
     
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
     self.activeScrollView = sv;
     
     CGFloat tvContentHeight = [self totalTableViewHeightBasedOnTVSortedContent];
+    CGFloat svContentHeight = tvContentHeight + [self breatherRoomForChainTemplateScrollView];
+    
+    if (svContentHeight < self.mainContainer.frame.size.height){
+        svContentHeight = self.mainContainer.frame.size.height;
+    }
     
     if (tvContentHeight < self.mainContainer.frame.size.height){
         tvContentHeight = self.mainContainer.frame.size.height;
     }
     
-    CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, tvContentHeight); // the scroll view is large enough that the table view will layout all of its content
+    CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, svContentHeight); // the scroll view is large enough that the table view will layout all of its content plus a little breather room above the bottom controls
     sv.contentSize = svContentSize;
     
     sv.backgroundColor = [UIColor clearColor];
@@ -519,6 +527,17 @@
 
 
 #pragma mark - Routine Content Generation Sequence Helper Methods
+
+- (CGFloat)breatherRoomForChainTemplateScrollView{
+    
+    [self.view layoutSubviews];
+    
+    CGFloat bottomControlsHeight =  self.mainContainer.frame.size.height - self.arrowControlButton.frame.origin.y;
+    CGFloat extraSpace = 8;
+    
+    return bottomControlsHeight + extraSpace;
+    
+}
 
 
 - (int)dateControlObjectIndexForDate:(NSDate *)date{
@@ -1158,39 +1177,39 @@
 
 #pragma mark - Convenience
 
-- (void)toggleButtonsToOnStateWithViewHistoryEnabled:(BOOL)viewHistoryEnabled{
-    
-//    NSArray *buttons = @[self.launchButton];
+//- (void)toggleButtonsToOnStateWithViewHistoryEnabled:(BOOL)viewHistoryEnabled{
 //    
-//    for (UIButton *b in buttons){
-//        
-//        b.enabled = YES;
-//        b.layer.opacity = 1.0;
-//        
-//    }
+////    NSArray *buttons = @[self.launchButton];
+////    
+////    for (UIButton *b in buttons){
+////        
+////        b.enabled = YES;
+////        b.layer.opacity = 1.0;
+////        
+////    }
+////    
+////    if (viewHistoryEnabled){
+////        
+////        self.previousMarkButton.enabled = YES;
+////        self.previousMarkButton.layer.opacity = 1.0;
+////        
+////    }
 //    
-//    if (viewHistoryEnabled){
-//        
-//        self.previousMarkButton.enabled = YES;
-//        self.previousMarkButton.layer.opacity = 1.0;
-//        
-//    }
-    
-}
-
-- (void)toggleButtonsToOffState{
-    
-//    NSArray *buttons = @[self.launchButton,
-//                         self.previousMarkButton];
+//}
+//
+//- (void)toggleButtonsToOffState{
 //    
-//    for (UIButton *b in buttons){
-//        
-//        b.enabled = NO;
-//        b.layer.opacity = .4;
-//        
-//    }
-    
-}
+////    NSArray *buttons = @[self.launchButton,
+////                         self.previousMarkButton];
+////    
+////    for (UIButton *b in buttons){
+////        
+////        b.enabled = NO;
+////        b.layer.opacity = .4;
+////        
+////    }
+//    
+//}
 
 
 #pragma mark - <UITableViewDataSource>
@@ -1300,7 +1319,16 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return YES;
+    if (self.tvSortedContent.count > 0) {
+        
+        return YES;
+        
+    } else{
+        
+        return NO;
+        
+    }
+
     
 }
 
@@ -1320,9 +1348,6 @@
     // highlight the new cell
     
     TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row];
-    
-    BOOL realizationsExist = chainTemplate.realizedChains.count > 0;
-    
     self.selectedChainTemplate = chainTemplate;
     
     // add blue border to selected cell
@@ -1333,37 +1358,30 @@
     
     selectedCell.layer.borderWidth = 4.0;
     
-    [self toggleButtonsToOnStateWithViewHistoryEnabled: realizationsExist];
+    // controls state
+    
+    [self configureToolbarButtonsAccordingToActiveState];
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    CGFloat titleHeight = 80.0;
-//    
-//    if (indexPath.row == 0){
-//        
-//        return titleHeight;
-//        
-//    } else{
+    [self.view layoutSubviews];
     
-        NSInteger chainCount = self.tvSortedContent.count;
+    NSInteger chainCount = self.tvSortedContent.count;
+    
+    if (chainCount == 0){
         
-        if (chainCount == 0){
-            
-            [self.view layoutIfNeeded];
-            
-            return self.activeTableView.frame.size.height;
-            
-        } else{
-            
-            TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row];
-            
-            return [TJBRealizedChainCell suggestedCellHeightForChainTemplate: chainTemplate];
-            
-        }
+        return self.mainContainer.frame.size.height - [self breatherRoomForChainTemplateScrollView];
         
-//    }
+    } else{
+        
+        TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row];
+        
+        return [TJBRealizedChainCell suggestedCellHeightForChainTemplate: chainTemplate];
+        
+    }
+    
     
 }
 
@@ -1611,7 +1629,7 @@
     // get rid of the border on the last selected cell and change state variables for selection
     
     self.selectedChainTemplate = nil;
-    [self toggleButtonsToOffState];
+//    [self toggleButtonsToOffState];
     
     if (self.lastSelectedIndexPath){
         
@@ -1628,7 +1646,7 @@
 
 
 
-#pragma mark - Controls Appearance
+#pragma mark - Controls Appearance / State (enabled or not)
 
 - (void)giveControlsDisabledConfiguration{
     
@@ -1672,13 +1690,64 @@
     
 }
 
+- (void)configureToolbarButtonsAccordingToActiveState{
+    
+    NSArray *buttons = @[self.launchButton, self.deleteButton];
+    
+    for (UIBarButtonItem *bbi in buttons){
+        
+        if (self.lastSelectedIndexPath){
+            
+            [self giveToolbarButtonEnabledAppearance: bbi];
+            
+        } else{
+            
+            [self giveToolbarButtonDisabledAppearance: bbi];
+            
+        }
+        
+    }
+    
+    // must check whether the selected cell has any realized chains before showing the history button
+    
+    if (self.lastSelectedIndexPath){
+        
+        BOOL realizationsExist = self.selectedChainTemplate.realizedChains.count > 0;
+        
+        if (realizationsExist){
+            
+            [self giveToolbarButtonEnabledAppearance: self.historyButton];
+            
+        } else{
+            
+            [self giveToolbarButtonDisabledAppearance: self.historyButton];
+            
+        }
+        
+    } else{
+        
+        [self giveToolbarButtonDisabledAppearance: self.historyButton];
+        
+    }
+    
+
+    
+}
+
+- (void)giveToolbarButtonDisabledAppearance:(UIBarButtonItem *)bbi{
+    
+    bbi.tintColor = [UIColor grayColor];
+    bbi.enabled = NO;
+    
+}
 
 
-
-
-
-
-
+- (void)giveToolbarButtonEnabledAppearance:(UIBarButtonItem *)bbi{
+    
+    bbi.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    bbi.enabled = YES;
+    
+}
 
 
 
