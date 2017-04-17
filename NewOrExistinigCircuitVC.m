@@ -45,7 +45,7 @@
     // user selection flow
     
     BOOL _viewingChainHistory;
-    BOOL _sortByDateCreated;
+//    BOOL _sortByDateCreated;
     
 }
 
@@ -147,7 +147,6 @@
     self.tvActiveDate = today;
     self.dcActiveDate = today;
     
-    _sortByDateCreated = YES;
     
     return self;
 }
@@ -166,8 +165,9 @@
     
     [self viewAesthetics];
     
-    [self configureLabelCorrespondingToSegmentedControl];
+    // segmented control
     
+    [self configureLabelCorrespondingToSegmentedControl];
     [self configureSegmentedControlNotifications];
     
     [self toggleButtonsToOffState];
@@ -392,6 +392,15 @@
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
     
+    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
+                                         fromDate: self.dcActiveDate];
+    [dateComps setMonth: [index intValue] + 1];
+    [dateComps setDay: 1];
+    
+    NSDate *selectedDate = [cal dateFromComponents: dateComps];
+    self.tvActiveDate = selectedDate;
+    
     // disable controls and give disabled appearance
     
     [self giveControlsDisabledConfiguration];
@@ -410,6 +419,7 @@
     
     [self.dateControlObjects[[index intValue]] configureAsSelected];
     self.selectedDateObjectIndex = index;
+    
     
     // activity indicator
     
@@ -435,13 +445,6 @@
     
     int reversedIndex = 11 - [index intValue]; // must use a reversed index because December is in the 0th position of dcSortedContent
     self.tvSortedContent = self.dcSortedContent[reversedIndex]; // the chains being used by the tv will always be a subset of those stored in the dcSortedContent array
-    
-    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
-                                         fromDate: self.dcActiveDate];
-    [dateComps setMonth: [index intValue] + 1];
-    [dateComps setDay: 1];
-    self.tvActiveDate = [cal dateFromComponents: dateComps];
     
     // new table view
     
@@ -503,13 +506,20 @@
     
     [self removeActivityIndicatorIfExists];
     
+    // labels
+    
+    [self updateAllTitleLabelsForNewContent];
+    
     return;
     
 }
 
 
 
+
+
 #pragma mark - Routine Content Generation Sequence Helper Methods
+
 
 - (int)dateControlObjectIndexForDate:(NSDate *)date{
     
@@ -589,6 +599,46 @@
         [self.activeActivityIndicator removeFromSuperview];
         self.activeActivityIndicator = nil;
         
+        
+    }
+    
+}
+
+
+#pragma mark - Title Labels Describing Content
+
+- (void)updateAllTitleLabelsForNewContent{
+    
+    [self updateTitleLabelCorrespondingToActiveTVDate];
+    [self updateNumberOfRecordsTitleLabel];
+    [self configureLabelCorrespondingToSegmentedControl];
+    
+}
+
+- (void)updateTitleLabelCorrespondingToActiveTVDate{
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"MMM yy";
+    self.monthYearTitleLabel.text = [df stringFromDate: self.tvActiveDate];
+    
+}
+
+- (void)updateNumberOfRecordsTitleLabel{
+    
+    NSString *text = [NSString stringWithFormat: @"%d Records", (int)self.tvSortedContent.count];
+    self.numberOfRecordsLabel.text = text;
+    
+}
+
+- (void)configureLabelCorrespondingToSegmentedControl{
+    
+    if (self.sortBySegmentedControl.selectedSegmentIndex == 0){
+        
+        self.routinesByLabel.text = @"Routines by Date Created";
+        
+    } else{
+        
+        self.routinesByLabel.text = @"Routines by Date Executed";
         
     }
     
@@ -1171,111 +1221,78 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-//    if (indexPath.row == 0){
-//        
-//        TJBWorkoutLogTitleCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBWorkoutLogTitleCell"];
-//        
-//        NSString *primaryText;
-//        if (_sortByDateCreated == NO){
-//            primaryText = @"Routines by Last Completion";
-//        } else{
-//            primaryText = @"Routines by Date Created";
-//        }
-//        
-//        NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//        NSDateComponents *dateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
-//                                                  fromDate: self.tvActiveDate];
-//        [dateComps setMonth: [self.selectedDateObjectIndex intValue] + 1];
-//        NSDate *titleDate = [calendar dateFromComponents: dateComps];
-//        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//        df.dateFormat = @"MMMM, yyyy";
-//        NSString *secondaryText = [df stringFromDate: titleDate];
-//        
-//        cell.primaryLabel.text = primaryText;
-//        cell.primaryLabel.font = [UIFont boldSystemFontOfSize: 25];
-//        
-//        cell.secondaryLabel.text = secondaryText;
-//        cell.secondaryLabel.font = [UIFont boldSystemFontOfSize: 20];
-//        
-//        cell.backgroundColor = [UIColor clearColor];
-//        
-//        return cell;
-//        
-//        
-//    } else{
+    NSInteger chainCount = self.tvSortedContent.count;
     
-        NSInteger chainCount = self.tvSortedContent.count;
+    if (chainCount == 0){
         
-        if (chainCount == 0){
+        TJBNoDataCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+        
+        cell.mainLabel.text = @"No Routines";
+        
+        cell.backgroundColor = [UIColor clearColor];
+        
+        return cell;
+        
+    } else{
+        
+        BOOL isSelectedCell = NO;
+        
+        if (self.lastSelectedIndexPath){
             
-            TJBNoDataCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
-            
-            cell.mainLabel.text = @"No Routines";
-            
-            cell.backgroundColor = [UIColor clearColor];
-            
-            return cell;
-            
-        } else{
-            
-            BOOL isSelectedCell = NO;
-            
-            if (self.lastSelectedIndexPath){
-                
-                isSelectedCell = self.lastSelectedIndexPath.row == indexPath.row;
-                
-            }
-            
-            TJBRealizedChainCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
-            
-            [cell clearExistingEntries];
-            
-            NSInteger adjustedRowIndex = indexPath.row ;
-            
-            TJBChainTemplate *chainTemplate = self.tvSortedContent[adjustedRowIndex];
-    
-            BOOL sortByDateLastExecuted = _sortByDateCreated == NO;
-            
-            NSDate *date;
-            
-            if (sortByDateLastExecuted){
-                
-                date = [self largestRealizeChainDateInReferenceYearForChainTemplate: chainTemplate
-                                                                      referenceDate: self.tvActiveDate];
-                
-            } else{
-                
-                date = chainTemplate.dateCreated;
-                
-            }
-            
-            [cell configureWithContentObject: chainTemplate
-                                    cellType: ChainTemplateAdvCell
-                                dateTimeType: TJBDayInYear
-                                 titleNumber: @(indexPath.row + 1)];
-            
-            // configure border width and background color according to whether or not the cell is selected
-            
-            if (isSelectedCell){
-                
-                cell.backgroundColor = [UIColor clearColor];
-                cell.layer.borderWidth = 4.0;
-                
-            } else{
-                
-                cell.backgroundColor = [UIColor clearColor];
-                cell.layer.borderWidth = 0.0;
-                
-            }
-            
-            return cell;
+            isSelectedCell = self.lastSelectedIndexPath.row == indexPath.row;
             
         }
         
-//    }
+        TJBRealizedChainCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+        
+        [cell clearExistingEntries];
+        
+        NSInteger adjustedRowIndex = indexPath.row ;
+        
+        TJBChainTemplate *chainTemplate = self.tvSortedContent[adjustedRowIndex];
+        
+        BOOL sortByDateLastExecuted = self.sortBySegmentedControl.selectedSegmentIndex == 1;
+        
+        NSDate *date;
+        
+        if (sortByDateLastExecuted){
+            
+            date = [self largestRealizeChainDateInReferenceYearForChainTemplate: chainTemplate
+                                                                  referenceDate: self.tvActiveDate];
+            
+        } else{
+            
+            date = chainTemplate.dateCreated;
+            
+        }
+        
+        [cell configureWithContentObject: chainTemplate
+                                cellType: ChainTemplateAdvCell
+                            dateTimeType: TJBDayInYear
+                             titleNumber: @(indexPath.row + 1)];
+        
+        // configure border width and background color according to whether or not the cell is selected
+        
+        if (isSelectedCell){
+            
+            cell.backgroundColor = [UIColor clearColor];
+            cell.layer.borderWidth = 4.0;
+            
+        } else{
+            
+            cell.backgroundColor = [UIColor clearColor];
+            cell.layer.borderWidth = 0.0;
+            
+        }
+        
+        return cell;
+        
+    }
+    
+
     
 }
 
@@ -1758,21 +1775,11 @@
 
 - (void)segmentedControlValueDidChange{
     
+    // date controls must be reloaded because sorting change has significant changes on what month chain templates are associated with
     
+    [self createAndShowDateControlsForDate: self.tvActiveDate];
     
-}
-
-- (void)configureLabelCorrespondingToSegmentedControl{
-    
-    if (self.sortBySegmentedControl.selectedSegmentIndex == 0){
-        
-        self.routinesByLabel.text = @"Routines by Date Created";
-        
-    } else{
-        
-        self.routinesByLabel.text = @"Routines by Date Exxecuted";
-        
-    }
+    [self selectDateControlCorrespondingToDate: self.tvActiveDate];
     
 }
 
