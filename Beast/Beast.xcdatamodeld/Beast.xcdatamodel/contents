@@ -5,6 +5,7 @@
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="numberOfExercises" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="numberOfRounds" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="showInRoutineList" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="exercises" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Exercise" inverseName="chainTemplates" inverseEntity="Exercise" syncable="YES"/>
         <relationship name="realizedChains" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedChain" inverseName="chainTemplate" inverseEntity="RealizedChain" syncable="YES"/>
@@ -13,6 +14,7 @@
     <entity name="Exercise" representedClassName="TJBExercise" syncable="YES" codeGenerationType="class">
         <attribute name="isPlaceholderExercise" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="showInRoutineList" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="ExerciseCategory" inverseName="exercises" inverseEntity="ExerciseCategory" syncable="YES"/>
         <relationship name="chainTemplates" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="exercises" inverseEntity="ChainTemplate" syncable="YES"/>
         <relationship name="realizedSets" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSet" inverseName="exercise" inverseEntity="RealizedSet" syncable="YES"/>
@@ -66,8 +68,8 @@
         <relationship name="targetUnits" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TargetUnit" inverseName="targetUnitCollector" inverseEntity="TargetUnit" syncable="YES"/>
     </entity>
     <elements>
-        <element name="ChainTemplate" positionX="-171" positionY="207" width="128" height="165"/>
-        <element name="Exercise" positionX="-504" positionY="-162" width="128" height="135"/>
+        <element name="ChainTemplate" positionX="-171" positionY="207" width="128" height="180"/>
+        <element name="Exercise" positionX="-504" positionY="-162" width="128" height="150"/>
         <element name="ExerciseCategory" positionX="-794" positionY="-135" width="128" height="73"/>
         <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="120"/>
         <element name="RealizedSet" positionX="-182" positionY="-54" width="128" height="180"/>
