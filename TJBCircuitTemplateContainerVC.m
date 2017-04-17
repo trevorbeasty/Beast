@@ -172,7 +172,7 @@ static NSString * const placeholderName = @"placeholderName";
     
     // meta view
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // title container
     
@@ -195,9 +195,9 @@ static NSString * const placeholderName = @"placeholderName";
     
     self.containerView.backgroundColor = [UIColor clearColor];
     
-    self.leftControlsContainer.backgroundColor = [UIColor blackColor];
+    self.leftControlsContainer.backgroundColor = [UIColor grayColor];
     CALayer *ccLayer = self.leftControlsContainer.layer;
-    ccLayer.borderWidth = 2.0;
+    ccLayer.borderWidth = 1.0;
     ccLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     ccLayer.masksToBounds = YES;
     ccLayer.cornerRadius = 16;

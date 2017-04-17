@@ -305,7 +305,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
                 
                 if (tu.weightIsNull){
                     
-                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
+//                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
                     
                     return NO;
                     
@@ -319,7 +319,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
                 
                 if (tu.repsIsNull){
                     
-                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
+//                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
                     
                     return NO;
                     
@@ -333,7 +333,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
                 
                 if (tu.trailingRestIsNull){
                     
-                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
+//                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
                     
                     return NO;
                     
@@ -722,7 +722,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         tuc.targetUnits = targetUnitsCopy;
         
-        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
+//        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
         
     }
     
@@ -746,7 +746,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         tuc.targetUnits = targetUnitsCopy;
         
-        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
+//        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
         
     }
     
@@ -809,7 +809,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
     
-    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
+//    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
     
     [self saveContext];
     
@@ -836,7 +836,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     [[self moc] deleteObject: tuc];
     
-    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
+//    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
     
     [self saveContext];
     

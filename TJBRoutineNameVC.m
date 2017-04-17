@@ -62,7 +62,7 @@
     
     self.nameLabel.font = [UIFont boldSystemFontOfSize: 15];
     self.nameLabel.backgroundColor = [UIColor clearColor];
-    self.nameLabel.textColor = [UIColor whiteColor];
+    self.nameLabel.textColor = [UIColor blackColor];
     
     self.view.backgroundColor = [UIColor clearColor];
     
@@ -71,8 +71,8 @@
     self.nameTextField.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     CALayer *ntfLayer = self.nameTextField.layer;
     ntfLayer.masksToBounds = YES;
-    ntfLayer.borderColor = [UIColor whiteColor].CGColor;
-    ntfLayer.borderWidth = 2.0;
+    ntfLayer.borderColor = [UIColor blackColor].CGColor;
+    ntfLayer.borderWidth = 1.0;
     ntfLayer.cornerRadius = 8;
     
 }

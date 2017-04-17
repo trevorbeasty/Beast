@@ -158,7 +158,7 @@
     self.roundLabel.text = [NSString stringWithFormat: @"Round %d", [self.roundIndex intValue] + 1];
         
     self.roundLabel.backgroundColor = [UIColor clearColor];
-    self.roundLabel.textColor = [UIColor whiteColor];
+    self.roundLabel.textColor = [UIColor blackColor];
     self.roundLabel.font = [UIFont boldSystemFontOfSize: 15];
     
     int eInd = [self.exerciseIndex intValue];
@@ -228,10 +228,8 @@
         [[CoreDataController singleton] saveContext];
         
         // configure the button
-        
-        self.weightButton.backgroundColor = [UIColor clearColor];
-        [self.weightButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
-                                forState: UIControlStateNormal];
+
+        [self giveButtonSelectedAppearance: self.weightButton];
         
         NSString *weightText = [NSString stringWithFormat: @"%@ lbs", [selectedNumber stringValue]];
         [self.weightButton setTitle: weightText
@@ -283,9 +281,7 @@
         
         // configure the button
         
-        self.repsButton.backgroundColor = [UIColor clearColor];
-        [self.repsButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
-                                forState: UIControlStateNormal];
+        [self giveButtonSelectedAppearance: self.repsButton];
         
         NSString *repsText = [NSString stringWithFormat: @"%@ reps", [selectedNumber stringValue]];
         [self.repsButton setTitle: repsText
@@ -337,9 +333,7 @@
         
         // configure the button
         
-        self.restButton.backgroundColor = [UIColor clearColor];
-        [self.restButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
-                              forState: UIControlStateNormal];
+        [self giveButtonSelectedAppearance: self.restButton];
         
         NSString *formattedTime = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [selectedNumber intValue]];
         NSString *restText = [NSString stringWithFormat: @"%@ rest", formattedTime];
@@ -372,7 +366,7 @@
     
     if (gr.state == UIGestureRecognizerStateBegan){
         
-        NSLog(@"began");
+//        NSLog(@"began");
         
         BOOL valueNotSelected = [self targetUnitCorrespondingToVC].weightIsNull;
         
@@ -404,7 +398,7 @@
         
     } else if (gr.state == UIGestureRecognizerStateRecognized){
         
-        NSLog(@"recognized");
+//        NSLog(@"recognized");
         
         [self.masterController deactivateCopyingState];
         
@@ -416,7 +410,7 @@
     
     if (gr.state == UIGestureRecognizerStateBegan){
         
-        NSLog(@"began");
+//        NSLog(@"began");
         
         BOOL valueNotSelected = [self targetUnitCorrespondingToVC].repsIsNull;
     
@@ -448,7 +442,7 @@
         
     } else if (gr.state == UIGestureRecognizerStateRecognized){
         
-        NSLog(@"recognized");
+//        NSLog(@"recognized");
         
         [self.masterController deactivateCopyingState];
         
@@ -460,7 +454,7 @@
     
     if (gr.state == UIGestureRecognizerStateBegan){
         
-        NSLog(@"began");
+//        NSLog(@"began");
         
         BOOL valueNotSelected = [self targetUnitCorrespondingToVC].trailingRestIsNull;
         
@@ -473,7 +467,7 @@
             
             float number = [self targetUnitCorrespondingToVC].trailingRestTarget;
             
-            NSLog(@"number to be copied for trailing rest: %f (the number being sent to other row comps)", number);
+//            NSLog(@"number to be copied for trailing rest: %f (the number being sent to other row comps)", number);
             
             // change the appearance of the copying reference cell
             
@@ -494,7 +488,7 @@
         
     } else if (gr.state == UIGestureRecognizerStateRecognized){
         
-        NSLog(@"recognized");
+//        NSLog(@"recognized");
         
         [self.masterController deactivateCopyingState];
         
@@ -506,9 +500,12 @@
 
 - (void)giveButtonCopyingAppearance:(UIButton *)button{
     
-    button.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    [button setTitleColor: [UIColor blackColor]
+//    button.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    button.backgroundColor = [UIColor darkGrayColor];
+    [button setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                  forState: UIControlStateNormal];
+    
+    button.layer.borderWidth = 0;
     
 }
 
@@ -516,20 +513,28 @@
     
     
     button.backgroundColor = [UIColor clearColor];
-    [button setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
+    [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
+    
+    button.layer.borderWidth = 0;
 }
 
 - (void)giveButtonActiveConfig:(UIButton *)button{
     
-    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    [button setTitleColor: [UIColor blackColor]
+//    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//    button.backgroundColor = [UIColor lightGrayColor];
+    button.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+//    [button setTitleColor: [UIColor blackColor]
+//                 forState: UIControlStateNormal];
+    [button setTitleColor: [UIColor darkGrayColor]
                  forState: UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     
     CALayer *layer = button.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8.0;
+    layer.borderWidth = 1.0;
+    layer.borderColor = [UIColor darkGrayColor].CGColor;
     
 }
 
@@ -621,7 +626,7 @@
         
         // core data
         
-        NSLog(@"value to copy for trailing rest: %f", _valueToCopy);
+//        NSLog(@"value to copy for trailing rest: %f", _valueToCopy);
         
         TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
         tu.trailingRestTarget = _valueToCopy;

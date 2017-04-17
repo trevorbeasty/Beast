@@ -118,8 +118,8 @@
     
     UIButton *button = self.selectedExerciseButton;
     
-    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    [button setTitleColor: [UIColor blackColor]
+    button.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    [button setTitleColor: [UIColor darkGrayColor]
                  forState: UIControlStateNormal];
     
     button.titleLabel.numberOfLines = 0;
@@ -128,11 +128,13 @@
     CALayer *layer = button.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8;
+    layer.borderWidth = 1;
+    layer.borderColor = [UIColor darkGrayColor].CGColor;
     
     // number label
     
     self.exerciseNumberLabel.font = [UIFont boldSystemFontOfSize: 35];
-    self.exerciseNumberLabel.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.exerciseNumberLabel.textColor = [UIColor blackColor];
     self.exerciseNumberLabel.backgroundColor = [UIColor clearColor];
 
 
@@ -231,8 +233,10 @@
         // update the view
         
         self.selectedExerciseButton.backgroundColor = [UIColor clearColor];
-        [self.selectedExerciseButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
+        [self.selectedExerciseButton setTitleColor: [UIColor blackColor]
                                           forState: UIControlStateNormal];
+        
+        self.selectedExerciseButton.layer.borderWidth = 0;
         
         [self.selectedExerciseButton setTitle: selectedExercise.name
                                      forState: UIControlStateNormal];

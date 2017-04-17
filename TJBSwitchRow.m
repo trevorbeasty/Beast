@@ -94,7 +94,7 @@
     // targets title label
     
     self.targetsTitleLabel.font = [UIFont boldSystemFontOfSize: 15];
-    self.targetsTitleLabel.textColor = [UIColor whiteColor];
+    self.targetsTitleLabel.textColor = [UIColor blackColor];
     self.targetsTitleLabel.backgroundColor = [UIColor clearColor];
     
 }
