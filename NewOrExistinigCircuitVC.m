@@ -39,7 +39,7 @@
 #import "TJBSchemeSelectionDateComp.h"
 
 
-@interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
+@interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 {
     // user selection flow
@@ -176,6 +176,8 @@
     
     [self configureLabelCorrespondingToSegmentedControl];
     
+    [self configureSegmentedControlNotifications];
+    
     [self toggleButtonsToOffState];
     
     [self deriveSupportArraysAndConfigureInitialDisplay];
@@ -194,35 +196,7 @@
     
 }
 
-- (void)deriveSupportArraysAndConfigureInitialDisplay{
-    
-    [self fetchCoreData]; // fetches all chain templates and stores them in the 'frc' property
-    
-    // derive the supporting arrays for both the date controls and the table view. When this controller is first loaded, the date controls and table view will reference the same array, which corresponds to the year encapsulating the current day
-    
-    NSDate *today = [NSDate date];
-    
-    self.tvActiveDate = today;
-    self.dcActiveDate = today;
-    
-    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: today];
-    
-    self.dcSortedContent = initialRefArray; // only the dc needs to store this annual, sorted content bucketed by month. The table view simply must choose the correct bucket when setting its tvSortedContent
-    
-    // must now configure the date controls and create the table view
-    
-    // date controls
-    
-    [self configureDateControlsBasedOnDCActiveDate]; // this does not select any particular date control. Call 'didSelectObjectWithIndex' to select a date control and load the corresponding table view
-    
-    // table view
-    // the table view is created by artificially selecting a date control
-    
-    int dateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
-    
-    [self didSelectObjectWithIndex: @(dateControlIndex)];
-    
-}
+
 
 
 
@@ -326,48 +300,68 @@
     
 }
 
-
-#pragma mark - Core Data
-
-- (void)fetchCoreData{
+- (void)configureTableView:(UITableView *)tableView{
     
-    // NSFetchedResultsController
+    // table view configuration
     
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
+    // cells
     
-    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
-                                                               ascending: YES];
+    UINib *nib = [UINib nibWithNibName: @"TJBRealizedChainCell"
+                                bundle: nil];
     
-    [request setSortDescriptors: @[nameSort]];
+    [tableView registerNib: nib
+    forCellReuseIdentifier: @"TJBRealizedChainCell"];
     
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    UINib *nib2 = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
+                                 bundle: nil];
     
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                          managedObjectContext: moc
-                                                                            sectionNameKeyPath: @"name"
-                                                                                     cacheName: nil];
-    frc.delegate = self;
+    [tableView registerNib: nib2
+    forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
     
-    self.frc = frc;
+    UINib *nib3 = [UINib nibWithNibName: @"TJBNoDataCell"
+                                 bundle: nil];
     
-    NSError *error = nil;
+    [tableView registerNib: nib3
+    forCellReuseIdentifier: @"TJBNoDataCell"];
     
-    if (![self.frc performFetch: &error])
-    {
-        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
-        abort();
-    }
+    // data source and delegate
+    
+    tableView.delegate = self;
+    tableView.dataSource = self;
     
 }
 
+#pragma mark - Routine Content Generation Sequence
 
-
-
-
-
-
-
-#pragma mark - Derivation of Support Arrays
+- (void)deriveSupportArraysAndConfigureInitialDisplay{
+    
+    [self fetchCoreData]; // fetches all chain templates and stores them in the 'frc' property
+    
+    // derive the supporting arrays for both the date controls and the table view. When this controller is first loaded, the date controls and table view will reference the same array, which corresponds to the year encapsulating the current day
+    
+    NSDate *today = [NSDate date];
+    
+    self.tvActiveDate = today;
+    self.dcActiveDate = today;
+    
+    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: today];
+    
+    self.dcSortedContent = initialRefArray; // only the dc needs to store this annual, sorted content bucketed by month. The table view simply must choose the correct bucket when setting its tvSortedContent
+    
+    // must now configure the date controls and create the table view
+    
+    // date controls
+    
+    [self configureDateControlsBasedOnDCActiveDate]; // this does not select any particular date control. Call 'didSelectObjectWithIndex' to select a date control and load the corresponding table view
+    
+    // table view
+    // the table view is created by artificially selecting a date control
+    
+    int dateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
+    
+    [self didSelectObjectWithIndex: @(dateControlIndex)];
+    
+}
 
 
 - (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)annualSortedContentForReferenceDate:(NSDate *)referenceDate{
@@ -398,6 +392,215 @@
     }
     
 }
+
+
+- (void)didSelectObjectWithIndex:(NSNumber *)index{
+    
+    // disable controls and give disabled appearance
+    
+    [self giveControlsDisabledConfiguration];
+    
+    // must show the new selection in the date control objects, show the activity indicator while replacing the old table view, and adjust all state variables accordingly
+    
+    [self configureSelectionAsNil]; // adjusts certain state parameters
+    
+    // date objects
+    
+    if (self.selectedDateObjectIndex){
+        
+        [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] configureAsNotSelected];
+        
+    }
+    
+    [self.dateControlObjects[[index intValue]] configureAsSelected];
+    self.selectedDateObjectIndex = index;
+    
+    // activity indicator
+    
+    [self showActivityIndicator];
+    
+    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
+    
+    [self performSelector: @selector(updateTableViewAndRemoveActivityIndicator:)
+               withObject: index
+               afterDelay: .2];
+    
+}
+
+
+- (void)updateTableViewAndRemoveActivityIndicator:(NSNumber *)index{
+    
+    // get rid of all existing table before adding the new one
+    
+    [self clearAllTableViewsAndDirectlyAssociatedObjects];
+    
+    // table view UI and supporting array
+    // supporting array must be derived before the table view is configured because the supporting array is required to determine table view size and to determine cell content
+    
+    int reversedIndex = 11 - [index intValue]; // must use a reversed index because December is in the 0th position of dcSortedContent
+    self.tvSortedContent = self.dcSortedContent[reversedIndex]; // the chains being used by the tv will always be a subset of those stored in the dcSortedContent array
+    
+    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
+                                         fromDate: self.dcActiveDate];
+    [dateComps setMonth: [index intValue] + 1];
+    [dateComps setDay: 1];
+    self.tvActiveDate = [cal dateFromComponents: dateComps];
+    
+    // new table view
+    
+    [self addEmbeddedTableViewToViewHierarchy];
+    
+    // enable all buttons and give enabled appearance
+    
+    [self giveControlsEnabledConfiguration];
+    
+    return;
+    
+}
+
+
+
+
+- (void)addEmbeddedTableViewToViewHierarchy{
+    
+    //// returns a table view embedded inside a scroll view. This is done so that the table view is forced to layout all its content
+    
+    UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
+    self.activeScrollView = sv;
+    
+    CGFloat tvContentHeight = [self totalTableViewHeightBasedOnTVSortedContent];
+    
+    if (tvContentHeight < self.mainContainer.frame.size.height){
+        tvContentHeight = self.mainContainer.frame.size.height;
+    }
+    
+    CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, tvContentHeight); // the scroll view is large enough that the table view will layout all of its content
+    sv.contentSize = svContentSize;
+    
+    sv.backgroundColor = [UIColor clearColor];
+    sv.bounces = YES;
+    
+    UITableView *tv = [[UITableView alloc] init];
+    self.activeTableView = tv;
+    
+    [self configureTableView: tv];
+    
+    tv.frame = CGRectMake(0, 0, svContentSize.width, tvContentHeight);
+    tv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    tv.separatorColor = [UIColor blackColor];
+    tv.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    
+    tv.dataSource = self;
+    tv.delegate = self;
+    
+    // ... other aesthetic properties
+    
+    //// view hierarchy
+    // sv and tv
+    
+    [sv addSubview: tv];
+    [self.mainContainer insertSubview: sv
+                              atIndex: 0];
+    
+    // activity indicator
+    
+    [self removeActivityIndicatorIfExists];
+    
+    return;
+    
+}
+
+
+
+#pragma mark - Routine Content Generation Sequence Helper Methods
+
+- (int)dateControlObjectIndexForDate:(NSDate *)date{
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSInteger monthAsInt = [calendar component: NSCalendarUnitMonth
+                                      fromDate: date];
+    
+    return (int)monthAsInt - 1;
+    
+}
+
+
+- (CGFloat)totalTableViewHeightBasedOnTVSortedContent{
+    
+    // based on the array of chain templates found in tvSortedContent, calculate the total table view height
+    
+    NSInteger iterationLimit; // based on the count of objects in tvSortedContent, the amount of cells presented by the table view will vary
+    
+    if (self.tvSortedContent.count == 0){
+        
+        iterationLimit = 1;
+        
+    } else{
+        
+        iterationLimit = self.tvSortedContent.count;
+        
+    }
+    
+    CGFloat sum = 0;
+    
+    for (int i = 0; i < iterationLimit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        CGFloat height = [self tableView: self.activeTableView
+                 heightForRowAtIndexPath: path];
+        
+        sum += height;
+        
+    }
+    
+    return sum;
+    
+}
+
+
+- (void)showActivityIndicator{
+    
+    if (self.activeActivityIndicator){
+        
+        [self.activeActivityIndicator removeFromSuperview];
+        self.activeActivityIndicator = nil;
+        
+    }
+    
+    UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    self.activeActivityIndicator = indView;
+    
+    indView.frame = self.mainContainer.frame;
+    indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    indView.layer.opacity = .9;
+    indView.hidesWhenStopped = YES;
+    
+    [self.view addSubview: indView];
+    
+    [indView startAnimating];
+    
+}
+
+
+- (void)removeActivityIndicatorIfExists{
+    
+    if (self.activeActivityIndicator){
+        
+        [self.activeActivityIndicator stopAnimating];
+        [self.activeActivityIndicator removeFromSuperview];
+        self.activeActivityIndicator = nil;
+        
+        
+    }
+    
+}
+
+
+#pragma mark - Content Sorting and Grouping
+
 
 - (void)filterAndSortArrayByDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)array referenceDate:(NSDate *)referenceDate{
     
@@ -462,6 +665,7 @@
     }];
     
 }
+
 
 - (void)filterAndSortArrayByDateCreated:(NSMutableArray<TJBChainTemplate *> *)array referenceDate:(NSDate *)referenceDate{
     
@@ -614,6 +818,11 @@
     
 }
 
+
+
+#pragma mark - Content Sorting and Grouping Helper Methods
+
+
 - (NSDate *)largestRealizeChainDateInReferenceYearForChainTemplate:(TJBChainTemplate *)chainTemplate referenceDate:(NSDate *)referenceDate{
     
     //// the goal is to get the largest date for the current year so that dates are correctly ordered.  This algorithm relies on the chain template's chains being in chronological order.  This method assumes there is a realized chain to be referenced
@@ -684,7 +893,78 @@
     
 }
 
+
+
+#pragma mark - Core Data Fetching
+
+- (void)fetchCoreData{
+    
+    // NSFetchedResultsController
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
+    
+    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
+                                                               ascending: YES];
+    
+    [request setSortDescriptors: @[nameSort]];
+    
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
+                                                                          managedObjectContext: moc
+                                                                            sectionNameKeyPath: @"name"
+                                                                                     cacheName: nil];
+    frc.delegate = self;
+    
+    self.frc = frc;
+    
+    NSError *error = nil;
+    
+    if (![self.frc performFetch: &error])
+    {
+        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
+        abort();
+    }
+    
+}
+
+
+
+
+
+
+
+
+
 #pragma mark - Date Controls
+
+- (void)incrementDCACtiveYearWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
+    
+    int yearDelta;
+    
+    if (incrementDirectionForward){
+        yearDelta = 1;
+    } else{
+        yearDelta = -1;
+    }
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [calendar components: NSCalendarUnitYear
+                                              fromDate: self.dcActiveDate];
+    
+    dateComps.year += yearDelta;
+    [dateComps setDay: 1];
+    [dateComps setMonth: 1];
+    self.dcActiveDate = [calendar dateFromComponents: dateComps];
+    
+    // source array and date control objects
+    
+    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
+    
+    [self configureDateControlsBasedOnDCActiveDate];
+    
+}
+
 
 - (void)configureDateControlsBasedOnDCActiveDate{
     
@@ -810,6 +1090,8 @@
     self.dateControlObjects = [[NSMutableArray alloc] init];
     
 }
+
+#pragma mark - Date Controls Helper Methods
 
 - (void)drawCircles{
     
@@ -1262,31 +1544,31 @@
 
 #pragma mark - Button Actions
 
-- (IBAction)didPressToggle:(id)sender{
-    
-    _sortByDateCreated = !_sortByDateCreated;
-    
-    [self configureSelectionAsNil];
-    
-    // must rederive and layout date controls because the filter criteria for chain templates has now changed
-    
-    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
-    
-    [self configureDateControlsBasedOnDCActiveDate];
-    
-    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
-    
-    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
-    
-    NSIndexPath *path = [NSIndexPath indexPathForRow: 0
-                                           inSection: 0];
-    
-    [self.activeTableView scrollToRowAtIndexPath: path
-                                atScrollPosition: UITableViewScrollPositionTop
-                                        animated: YES];
-
-    
-}
+//- (IBAction)didPressToggle:(id)sender{
+//    
+//    _sortByDateCreated = !_sortByDateCreated;
+//    
+//    [self configureSelectionAsNil];
+//    
+//    // must rederive and layout date controls because the filter criteria for chain templates has now changed
+//    
+//    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
+//    
+//    [self configureDateControlsBasedOnDCActiveDate];
+//    
+//    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
+//    
+//    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
+//    
+//    NSIndexPath *path = [NSIndexPath indexPathForRow: 0
+//                                           inSection: 0];
+//    
+//    [self.activeTableView scrollToRowAtIndexPath: path
+//                                atScrollPosition: UITableViewScrollPositionTop
+//                                        animated: YES];
+//
+//    
+//}
 
 
 
@@ -1315,7 +1597,7 @@
     
 }
 
-
+#pragma mark - Selections
 
 - (void)configureSelectionAsNil{
     
@@ -1335,104 +1617,11 @@
     
 }
 
-- (void)incrementDCACtiveYearWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
-    
-    int yearDelta;
-    
-    if (incrementDirectionForward){
-        yearDelta = 1;
-    } else{
-        yearDelta = -1;
-    }
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [calendar components: NSCalendarUnitYear
-                                              fromDate: self.dcActiveDate];
-    
-    dateComps.year += yearDelta;
-    [dateComps setDay: 1];
-    [dateComps setMonth: 1];
-    self.dcActiveDate = [calendar dateFromComponents: dateComps];
-    
-    // source array and date control objects
-    
-    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
-    
-    [self configureDateControlsBasedOnDCActiveDate];
-    
-}
-
-#pragma mark - <UIViewControllerRestoration>
-
-// will want to eventually store table view scroll position
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    
-    NewOrExistinigCircuitVC *vc = [[NewOrExistinigCircuitVC alloc] init];
-    
-    return vc;
-    
-}
-
-#pragma mark - <TJBSchemeSelectionDateCompDelegate>
-
-- (void)didSelectObjectWithIndex:(NSNumber *)index{
-    
-    // disable controls and give disabled appearance
-    
-    [self giveControlsDisabledConfiguration];
-    
-    // must show the new selection in the date control objects, show the activity indicator while replacing the old table view, and adjust all state variables accordingly
-    
-    [self configureSelectionAsNil]; // adjusts certain state parameters
-    
-    // date objects
-    
-    if (self.selectedDateObjectIndex){
-        
-        [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] configureAsNotSelected];
-        
-    }
-    
-    [self.dateControlObjects[[index intValue]] configureAsSelected];
-    self.selectedDateObjectIndex = index;
-    
-    // activity indicator
-    
-    [self showActivityIndicator];
-    
-    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
-    
-    [self performSelector: @selector(updateTableViewAndRemoveActivityIndicator:)
-               withObject: index
-               afterDelay: .2];
-
-}
 
 
 
-- (void)showActivityIndicator{
-    
-    if (self.activeActivityIndicator){
-        
-        [self.activeActivityIndicator removeFromSuperview];
-        self.activeActivityIndicator = nil;
-        
-    }
-    
-    UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-    self.activeActivityIndicator = indView;
-    
-    indView.frame = self.mainContainer.frame;
-    indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    indView.layer.opacity = .9;
-    indView.hidesWhenStopped = YES;
-    
-    [self.view addSubview: indView];
-    
-    [indView startAnimating];
-    
-}
+
+#pragma mark - Controls Appearance
 
 - (void)giveControlsDisabledConfiguration{
     
@@ -1446,10 +1635,7 @@
         b.layer.opacity = .4;
         
     }
-    
-//    self.sortBySegmentedControl.enabled = NO;
-//    self.sortBySegmentedControl.layer.opacity = .4;
-    
+
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
         [comp configureAsDisabled];
@@ -1471,9 +1657,6 @@
         
     }
     
-//    self.sortBySegmentedControl.enabled = YES;
-//    self.sortBySegmentedControl.layer.opacity = 1.0;
-    
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
         [comp configureAsEnabled];
@@ -1482,173 +1665,15 @@
     
 }
 
-- (void)updateTableViewAndRemoveActivityIndicator:(NSNumber *)index{
-    
-    // get rid of all existing table before adding the new one
-    
-    [self clearAllTableViewsAndDirectlyAssociatedObjects];
-    
-    // table view UI and supporting array
-    // supporting array must be derived before the table view is configured because the supporting array is required to determine table view size and to determine cell content
-    
-    int reversedIndex = 11 - [index intValue]; // must use a reversed index because December is in the 0th position of dcSortedContent
-    self.tvSortedContent = self.dcSortedContent[reversedIndex]; // the chains being used by the tv will always be a subset of those stored in the dcSortedContent array
-    
-    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
-                                         fromDate: self.dcActiveDate];
-    [dateComps setMonth: [index intValue] + 1];
-    [dateComps setDay: 1];
-    self.tvActiveDate = [cal dateFromComponents: dateComps];
-    
-    // new table view
-    
-    [self addEmbeddedTableViewToViewHierarchy];
-    
-    // enable all buttons and give enabled appearance
-    
-    [self giveControlsEnabledConfiguration];
-    
-    return;
-    
-}
 
-- (void)addEmbeddedTableViewToViewHierarchy{
-    
-    //// returns a table view embedded inside a scroll view. This is done so that the table view is forced to layout all its content
-    
-    UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
-    self.activeScrollView = sv;
-    
-    CGFloat tvContentHeight = [self totalTableViewHeightBasedOnTVSortedContent];
-    
-    if (tvContentHeight < self.mainContainer.frame.size.height){
-        tvContentHeight = self.mainContainer.frame.size.height;
-    }
-    
-    CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, tvContentHeight); // the scroll view is large enough that the table view will layout all of its content
-    sv.contentSize = svContentSize;
-    
-    sv.backgroundColor = [UIColor clearColor];
-    sv.bounces = YES;
-    
-    UITableView *tv = [[UITableView alloc] init];
-    self.activeTableView = tv;
-    
-    [self configureTableView: tv];
-    
-    tv.frame = CGRectMake(0, 0, svContentSize.width, tvContentHeight);
-    tv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    tv.separatorColor = [UIColor blackColor];
-    tv.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
-    tv.dataSource = self;
-    tv.delegate = self;
-    
-    // ... other aesthetic properties
-    
-    //// view hierarchy
-    // sv and tv
-    
-    [sv addSubview: tv];
-    [self.mainContainer insertSubview: sv
-                              atIndex: 0];
-    
-    // activity indicator
-    
-    [self removeActivityIndicatorIfExists];
-    
-    return;
 
-}
 
-- (void)removeActivityIndicatorIfExists{
-    
-    if (self.activeActivityIndicator){
-        
-        [self.activeActivityIndicator stopAnimating];
-        [self.activeActivityIndicator removeFromSuperview];
-        self.activeActivityIndicator = nil;
-        
-        
-    }
-    
-}
 
-- (CGFloat)totalTableViewHeightBasedOnTVSortedContent{
-    
-    // based on the array of chain templates found in tvSortedContent, calculate the total table view height
-    
-    NSInteger iterationLimit; // based on the count of objects in tvSortedContent, the amount of cells presented by the table view will vary
-    
-    if (self.tvSortedContent.count == 0){
-        
-        iterationLimit = 1;
-        
-    } else{
-        
-        iterationLimit = self.tvSortedContent.count;
-        
-    }
-    
-    CGFloat sum = 0;
-    
-    for (int i = 0; i < iterationLimit; i++){
-        
-        NSIndexPath *path = [NSIndexPath indexPathForRow: i
-                                               inSection: 0];
-        
-        CGFloat height = [self tableView: self.activeTableView
-                 heightForRowAtIndexPath: path];
-        
-        sum += height;
-        
-    }
-    
-    return sum;
-    
-}
 
-- (int)dateControlObjectIndexForDate:(NSDate *)date{
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSInteger monthAsInt = [calendar component: NSCalendarUnitMonth
-                                      fromDate: date];
-    
-    return (int)monthAsInt - 1;
-    
-}
 
-- (void)configureTableView:(UITableView *)tableView{
-    
-    // table view configuration
-    
-    // cells
-    
-    UINib *nib = [UINib nibWithNibName: @"TJBRealizedChainCell"
-                                bundle: nil];
-    
-    [tableView registerNib: nib
-               forCellReuseIdentifier: @"TJBRealizedChainCell"];
-    
-    UINib *nib2 = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-                                 bundle: nil];
-    
-    [tableView registerNib: nib2
-               forCellReuseIdentifier: @"TJBWorkoutLogTitleCell"];
-    
-    UINib *nib3 = [UINib nibWithNibName: @"TJBNoDataCell"
-                                 bundle: nil];
-    
-    [tableView registerNib: nib3
-               forCellReuseIdentifier: @"TJBNoDataCell"];
-    
-    // data source and delegate
-    
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    
-}
+
+
+
 
 #pragma mark - Toolbar
 
@@ -1755,7 +1780,7 @@
         
     } else{
         
-        self.routinesByLabel.text = @"Routines by Date Executed";
+        self.routinesByLabel.text = @"Routines by Date Exxecuted";
         
     }
     
