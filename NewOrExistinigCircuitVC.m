@@ -214,7 +214,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
 }
 
-- (void)viewDidAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated{
     
     // core data will be saved many times as a routine is created
     // this method of updating this controller prevents needless, repetitive updates
@@ -1952,7 +1952,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 - (void)animateToolbarOffscreen{
     
 
-    
     [UIView animateWithDuration: toolbarSlidingAnimationTime
                      animations: ^{
                          
@@ -1978,8 +1977,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
                          CGFloat toolbarHeight = self.toolbar.frame.size.height;
                          self.toolbarBottomSpacingConstr.constant = -1 * toolbarHeight;
-                         
-                         [self.view layoutSubviews];
                          
                          self.activeScrollView.contentSize = [self scrollViewContentSize];
     
@@ -2014,8 +2011,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
                          self.arrowControlButton.enabled = YES;
                          
                          self.toolbarBottomSpacingConstr.constant = 8;
-                         
-                         [self.view layoutSubviews];
                          
                          self.activeScrollView.contentSize = [self scrollViewContentSize];
                          
@@ -2169,7 +2164,9 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     if (self.tvSortedContent.count == 0){
         
         [self.activeTableView insertRowsAtIndexPaths: @[self.lastSelectedIndexPath]
-                              withRowAnimation: UITableViewRowAnimationRight];
+                                    withRowAnimation: UITableViewRowAnimationRight];
+        
+        [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] deleteCircle];
         
     }
 
@@ -2195,6 +2192,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         if (ct.realizedChains.count > 0){
     
             ct.showInRoutineList = NO;
+            
+            [[CoreDataController singleton] saveContext];
     
         } else{
     

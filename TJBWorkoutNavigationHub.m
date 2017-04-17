@@ -1666,6 +1666,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
         [self.tableView insertRowsAtIndexPaths: @[self.currentlySelectedPath]
                               withRowAnimation: UITableViewRowAnimationRight];
         
+        [self.circleDateChildren[[self.selectedDateButtonIndex intValue]] getRidOfContentDot];
+        
     }
     
 
