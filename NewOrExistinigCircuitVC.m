@@ -68,15 +68,30 @@
 @property (weak, nonatomic) IBOutlet UILabel *monthYearTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfRecordsLabel;
 
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UILabel *sortByBottomLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
+@property (weak, nonatomic) IBOutlet UIButton *arrowControlButton;
+
+
 // IBAction
 
-- (IBAction)didPressLaunchButton:(id)sender;
+//- (IBAction)didPressLaunchButton:(id)sender;
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
-- (IBAction)didPressViewHistory:(id)sender;
-- (IBAction)didPressToggle:(id)sender;
-- (IBAction)didPressNewRoutineButton:(id)sender;
+//- (IBAction)didPressViewHistory:(id)sender;
+//- (IBAction)didPressToggle:(id)sender;
+//- (IBAction)didPressNewRoutineButton:(id)sender;
+
+// toolbar button actions
+
+- (IBAction)didPressLaunchButton:(id)sender;
+- (IBAction)didPressHistoryButton:(id)sender;
+- (IBAction)didPressDeleteButton:(id)sender;
+- (IBAction)didPressNewRoutine:(id)sender;
+
+
 
 
 // core
@@ -209,27 +224,6 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     
-    // buttons
-    
-//    NSArray *buttons = @[self.launchButton,
-//                         self.previousMarkButton,
-//                         self.buttonNewRoutine];
-//    
-//    for (UIButton *button in buttons){
-//        
-//        [button setBackgroundColor: [[TJBAestheticsController singleton] paleLightBlueColor]];
-//        [button setTitleColor: [UIColor darkGrayColor]
-//                     forState: UIControlStateNormal];
-//        button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
-//        
-//        CALayer *buttLayer = button.layer;
-//        buttLayer.masksToBounds = YES;
-//        buttLayer.cornerRadius = 20.0;
-//        buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
-//        buttLayer.borderWidth = 2.0;
-//        
-//    }
-    
     // container view shadow
     
     UIView *shadowView = self.mainContainer;
@@ -278,10 +272,6 @@
         
     }
     
-    // bottom controls container
-    
-//    self.bottomControlsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
     // title labels
     
     NSArray *grayBarTitleLabels = @[self.routinesByLabel, self.monthYearTitleLabel, self.numberOfRecordsLabel];
@@ -293,8 +283,36 @@
         
     }
 
+    // bottom controls
     
-
+    self.arrowControlButton.backgroundColor = [UIColor grayColor];
+    CALayer *acbLayer = self.arrowControlButton.layer;
+    acbLayer.cornerRadius = 25;
+    acbLayer.masksToBounds = YES;
+    acbLayer.borderWidth = 1;
+    acbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    
+    self.toolbar.backgroundColor = [UIColor grayColor];
+    
+    self.sortBySegmentedControl.backgroundColor = [UIColor grayColor];
+    self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    CALayer *sbscLayer = self.sortBySegmentedControl.layer;
+    sbscLayer.masksToBounds = YES;
+    sbscLayer.cornerRadius = 22;
+    sbscLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    sbscLayer.borderWidth = 1.0;
+    
+    self.toolbar.barTintColor = [UIColor grayColor];
+    self.toolbar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    CALayer *tbLayer = self.toolbar.layer;
+    tbLayer.cornerRadius = 22;
+    tbLayer.masksToBounds = YES;
+    tbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    tbLayer.borderWidth = 1.0;
+    
+    self.sortByBottomLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.sortByBottomLabel.backgroundColor = [UIColor clearColor];
+    self.sortByBottomLabel.textColor = [UIColor grayColor];
     
 }
 
@@ -1052,7 +1070,8 @@
 
 #pragma mark - View History and Related Actions
 
-- (IBAction)didPressViewHistory:(id)sender{
+
+- (IBAction)didPressHistoryButton:(id)sender{
     
     // only attempt to present the VC if a chain template has been selected
     
@@ -1087,9 +1106,8 @@
         
     }
     
-    
-    
 }
+
 
 
 - (void)showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables{
@@ -1260,26 +1278,7 @@
     
 }
 
-- (IBAction)didPressNewRoutineButton:(id)sender{
-    
-    __weak NewOrExistinigCircuitVC *weakSelf = self;
-    
-    TJBVoidCallback callback = ^{
-        
-        [weakSelf dismissViewControllerAnimated: YES
-                                     completion: nil];
-        
-        [weakSelf deriveSupportArraysAndConfigureInitialDisplay];
-        
-    };
-    
-    TJBCircuitTemplateContainerVC *ctcVC = [[TJBCircuitTemplateContainerVC alloc] initWithCallback: callback];
-    
-    [self presentViewController: ctcVC
-                       animated: YES
-                     completion: nil];
-    
-}
+
 
 
 
@@ -1291,45 +1290,6 @@
 }
 
 
-- (IBAction)didPressLaunchButton:(id)sender {
-    
-    if (self.selectedChainTemplate){
-        
-        TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
-        vc1.tabBarItem.title = @"Active";
-        vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
-        
-        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
-                                                                    advancedControlsActive: NO];
-        vc3.tabBarItem.title = @"Workout Log";
-        vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
-        
-        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
-        vc2.tabBarItem.title = @"Progress";
-        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
-        
-        // tab bar
-        
-        UITabBarController *tbc = [[UITabBarController alloc] init];
-        [tbc setViewControllers: @[vc1, vc2, vc3]];
-        tbc.tabBar.translucent = NO;
-        tbc.tabBar.barTintColor = [UIColor darkGrayColor];
-        tbc.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-
-        
-        [self presentViewController: tbc
-                           animated: YES
-                         completion: nil];
-        
-    } else{
-        
-        NSLog(@"no chain template selected");
-        
-    }
-    
-    
-    
-}
 
 
 
@@ -1581,7 +1541,8 @@
     // sv and tv
     
     [sv addSubview: tv];
-    [self.mainContainer addSubview: sv];
+    [self.mainContainer insertSubview: sv
+                              atIndex: 0];
     
     // activity indicator
     
@@ -1679,9 +1640,108 @@
     
 }
 
+#pragma mark - Toolbar
+
+
+
+
+
+
+
+#pragma mark - Toolbar Actions
+
+
+
+
+
+- (IBAction)didPressLaunchButton:(id)sender {
+        
+    if (self.selectedChainTemplate){
+        
+        TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
+        vc1.tabBarItem.title = @"Active";
+        vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
+        
+        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
+                                                                    advancedControlsActive: NO];
+        vc3.tabBarItem.title = @"Workout Log";
+        vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
+        
+        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
+        vc2.tabBarItem.title = @"Progress";
+        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
+        
+        // tab bar
+        
+        UITabBarController *tbc = [[UITabBarController alloc] init];
+        [tbc setViewControllers: @[vc1, vc2, vc3]];
+        tbc.tabBar.translucent = NO;
+        tbc.tabBar.barTintColor = [UIColor darkGrayColor];
+        tbc.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        
+        
+        [self presentViewController: tbc
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        
+        NSLog(@"no chain template selected");
+        
+    }
+    
+}
+
+
+
+
+
+
+
+
+- (IBAction)didPressDeleteButton:(id)sender{
+}
+
+
+
+
+
+
+- (IBAction)didPressNewRoutine:(id)sender{
+    
+    __weak NewOrExistinigCircuitVC *weakSelf = self;
+    
+    TJBVoidCallback callback = ^{
+        
+        [weakSelf dismissViewControllerAnimated: YES
+                                     completion: nil];
+        
+        [weakSelf deriveSupportArraysAndConfigureInitialDisplay];
+        
+    };
+    
+    TJBCircuitTemplateContainerVC *ctcVC = [[TJBCircuitTemplateContainerVC alloc] initWithCallback: callback];
+    
+    [self presentViewController: ctcVC
+                       animated: YES
+                     completion: nil];
+
+}
+
+
+
+
 
 
 @end
+
+
+
+
+
+
+
+
 
 
 

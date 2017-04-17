@@ -735,7 +735,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     self.toolbarControlArrow.backgroundColor = [UIColor grayColor];
     CALayer *tcaLayer = self.toolbarControlArrow.layer;
     tcaLayer.masksToBounds = YES;
-    tcaLayer.cornerRadius = 25;
+    tcaLayer.cornerRadius = 22;
     tcaLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     tcaLayer.borderWidth = 1;
 
