@@ -1015,6 +1015,12 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     [request setSortDescriptors: @[nameSort]];
     
+    // predicate
+    // the showInRoutineList property determines if a chain should appear in the routine list
+    
+    NSPredicate *showInRoutineListPred = [NSPredicate predicateWithFormat: @"showInRoutineList == YES"];
+    [request setPredicate: showInRoutineListPred];
+    
     return request;
     
 }
@@ -2037,19 +2043,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 
 
-
-
-
-
-
-- (IBAction)didPressDeleteButton:(id)sender{
-}
-
-
-
-
-
-
 - (IBAction)didPressNewRoutine:(id)sender{
     
     __weak NewOrExistinigCircuitVC *weakSelf = self;
@@ -2068,8 +2061,113 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     [self presentViewController: ctcVC
                        animated: YES
                      completion: nil];
-
+    
 }
+
+
+#pragma mark - Delete Actions
+
+- (IBAction)didPressDeleteButton:(id)sender{
+    
+    // alert controller
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Proceed with Delete?"
+                                                                   message: @"This action is permanent. Submissions cannot be ressurected following deletion"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    __weak NewOrExistinigCircuitVC *weakSelf = self;
+    
+    // confirm action
+    
+    void (^confirmAction)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        [weakSelf deleteCurrentlySelectedCell];
+        
+    };
+    
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle: @"Delete"
+                                                      style: UIAlertActionStyleDestructive
+                                                    handler: confirmAction];
+    
+    // cancel action
+    
+    void (^cancelAction)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        return;
+        
+    };
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle: @"Cancel"
+                                                     style: UIAlertActionStyleCancel
+                                                   handler: cancelAction];
+    
+    [alert addAction: cancel];
+    [alert addAction: confirm];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
+    
+    
+    
+    
+}
+
+- (void)deleteCurrentlySelectedCell{
+    
+    // if the the chain template has realizations, must keep it around but change its showInRoutineListProperty
+    // otherwise, simply delete the chain template
+    
+    [self.activeTableView beginUpdates];
+    
+    [self.activeTableView deleteRowsAtIndexPaths: @[self.lastSelectedIndexPath]
+                          withRowAnimation: UITableViewRowAnimationLeft];
+    
+    [self.tvSortedContent removeObject: self.selectedChainTemplate];
+    
+    int dateControlObjectIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
+    int reversedIndex = 11 - dateControlObjectIndex; // must use a reversed index because December is in the 0th position of dcSortedContent
+    [self.dcSortedContent[reversedIndex] removeObject: self.selectedChainTemplate];
+    
+    if (self.tvSortedContent.count == 0){
+        
+        [self.activeTableView insertRowsAtIndexPaths: @[self.lastSelectedIndexPath]
+                              withRowAnimation: UITableViewRowAnimationRight];
+        
+    }
+
+    
+    [self deleteChainTemplate: self.selectedChainTemplate];
+    
+    self.selectedChainTemplate = nil;
+    
+    [self.activeTableView endUpdates];
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self selectDateControlCorrespondingToDate: self.tvActiveDate];
+        
+    });
+    
+    
+}
+
+- (void)deleteChainTemplate:(TJBChainTemplate *)ct{
+    
+        if (ct.realizedChains.count > 0){
+    
+            ct.showInRoutineList = NO;
+    
+        } else{
+    
+            [[CoreDataController singleton] deleteChainTemplate: self.selectedChainTemplate];
+            
+        }
+    
+}
+
+
 
 
 #pragma mark - Segmented Control 
