@@ -796,6 +796,7 @@ typedef enum{
                 if (tu.isTargetingTrailingRest == YES){
                     number = @(tu.trailingRestTarget);
                 }
+                break;
                 
             default:
                 break;

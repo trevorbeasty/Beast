@@ -305,6 +305,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
                 
                 if (tu.weightIsNull){
                     
+                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
+                    
                     return NO;
                     
                 }
@@ -317,6 +319,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
                 
                 if (tu.repsIsNull){
                     
+                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
+                    
                     return NO;
                     
                 }
@@ -328,6 +332,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
             if (tu.isTargetingTrailingRest){
                 
                 if (tu.trailingRestIsNull){
+                    
+                    NSLog(@"exercise index: %d\nround index: %d", tu.exerciseIndex, tu.roundIndex);
                     
                     return NO;
                     
@@ -349,17 +355,21 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         return NO;
         
+    } else{
+        
+        for (TJBExercise *exercise in exercises){
+            
+            BOOL exerciseIsDefaultExercise = [exercise.name containsString: placeholderExerciseName];
+            
+            if (exerciseIsDefaultExercise){
+                
+                return NO;
+                
+            }
+        
     }
 
-    for (TJBExercise *exercise in exercises){
-        
-        BOOL exerciseIsDefaultExercise = [exercise.name containsString: placeholderExerciseName];
-        
-        if (exerciseIsDefaultExercise){
-            
-            return NO;
-            
-        }
+
         
     }
     
@@ -369,28 +379,6 @@ NSString * const placeholderCategoryName = @"Placeholder";
     return YES;
     
 }
-
-//- (BOOL)defaultObjectFoundInOrderedSet:(NSOrderedSet <TJBNumberTypeArrayComp *> *)set{
-//    
-//    //// internal method.  Given an NSOrderedSet of NSNumberTypeArrayComponents, this method determines whether any of them are default objects and returns YES if it does.  Otherwise, returns NO
-//    
-//    for (TJBNumberTypeArrayComp *comp in set){
-//        
-//        BOOL isDefault = comp.isDefaultObject;
-//        
-//        if (isDefault){
-//            
-//            return YES;
-//        }
-//        
-//    }
-//    
-//    // if control reaches this point, then no default objects have been found
-//
-//    return NO;
-//    
-//}
-
 
 
 
@@ -714,12 +702,11 @@ NSString * const placeholderCategoryName = @"Placeholder";
         TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
                                                                            inManagedObjectContext: [self moc]];
         iterativeTargetUnit.targetUnitCollector = tuc;
-        [targetUnitsCopy addObject: iterativeTargetUnit];
         
         TJBTargetUnit *zeroethTargetUnit = targetUnitsCopy[0];
         
         iterativeTargetUnit.exerciseIndex = zeroethTargetUnit.exerciseIndex;
-        iterativeTargetUnit.roundIndex = zeroethTargetUnit.roundIndex;
+        iterativeTargetUnit.roundIndex = previousNumberRounds;
         
         iterativeTargetUnit.isTargetingWeight = zeroethTargetUnit.isTargetingWeight;
         iterativeTargetUnit.isTargetingReps = zeroethTargetUnit.isTargetingReps;
@@ -731,7 +718,11 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         iterativeTargetUnit.exercise = zeroethTargetUnit.exercise;
         
+        [targetUnitsCopy addObject: iterativeTargetUnit];
+        
         tuc.targetUnits = targetUnitsCopy;
+        
+        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
         
     }
     
@@ -754,6 +745,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
         [targetUnitsCopy removeObject: tu];
         
         tuc.targetUnits = targetUnitsCopy;
+        
+        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
         
     }
     
@@ -784,14 +777,12 @@ NSString * const placeholderCategoryName = @"Placeholder";
     NSMutableOrderedSet<TJBTargetUnit *> *iterativeTargetUnits = [[NSMutableOrderedSet alloc] init];
     
     NSMutableOrderedSet *targetUnitCollectionsCopy = [chainTemplate.targetUnitCollections mutableCopy];
-    [targetUnitCollectionsCopy addObject: tuc];
     
     for (int i = 0; i < numberOfRounds; i++){
         
         TJBTargetUnit *iterativeTargetUnit = [NSEntityDescription insertNewObjectForEntityForName: @"TargetUnit"
                                                                            inManagedObjectContext: [self moc]];
         iterativeTargetUnit.targetUnitCollector = tuc;
-        [iterativeTargetUnits addObject: iterativeTargetUnit];
         
         iterativeTargetUnit.exerciseIndex = previousNumberExercises;
         iterativeTargetUnit.roundIndex = i;
@@ -808,10 +799,17 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         iterativeTargetUnit.exercise = placeholderExercise;
         
+        [iterativeTargetUnits addObject: iterativeTargetUnit];
+        
     }
     
     tuc.targetUnits = iterativeTargetUnits;
+    
+    [targetUnitCollectionsCopy addObject: tuc];
+    
     chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
+    
+    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
     
     [self saveContext];
     
@@ -837,6 +835,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
     chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
     
     [[self moc] deleteObject: tuc];
+    
+    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
     
     [self saveContext];
     

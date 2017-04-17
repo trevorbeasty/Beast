@@ -79,9 +79,11 @@
     self.exerciseIndex = [NSNumber numberWithInt: exerciseIndex];
     self.masterController = masterController;
     
-    _isTargetingWeight = YES;
-    _isTargetingReps = YES;
-    _isTargetingTrailingRest = YES;
+    TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
+    
+    _isTargetingWeight = tu.isTargetingWeight;
+    _isTargetingReps = tu.isTargetingReps;
+    _isTargetingTrailingRest = tu.isTargetingTrailingRest;
     
     return self;
     
@@ -331,9 +333,6 @@
         tu.trailingRestTarget = [selectedNumber floatValue];
         tu.trailingRestIsNull = NO;
         
-//        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].value = [selectedNumber floatValue];
-//        self.chainTemplate.targetRestTimeArrays[exerciseInd].numbers[roundInd].isDefaultObject = NO;
-        
         [[CoreDataController singleton] saveContext];
         
         // configure the button
@@ -474,6 +473,8 @@
             
             float number = [self targetUnitCorrespondingToVC].trailingRestTarget;
             
+            NSLog(@"number to be copied for trailing rest: %f (the number being sent to other row comps)", number);
+            
             // change the appearance of the copying reference cell
             
             [self giveButtonCopyingAppearance: self.restButton];
@@ -547,7 +548,7 @@
     
     // if it is not the reference button and copying is active, then copy the value
     
-    if (!_isReferenceForCopying && _copyingActive){
+    if (!_isReferenceForCopying && _copyingActive && _isTargetingWeight){
         
         // button appearance
         
@@ -566,9 +567,6 @@
         tu.weightTarget = _valueToCopy;
         tu.weightIsNull = NO;
         
-//        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].value = _valueToCopy;
-//        self.chainTemplate.weightArrays[[self.exerciseIndex intValue]].numbers[[self.roundIndex intValue]].isDefaultObject = NO;
-        
         [[CoreDataController singleton] saveContext];
         
     }
@@ -579,7 +577,7 @@
     
     // if it is not the reference button and copying is active, then copy the value
     
-    if (!_isReferenceForCopying && _copyingActive){
+    if (!_isReferenceForCopying && _copyingActive && _isTargetingReps){
         
         // button appearance
         
@@ -608,7 +606,7 @@
     
     // if it is not the reference button and copying is active, then copy the value
     
-    if (!_isReferenceForCopying && _copyingActive){
+    if (!_isReferenceForCopying && _copyingActive && _isTargetingTrailingRest){
         
         // button appearance
         
@@ -622,6 +620,8 @@
         self.restButton.layer.opacity = 1.0;
         
         // core data
+        
+        NSLog(@"value to copy for trailing rest: %f", _valueToCopy);
         
         TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
         tu.trailingRestTarget = _valueToCopy;
@@ -645,7 +645,7 @@
     
     UIButton *button;
     
-    switch (copyInputType) {
+    switch (copyInputType){
         case CopyWeightType:
             button = self.weightButton;
             break;
@@ -675,22 +675,26 @@
     // button appearance is determined by whether or not the button corresponds to a default value
     
     BOOL valueNotYetSelected;
+    BOOL isBeingTargeted;
     UIButton *button;
     TJBTargetUnit *tu = [self targetUnitCorrespondingToVC];
     
     switch (_copyInputType) {
         case CopyWeightType:
             valueNotYetSelected = tu.weightIsNull;
+            isBeingTargeted = _isTargetingWeight;
             button = self.weightButton;
             break;
             
         case CopyRepsType:
             valueNotYetSelected = tu.repsIsNull;
+            isBeingTargeted = _isTargetingReps;
             button = self.repsButton;
             break;
             
         case CopyRestType:
             valueNotYetSelected = tu.trailingRestIsNull;
+            isBeingTargeted = _isTargetingTrailingRest;
             button = self.restButton;
             break;
             
@@ -698,13 +702,21 @@
             break;
     }
     
-    if (valueNotYetSelected){
+    if (isBeingTargeted){
         
-        [self giveButtonActiveConfig: button];
+        if (valueNotYetSelected){
+            
+            [self giveButtonActiveConfig: button];
+            
+        } else{
+            
+            [self giveButtonSelectedAppearance: button];
+            
+        }
         
     } else{
         
-        [self giveButtonSelectedAppearance: button];
+        [self giveButtonInactiveConfig: button];
         
     }
     
@@ -733,10 +745,12 @@
     if (targetingStateActive == YES){
         
         self.weightButton.hidden = NO;
+        _isTargetingWeight = YES;
         
     } else{
         
         self.weightButton.hidden = YES;
+        _isTargetingWeight = NO;
         
     }
     
@@ -750,10 +764,12 @@
     if (targetingStateActive == YES){
         
         self.repsButton.hidden = NO;
+        _isTargetingReps = YES;
         
     } else{
         
         self.repsButton.hidden = YES;
+        _isTargetingReps = NO;
         
     }
     
@@ -767,10 +783,12 @@
     if (targetingStateActive == YES){
         
         self.restButton.hidden = NO;
+        _isTargetingTrailingRest = YES;
         
     } else{
         
         self.restButton.hidden = YES;
+        _isTargetingTrailingRest = NO;
         
     }
     
@@ -790,9 +808,11 @@
             
         case RepsSwitch:
             relevantTU.isTargetingReps = isTargeting;
+            break;
             
         case TrailingRestSwitch:
             relevantTU.isTargetingTrailingRest = isTargeting;
+            break;
             
         default:
             break;

@@ -119,10 +119,6 @@
     UIButton *button = self.selectedExerciseButton;
     
     button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//    button.backgroundColor = [UIColor clearColor];
-//    UIColor *color = [[TJBAestheticsController singleton] buttonTextColor];
-//    [button setTitleColor: color
-//                 forState: UIControlStateNormal];
     [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
     
@@ -132,8 +128,6 @@
     CALayer *layer = button.layer;
     layer.masksToBounds = YES;
     layer.cornerRadius = 8;
-//    layer.borderWidth = 1.0;
-//    layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
     // number label
     

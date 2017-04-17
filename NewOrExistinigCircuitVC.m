@@ -696,7 +696,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 - (void)updateTitleLabelCorrespondingToActiveTVDate{
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MMM yy";
+    df.dateFormat = @"MMM yyyy";
     self.monthYearTitleLabel.text = [df stringFromDate: self.tvActiveDate];
     
 }
