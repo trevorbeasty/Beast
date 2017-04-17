@@ -335,10 +335,8 @@
 
 - (void)deriveSupportArraysAndConfigureInitialDisplay{
     
-    [self fetchCoreData]; // fetches all chain templates and stores them in the 'frc' property
-    
-    // derive the supporting arrays for both the date controls and the table view. When this controller is first loaded, the date controls and table view will reference the same array, which corresponds to the year encapsulating the current day
-    
+//    [self fetchCoreData];
+//    
     NSDate *today = [NSDate date];
     
     self.tvActiveDate = today;
@@ -346,17 +344,10 @@
     
     NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: today];
     
-    self.dcSortedContent = initialRefArray; // only the dc needs to store this annual, sorted content bucketed by month. The table view simply must choose the correct bucket when setting its tvSortedContent
+    self.dcSortedContent = initialRefArray;
     
-    // must now configure the date controls and create the table view
-    
-    // date controls
-    
-    [self configureDateControlsBasedOnDCActiveDate]; // this does not select any particular date control. Call 'didSelectObjectWithIndex' to select a date control and load the corresponding table view
-    
-    // table view
-    // the table view is created by artificially selecting a date control
-    
+    [self configureDateControlsBasedOnDCActiveDate];
+
     int dateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
     
     [self didSelectObjectWithIndex: @(dateControlIndex)];
@@ -371,7 +362,13 @@
     
     BOOL sortByDateLastExecuted = self.sortBySegmentedControl.selectedSegmentIndex == 1;
     
-    NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: self.frc.fetchedObjects];
+    
+    NSFetchRequest *fr = [self chainTemplateFetchRequest];
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    NSError *error = nil;
+    NSArray *chainTemplates = [moc executeFetchRequest: fr
+                                                 error: &error];
+    NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: chainTemplates];
     
     if (sortByDateLastExecuted){
         
@@ -897,10 +894,8 @@
 
 #pragma mark - Core Data Fetching
 
-- (void)fetchCoreData{
-    
-    // NSFetchedResultsController
-    
+- (NSFetchRequest *)chainTemplateFetchRequest{
+
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
     
     NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
@@ -908,23 +903,7 @@
     
     [request setSortDescriptors: @[nameSort]];
     
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                          managedObjectContext: moc
-                                                                            sectionNameKeyPath: @"name"
-                                                                                     cacheName: nil];
-    frc.delegate = self;
-    
-    self.frc = frc;
-    
-    NSError *error = nil;
-    
-    if (![self.frc performFetch: &error])
-    {
-        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
-        abort();
-    }
+    return request;
     
 }
 
