@@ -34,6 +34,7 @@
     
     float _previousExercisesStepperValue;
     float _previousRoundsStepperValue;
+    BOOL _advancedControlsHidden;
     
 }
 
@@ -55,12 +56,14 @@
 @property (weak, nonatomic) IBOutlet UIStepper *numberExercisesStepper;
 @property (weak, nonatomic) IBOutlet UIStepper *numberRoundsStepper;
 
+@property (weak, nonatomic) IBOutlet UIButton *controlsArrow;
 
 
 // IBAction
 
 - (IBAction)didPressBack:(id)sender;
 - (IBAction)didPressAdd:(id)sender;
+- (IBAction)didPressControlsArrow:(id)sender;
 
 // core
 
@@ -97,6 +100,10 @@ static NSString * const placeholderName = @"placeholderName";
     [self createPlaceholderChainTemplate];
     
     self.callback = callback;
+    
+    // state
+    
+    _advancedControlsHidden = NO;
     
     return self;
     
@@ -172,7 +179,7 @@ static NSString * const placeholderName = @"placeholderName";
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
     // title container
     
@@ -193,7 +200,7 @@ static NSString * const placeholderName = @"placeholderName";
     
     // content container
     
-    self.containerView.backgroundColor = [UIColor clearColor];
+    self.containerView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     self.leftControlsContainer.backgroundColor = [UIColor grayColor];
     CALayer *ccLayer = self.leftControlsContainer.layer;
@@ -228,6 +235,15 @@ static NSString * const placeholderName = @"placeholderName";
         
     }
     
+    // controls arrow
+    
+    self.controlsArrow.backgroundColor = [UIColor grayColor];
+    CALayer *controlArrowLayer = self.controlsArrow.layer;
+    controlArrowLayer.masksToBounds = YES;
+    controlArrowLayer.cornerRadius = 25;
+    controlArrowLayer.borderWidth = 1;
+    controlArrowLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    
 }
 
 - (void)configureStartingContent{
@@ -255,7 +271,8 @@ static NSString * const placeholderName = @"placeholderName";
     
     [self addChildViewController: ctVC];
     
-    [self.containerView addSubview: ctVC.view];
+    [self.containerView insertSubview: ctVC.view
+                              atIndex: 0];
     
     [ctVC didMoveToParentViewController: self];
     
@@ -406,6 +423,24 @@ static NSString * const placeholderName = @"placeholderName";
                     requisiteUserInputNotCollected: !requisiteUserInputCollected];
         
     }
+}
+
+#pragma mark - Advanced Controls Animation
+
+
+
+- (IBAction)didPressControlsArrow:(id)sender{
+    
+    if (_advancedControlsHidden == NO){
+        
+        
+        
+    } else if (_advancedControlsHidden == YES){
+        
+        
+        
+    }
+    
 }
 
 #pragma mark - <UIViewControllerRestoration>

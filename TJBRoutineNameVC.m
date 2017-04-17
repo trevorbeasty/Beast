@@ -68,7 +68,7 @@
     
     self.nameTextField.font = [UIFont systemFontOfSize: 20];
     self.nameTextField.backgroundColor = [UIColor clearColor];
-    self.nameTextField.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.nameTextField.textColor = [UIColor blackColor];
     CALayer *ntfLayer = self.nameTextField.layer;
     ntfLayer.masksToBounds = YES;
     ntfLayer.borderColor = [UIColor blackColor].CGColor;
