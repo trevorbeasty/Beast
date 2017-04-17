@@ -143,6 +143,7 @@ typedef enum{
 
 @property (strong) TJBCompleteChainHistoryVC *chainHistoryVC;
 @property (strong) UIScrollView *chainHistoryScrollView;
+@property (strong) UIButton *viewHistoryReturnButton;
 
 @end
 
@@ -1426,7 +1427,7 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
     
 }
 
-#pragma mark - View History and Related Actions
+#pragma mark - View History
 
 
 - (IBAction)didPressHistoryButton:(id)sender{
@@ -1444,9 +1445,16 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
         // the chain history table view is handled by a separate controller. I simply add it to a scroll view here and designate it as a a child view controller
         // this task must be completed after a short delay to allow the view to draw the activity indicator
         
-        [self performSelector: @selector(showChainHistoryForSelectedChainAndUpdateStateVariables)
-                   withObject: nil
-                   afterDelay: .2];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self showChainHistoryForSelectedChainAndUpdateStateVariables];
+            [self showViewHistoryReturnButton];
+            
+        });
+        
+//        [self performSelector: @selector(showChainHistoryForSelectedChainAndUpdateStateVariables)
+//                   withObject: nil
+//                   afterDelay: .2];
         
     } else{
         
@@ -1558,6 +1566,70 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
     
 }
 
+#pragma mark - View History Helper Methods
+
+- (void)showViewHistoryReturnButton{
+    
+    if (!self.viewHistoryReturnButton){
+        
+        UIButton *vhrButton = [[UIButton alloc] init];
+        self.viewHistoryReturnButton = vhrButton;
+        
+        [self configureViewHistoryReturnButtonAppearanceAndFunctionality];
+        
+        NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
+        NSString *vhrButtonKey = @"viewHistoryReturnButton";
+        [constraintMapping setObject: vhrButton
+                              forKey: vhrButtonKey];
+        
+        [self.mainContainer insertSubview: vhrButton
+                             aboveSubview: self.chainHistoryScrollView];
+        
+        vhrButton.translatesAutoresizingMaskIntoConstraints = NO;
+    
+        NSString *horzLayoutVFL = [NSString stringWithFormat: @"H:|-16-[%@]-16-|", vhrButtonKey];
+        [self.mainContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: horzLayoutVFL
+                                                                                    options: 0
+                                                                                    metrics: nil
+                                                                                      views: constraintMapping]];
+        
+        NSString *vertLayoutVFL = [NSString stringWithFormat: @"V:[%@(==44)]-8-|", vhrButtonKey];
+        [self.mainContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertLayoutVFL
+                                                                                    options: 0
+                                                                                    metrics: nil
+                                                                                      views: constraintMapping]];
+        
+        
+    }
+    
+    self.viewHistoryReturnButton.hidden = NO;
+    
+}
+
+- (void)configureViewHistoryReturnButtonAppearanceAndFunctionality{
+    
+    self.viewHistoryReturnButton.backgroundColor = [UIColor grayColor];
+    [self.viewHistoryReturnButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
+                                       forState: UIControlStateNormal];
+    self.viewHistoryReturnButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    [self.viewHistoryReturnButton setTitle: @"Back to List"
+                                  forState: UIControlStateNormal];
+    
+    CALayer *vhrbLayer = self.viewHistoryReturnButton.layer;
+    vhrbLayer.masksToBounds = YES;
+    vhrbLayer.cornerRadius = 22;
+    vhrbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    vhrbLayer.borderWidth = 1.0;
+    
+    
+}
+
+- (void)hideViewHistoryReturnButton{
+    
+    
+    
+}
+
 - (void)clearAllTableViewsAndDirectlyAssociatedObjects{
     
     // chain template tv
@@ -1603,32 +1675,6 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
 
 
 #pragma mark - Button Actions
-
-//- (IBAction)didPressToggle:(id)sender{
-//    
-//    _sortByDateCreated = !_sortByDateCreated;
-//    
-//    [self configureSelectionAsNil];
-//    
-//    // must rederive and layout date controls because the filter criteria for chain templates has now changed
-//    
-//    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
-//    
-//    [self configureDateControlsBasedOnDCActiveDate];
-//    
-//    // will then artificially select the same date control object that was previously selected. This is done because it may otherwise be confusing to the user if the criteria changes but the content for the old criteria still remains
-//    
-//    [self didSelectObjectWithIndex: self.selectedDateObjectIndex];
-//    
-//    NSIndexPath *path = [NSIndexPath indexPathForRow: 0
-//                                           inSection: 0];
-//    
-//    [self.activeTableView scrollToRowAtIndexPath: path
-//                                atScrollPosition: UITableViewScrollPositionTop
-//                                        animated: YES];
-//
-//    
-//}
 
 
 
