@@ -55,7 +55,7 @@ typedef enum{
     // user selection flow
     
     BOOL _viewingChainHistory;
-    
+    BOOL _coreDataUpdateRequired;
     TJBToolbarState _toolbarState;
     
 }
@@ -182,6 +182,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     // state
     
     _toolbarState = TJBToolBarNotHidden;
+    _coreDataUpdateRequired = NO;
     
     
     return self;
@@ -205,13 +206,27 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     [self configureLabelCorrespondingToSegmentedControl];
     [self configureSegmentedControlNotifications];
-    
-//    [self toggleButtonsToOffState];
-    
+    [self configureCoreDataNotifications];
     
     [self selectDateControlCorrespondingToDate: [NSDate date]];
     
     return;
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    // core data will be saved many times as a routine is created
+    // this method of updating this controller prevents needless, repetitive updates
+    
+    if (_coreDataUpdateRequired == YES){
+        
+        [self createAndShowDateControlsForDate: self.tvActiveDate];
+        [self selectDateControlCorrespondingToDate: self.tvActiveDate];
+        
+        _coreDataUpdateRequired = NO;
+        
+    }
     
 }
 
@@ -1004,7 +1019,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 
 
-#pragma mark - Core Data Fetching
+#pragma mark - Core Data
 
 - (NSFetchRequest *)chainTemplateFetchRequest{
 
@@ -1026,7 +1041,21 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 }
 
 
+- (void)configureCoreDataNotifications{
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(coreDataUpdateRequiredForRoutineSelection)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: [[CoreDataController singleton] moc]];
+    
+}
 
+
+- (void)coreDataUpdateRequiredForRoutineSelection{
+    
+    _coreDataUpdateRequired = YES;
+    
+}
 
 
 
@@ -1926,6 +1955,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     [UIView animateWithDuration: toolbarSlidingAnimationTime
                      animations: ^{
+                         
+                         self.arrowControlButton.enabled = NO;
     
                          CGFloat vertAnimationDist = self.mainContainer.frame.size.height - self.toolbar.frame.origin.y;
                          
@@ -1942,6 +1973,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
                          
                      }
                      completion: ^(BOOL finished){
+                         
+                         self.arrowControlButton.enabled = YES;
     
                          CGFloat toolbarHeight = self.toolbar.frame.size.height;
                          self.toolbarBottomSpacingConstr.constant = -1 * toolbarHeight;
@@ -1960,6 +1993,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     [UIView animateWithDuration: toolbarSlidingAnimationTime
                      animations: ^{
                          
+                         self.arrowControlButton.enabled = NO;
+                         
                          CGFloat vertAnimationDist = self.toolbar.frame.size.height + 8;
                          
                          NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortByBottomLabel, self.sortBySegmentedControl];
@@ -1975,6 +2010,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
                          
                      }
                      completion: ^(BOOL finished){
+                         
+                         self.arrowControlButton.enabled = YES;
                          
                          self.toolbarBottomSpacingConstr.constant = 8;
                          

@@ -646,6 +646,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     chainTemplate.dateCreated = [NSDate date];
     chainTemplate.uniqueID = [[NSUUID UUID] UUIDString];
     chainTemplate.name = name;
+    chainTemplate.showInRoutineList = YES;
     
     // exercises
     
