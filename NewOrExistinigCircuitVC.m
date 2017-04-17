@@ -96,7 +96,7 @@
 
 // core
 
-@property (nonatomic, strong) NSFetchedResultsController *frc;
+//@property (nonatomic, strong) NSFetchedResultsController *frc;
 @property (strong) UITableView *activeTableView;
 @property (strong) UIScrollView *activeScrollView;
 
@@ -141,19 +141,11 @@
     
     self = [super init];
     
-    // state
+    // active dates
     
     NSDate *today = [NSDate date];
-    
     self.tvActiveDate = today;
     self.dcActiveDate = today;
-    
-    // for restoration
-    
-    self.restorationIdentifier = @"TJBNewOrExistingCircuit";
-    self.restorationClass = [NewOrExistinigCircuitVC class];
-    
-    //
     
     _sortByDateCreated = YES;
     
@@ -180,7 +172,8 @@
     
     [self toggleButtonsToOffState];
     
-    [self deriveSupportArraysAndConfigureInitialDisplay];
+    
+    [self selectDateControlCorrespondingToDate: [NSDate date]];
     
     return;
     
@@ -333,26 +326,32 @@
 
 #pragma mark - Routine Content Generation Sequence
 
-- (void)deriveSupportArraysAndConfigureInitialDisplay{
-    
-//    [self fetchCoreData];
-//    
-    NSDate *today = [NSDate date];
-    
-    self.tvActiveDate = today;
-    self.dcActiveDate = today;
-    
-    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: today];
-    
-    self.dcSortedContent = initialRefArray;
-    
-    [self configureDateControlsBasedOnDCActiveDate];
 
-    int dateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
+- (void)selectDateControlCorrespondingToDate:(NSDate *)date{
     
+    // must check that the passed-in date is within the year for the current dcActiveDate
+    // if it is not, must reload date controls for the passed-in date
+    // the didSelectObjectAtIndex method does no date checking
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+    
+    BOOL correctDateControlsDisplayed = [calendar isDate: date
+                                             equalToDate: self.dcActiveDate
+                                       toUnitGranularity: NSCalendarUnitYear];
+    
+    // loads the date controls if the dates are incompatible or there are no date control objects currently displayed
+    
+    if (correctDateControlsDisplayed == NO || !self.dateStackView){
+        
+        [self createAndShowDateControlsForDate: date];
+        
+    }
+    
+    int dateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
     [self didSelectObjectWithIndex: @(dateControlIndex)];
     
 }
+
 
 
 - (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)annualSortedContentForReferenceDate:(NSDate *)referenceDate{
@@ -917,6 +916,15 @@
 
 #pragma mark - Date Controls
 
+- (void)createAndShowDateControlsForDate:(NSDate *)date{
+    
+    self.dcActiveDate = date;
+    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: date];
+    self.dcSortedContent = initialRefArray;
+    [self configureDateControlsBasedOnDCActiveDate];
+    
+}
+
 - (void)incrementDCACtiveYearWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
     
     int yearDelta;
@@ -930,6 +938,9 @@
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSDateComponents *dateComps = [calendar components: NSCalendarUnitYear
                                               fromDate: self.dcActiveDate];
+    
+    // it is arbitrary what day in the year the dcActiveDate represents
+    // I set the month and day to 1 here as a convention
     
     dateComps.year += yearDelta;
     [dateComps setDay: 1];
@@ -1730,7 +1741,7 @@
         [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
         
-        [weakSelf deriveSupportArraysAndConfigureInitialDisplay];
+        [weakSelf selectDateControlCorrespondingToDate: [NSDate date]];
         
     };
     
