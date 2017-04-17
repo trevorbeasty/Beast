@@ -123,7 +123,7 @@ static NSString *realizedChainCellID = @"TJBRealizedChainCell";
     [chainCell configureWithContentObject: chain
                                  cellType: RealizedChainCell
                              dateTimeType: TJBDayInYear
-                              titleNumber: @(indexPath.row)];
+                              titleNumber: @(indexPath.row + 1)];
     
     chainCell.backgroundColor = [UIColor clearColor];
     

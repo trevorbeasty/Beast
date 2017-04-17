@@ -692,7 +692,7 @@ typedef enum{
         
         TJBChainTemplate *ct = self.contentObject;
         NSNumber *numberOfCompletions = @(ct.realizedChains.count);
-        NSString *executionsWord = [numberOfCompletions intValue] == 1 ? @"execution" : @"executions";
+        NSString *executionsWord = [numberOfCompletions intValue] == 1 ? @"completion" : @"completions";
         type = [NSString stringWithFormat: @"%@ (%@ %@)",
                 type,
                 [numberOfCompletions stringValue],

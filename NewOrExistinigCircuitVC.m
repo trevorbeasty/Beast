@@ -1518,6 +1518,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)showChainHistoryForSelectedChainAndUpdateStateVariables{
     
+    [self.view layoutSubviews];
+    
     // get rid of all table views before adding current table view
     
     [self clearAllTableViewsAndDirectlyAssociatedObjects];
@@ -1528,22 +1530,29 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     TJBCompleteChainHistoryVC *chainHistoryVC = [[TJBCompleteChainHistoryVC alloc] initWithChainTemplate: self.selectedChainTemplate];
     self.chainHistoryVC = chainHistoryVC;
     
+    CGFloat breatherRoom = historyReturnButtonBottomSpacing + historyReturnButtonHeight + 8;
     CGFloat contentHeight = [chainHistoryVC contentHeight]; // gets the total height of cells based on provided chain template
-    if (contentHeight < self.mainContainer.frame.size.height){
-        contentHeight = self.mainContainer.frame.size.height;
-    }
+    CGFloat svHeight;
     
-    CGRect rect = CGRectMake(0, 0, self.mainContainer.frame.size.width, contentHeight);
-    chainHistoryVC.view.frame = rect;
+    if (contentHeight < self.mainContainer.frame.size.height - breatherRoom){
+        
+        svHeight = self.mainContainer.frame.size.width;
+
+    } else{
+        
+        svHeight = contentHeight + breatherRoom;
+        
+    }
     
     // scroll view
     
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
     self.chainHistoryScrollView = sv;
     
-    CGFloat breatherRoom = historyReturnButtonBottomSpacing + historyReturnButtonBottomSpacing + 8;
+    CGRect rect = CGRectMake(0, 0, self.mainContainer.frame.size.width, contentHeight);
+    chainHistoryVC.view.frame = rect;
     
-    CGSize contentSize = CGSizeMake(self.mainContainer.frame.size.width, contentHeight + breatherRoom);
+    CGSize contentSize = CGSizeMake(self.mainContainer.frame.size.width, svHeight);
     sv.contentSize = contentSize;
     sv.bounces = YES;
     
