@@ -152,6 +152,8 @@ typedef enum{
 
 static NSTimeInterval const toolbarSlidingAnimationTime = .2;
 
+static CGFloat const historyReturnButtonHeight = 44;
+static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 
 
@@ -1449,28 +1451,31 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
             
             [self showChainHistoryForSelectedChainAndUpdateStateVariables];
             [self showViewHistoryReturnButton];
+            [self configureTitleLabelsAccordingToRoutineHistory];
             
         });
         
-//        [self performSelector: @selector(showChainHistoryForSelectedChainAndUpdateStateVariables)
-//                   withObject: nil
-//                   afterDelay: .2];
-        
-    } else{
-        
-        // show activity indicator
-        
-        [self showActivityIndicator];
-        
-        // queue the uploading of the new table to allow the view to redraw itself
-        
-        [self performSelector: @selector(showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables)
-                   withObject: nil
-                   afterDelay: .2];
-        
-        
-        
     }
+    
+}
+
+- (void)didPressHistoryReturnButton{
+
+        
+    // show activity indicator
+    
+    [self showActivityIndicator];
+    
+    // queue the uploading of the new table to allow the view to redraw itself
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables];
+        [self hideViewHistoryReturnButton];
+        [self configureToolbarButtonsAccordingToActiveState];
+        [self unhideAllBottomControls];
+        
+    });
     
 }
 
@@ -1536,7 +1541,9 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.mainContainer.bounds];
     self.chainHistoryScrollView = sv;
     
-    CGSize contentSize = CGSizeMake(self.mainContainer.frame.size.width, contentHeight);
+    CGFloat breatherRoom = historyReturnButtonBottomSpacing + historyReturnButtonBottomSpacing + 8;
+    
+    CGSize contentSize = CGSizeMake(self.mainContainer.frame.size.width, contentHeight + breatherRoom);
     sv.contentSize = contentSize;
     sv.bounces = YES;
     
@@ -1547,7 +1554,8 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
     
     [self addChildViewController: chainHistoryVC];
     
-    [self.mainContainer addSubview: sv];
+    [self.mainContainer insertSubview: sv
+                              atIndex: 0];
     
     [chainHistoryVC didMoveToParentViewController: self];
     
@@ -1567,6 +1575,19 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
 }
 
 #pragma mark - View History Helper Methods
+
+- (void)configureTitleLabelsAccordingToRoutineHistory{
+    
+    self.routinesByLabel.text = @"Routine History";
+    self.monthYearTitleLabel.text = @"";
+    
+    NSNumber *numberOfRoutines = @(self.selectedChainTemplate.realizedChains.count);
+    NSString *recordsWord = [numberOfRoutines intValue] == 1 ? @"Record" : @"Records";
+    self.numberOfRecordsLabel.text = [NSString stringWithFormat: @"%@ %@",
+                                      [numberOfRoutines stringValue],
+                                      recordsWord];
+    
+}
 
 - (void)showViewHistoryReturnButton{
     
@@ -1593,11 +1614,18 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
                                                                                     metrics: nil
                                                                                       views: constraintMapping]];
         
-        NSString *vertLayoutVFL = [NSString stringWithFormat: @"V:[%@(==44)]-8-|", vhrButtonKey];
+        NSString *vertLayoutVFL = [NSString stringWithFormat: @"V:[%@(==%f)]-%f-|",
+                                   vhrButtonKey,
+                                   historyReturnButtonHeight,
+                                   historyReturnButtonBottomSpacing];
         [self.mainContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertLayoutVFL
                                                                                     options: 0
                                                                                     metrics: nil
                                                                                       views: constraintMapping]];
+        
+        [vhrButton addTarget: self
+                      action: @selector(didPressHistoryReturnButton)
+            forControlEvents: UIControlEventTouchUpInside];
         
         
     }
@@ -1626,7 +1654,7 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
 
 - (void)hideViewHistoryReturnButton{
     
-    
+    self.viewHistoryReturnButton.hidden = YES;
     
 }
 

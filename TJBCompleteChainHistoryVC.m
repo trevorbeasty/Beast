@@ -14,9 +14,7 @@
 
 // table view cells
 
-//#import "TJBRealizedChainHistoryCell.h"
 #import "TJBRealizedChainCell.h"
-#import "TJBWorkoutLogTitleCell.h"
 
 // aesthetics
 
@@ -37,13 +35,27 @@
 
 @implementation TJBCompleteChainHistoryVC
 
+{
+    
+    CGFloat _tableViewBreatherRoom;
+    
+}
+
 #pragma mark - Instantiation
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate{
     
+    return  [self initWithChainTemplate: chainTemplate
+                  tableViewBreatherRoom: 0];
+    
+}
+
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate tableViewBreatherRoom:(CGFloat)tableViewBreatherRoom{
+    
     self = [super init];
     
     self.chainTemplate = chainTemplate;
+    _tableViewBreatherRoom = tableViewBreatherRoom;
     
     return self;
     
@@ -66,7 +78,6 @@
 }
 
 static NSString *realizedChainCellID = @"TJBRealizedChainCell";
-static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 - (void)configureTableView{
     
@@ -75,12 +86,6 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
     
     [self.chainHistoryTV registerNib: realizedChainNib
               forCellReuseIdentifier: realizedChainCellID];
-    
-    UINib *titleCellNib = [UINib nibWithNibName: @"TJBWorkoutLogTitleCell"
-                                         bundle: nil];
-    
-    [self.chainHistoryTV registerNib: titleCellNib
-              forCellReuseIdentifier: titleCellID];
     
 }
 
@@ -94,56 +99,36 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return self.chainTemplate.realizedChains.count + 1;
+    return self.chainTemplate.realizedChains.count;
     
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    // the first cell will be the title cell.  All subsequent content cells will need to have the index path row adjusted
+    // content cell
     
-    if (indexPath.row == 0){
-        
-        // title cell
-        
-        TJBWorkoutLogTitleCell *titleCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: titleCellID];
-        
-        titleCell.primaryLabel.text = self.chainTemplate.name;
-        titleCell.secondaryLabel.text = @"Routine History";
-        
-        titleCell.backgroundColor = [UIColor clearColor];
-        
-        return titleCell;
-        
-    } else{
-        
-        // content cell
-        
-        // adjust the index.  This accounts for the 1 title cell and also reverses the index so that it grabs the last entry first
-        
-        NSInteger adjIndex = indexPath.row - 1;
-        NSInteger reversedIndex = (self.chainTemplate.realizedChains.count - 1) - adjIndex;
-        
-        // dequeue the cell
-        
-        TJBRealizedChainCell *chainCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: realizedChainCellID];
-        
-        // grab the appropriate realized chain
-        
-        TJBRealizedChain *chain = self.chainTemplate.realizedChains[reversedIndex];
-        
-        // configure the cell
-        
-        [chainCell configureWithContentObject: chain
-                                     cellType: RealizedChainCell
-                                 dateTimeType: TJBDayInYear
-                                  titleNumber: @(indexPath.row)];
-        
-        chainCell.backgroundColor = [UIColor clearColor];
-        
-        return chainCell;
-        
-    }
+    NSInteger adjIndex = indexPath.row;
+    NSInteger reversedIndex = (self.chainTemplate.realizedChains.count - 1) - adjIndex;
+    
+    // dequeue the cell
+    
+    TJBRealizedChainCell *chainCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: realizedChainCellID];
+    
+    // grab the appropriate realized chain
+    
+    TJBRealizedChain *chain = self.chainTemplate.realizedChains[reversedIndex];
+    
+    // configure the cell
+    
+    [chainCell configureWithContentObject: chain
+                                 cellType: RealizedChainCell
+                             dateTimeType: TJBDayInYear
+                              titleNumber: @(indexPath.row)];
+    
+    chainCell.backgroundColor = [UIColor clearColor];
+    
+    return chainCell;
+    
     
 }
 
@@ -158,21 +143,12 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleHeight = 80.0;
+    NSInteger adjIndex = indexPath.row;
     
-    if (indexPath.row == 0){
-        
-        return titleHeight;
-        
-    } else{
-        
-        NSInteger adjIndex = indexPath.row - 1;
-        
-        TJBRealizedChain *realizedChain = self.chainTemplate.realizedChains[adjIndex];
-        
-        return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
-        
-    }
+    TJBRealizedChain *realizedChain = self.chainTemplate.realizedChains[adjIndex];
+    
+    return [TJBRealizedChainCell suggestedCellHeightForRealizedChain: realizedChain];
+    
     
 }
 
@@ -184,15 +160,8 @@ static NSString *titleCellID = @"TJBWorkoutLogTitleCell";
     
     NSInteger realizedChainCount = self.chainTemplate.realizedChains.count;
     
-    NSInteger iterationLimit;
-    if (realizedChainCount == 0){
-        iterationLimit = 2;
-    } else{
-        iterationLimit = realizedChainCount + 1;
-    }
-    
     CGFloat sum = 0;
-    for (int i = 0; i < iterationLimit; i++){
+    for (int i = 0; i < realizedChainCount; i++){
         
         NSIndexPath *path = [NSIndexPath indexPathForRow: i
                                                inSection: 0];

@@ -15,6 +15,7 @@
 
 
 - (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+- (instancetype)initWithChainTemplate:(TJBChainTemplate *)chainTemplate tableViewBreatherRoom:(CGFloat)tableViewBreatherRoom;
 
 - (CGFloat)contentHeight;
 
