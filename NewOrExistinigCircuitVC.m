@@ -506,17 +506,12 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
     self.activeScrollView = sv;
     
     CGFloat tvContentHeight = [self totalTableViewHeightBasedOnTVSortedContent];
-    CGFloat svContentHeight = tvContentHeight + [self breatherRoomForChainTemplateScrollView];
-    
-    if (svContentHeight < self.mainContainer.frame.size.height){
-        svContentHeight = self.mainContainer.frame.size.height;
-    }
     
     if (tvContentHeight < self.mainContainer.frame.size.height){
         tvContentHeight = self.mainContainer.frame.size.height;
     }
     
-    CGSize svContentSize = CGSizeMake(self.mainContainer.frame.size.width, svContentHeight); // the scroll view is large enough that the table view will layout all of its content plus a little breather room above the bottom controls
+    CGSize svContentSize = [self scrollViewContentSize]; // the scroll view is large enough that the table view will layout all of its content plus a little breather room above the bottom controls
     sv.contentSize = svContentSize;
     
     sv.backgroundColor = [UIColor clearColor];
@@ -561,6 +556,18 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
 
 
 #pragma mark - Routine Content Generation Sequence Helper Methods
+
+- (CGSize)scrollViewContentSize{
+    
+    CGFloat svContentHeight = [self totalTableViewHeightBasedOnTVSortedContent] + [self breatherRoomForChainTemplateScrollView];
+    
+    if (svContentHeight < self.mainContainer.frame.size.height){
+        svContentHeight = self.mainContainer.frame.size.height;
+    }
+    
+    return  CGSizeMake(self.mainContainer.frame.size.width, svContentHeight);
+    
+}
 
 - (CGFloat)breatherRoomForChainTemplateScrollView{
     
@@ -1849,7 +1856,10 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
     
                          CGFloat toolbarHeight = self.toolbar.frame.size.height;
                          self.toolbarBottomSpacingConstr.constant = -1 * toolbarHeight;
+                         
                          [self.view layoutSubviews];
+                         
+                         self.activeScrollView.contentSize = [self scrollViewContentSize];
     
                      }];
     
@@ -1858,7 +1868,7 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
 
 - (void)animateToolbarOnscreen{
     
-    [UIView animateWithDuration: .2
+    [UIView animateWithDuration: toolbarSlidingAnimationTime
                      animations: ^{
                          
                          CGFloat vertAnimationDist = self.toolbar.frame.size.height + 8;
@@ -1878,7 +1888,10 @@ static NSTimeInterval const toolbarSlidingAnimationTime = .2;
                      completion: ^(BOOL finished){
                          
                          self.toolbarBottomSpacingConstr.constant = 8;
+                         
                          [self.view layoutSubviews];
+                         
+                         self.activeScrollView.contentSize = [self scrollViewContentSize];
                          
                      }];
     
