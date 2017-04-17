@@ -39,12 +39,24 @@
 #import "TJBSchemeSelectionDateComp.h"
 
 
+#pragma mark - Constants
+
+
+typedef enum{
+    TJBToolbarHidden,
+    TJBToolBarNotHidden
+}TJBToolbarState;
+
+
+
 @interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 {
     // user selection flow
     
     BOOL _viewingChainHistory;
+    
+    TJBToolbarState _toolbarState;
     
 }
 
@@ -74,6 +86,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createNewButton;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomSpacingConstr;
 
 
 // IBAction
@@ -81,6 +94,7 @@
 - (IBAction)didPressLeftArrow:(id)sender;
 - (IBAction)didPressRightArrow:(id)sender;
 - (IBAction)didPressBackButton:(id)sender;
+- (IBAction)didPressArrowControlButton:(id)sender;
 
 
 // toolbar button actions
@@ -132,6 +146,22 @@
 
 @end
 
+
+#pragma mark - Constants
+
+static NSTimeInterval const toolbarSlidingAnimationTime = .2;
+
+
+
+
+
+
+
+
+
+
+
+
 @implementation NewOrExistinigCircuitVC
 
 #pragma mark - Instantiation
@@ -145,6 +175,10 @@
     NSDate *today = [NSDate date];
     self.tvActiveDate = today;
     self.dcActiveDate = today;
+    
+    // state
+    
+    _toolbarState = TJBToolBarNotHidden;
     
     
     return self;
@@ -1601,9 +1635,6 @@
 }
 
 
-
-
-
 - (IBAction)didPressLeftArrow:(id)sender{
     
     [self incrementDCACtiveYearWithIncrementDirectionForward: NO];
@@ -1765,12 +1796,103 @@
     
 }
 
-#pragma mark - Toolbar
+#pragma mark - Toolbar Animation
 
 
+- (IBAction)didPressArrowControlButton:(id)sender{
+    
+    if (_toolbarState == TJBToolbarHidden){
+        
+        [self animateToolbarOnscreen];
+      
+        [self.arrowControlButton setImage: [UIImage imageNamed: @"doubleDownArrowBlue32"]
+                                 forState: UIControlStateNormal];
+        
+        _toolbarState = TJBToolBarNotHidden;
+        
+    } else if (_toolbarState == TJBToolBarNotHidden){
+        
+        [self animateToolbarOffscreen];
+        
+        [self.arrowControlButton setImage: [UIImage imageNamed: @"doubleUpArrowBlue32"]
+                                 forState: UIControlStateNormal];
+        
+        _toolbarState = TJBToolbarHidden;
+        
+    }
+    
+    
+}
+
+- (void)animateToolbarOffscreen{
+    
+
+    
+    [UIView animateWithDuration: toolbarSlidingAnimationTime
+                     animations: ^{
+    
+                         CGFloat vertAnimationDist = self.mainContainer.frame.size.height - self.toolbar.frame.origin.y;
+                         
+                         NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortByBottomLabel, self.sortBySegmentedControl];
+                         for (UIView *v in viewsToTranslate){
+                             
+                             v.frame = [self rectByTranslatingRect: v.frame
+                                                           originX: 0
+                                                           originY: vertAnimationDist];
+                             
+                         }
+                         
+                         self.sortByBottomLabel.hidden = YES;
+                         
+                     }
+                     completion: ^(BOOL finished){
+    
+                         CGFloat toolbarHeight = self.toolbar.frame.size.height;
+                         self.toolbarBottomSpacingConstr.constant = -1 * toolbarHeight;
+                         [self.view layoutSubviews];
+    
+                     }];
+    
+}
 
 
+- (void)animateToolbarOnscreen{
+    
+    [UIView animateWithDuration: .2
+                     animations: ^{
+                         
+                         CGFloat vertAnimationDist = self.toolbar.frame.size.height + 8;
+                         
+                         NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortByBottomLabel, self.sortBySegmentedControl];
+                         for (UIView *v in viewsToTranslate){
+                             
+                             v.frame = [self rectByTranslatingRect: v.frame
+                                                           originX: 0
+                                                           originY: -1 * vertAnimationDist];
+                             
+                         }
+                         
+                         self.sortByBottomLabel.hidden = NO;
+                         
+                     }
+                     completion: ^(BOOL finished){
+                         
+                         self.toolbarBottomSpacingConstr.constant = 8;
+                         [self.view layoutSubviews];
+                         
+                     }];
+    
 
+    
+    
+}
+
+
+- (CGRect)rectByTranslatingRect:(CGRect)initialRect originX:(CGFloat)originX originY:(CGFloat)originY{
+    
+    return CGRectMake(initialRect.origin.x + originX, initialRect.origin.y + originY, initialRect.size.width, initialRect.size.height);
+    
+}
 
 
 #pragma mark - Toolbar Actions

@@ -27,6 +27,7 @@
                 <outlet property="sortByBottomLabel" destination="Fhf-o8-MPj" id="poS-dt-6up"/>
                 <outlet property="sortBySegmentedControl" destination="tyu-rD-VFA" id="gko-Xm-P6y"/>
                 <outlet property="toolbar" destination="5hF-RU-JdV" id="OVA-BE-Gaa"/>
+                <outlet property="toolbarBottomSpacingConstr" destination="En6-Vd-yyB" id="iYr-N5-2Cm"/>
                 <outlet property="topTitleBar" destination="jJx-Ep-SFb" id="6zS-tR-nMP"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yearLabel" destination="yZc-c3-eUK" id="gpZ-IA-MuZ"/>
@@ -98,7 +99,10 @@
                                 <constraint firstAttribute="height" constant="44" id="c58-q3-j37"/>
                                 <constraint firstAttribute="width" constant="50" id="d8w-Jv-Q6g"/>
                             </constraints>
-                            <state key="normal" image="doubleUpArrowBlue32"/>
+                            <state key="normal" image="doubleDownArrowBlue32"/>
+                            <connections>
+                                <action selector="didPressArrowControlButton:" destination="-1" eventType="touchUpInside" id="EOw-ha-NmI"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -223,7 +227,7 @@
     <resources>
         <image name="armFlexBlue25" width="25" height="25"/>
         <image name="colosseumBlue25" width="25" height="25"/>
-        <image name="doubleUpArrowBlue32" width="32" height="32"/>
+        <image name="doubleDownArrowBlue32" width="32" height="32"/>
         <image name="garbageBlue25" width="25" height="25"/>
         <image name="leftDoubleArrow" width="25" height="25"/>
         <image name="new" width="32" height="32"/>
