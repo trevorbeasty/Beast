@@ -8,9 +8,7 @@
 
 #import "TJBCircuitReferenceVC.h"
 
-// core data
 
-#import "CoreDataController.h"
 
 // child VC's
 
@@ -24,36 +22,50 @@
 @interface TJBCircuitReferenceVC ()
 
 {
-    
-    // core
-    
-    CGSize _prescribedSize;
+
+    TJBEditingDataType _editingDataType;
     
 }
 
 // core
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+@property (strong) TJBRealizedSetGrouping rsg;
 @property (nonatomic, strong) NSMutableArray *childExerciseCompControllers;
 
 // for programmatic layout constraints
 
-@property (nonatomic, strong) NSMutableDictionary *constraintMapping;
+//@property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
 
 
 @end
 
+
+
+#pragma mark - Constants
+
+static CGFloat const titleBarHeight = 50;
+static CGFloat const contentRowHeight = 44;
+static CGFloat const componentToComponentSpacing = 24;
+static CGFloat const componentStyleSpacing = 9;
+static CGFloat const componentHeight;
+
+
+
+
+
 @implementation TJBCircuitReferenceVC
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain viewSize:(CGSize)size{
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)rc realizedSetGrouping:(TJBRealizedSetGrouping)rsg editingDataType:(TJBEditingDataType)editingDataType{
     
     self = [super init];
     
-    self.realizedChain = realizedChain;
-    _prescribedSize = size;
+    self.realizedChain = rc;
+    self.rsg = rsg;
+    _editingDataType = editingDataType;
     
     // prep
     
@@ -63,15 +75,15 @@
     
 }
 
+#pragma mark - Init Helper Methods
+
+
+
 #pragma mark - View Life Cycle
 
 - (void)loadView{
     
-    // this must be called when creating the view programatically
-        
-    CGRect frame = CGRectMake(0, 0, _prescribedSize.width, _prescribedSize.height);
-    UIView *view = [[UIView alloc] initWithFrame: frame];
-    view.backgroundColor = [UIColor clearColor];
+    UIView *view = [[UIView alloc] init];
     self.view = view;
     
 }
@@ -79,47 +91,36 @@
 
 - (void)viewDidLoad{
     
-    // meta view background color
-    
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    [self configureViewAesthetics];
     
     [self createChildViewControllersAndLayoutViews];
     
 }
 
+
+#pragma mark - View Helper Methods
+
+- (void)configureViewAesthetics{
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+}
+
 - (void)createChildViewControllersAndLayoutViews{
     
-    // for constraint mapping
+    NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
     
-    self.constraintMapping = [[NSMutableDictionary alloc] init];
-    
-    // scroll view
-    
-    CGRect scrollViewFrame = CGRectMake(0, 0, _prescribedSize.width, _prescribedSize.height);
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: scrollViewFrame];
-    
-    // determine height of scroll view content size
-    
-    
-    CGFloat titleBarHeight = 50;
-    CGFloat contentRowHeight = 44;
-    CGFloat componentToComponentSpacing = 24;
-    CGFloat componentStyleSpacing = 9;
-    CGFloat componentHeight;
-
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
     
     CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
+    CGFloat metaViewWidth = self.view.frame.size.width;
+    CGFloat totalContentHeight = [self totalContentHeight];
     
-    componentHeight = titleBarHeight + contentRowHeight * (self.realizedChain.chainTemplate.numberOfRounds) + componentStyleSpacing;
-    
-    int numberOfComponents = self.realizedChain.chainTemplate.numberOfExercises;
-    CGFloat scrollContentHeight = componentHeight * numberOfComponents + componentToComponentSpacing * (numberOfComponents - 1) + extraHeight;
-    
-    scrollView.contentSize = CGSizeMake(_prescribedSize.width, scrollContentHeight);
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: self.view.bounds];
+    scrollView.contentSize = CGSizeMake(metaViewWidth, totalContentHeight + extraHeight);
     [self.view addSubview: scrollView];
     
-    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, _prescribedSize.width, scrollContentHeight);
+    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, metaViewWidth, totalContentHeight);
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
@@ -195,33 +196,39 @@
         [child didMoveToParentViewController: self];
     }
 }
-//
-//#pragma mark - Class Interface
-//
-//- (void)activateMode:(TJBRoutineReferenceMode)mode{
-//    
-//    for (TJBCircuitReferenceExerciseComp *exerciseComp in self.childExerciseCompControllers){
-//        
-//        switch (mode) {
-//            case EditingMode:
-//                [exerciseComp activateMode: EditingMode];
-//                break;
-//                
-//            case ProgressMode:
-//                [exerciseComp activateMode: ProgressMode];
-//                break;
-//                
-//            case TargetsMode:
-//                [exerciseComp activateMode: TargetsMode];
-//                
-//            default:
-//                break;
-//        }
-//        
-//    }
-//    
-//}
 
+
+
+#pragma mark - View Math
+
+- (float)numberOfRounds{
+    
+    return _editingDataType == TJBRealizedsetGroupingEditingData ? self.rsg.count : self.realizedChain.chainTemplate.numberOfRounds;
+    
+}
+
+
+- (CGFloat)componentHeight{
+    
+    return titleBarHeight + contentRowHeight * [self numberOfRounds] + componentStyleSpacing;
+    
+}
+
+- (CGFloat)totalContentHeight{
+    
+    if (_editingDataType == TJBRealizedsetGroupingEditingData){
+        
+        return [self componentHeight];
+        
+    } else if (_editingDataType == TJBRealizedChainEditingData){
+        
+        float numberOfRounds = [self numberOfRounds];
+        
+        return  [self componentHeight] * numberOfRounds + componentToComponentSpacing * (numberOfRounds - 1.0);
+        
+    }
+    
+}
 
 @end
 

@@ -13,12 +13,13 @@ typedef enum {
     TJBRealizedChainEditingData
 } TJBEditingDataType;
 
-@class TJBRealizedChain;
+// core data
+
+#import "CoreDataController.h"
 
 @interface TJBCircuitReferenceVC : UIViewController
 
-- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain viewSize:(CGSize)size;
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)rc realizedSetGrouping:(TJBRealizedSetGrouping)rsg editingDataType:(TJBEditingDataType)editingDataType;
 
-//- (void)activateMode:(TJBRoutineReferenceMode)mode;
 
 @end

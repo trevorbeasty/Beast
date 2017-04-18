@@ -121,16 +121,17 @@
     [self.view layoutSubviews];
     
     TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithRealizedChain: self.realizedChain
-                                                                            viewSize: self.circuitReferenceView.frame.size];
+                                                                 realizedSetGrouping: self.rsg
+                                                                     editingDataType: _editingDataType];
+    self.childRoutineVC = vc;
+    
+    vc.view.frame = self.circuitReferenceView.bounds;
     
     [self addChildViewController: vc];
     
     [self.circuitReferenceView addSubview: vc.view];
     
     [vc didMoveToParentViewController: self];
-    
-    self.childRoutineVC = vc;
-
     
 }
 
