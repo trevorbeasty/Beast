@@ -16,8 +16,8 @@
 
 @interface TJBCircuitReferenceRowComp : UIViewController
 
-- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain realizedSet:(TJBRealizedSet *)rs editingDataType:(TJBEditingDataType)editingDataType exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
-//- (void)activateMode:(TJBRoutineReferenceMode)mode;
+
 
 @end

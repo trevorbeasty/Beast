@@ -29,6 +29,7 @@
 // presented VC's
 
 #import "TJBLiftOptionsVC.h"
+#import "TJBCircuitReferenceContainerVC.h"
 
 // cell preloading
 
@@ -1598,8 +1599,13 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (IBAction)didPressEdit:(id)sender{
     
+    id selecteDataObject = self.dailyList[self.currentlySelectedPath.row];
     
+    TJBCircuitReferenceContainerVC *crcVC = [[TJBCircuitReferenceContainerVC alloc] initWithDataObject: selecteDataObject];
     
+    [self presentViewController: crcVC
+                       animated: YES
+                     completion: nil];
     
     
 }

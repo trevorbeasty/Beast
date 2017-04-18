@@ -32,9 +32,7 @@
 
 {
     
-    // state
-    
-//    TJBRoutineReferenceMode _activeMode;
+    TJBEditingDataType _editingDataType;
     
 }
 
@@ -44,6 +42,7 @@
 @property (nonatomic, strong) NSNumber *roundIndex;
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
+@property (nonatomic, strong) TJBRealizedSet *rs;
 
 // IBOutlet
 
@@ -62,6 +61,25 @@
 @implementation TJBCircuitReferenceRowComp
 
 #pragma mark - Instantiation
+
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain realizedSet:(TJBRealizedSet *)rs editingDataType:(TJBEditingDataType)editingDataType exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
+    
+    self = [super init];
+    
+    
+    self.realizedChain = realizedChain;
+    self.rs = rs;
+    self.exerciseIndex = @(exerciseIndex);
+    self.roundIndex = @(roundIndex);
+    _editingDataType = editingDataType;
+    
+    
+    
+    
+    
+    return self;
+    
+}
 
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex{
     

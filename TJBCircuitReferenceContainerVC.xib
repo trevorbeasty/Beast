@@ -23,7 +23,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OBm-HU-zw0">
-                    <rect key="frame" x="8" y="71" width="566" height="684"/>
+                    <rect key="frame" x="0.0" y="71" width="582" height="684"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9y5-2C-wjz" userLabel="titleContainer">
@@ -54,8 +54,8 @@
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Iue-Tv-NOF"/>
                 <constraint firstAttribute="trailing" secondItem="9y5-2C-wjz" secondAttribute="trailing" id="aqZ-s8-tpg"/>
                 <constraint firstItem="9y5-2C-wjz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="m6G-MG-RcR"/>
-                <constraint firstItem="OBm-HU-zw0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="pgX-xX-A35"/>
-                <constraint firstAttribute="trailing" secondItem="OBm-HU-zw0" secondAttribute="trailing" constant="8" id="rLS-du-Uuy"/>
+                <constraint firstItem="OBm-HU-zw0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pgX-xX-A35"/>
+                <constraint firstAttribute="trailing" secondItem="OBm-HU-zw0" secondAttribute="trailing" id="rLS-du-Uuy"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="79" y="127.5"/>

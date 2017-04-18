@@ -95,14 +95,19 @@
     
     [self configureViewAesthetics];
     
+    [self layoutContent];
+    
 }
+
+#pragma mark - View Helper Methods
 
 
 - (void)configureViewAesthetics{
     
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+//    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.circuitReferenceView.backgroundColor = [UIColor blueColor];
     
     // title label
 

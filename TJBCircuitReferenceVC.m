@@ -31,13 +31,10 @@
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 @property (strong) TJBRealizedSetGrouping rsg;
-//@property (nonatomic, strong) NSMutableArray *childExerciseCompControllers;
 
-// for programmatic layout constraints
+// content
 
-//@property (nonatomic, strong) NSMutableDictionary *constraintMapping;
-
-
+@property (strong) UIView *scrollViewContentContainer;
 
 @end
 
@@ -82,6 +79,24 @@ static CGFloat const topSpacing;
     UIView *view = [[UIView alloc] init];
     self.view = view;
     
+    CGFloat contentWidth = [self contentWidth];
+    CGFloat contentHeight = [self totalContentHeight];
+    
+    // scroll view
+    
+    UIScrollView *scrollView = [[UIScrollView alloc] init];
+    self.view = scrollView;
+    scrollView.contentSize = CGSizeMake(contentWidth, contentHeight);
+    
+    // scroll view content container
+    
+    UIView *svContentContainer = [[UIView alloc] initWithFrame: CGRectMake(0, 0, contentWidth, contentHeight)];
+    self.scrollViewContentContainer = svContentContainer;
+    [scrollView addSubview: svContentContainer];
+    
+    scrollView.backgroundColor = [UIColor clearColor];
+    svContentContainer.backgroundColor = [UIColor clearColor];
+    
 }
 
 
@@ -106,17 +121,17 @@ static CGFloat const topSpacing;
     
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
     
-    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
-    CGFloat metaViewWidth = self.view.frame.size.width;
-    CGFloat totalContentHeight = [self totalContentHeight];
+//    CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
+//    CGFloat metaViewWidth = self.view.frame.size.width;
+//    CGFloat totalContentHeight = [self totalContentHeight];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: self.view.bounds];
-    scrollView.contentSize = CGSizeMake(metaViewWidth, totalContentHeight + extraHeight);
-    [self.view addSubview: scrollView];
-    
-    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, metaViewWidth, totalContentHeight);
-    UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
-    [scrollView addSubview: scrollViewSubview];
+//    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame: self.view.bounds];
+//    scrollView.contentSize = CGSizeMake(metaViewWidth, totalContentHeight + extraHeight);
+//    [self.view addSubview: scrollView];
+//    
+//    CGRect scrollViewSubviewFrame = CGRectMake(0, 0, metaViewWidth, totalContentHeight);
+//    UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
+//    [scrollView addSubview: scrollViewSubview];
     
     // child views
     
@@ -131,9 +146,9 @@ static CGFloat const topSpacing;
         [constraintMapping setObject: exComp.view
                               forKey: dynamicExCompName];
         
-        [scrollViewSubview addSubview: exComp.view];
+        [self.scrollViewContentContainer addSubview: exComp.view];
         
-        [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: [self horizontalVFLStringForViewName: dynamicExCompName]
+        [self.scrollViewContentContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: [self horizontalVFLStringForViewName: dynamicExCompName]
                                                                                    options: 0
                                                                                    metrics: nil
                                                                                      views: constraintMapping]];
@@ -141,7 +156,7 @@ static CGFloat const topSpacing;
         NSString *vertVFL = [self verticalVFLStringForViewName: dynamicExCompName
                                             currentTopViewName: nil];
         
-        [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
+        [self.scrollViewContentContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
                                                                                    options: 0
                                                                                    metrics: nil
                                                                                      views: constraintMapping]];
@@ -157,9 +172,9 @@ static CGFloat const topSpacing;
             [constraintMapping setObject: exComp.view
                                   forKey: dynamicExCompName];
             
-            [scrollViewSubview addSubview: exComp.view];
+            [self.scrollViewContentContainer addSubview: exComp.view];
             
-            [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: [self horizontalVFLStringForViewName: dynamicExCompName]
+            [self.scrollViewContentContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: [self horizontalVFLStringForViewName: dynamicExCompName]
                                                                                        options: 0
                                                                                        metrics: nil
                                                                                          views: constraintMapping]];
@@ -167,7 +182,7 @@ static CGFloat const topSpacing;
             NSString *vertVFL = [self verticalVFLStringForViewName: dynamicExCompName
                                                 currentTopViewName: topViewName];
             
-            [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
+            [self.scrollViewContentContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
                                                                                        options: 0
                                                                                        metrics: nil
                                                                                          views: constraintMapping]];
@@ -178,77 +193,7 @@ static CGFloat const topSpacing;
         
     }
     
-    
-//    
-//    // exercise components
-//    
-//    NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-//    [verticalLayoutConstraintsString setString: @"V:|-2-"];
-//    
-//    for (int i = 0 ; i < self.realizedChain.chainTemplate.numberOfExercises ; i ++){
-//        
-//        TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithRealizedChain: self.realizedChain
-//                                                                                               exerciseIndex: i];
-//        
-//        // add the vc to the child controllers array
-//        
-//        [self.childExerciseCompControllers addObject: vc];
-//        
-//        vc.view.translatesAutoresizingMaskIntoConstraints = NO;
-//        
-//        [self addChildViewController: vc];
-//        
-//        [scrollViewSubview addSubview: vc.view];
-//        
-//        NSString *dynamicComponentName = [NSString stringWithFormat: @"exerciseComponent%d",
-//                                          i];
-//        
-//        [self.constraintMapping setObject: vc.view
-//                                   forKey: dynamicComponentName];
-//        
-//        // vertical constraints
-//        
-//        NSString *verticalAppendString;
-//        
-//        if (i == self.realizedChain.chainTemplate.numberOfExercises - 1){
-//            
-//            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]",
-//                                    dynamicComponentName,
-//                                    componentHeight];
-//        } else{
-//            
-//            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]-%d-",
-//                                    dynamicComponentName,
-//                                    componentHeight,
-//                                    (int)componentToComponentSpacing];
-//        }
-//        
-//        [verticalLayoutConstraintsString appendString: verticalAppendString];
-//        
-//        // horizontal constraints
-//        
-//        NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
-//                                                       dynamicComponentName];
-//        
-//        NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horizontalLayoutConstraintsString
-//                                                                                       options: 0
-//                                                                                       metrics: nil
-//                                                                                         views: self.constraintMapping];
-//        
-//        [scrollViewSubview addConstraints: horizontalLayoutConstraints];
-//    }
-//    
-//    NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
-//                                                                                 options: 0
-//                                                                                 metrics: nil
-//                                                                                   views: self.constraintMapping];
-//    
-//    [scrollViewSubview addConstraints: verticalLayoutConstraints];
-//    
-//    for (TJBCircuitReferenceExerciseComp *child in self.childViewControllers){
-//        
-//        [child didMoveToParentViewController: self];
-//    }
+
 }
 
 
@@ -288,6 +233,12 @@ static CGFloat const topSpacing;
     
 }
 
+- (CGFloat)contentWidth{
+    
+    return [UIScreen mainScreen].bounds.size.width;
+    
+}
+
 #pragma mark - Child Exercise Component Controllers
 
 - (TJBCircuitReferenceExerciseComp *)createAndConfigureExerciseComponentForExerciseIndex:(int)exerciseIndex{
@@ -297,6 +248,7 @@ static CGFloat const topSpacing;
                                                                                          editingDataType: _editingDataType
                                                                                            exerciseIndex: exerciseIndex];
     vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+    vc.view.backgroundColor = [UIColor greenColor];
 
     [self addChildViewController: vc];
     
@@ -319,7 +271,7 @@ static CGFloat const topSpacing;
 
 - (NSString *)horizontalVFLStringForViewName:(NSString *)viewName{
     
-    return [NSString stringWithFormat: @"|-0-[%@]-0-|", viewName];
+    return [NSString stringWithFormat: @"H:|-0-[%@]-0-|", viewName];
     
 }
 
