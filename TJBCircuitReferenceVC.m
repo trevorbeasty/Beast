@@ -31,7 +31,7 @@
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 @property (strong) TJBRealizedSetGrouping rsg;
-@property (nonatomic, strong) NSMutableArray *childExerciseCompControllers;
+//@property (nonatomic, strong) NSMutableArray *childExerciseCompControllers;
 
 // for programmatic layout constraints
 
@@ -49,7 +49,7 @@ static CGFloat const titleBarHeight = 50;
 static CGFloat const contentRowHeight = 44;
 static CGFloat const componentToComponentSpacing = 24;
 static CGFloat const componentStyleSpacing = 9;
-static CGFloat const componentHeight;
+static CGFloat const topSpacing;
 
 
 
@@ -66,10 +66,6 @@ static CGFloat const componentHeight;
     self.realizedChain = rc;
     self.rsg = rsg;
     _editingDataType = editingDataType;
-    
-    // prep
-    
-    self.childExerciseCompControllers = [[NSMutableArray alloc] init];
     
     return self;
     
@@ -108,8 +104,6 @@ static CGFloat const componentHeight;
 
 - (void)createChildViewControllersAndLayoutViews{
     
-    NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
-    
     // the extra height allows the user to drag the bottom-most exercise further up on the screen
     
     CGFloat extraHeight = [UIScreen mainScreen].bounds.size.height / 4.0;
@@ -124,77 +118,137 @@ static CGFloat const componentHeight;
     UIView *scrollViewSubview = [[UIView alloc] initWithFrame: scrollViewSubviewFrame];
     [scrollView addSubview: scrollViewSubview];
     
+    // child views
     
+    NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
+    NSString *topViewName;
     
-    // exercise components
-    
-    NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
-    [verticalLayoutConstraintsString setString: @"V:|-2-"];
-    
-    for (int i = 0 ; i < self.realizedChain.chainTemplate.numberOfExercises ; i ++){
+    if (_editingDataType == TJBRealizedsetGroupingEditingData){
         
-        TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithRealizedChain: self.realizedChain
-                                                                                               exerciseIndex: i];
+        TJBCircuitReferenceExerciseComp *exComp = [self createAndConfigureExerciseComponentForExerciseIndex: 0];
+        NSString *dynamicExCompName = [self dynamicExCompNameForExerciseIndex: 0];
         
-        // add the vc to the child controllers array
+        [constraintMapping setObject: exComp.view
+                              forKey: dynamicExCompName];
         
-        [self.childExerciseCompControllers addObject: vc];
+        [scrollViewSubview addSubview: exComp.view];
         
-        vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+        [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: [self horizontalVFLStringForViewName: dynamicExCompName]
+                                                                                   options: 0
+                                                                                   metrics: nil
+                                                                                     views: constraintMapping]];
         
-        [self addChildViewController: vc];
+        NSString *vertVFL = [self verticalVFLStringForViewName: dynamicExCompName
+                                            currentTopViewName: nil];
         
-        [scrollViewSubview addSubview: vc.view];
+        [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
+                                                                                   options: 0
+                                                                                   metrics: nil
+                                                                                     views: constraintMapping]];
         
-        NSString *dynamicComponentName = [NSString stringWithFormat: @"exerciseComponent%d",
-                                          i];
+    } else if (_editingDataType == TJBRealizedChainEditingData){
         
-        [self.constraintMapping setObject: vc.view
-                                   forKey: dynamicComponentName];
-        
-        // vertical constraints
-        
-        NSString *verticalAppendString;
-        
-        if (i == self.realizedChain.chainTemplate.numberOfExercises - 1){
+        for (int i = 0; i < self.realizedChain.chainTemplate.numberOfExercises; i++){
             
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]",
-                                    dynamicComponentName,
-                                    componentHeight];
-        } else{
             
-            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]-%d-",
-                                    dynamicComponentName,
-                                    componentHeight,
-                                    (int)componentToComponentSpacing];
-        }
-        
-        [verticalLayoutConstraintsString appendString: verticalAppendString];
-        
-        // horizontal constraints
-        
-        NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
-                                                       dynamicComponentName];
-        
-        NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horizontalLayoutConstraintsString
+            TJBCircuitReferenceExerciseComp *exComp = [self createAndConfigureExerciseComponentForExerciseIndex: i];
+            NSString *dynamicExCompName = [self dynamicExCompNameForExerciseIndex: i];
+            
+            [constraintMapping setObject: exComp.view
+                                  forKey: dynamicExCompName];
+            
+            [scrollViewSubview addSubview: exComp.view];
+            
+            [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: [self horizontalVFLStringForViewName: dynamicExCompName]
                                                                                        options: 0
                                                                                        metrics: nil
-                                                                                         views: self.constraintMapping];
+                                                                                         views: constraintMapping]];
+            
+            NSString *vertVFL = [self verticalVFLStringForViewName: dynamicExCompName
+                                                currentTopViewName: topViewName];
+            
+            [scrollViewSubview addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
+                                                                                       options: 0
+                                                                                       metrics: nil
+                                                                                         views: constraintMapping]];
+            
+            topViewName = dynamicExCompName;
+
+        }
         
-        [scrollViewSubview addConstraints: horizontalLayoutConstraints];
     }
     
-    NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
-                                                                                 options: 0
-                                                                                 metrics: nil
-                                                                                   views: self.constraintMapping];
     
-    [scrollViewSubview addConstraints: verticalLayoutConstraints];
-    
-    for (TJBCircuitReferenceExerciseComp *child in self.childViewControllers){
-        
-        [child didMoveToParentViewController: self];
-    }
+//    
+//    // exercise components
+//    
+//    NSMutableString *verticalLayoutConstraintsString = [NSMutableString stringWithCapacity: 1000];
+//    [verticalLayoutConstraintsString setString: @"V:|-2-"];
+//    
+//    for (int i = 0 ; i < self.realizedChain.chainTemplate.numberOfExercises ; i ++){
+//        
+//        TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithRealizedChain: self.realizedChain
+//                                                                                               exerciseIndex: i];
+//        
+//        // add the vc to the child controllers array
+//        
+//        [self.childExerciseCompControllers addObject: vc];
+//        
+//        vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+//        
+//        [self addChildViewController: vc];
+//        
+//        [scrollViewSubview addSubview: vc.view];
+//        
+//        NSString *dynamicComponentName = [NSString stringWithFormat: @"exerciseComponent%d",
+//                                          i];
+//        
+//        [self.constraintMapping setObject: vc.view
+//                                   forKey: dynamicComponentName];
+//        
+//        // vertical constraints
+//        
+//        NSString *verticalAppendString;
+//        
+//        if (i == self.realizedChain.chainTemplate.numberOfExercises - 1){
+//            
+//            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]",
+//                                    dynamicComponentName,
+//                                    componentHeight];
+//        } else{
+//            
+//            verticalAppendString = [NSString stringWithFormat: @"[%@(==%f)]-%d-",
+//                                    dynamicComponentName,
+//                                    componentHeight,
+//                                    (int)componentToComponentSpacing];
+//        }
+//        
+//        [verticalLayoutConstraintsString appendString: verticalAppendString];
+//        
+//        // horizontal constraints
+//        
+//        NSString *horizontalLayoutConstraintsString = [NSString stringWithFormat: @"H:|-0-[%@]-0-|",
+//                                                       dynamicComponentName];
+//        
+//        NSArray *horizontalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: horizontalLayoutConstraintsString
+//                                                                                       options: 0
+//                                                                                       metrics: nil
+//                                                                                         views: self.constraintMapping];
+//        
+//        [scrollViewSubview addConstraints: horizontalLayoutConstraints];
+//    }
+//    
+//    NSArray *verticalLayoutConstraints = [NSLayoutConstraint constraintsWithVisualFormat: verticalLayoutConstraintsString
+//                                                                                 options: 0
+//                                                                                 metrics: nil
+//                                                                                   views: self.constraintMapping];
+//    
+//    [scrollViewSubview addConstraints: verticalLayoutConstraints];
+//    
+//    for (TJBCircuitReferenceExerciseComp *child in self.childViewControllers){
+//        
+//        [child didMoveToParentViewController: self];
+//    }
 }
 
 
@@ -226,9 +280,76 @@ static CGFloat const componentHeight;
         
         return  [self componentHeight] * numberOfRounds + componentToComponentSpacing * (numberOfRounds - 1.0);
         
+    } else{
+        
+        return 0;
+        
     }
     
 }
+
+#pragma mark - Child Exercise Component Controllers
+
+- (TJBCircuitReferenceExerciseComp *)createAndConfigureExerciseComponentForExerciseIndex:(int)exerciseIndex{
+    
+    TJBCircuitReferenceExerciseComp *vc = [[TJBCircuitReferenceExerciseComp alloc] initWithRealizedChain: self.realizedChain
+                                                                                     realizedSetGrouping: self.rsg
+                                                                                         editingDataType: _editingDataType
+                                                                                           exerciseIndex: exerciseIndex];
+    vc.view.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self addChildViewController: vc];
+    
+    [vc didMoveToParentViewController: self];
+    
+    return vc;
+    
+}
+
+
+
+
+#pragma mark - Visual Format Language Strings
+
+- (NSString *)dynamicExCompNameForExerciseIndex:(int)exerciseIndex{
+    
+    return [NSString stringWithFormat: @"exComp%d", exerciseIndex];
+    
+}
+
+- (NSString *)horizontalVFLStringForViewName:(NSString *)viewName{
+    
+    return [NSString stringWithFormat: @"|-0-[%@]-0-|", viewName];
+    
+}
+
+- (NSString *)verticalVFLStringForViewName:(NSString *)viewName currentTopViewName:(NSString *)currentTopViewName{
+    
+    NSString *vertVFL;
+    
+    if (!currentTopViewName){
+        
+        vertVFL = [NSString stringWithFormat: @"V:|-%f-[%@(==%f)]",
+                   topSpacing,
+                   viewName,
+                   [self componentHeight]];
+        
+    } else{
+        
+        vertVFL = [NSString stringWithFormat: @"V:[%@]-%f-[%@(==%f)]",
+                   currentTopViewName,
+                   componentToComponentSpacing,
+                   viewName,
+                   [self componentHeight]];
+        
+    }
+    
+    return vertVFL;
+    
+}
+
+
+
 
 @end
 

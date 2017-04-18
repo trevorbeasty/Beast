@@ -12,14 +12,11 @@
 
 #import "TJBCircuitReferenceVC.h"
 
-// core data
 
-@class  TJBRealizedChain;
 
 @interface TJBCircuitReferenceExerciseComp : UIViewController
 
-- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex;
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain realizedSetGrouping:(TJBRealizedSetGrouping)rsg editingDataType:(TJBEditingDataType)editingDataType exerciseIndex:(int)exerciseIndex;
 
-//- (void)activateMode:(TJBRoutineReferenceMode)mode;
 
 @end
