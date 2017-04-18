@@ -74,9 +74,7 @@
     _editingDataType = editingDataType;
     
     
-    
-    
-    
+
     return self;
     
 }

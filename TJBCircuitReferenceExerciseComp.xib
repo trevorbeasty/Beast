@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBCircuitReferenceExerciseComp">
             <connections>
                 <outlet property="horzThinLabel" destination="rcw-fx-3Cl" id="5KV-Lb-Wqg"/>
+                <outlet property="rowCompStackView" destination="wSE-tk-8b1" id="FFl-cg-9mw"/>
                 <outlet property="selectedExerciseButton" destination="cMQ-sv-FMh" id="KWe-nf-M2b"/>
                 <outlet property="titleLabel" destination="qQ1-Ea-MhF" id="xYA-El-GY2"/>
                 <outlet property="view" destination="f6Q-k7-CKB" id="5Mg-0Q-UhD"/>
@@ -46,34 +47,29 @@
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YkY-T9-YAR" userLabel="thinVertLabel">
-                    <rect key="frame" x="74" y="55" width="1" height="4"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="1" id="7dc-zK-e5D"/>
-                        <constraint firstAttribute="height" constant="4" id="Pml-cr-qOQ"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="wSE-tk-8b1">
+                    <rect key="frame" x="0.0" y="55" width="652" height="202"/>
+                </stackView>
             </subviews>
             <color key="backgroundColor" red="0.99626137069999998" green="1" blue="0.75889376890000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
-                <constraint firstItem="YkY-T9-YAR" firstAttribute="top" secondItem="rcw-fx-3Cl" secondAttribute="bottom" id="0qP-Eb-K7e"/>
                 <constraint firstItem="rcw-fx-3Cl" firstAttribute="top" secondItem="cMQ-sv-FMh" secondAttribute="bottom" constant="4" id="Aaq-me-S3j"/>
                 <constraint firstAttribute="trailing" secondItem="rcw-fx-3Cl" secondAttribute="trailing" id="Lb2-pf-qU1"/>
                 <constraint firstAttribute="trailing" secondItem="cMQ-sv-FMh" secondAttribute="trailing" id="Nct-Xr-D81"/>
                 <constraint firstItem="cMQ-sv-FMh" firstAttribute="top" secondItem="f6Q-k7-CKB" secondAttribute="top" id="OLU-aD-dew"/>
+                <constraint firstItem="wSE-tk-8b1" firstAttribute="top" secondItem="rcw-fx-3Cl" secondAttribute="bottom" id="QWS-Xk-KgK"/>
+                <constraint firstAttribute="bottom" secondItem="wSE-tk-8b1" secondAttribute="bottom" id="U56-VL-CB9"/>
                 <constraint firstItem="cMQ-sv-FMh" firstAttribute="leading" secondItem="qQ1-Ea-MhF" secondAttribute="trailing" id="Xga-Ma-dsF"/>
-                <constraint firstItem="YkY-T9-YAR" firstAttribute="leading" secondItem="rcw-fx-3Cl" secondAttribute="leading" id="mh9-6f-Pon"/>
+                <constraint firstAttribute="trailing" secondItem="wSE-tk-8b1" secondAttribute="trailing" id="g2N-hV-VS7"/>
                 <constraint firstItem="qQ1-Ea-MhF" firstAttribute="leading" secondItem="f6Q-k7-CKB" secondAttribute="leading" id="pc5-KY-7HT"/>
+                <constraint firstItem="wSE-tk-8b1" firstAttribute="leading" secondItem="f6Q-k7-CKB" secondAttribute="leading" id="q73-Pb-5dz"/>
                 <constraint firstItem="cMQ-sv-FMh" firstAttribute="bottom" secondItem="qQ1-Ea-MhF" secondAttribute="bottom" id="qrg-of-TOV"/>
                 <constraint firstItem="cMQ-sv-FMh" firstAttribute="leading" secondItem="rcw-fx-3Cl" secondAttribute="leading" id="rN2-qe-lww"/>
                 <constraint firstItem="qQ1-Ea-MhF" firstAttribute="top" secondItem="f6Q-k7-CKB" secondAttribute="top" id="rxf-kR-GqJ"/>
                 <constraint firstItem="rcw-fx-3Cl" firstAttribute="leading" secondItem="f6Q-k7-CKB" secondAttribute="leading" constant="74" id="uRL-V3-OFw"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-19" y="-931"/>
+            <point key="canvasLocation" x="-19" y="-931.5"/>
         </view>
     </objects>
 </document>
