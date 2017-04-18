@@ -111,7 +111,7 @@
     button.backgroundColor = [UIColor clearColor];
     [button setTitleColor: [UIColor blackColor]
                  forState: UIControlStateNormal];
-    button.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
+    button.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
     button.layer.masksToBounds = YES;
     button.layer.cornerRadius = 8.0;
     button.layer.opacity = 1.0;

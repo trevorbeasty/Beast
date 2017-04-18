@@ -35,7 +35,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
-//@property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
+@property (weak, nonatomic) IBOutlet UILabel *weightRepEntryLabel;
+@property (weak, nonatomic) IBOutlet UIView *topTopTitleBar;
+
 
 @property (weak, nonatomic) IBOutlet UIView *leftJumpBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *rightJumpBarContainer;
@@ -100,6 +102,9 @@ typedef enum {
     [self configureJumpBars];
     
 }
+
+
+#pragma mark - View Helper Methods
 
 - (void)configureJumpBars{
     
@@ -181,12 +186,12 @@ typedef enum {
     
     // thin divider label
     
-    self.thinDividerLabel.backgroundColor = [UIColor darkGrayColor];
+    self.thinDividerLabel.backgroundColor = [UIColor blackColor];
     self.thinDividerLabel.text = @"";
     
     // meta view
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     self.titleBarContainer.backgroundColor = [UIColor blackColor];
     self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
     
@@ -196,11 +201,11 @@ typedef enum {
     for (UISegmentedControl *sc in segmentedControls){
         
         sc.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-        sc.backgroundColor = [UIColor darkGrayColor];
+        sc.backgroundColor = [UIColor grayColor];
         
         CALayer *scLayer = sc.layer;
         scLayer.masksToBounds = YES;
-        scLayer.cornerRadius = 25;
+        scLayer.cornerRadius = 22;
         scLayer.borderWidth = 1.0;
         scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         
@@ -225,7 +230,7 @@ typedef enum {
     for (UILabel *lab in selectedValueLabels){
         
         lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        lab.textColor = [UIColor blackColor];
         lab.font = [UIFont boldSystemFontOfSize: 20];
         
     }
@@ -236,17 +241,20 @@ typedef enum {
     [self.submitButton setTitleColor: [UIColor darkGrayColor]
                             forState: UIControlStateNormal];
     self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
+    CALayer *sbLayer = self.submitButton.layer;
+    sbLayer.masksToBounds = YES;
+    sbLayer.cornerRadius = 4;
+    sbLayer.borderColor = [UIColor darkGrayColor].CGColor;
+    sbLayer.borderWidth = 1;
     
-    [self.cancelButton setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
-                            forState: UIControlStateNormal];
-    self.cancelButton.titleLabel.backgroundColor = [UIColor clearColor];
-    self.cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15.0];
-    self.cancelButton.backgroundColor = [UIColor darkGrayColor];
+    self.cancelButton.backgroundColor = [UIColor clearColor];
     
     // jump bars
     
     NSArray *jumpBarContainers = @[self.leftJumpBarContainer, self.rightJumpBarContainer];
     for (UIView *view in jumpBarContainers){
+        
+        view.backgroundColor = [UIColor grayColor];
         
         CALayer *layer = view.layer;
         layer.masksToBounds = YES;
@@ -256,6 +264,12 @@ typedef enum {
         
     }
     
+    // top top title bar and label
+    
+    self.topTopTitleBar.backgroundColor = [UIColor darkGrayColor];
+    
+    self.weightRepEntryLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.weightRepEntryLabel.textColor = [UIColor whiteColor];
     
 }
 
@@ -301,18 +315,14 @@ typedef enum {
         NSNumber *weightNumber = [NSNumber numberWithFloat: indexPath.row * [self weightMultiplier]];
         
         weightCell.numberLabel.text = [weightNumber stringValue];
-//        weightCell.numberLabel.textColor = [UIColor blackColor];
-//        weightCell.numberLabel.font = [UIFont systemFontOfSize: 15.0];
         weightCell.typeLabel.text = @"";
-//        weightCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
+
         
         [self configureUnselectedCellAesthetics: weightCell];
         
-//        CALayer *cellLayer = weightCell.layer;
         
         // the following is done so that a cell remains highlighted if it is selected, scrolled off-screen, and then scrolled back on-screen
         
-//        weightCell.backgroundColor = [UIColor clearColor];
         
         if (self.weightSelectedCellIndexPath){
             
@@ -322,10 +332,7 @@ typedef enum {
                 
             }
             
-        } 
-        
-//        weightCell.layer.masksToBounds = YES;
-//        weightCell.layer.cornerRadius = 4.0;
+        }
         
         return weightCell;
         
@@ -337,14 +344,9 @@ typedef enum {
         NSNumber *repsNumber = [NSNumber numberWithFloat: indexPath.row * [self repsMultiplier]];
         
         repsCell.numberLabel.text = [repsNumber stringValue];
-//        repsCell.numberLabel.textColor = [UIColor whiteColor];
-//        repsCell.numberLabel.font = [UIFont boldSystemFontOfSize: 15.0];
         repsCell.typeLabel.text = @"";
-//        repsCell.typeLabel.font = [UIFont systemFontOfSize: 15.0];
         
         [self configureUnselectedCellAesthetics: repsCell];
-        
-//        repsCell.backgroundColor = [[TJBAestheticsController singleton] blueButtonColor];
         
         if (self.repsSelectedCellIndexPath){
             
@@ -355,9 +357,6 @@ typedef enum {
             }
             
         }
-        
-//        repsCell.layer.masksToBounds = YES;
-//        repsCell.layer.cornerRadius = 4.0;
         
         return repsCell;
         
