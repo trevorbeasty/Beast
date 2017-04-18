@@ -34,7 +34,7 @@
     
     // state
     
-    TJBRoutineReferenceMode _activeMode;
+//    TJBRoutineReferenceMode _activeMode;
     
 }
 
@@ -77,7 +77,7 @@
     
     // state
     
-    _activeMode = EditingMode;
+//    _activeMode = EditingMode;
     
     return self;
     
@@ -152,7 +152,7 @@
     
     // have the controller refresh its view data every time core data saves
     
-    [self activateMode: _activeMode];
+//    [self activateMode: _activeMode];
     
 }
 
@@ -162,7 +162,7 @@
     
     // state
     
-    _activeMode = ProgressMode;
+//    _activeMode = ProgressMode;
     
     // buttons
     
@@ -245,100 +245,100 @@
     
 }
 
-- (void)configureViewForTargetsMode{
-    
-    // state
-    
-    _activeMode = TargetsMode;
-    
-    // buttons
-    
-    NSArray *buttons = @[self.weightButton,
-                         self.repsButton,
-                         self.restButton];
-    for (UIButton *button in buttons){
-        
-        button.enabled = NO;
-        
-    }
-    
-    // aesthetis and functionality
-    
-    for (UIButton *b in buttons){
-        
-        b.enabled = NO;
-        
-        b.backgroundColor = [UIColor clearColor];
-        [b setTitleColor: [UIColor blackColor]
-                forState: UIControlStateNormal];
-        
-        [self getRidOfActiveButtonEffects: b];
-        
-    }
-    
-    // must first gather all of the appropriate data and then format it appropriately
-    
-    int exerciseInd = [self.exerciseIndex intValue];
-    int roundInd = [self.roundIndex intValue];
-    
-    // targets
-    
-    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
-    
-    // only grab targets if the type is being targeted, otherwise leave them as nil
-    
-    NSNumber *weightTarget;
-    NSNumber *repsTarget;
-    
-    TJBTargetUnit *tu = chainTemplate.targetUnitCollections[exerciseInd].targetUnits[roundInd];
-    
-    if (tu.isTargetingWeight){
-        weightTarget = [NSNumber numberWithFloat: tu.weightTarget];
-    }
-    
-    if (tu.isTargetingReps){
-        repsTarget = [NSNumber numberWithFloat: tu.repsTarget];
-    }
-    
-    // weight
-    
-    if (tu.isTargetingWeight){
-        
-        NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weightTarget stringValue]];
-        
-        [self.weightButton setTitle: weightString
-                           forState: UIControlStateNormal];
-        
-    } else{
-        
-        [self.weightButton setTitle: @"X"
-                           forState: UIControlStateNormal];
-        
-    }
-    
-    // reps
-    
-    if (tu.isTargetingReps){
-        
-        NSString *repsString = [NSString stringWithFormat: @"%@ reps", [repsTarget stringValue]];
-        
-        [self.repsButton setTitle: repsString
-                         forState: UIControlStateNormal];
-        
-    } else{
-        
-        [self.repsButton setTitle: @"X"
-                         forState: UIControlStateNormal];
-        
-    }
-    
-    // rest
-    
-    [self.restButton setTitle: [self targetRestString]
-                     forState: UIControlStateNormal];
-    
-    
-}
+//- (void)configureViewForTargetsMode{
+//    
+//    // state
+//    
+//    _activeMode = TargetsMode;
+//    
+//    // buttons
+//    
+//    NSArray *buttons = @[self.weightButton,
+//                         self.repsButton,
+//                         self.restButton];
+//    for (UIButton *button in buttons){
+//        
+//        button.enabled = NO;
+//        
+//    }
+//    
+//    // aesthetis and functionality
+//    
+//    for (UIButton *b in buttons){
+//        
+//        b.enabled = NO;
+//        
+//        b.backgroundColor = [UIColor clearColor];
+//        [b setTitleColor: [UIColor blackColor]
+//                forState: UIControlStateNormal];
+//        
+//        [self getRidOfActiveButtonEffects: b];
+//        
+//    }
+//    
+//    // must first gather all of the appropriate data and then format it appropriately
+//    
+//    int exerciseInd = [self.exerciseIndex intValue];
+//    int roundInd = [self.roundIndex intValue];
+//    
+//    // targets
+//    
+//    TJBChainTemplate *chainTemplate = self.realizedChain.chainTemplate;
+//    
+//    // only grab targets if the type is being targeted, otherwise leave them as nil
+//    
+//    NSNumber *weightTarget;
+//    NSNumber *repsTarget;
+//    
+//    TJBTargetUnit *tu = chainTemplate.targetUnitCollections[exerciseInd].targetUnits[roundInd];
+//    
+//    if (tu.isTargetingWeight){
+//        weightTarget = [NSNumber numberWithFloat: tu.weightTarget];
+//    }
+//    
+//    if (tu.isTargetingReps){
+//        repsTarget = [NSNumber numberWithFloat: tu.repsTarget];
+//    }
+//    
+//    // weight
+//    
+//    if (tu.isTargetingWeight){
+//        
+//        NSString *weightString = [NSString stringWithFormat: @"%@ lbs", [weightTarget stringValue]];
+//        
+//        [self.weightButton setTitle: weightString
+//                           forState: UIControlStateNormal];
+//        
+//    } else{
+//        
+//        [self.weightButton setTitle: @"X"
+//                           forState: UIControlStateNormal];
+//        
+//    }
+//    
+//    // reps
+//    
+//    if (tu.isTargetingReps){
+//        
+//        NSString *repsString = [NSString stringWithFormat: @"%@ reps", [repsTarget stringValue]];
+//        
+//        [self.repsButton setTitle: repsString
+//                         forState: UIControlStateNormal];
+//        
+//    } else{
+//        
+//        [self.repsButton setTitle: @"X"
+//                         forState: UIControlStateNormal];
+//        
+//    }
+//    
+//    // rest
+//    
+//    [self.restButton setTitle: [self targetRestString]
+//                     forState: UIControlStateNormal];
+//    
+//    
+//}
 
 - (void)getRidOfActiveButtonEffects:(UIButton *)button{
     
@@ -349,85 +349,85 @@
 }
 
 
-
-- (void)configureViewForEditingMode{
-    
-    // state
-    
-    _activeMode = EditingMode;
-    
-    // aesthetics and functionality
-    
-    int exerciseInd = [self.exerciseIndex intValue];
-    int roundInd = [self.roundIndex intValue];
-    
-    BOOL setHasOccurred = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseInd
-                                                             roundIndex: roundInd
-                                        isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
-                                                    referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
-    
-    NSArray *buttons = @[self.weightButton,
-                         self.repsButton];
-    
-    // if the set has actually occurred, then give it an active button appearance and enable it.  If not, simply give it a blank text string
-    
-    if (setHasOccurred){
-        
-        for (UIButton *button in buttons){
-            
-            button.backgroundColor = [UIColor clearColor];
-            [button setTitleColor: [UIColor blackColor]
-                         forState: UIControlStateNormal];
-            button.enabled = YES;
-            
-            CALayer *buttLayer = button.layer;
-            buttLayer.masksToBounds = YES;
-            buttLayer.cornerRadius = 22;
-            buttLayer.borderWidth = 1.0;
-            buttLayer.borderColor = [UIColor blackColor].CGColor;
-            
-        }
-        
-    } else{
-        
-        for (UIButton *button in buttons){
-            
-            button.enabled = NO;
-            [button setTitle: @""
-                    forState: UIControlStateNormal];\
-            
-        }
-        
-    }
-    
-    // display data
-    // if the set has occurred, then fill in the appropriate data
-    
-    if (setHasOccurred){
-        
-        [self.weightButton setTitle: [self realizedWeightString]
-                           forState: UIControlStateNormal];
-        
-        [self.repsButton setTitle: [self realizedRepsString]
-                         forState: UIControlStateNormal];
-        
-    } else{
-        
-        for (UIButton *button in buttons){
-            
-            [button setTitle: @""
-                    forState: UIControlStateNormal];
-            
-        }
-        
-    }
-    
-    // the user cannot edit rest times.  Simply show a blank string as the rest button title
-    
-    [self.restButton setTitle: @""
-                     forState: UIControlStateNormal];
-    
-}
+//
+//- (void)configureViewForEditingMode{
+//    
+//    // state
+//    
+//    _activeMode = EditingMode;
+//    
+//    // aesthetics and functionality
+//    
+//    int exerciseInd = [self.exerciseIndex intValue];
+//    int roundInd = [self.roundIndex intValue];
+//    
+//    BOOL setHasOccurred = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseInd
+//                                                             roundIndex: roundInd
+//                                        isPriorToReferenceExerciseIndex: self.realizedChain.firstIncompleteExerciseIndex
+//                                                    referenceRoundIndex: self.realizedChain.firstIncompleteRoundIndex];
+//    
+//    NSArray *buttons = @[self.weightButton,
+//                         self.repsButton];
+//    
+//    // if the set has actually occurred, then give it an active button appearance and enable it.  If not, simply give it a blank text string
+//    
+//    if (setHasOccurred){
+//        
+//        for (UIButton *button in buttons){
+//            
+//            button.backgroundColor = [UIColor clearColor];
+//            [button setTitleColor: [UIColor blackColor]
+//                         forState: UIControlStateNormal];
+//            button.enabled = YES;
+//            
+//            CALayer *buttLayer = button.layer;
+//            buttLayer.masksToBounds = YES;
+//            buttLayer.cornerRadius = 22;
+//            buttLayer.borderWidth = 1.0;
+//            buttLayer.borderColor = [UIColor blackColor].CGColor;
+//            
+//        }
+//        
+//    } else{
+//        
+//        for (UIButton *button in buttons){
+//            
+//            button.enabled = NO;
+//            [button setTitle: @""
+//                    forState: UIControlStateNormal];\
+//            
+//        }
+//        
+//    }
+//    
+//    // display data
+//    // if the set has occurred, then fill in the appropriate data
+//    
+//    if (setHasOccurred){
+//        
+//        [self.weightButton setTitle: [self realizedWeightString]
+//                           forState: UIControlStateNormal];
+//        
+//        [self.repsButton setTitle: [self realizedRepsString]
+//                         forState: UIControlStateNormal];
+//        
+//    } else{
+//        
+//        for (UIButton *button in buttons){
+//            
+//            [button setTitle: @""
+//                    forState: UIControlStateNormal];
+//            
+//        }
+//        
+//    }
+//    
+//    // the user cannot edit rest times.  Simply show a blank string as the rest button title
+//    
+//    [self.restButton setTitle: @""
+//                     forState: UIControlStateNormal];
+//    
+//}
 
 #pragma mark - Convenience
 
@@ -527,27 +527,27 @@
 
 #pragma mark - Class API
 
-- (void)activateMode:(TJBRoutineReferenceMode)mode{
-    
-    switch (mode) {
-        case EditingMode:
-            [self configureViewForEditingMode];
-            break;
-            
-        case ProgressMode:
-            [self configureViewForProgressMode];
-            break;
-            
-        case TargetsMode:
-            [self configureViewForTargetsMode];
-            break;
-            
-        default:
-            break;
-    
-    }
-    
-}
+//- (void)activateMode:(TJBRoutineReferenceMode)mode{
+//    
+//    switch (mode) {
+//        case EditingMode:
+//            [self configureViewForEditingMode];
+//            break;
+//            
+//        case ProgressMode:
+//            [self configureViewForProgressMode];
+//            break;
+//            
+//        case TargetsMode:
+//            [self configureViewForTargetsMode];
+//            break;
+//            
+//        default:
+//            break;
+//    
+//    }
+//    
+//}
 
 #pragma mark - Target Action
 
@@ -583,8 +583,8 @@
         
         // reload view data
         
-        [self activateMode: _activeMode];
-         
+//        [self activateMode: _activeMode];
+        
         // presented VC
         
         [self dismissViewControllerAnimated: NO
@@ -631,7 +631,7 @@
         
         // reload view data
         
-        [self activateMode: _activeMode];
+//        [self activateMode: _activeMode];
 //        [self.view setNeedsDisplay];
         
         // presented VC

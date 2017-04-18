@@ -195,32 +195,32 @@
         [child didMoveToParentViewController: self];
     }
 }
-
-#pragma mark - Class Interface
-
-- (void)activateMode:(TJBRoutineReferenceMode)mode{
-    
-    for (TJBCircuitReferenceExerciseComp *exerciseComp in self.childExerciseCompControllers){
-        
-        switch (mode) {
-            case EditingMode:
-                [exerciseComp activateMode: EditingMode];
-                break;
-                
-            case ProgressMode:
-                [exerciseComp activateMode: ProgressMode];
-                break;
-                
-            case TargetsMode:
-                [exerciseComp activateMode: TargetsMode];
-                
-            default:
-                break;
-        }
-        
-    }
-    
-}
+//
+//#pragma mark - Class Interface
+//
+//- (void)activateMode:(TJBRoutineReferenceMode)mode{
+//    
+//    for (TJBCircuitReferenceExerciseComp *exerciseComp in self.childExerciseCompControllers){
+//        
+//        switch (mode) {
+//            case EditingMode:
+//                [exerciseComp activateMode: EditingMode];
+//                break;
+//                
+//            case ProgressMode:
+//                [exerciseComp activateMode: ProgressMode];
+//                break;
+//                
+//            case TargetsMode:
+//                [exerciseComp activateMode: TargetsMode];
+//                
+//            default:
+//                break;
+//        }
+//        
+//    }
+//    
+//}
 
 
 @end

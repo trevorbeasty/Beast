@@ -18,6 +18,6 @@
 
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
-- (void)activateMode:(TJBRoutineReferenceMode)mode;
+//- (void)activateMode:(TJBRoutineReferenceMode)mode;
 
 @end

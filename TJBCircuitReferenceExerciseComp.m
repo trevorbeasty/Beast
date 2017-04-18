@@ -233,31 +233,31 @@
 }
 
 #pragma mark - Class API
-
-- (void)activateMode:(TJBRoutineReferenceMode)mode{
-    
-    for (TJBCircuitReferenceRowComp *rowComp in self.childRowCompControllers){
-        
-        switch (mode) {
-            case EditingMode:
-                [rowComp activateMode: EditingMode];
-                break;
-                
-            case ProgressMode:
-                [rowComp activateMode: ProgressMode];
-                break;
-                
-            case TargetsMode:
-                [rowComp activateMode: TargetsMode];
-                break;
-                
-            default:
-                break;
-        }
-        
-    }
-    
-}
+//
+//- (void)activateMode:(TJBRoutineReferenceMode)mode{
+//    
+//    for (TJBCircuitReferenceRowComp *rowComp in self.childRowCompControllers){
+//        
+//        switch (mode) {
+//            case EditingMode:
+//                [rowComp activateMode: EditingMode];
+//                break;
+//                
+//            case ProgressMode:
+//                [rowComp activateMode: ProgressMode];
+//                break;
+//                
+//            case TargetsMode:
+//                [rowComp activateMode: TargetsMode];
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//        
+//    }
+//    
+//}
 
 
 

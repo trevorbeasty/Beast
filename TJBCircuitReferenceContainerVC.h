@@ -12,6 +12,6 @@
 
 @interface TJBCircuitReferenceContainerVC : UIViewController
 
-- (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain;
+- (instancetype)initWithDataObject:(id)dataObject;
 
 @end

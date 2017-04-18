@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-    EditingMode,
-    ProgressMode,
-    TargetsMode,
-} TJBRoutineReferenceMode;
+    TJBRealizedsetGroupingEditingData,
+    TJBRealizedChainEditingData
+} TJBEditingDataType;
 
 @class TJBRealizedChain;
 
@@ -20,6 +19,6 @@ typedef enum {
 
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain viewSize:(CGSize)size;
 
-- (void)activateMode:(TJBRoutineReferenceMode)mode;
+//- (void)activateMode:(TJBRoutineReferenceMode)mode;
 
 @end
