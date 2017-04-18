@@ -2048,14 +2048,14 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         vc3.tabBarItem.title = @"Workout Log";
         vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
         
-        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
-        vc2.tabBarItem.title = @"Progress";
-        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
-        
+//        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
+//        vc2.tabBarItem.title = @"Progress";
+//        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
+//        
         // tab bar
         
         UITabBarController *tbc = [[UITabBarController alloc] init];
-        [tbc setViewControllers: @[vc1, vc2, vc3]];
+        [tbc setViewControllers: @[vc1, vc3]];
         tbc.tabBar.translucent = NO;
         tbc.tabBar.barTintColor = [UIColor darkGrayColor];
         tbc.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];

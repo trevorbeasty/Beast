@@ -359,6 +359,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
         
         for (TJBExercise *exercise in exercises){
             
+//            NSLog(@"exercise name: %@", exercise.name);
+            
             BOOL exerciseIsDefaultExercise = [exercise.name containsString: placeholderExerciseName];
             
             if (exerciseIsDefaultExercise){
@@ -810,6 +812,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
     
 //    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
+//    NSLog(@"chain template has %lu exercises", chainTemplate.exercises.count);
     
     [self saveContext];
     
@@ -821,6 +824,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     int previousNumberExercises = chainTemplate.numberOfExercises;
     chainTemplate.numberOfExercises = previousNumberExercises - 1;
+    
+    // target units
     
     TJBTargetUnitCollection *tuc = chainTemplate.targetUnitCollections[previousNumberExercises - 1];
     
@@ -836,7 +841,14 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
     [[self moc] deleteObject: tuc];
     
+    // exercises
+    
+    NSMutableOrderedSet *exercisesCopy = [chainTemplate.exercises mutableCopy];
+    [exercisesCopy removeObjectAtIndex: exercisesCopy.count - 1];
+    chainTemplate.exercises = exercisesCopy;
+    
 //    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
+//    NSLog(@"chain template has %lu exercises", chainTemplate.exercises.count);
     
     [self saveContext];
     
