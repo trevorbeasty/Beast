@@ -33,6 +33,12 @@
 @property (weak, nonatomic) IBOutlet UIView *circuitReferenceView;
 @property (weak, nonatomic) IBOutlet UIView *titleContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
+@property (weak, nonatomic) IBOutlet UIButton *returnButton;
+
+// IBAction
+
+- (IBAction)didPressReturnButton:(id)sender;
+
 
 // core
 
@@ -106,7 +112,6 @@
     
     // meta view
     
-//    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     self.circuitReferenceView.backgroundColor = [UIColor blueColor];
     
     // title label
@@ -118,6 +123,19 @@
     // title bar container
     
     self.titleContainerView.backgroundColor = [UIColor blackColor];
+    
+    // button
+    
+    self.returnButton.backgroundColor = [UIColor grayColor];
+    [self.returnButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
+                            forState: UIControlStateNormal];
+    self.returnButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+    CALayer *rbLayer = self.returnButton.layer;
+    rbLayer.masksToBounds = YES;
+    rbLayer.cornerRadius = 22;
+    rbLayer.borderWidth = 1;
+    rbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
 }
 
@@ -134,11 +152,27 @@
     
     [self addChildViewController: vc];
     
-    [self.circuitReferenceView addSubview: vc.view];
+    [self.circuitReferenceView insertSubview: vc.view
+                                     atIndex: 0];
     
     [vc didMoveToParentViewController: self];
     
 }
+
+#pragma mark - Button Actions
+
+
+
+- (IBAction)didPressReturnButton:(id)sender{
+    
+    [self dismissViewControllerAnimated: YES
+                             completion: nil];
+    
+}
+
+
+
+
 
 @end
 

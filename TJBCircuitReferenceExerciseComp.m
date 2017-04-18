@@ -48,14 +48,6 @@
 @end
 
 
-#pragma mark - Constants
-
-static CGFloat const topSpacing = 2;
-static CGFloat const componentToComponentSpacing = 0;
-
-
-
-
 
 
 @implementation TJBCircuitReferenceExerciseComp
@@ -82,7 +74,7 @@ static CGFloat const componentToComponentSpacing = 0;
     
     [self configureViewAesthetics];
     
-//    [self configureViewDataAndFunctionality];
+    [self configureViewDataAndFunctionality];
     
     [self configureStackViewContent];
     
@@ -130,19 +122,27 @@ static CGFloat const componentToComponentSpacing = 0;
     
     // exercise
     
-    [self.selectedExerciseButton setTitle: self.realizedChain.chainTemplate.exercises[[self.exerciseIndex intValue]].name
+    TJBExercise *exercise;
+    
+    if (_editingDataType == TJBRealizedChainEditingData){
+    
+        exercise = self.realizedChain.chainTemplate.exercises[[self.exerciseIndex intValue]];
+        
+    } else if (_editingDataType == TJBRealizedsetGroupingEditingData){
+        
+        exercise = self.rsg[[self.exerciseIndex intValue]].exercise;
+        
+    }
+    
+    [self.selectedExerciseButton setTitle: exercise.name
                                  forState: UIControlStateNormal];
     
     self.selectedExerciseButton.enabled = NO;
     
     // title label
     
-    NSString *exerciseNumberText = [NSString stringWithFormat: @"Exercise %d", [self.exerciseIndex intValue] + 1];
-    self.titleLabel.text = exerciseNumberText;
-    
-    // disable button
-    
-    self.selectedExerciseButton.enabled = NO;
+    NSNumber *exerciseNumber = @([self.exerciseIndex intValue] + 1);
+    self.titleLabel.text = [exerciseNumber stringValue];
     
 }
 
