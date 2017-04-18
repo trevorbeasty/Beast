@@ -248,7 +248,6 @@ static CGFloat const topSpacing;
                                                                                          editingDataType: _editingDataType
                                                                                            exerciseIndex: exerciseIndex];
     vc.view.translatesAutoresizingMaskIntoConstraints = NO;
-    vc.view.backgroundColor = [UIColor greenColor];
 
     [self addChildViewController: vc];
     

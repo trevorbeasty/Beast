@@ -150,6 +150,8 @@ static CGFloat const componentToComponentSpacing = 0;
 
 - (void)configureStackViewContent{
     
+    self.rowCompStackView.distribution = UIStackViewDistributionFillEqually;
+    
     int limit = _editingDataType == TJBRealizedsetGroupingEditingData ? (int)self.rsg.count : self.realizedChain.chainTemplate.numberOfRounds;
     
     for (int i = 0; i < limit; i++){
@@ -168,7 +170,6 @@ static CGFloat const componentToComponentSpacing = 0;
                                                                                  exerciseIndex: [self.exerciseIndex intValue]
                                                                                     roundIndex: roundIndex];
     vc.view.translatesAutoresizingMaskIntoConstraints = NO;
-    vc.view.backgroundColor = [UIColor orangeColor];
     
     [self addChildViewController: vc];
     

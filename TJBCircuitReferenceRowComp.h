@@ -19,5 +19,4 @@
 - (instancetype)initWithRealizedChain:(TJBRealizedChain *)realizedChain realizedSet:(TJBRealizedSet *)rs editingDataType:(TJBEditingDataType)editingDataType exerciseIndex:(int)exerciseIndex roundIndex:(int)roundIndex;
 
 
-
 @end
