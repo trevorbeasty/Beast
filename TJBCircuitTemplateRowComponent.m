@@ -531,11 +531,7 @@ static CGFloat const requiredTouchTime = .125;
 
 - (void)giveButtonActiveConfig:(UIButton *)button{
     
-//    button.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//    button.backgroundColor = [UIColor lightGrayColor];
     button.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-//    [button setTitleColor: [UIColor blackColor]
-//                 forState: UIControlStateNormal];
     [button setTitleColor: [UIColor darkGrayColor]
                  forState: UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize: 15.0];

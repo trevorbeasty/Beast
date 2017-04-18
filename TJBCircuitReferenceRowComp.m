@@ -92,7 +92,7 @@
     
     [self configureInitialViewData];
     
-
+    [self configureButtonAestheticsAndFunctionality];
     
 }
 
@@ -205,6 +205,65 @@
     
 }
 
+- (void)configureButtonAestheticsAndFunctionality{
+    
+    TJBRealizedSet *rs = [self realizedSetForController];
+    
+    if (rs.holdsNullValues == NO){
+        
+        [self giveButtonActiveAppearanceAndFunctionality: self.weightButton];
+        [self giveButtonActiveAppearanceAndFunctionality: self.repsButton];
+        
+        
+    } else{
+        
+        
+        [self giveButtonInactiveAppearanceAndFunctionality: self.weightButton];
+        [self giveButtonInactiveAppearanceAndFunctionality: self.repsButton];
+        
+        
+    }
+    
+    [self giveButtonInactiveAppearanceAndFunctionality: self.restButton];
+    
+}
+
+#pragma mark - Button Appearances and States
+
+- (void)giveButtonActiveAppearanceAndFunctionality:(UIButton *)butt{
+    
+    butt.enabled = YES;
+    
+    butt.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    [butt setTitleColor: [UIColor darkGrayColor]
+               forState: UIControlStateNormal];
+    butt.titleLabel.font = [UIFont systemFontOfSize: 15];
+    
+    CALayer *buttLayer = butt.layer;
+    buttLayer.masksToBounds = YES;
+    buttLayer.cornerRadius = 8;
+    buttLayer.borderWidth = 1;
+    buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
+    
+    
+}
+
+
+
+- (void)giveButtonInactiveAppearanceAndFunctionality:(UIButton *)butt{
+    
+    butt.enabled = NO;
+    
+    butt.backgroundColor = [UIColor clearColor];
+    [butt setTitleColor: [UIColor blackColor]
+               forState: UIControlStateNormal];
+    butt.titleLabel.font = [UIFont systemFontOfSize: 15];
+    
+    CALayer *buttLayer = butt.layer;
+    buttLayer.borderWidth = 0;
+
+    
+}
 
 #pragma mark - Core Data
 
