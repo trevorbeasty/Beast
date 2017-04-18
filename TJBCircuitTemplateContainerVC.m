@@ -24,6 +24,10 @@
 
 #import "TJBAestheticsController.h"
 
+// utilities
+
+#import "TJBAssortedUtilities.h"
+
 // core data
 
 #import "CoreDataController.h"
@@ -57,6 +61,7 @@
 @property (weak, nonatomic) IBOutlet UIStepper *numberRoundsStepper;
 
 @property (weak, nonatomic) IBOutlet UIButton *controlsArrow;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *controlsContainerBottomSpaceConstr;
 
 
 // IBAction
@@ -85,7 +90,8 @@ static int const _startingNumberRounds = 3;
 
 static NSString * const placeholderName = @"placeholderName";
 
-
+static NSTimeInterval const bottomControlsAnimationTime = .2;
+static CGFloat const bottomControlsSpaceValue = 8;
 
 
 
@@ -374,10 +380,47 @@ static NSString * const placeholderName = @"placeholderName";
     
     [self.circuitTemplateVC dismissKeyboard];
     
-    [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
+    // alert controller
     
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Proceed with Delete?"
+                                                                   message: @"All entered information will be lost"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    __weak TJBCircuitTemplateContainerVC *weakSelf = self;
+    
+    // confirm action
+    
+    void (^confirmAction)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
+        
+        [weakSelf dismissViewControllerAnimated: YES
+                                 completion: nil];
+        
+    };
+    
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle: @"Delete"
+                                                      style: UIAlertActionStyleDestructive
+                                                    handler: confirmAction];
+    
+    // cancel action
+    
+    void (^cancelAction)(UIAlertAction *) = ^(UIAlertAction *action){
+        
+        return;
+        
+    };
+    
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle: @"Cancel"
+                                                     style: UIAlertActionStyleCancel
+                                                   handler: cancelAction];
+    
+    [alert addAction: cancel];
+    [alert addAction: confirm];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
     
 }
 
@@ -433,13 +476,83 @@ static NSString * const placeholderName = @"placeholderName";
     
     if (_advancedControlsHidden == NO){
         
+        [self animateControlsContainerOffscreen];
         
+        [self.controlsArrow setImage: [UIImage imageNamed: @"doubleUpArrowBlue32"]
+                            forState: UIControlStateNormal];
+        
+        _advancedControlsHidden = YES;
         
     } else if (_advancedControlsHidden == YES){
         
+        [self animateControlsContainerOnscreen];
         
+        [self.controlsArrow setImage: [UIImage imageNamed: @"doubleDownArrowBlue32"]
+                            forState: UIControlStateNormal];
+        
+        _advancedControlsHidden = NO;
         
     }
+    
+}
+
+- (void)animateControlsContainerOffscreen{
+    
+    [UIView animateWithDuration: bottomControlsAnimationTime
+                     animations: ^{
+                         
+                         self.controlsArrow.enabled = NO;
+                         
+                         CGFloat height = self.containerView.frame.size.height - self.leftControlsContainer.frame.origin.y;
+                         
+                         self.leftControlsContainer.frame = [TJBAssortedUtilities rectByTranslatingRect: self.leftControlsContainer.frame
+                                                                                                originX: 0
+                                                                                                originY: height];
+                         
+                         self.controlsArrow.frame = [TJBAssortedUtilities rectByTranslatingRect: self.controlsArrow.frame
+                                                                                        originX: 0
+                                                                                        originY: height];
+                         
+                     }
+                     completion: ^(BOOL finished){
+                         
+                         self.controlsArrow.enabled = YES;
+                         
+                         CGFloat height = self.leftControlsContainer.frame.size.height;
+                         
+                         self.controlsContainerBottomSpaceConstr.constant = -1 * height;
+                         
+                     }];
+    
+}
+
+
+- (void)animateControlsContainerOnscreen{
+    
+    
+    [UIView animateWithDuration: bottomControlsAnimationTime
+                     animations: ^{
+                         
+                         self.controlsArrow.enabled = NO;
+                         
+                         CGFloat height = (self.leftControlsContainer.frame.size.height + bottomControlsSpaceValue) * -1;
+                         
+                         self.leftControlsContainer.frame = [TJBAssortedUtilities rectByTranslatingRect: self.leftControlsContainer.frame
+                                                                                                originX: 0
+                                                                                                originY: height];
+                         
+                         self.controlsArrow.frame = [TJBAssortedUtilities rectByTranslatingRect: self.controlsArrow.frame
+                                                                                        originX: 0
+                                                                                        originY: height];
+                         
+                     }
+                     completion: ^(BOOL finished){
+                         
+                         self.controlsArrow.enabled = YES;
+                         
+                         self.controlsContainerBottomSpaceConstr.constant = bottomControlsSpaceValue;
+                         
+                     }];
     
 }
 

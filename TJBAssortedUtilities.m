@@ -310,6 +310,16 @@
 }
 
 
+#pragma mark - View Math
+
+
++ (CGRect)rectByTranslatingRect:(CGRect)initialRect originX:(CGFloat)originX originY:(CGFloat)originY{
+    
+    return CGRectMake(initialRect.origin.x + originX, initialRect.origin.y + originY, initialRect.size.width, initialRect.size.height);
+    
+}
+
+
 
 @end
 

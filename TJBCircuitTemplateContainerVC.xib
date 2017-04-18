@@ -14,6 +14,7 @@
                 <outlet property="backButton" destination="a2A-HH-h48" id="sej-b3-y2k"/>
                 <outlet property="containerView" destination="ddm-83-lU1" id="zmL-Qx-OVD"/>
                 <outlet property="controlsArrow" destination="dEd-qn-1KF" id="5kY-qW-2SZ"/>
+                <outlet property="controlsContainerBottomSpaceConstr" destination="eLn-va-105" id="kp8-bY-Rvy"/>
                 <outlet property="leftControlsContainer" destination="XPt-E1-GwX" id="U3S-eN-xeP"/>
                 <outlet property="mainTitleLabel" destination="4sq-W5-vNc" id="CnU-d0-Q57"/>
                 <outlet property="numberExercisesStepper" destination="1gT-dx-0IG" id="5XB-8f-uPY"/>
@@ -128,8 +129,12 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2A-HH-h48">
-                            <rect key="frame" x="30" y="23" width="25" height="25"/>
+                            <rect key="frame" x="0.0" y="5.5" width="60" height="60"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="Okl-Y9-ViK"/>
+                                <constraint firstAttribute="width" constant="60" id="nSo-55-Sql"/>
+                            </constraints>
                             <state key="normal" image="trashBlue25">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
@@ -138,8 +143,12 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VD7-7W-J65">
-                            <rect key="frame" x="320" y="23" width="25" height="25"/>
+                            <rect key="frame" x="315" y="5.5" width="60" height="60"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="Lic-Y6-J5x"/>
+                                <constraint firstAttribute="height" constant="60" id="oe3-Pn-fuq"/>
+                            </constraints>
                             <state key="normal" image="saveBlue25">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
@@ -153,9 +162,9 @@
                         <constraint firstItem="4sq-W5-vNc" firstAttribute="centerX" secondItem="b3K-3X-CZg" secondAttribute="centerX" id="3BH-jQ-gup"/>
                         <constraint firstItem="4sq-W5-vNc" firstAttribute="centerY" secondItem="b3K-3X-CZg" secondAttribute="centerY" id="8E9-Vp-bdZ"/>
                         <constraint firstItem="a2A-HH-h48" firstAttribute="centerY" secondItem="b3K-3X-CZg" secondAttribute="centerY" id="Uw3-7a-ow2"/>
-                        <constraint firstAttribute="trailing" secondItem="VD7-7W-J65" secondAttribute="trailing" constant="30" id="bVe-jm-qkW"/>
+                        <constraint firstAttribute="trailing" secondItem="VD7-7W-J65" secondAttribute="trailing" id="bVe-jm-qkW"/>
                         <constraint firstItem="VD7-7W-J65" firstAttribute="centerY" secondItem="b3K-3X-CZg" secondAttribute="centerY" id="gBh-zO-Gu7"/>
-                        <constraint firstItem="a2A-HH-h48" firstAttribute="leading" secondItem="b3K-3X-CZg" secondAttribute="leading" constant="30" id="o2i-Y8-IEA"/>
+                        <constraint firstItem="a2A-HH-h48" firstAttribute="leading" secondItem="b3K-3X-CZg" secondAttribute="leading" id="o2i-Y8-IEA"/>
                         <constraint firstAttribute="height" constant="70" id="rMg-fF-whT"/>
                     </constraints>
                 </view>

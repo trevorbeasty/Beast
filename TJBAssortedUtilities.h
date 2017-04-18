@@ -38,6 +38,10 @@
 
 
 
+#pragma mark - View Math
+
++ (CGRect)rectByTranslatingRect:(CGRect)initialRect originX:(CGFloat)originX originY:(CGFloat)originY;
+
 
 
 @end
