@@ -2177,12 +2177,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     [self.activeTableView endUpdates];
     
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        [self selectDateControlCorrespondingToDate: self.tvActiveDate];
-        
-    });
+    [self updateAllTitleLabelsForNewContent];
     
     
 }

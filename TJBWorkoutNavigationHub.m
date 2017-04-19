@@ -2075,8 +2075,6 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
     CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
     
-    //
-    
     CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
     float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
     float maxAnimationTime = _maxDateControlAnimationTime;
