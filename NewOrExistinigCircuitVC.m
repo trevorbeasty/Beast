@@ -543,8 +543,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     tv.frame = CGRectMake(0, 0, svContentSize.width, tvContentHeight);
     tv.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    tv.separatorColor = [UIColor blackColor];
-    tv.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    tv.separatorColor = [UIColor lightGrayColor];
+    tv.separatorInset = UIEdgeInsetsMake(0, 16, 0, 0);
     
     tv.dataSource = self;
     tv.delegate = self;

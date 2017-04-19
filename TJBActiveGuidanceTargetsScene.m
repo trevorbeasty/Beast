@@ -134,10 +134,11 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
     
     TJBRealizedChainCell *cell = [self.routineTargetTableView dequeueReusableCellWithIdentifier: cellReuseID];
     
-    [cell configureWithContentObject: self.chainTemplate
-                            cellType: ChainTemplateAdvCell
-                        dateTimeType: TJBDayInYear
-                         titleNumber: @(1)];
+    [cell configureChainTemplateCellWithChainTemplate: self.chainTemplate
+                                         dateTimeType: TJBDayInYear
+                                          titleNumber: @(1)
+                                          sortingType: TJBChainTemplateByDateCreated];
+    
     cell.backgroundColor = [UIColor clearColor];
     
     self.cell = cell;

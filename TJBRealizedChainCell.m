@@ -47,6 +47,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *firstExerciseNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberExercisesRoundsLabel;
 
 // core
 
@@ -599,6 +600,12 @@ typedef enum{
     
     [self configureExerciseLabel: self.firstExerciseLabel];
     [self configureExerciseNameLabel: self.firstExerciseNameLabel];
+    
+    // exercise rounds number label
+    
+    self.numberExercisesRoundsLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.numberExercisesRoundsLabel.backgroundColor = [UIColor clearColor];
+    self.numberExercisesRoundsLabel.textColor = [UIColor blackColor];
     
     // detail drawing
     
@@ -1270,7 +1277,7 @@ typedef enum{
     
     // I assume labels with intrinsic content sizes determining heights are 25 tall
     
-    CGFloat estimatedHeaderAreaHeight = 189;
+    CGFloat estimatedHeaderAreaHeight = 233;
     CGFloat breatherRoom = 32;
     
     return  estimatedHeaderAreaHeight + breatherRoom;

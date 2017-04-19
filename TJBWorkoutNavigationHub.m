@@ -1112,8 +1112,8 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     newTableView.delegate = self;
     newTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     newTableView.scrollEnabled = YES;
-    newTableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    newTableView.separatorColor = [UIColor blackColor];
+    newTableView.separatorInset = UIEdgeInsetsMake(0, 16, 0, 0);
+    newTableView.separatorColor = [UIColor lightGrayColor];
     
     // make sure to remove the old table view from the view hierarchy or else it will not deallocate
     
@@ -1212,7 +1212,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 - (void)prepareNewContentCellsAndRemoveActivityIndicator{
     
     [self deriveDailyList];
-    [self updateNumberOfEntriesLabel: @(self.dailyList.count)];
+    [self updateNumberOfEntriesLabel];
     
     // call the table view cellForIndexPath method for all daily list cells and store the results
     
@@ -1244,7 +1244,9 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
 }
 
-- (void)updateNumberOfEntriesLabel:(NSNumber *)number{
+- (void)updateNumberOfEntriesLabel{
+    
+    NSNumber *number = @(self.dailyList.count);
     
     BOOL hasOneEntry = [number intValue] == 1;
     NSString *entriesWord = hasOneEntry ? @"Entry" : @"Entries";
@@ -1556,7 +1558,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     // alert controller
     
     UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Proceed with Delete?"
-                                                                   message: @"This action is permanent. Submissions cannot be ressurected following deletion"
+                                                                   message: @"This action is permanent"
                                                             preferredStyle: UIAlertControllerStyleAlert];
     
     __weak TJBWorkoutNavigationHub *weakSelf = self;
@@ -1626,12 +1628,14 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        [self updateCellTitleNumbers];
-        
         [self fetchManagedObjectsAndDeriveMasterList];
         
         self.currentlySelectedPath = nil;
         [self configureToolbarAppearanceAccordingToStateVariables];
+        
+        [self updateCellTitleNumbers];
+        
+        [self updateNumberOfEntriesLabel];
         
     });
     
