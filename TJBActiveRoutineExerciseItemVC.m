@@ -8,31 +8,27 @@
 
 #import "TJBActiveRoutineExerciseItemVC.h"
 
-// table view cell
+#import "TJBAestheticsController.h" // aesthetics
+#import "TJBPreviousMarksDictionary.h" // previous marks
 
-#import "TJBActiveRoutineGuidancePreviousEntryCell.h"
-
-// aesthetics
-
-#import "TJBAestheticsController.h"
-
-@interface TJBActiveRoutineExerciseItemVC () <UITableViewDelegate, UITableViewDataSource>
+@interface TJBActiveRoutineExerciseItemVC () 
 
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UILabel *titleExerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetWeightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetRepsLabel;
-@property (weak, nonatomic) IBOutlet UITableView *previousEntriesTableView;
 @property (weak, nonatomic) IBOutlet UILabel *numberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *previousEntriesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsLabel;
+@property (weak, nonatomic) IBOutlet UIStackView *contentStackView;
 
 @property (weak, nonatomic) IBOutlet UIView *headerAreaContainer;
 @property (weak, nonatomic) IBOutlet UIView *metaContainer;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *stackViewHeight;
 
 
 // core
@@ -41,16 +37,27 @@
 @property (nonatomic, strong) NSString *targetExerciseName;
 @property (nonatomic, strong) NSString *targetWeight;
 @property (nonatomic, strong) NSString *targetReps;
-@property (nonatomic, strong) NSArray<NSArray *> *previousEntries;
+@property (nonatomic, strong) NSArray<TJBPreviousMarksDictionary *> *previousEntries;
 
 
 @end
+
+
+#pragma mark - Constants
+
+static CGFloat const rowHeight = 30;
+static CGFloat const rowSpacing = .5;
+
+
+
+
+
 
 @implementation TJBActiveRoutineExerciseItemVC
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithTitleNumber:(NSString *)titleNumber targetExerciseName:(NSString *)targetExerciseName targetWeight:(NSString *)targetWeight targetReps:(NSString *)targetReps previousEntries:(NSArray *)previousEntries{
+- (instancetype)initWithTitleNumber:(NSString *)titleNumber targetExerciseName:(NSString *)targetExerciseName targetWeight:(NSString *)targetWeight targetReps:(NSString *)targetReps previousEntries:(NSArray<TJBPreviousMarksDictionary *> *)previousEntries{
     
     self = [super init];
     
@@ -70,19 +77,26 @@
     
     [self configureViewData];
     
-    [self configureTableView];
+    [self configureStackView];
     
     [self configureViewAesthetics];
     
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    
-    
+    [self createStackViewContent];
     
 }
 
 #pragma mark - View Helper Methods
+
+- (void)configureStackView{
+    
+    self.contentStackView.distribution = UIStackViewDistributionFillEqually;
+    self.contentStackView.backgroundColor = [UIColor clearColor];
+    self.contentStackView.spacing = rowSpacing;
+    
+    float numberOfRows = (float)self.previousEntries.count;
+    self.stackViewHeight.constant = numberOfRows * rowHeight + (numberOfRows - 1.0) * rowSpacing;
+    
+}
 
 
 - (void)configureViewAesthetics{
@@ -98,21 +112,6 @@
     CALayer *metaContainerLayer = self.metaContainer.layer;
     metaContainerLayer.masksToBounds = YES;
     metaContainerLayer.cornerRadius = 4;
-    
-//    UIView *shadowView = [[UIView alloc] initWithFrame: self.metaContainer.frame];
-//    shadowView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-//    CALayer *shadowLayer = shadowView.layer;
-//    shadowLayer.masksToBounds = NO;
-//    shadowLayer.shadowColor = [UIColor blackColor].CGColor;
-//    shadowLayer.shadowOffset = CGSizeMake(1.5, 1.5);
-//    shadowLayer.shadowRadius = 1.5;
-//    shadowLayer.shadowOpacity = .8;
-//    [self.view insertSubview: shadowView
-//                belowSubview: self.metaContainer];
-//    metaContainerLayer.shadowColor = [UIColor lightGrayColor].CGColor;
-//    metaContainerLayer.shadowOffset = CGSizeMake(3, 3);
-//    metaContainerLayer.shadowOpacity = 1.0;
-//    metaContainerLayer.shadowRadius = 1;
     
     // title labels
     
@@ -137,21 +136,13 @@
         
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor blackColor];
-        label.font = [UIFont systemFontOfSize: 12];
+        label.font = [UIFont boldSystemFontOfSize: 12];
         
     }
     
     self.previousEntriesLabel.backgroundColor = [UIColor lightGrayColor];
     self.previousEntriesLabel.font = [UIFont boldSystemFontOfSize: 15];
     self.previousEntriesLabel.textColor = [UIColor whiteColor];
-    
-    // line drawing
-    
-    [self addVerticalBorderToRight: YES
-                           topView: self.dateLabel
-                        bottomView: self.dateLabel
-                         thickness: 1
-                         superView: self.view];
 
     
 }
@@ -173,30 +164,11 @@
     
 }
 
-static NSString * previousEntryCellID = @"previousEntryCell";
-
-- (void)configureTableView{
-    
-    // functionality
-    
-    UINib *previousEntryCell = [UINib nibWithNibName: @"TJBActiveRoutineGuidancePreviousEntryCell"
-                                              bundle: nil];
-    
-    [self.previousEntriesTableView registerNib: previousEntryCell
-                        forCellReuseIdentifier: previousEntryCellID];
-    
-    self.previousEntriesTableView.scrollEnabled = NO;
-    
-    // aesthetics
-    
-    self.previousEntriesTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
-}
 
 #pragma mark - Line Drawing
 
 
-- (void)addVerticalBorderToRight:(BOOL)toRight topView:(UIView *)topView bottomView:(UIView *)bottomView thickness:(CGFloat)thickness superView:(UIView *)superView{
+- (void)drawVerticalDividerToRightOfLabel:(UILabel *)label horizontalOffset:(CGFloat)horOff thickness:(CGFloat)thickness verticalOffset:(CGFloat)vertOff{
     
     CAShapeLayer *sl = [CAShapeLayer layer];
     
@@ -208,21 +180,18 @@ static NSString * previousEntryCellID = @"previousEntryCell";
     sl.opacity = 1.0;
     
     
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
     
-    CGPoint startPoint;
-    CGPoint endPoint;
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
     
-    if (toRight == YES){
-        
-        startPoint = CGPointMake(topView.frame.origin.x + topView.frame.size.width, topView.frame.origin.y);
-        endPoint = CGPointMake(bottomView.frame.origin.x + bottomView.frame.size.width, bottomView.frame.origin.y + bottomView.frame.size.height);
-        
-    } else{
-        
-        startPoint = CGPointMake(topView.frame.origin.x, topView.frame.origin.y);
-        endPoint = CGPointMake(bottomView.frame.origin.x, bottomView.frame.origin.y + bottomView.frame.size.height);
-        
-    }
+    CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
+    CGPoint bottomRightCorner = CGPointMake(topRightCorner.x, topRightCorner.y + labelSize.height);
+    
+    CGPoint startPoint = CGPointMake(topRightCorner.x + horOff, topRightCorner.y + vertOff);
+    CGPoint endPoint = CGPointMake(bottomRightCorner.x + horOff,  bottomRightCorner.y - vertOff);
     
     UIBezierPath *bp = [[UIBezierPath alloc] init];
     [bp moveToPoint: startPoint];
@@ -232,11 +201,49 @@ static NSString * previousEntryCellID = @"previousEntryCell";
     
     // label layer
     
-    [superView.layer addSublayer: sl];
+    [self.view.layer addSublayer: sl];
     
 }
 
-- (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness superView:(UIView *)superView{
+- (void)drawRightBorderForLabel:(UILabel *)label thickness:(CGFloat)thickness{
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = [[UIColor blackColor] CGColor];
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
+    CGPoint bottomRightCorner = CGPointMake(topRightCorner.x, topRightCorner.y + labelSize.height);
+    
+    CGPoint startPoint = topRightCorner;
+    CGPoint endPoint = bottomRightCorner;
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    label.layer.masksToBounds = NO;
+    [label.layer addSublayer: sl];
+    
+}
+
+- (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness{
     
     CAShapeLayer *sl = [CAShapeLayer layer];
     
@@ -266,62 +273,143 @@ static NSString * previousEntryCellID = @"previousEntryCell";
     
     // label layer
     
-//    [self.contentView.layer addSublayer: sl];
+    [self.view.layer addSublayer: sl];
     
 }
 
-#pragma mark - <UITableViewDelegate>
+#pragma mark - Content
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)createStackViewContent{
     
-    return 40;
+    int limit = (int)self.previousEntries.count;
     
-    
-}
-
-
-
-
-#pragma mark - <UITableViewDataSource>
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    
-    return 1;
-    
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
-    
-    return self.previousEntries.count;
+    for (int i = 0; i < limit; i++){
         
+        UIView *contentRow = [self contentRowCorrespondingToIndex: i
+                                                         maxIndex: limit];
+        
+        [self.contentStackView addArrangedSubview: contentRow];
+        
+    }
+    
+}
 
+- (UIView *)contentRowCorrespondingToIndex:(int)index maxIndex:(int)maxIndex{
+    
+//    BOOL isTopRow = index == 0;
+//    BOOL isBottomRow = index == maxIndex;
+
+    // container view
+    
+    UIView *containerView = [[UIView alloc] init];
+    containerView.backgroundColor = [UIColor blackColor];
+    
+    NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
+    
+    TJBPreviousMarksDictionary *pmDict = self.previousEntries[index];
+    
+    // date label
+    
+
+    UILabel *dateLabel = [[UILabel alloc] init];
+    [containerView addSubview: dateLabel];
+    [self configurePreviousMarkLabelAesthetics: dateLabel];
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    df.dateFormat = @"MMM d, yyyy";
+    dateLabel.text = [df stringFromDate: [pmDict date]];
+    
+    NSString *dateLabelKey = @"dateLabel";
+    [constraintMapping setObject: dateLabel
+                          forKey: dateLabelKey];
+
+    dateLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSString *dateVertVFL = [self vertVFLForLabelWithKey: dateLabelKey];
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: dateVertVFL
+                                                                           options: 0
+                                                                           metrics: nil
+                                                                             views: constraintMapping]];
+    
+
+    
+    // weight
+    
+    UILabel *weightLabel = [[UILabel alloc] init];
+    [containerView addSubview: weightLabel];
+    [self configurePreviousMarkLabelAesthetics: weightLabel];
+    
+    weightLabel.text = [[pmDict weight] stringValue];
+    
+    NSString *weightLabelKey = @"weightLabel";
+    [constraintMapping setObject: weightLabel
+                          forKey: weightLabelKey];
+    
+    weightLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSString *weightVertVFL = [self vertVFLForLabelWithKey: weightLabelKey];
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: weightVertVFL
+                                                                           options: 0
+                                                                           metrics: nil
+                                                                             views: constraintMapping]];
+    
+    
+    // reps
+    
+    UILabel *repsLabel = [[UILabel alloc] init];
+    [containerView addSubview: repsLabel];
+    [self configurePreviousMarkLabelAesthetics: repsLabel];
+    
+    repsLabel.text = [[pmDict reps] stringValue];
+    
+    NSString *repsLabelKey = @"repsLabel";
+    [constraintMapping setObject: repsLabel
+                          forKey: repsLabelKey];
+    
+    repsLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSString *repsVertVFL = [self vertVFLForLabelWithKey: repsLabelKey];
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: repsVertVFL
+                                                                           options: 0
+                                                                           metrics: nil
+                                                                             views: constraintMapping]];
+    
+    
+    // horisontal constraints for all
+    
+    NSString *horzVFL = [NSString stringWithFormat: @"H:|-0-[%@(==%@)]-%f-[%@(==%@)]-%f-[%@]-0-|",
+                         dateLabelKey,
+                         weightLabelKey,
+                         rowSpacing,
+                         weightLabelKey,
+                         repsLabelKey,
+                         rowSpacing,
+                         repsLabelKey];
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: horzVFL
+                                                                           options: 0
+                                                                           metrics: nil
+                                                                             views: constraintMapping]];
+    
+    [containerView layoutSubviews];
+
+    return containerView;
     
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (NSString *)vertVFLForLabelWithKey:(NSString *)key{
     
-    // in the array, the order of objects is as follows: weight, reps, date created
-    
-    TJBActiveRoutineGuidancePreviousEntryCell *cell = [self.previousEntriesTableView dequeueReusableCellWithIdentifier: previousEntryCellID];
-    
-    cell.backgroundColor = [UIColor clearColor];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    // give the cell the correct data
-    
-    NSArray *data = self.previousEntries[indexPath.row];
-    
-    [cell configureWithDate: data[2]
-                     weight: data[0]
-                       reps: data[1]];
-    
-    return cell;
-
+    return [NSString stringWithFormat: @"V:|-0-[%@]-0-|", key];
     
 }
 
+- (void)configurePreviousMarkLabelAesthetics:(UILabel *)label{
+    
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    label.textColor = [UIColor blackColor];
+    label.font = [UIFont systemFontOfSize: 15];
+    
+}
 
 
 

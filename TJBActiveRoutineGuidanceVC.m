@@ -47,6 +47,8 @@
 
 #import "TJBClockConfigurationVC.h"
 
+#import "TJBPreviousMarksDictionary.h" // previous marks
+
 @interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
 
 {
@@ -101,7 +103,7 @@
 @property (nonatomic, strong) NSNumber *activeExerciseIndexForChain;
 
 @property (nonatomic, strong) NSMutableArray<NSArray *> *activeLiftTargets;
-@property (nonatomic, strong) NSMutableArray<NSArray<NSArray *> *> *activePreviousMarks;
+@property (nonatomic, strong) NSMutableArray<NSArray<TJBPreviousMarksDictionary *> *> *activePreviousMarks;
 @property (nonatomic, strong) NSNumber *futureRestTarget;
 @property (nonatomic, strong) NSNumber *currentRestTarget;
 
@@ -301,7 +303,7 @@ static float const animationTimeUnit = .4;
 
 #pragma mark - Scroll View Content
 
-- (NSArray<NSArray *> *)extractPreviousMarksArrayForActiveIndices{
+- (NSArray<TJBPreviousMarksDictionary *> *)extractPreviousMarksArrayForActiveIndices{
     
     NSMutableArray *returnArray = [[NSMutableArray alloc] init];
     
@@ -315,14 +317,8 @@ static float const animationTimeUnit = .4;
     
     for (NSInteger i = numberOfValidRealizedChains - 1; i >= 0; i--){
         
-        NSMutableArray *previousMarksArray = [[NSMutableArray alloc] init];
-        
         TJBRealizedChain *iterativeRealizedChain = self.chainTemplate.realizedChains[i];
-        
-        float weight;
-        float reps;
-        NSDate *date;
-        
+
         // it is possible that in historic realized chains, the user did not complete all sets.  Must check the 'first incomplete' type properties to check for this.  If the set occurred, weight, reps, and the creation date of the realized chain should be grabbed.  We only need the creation date because we only care to report the day executed to the user, not the rest or in-set time
         
         BOOL setExists = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseIndex
@@ -336,15 +332,15 @@ static float const animationTimeUnit = .4;
         
         if (setExists && setIsNonnull){
             
-            weight = rs.submittedWeight;
-            reps = rs.submittedReps;
-            date = rs.submissionTime;
+            NSNumber *weight = @(rs.submittedWeight);
+            NSNumber *reps = @(rs.submittedReps);
+            NSDate *date = rs.submissionTime;
             
-            [previousMarksArray addObject: [NSNumber numberWithFloat: weight]];
-            [previousMarksArray addObject: [NSNumber numberWithFloat: reps]];
-            [previousMarksArray addObject: date];
+            TJBPreviousMarksDictionary *pmDict = [[TJBPreviousMarksDictionary alloc] initWithDate: date
+                                                                                           weight: weight
+                                                                                             reps: reps];
             
-            [returnArray addObject: previousMarksArray];
+            [returnArray addObject: pmDict];
             
         }
     }
@@ -365,7 +361,7 @@ static float const animationTimeUnit = .4;
     
     // it is possible that an array of length 0 is assigned to previousMarks.  I must check that the length is greater than zero before adding (if it has no content, I do not want to show it to the user)
     
-    NSArray<NSArray *> *previousMarks = [self extractPreviousMarksArrayForActiveIndices];
+    NSArray<TJBPreviousMarksDictionary *> *previousMarks = [self extractPreviousMarksArrayForActiveIndices];
     
     if (previousMarks.count > 0){
         
@@ -570,7 +566,7 @@ static NSString const *restViewKey = @"restView";
         
         NSInteger numberOfPreviousEntries = self.activePreviousMarks.count;
         
-        NSArray<NSArray *> *previousEntries = nil;
+        NSArray<TJBPreviousMarksDictionary *> *previousEntries = nil;
         
         if (i < numberOfPreviousEntries){
             

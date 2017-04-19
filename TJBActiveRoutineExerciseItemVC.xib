@@ -11,13 +11,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBActiveRoutineExerciseItemVC">
             <connections>
+                <outlet property="contentStackView" destination="Tuz-7b-HjI" id="iqJ-t5-Pir"/>
                 <outlet property="dateLabel" destination="eaa-yk-Udd" id="5rI-u3-a97"/>
                 <outlet property="headerAreaContainer" destination="wbt-rX-IKN" id="lxg-nX-mBg"/>
                 <outlet property="metaContainer" destination="rsm-I6-7Ta" id="knm-LM-F9y"/>
                 <outlet property="numberLabel" destination="0hn-Wd-cQg" id="r2i-oM-TPz"/>
                 <outlet property="previousEntriesLabel" destination="XBm-Q6-VFc" id="3a3-Fa-PbR"/>
-                <outlet property="previousEntriesTableView" destination="Jcv-SU-ArZ" id="8jO-a9-3Za"/>
                 <outlet property="repsLabel" destination="eBb-rK-HIm" id="hEr-wM-9Uh"/>
+                <outlet property="stackViewHeight" destination="rT4-M9-VzL" id="7Hc-6r-kW0"/>
                 <outlet property="targetRepsLabel" destination="ntA-GQ-BPr" id="YFE-m0-yfJ"/>
                 <outlet property="targetWeightLabel" destination="DJh-zC-K1t" id="LAl-f3-K3I"/>
                 <outlet property="titleExerciseLabel" destination="oy1-94-oRo" id="Nny-P5-dmt"/>
@@ -103,7 +104,7 @@
                                 <constraint firstItem="ntA-GQ-BPr" firstAttribute="bottom" secondItem="DJh-zC-K1t" secondAttribute="bottom" id="xgZ-bk-rVz"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date entered" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaa-yk-Udd">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaa-yk-Udd">
                             <rect key="frame" x="0.0" y="121" width="119.5" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
@@ -124,38 +125,32 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Jcv-SU-ArZ">
-                            <rect key="frame" x="0.0" y="151" width="359" height="484"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <color key="separatorColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="MwM-sJ-XgM"/>
-                                <outlet property="delegate" destination="-1" id="lzO-HG-Hfo"/>
-                            </connections>
-                        </tableView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Tuz-7b-HjI">
+                            <rect key="frame" x="0.0" y="151" width="359" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="rT4-M9-VzL"/>
+                            </constraints>
+                        </stackView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstItem="Tuz-7b-HjI" firstAttribute="leading" secondItem="rsm-I6-7Ta" secondAttribute="leading" id="1hK-OB-hwU"/>
                         <constraint firstItem="h1d-hi-ceA" firstAttribute="bottom" secondItem="eaa-yk-Udd" secondAttribute="bottom" id="23f-ba-2OI"/>
                         <constraint firstItem="h1d-hi-ceA" firstAttribute="leading" secondItem="eaa-yk-Udd" secondAttribute="trailing" id="5CS-nE-2nc"/>
                         <constraint firstItem="h1d-hi-ceA" firstAttribute="top" secondItem="eaa-yk-Udd" secondAttribute="top" id="D87-yM-1dd"/>
                         <constraint firstItem="eBb-rK-HIm" firstAttribute="width" secondItem="eaa-yk-Udd" secondAttribute="width" id="J9c-3Z-bd2"/>
                         <constraint firstItem="wbt-rX-IKN" firstAttribute="top" secondItem="rsm-I6-7Ta" secondAttribute="top" id="NE1-0N-t2a"/>
-                        <constraint firstAttribute="trailing" secondItem="Jcv-SU-ArZ" secondAttribute="trailing" id="OtF-Pm-Qo5"/>
-                        <constraint firstItem="Jcv-SU-ArZ" firstAttribute="top" secondItem="eBb-rK-HIm" secondAttribute="bottom" id="Pbo-16-Kxr"/>
                         <constraint firstItem="eBb-rK-HIm" firstAttribute="top" secondItem="eaa-yk-Udd" secondAttribute="top" id="RAg-tA-5nd"/>
                         <constraint firstItem="eBb-rK-HIm" firstAttribute="bottom" secondItem="eaa-yk-Udd" secondAttribute="bottom" id="Vbc-XJ-NiF"/>
                         <constraint firstItem="wbt-rX-IKN" firstAttribute="leading" secondItem="rsm-I6-7Ta" secondAttribute="leading" id="dPY-Ts-aCm"/>
                         <constraint firstItem="eBb-rK-HIm" firstAttribute="leading" secondItem="h1d-hi-ceA" secondAttribute="trailing" id="gFf-Tr-f55"/>
-                        <constraint firstAttribute="bottom" secondItem="Jcv-SU-ArZ" secondAttribute="bottom" id="n6a-Tp-dwn"/>
                         <constraint firstItem="h1d-hi-ceA" firstAttribute="top" secondItem="wbt-rX-IKN" secondAttribute="bottom" id="oas-Y5-MwO"/>
-                        <constraint firstItem="eBb-rK-HIm" firstAttribute="trailing" secondItem="Jcv-SU-ArZ" secondAttribute="trailing" id="qag-Fo-dnj"/>
-                        <constraint firstItem="Jcv-SU-ArZ" firstAttribute="leading" secondItem="rsm-I6-7Ta" secondAttribute="leading" id="sHC-kT-G66"/>
+                        <constraint firstAttribute="trailing" secondItem="eBb-rK-HIm" secondAttribute="trailing" id="pf5-vX-HaX"/>
+                        <constraint firstItem="eaa-yk-Udd" firstAttribute="leading" secondItem="rsm-I6-7Ta" secondAttribute="leading" id="sjR-te-FYi"/>
                         <constraint firstItem="h1d-hi-ceA" firstAttribute="width" secondItem="eaa-yk-Udd" secondAttribute="width" id="u5m-7d-MJ7"/>
-                        <constraint firstItem="Jcv-SU-ArZ" firstAttribute="leading" secondItem="eaa-yk-Udd" secondAttribute="leading" id="wxe-F7-4wM"/>
+                        <constraint firstAttribute="trailing" secondItem="Tuz-7b-HjI" secondAttribute="trailing" id="zMD-c2-hui"/>
                         <constraint firstAttribute="trailing" secondItem="wbt-rX-IKN" secondAttribute="trailing" id="ziW-hD-mSc"/>
+                        <constraint firstItem="Tuz-7b-HjI" firstAttribute="top" secondItem="h1d-hi-ceA" secondAttribute="bottom" id="zvp-pW-ZXi"/>
                     </constraints>
                 </view>
             </subviews>
