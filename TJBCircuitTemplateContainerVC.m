@@ -437,7 +437,11 @@ static CGFloat const bottomControlsSpaceValue = 8;
         
         // alert
         
-        NSString *message = [NSString stringWithFormat: @"New routine added to My Routines"];
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        df.dateFormat = @"MMMM yyyy";
+        NSString *thisMonth = [df stringFromDate: [NSDate date]];
+        
+        NSString *message = [NSString stringWithFormat: @"You can now find your routine in 'Routines by Date Created' for %@", thisMonth];
         
         UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Routine Successfully Saved"
                                                                        message: message

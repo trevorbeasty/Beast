@@ -141,7 +141,6 @@ static const CGFloat buttonWidth = 60.0;
 static const CGFloat buttonSpacing = 0.0;
 static const CGFloat buttonHeight = 55.0;
 
-//static const CGFloat toolBarToContentBottomCushion = 8;
 
 // animation
 
@@ -153,7 +152,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
-
+static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 
 
 
@@ -179,12 +178,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithHomeButton:(BOOL)includeHomeButton{
-    
-    return  [self initWithHomeButton: includeHomeButton
-              advancedControlsActive: YES];
-    
-}
 
 - (instancetype)initWithHomeButton:(BOOL)includeHomeButton advancedControlsActive:(BOOL)advancedControlsActive{
     
@@ -199,7 +192,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     _toolbarState = TJBToolbarNotHidden;
     
-    [self configureNotifications];
+    [self configureCoreDataUpdateNotification];
     
     // controls
     
@@ -566,26 +559,16 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 // viewWillAppear and viewDidAppear are used to handle the animation that slides the date scroll view from right to left when the workout log becomes visible
 
 - (void)viewWillAppear:(BOOL)animated{
-
-    //// animation calculations
-    // first position
-    
-    [self configureInitialDateControlAnimationPosition];
     
     // the following is used to update the cells if core data was updated while this controller existed but was not the active view controller (in the tab bar controller). The core data update will have prompted this controller to refetch core data objects and derive the master list. The following logic will then derive the daily list and active cells, showing the activity indicator while doing so
     
     if (_cellsNeedUpdating){
         
-        NSInteger dayAsIndex = [self dayIndexForDate: self.workoutLogActiveDay];
+        [self fetchManagedObjectsAndDeriveMasterList];
         
-        [self didSelectObjectWithIndex: @(dayAsIndex)
-                       representedDate: self.workoutLogActiveDay];
-        
-        // the date controls should also be reloaded, in case a day that previously had not content now contains content
-        
-        [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
-        
-        // update the state variable to reflect that cells no longer need updating
+        [self showWorkoutLogForDate: self.workoutLogActiveDay
+              animateDateControlBar: NO
+                          withDelay: 0];
         
         _cellsNeedUpdating = NO;
         
@@ -593,13 +576,6 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
 }
 
-
-
-- (void)viewDidAppear:(BOOL)animated{
-    
-    [self executeDateControlAnimation];
-    
-}
 
 
 
@@ -613,7 +589,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     
     [self showWorkoutLogForDate: [NSDate date]
           animateDateControlBar: YES
-                      withDelay: .1];
+                      withDelay: .5];
     
     return;
     
@@ -1004,44 +980,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 }
 
 
-- (void)executeDateControlAnimation{
-    
-//    [self.view layoutSubviews];
-    
-    // second position
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSInteger day = [calendar component: NSCalendarUnitDay
-                               fromDate: self.workoutLogActiveDay];
-    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
-    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
-    
-    // make sure the second position will not drag the view too far, revealing a white screen beneath
-    
-    CGFloat viewWidth = self.view.frame.size.width;
-    
-    if (activeDateControlRightEdge < viewWidth){
-        
-        activeDateControlRightEdge = viewWidth;
-        
-    }
-    
-    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
-    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
-    
-    //
-    
-    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
-    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
-    float maxAnimationTime = .5;
-    
-    // animation call
-    
-    [self scrollToOffset: secondPosition
-       animationDuration: maxAnimationTime * percentScrollViewWidth
-     subsequentAnimation: nil];
-    
-}
+
 
 - (void)artificiallySelectDate:(NSDate *)date{
     
@@ -1679,6 +1618,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
     
     [self deleteCoreDataObjectsForIndexPath: self.currentlySelectedPath];
+    _cellsNeedUpdating = NO; // this is done so that the controller does not attempt to relaod data if it's view were to disappear and reappear. Core data reloading is already handled in the following logic
     
     [self.tableView endUpdates];
     
@@ -1772,7 +1712,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 #pragma mark - Core Data Notification
 
-- (void)configureNotifications{
+- (void)configureCoreDataUpdateNotification{
     
     //// configure managed context notification for updating
     
@@ -1790,17 +1730,17 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
     //// refresh fetched managed objects and all trickle-down
     // the daily list is derived whenever a date control object is selected. Even when a date control object is not explicitly selected by the user, I programmatically make the selection to select the desired day.
     
-    [self fetchManagedObjectsAndDeriveMasterList];
+    _cellsNeedUpdating = YES;
     
-    if (self.tabBarController){
-        
-        if (![self.tabBarController.selectedViewController isEqual: self]){
-            
-            _cellsNeedUpdating = YES; // when this state BOOL == YES, it means that core data was saved while this was not the active view controller in a tab bar controller. When this is the case, it is necessary for the table view to reload its cells when its view appears
-            
-        }
-        
-    }
+//    if (self.tabBarController){
+//        
+//        if (![self.tabBarController.selectedViewController isEqual: self]){
+//            
+//            _cellsNeedUpdating = YES; // when this state BOOL == YES, it means that core data was saved while this was not the active view controller in a tab bar controller. When this is the case, it is necessary for the table view to reload its cells when its view appears
+//            
+//        }
+//        
+//    }
 
 }
 
@@ -2111,6 +2051,43 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 }
 
 #pragma mark - Animations and Date SV Calcs
+
+- (void)executeDateControlAnimation{
+    
+    // second position
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    NSInteger day = [calendar component: NSCalendarUnitDay
+                               fromDate: self.workoutLogActiveDay];
+    TJBCircleDateVC *vc = self.circleDateChildren[day - 1];
+    CGFloat activeDateControlRightEdge = vc.view.frame.origin.x + vc.view.frame.size.width;
+    
+    // make sure the second position will not drag the view too far, revealing a white screen beneath
+    
+    CGFloat viewWidth = self.view.frame.size.width;
+    
+    if (activeDateControlRightEdge < viewWidth){
+        
+        activeDateControlRightEdge = viewWidth;
+        
+    }
+    
+    CGFloat secondPositionOffsetX = activeDateControlRightEdge - self.dateScrollView.frame.size.width;
+    CGPoint secondPosition = CGPointMake(secondPositionOffsetX,  0);
+    
+    //
+    
+    CGFloat firstPositionOffsetX = [self dateSVWidthGivenButtonSpecifications] - [UIScreen mainScreen].bounds.size.width;
+    float percentScrollViewWidth = (firstPositionOffsetX - secondPositionOffsetX) / firstPositionOffsetX;
+    float maxAnimationTime = _maxDateControlAnimationTime;
+    
+    // animation call
+    
+    [self scrollToOffset: secondPosition
+       animationDuration: maxAnimationTime * percentScrollViewWidth
+     subsequentAnimation: nil];
+    
+}
 
 - (void)scrollToOffset:(CGPoint)offset animationDuration:(NSTimeInterval)animationDuration subsequentAnimation:(AnimationCompletionBlock)subsequentAnimation{
     

@@ -16,7 +16,6 @@
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithHomeButton:(BOOL)includeHomeButton;
 - (instancetype)initWithHomeButton:(BOOL)includeHomeButton advancedControlsActive:(BOOL)advancedControlsActive;
 
 @end

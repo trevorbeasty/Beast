@@ -200,7 +200,8 @@
 
 - (IBAction)didPressViewWorkoutLog:(id)sender{
     
-    TJBWorkoutNavigationHub *navHub = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: YES];
+    TJBWorkoutNavigationHub *navHub = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: YES
+                                                                   advancedControlsActive: YES];
 
     [self presentViewController: navHub
                        animated: YES

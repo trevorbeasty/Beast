@@ -30,7 +30,8 @@
         NewOrExistinigCircuitVC *vc1 = [[NewOrExistinigCircuitVC alloc] init];
         vc1.tabBarItem.title = @"Selection";
         
-        TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO];
+        TJBWorkoutNavigationHub *vc2 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
+                                        advancedControlsActive: NO];
         vc2.tabBarItem.title = @"Workout Log";
     
         [self setViewControllers: @[vc1, vc2]];
