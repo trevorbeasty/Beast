@@ -31,6 +31,8 @@
 		0B47EC001EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EBFE1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m */; };
 		0B47EC011EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B47EBFF1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib */; };
 		0B47EC051EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EC041EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m */; };
+		0B47EC091EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EC071EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.m */; };
+		0B47EC0A1EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B47EC081EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BC71DF77C20009981F9 /* Main.storyboard */; };
@@ -157,6 +159,9 @@
 		0B47EBFF1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveGuidanceTargetsScene.xib; sourceTree = "<group>"; };
 		0B47EC031EA794B000CBC8D8 /* TJBActiveGuidanceTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveGuidanceTBC.h; sourceTree = "<group>"; };
 		0B47EC041EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveGuidanceTBC.m; sourceTree = "<group>"; };
+		0B47EC061EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveGuidanceRoutineHistory.h; sourceTree = "<group>"; };
+		0B47EC071EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveGuidanceRoutineHistory.m; sourceTree = "<group>"; };
+		0B47EC081EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveGuidanceRoutineHistory.xib; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -424,6 +429,9 @@
 		0B47EBFC1EA78D0500CBC8D8 /* Guidance Routine History */ = {
 			isa = PBXGroup;
 			children = (
+				0B47EC061EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.h */,
+				0B47EC071EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.m */,
+				0B47EC081EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib */,
 			);
 			name = "Guidance Routine History";
 			sourceTree = "<group>";
@@ -1004,6 +1012,7 @@
 				0BA8ACF61E26561C00EE10C2 /* TJBCircuitReferenceVC.xib in Resources */,
 				0B78E8021E67654C00EB216F /* TJBExerciseSelectionCell.xib in Resources */,
 				0BC12E331E8FCB9F0041D863 /* TJBClockConfigurationVC.xib in Resources */,
+				0B47EC0A1EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib in Resources */,
 				0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */,
 				0B78E7CE1E3C16A300EB216F /* TJBRealizedChainCell.xib in Resources */,
 				0B78E7FC1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.xib in Resources */,
@@ -1029,6 +1038,7 @@
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B78E7CD1E3C16A300EB216F /* TJBRealizedChainCell.m in Sources */,
 				0B870E5D1E31008900E38C46 /* TJBRepsWeightRecordPair.m in Sources */,
+				0B47EC091EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.m in Sources */,
 				0B78E7F31E61236300EB216F /* TJBCellFetchingOperation.m in Sources */,
 				0B78E7E61E462B6300EB216F /* TJBWeightRepsSelectionVC.m in Sources */,
 				0B86FB7B1E217326000D1B5F /* TJBBasicCollectionViewCell.m in Sources */,

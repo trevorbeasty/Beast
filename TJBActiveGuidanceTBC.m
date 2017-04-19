@@ -13,6 +13,7 @@
 #import "TJBActiveRoutineGuidanceVC.h" // active guidance main scene
 #import "TJBWorkoutNavigationHub.h" // workout log
 #import "TJBActiveGuidanceTargetsScene.h" // routine targets
+#import "TJBActiveGuidanceRoutineHistory.h" // routine history
 
 #import "TJBAestheticsController.h" // aesthetics
 
@@ -57,15 +58,19 @@
     
     TJBActiveGuidanceTargetsScene *vc2 = [[TJBActiveGuidanceTargetsScene alloc] initWithChainTemplate: self.chainTemplate];
     vc2.tabBarItem.title = @"Targets";
+    vc2.tabBarItem.image = [UIImage imageNamed: @"targetBlue25"];
     
+    TJBActiveGuidanceRoutineHistory *vc3 = [[TJBActiveGuidanceRoutineHistory alloc] initWithChainTemplate: self.chainTemplate];
+    vc3.tabBarItem.title = @"History";
+    vc3.tabBarItem.image = [UIImage imageNamed: @"colosseumBlue25"];
     
-    TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
+    TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
                                                                 advancedControlsActive: NO];
-    vc3.tabBarItem.title = @"Workout Log";
-    vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
+    vc4.tabBarItem.title = @"Workout Log";
+    vc4.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
     
 
-    [self setViewControllers: @[vc1, vc2, vc3]];
+    [self setViewControllers: @[vc1, vc2, vc3, vc4]];
     self.tabBar.translucent = NO;
     self.tabBar.barTintColor = [UIColor darkGrayColor];
     self.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
