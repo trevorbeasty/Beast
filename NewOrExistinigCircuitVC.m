@@ -12,10 +12,12 @@
 
 #import "CoreDataController.h"
 
+#import "TJBActiveGuidanceTBC.h" // tab bar controller for active guidance
+
 // VC's to present
 
-#import "TJBActiveRoutineGuidanceVC.h"
-#import "TJBWorkoutNavigationHub.h"
+//#import "TJBActiveRoutineGuidanceVC.h"
+//#import "TJBWorkoutNavigationHub.h"
 #import "TJBCircuitReferenceContainerVC.h"
 #import "TJBCompleteChainHistoryVC.h"
 #import "TJBCircuitTemplateContainerVC.h"
@@ -2039,29 +2041,30 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         
     if (self.selectedChainTemplate){
         
-        TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
-        vc1.tabBarItem.title = @"Active";
-        vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
-        
-        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
-                                                                    advancedControlsActive: NO];
-        vc3.tabBarItem.title = @"Workout Log";
-        vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
-        
-//        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
-//        vc2.tabBarItem.title = @"Progress";
-//        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
+//        TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
+//        vc1.tabBarItem.title = @"Active";
+//        vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
 //        
-        // tab bar
+//        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
+//                                                                    advancedControlsActive: NO];
+//        vc3.tabBarItem.title = @"Workout Log";
+//        vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
+//        
+////        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
+////        vc2.tabBarItem.title = @"Progress";
+////        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
+////        
+//        // tab bar
+//        
+//        UITabBarController *tbc = [[UITabBarController alloc] init];
+//        [tbc setViewControllers: @[vc1, vc3]];
+//        tbc.tabBar.translucent = NO;
+//        tbc.tabBar.barTintColor = [UIColor darkGrayColor];
+//        tbc.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
         
-        UITabBarController *tbc = [[UITabBarController alloc] init];
-        [tbc setViewControllers: @[vc1, vc3]];
-        tbc.tabBar.translucent = NO;
-        tbc.tabBar.barTintColor = [UIColor darkGrayColor];
-        tbc.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        TJBActiveGuidanceTBC *activeGuidanceTBC = [[TJBActiveGuidanceTBC alloc] initWithChainTemplate: self.selectedChainTemplate];
         
-        
-        [self presentViewController: tbc
+        [self presentViewController: activeGuidanceTBC
                            animated: YES
                          completion: nil];
         

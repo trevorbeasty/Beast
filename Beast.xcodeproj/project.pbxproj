@@ -28,6 +28,9 @@
 		0B3688321E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */; };
 		0B3688371E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3688351E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m */; };
 		0B3688381E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3688361E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib */; };
+		0B47EC001EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EBFE1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m */; };
+		0B47EC011EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B47EBFF1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib */; };
+		0B47EC051EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EC041EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BC71DF77C20009981F9 /* Main.storyboard */; };
@@ -149,6 +152,11 @@
 		0B3688341E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveRoutineGuidancePreviousEntryCell.h; sourceTree = "<group>"; };
 		0B3688351E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveRoutineGuidancePreviousEntryCell.m; sourceTree = "<group>"; };
 		0B3688361E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveRoutineGuidancePreviousEntryCell.xib; sourceTree = "<group>"; };
+		0B47EBFD1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveGuidanceTargetsScene.h; sourceTree = "<group>"; };
+		0B47EBFE1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveGuidanceTargetsScene.m; sourceTree = "<group>"; };
+		0B47EBFF1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveGuidanceTargetsScene.xib; sourceTree = "<group>"; };
+		0B47EC031EA794B000CBC8D8 /* TJBActiveGuidanceTBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveGuidanceTBC.h; sourceTree = "<group>"; };
+		0B47EC041EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveGuidanceTBC.m; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -324,16 +332,11 @@
 		0B26199F1E0DC94B006FB2D9 /* Active Guidance */ = {
 			isa = PBXGroup;
 			children = (
+				0B47EC021EA792F300CBC8D8 /* Active Guidance TBC */,
+				0B47EBFC1EA78D0500CBC8D8 /* Guidance Routine History */,
+				0B47EBFB1EA78CF600CBC8D8 /* Guidance Targets */,
+				0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */,
 				0B3688331E4E01CA0077290C /* Cell */,
-				0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */,
-				0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */,
-				0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */,
-				0BC12E0A1E4FA5A70041D863 /* TJBActiveRoutineRestItem.h */,
-				0BC12E0B1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m */,
-				0BC12E0C1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib */,
-				0B3688251E4D10E60077290C /* TJBActiveRoutineGuidanceVC.h */,
-				0B3688261E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m */,
-				0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */,
 			);
 			name = "Active Guidance";
 			sourceTree = "<group>";
@@ -390,6 +393,48 @@
 				0B3688361E4E01FD0077290C /* TJBActiveRoutineGuidancePreviousEntryCell.xib */,
 			);
 			name = Cell;
+			sourceTree = "<group>";
+		};
+		0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */ = {
+			isa = PBXGroup;
+			children = (
+				0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */,
+				0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */,
+				0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */,
+				0BC12E0A1E4FA5A70041D863 /* TJBActiveRoutineRestItem.h */,
+				0BC12E0B1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m */,
+				0BC12E0C1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib */,
+				0B3688251E4D10E60077290C /* TJBActiveRoutineGuidanceVC.h */,
+				0B3688261E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m */,
+				0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */,
+			);
+			name = "Main Guidance Scene";
+			sourceTree = "<group>";
+		};
+		0B47EBFB1EA78CF600CBC8D8 /* Guidance Targets */ = {
+			isa = PBXGroup;
+			children = (
+				0B47EBFD1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.h */,
+				0B47EBFE1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m */,
+				0B47EBFF1EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib */,
+			);
+			name = "Guidance Targets";
+			sourceTree = "<group>";
+		};
+		0B47EBFC1EA78D0500CBC8D8 /* Guidance Routine History */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Guidance Routine History";
+			sourceTree = "<group>";
+		};
+		0B47EC021EA792F300CBC8D8 /* Active Guidance TBC */ = {
+			isa = PBXGroup;
+			children = (
+				0B47EC031EA794B000CBC8D8 /* TJBActiveGuidanceTBC.h */,
+				0B47EC041EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m */,
+			);
+			name = "Active Guidance TBC";
 			sourceTree = "<group>";
 		};
 		0B517BB21DF77C20009981F9 = {
@@ -949,6 +994,7 @@
 				0B78E7C71E3C165900EB216F /* TJBRealizedSetCell.xib in Resources */,
 				0BE970FF1E8887E100DF297E /* TJBSearchExerciseChild.xib in Resources */,
 				0BE970F81E85C8D400DF297E /* TJBExerciseAdditionChildVC.xib in Resources */,
+				0B47EC011EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.xib in Resources */,
 				0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */,
 				0BE9710B1E9BABCA00DF297E /* TJBRoutineNameVC.xib in Resources */,
 				0B86FB7C1E217326000D1B5F /* TJBBasicCollectionViewCell.xib in Resources */,
@@ -978,6 +1024,7 @@
 				0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */,
 				0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */,
 				0B78E7D91E3F5D3C00EB216F /* TJBPersonalRecordCell.m in Sources */,
+				0B47EC001EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m in Sources */,
 				0B78E8011E67654C00EB216F /* TJBExerciseSelectionCell.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,
 				0B78E7CD1E3C16A300EB216F /* TJBRealizedChainCell.m in Sources */,
@@ -1012,6 +1059,7 @@
 				0B1616D01E06D72F001C8F45 /* TJBGlobalParameters.m in Sources */,
 				0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */,
 				0B78E7E01E454DE400EB216F /* TJBNoDataCell.m in Sources */,
+				0B47EC051EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m in Sources */,
 				0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */,
 				0BE9710A1E9BABCA00DF297E /* TJBRoutineNameVC.m in Sources */,
 				0BC12E191E5F20560041D863 /* TJBRealizedChainHistoryCell.m in Sources */,
