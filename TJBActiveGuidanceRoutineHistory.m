@@ -28,6 +28,7 @@
 // core
 
 @property (strong) TJBChainTemplate *chainTemplate;
+@property (strong) UIScrollView *contentScrollView;
 
 @end
 
@@ -43,6 +44,8 @@
     if (self){
         
         self.chainTemplate = ct;
+        
+        [self configureCoreDataUpdateNotification];
         
     }
     
@@ -99,6 +102,7 @@
     [self.view layoutSubviews];
     
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.tableViewContainer.bounds];
+    self.contentScrollView = sv;
     sv.backgroundColor = [UIColor clearColor];
     
     CGFloat containerHeight = self.tableViewContainer.frame.size.height;
@@ -122,6 +126,31 @@
     
     
 }
+
+#pragma mark - Core Data Updates
+
+- (void)configureCoreDataUpdateNotification{
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(reloadContent)
+                                                 name: NSManagedObjectContextDidSaveNotification
+                                               object: [[CoreDataController singleton] moc]];
+    
+    
+}
+
+
+- (void)reloadContent{
+    
+    [self.contentScrollView removeFromSuperview];
+    self.contentScrollView = nil;
+    
+    [self configureChildVC];
+    
+    
+}
+
+
 
 
 
