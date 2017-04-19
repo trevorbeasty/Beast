@@ -363,16 +363,20 @@ typedef enum {
     }
 }
 
+#pragma mark - Cell Aesthetics
+
+
+
 - (void)configureUnselectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
     
-    cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    cell.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     cell.numberLabel.font = [UIFont systemFontOfSize: 15];
-    cell.numberLabel.textColor = [UIColor blackColor];
+    cell.numberLabel.textColor = [UIColor darkGrayColor];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;
     cellLayer.cornerRadius = 4.0;
-    cellLayer.borderColor = [UIColor blackColor].CGColor;
+    cellLayer.borderColor = [UIColor darkGrayColor].CGColor;
     cellLayer.borderWidth = 1.0;
     
 }
@@ -381,69 +385,19 @@ typedef enum {
     
     cell.backgroundColor = [UIColor clearColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
-    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+//    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    cell.numberLabel.textColor = [UIColor blackColor];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;
     cellLayer.cornerRadius = 4.0;
-    cellLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+//    cellLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    cellLayer.borderColor = [UIColor blackColor].CGColor;
     cellLayer.borderWidth = 4.0;
     
 }
 
-- (float)weightMultiplier{
-    
-    NSInteger weightSCIndex = self.weightSegmentedControl.selectedSegmentIndex;
-    
-    float returnValue;
-    
-    switch (weightSCIndex) {
-            
-        case 0:
-            returnValue = 1.0;
-            break;
-            
-        case 1:
-            returnValue = 2.5;
-            break;
-            
-        case 2:
-            returnValue = 5.0;
-            break;
-            
-        default:
-            break;
-            
-    }
-    
-    return returnValue;
-    
-}
 
-- (float)repsMultiplier{
-    
-    NSInteger repsSCIndex = self.repsSegmentedControl.selectedSegmentIndex;
-    
-    float returnValue;
-    
-    switch (repsSCIndex) {
-            
-        case 0:
-            returnValue = 0.5;
-            break;
-            
-        case 1:
-            returnValue = 1.0;
-            break;
-            
-        default:
-            break;
-            
-    }
-    
-    return returnValue;
-    
-}
 
 #pragma mark <UICollectionViewDelegate>
 
@@ -566,6 +520,61 @@ static float const numberOfCellsPerRow = 2;
     self.repsSelectedValueLabel.text = @"--- reps";
     
     self.submitButton.enabled = NO;
+    
+}
+
+
+- (float)weightMultiplier{
+    
+    NSInteger weightSCIndex = self.weightSegmentedControl.selectedSegmentIndex;
+    
+    float returnValue;
+    
+    switch (weightSCIndex) {
+            
+        case 0:
+            returnValue = 1.0;
+            break;
+            
+        case 1:
+            returnValue = 2.5;
+            break;
+            
+        case 2:
+            returnValue = 5.0;
+            break;
+            
+        default:
+            break;
+            
+    }
+    
+    return returnValue;
+    
+}
+
+- (float)repsMultiplier{
+    
+    NSInteger repsSCIndex = self.repsSegmentedControl.selectedSegmentIndex;
+    
+    float returnValue;
+    
+    switch (repsSCIndex) {
+            
+        case 0:
+            returnValue = 0.5;
+            break;
+            
+        case 1:
+            returnValue = 1.0;
+            break;
+            
+        default:
+            break;
+            
+    }
+    
+    return returnValue;
     
 }
 
