@@ -24,6 +24,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *activeRoutineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *completeHistoryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberOfRecordsLabel;
 
 // core
 
@@ -60,6 +61,8 @@
     
     [self configureViewAesthetics];
     
+    [self configureLabelText];
+    
     [self configureChildVC];
     
     
@@ -70,6 +73,18 @@
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureLabelText{
+    
+    NSNumber *numberOfRecords = @(self.chainTemplate.realizedChains.count);
+    
+    NSString *recordsWord = [numberOfRecords intValue] == 1 ? @"Record" : @"Records";
+    
+    self.numberOfRecordsLabel.text = [NSString stringWithFormat: @"%@ %@",
+                                           [numberOfRecords stringValue],
+                                           recordsWord];
+    
+}
 
 - (void)configureViewAesthetics{
     
@@ -87,6 +102,10 @@
         lab.textColor = [UIColor whiteColor];
         
     }
+    
+    self.numberOfRecordsLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.numberOfRecordsLabel.backgroundColor = [UIColor grayColor];
+    self.numberOfRecordsLabel.textColor = [UIColor whiteColor];
     
     
     

@@ -585,6 +585,11 @@ static NSString const *restViewKey = @"restView";
                                                                                                         targetWeight: weight
                                                                                                           targetReps: reps
                                                                                                      previousEntries: previousEntries];
+        
+        CALayer *eiVCLayer = exerciseItemVC.view.layer;
+        eiVCLayer.masksToBounds = NO;
+        
+        
         [self.exerciseItemChildVCs addObject: exerciseItemVC];
         [self addChildViewController: exerciseItemVC];
         

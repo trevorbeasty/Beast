@@ -403,9 +403,7 @@
 		0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */ = {
 			isa = PBXGroup;
 			children = (
-				0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */,
-				0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */,
-				0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */,
+				0B47EC0B1EA7CFB900CBC8D8 /* Exercise Item */,
 				0BC12E0A1E4FA5A70041D863 /* TJBActiveRoutineRestItem.h */,
 				0BC12E0B1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m */,
 				0BC12E0C1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib */,
@@ -443,6 +441,16 @@
 				0B47EC041EA794B000CBC8D8 /* TJBActiveGuidanceTBC.m */,
 			);
 			name = "Active Guidance TBC";
+			sourceTree = "<group>";
+		};
+		0B47EC0B1EA7CFB900CBC8D8 /* Exercise Item */ = {
+			isa = PBXGroup;
+			children = (
+				0B36882E1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.h */,
+				0B36882F1E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m */,
+				0B3688301E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib */,
+			);
+			name = "Exercise Item";
 			sourceTree = "<group>";
 		};
 		0B517BB21DF77C20009981F9 = {
