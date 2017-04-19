@@ -47,6 +47,7 @@
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UIView *jumpBarContainer;
 @property (weak, nonatomic) IBOutlet UILabel *selectedValueLabel;
+@property (weak, nonatomic) IBOutlet UIView *titleAreaContainer;
 
 // IBAction
 
@@ -246,22 +247,21 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureViewAesthetics{
     
-    // meta view
+    // meta views
     
-    self.view.backgroundColor = [UIColor blackColor];
-    
-    // title bar container
-    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.titleAreaContainer.backgroundColor = [UIColor blackColor];
     self.titleBarContainer.backgroundColor = [UIColor darkGrayColor];
     
     // segmented control
     
     self.multiplierSegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    self.multiplierSegmentedControl.backgroundColor = [UIColor darkGrayColor];
+    self.multiplierSegmentedControl.backgroundColor = [UIColor grayColor];
     CALayer *scLayer = self.multiplierSegmentedControl.layer;
     scLayer.masksToBounds = YES;
     scLayer.cornerRadius = 25.0;
     scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+//    scLayer.borderColor = [UIColor grayColor].CGColor;
     scLayer.borderWidth = 1.0;
     
     // title label
@@ -278,16 +278,21 @@ static NSString * const reuseIdentifier = @"cell";
     self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
     [self.submitButton setTitleColor: [UIColor darkGrayColor]
                             forState: UIControlStateNormal];
+    CALayer *sbLayer = self.submitButton.layer;
+    sbLayer.masksToBounds = YES;
+    sbLayer.cornerRadius = 4;
+    sbLayer.borderWidth = 1;
+    sbLayer.borderColor = [UIColor darkGrayColor].CGColor;
     
     // selected value label
     
     self.selectedValueLabel.font = [UIFont boldSystemFontOfSize: 20];
-    self.selectedValueLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.selectedValueLabel.textColor = [UIColor blackColor];
     self.selectedValueLabel.backgroundColor = [UIColor clearColor];
     
     // jump bar container
     
-    self.jumpBarContainer.backgroundColor = [UIColor clearColor];
+    self.jumpBarContainer.backgroundColor = [UIColor grayColor];
     CALayer *jbLayer = self.jumpBarContainer.layer;
     jbLayer.masksToBounds = YES;
     jbLayer.cornerRadius = 25;
@@ -376,97 +381,37 @@ static NSString * const reuseIdentifier = @"cell";
     
 }
 
+#pragma mark - Cell Aesthetics
+
 - (void)configureSelectedCellAppearanceForCell:(TJBWeightRepsSelectionCell *)cell{
     
     cell.backgroundColor = [UIColor clearColor];
-    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    cell.numberLabel.textColor = [UIColor blackColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;
     cellLayer.cornerRadius = 4.0;
-    cellLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    cellLayer.borderColor = [UIColor blackColor].CGColor;
     cellLayer.borderWidth = 4.0;
     
 }
 
 - (void)configureUnselectedCellAppearance:(TJBWeightRepsSelectionCell *)cell{
     
-    cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    cell.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     cell.numberLabel.font = [UIFont systemFontOfSize: 15];
-    cell.numberLabel.textColor = [UIColor blackColor];
+    cell.numberLabel.textColor = [UIColor darkGrayColor];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;
     cellLayer.cornerRadius = 4.0;
-    cellLayer.borderColor = [UIColor blackColor].CGColor;
+    cellLayer.borderColor = [UIColor darkGrayColor].CGColor;
     cellLayer.borderWidth = 1.0;
     
 }
 
-- (float)multiplierValue{
-    
-    float returnValue;
-    NSInteger index = self.multiplierSegmentedControl.selectedSegmentIndex;
-    
-    if (_numberTypeIdentifier == WeightType){
-        
-        switch (index) {
-            case 0:
-                returnValue = 1.0;
-                break;
-            
-            case 1:
-                returnValue = 2.5;
-                break;
-            
-            case 2:
-                returnValue = 5.0;
-                break;
-            
-            default:
-                break;
-        }
-        
-    } else if (_numberTypeIdentifier == RepsType){
-        
-        switch (index) {
-            case 0:
-                returnValue = 0.5;
-                break;
-                
-            case 1:
-                returnValue = 1.0;
-                break;
-                
-            default:
-                break;
-        }
-        
-    } else{
-        
-        switch (index) {
-            case 0:
-                returnValue = 1.0;
-                break;
-                
-            case 1:
-                returnValue = 5.0;
-                break;
-                
-            case 2:
-                returnValue = 10.0;
-                break;
-                
-            default:
-                break;
-        }
-        
-    }
-    
-    return returnValue;
-    
-}
+
 
 #pragma mark <UICollectionViewDelegate>
 
@@ -567,6 +512,10 @@ static NSString * const reuseIdentifier = @"cell";
     
 }
 
+#pragma mark - Segmented Control
+
+
+
 - (void)scValueDidChange{
     
     self.submitButton.enabled = NO;
@@ -576,6 +525,70 @@ static NSString * const reuseIdentifier = @"cell";
     [self.collectionView reloadData];
     
     [self configureDisplay]; // called so that the selectedValueLabel resets to the correct 'no selection made' text
+    
+}
+
+- (float)multiplierValue{
+    
+    float returnValue;
+    NSInteger index = self.multiplierSegmentedControl.selectedSegmentIndex;
+    
+    if (_numberTypeIdentifier == WeightType){
+        
+        switch (index) {
+            case 0:
+                returnValue = 1.0;
+                break;
+                
+            case 1:
+                returnValue = 2.5;
+                break;
+                
+            case 2:
+                returnValue = 5.0;
+                break;
+                
+            default:
+                break;
+        }
+        
+    } else if (_numberTypeIdentifier == RepsType){
+        
+        switch (index) {
+            case 0:
+                returnValue = 0.5;
+                break;
+                
+            case 1:
+                returnValue = 1.0;
+                break;
+                
+            default:
+                break;
+        }
+        
+    } else{
+        
+        switch (index) {
+            case 0:
+                returnValue = 1.0;
+                break;
+                
+            case 1:
+                returnValue = 5.0;
+                break;
+                
+            case 2:
+                returnValue = 10.0;
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    return returnValue;
     
 }
 

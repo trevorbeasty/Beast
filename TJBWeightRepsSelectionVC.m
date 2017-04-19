@@ -385,13 +385,11 @@ typedef enum {
     
     cell.backgroundColor = [UIColor clearColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
-//    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     cell.numberLabel.textColor = [UIColor blackColor];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;
     cellLayer.cornerRadius = 4.0;
-//    cellLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     cellLayer.borderColor = [UIColor blackColor].CGColor;
     cellLayer.borderWidth = 4.0;
     
@@ -578,14 +576,9 @@ static float const numberOfCellsPerRow = 2;
     
 }
 
-#pragma mark - Button Actions
 
-- (BOOL)requisiteUserInputCollected{
-    
-    return self.weightSelectedCellIndexPath && self.repsSelectedCellIndexPath;
-    
-}
 
+#pragma mark - Submit Button Actions
 
 - (IBAction)didPressSubmitButton:(id)sender{
     
@@ -596,8 +589,36 @@ static float const numberOfCellsPerRow = 2;
         
         self.numberSelectedBlock(weight, reps);
         
+    } else{
+        
+        UIAlertController *alertContr = [UIAlertController alertControllerWithTitle: @"Incomplete Selections"
+                                                                            message: @"Please select both a weight and number of reps before submitting"
+                                                                     preferredStyle: UIAlertControllerStyleAlert];
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: ^(UIAlertAction *action){
+                                                           
+                                                           return;
+                                                           
+                                                       }];
+        [alertContr addAction: action];
+        
+        [self presentViewController: alertContr
+                           animated: YES
+                         completion: nil];
+        
     }
 }
+
+
+- (BOOL)requisiteUserInputCollected{
+    
+    return self.weightSelectedCellIndexPath && self.repsSelectedCellIndexPath;
+    
+}
+
+
+#pragma mark - Cancel Button Actions
 
 - (IBAction)didPressCancel:(id)sender{
     
