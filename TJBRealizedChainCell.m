@@ -30,6 +30,7 @@
     
     TJBAdvancedCellType _cellType;
     TJBDateTimeType _dateTimeType;
+    TJBChainTemplateSortingType _sortingType;
     
 }
 
@@ -98,6 +99,20 @@ typedef enum{
     [self createAndLayoutDynamicContent];
     
     return;
+    
+}
+
+- (void)configureChainTemplateCellWithChainTemplate:(TJBChainTemplate *)ct dateTimeType:(TJBDateTimeType)dateTimeType titleNumber:(NSNumber *)titleNumber sortingType:(TJBChainTemplateSortingType)sortingType{
+    
+    self.contentObject = ct;
+    self.titleNumber = titleNumber;
+    _cellType = ChainTemplateAdvCell;
+    _dateTimeType = dateTimeType;
+    _sortingType = sortingType;
+    
+    [self configureBasicLabelText];
+    [self configureViewAesthetics];
+    [self createAndLayoutDynamicContent];
     
 }
 
@@ -663,7 +678,26 @@ typedef enum{
             break;
     }
     
-    self.dateTimeLabel.text = [df stringFromDate: date];
+    NSString *formattedDate = [df stringFromDate: date];
+    
+    if (_cellType == ChainTemplateAdvCell){
+        
+        switch (_sortingType) {
+            case TJBChainTemplateByDateCreated:
+                formattedDate = [NSString stringWithFormat: @"Date Created:  %@", formattedDate];
+                break;
+                
+            case TJBChainTemplateByDateLastExecuted:
+                formattedDate = [NSString stringWithFormat: @"Date Last Executed:  %@", formattedDate];
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    self.dateTimeLabel.text = formattedDate;
     
     // number type label
     

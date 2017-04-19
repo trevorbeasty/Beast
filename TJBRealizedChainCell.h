@@ -27,11 +27,16 @@ typedef enum{
     TJBMaxDetailDate
 }TJBDateTimeType;
 
+typedef enum{
+    TJBChainTemplateByDateLastExecuted,
+    TJBChainTemplateByDateCreated
+}TJBChainTemplateSortingType;
+
 @interface TJBRealizedChainCell : TJBMasterCell
 
 
-
 - (void)configureWithContentObject:(id)contentObject cellType:(TJBAdvancedCellType)cellType dateTimeType:(TJBDateTimeType)dateTimeType titleNumber:(NSNumber *)titleNumber;
+- (void)configureChainTemplateCellWithChainTemplate:(TJBChainTemplate *)ct dateTimeType:(TJBDateTimeType)dateTimeType titleNumber:(NSNumber *)titleNumber sortingType:(TJBChainTemplateSortingType)sortingType;
 
 #pragma mark - API
 

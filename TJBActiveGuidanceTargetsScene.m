@@ -26,6 +26,7 @@
 // core
 
 @property (strong) TJBChainTemplate *chainTemplate;
+@property (strong) TJBRealizedChainCell *cell;
 
 
 @end
@@ -56,7 +57,6 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
         
         self.chainTemplate = ct;
         
-        
     }
    
     return self;
@@ -70,17 +70,16 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 
 
 
-
 #pragma mark - View Life Cycle
 
 
 - (void)viewDidLoad{
     
     [self configureViewAesthetics];
-    
-    
+
     [self configureTableView];
     
+    [self deriveCell];
     
 }
 
@@ -130,6 +129,21 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
     
 }
 
+
+- (void)deriveCell{
+    
+    TJBRealizedChainCell *cell = [self.routineTargetTableView dequeueReusableCellWithIdentifier: cellReuseID];
+    
+    [cell configureWithContentObject: self.chainTemplate
+                            cellType: ChainTemplateAdvCell
+                        dateTimeType: TJBDayInYear
+                         titleNumber: @(1)];
+    cell.backgroundColor = [UIColor clearColor];
+    
+    self.cell = cell;
+    
+}
+
 #pragma mark - <UITableViewDataSource>
 
 
@@ -148,14 +162,7 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    TJBRealizedChainCell *cell = [self.routineTargetTableView dequeueReusableCellWithIdentifier: cellReuseID];
-    
-    [cell configureWithContentObject: self.chainTemplate
-                            cellType: ChainTemplateAdvCell
-                        dateTimeType: TJBDayInYear
-                         titleNumber: @(1)];
-    
-    return cell;
+    return self.cell;
     
 }
 
@@ -170,6 +177,12 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
     return NO;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return [TJBRealizedChainCell suggestedCellHeightForChainTemplate: self.chainTemplate];
     
 }
 

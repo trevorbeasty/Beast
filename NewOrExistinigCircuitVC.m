@@ -206,7 +206,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     // segmented control
     
-    [self configureLabelCorrespondingToSegmentedControl];
     [self configureSegmentedControlNotifications];
     [self configureCoreDataNotifications];
     
@@ -691,7 +690,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     [self updateTitleLabelCorrespondingToActiveTVDate];
     [self updateNumberOfRecordsTitleLabel];
-    [self configureLabelCorrespondingToSegmentedControl];
     
 }
 
@@ -705,22 +703,12 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)updateNumberOfRecordsTitleLabel{
     
-    NSString *text = [NSString stringWithFormat: @"%d Records", (int)self.tvSortedContent.count];
+    NSString *recordsWord = self.tvSortedContent.count == 1 ? @"Record" : @"Records";
+    
+    NSString *text = [NSString stringWithFormat: @"%d %@",
+                      (int)self.tvSortedContent.count,
+                      recordsWord];
     self.numberOfRecordsLabel.text = text;
-    
-}
-
-- (void)configureLabelCorrespondingToSegmentedControl{
-    
-    if (self.sortBySegmentedControl.selectedSegmentIndex == 0){
-        
-        self.routinesByLabel.text = @"Routines by Date Created";
-        
-    } else{
-        
-        self.routinesByLabel.text = @"Routines by Date Executed";
-        
-    }
     
 }
 
@@ -1369,10 +1357,17 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
             
         }
         
-        [cell configureWithContentObject: chainTemplate
-                                cellType: ChainTemplateAdvCell
-                            dateTimeType: TJBDayInYear
-                             titleNumber: @(indexPath.row + 1)];
+//        [cell configureWithContentObject: chainTemplate
+//                                cellType: ChainTemplateAdvCell
+//                            dateTimeType: TJBDayInYear
+//                             titleNumber: @(indexPath.row + 1)];
+        
+        TJBChainTemplateSortingType sortingType = self.sortBySegmentedControl.selectedSegmentIndex == 0 ? TJBChainTemplateByDateCreated : TJBChainTemplateByDateLastExecuted;
+        
+        [cell configureChainTemplateCellWithChainTemplate: chainTemplate
+                                             dateTimeType: TJBDayInYear
+                                              titleNumber: @(indexPath.row + 1)
+                                              sortingType: sortingType];
         
         // configure border width and background color according to whether or not the cell is selected
         
@@ -1781,7 +1776,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     // get rid of the border on the last selected cell and change state variables for selection
     
     self.selectedChainTemplate = nil;
-//    [self toggleButtonsToOffState];
     
     if (self.lastSelectedIndexPath){
         

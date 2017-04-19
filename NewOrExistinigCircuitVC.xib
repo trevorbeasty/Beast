@@ -176,23 +176,22 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-Ii-eNq">
-                    <rect key="frame" x="200" y="122" width="87.5" height="30"/>
+                    <rect key="frame" x="125" y="122" width="125" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Routines by" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-hU-YP4">
-                    <rect key="frame" x="0.0" y="122" width="200" height="30"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="My Routines" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf5-hU-YP4">
+                    <rect key="frame" x="0.0" y="122" width="125" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="2Cv-bm-2zU"/>
-                        <constraint firstAttribute="width" constant="200" id="SaN-Cz-28O"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Records" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qa-r8-4d0">
-                    <rect key="frame" x="288" y="122" width="87" height="30"/>
+                    <rect key="frame" x="250.5" y="122" width="124.5" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -208,6 +207,7 @@
                 <constraint firstItem="4Qa-r8-4d0" firstAttribute="top" secondItem="Zf5-hU-YP4" secondAttribute="top" id="JC6-Qm-1uG"/>
                 <constraint firstItem="jJx-Ep-SFb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="K3r-sn-67Q"/>
                 <constraint firstItem="cna-Rm-Pq1" firstAttribute="top" secondItem="4Qa-r8-4d0" secondAttribute="bottom" constant="0.5" id="ML7-44-ZYY"/>
+                <constraint firstItem="Xgb-Ii-eNq" firstAttribute="width" secondItem="Zf5-hU-YP4" secondAttribute="width" id="Oio-3b-Fdd"/>
                 <constraint firstItem="Xgb-Ii-eNq" firstAttribute="bottom" secondItem="Zf5-hU-YP4" secondAttribute="bottom" id="RTB-hq-wel"/>
                 <constraint firstItem="Zf5-hU-YP4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="UaI-ch-w6y"/>
                 <constraint firstAttribute="trailing" secondItem="cna-Rm-Pq1" secondAttribute="trailing" id="Xgt-y7-ps3"/>
