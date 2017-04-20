@@ -87,9 +87,6 @@
 @property (nonatomic, strong) TJBChainTemplate *chainTemplate;
 
 @property (nonatomic, strong) UIView *activeScrollContentView;
-@property (nonatomic, strong) UIStackView *guidanceStackView;
-@property (nonatomic, strong) NSMutableArray<TJBActiveRoutineExerciseItemVC *> *exerciseItemChildVCs;
-@property (nonatomic, strong) TJBActiveRoutineRestItem *restItemChildVC;
 
 // scroll content view
 
@@ -324,9 +321,9 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
     // alert value label
     
-    self.alertValueLabel.backgroundColor = [UIColor clearColor];
+    self.alertValueLabel.backgroundColor = [UIColor grayColor];
     self.alertValueLabel.textColor = [UIColor whiteColor];
-    self.alertValueLabel.font = [UIFont systemFontOfSize: 15];
+    self.alertValueLabel.font = [UIFont boldSystemFontOfSize: 15];
     
 }
 
@@ -520,18 +517,18 @@ static NSString const *restViewKey = @"restView";
         
         if ([self.currentRestTarget floatValue] < 0.0){
             
-            restText = @"Rest until ready";
+            restText = @"Lift when ready";
             
         } else{
             
             NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
-            restText = [NSString stringWithFormat: @"Rest for %@, then begin", formattedRest];
+            restText = [NSString stringWithFormat: @"Rest for %@, then lift", formattedRest];
             
         }
         
     } else{
         
-        restText = @"Begin when ready";
+        restText = @"Lift when ready";
         
     }
     
@@ -587,6 +584,8 @@ static NSString const *restViewKey = @"restView";
         NSString *repsString = [self valueOrXFromNumber: [iterativeLiftTargets reps]];
     
         NSArray<TJBPreviousMarksDictionary *> *previousEntries = self.activePreviousMarks[i];
+        
+        NSLog(@"number of previous entries: %lu", previousEntries.count);
         
         TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
                                                                                                   targetExerciseName: exercise.name

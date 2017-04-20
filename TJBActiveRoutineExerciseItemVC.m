@@ -46,9 +46,10 @@
 #pragma mark - Constants
 
 static CGFloat const rowHeight = 30;
-static CGFloat const rowSpacing = .5;
+static CGFloat const rowVerticalSpacing = 8;
+static CGFloat const rowHorizontalSpacing = .5;
 
-
+static CGFloat const bottomCushion = 32;
 
 
 
@@ -90,11 +91,13 @@ static CGFloat const rowSpacing = .5;
 - (void)configureStackView{
     
     self.contentStackView.distribution = UIStackViewDistributionFillEqually;
-    self.contentStackView.backgroundColor = [UIColor clearColor];
-    self.contentStackView.spacing = rowSpacing;
+    self.contentStackView.backgroundColor = [UIColor blackColor];
+    self.contentStackView.spacing = rowVerticalSpacing;
+    self.contentStackView.alignment = UIStackViewAlignmentFill;
     
     float numberOfRows = (float)self.previousEntries.count;
-    self.stackViewHeight.constant = numberOfRows * rowHeight + (numberOfRows - 1.0) * rowSpacing;
+    numberOfRows = numberOfRows < 1 ? 1 : numberOfRows;
+    self.stackViewHeight.constant = numberOfRows * rowHeight + (numberOfRows - 1.0) * rowVerticalSpacing;
     
 }
 
@@ -283,21 +286,45 @@ static CGFloat const rowSpacing = .5;
     
     int limit = (int)self.previousEntries.count;
     
-    for (int i = 0; i < limit; i++){
+    if (limit > 0){
         
-        UIView *contentRow = [self contentRowCorrespondingToIndex: i
-                                                         maxIndex: limit];
+        for (int i = 0; i < limit; i++){
+            
+            UIView *contentRow = [self contentRowCorrespondingToIndex: i
+                                                             maxIndex: limit];
+            
+            [self.contentStackView addArrangedSubview: contentRow];
+            
+        }
         
-        [self.contentStackView addArrangedSubview: contentRow];
+    } else{
+        
+        UILabel *noPreviousRecordsRow = [self noPreviousRecordRow];
+        
+        [self.contentStackView addArrangedSubview: noPreviousRecordsRow];
         
     }
+    
+
+    
+}
+
+- (UILabel *)noPreviousRecordRow{
+    
+    UILabel *nprLabel = [[UILabel alloc] init];
+    
+    nprLabel.text = @"No previous entries";
+    
+    nprLabel.backgroundColor = [UIColor clearColor];
+    nprLabel.textColor = [UIColor blackColor];
+    nprLabel.textAlignment = NSTextAlignmentCenter;
+    nprLabel.font = [UIFont systemFontOfSize: 15];
+    
+    return nprLabel;
     
 }
 
 - (UIView *)contentRowCorrespondingToIndex:(int)index maxIndex:(int)maxIndex{
-    
-//    BOOL isTopRow = index == 0;
-//    BOOL isBottomRow = index == maxIndex;
 
     // container view
     
@@ -379,10 +406,10 @@ static CGFloat const rowSpacing = .5;
     NSString *horzVFL = [NSString stringWithFormat: @"H:|-0-[%@(==%@)]-%f-[%@(==%@)]-%f-[%@]-0-|",
                          dateLabelKey,
                          weightLabelKey,
-                         rowSpacing,
+                         rowHorizontalSpacing,
                          weightLabelKey,
                          repsLabelKey,
-                         rowSpacing,
+                         rowHorizontalSpacing,
                          repsLabelKey];
     [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: horzVFL
                                                                            options: 0
@@ -415,9 +442,7 @@ static CGFloat const rowSpacing = .5;
     
     [self.view layoutSubviews];
     
-    return self.contentStackView.frame.origin.y + self.contentStackView.frame.size.height + 32;
-    
-    return 0;
+    return self.contentStackView.frame.origin.y + self.stackViewHeight.constant + bottomCushion;
     
 }
 
