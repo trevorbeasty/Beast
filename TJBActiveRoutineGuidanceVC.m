@@ -15,7 +15,6 @@
 // child VC's
 
 #import "TJBActiveRoutineExerciseItemVC.h"
-#import "TJBActiveRoutineRestItem.h"
 
 // utilities
 

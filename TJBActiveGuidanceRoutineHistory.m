@@ -15,6 +15,12 @@
 
 @interface TJBActiveGuidanceRoutineHistory ()
 
+{
+    
+    BOOL _dataNeedsUpdating;
+    
+}
+
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIView *titleAreaContainer;
@@ -48,6 +54,8 @@
         
         [self configureCoreDataUpdateNotification];
         
+        _dataNeedsUpdating = YES;
+        
     }
     
     
@@ -70,7 +78,18 @@
 }
 
 
+- (void)viewWillAppear:(BOOL)animated{
+    
+    
+    
+}
 
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    
+    
+}
 
 #pragma mark - View Helper Methods
 
@@ -169,9 +188,22 @@
     
 }
 
+- (void)showActivityIndicator{
+    
+    
+    
+    
+    
+    
+}
 
-
-
+- (void)removeActivityIndicator{
+    
+    
+    
+    
+    
+}
 
 @end
 

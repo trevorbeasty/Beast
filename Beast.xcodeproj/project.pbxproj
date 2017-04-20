@@ -94,8 +94,6 @@
 		0BA8AD051E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD031E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m */; };
 		0BA8AD061E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8AD041E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib */; };
 		0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */; };
-		0BC12E0D1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E0B1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m */; };
-		0BC12E0E1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E0C1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib */; };
 		0BC12E131E5F10950041D863 /* TJBCompleteChainHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E111E5F10950041D863 /* TJBCompleteChainHistoryVC.m */; };
 		0BC12E141E5F10950041D863 /* TJBCompleteChainHistoryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E121E5F10950041D863 /* TJBCompleteChainHistoryVC.xib */; };
 		0BC12E191E5F20560041D863 /* TJBRealizedChainHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E171E5F20560041D863 /* TJBRealizedChainHistoryCell.m */; };
@@ -264,9 +262,6 @@
 		0BA8AD1C1E26B4F900EE10C2 /* TJBAssortedUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBAssortedUtilities.h; sourceTree = "<group>"; };
 		0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBAssortedUtilities.m; sourceTree = "<group>"; };
 		0BA8AD221E2928E900EE10C2 /* TJBCircuitTemplateExerciseComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateExerciseComponentProtocol.h; sourceTree = "<group>"; };
-		0BC12E0A1E4FA5A70041D863 /* TJBActiveRoutineRestItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveRoutineRestItem.h; sourceTree = "<group>"; };
-		0BC12E0B1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveRoutineRestItem.m; sourceTree = "<group>"; };
-		0BC12E0C1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveRoutineRestItem.xib; sourceTree = "<group>"; };
 		0BC12E101E5F10950041D863 /* TJBCompleteChainHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCompleteChainHistoryVC.h; sourceTree = "<group>"; };
 		0BC12E111E5F10950041D863 /* TJBCompleteChainHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCompleteChainHistoryVC.m; sourceTree = "<group>"; };
 		0BC12E121E5F10950041D863 /* TJBCompleteChainHistoryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCompleteChainHistoryVC.xib; sourceTree = "<group>"; };
@@ -409,15 +404,10 @@
 		0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */ = {
 			isa = PBXGroup;
 			children = (
+				0B47EC141EA8EC1D00CBC8D8 /* Central Guidance Controller */,
 				0B47EC101EA8CA6800CBC8D8 /* Active Lift Targets Dictionary */,
 				0B47EC0C1EA813E500CBC8D8 /* Previous Marks Dictionary */,
 				0B47EC0B1EA7CFB900CBC8D8 /* Exercise Item */,
-				0BC12E0A1E4FA5A70041D863 /* TJBActiveRoutineRestItem.h */,
-				0BC12E0B1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m */,
-				0BC12E0C1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib */,
-				0B3688251E4D10E60077290C /* TJBActiveRoutineGuidanceVC.h */,
-				0B3688261E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m */,
-				0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */,
 			);
 			name = "Main Guidance Scene";
 			sourceTree = "<group>";
@@ -477,6 +467,16 @@
 				0B47EC121EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.m */,
 			);
 			name = "Active Lift Targets Dictionary";
+			sourceTree = "<group>";
+		};
+		0B47EC141EA8EC1D00CBC8D8 /* Central Guidance Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0B3688251E4D10E60077290C /* TJBActiveRoutineGuidanceVC.h */,
+				0B3688261E4D10E60077290C /* TJBActiveRoutineGuidanceVC.m */,
+				0B3688271E4D10E60077290C /* TJBActiveRoutineGuidanceVC.xib */,
+			);
+			name = "Central Guidance Controller";
 			sourceTree = "<group>";
 		};
 		0B517BB21DF77C20009981F9 = {
@@ -1052,7 +1052,6 @@
 				0B78E7FC1E65BF0F00EB216F /* TJBSetCompletedSummaryVC.xib in Resources */,
 				0BE971051E99469400DF297E /* TJBSwitchRow.xib in Resources */,
 				0B36881C1E413D8F0077290C /* TJBWorkoutLogTitleCell.xib in Resources */,
-				0BC12E0E1E4FA5A70041D863 /* TJBActiveRoutineRestItem.xib in Resources */,
 				0BF2385C1E7A267600270059 /* TJBDetailTitleCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1094,7 +1093,6 @@
 				0BE970F71E85C8D400DF297E /* TJBExerciseAdditionChildVC.m in Sources */,
 				0BE971041E99469400DF297E /* TJBSwitchRow.m in Sources */,
 				0BA8AD001E26636E00EE10C2 /* TJBCircuitReferenceRowComp.m in Sources */,
-				0BC12E0D1E4FA5A70041D863 /* TJBActiveRoutineRestItem.m in Sources */,
 				0B78E7EC1E462F8500EB216F /* TJBWeightRepsSelectionCell.m in Sources */,
 				0B517BCC1DF77C20009981F9 /* Beast.xcdatamodeld in Sources */,
 				0BC12E131E5F10950041D863 /* TJBCompleteChainHistoryVC.m in Sources */,
