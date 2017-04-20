@@ -411,7 +411,15 @@ static CGFloat const rowSpacing = .5;
     
 }
 
-
+- (CGFloat)suggestedHeight{
+    
+    [self.view layoutSubviews];
+    
+    return self.contentStackView.frame.origin.y + self.contentStackView.frame.size.height + 32;
+    
+    return 0;
+    
+}
 
 @end
 

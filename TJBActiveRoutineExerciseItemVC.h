@@ -14,4 +14,6 @@
 
 - (instancetype)initWithTitleNumber:(NSString *)titleNumber targetExerciseName:(NSString *)targetExerciseName targetWeight:(NSString *)targetWeight targetReps:(NSString *)targetReps previousEntries:(NSArray<TJBPreviousMarksDictionary *> *)previousEntries;
 
+- (CGFloat)suggestedHeight;
+
 @end

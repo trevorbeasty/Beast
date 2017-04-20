@@ -34,6 +34,7 @@
 		0B47EC091EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EC071EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.m */; };
 		0B47EC0A1EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B47EC081EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib */; };
 		0B47EC0F1EA8141000CBC8D8 /* TJBPreviousMarksDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EC0E1EA8141000CBC8D8 /* TJBPreviousMarksDictionary.m */; };
+		0B47EC131EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B47EC121EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.m */; };
 		0B517BC01DF77C20009981F9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BBF1DF77C20009981F9 /* main.m */; };
 		0B517BC31DF77C20009981F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BC21DF77C20009981F9 /* AppDelegate.m */; };
 		0B517BC91DF77C20009981F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BC71DF77C20009981F9 /* Main.storyboard */; };
@@ -165,6 +166,8 @@
 		0B47EC081EA7A7ED00CBC8D8 /* TJBActiveGuidanceRoutineHistory.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBActiveGuidanceRoutineHistory.xib; sourceTree = "<group>"; };
 		0B47EC0D1EA8141000CBC8D8 /* TJBPreviousMarksDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBPreviousMarksDictionary.h; sourceTree = "<group>"; };
 		0B47EC0E1EA8141000CBC8D8 /* TJBPreviousMarksDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBPreviousMarksDictionary.m; sourceTree = "<group>"; };
+		0B47EC111EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBActiveLiftTargetsDictionary.h; sourceTree = "<group>"; };
+		0B47EC121EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBActiveLiftTargetsDictionary.m; sourceTree = "<group>"; };
 		0B517BBB1DF77C20009981F9 /* Beast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B517BBF1DF77C20009981F9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0B517BC11DF77C20009981F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Beast/AppDelegate.h; sourceTree = "<group>"; };
@@ -406,6 +409,7 @@
 		0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */ = {
 			isa = PBXGroup;
 			children = (
+				0B47EC101EA8CA6800CBC8D8 /* Active Lift Targets Dictionary */,
 				0B47EC0C1EA813E500CBC8D8 /* Previous Marks Dictionary */,
 				0B47EC0B1EA7CFB900CBC8D8 /* Exercise Item */,
 				0BC12E0A1E4FA5A70041D863 /* TJBActiveRoutineRestItem.h */,
@@ -464,6 +468,15 @@
 				0B47EC0E1EA8141000CBC8D8 /* TJBPreviousMarksDictionary.m */,
 			);
 			name = "Previous Marks Dictionary";
+			sourceTree = "<group>";
+		};
+		0B47EC101EA8CA6800CBC8D8 /* Active Lift Targets Dictionary */ = {
+			isa = PBXGroup;
+			children = (
+				0B47EC111EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.h */,
+				0B47EC121EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.m */,
+			);
+			name = "Active Lift Targets Dictionary";
 			sourceTree = "<group>";
 		};
 		0B517BB21DF77C20009981F9 = {
@@ -1098,6 +1111,7 @@
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,
 				0B78E7D31E3D31B100EB216F /* TJBLiftOptionsVC.m in Sources */,
+				0B47EC131EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.m in Sources */,
 				0B78E7C61E3C165900EB216F /* TJBRealizedSetCell.m in Sources */,
 				0BE970FE1E8887E100DF297E /* TJBSearchExerciseChild.m in Sources */,
 				0B2B6BB21E9C718500927A18 /* TJBPersonalRecordVC.m in Sources */,

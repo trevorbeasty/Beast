@@ -48,6 +48,7 @@
 #import "TJBClockConfigurationVC.h"
 
 #import "TJBPreviousMarksDictionary.h" // previous marks
+#import "TJBActiveLiftTargetsDictionary.h" // active lift targets
 
 @interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
 
@@ -102,7 +103,7 @@
 @property (nonatomic, strong) NSNumber *activeRoundIndexForChain;
 @property (nonatomic, strong) NSNumber *activeExerciseIndexForChain;
 
-@property (nonatomic, strong) NSMutableArray<NSArray *> *activeLiftTargets;
+@property (nonatomic, strong) NSMutableArray<TJBActiveLiftTargetsDictionary   *> *activeLiftTargets;
 @property (nonatomic, strong) NSMutableArray<NSArray<TJBPreviousMarksDictionary *> *> *activePreviousMarks;
 @property (nonatomic, strong) NSNumber *futureRestTarget;
 @property (nonatomic, strong) NSNumber *currentRestTarget;
@@ -119,7 +120,33 @@
 
 @end
 
+
+
+
+
+
+
+#pragma mark - Constants
+
+
+
 static float const animationTimeUnit = .4;
+
+
+// header view (describing round and rest in content scroll view)
+
+static CGFloat const headerViewTopLabelHeight = 50;
+static CGFloat const headerViewBottomLabelHeight = 50;
+static CGFloat const headerViewLabelSpacing = .5;
+static CGFloat const headerViewComponentHorizontalInset = 8;
+static CGFloat const headerViewTopSpacing = 16;
+static CGFloat const componentToComponentSpacing = 16;
+
+
+
+
+
+
 
 @implementation TJBActiveRoutineGuidanceVC
 
@@ -319,18 +346,13 @@ static float const animationTimeUnit = .4;
         
         TJBRealizedChain *iterativeRealizedChain = self.chainTemplate.realizedChains[i];
 
-        // it is possible that in historic realized chains, the user did not complete all sets.  Must check the 'first incomplete' type properties to check for this.  If the set occurred, weight, reps, and the creation date of the realized chain should be grabbed.  We only need the creation date because we only care to report the day executed to the user, not the rest or in-set time
-        
-        BOOL setExists = [TJBAssortedUtilities indiceWithExerciseIndex: exerciseIndex
-                                                            roundIndex: roundIndex
-                                       isPriorToReferenceExerciseIndex: iterativeRealizedChain.firstIncompleteExerciseIndex
-                                                   referenceRoundIndex: iterativeRealizedChain.firstIncompleteRoundIndex];
+        // it is possible that in historic realized chains, the user did not complete all sets, so it is necessary to check if a set is null
         
         TJBRealizedSet *rs = iterativeRealizedChain.realizedSetCollections[exerciseIndex].realizedSets[roundIndex];
         
         BOOL setIsNonnull = rs.holdsNullValues == NO;
         
-        if (setExists && setIsNonnull){
+        if ( setIsNonnull){
             
             NSNumber *weight = @(rs.submittedWeight);
             NSNumber *reps = @(rs.submittedReps);
@@ -356,18 +378,13 @@ static float const animationTimeUnit = .4;
     // based on the active exercise and round index, give the appropriate content to the state target arrays
     // grab all exercises, beginning with the one corresponding to the active indices, and continuing to grab exercises until the rest is nonzero
     
-    NSArray *targets = [self extractTargetsArrayForActiveIndices];
+    TJBActiveLiftTargetsDictionary *targets = [self extractTargetsArrayForActiveIndices];
     [self.activeLiftTargets addObject: targets];
     
     // it is possible that an array of length 0 is assigned to previousMarks.  I must check that the length is greater than zero before adding (if it has no content, I do not want to show it to the user)
     
     NSArray<TJBPreviousMarksDictionary *> *previousMarks = [self extractPreviousMarksArrayForActiveIndices];
-    
-    if (previousMarks.count > 0){
-        
-        [self.activePreviousMarks addObject: previousMarks];
-        
-    }
+    [self.activePreviousMarks addObject: previousMarks];
     
     // if the rest is zero, grab the next set of targets.  Otherwise, continue.  Will use recursion.
     
@@ -377,13 +394,13 @@ static float const animationTimeUnit = .4;
         
         // the fourth position holds an NSNumber with the target rest value
         
-        if ([targets[3] floatValue] == 0.0){
+        if ([[targets rest] floatValue] == 0.0){
             
             [self deriveStateContent];
             
         } else{
             
-            self.futureRestTarget = targets[3];
+            self.futureRestTarget = [targets rest];
             
         }
         
@@ -426,9 +443,7 @@ static float const animationTimeUnit = .4;
     
 }
 
-- (NSMutableArray *)extractTargetsArrayForActiveIndices{
-    
-    NSMutableArray *targetsCollector = [[NSMutableArray alloc] init];
+- (TJBActiveLiftTargetsDictionary *)extractTargetsArrayForActiveIndices{
     
     int exerciseIndex = [self.activeExerciseIndexForTargets intValue];
     int roundIndex = [self.activeRoundIndexForTargets intValue];
@@ -437,7 +452,7 @@ static float const animationTimeUnit = .4;
     float reps;
     float rest;
     
-    [targetsCollector addObject: self.chainTemplate.exercises[exerciseIndex].name];
+    TJBExercise *exercise = self.chainTemplate.exercises[exerciseIndex];
     
     TJBTargetUnit *tu = [self targetUnitForExerciseIndex: exerciseIndex
                                               roundIndex: roundIndex];
@@ -472,11 +487,10 @@ static float const animationTimeUnit = .4;
         
     }
     
-    [targetsCollector addObject: [NSNumber numberWithFloat: weight]];
-    [targetsCollector addObject: [NSNumber numberWithFloat: reps]];
-    [targetsCollector addObject: [NSNumber numberWithFloat: rest]];
-    
-    return targetsCollector;
+    return [[TJBActiveLiftTargetsDictionary alloc] initWithExercise: exercise
+                                                             weight: @(weight)
+                                                               reps: @(reps)
+                                                               rest: @(rest)];;
     
 }
 
@@ -488,215 +502,141 @@ static NSString const *restViewKey = @"restView";
 
 - (UIView *)scrollContentViewForTargetArrays_isInitialDisplay:(BOOL)isInitialContentView{
     
-    self.constraintMapping = [[NSMutableDictionary alloc] init];
-    self.exerciseItemChildVCs = [[NSMutableArray alloc] init];
+    NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
+    NSString *descendingTopViewKey;
+    CGFloat heightSum = 0;
     
-    //// create the master view and give it the appropriate frame. Set the scroll view's content area according to the masterFrame's size
+    UIView *containerView = [[UIView alloc] init];
+    containerView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    CGFloat width = self.contentScrollView.frame.size.width;
-    float numberOfExerciseComps = (float)self.activeLiftTargets.count;
-    CGFloat exerciseCompHeight = 315;
-    CGFloat restCompHeight = 62;
-    CGFloat initialTopSpacing = 8;
-    CGFloat height = exerciseCompHeight * (numberOfExerciseComps) + restCompHeight * 2 + initialTopSpacing; // rest comp height is multiplied by two because I am now including both a rest component and a 'sequence completed' component
+    // header view describing round and rest
     
-    CGRect masterFrame = CGRectMake(0, 0, width, height);
-    [self.contentScrollView setContentSize: CGSizeMake(width, height)];
-    
-    UIView *masterView = [[UIView alloc] initWithFrame: masterFrame];
-    masterView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
-    //// create and add on a stack view.  This stack view will fill the rest of the scrollable content and its individual views will be the immediate targets along with previous marks
-    
-    UIStackView *guidanceStackView = [[UIStackView alloc] init];
-    guidanceStackView.axis = UILayoutConstraintAxisVertical;
-    guidanceStackView.distribution = UIStackViewDistributionFillEqually;
-    guidanceStackView.alignment = UIStackViewDistributionFill;
-    guidanceStackView.spacing = 0;
-    guidanceStackView.backgroundColor = [UIColor clearColor];
-    
-    guidanceStackView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    // layout constraints
-    
-    [self.constraintMapping setObject: guidanceStackView
-                               forKey: guidanceStackViewKey];
-    [masterView addSubview: guidanceStackView];
-    
-    NSArray *guidanceStackViewHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[guidanceStackView]-0-|"
-                                                                             options: 0
-                                                                             metrics: nil
-                                                                               views: self.constraintMapping];
-    
-    [masterView addConstraints: guidanceStackViewHorC];
-    
-    // add views to the guidance stack view
-    
-    for (int i = 0; i < self.activeLiftTargets.count; i++){
-        
-        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 1];
-        NSString *exerciseName = self.activeLiftTargets[i][0];
-        NSString *weight;
-        NSString *reps;
-        
-        NSArray *iterativeLiftTargets = self.activeLiftTargets[i];
-        
-        if ([iterativeLiftTargets[1] floatValue] != -1){
-            
-            weight = [self.activeLiftTargets[i][1] stringValue];
-            
-        } else{
-            
-            weight = @"X";
-            
-        }
-        
-        if ([iterativeLiftTargets[2] floatValue] != -1){
-            
-            reps = [self.activeLiftTargets[i][2] stringValue];
-            
-        } else{
-            
-            reps = @"X";
-            
-        }
-        
-        // grab the previous entries to be passed to the exerciseItemVC based on the active targets index
-        // must make sure that a sub-array exists at the index before attempting to grab it.  If info exists at a certain index, it must exist at a lesser index given how chains work.  This allows me to just evaluate chain length when determining if info exists or not
-        
-        NSInteger numberOfPreviousEntries = self.activePreviousMarks.count;
-        
-        NSArray<TJBPreviousMarksDictionary *> *previousEntries = nil;
-        
-        if (i < numberOfPreviousEntries){
-            
-            previousEntries = self.activePreviousMarks[i];
-            
-        }
-        
-   
-        
-        TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
-                                                                                                  targetExerciseName: exerciseName
-                                                                                                        targetWeight: weight
-                                                                                                          targetReps: reps
-                                                                                                     previousEntries: previousEntries];
-        
-        CALayer *eiVCLayer = exerciseItemVC.view.layer;
-        eiVCLayer.masksToBounds = NO;
-        
-        
-        [self.exerciseItemChildVCs addObject: exerciseItemVC];
-        [self addChildViewController: exerciseItemVC];
-        
-        [guidanceStackView addArrangedSubview: exerciseItemVC.view];
-        
-        [exerciseItemVC didMoveToParentViewController: self];
-        
-    }
-    
-    // add single rest view to stack view
-    // the rest view needs to know if it is the last view.  If so, it will indicate the routine ends instead of showing a rest value.  The active target indices will stop at their max values when all chain values have been pulled.  I keep track of this with a state variable
-    
-    NSNumber *titleNumber = [NSNumber numberWithInteger: 1];
-    
-    // must check the value of the rest target
-    // a value of -1 indicates that rest is not being targeted
-    
-    NSString *contentText;
+    NSString *restText;
     
     if (!isInitialContentView){
         
         if ([self.currentRestTarget floatValue] < 0.0){
             
-            contentText = @"Rest until ready";
+            restText = @"Rest until ready";
             
         } else{
             
             NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
-            contentText = [NSString stringWithFormat: @"Rest for %@", formattedRest];
+            restText = [NSString stringWithFormat: @"Rest for %@", formattedRest];
             
         }
- 
+        
     } else{
         
-        contentText = @"Begin when ready";
+        restText = @"Begin when ready";
         
     }
     
-    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
+    NSNumber *currentRound = self.activeRoundIndexForChain;
+    NSNumber *totalNumberOfRounds = @(self.chainTemplate.numberOfRounds);
+    NSString *roundText = [NSString stringWithFormat: @"Round %@ / %@",
+                           [currentRound stringValue],
+                           [totalNumberOfRounds stringValue]];
     
-    TJBActiveRoutineRestItem *restItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: titleNumber
-                                                                                     contentText: contentText
-                                                                              isCompletionButton: NO
-                                                                                        callback: nil];
-    restItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+    UIView *headerView = [self headerViewWithRoundText: roundText
+                                              restText: restText];
+    [containerView addSubview: headerView];
     
-    self.restItemChildVC = restItemVC;
-    [self addChildViewController: restItemVC];
+    NSString *headerViewKey = @"headerView";
+    [constraintMapping setObject: headerView
+                          forKey: headerViewKey];
+    headerView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    // add 'sequence completed' item
-    // will reuse the TJBActiveRoutineRestItem class because it works for this purpose
+    NSString *headerComponentHorzVFLString = [NSString stringWithFormat: @"H:|-%f-[%@]-%f-|",
+                                              headerViewComponentHorizontalInset,
+                                              headerViewKey,
+                                              headerViewComponentHorizontalInset];
     
-    NSNumber *scTitleNumber = [NSNumber numberWithInteger: self.activeLiftTargets.count + 2];
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: headerComponentHorzVFLString
+                                                                          options: 0
+                                                                          metrics: nil
+                                                                            views: constraintMapping]];
     
-    NSString *scText = @"Sequence Completed";
+    CGFloat totalHeaderComponentHeight = headerViewBottomLabelHeight + headerViewLabelSpacing + headerViewTopLabelHeight;
+    NSString *headerComponentVertVFLString = [NSString stringWithFormat: @"V:|-%f-[%@(==%f)]",
+                                              headerViewTopSpacing,
+                                              headerViewKey,
+                                              totalHeaderComponentHeight];
     
-    void (^callback)(void) = ^{
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: headerComponentVertVFLString
+                                                                          options: 0
+                                                                          metrics: nil
+                                                                            views: constraintMapping]];
+    
+    heightSum += totalHeaderComponentHeight + headerViewTopSpacing;
+    
+    // add previous marks content views
+    
+    descendingTopViewKey = headerViewKey;
+    
+    for (int i = 0; i < self.activeLiftTargets.count; i++){
         
-        [weakSelf didPressSetCompleted: nil];
+        // grab the info necessary for creating the exercise item VC
         
-    };
+        TJBActiveLiftTargetsDictionary *iterativeLiftTargets = self.activeLiftTargets[i];
+        
+        NSString *titleNumber = [NSString stringWithFormat: @"%d", i + 1];
+        TJBExercise *exercise = [iterativeLiftTargets exercise];
+        NSString *weightString = [self valueOrXFromNumber: [iterativeLiftTargets weight]];
+        NSString *repsString = [self valueOrXFromNumber: [iterativeLiftTargets reps]];
     
-    TJBActiveRoutineRestItem *scItemVC = [[TJBActiveRoutineRestItem alloc] initWithTitleNumber: scTitleNumber
-                                                                                   contentText: scText
-                                                                            isCompletionButton: YES
-                                                                                      callback: callback];
-    scItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [self addChildViewController: scItemVC];
-    
-    // layout constraints
-    
-    [masterView addSubview: restItemVC.view];
-    [masterView addSubview: scItemVC.view];
-    
-    [self.constraintMapping setObject: restItemVC.view
-                               forKey: restViewKey];
-    
-    [self.constraintMapping setObject: scItemVC.view
-                               forKey: @"scItem"];
-    
-    NSArray *restViewHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[restView]-0-|"
-                                                                             options: 0
-                                                                             metrics: nil
-                                                                               views: self.constraintMapping];
-    
-    NSArray *scHorC = [NSLayoutConstraint constraintsWithVisualFormat: @"H:|-0-[scItem]-0-|"
-                                                                    options: 0
-                                                                    metrics: nil
-                                                                      views: self.constraintMapping];
-    
-    NSString *verticalString = [NSString stringWithFormat: @"V:|-%f-[restView(==%d)]-0-[guidanceStackView]-0-[scItem(==restView)]-0-|",
-                                initialTopSpacing,
-                                (int)restCompHeight];
-    NSArray *restViewVerC = [NSLayoutConstraint constraintsWithVisualFormat: verticalString
-                                                                             options: 0
-                                                                             metrics: nil
-                                                                               views: self.constraintMapping];
-    
-    [masterView addConstraints: restViewHorC];
-    [masterView addConstraints: scHorC];
-    
-    [masterView addConstraints: restViewVerC];
-    
-    [restItemVC didMoveToParentViewController: self];
+        NSArray<TJBPreviousMarksDictionary *> *previousEntries = self.activePreviousMarks[i];
+        
+        TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
+                                                                                                  targetExerciseName: exercise.name
+                                                                                                        targetWeight: weightString
+                                                                                                          targetReps: repsString
+                                                                                                     previousEntries: previousEntries];
+        
+        exerciseItemVC.view.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        
+        [self addChildViewController: exerciseItemVC];
+        [containerView addSubview: exerciseItemVC.view];
+        [exerciseItemVC didMoveToParentViewController: self];
+        
+        CGFloat exerciseComponentHeight = [exerciseItemVC suggestedHeight];
+        NSString *exerciseComponentKey = [self dynamicExerciseComponentKeyForIndex: i];
+        [constraintMapping setObject: exerciseItemVC.view
+                              forKey: exerciseComponentKey];
+        
+        NSString *vertVFL = [self verticalVFLStringForTopViewKey: descendingTopViewKey
+                                                   bottomViewKey: exerciseComponentKey
+                                                         spacing: componentToComponentSpacing
+                                                bottomViewHeight: exerciseComponentHeight];
+        
+        [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFL
+                                                                              options: 0
+                                                                              metrics: nil
+                                                                                views: constraintMapping]];
+        
+        NSString *horzVFL = [self fillSuperViewWidthVFLStringForViewKey: exerciseComponentKey];
+        [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: horzVFL
+                                                                               options: 0
+                                                                               metrics: nil
+                                                                                 views: constraintMapping]];
+        
+        descendingTopViewKey = exerciseComponentKey;
+        heightSum += exerciseComponentHeight + componentToComponentSpacing;
+        
+    }
     
     // stopwatch config
     
     [self configureStopwatchBasedOnCurrentTargets];
     
-    return masterView;
+    [self.view layoutSubviews];
+    CGFloat width = self.contentScrollView.frame.size.width;
+    
+    [containerView setFrame: CGRectMake(0, 0, width, heightSum)];
+    [self.contentScrollView setContentSize: CGSizeMake(width, heightSum)];
+    
+    return containerView;
     
 }
 
@@ -725,6 +665,120 @@ static NSString const *restViewKey = @"restView";
     // update alertValueLabel to reflect stopwatch parameters
     
     self.alertValueLabel.text = [stopwatch alertTextFromTargetValues];
+    
+}
+
+#pragma mark - Visual Content Helper Methods
+
+- (NSString *)dynamicExerciseComponentKeyForIndex:(int)index{
+    
+    return  [NSString stringWithFormat: @"exerciseComponent%d", index + 1];
+    
+}
+
+- (NSString *)verticalVFLStringForTopViewKey:(NSString *)topViewKey bottomViewKey:(NSString *)bottomViewKey spacing:(CGFloat)spacing bottomViewHeight:(CGFloat)bottomViewHeight{
+    
+    return [NSString stringWithFormat: @"V:[%@]-%f-[%@(==%f)]",
+            topViewKey,
+            spacing,
+            bottomViewKey,
+            bottomViewHeight];
+    
+}
+
+- (UIView *)headerViewWithRoundText:(NSString *)roundText restText:(NSString *)restText{
+    
+    UIView *container = [[UIView alloc] init];
+    
+    UILabel *topLabel = [[UILabel alloc] init];
+    UILabel *bottomLabel = [[UILabel alloc] init];
+    
+    // view hieararchy and constraints
+    
+    topLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    bottomLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [container addSubview: topLabel];
+    [container addSubview: bottomLabel];
+    
+    NSMutableDictionary *constraintMapping = [[NSMutableDictionary alloc] init];
+    NSString *topLabelKey = @"topLabel";
+    NSString *bottomLabelKey = @"bottomLabel";
+    [constraintMapping setObject: topLabel
+                          forKey: topLabelKey];
+    [constraintMapping setObject: bottomLabel
+                          forKey: bottomLabelKey];
+    
+    NSArray *labelKeys = @[topLabelKey, bottomLabelKey];
+    for (NSString *labelKey in labelKeys){
+        
+        [container addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: [self fillSuperViewWidthVFLStringForViewKey: labelKey]
+                                                                           options: 0
+                                                                           metrics: nil
+                                                                             views: constraintMapping]];
+        
+    }
+    
+    NSString *vertVFLString = [NSString stringWithFormat: @"V:|-0-[%@(==%f)]-%f-[%@(==%f)]",
+                               topLabelKey,
+                               headerViewTopLabelHeight,
+                               headerViewLabelSpacing,
+                               bottomLabelKey,
+                               headerViewBottomLabelHeight];
+    
+    [container addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertVFLString
+                                                                      options: 0
+                                                                      metrics: nil
+                                                                        views: constraintMapping]];
+    
+    // label detail
+    
+    NSArray *labels = @[topLabel, bottomLabel];
+    for (UILabel *l in labels){
+        
+        l.backgroundColor = [UIColor grayColor];
+        l.textColor = [UIColor whiteColor];
+        l.font = [UIFont boldSystemFontOfSize: 20];
+        l.textAlignment = NSTextAlignmentCenter;
+        l.numberOfLines = 0;
+        l.lineBreakMode = NSLineBreakByWordWrapping;
+        
+    }
+    
+    topLabel.text = roundText;
+    bottomLabel.text = restText;
+    
+    container.backgroundColor = [UIColor blackColor];
+    CALayer *containerLayer = container.layer;
+    containerLayer.masksToBounds = YES;
+    containerLayer.cornerRadius = 4;
+    
+    return container;
+    
+    
+}
+
+- (NSString *)fillSuperViewWidthVFLStringForViewKey:(NSString *)viewKey{
+    
+    
+    return [NSString stringWithFormat: @"H:|-0-[%@]-0-|", viewKey];
+    
+}
+
+- (NSString *)valueOrXFromNumber:(NSNumber *)number{
+    
+    // returns the number as a string if it is positive and X otherwise
+    // the convention here is that a value of negative one is assigned to weight or reps when it is not being targeted
+    
+    if ([number floatValue] >= 0){
+        
+        return  [number stringValue];
+        
+    } else{
+        
+        return @"X";
+        
+    }
     
 }
 
@@ -789,7 +843,7 @@ static NSString const *restViewKey = @"restView";
         self.cancelRestorationRoundIndex = self.activeRoundIndexForChain;
     }
     
-    NSString *title = self.activeLiftTargets[_selectionIndex][0];
+    NSString *title = [[self.activeLiftTargets[_selectionIndex] exercise] name];
         
     // cancel block
         
