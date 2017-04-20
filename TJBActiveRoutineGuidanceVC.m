@@ -143,7 +143,10 @@ static CGFloat const headerViewTopSpacing = 16;
 static CGFloat const componentToComponentSpacing = 16;
 
 
+// sequence completed button
 
+static CGFloat const sequenceCompletedButtonHorizontalInset = 8;
+static CGFloat const sequenceCompletedButtonHeight = 44;
 
 
 
@@ -522,7 +525,7 @@ static NSString const *restViewKey = @"restView";
         } else{
             
             NSString *formattedRest = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
-            restText = [NSString stringWithFormat: @"Rest for %@", formattedRest];
+            restText = [NSString stringWithFormat: @"Rest for %@, then begin", formattedRest];
             
         }
         
@@ -532,9 +535,9 @@ static NSString const *restViewKey = @"restView";
         
     }
     
-    NSNumber *currentRound = self.activeRoundIndexForChain;
+    NSNumber *currentRound = @([self.activeRoundIndexForChain intValue] + 1);
     NSNumber *totalNumberOfRounds = @(self.chainTemplate.numberOfRounds);
-    NSString *roundText = [NSString stringWithFormat: @"Round %@ / %@",
+    NSString *roundText = [NSString stringWithFormat: @"Round %@/%@",
                            [currentRound stringValue],
                            [totalNumberOfRounds stringValue]];
     
@@ -547,10 +550,8 @@ static NSString const *restViewKey = @"restView";
                           forKey: headerViewKey];
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    NSString *headerComponentHorzVFLString = [NSString stringWithFormat: @"H:|-%f-[%@]-%f-|",
-                                              headerViewComponentHorizontalInset,
-                                              headerViewKey,
-                                              headerViewComponentHorizontalInset];
+    NSString *headerComponentHorzVFLString = [self horizontalVFLStringForInset: headerViewComponentHorizontalInset
+                                                                       viewKey: headerViewKey];
     
     [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: headerComponentHorzVFLString
                                                                           options: 0
@@ -570,7 +571,7 @@ static NSString const *restViewKey = @"restView";
     
     heightSum += totalHeaderComponentHeight + headerViewTopSpacing;
     
-    // add previous marks content views
+    // add previous marks (exercise target) content views
     
     descendingTopViewKey = headerViewKey;
     
@@ -626,6 +627,36 @@ static NSString const *restViewKey = @"restView";
         
     }
     
+    // sequence completed button
+    
+    UIButton *sequenceCompletedButton = [self sequenceCompletedButton];
+    
+    sequenceCompletedButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [containerView addSubview: sequenceCompletedButton];
+    
+    NSString *scButtonKey = @"sequenceCompletedButton";
+    [constraintMapping setObject: sequenceCompletedButton
+                          forKey: scButtonKey];
+    
+    NSString *scButtonHorzVFL = [self horizontalVFLStringForInset: sequenceCompletedButtonHorizontalInset
+                                                          viewKey: scButtonKey];
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: scButtonHorzVFL
+                                                                           options: 0
+                                                                           metrics: nil
+                                                                             views: constraintMapping]];
+    
+    NSString *scButtonVertVFL = [self verticalVFLStringForTopViewKey: descendingTopViewKey
+                                                       bottomViewKey: scButtonKey
+                                                             spacing: componentToComponentSpacing
+                                                    bottomViewHeight: sequenceCompletedButtonHeight];
+    
+    [containerView addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: scButtonVertVFL
+                                                                           options: 0
+                                                                           metrics: nil
+                                                                             views: constraintMapping]];
+    
+    heightSum += sequenceCompletedButtonHeight + componentToComponentSpacing * 2.0; // multiplied by two to give room beneath button at bottom
+    
     // stopwatch config
     
     [self configureStopwatchBasedOnCurrentTargets];
@@ -669,6 +700,40 @@ static NSString const *restViewKey = @"restView";
 }
 
 #pragma mark - Visual Content Helper Methods
+
+- (NSString *)horizontalVFLStringForInset:(CGFloat)inset viewKey:(NSString *)viewKey{
+    
+    return  [NSString stringWithFormat: @"H:|-%f-[%@]-%f-|",
+             inset,
+             viewKey,
+             inset];
+    
+}
+
+- (UIButton *)sequenceCompletedButton{
+    
+    UIButton *scButton = [[UIButton alloc] init];
+    
+    [scButton addTarget: self
+                 action: @selector(didPressSetCompleted:)
+       forControlEvents: UIControlEventTouchUpInside];
+    
+    scButton.backgroundColor = [UIColor grayColor];
+    [scButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
+                   forState: UIControlStateNormal];
+    [scButton setTitle: @"Sequence Completed"
+              forState: UIControlStateNormal];
+    scButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+    CALayer *scLayer = scButton.layer;
+    scLayer.masksToBounds = YES;
+    scLayer.cornerRadius = sequenceCompletedButtonHeight / 2.0;
+    scLayer.borderWidth = 1;
+    scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    
+    return scButton;
+    
+}
 
 - (NSString *)dynamicExerciseComponentKeyForIndex:(int)index{
     
