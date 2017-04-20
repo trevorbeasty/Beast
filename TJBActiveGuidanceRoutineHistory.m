@@ -17,7 +17,7 @@
 
 {
     
-    BOOL _dataNeedsUpdating;
+    BOOL _shouldFetchDataAndCreateDisplay;
     
 }
 
@@ -36,6 +36,9 @@
 
 @property (strong) TJBChainTemplate *chainTemplate;
 @property (strong) UIScrollView *contentScrollView;
+@property (strong) TJBCompleteChainHistoryVC *activeChainHistoryVC;
+
+@property (strong) UIActivityIndicatorView *activeAIView;
 
 @end
 
@@ -54,7 +57,7 @@
         
         [self configureCoreDataUpdateNotification];
         
-        _dataNeedsUpdating = YES;
+        _shouldFetchDataAndCreateDisplay = YES;
         
     }
     
@@ -71,8 +74,6 @@
     
     [self configureLabelText];
     
-    [self configureChildVC];
-    
     
     
 }
@@ -80,14 +81,28 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     
-    
+    if (_shouldFetchDataAndCreateDisplay){
+        
+        [self removeExistingChildVC];
+        
+        [self showActivityIndicator];
+        
+    }
     
 }
 
 
 - (void)viewDidAppear:(BOOL)animated{
     
-    
+    if (_shouldFetchDataAndCreateDisplay){
+        
+        [self configureChildVC];
+        
+        [self removeActivityIndicator];
+        
+        _shouldFetchDataAndCreateDisplay = NO;
+        
+    }
     
 }
 
@@ -132,9 +147,28 @@
 
 #pragma mark - Child VC Content
 
+- (void)removeExistingChildVC{
+    
+    if (self.contentScrollView){
+        
+        [self.activeChainHistoryVC willMoveToParentViewController: nil];
+        
+        [self.contentScrollView removeFromSuperview];
+        self.contentScrollView = nil;
+        
+        [self.activeChainHistoryVC removeFromParentViewController];
+        
+        self.activeChainHistoryVC = nil;
+        
+    }
+    
+}
+
 - (void)configureChildVC{
     
     TJBCompleteChainHistoryVC *childVC = [[TJBCompleteChainHistoryVC alloc] initWithChainTemplate: self.chainTemplate];
+    self.activeChainHistoryVC = childVC;
+    
     childVC.view.backgroundColor = [UIColor clearColor];
     
     [self.view layoutSubviews];
@@ -170,7 +204,7 @@
 - (void)configureCoreDataUpdateNotification{
     
     [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(reloadContent)
+                                             selector: @selector(coreDataDidSave)
                                                  name: NSManagedObjectContextDidSaveNotification
                                                object: [[CoreDataController singleton] moc]];
     
@@ -178,32 +212,45 @@
 }
 
 
-- (void)reloadContent{
+- (void)coreDataDidSave{
     
-    [self.contentScrollView removeFromSuperview];
-    self.contentScrollView = nil;
-    
-    [self configureChildVC];
-    
+    _shouldFetchDataAndCreateDisplay = YES;
     
 }
 
+#pragma mark - Activity Indicator
+
 - (void)showActivityIndicator{
     
+    if (!self.activeAIView){
+        
+        [self createActivityIndicator];
+        
+    }
     
+    [self.activeAIView startAnimating];
     
+}
+
+- (void)createActivityIndicator{
     
+    UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    self.activeAIView = aiView;
     
+    [self.view layoutSubviews];
+    aiView.frame = self.tableViewContainer.bounds;
+    
+    [self.tableViewContainer addSubview: aiView];
     
 }
 
 - (void)removeActivityIndicator{
     
-    
-    
-    
+    [self.activeAIView stopAnimating];
     
 }
+
+
 
 @end
 
