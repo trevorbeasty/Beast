@@ -29,6 +29,7 @@
 //@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController; // core
 @property (nonatomic, strong) NSMutableArray *contentExercisesArray; // core - managed objects supplied to table view as data source
 @property (strong) NSIndexPath *selectedCellIndexPath; // state - table view selection
+@property (copy) NSString *exerciseSearchString;
 
 
 // callback
@@ -655,12 +656,12 @@ static CGFloat const searchBarVerticalInset = 4;
         
         [self animateToolbarToBottomPositionAndShowListButton];
         [self animateSearchContainerOnscreen];
-        
-//        [self createSearchBarIfNecessary];
         [self animateSearchContainerOnscreen];
-        
 
         _searchIsActive = YES;
+        
+        [self deriveExerciseContentGivenState];
+        [self.exerciseTableView reloadData];
         
     } else if (_searchIsActive == YES){
         
@@ -735,6 +736,8 @@ static CGFloat const searchBarVerticalInset = 4;
     // search bar aesthetics
     
     searchBar.backgroundColor = [UIColor clearColor];
+    searchBar.textAlignment = NSTextAlignmentCenter;
+    searchBar.font = [UIFont systemFontOfSize: 15];
     
     CALayer *searchBarLayer = searchBar.layer;
     searchBarLayer.masksToBounds = YES;
@@ -781,6 +784,11 @@ static CGFloat const searchBarVerticalInset = 4;
                                                  name: UITextFieldTextDidChangeNotification
                                                object: searchBar];
     
+    
+    // delegate
+    
+    searchBar.delegate = self;
+    
 
     
 
@@ -789,7 +797,11 @@ static CGFloat const searchBarVerticalInset = 4;
 
 - (void)searchTextFieldValueDidChange:(NSNotification *)notification{
     
+    UITextField *tf = notification.object;
+    self.exerciseSearchString = tf.text;
     
+    [self deriveExerciseContentGivenState];
+    [self.exerciseTableView reloadData];
     
 }
 
@@ -856,39 +868,41 @@ static CGFloat const searchBarVerticalInset = 4;
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     
+    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
+                                                               ascending: YES];
+    [request setSortDescriptors: @[nameSort]];
+    
     if (_searchIsActive == NO){
         
         // only apply the compount predicate if the exercise search text field has a non blank entry
         
         NSString *selectedCategoryName = [self exerciseCategoryNameForSelectedExerciseCategorySegmentedControlIndex];
         
-        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name = %@",
-                                                        selectedCategoryName];
+        NSPredicate *exercisesForCategory = [NSPredicate predicateWithFormat: @"category.name = %@",
+                                             selectedCategoryName];
         
-        request.predicate = noPlaceholderExercisesPredicate;
-        
-        NSSortDescriptor *categoryNameSort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
-                                                                           ascending: YES];
-        
-        NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
-                                                                   ascending: YES];
-        
-        [request setSortDescriptors: @[categoryNameSort, nameSort]];
+        request.predicate = exercisesForCategory;
         
     } else if (_searchIsActive == YES){
         
+        NSString *placeholderNameRoot = [[CoreDataController singleton] categoryStingFromEnum: PlaceholderType];
+        NSPredicate *noPlaceholderExercises = [NSPredicate predicateWithFormat: @"category.name != %@",
+                                               placeholderNameRoot];
         
-        
-        
-        
-        
-        
-        
-        
+        if (self.exerciseSearchString){
+            
+            NSPredicate *nameContainsString = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", self.exerciseSearchString];
+            
+            NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercises, nameContainsString]];
+            request.predicate = compPred;
+            
+        } else{
+            
+            request.predicate = noPlaceholderExercises;
+            
+        }
         
     }
-    
-
     
     return request;
     
@@ -968,8 +982,11 @@ static CGFloat const searchBarVerticalInset = 4;
 - (void)animateToolbarToBottomPositionAndShowListButton{
     
     CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
+
     
     [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
+                          delay: 0
+                        options: UIViewAnimationOptionCurveLinear
                      animations: ^{
                          
                          NSArray *verticallySlidingViews = @[self.actionsToolbar, self.normalBrowsingExerciseSC];
@@ -980,7 +997,7 @@ static CGFloat const searchBarVerticalInset = 4;
                                                                               originY: verticalTranslation];
                              
                          }
-    
+                         
                      }
                      completion: ^(BOOL finished){
                          
@@ -1025,7 +1042,15 @@ static CGFloat const searchBarVerticalInset = 4;
 }
 
 
+#pragma mark - UITextFieldDelegate
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    [textField resignFirstResponder];
+    
+    return YES;
+    
+}
 
 
 @end
