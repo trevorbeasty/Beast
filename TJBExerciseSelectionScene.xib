@@ -17,6 +17,7 @@
                 <outlet property="columnTitleLabelsContainer" destination="jbx-V3-do0" id="6b1-XL-HC3"/>
                 <outlet property="dateLastExecutedColumbLabel" destination="6BJ-s5-1vy" id="w7q-wi-0e0"/>
                 <outlet property="exerciseColumnLabel" destination="OIp-Zq-XW0" id="cdj-4k-YfR"/>
+                <outlet property="exerciseSegmentedControlBottomSpaceConstr" destination="SIs-bv-zyP" id="1Vz-RK-fp4"/>
                 <outlet property="exerciseTableView" destination="hdc-bj-tBP" id="PkW-tI-NA3"/>
                 <outlet property="launchToolbarButton" destination="2Rd-sn-UVV" id="j8X-v2-2nG"/>
                 <outlet property="leftBarButton" destination="ajv-jV-md0" id="BsF-7l-vjf"/>

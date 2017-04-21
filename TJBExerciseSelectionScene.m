@@ -47,6 +47,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLastExecutedColumbLabel;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainier;
 
+// constraints
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *exerciseSegmentedControlBottomSpaceConstr;
 
 // toolbar buttons
 
@@ -147,6 +150,9 @@ static CGFloat const searchBarVerticalInset = 4;
     [self.view layoutSubviews];
     
     [self configureTableView];
+    
+    [self createSearchBar];
+    self.exerciseSearchFieldContainer.hidden = YES;
     
     [self deriveExerciseContentGivenState];
     
@@ -650,6 +656,9 @@ static CGFloat const searchBarVerticalInset = 4;
         [self animateToolbarToBottomPositionAndShowListButton];
         [self animateSearchContainerOnscreen];
         
+//        [self createSearchBarIfNecessary];
+        [self animateSearchContainerOnscreen];
+        
 
         _searchIsActive = YES;
         
@@ -690,8 +699,6 @@ static CGFloat const searchBarVerticalInset = 4;
         
         [self.actionsToolbar setItems: toolbarItems];
         
-        [self createSearchBar];
-        
         
     } else{
         
@@ -710,13 +717,14 @@ static CGFloat const searchBarVerticalInset = 4;
 
 - (void)createSearchBar{
     
-    CGRect searchContainerFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
-                                                                      originX: self.columnTitleLabelsContainer.frame.size.width
-                                                                      originY: 0];
+        
+    //    CGRect searchContainerFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
+    //                                                                      originX: self.columnTitleLabelsContainer.frame.size.width
+    //                                                                      originY: 0];
     
-    searchContainerFrame = self.columnTitleLabelsContainer.frame;
+    [self.view layoutSubviews];
     
-    UIView *searchContainer = [[UIView alloc] initWithFrame: searchContainerFrame];
+    UIView *searchContainer = [[UIView alloc] initWithFrame: self.columnTitleLabelsContainer.frame];
     self.exerciseSearchFieldContainer = searchContainer;
     [self.view addSubview: searchContainer];
     
@@ -747,7 +755,7 @@ static CGFloat const searchBarVerticalInset = 4;
     [searchContainer addSubview: searchBar];
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     
-
+    
     NSString *horzConstrVFL = [NSString stringWithFormat: @"H:|-%f-[%@]-%f-|",
                                searchBarHorizontalInset,
                                searchBarKey,
@@ -755,7 +763,7 @@ static CGFloat const searchBarVerticalInset = 4;
     [searchContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: horzConstrVFL
                                                                              options: 0
                                                                              metrics: nil
-                                                                              views: constraintMapping]];
+                                                                               views: constraintMapping]];
     
     NSString *vertConstrVFL = [NSString stringWithFormat: @"V:|-%f-[%@]-%f-|",
                                searchBarVerticalInset,
@@ -772,6 +780,10 @@ static CGFloat const searchBarVerticalInset = 4;
                                              selector: @selector(searchTextFieldValueDidChange:)
                                                  name: UITextFieldTextDidChangeNotification
                                                object: searchBar];
+    
+
+    
+
     
 }
 
@@ -955,10 +967,10 @@ static CGFloat const searchBarVerticalInset = 4;
 
 - (void)animateToolbarToBottomPositionAndShowListButton{
     
+    CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
+    
     [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
                      animations: ^{
-                         
-                         CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
                          
                          NSArray *verticallySlidingViews = @[self.actionsToolbar, self.normalBrowsingExerciseSC];
                          for (UIView *view in verticallySlidingViews){
@@ -974,17 +986,31 @@ static CGFloat const searchBarVerticalInset = 4;
                          
                          [self updateToolbarBarButtonItemsAccordingGivenState];
                          
+                         CGFloat bottomSpaceConstr = self.exerciseSegmentedControlBottomSpaceConstr.constant;
+                         bottomSpaceConstr -= verticalTranslation;
+                         
+                         self.exerciseSegmentedControlBottomSpaceConstr.constant = bottomSpaceConstr;
+                         
                      }];
-    
 
 }
 
+
+
 - (void)animateSearchContainerOnscreen{
+    
+    CGRect searchContainerStartingFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
+                                                                              originX: self.columnTitleLabelsContainer.frame.size.width
+                                                                              originY: 0];
+    self.exerciseSearchFieldContainer.frame = searchContainerStartingFrame;
+    
+    self.exerciseSearchFieldContainer.hidden = NO;
+    
     
     [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
                      animations: ^{
                          
-                         
+                         self.exerciseSearchFieldContainer.frame = self.columnTitleLabelsContainer.frame;
                          
                          
                      }
