@@ -85,7 +85,7 @@
 static NSString * const cellReuseIdentifier = @"basicCell";
 
 
-static NSTimeInterval const toolbarToBottomPositionAnimationTime = .5;
+static NSTimeInterval const toolbarToBottomPositionAnimationTime = .3;
 
 
 // search bar
@@ -112,39 +112,8 @@ static CGFloat const searchBarVerticalInset = 4;
 
 #pragma mark - View Life Cycle
 
-// view will appear and disappear are leveraged to have the view adjust itself when the keyboard is shown
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [super viewWillAppear: animated];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(keyboardWillAppear:)
-                                                 name: UIKeyboardWillShowNotification
-                                               object: nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(keyboardWillDisappear:)
-                                                 name: UIKeyboardWillHideNotification
-                                               object: nil];
-    
-}
 
-- (void)viewWillDisappear:(BOOL)animated{
-    
-    [super viewWillDisappear: animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIKeyboardWillShowNotification
-                                                  object: nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: UIKeyboardWillHideNotification
-                                                  object: nil];
-    
-    
-    
-}
 
 - (void)viewDidLoad{
     
@@ -156,8 +125,6 @@ static CGFloat const searchBarVerticalInset = 4;
     self.exerciseSearchFieldContainer.hidden = YES;
     
     [self deriveExerciseContentGivenState];
-    
-//    [self browsingSCValueDidChange]; // called to force the controller to create the array the table view needs
     
     [self viewAesthetics];
     
@@ -654,15 +621,8 @@ static CGFloat const searchBarVerticalInset = 4;
     
     if (_searchIsActive == NO){
         
-        [self animateToolbarToBottomPositionAndShowListButton];
-        [self animateSearchContainerOnscreen];
-        [self animateSearchContainerOnscreen];
+        [self animateToSearchBarState];
 
-        _searchIsActive = YES;
-        
-        [self deriveExerciseContentGivenState];
-        [self.exerciseTableView reloadData];
-        
     } else if (_searchIsActive == YES){
         
         
@@ -717,11 +677,6 @@ static CGFloat const searchBarVerticalInset = 4;
 }
 
 - (void)createSearchBar{
-    
-        
-    //    CGRect searchContainerFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
-    //                                                                      originX: self.columnTitleLabelsContainer.frame.size.width
-    //                                                                      originY: 0];
     
     [self.view layoutSubviews];
     
@@ -805,52 +760,7 @@ static CGFloat const searchBarVerticalInset = 4;
     
 }
 
-#pragma mark - Keyboard Notifications
 
-- (void)keyboardWillAppear:(NSNotification *)notification{
-
-//    // these actions should not be taken if exercise addition is active
-//
-//    if (_exerciseAdditionActive == NO){
-//
-//        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-//
-//        CGRect tableviewFrame = self.exerciseTableView.frame;
-//        CGFloat tvBottomEdge = tableviewFrame.origin.y + tableviewFrame.size.height;
-//        CGFloat bottomTVEdgeToScreenBounds = [UIScreen mainScreen].bounds.size.height - tvBottomEdge;
-//        CGFloat reductionInTVHeight = keyboardSize.height - bottomTVEdgeToScreenBounds;
-//
-//        // update the constraint that controls the vertical distance between the table view and segmented control
-//        // will do so by increasing its constant by the reductionInTVHeight
-//
-////        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
-////        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight + 8;
-////        self.scToTVVertDist.constant = newConstrConstant;
-//
-//        // hide views
-//
-//        [self.view layoutIfNeeded];
-//
-//    }
-
-
-
-
-}
-
-- (void)keyboardWillDisappear:(NSNotification *)notification{
-
-//    // these actions should not be taken if exercise addition is active
-//
-//    if (_exerciseAdditionActive == NO){
-//
-////        self.scToTVVertDist.constant = 8;
-//
-//        [self.view layoutIfNeeded];
-//
-//    }
-
-}
 
 
 
@@ -979,15 +889,27 @@ static CGFloat const searchBarVerticalInset = 4;
 
 #pragma mark - Bottom Controls Animations
 
-- (void)animateToolbarToBottomPositionAndShowListButton{
+- (void)animateToSearchBarState{
+    
+    // bottom controls
     
     CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
 
+    // search bar
+    
+    CGRect searchContainerStartingFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
+                                                                              originX: self.columnTitleLabelsContainer.frame.size.width
+                                                                              originY: 0];
+    self.exerciseSearchFieldContainer.frame = searchContainerStartingFrame;
+    
+    self.exerciseSearchFieldContainer.hidden = NO;
     
     [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
                           delay: 0
                         options: UIViewAnimationOptionCurveLinear
                      animations: ^{
+                         
+                         // bottom controls
                          
                          NSArray *verticallySlidingViews = @[self.actionsToolbar, self.normalBrowsingExerciseSC];
                          for (UIView *view in verticallySlidingViews){
@@ -998,48 +920,30 @@ static CGFloat const searchBarVerticalInset = 4;
                              
                          }
                          
+                         // search bar
+                         
+                         self.exerciseSearchFieldContainer.frame = self.columnTitleLabelsContainer.frame;
+                         
                      }
                      completion: ^(BOOL finished){
-                         
-                         [self updateToolbarBarButtonItemsAccordingGivenState];
                          
                          CGFloat bottomSpaceConstr = self.exerciseSegmentedControlBottomSpaceConstr.constant;
                          bottomSpaceConstr -= verticalTranslation;
                          
                          self.exerciseSegmentedControlBottomSpaceConstr.constant = bottomSpaceConstr;
                          
+                         _searchIsActive = YES;
+                         
+                         [self deriveExerciseContentGivenState];
+                         [self.exerciseTableView reloadData];
+                         
+                         [self updateToolbarBarButtonItemsAccordingGivenState];
+                         
                      }];
 
 }
 
 
-
-- (void)animateSearchContainerOnscreen{
-    
-    CGRect searchContainerStartingFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
-                                                                              originX: self.columnTitleLabelsContainer.frame.size.width
-                                                                              originY: 0];
-    self.exerciseSearchFieldContainer.frame = searchContainerStartingFrame;
-    
-    self.exerciseSearchFieldContainer.hidden = NO;
-    
-    
-    [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
-                     animations: ^{
-                         
-                         self.exerciseSearchFieldContainer.frame = self.columnTitleLabelsContainer.frame;
-                         
-                         
-                     }
-                     completion: ^(BOOL finished){
-                         
-                         
-                         
-                         
-                     }];
-    
-    
-}
 
 
 #pragma mark - UITextFieldDelegate
