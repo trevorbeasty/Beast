@@ -1333,6 +1333,9 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         
         TJBRealizedChainCell *cell = [self.activeTableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
         
+        [self layoutCellToEnsureCorrectWidth: cell
+                                   indexPath: indexPath];
+        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         
@@ -1357,10 +1360,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
             
         }
         
-//        [cell configureWithContentObject: chainTemplate
-//                                cellType: ChainTemplateAdvCell
-//                            dateTimeType: TJBDayInYear
-//                             titleNumber: @(indexPath.row + 1)];
         
         TJBChainTemplateSortingType sortingType = self.sortBySegmentedControl.selectedSegmentIndex == 0 ? TJBChainTemplateByDateCreated : TJBChainTemplateByDateLastExecuted;
         
@@ -1388,6 +1387,21 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     }
     
 
+    
+}
+
+- (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutSubviews];
+    
+    CGFloat cellHeight = [self tableView: self.activeTableView
+                 heightForRowAtIndexPath: indexPath];
+    
+    CGFloat cellWidth = self.mainContainer.frame.size.width;
+    
+    
+    [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
+    [cell layoutSubviews];
     
 }
 

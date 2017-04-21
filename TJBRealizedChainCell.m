@@ -95,6 +95,9 @@ typedef enum{
     _cellType = cellType;
     _dateTimeType = dateTimeType;
     
+    [self.contentView layoutSubviews];
+    [self.columnHeaderContainer layoutSubviews];
+    
     [self configureBasicLabelText];
     [self configureViewAesthetics];
     [self createAndLayoutDynamicContent];
@@ -110,6 +113,9 @@ typedef enum{
     _cellType = ChainTemplateAdvCell;
     _dateTimeType = dateTimeType;
     _sortingType = sortingType;
+    
+    [self.contentView layoutSubviews];
+    [self.columnHeaderContainer layoutSubviews];
     
     [self configureBasicLabelText];
     [self configureViewAesthetics];
@@ -642,6 +648,12 @@ typedef enum{
     
 }
 
+- (void)drawDetailedLines{
+    
+    
+    
+}
+
 - (void)configureExerciseLabel:(UILabel *)label{
     
     label.backgroundColor = [UIColor clearColor];
@@ -747,7 +759,6 @@ typedef enum{
     // name title label
     
     NSString *nameTitleText = [self titleNameForContentObject];
-//    self.nameLabel.text = @"This is a test... I like to type really long things just cause and let's see what happens";
     self.nameLabel.text = nameTitleText;
     
     // headers

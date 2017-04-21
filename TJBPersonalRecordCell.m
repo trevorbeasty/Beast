@@ -34,14 +34,17 @@
     
     self.contentView.backgroundColor = [UIColor clearColor];
     
-    self.repsLabel.font = [UIFont systemFontOfSize: 30];
-    self.repsLabel.textColor = [UIColor blackColor];
-    self.repsLabel.backgroundColor = [UIColor clearColor];
+    self.repsLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.repsLabel.textColor = [UIColor whiteColor];
+    self.repsLabel.backgroundColor = [UIColor grayColor];
+    CALayer *repsLayer = self.repsLabel.layer;
+    repsLayer.masksToBounds = YES;
+    repsLayer.cornerRadius = 4;
     
     NSArray *otherLabels = @[self.weightLabel, self.dateLabel];
     for (UILabel *lab in otherLabels){
         
-        lab.font = [UIFont systemFontOfSize: 20];
+        lab.font = [UIFont systemFontOfSize: 15];
         lab.backgroundColor = [UIColor clearColor];
         lab.textColor = [UIColor blackColor];
         
@@ -55,16 +58,13 @@
 
 - (void)drawDetaiLines{
     
-//    [self.contentView layoutSubviews];
-//    
-//    [TJBAssortedUtilities drawHookLineUnderLabel1: self.weightLabel
-//                                           label2: self.dateLabel
-//                                   verticalOffset: 2.0
-//                                        thickness: 1.0
-//                                       hookLength: 16
-//                                         metaView: self.contentView];
-//    
-//    self.repsLabel
+    [self.contentView layoutSubviews];
+    
+    [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: self.weightLabel
+                                           horizontalOffset: 0
+                                                  thickness: .5
+                                             verticalOffset: self.weightLabel.frame.size.height / 2.0
+                                                   metaView: self.contentView];
     
 }
 

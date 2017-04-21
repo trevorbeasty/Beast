@@ -1850,6 +1850,9 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
                 // dequeue the realizedSetCell
                 
                 TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+                
+                [self layoutCellToEnsureCorrectWidth: cell
+                                           indexPath: indexPath];
     
                 [cell configureWithContentObject: realizedSet
                                         cellType: RealizedSetCollectionCell
@@ -1867,21 +1870,12 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
                 // dequeue the realizedSetCell
                 
                 TJBRealizedChainCell *cell = nil;
+                    
+                cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
                 
-                if (shouldDequeue){
-                    
-                    cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-                    
-                } else{
-                    
-                    UINib *cellNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
-                                                    bundle: nil];
-                    NSArray *topLevelNibObjects = [cellNib instantiateWithOwner: nil
-                                                                        options: nil];
-                    
-                    cell = topLevelNibObjects[0];
-                    
-                }
+                
+                [self layoutCellToEnsureCorrectWidth: cell
+                                           indexPath: indexPath];
                 
                 [cell configureWithContentObject: realizedChain
                                         cellType: RealizedChainCell
@@ -1898,6 +1892,9 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
                 
                 TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
                 
+                [self layoutCellToEnsureCorrectWidth: cell
+                                           indexPath: indexPath];
+                
                 cell.backgroundColor = [UIColor clearColor];
                 
                 TJBRealizedSetGrouping rsg = self.dailyList[rowIndex];
@@ -1912,6 +1909,21 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
             }
         }
 
+    
+}
+
+- (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutSubviews];
+    
+    CGFloat cellHeight = [self tableView: self.tableView
+                 heightForRowAtIndexPath: indexPath];
+    
+    CGFloat cellWidth = self.shadowContainer.frame.size.width;
+    
+    
+    [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
+    [cell layoutSubviews];
     
 }
 

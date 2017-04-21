@@ -114,6 +114,9 @@ static NSString *realizedChainCellID = @"TJBRealizedChainCell";
     
     TJBRealizedChainCell *chainCell = [self.chainHistoryTV dequeueReusableCellWithIdentifier: realizedChainCellID];
     
+    [self layoutCellToEnsureCorrectWidth: chainCell
+                               indexPath: indexPath];
+    
     // grab the appropriate realized chain
     
     TJBRealizedChain *chain = self.chainTemplate.realizedChains[reversedIndex];
@@ -132,6 +135,20 @@ static NSString *realizedChainCellID = @"TJBRealizedChainCell";
     
 }
 
+- (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutSubviews];
+    
+    CGFloat cellHeight = [self tableView: self.chainHistoryTV
+                 heightForRowAtIndexPath: indexPath];
+    
+    CGFloat cellWidth = self.chainHistoryTV.frame.size.width;
+    
+    
+    [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
+    [cell layoutSubviews];
+    
+}
 
 
 

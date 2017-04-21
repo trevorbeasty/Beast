@@ -186,6 +186,7 @@
                            date: repsWeightRecordPair.date];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
         return cell;
         

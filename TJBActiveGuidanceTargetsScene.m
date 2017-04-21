@@ -134,6 +134,10 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
     
     TJBRealizedChainCell *cell = [self.routineTargetTableView dequeueReusableCellWithIdentifier: cellReuseID];
     
+    [self layoutCellToEnsureCorrectWidth: cell
+                               indexPath: [NSIndexPath indexPathForRow: 0
+                                                             inSection: 0]];
+    
     [cell configureChainTemplateCellWithChainTemplate: self.chainTemplate
                                          dateTimeType: TJBDayInYear
                                           titleNumber: @(1)
@@ -168,7 +172,20 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 }
 
 
-
+- (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutSubviews];
+    
+    CGFloat cellHeight = [self tableView: self.routineTargetTableView
+                 heightForRowAtIndexPath: indexPath];
+    
+    CGFloat cellWidth = self.routineTargetTableView.frame.size.width;
+    
+    
+    [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
+    [cell layoutSubviews];
+    
+}
 
 
 

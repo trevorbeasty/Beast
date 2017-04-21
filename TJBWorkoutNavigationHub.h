@@ -18,4 +18,8 @@
 
 - (instancetype)initWithHomeButton:(BOOL)includeHomeButton advancedControlsActive:(BOOL)advancedControlsActive;
 
+#pragma mark - Table View Cell Sizing
+
+
+
 @end

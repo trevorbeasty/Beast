@@ -518,6 +518,9 @@
             // dequeue the realizedSetCell
             
             TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            
+            [self layoutCellToEnsureCorrectWidth: cell
+                                       indexPath: indexPath];
 
             [cell configureWithContentObject: realizedSet
                                     cellType: RealizedSetCollectionCell
@@ -536,6 +539,9 @@
 
             TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
             
+            [self layoutCellToEnsureCorrectWidth: cell
+                                       indexPath: indexPath];
+            
             [cell configureWithContentObject: realizedChain
                                     cellType: RealizedChainCell
                                 dateTimeType: TJBDayInYear
@@ -550,6 +556,9 @@
             // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
             
             TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            
+            [self layoutCellToEnsureCorrectWidth: cell
+                                       indexPath: indexPath];
             
             cell.backgroundColor = [UIColor clearColor];
             
@@ -567,7 +576,20 @@
     
 }
 
-
+- (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutSubviews];
+    
+    CGFloat cellHeight = [self tableView: self.tableView
+                 heightForRowAtIndexPath: indexPath];
+    
+    CGFloat cellWidth = self.tableView.frame.size.width;
+    
+    
+    [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
+    [cell layoutSubviews];
+    
+}
 
 
 
