@@ -36,7 +36,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--- lbs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqd-bG-zir">
-                    <rect key="frame" x="58" y="122" width="121" height="60"/>
+                    <rect key="frame" x="56" y="122" width="123" height="60"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="tYR-Hs-H0z"/>
@@ -46,7 +46,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="l41-YA-PUS">
-                    <rect key="frame" x="58" y="549" width="121" height="45"/>
+                    <rect key="frame" x="56" y="549" width="123" height="45"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="AQi-hF-xXM"/>
                     </constraints>
@@ -56,14 +56,14 @@
                     </segments>
                 </segmentedControl>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iwf-i4-0Nw">
-                    <rect key="frame" x="250" y="549" width="121" height="45"/>
+                    <rect key="frame" x="248" y="549" width="123" height="45"/>
                     <segments>
                         <segment title="0.5"/>
                         <segment title="1"/>
                     </segments>
                 </segmentedControl>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="HnF-gb-8PT">
-                    <rect key="frame" x="58" y="182" width="121" height="363"/>
+                    <rect key="frame" x="56" y="182" width="123" height="363"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vib-K0-I1B">
                         <size key="itemSize" width="50" height="50"/>
@@ -87,18 +87,18 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Otr-Cg-8HO" userLabel="leftJumpBarContainer">
-                    <rect key="frame" x="4" y="202" width="50" height="323"/>
+                    <rect key="frame" x="4" y="202" width="44" height="323"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="50" id="izE-UW-yWL"/>
+                        <constraint firstAttribute="width" constant="44" id="izE-UW-yWL"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKI-9h-ZsH">
-                    <rect key="frame" x="196" y="202" width="50" height="323"/>
+                    <rect key="frame" x="196" y="202" width="44" height="323"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kFb-NO-8Ye">
-                    <rect key="frame" x="250" y="182" width="121" height="363"/>
+                    <rect key="frame" x="248" y="182" width="123" height="363"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YGx-n0-qjn">
                         <size key="itemSize" width="75" height="75"/>
@@ -187,7 +187,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--- reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAV-Bn-215">
-                    <rect key="frame" x="250" y="122" width="121" height="60"/>
+                    <rect key="frame" x="248" y="122" width="123" height="60"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -200,8 +200,8 @@
                 <constraint firstItem="hqd-bG-zir" firstAttribute="top" secondItem="JhK-da-Iip" secondAttribute="bottom" id="2cI-nE-iwU"/>
                 <constraint firstItem="oAV-Bn-215" firstAttribute="top" secondItem="hqd-bG-zir" secondAttribute="top" id="5Fd-2p-33Q"/>
                 <constraint firstItem="oAV-Bn-215" firstAttribute="height" secondItem="hqd-bG-zir" secondAttribute="height" id="A78-bo-xCJ"/>
-                <constraint firstItem="kFb-NO-8Ye" firstAttribute="leading" secondItem="aKI-9h-ZsH" secondAttribute="trailing" constant="4" id="A8v-uL-xFu"/>
-                <constraint firstItem="HnF-gb-8PT" firstAttribute="leading" secondItem="Otr-Cg-8HO" secondAttribute="trailing" constant="4" id="BYk-8j-6wE"/>
+                <constraint firstItem="kFb-NO-8Ye" firstAttribute="leading" secondItem="aKI-9h-ZsH" secondAttribute="trailing" constant="8" id="A8v-uL-xFu"/>
+                <constraint firstItem="HnF-gb-8PT" firstAttribute="leading" secondItem="Otr-Cg-8HO" secondAttribute="trailing" constant="8" id="BYk-8j-6wE"/>
                 <constraint firstAttribute="trailing" secondItem="JhK-da-Iip" secondAttribute="trailing" id="Gpn-vC-OeU"/>
                 <constraint firstItem="aKI-9h-ZsH" firstAttribute="leading" secondItem="TaB-FC-1Bv" secondAttribute="trailing" constant="8" id="GuB-om-o5l"/>
                 <constraint firstItem="kFb-NO-8Ye" firstAttribute="top" secondItem="HnF-gb-8PT" secondAttribute="top" id="IJd-5f-ris"/>

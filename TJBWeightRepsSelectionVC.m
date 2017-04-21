@@ -91,6 +91,8 @@ typedef enum {
     
     [super viewDidLoad];
     
+    [self.view layoutSubviews];
+    
     [self configureCollectionViews];
     
     [self configureViewAesthetics];
@@ -254,13 +256,14 @@ typedef enum {
     NSArray *jumpBarContainers = @[self.leftJumpBarContainer, self.rightJumpBarContainer];
     for (UIView *view in jumpBarContainers){
         
-        view.backgroundColor = [UIColor grayColor];
+        view.backgroundColor = [UIColor clearColor];
         
         CALayer *layer = view.layer;
         layer.masksToBounds = YES;
-        layer.cornerRadius = 25;
+        layer.cornerRadius = view.frame.size.width / 2.0;
         layer.borderWidth = 1.0;
-        layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+//        layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+        layer.borderColor = [UIColor grayColor].CGColor;
         
     }
     
@@ -369,9 +372,10 @@ typedef enum {
 
 - (void)configureUnselectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
     
-    cell.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    cell.numberLabel.font = [UIFont systemFontOfSize: 15];
-    cell.numberLabel.textColor = [UIColor darkGrayColor];
+    cell.backgroundColor = [UIColor grayColor];
+    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
+//    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    cell.numberLabel.textColor = [UIColor whiteColor];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;

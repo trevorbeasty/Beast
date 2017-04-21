@@ -152,6 +152,8 @@
 
 - (void)viewAesthetics{
     
+    [self.view layoutSubviews];
+    
     // meta view
     
     self.view.backgroundColor = [UIColor blackColor];
@@ -194,7 +196,7 @@
         CALayer *layer = butt.layer;
         layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         layer.borderWidth = 1.0;
-        layer.cornerRadius = 25;
+        layer.cornerRadius = butt.frame.size.height / 2.0;
         layer.masksToBounds = YES;
         
     }

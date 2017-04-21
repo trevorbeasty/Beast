@@ -147,7 +147,7 @@
     [vc1 configureSiblingExerciseHistoryVC: vc3];
     
     TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
-                                                                advancedControlsActive: NO];
+                                                                advancedControlsActive: YES];
     vc4.tabBarItem.title = @"Workout Log";
     vc4.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
     
