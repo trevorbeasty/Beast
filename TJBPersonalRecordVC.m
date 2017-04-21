@@ -26,14 +26,19 @@
 #import "TJBDetailTitleCell.h"
 #import "TJBNoDataCell.h"
 
+#import "TJBAssortedUtilities.h" // utilities
+
 @interface TJBPersonalRecordVC () 
 
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UITableView *personalRecordsTableView;
-@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseValueSubtitle;
+@property (weak, nonatomic) IBOutlet UIView *columnHeaderContainer;
+@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateColumnLabel;
 
 // core
 
@@ -123,17 +128,49 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     
-    self.titleBarContainer.backgroundColor = [UIColor darkGrayColor];
+    NSArray *mainTitles = @[self.mainTitleLabel, self.exerciseValueSubtitle];
+    for (UILabel *label in mainTitles){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20];
+        
+    }
     
-    self.mainTitleLabel.backgroundColor = [UIColor clearColor];
-    self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20];
-    self.mainTitleLabel.textColor = [UIColor whiteColor];
+    self.columnHeaderContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    self.exerciseValueSubtitle.backgroundColor = [UIColor clearColor];
-    self.exerciseValueSubtitle.font = [UIFont systemFontOfSize: 15];
-    self.exerciseValueSubtitle.textColor = [UIColor whiteColor];
+    NSArray *columnHeaderLabels = @[self.repsColumnLabel, self.weightColumnLabel, self.dateColumnLabel];
+    for (UILabel *label in columnHeaderLabels){
+        
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor blackColor];
+        label.font = [UIFont systemFontOfSize: 15];
+        
+    }
     
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    [self drawDetailedLines];
+    
+}
+
+
+
+- (void)drawDetailedLines{
+    
+    [self.view layoutSubviews];
+    [self.columnHeaderContainer layoutSubviews];
+    
+    NSArray *lineViews = @[self.repsColumnLabel, self.weightColumnLabel];
+    for (UILabel *label in lineViews){
+        
+        [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: label
+                                               horizontalOffset: 0
+                                                      thickness: 2
+                                                 verticalOffset: self.columnHeaderContainer.frame.size.height / 3.0
+                                                       metaView: self.columnHeaderContainer];
+        
+    }
     
 }
 
@@ -179,6 +216,9 @@
         
         TJBPersonalRecordCell *cell = [self.personalRecordsTableView dequeueReusableCellWithIdentifier: @"PRCell"];
         
+        [self layoutCellToEnsureCorrectWidth: cell
+                                   indexPath: indexPath];
+        
         TJBRepsWeightRecordPair *repsWeightRecordPair = self.repsWeightRecordPairs[adjustedRowIndex];
         
         [cell configureWithReps: repsWeightRecordPair.reps
@@ -193,6 +233,22 @@
     }
     
 }
+
+- (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
+    
+    [self.view layoutSubviews];
+    
+    CGFloat cellHeight = [self tableView: self.personalRecordsTableView
+                 heightForRowAtIndexPath: indexPath];
+    
+    CGFloat cellWidth = self.personalRecordsTableView.frame.size.width;
+    
+    
+    [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
+    [cell layoutSubviews];
+    
+}
+
 
 #pragma mark - <UITableViewDelegate>
 

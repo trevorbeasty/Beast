@@ -14,15 +14,20 @@
 
 - (void)configureWithReps:(NSNumber *)reps weight:(NSNumber *)weight date:(NSDate *)date{
     
+    [self.contentView layoutSubviews];
+    
     // view data
 
-    self.repsLabel.text = [reps stringValue];
-    
-    self.weightLabel.text = [weight stringValue];
+    self.repsLabel.text = [NSString stringWithFormat: @"%@ reps", [reps stringValue]];
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MMM d, yyyy";
+    df.dateFormat = @"M / d / yy";
     self.dateLabel.text = [df stringFromDate: date];
+    
+    self.weightLabel.text = [NSString stringWithFormat: @"%@ lbs",
+                             [weight stringValue]];
+    
+
     
     // aesthetics
     
@@ -58,12 +63,10 @@
 
 - (void)drawDetaiLines{
     
-    [self.contentView layoutSubviews];
-    
     [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: self.weightLabel
                                            horizontalOffset: 0
-                                                  thickness: .5
-                                             verticalOffset: self.weightLabel.frame.size.height / 2.0
+                                                  thickness: 2.0
+                                             verticalOffset: self.weightLabel.frame.size.height / 3.0
                                                    metaView: self.contentView];
     
 }

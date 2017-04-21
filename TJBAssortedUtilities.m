@@ -210,10 +210,7 @@
     // path
     // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
     // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
-    
-//    CGPoint startPoint = CGPointMake(label1.frame.origin.x, label2.frame.origin.y + label2.frame.size.height + vertOff);
-//    CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width, startPoint.y);
-//    CGPoint endPoint = CGPointMake(interimPoint.x + hookLength,  interimPoint.y - hookLength);
+
     
         CGPoint startPoint = CGPointMake(0, label1.frame.size.height + vertOff);
         CGPoint interimPoint = CGPointMake(label2.frame.origin.x + label2.frame.size.width - label1.frame.origin.x, startPoint.y);
@@ -254,7 +251,7 @@
     CGPoint labelOrigin = label.frame.origin;
     CGSize labelSize = label.frame.size;
     
-    CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width, labelOrigin.y);
+    CGPoint topRightCorner = CGPointMake(labelOrigin.x + labelSize.width - thickness / 2.0, labelOrigin.y);
     CGPoint bottomRightCorner = CGPointMake(topRightCorner.x, topRightCorner.y + labelSize.height);
     
     CGPoint startPoint = CGPointMake(topRightCorner.x + horOff, topRightCorner.y + vertOff);
