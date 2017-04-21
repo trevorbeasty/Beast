@@ -112,9 +112,9 @@
                 <constraint firstItem="J3Y-YQ-GBt" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="XuT-eM-SUY"/>
                 <constraint firstAttribute="trailing" secondItem="JEo-cq-CI2" secondAttribute="trailing" id="d14-wE-l5g"/>
                 <constraint firstAttribute="trailing" secondItem="qiC-xQ-bdt" secondAttribute="trailing" id="eHC-Hl-Cqu"/>
-                <constraint firstItem="qiC-xQ-bdt" firstAttribute="top" secondItem="3Db-Io-e3m" secondAttribute="bottom" constant="1" id="eYs-P0-ya2"/>
+                <constraint firstItem="qiC-xQ-bdt" firstAttribute="top" secondItem="3Db-Io-e3m" secondAttribute="bottom" constant="0.5" id="eYs-P0-ya2"/>
                 <constraint firstItem="3Db-Io-e3m" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="o8m-wC-Wsv"/>
-                <constraint firstItem="J3Y-YQ-GBt" firstAttribute="top" secondItem="qiC-xQ-bdt" secondAttribute="bottom" constant="1" id="sN2-s0-VTx"/>
+                <constraint firstItem="J3Y-YQ-GBt" firstAttribute="top" secondItem="qiC-xQ-bdt" secondAttribute="bottom" constant="0.5" id="sN2-s0-VTx"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>

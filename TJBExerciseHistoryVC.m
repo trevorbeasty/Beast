@@ -38,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseDetailLabel;
+@property (weak, nonatomic) IBOutlet UILabel *numberPreviousRecordsLabel;
 
 // core
 
@@ -154,17 +155,34 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     
-    self.titleBar.backgroundColor = [UIColor darkGrayColor];
+    self.titleBar.backgroundColor = [UIColor blackColor];
     
-    self.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
-    self.titleLabel.backgroundColor = [UIColor clearColor];
-    self.titleLabel.textColor = [UIColor whiteColor];
+    NSArray *titleLabels = @[self.titleLabel, self.exerciseDetailLabel];
+    for (UILabel *label in titleLabels){
+        
+        label.backgroundColor = [UIColor darkGrayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 20];
+        
+    }
     
-    self.exerciseDetailLabel.font = [UIFont systemFontOfSize: 15];
-    self.exerciseDetailLabel.backgroundColor = [UIColor clearColor];
-    self.exerciseDetailLabel.textColor = [UIColor whiteColor];
+    self.numberPreviousRecordsLabel.backgroundColor = [UIColor grayColor];
+    self.numberPreviousRecordsLabel.textColor = [UIColor whiteColor];
+    self.numberPreviousRecordsLabel.font = [UIFont boldSystemFontOfSize: 15];
     
     self.tableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+}
+
+- (void)configureNumberOfRecordsLabelAccordingToContent{
+    
+    NSNumber *numberOfPreviousRecords = @(self.sortedContent.count);
+    
+    NSString *recordsWord = [numberOfPreviousRecords intValue] == 1 ? @"Record" : @"Records";
+    
+    self.numberPreviousRecordsLabel.text = [NSString stringWithFormat: @"%@ %@",
+                                            [numberOfPreviousRecords stringValue],
+                                            recordsWord];
     
 }
 
@@ -644,6 +662,8 @@
     [self deriveContentForActiveExercise];
     
     [self preloadCellsForActiveContent];
+    
+    [self configureNumberOfRecordsLabelAccordingToContent];
     
     [self.tableView reloadData];
     

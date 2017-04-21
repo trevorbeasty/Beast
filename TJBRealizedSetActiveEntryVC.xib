@@ -177,7 +177,7 @@
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="dkn-Ek-RzV" firstAttribute="top" secondItem="jgW-8B-nqO" secondAttribute="bottom" constant="1" id="487-Fb-co1"/>
+                <constraint firstItem="dkn-Ek-RzV" firstAttribute="top" secondItem="jgW-8B-nqO" secondAttribute="bottom" constant="0.5" id="487-Fb-co1"/>
                 <constraint firstAttribute="trailing" secondItem="dkn-Ek-RzV" secondAttribute="trailing" id="7ka-ZW-cVP"/>
                 <constraint firstItem="2p1-Tc-V3s" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Dj4-rM-2dK"/>
                 <constraint firstItem="jgW-8B-nqO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="TCK-5B-jba"/>
