@@ -13,13 +13,16 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBExerciseSelectionScene">
             <connections>
                 <outlet property="actionsToolbar" destination="VMc-zH-510" id="Vbt-vg-GTD"/>
+                <outlet property="addNewToolbarButton" destination="m4l-4T-W51" id="upu-Hj-unY"/>
                 <outlet property="columnTitleLabelsContainer" destination="jbx-V3-do0" id="6b1-XL-HC3"/>
                 <outlet property="dateLastExecutedColumbLabel" destination="6BJ-s5-1vy" id="w7q-wi-0e0"/>
                 <outlet property="exerciseColumnLabel" destination="OIp-Zq-XW0" id="cdj-4k-YfR"/>
                 <outlet property="exerciseTableView" destination="hdc-bj-tBP" id="PkW-tI-NA3"/>
+                <outlet property="launchToolbarButton" destination="2Rd-sn-UVV" id="j8X-v2-2nG"/>
                 <outlet property="leftBarButton" destination="ajv-jV-md0" id="BsF-7l-vjf"/>
                 <outlet property="mainTitleLabel" destination="3TS-yz-6Zu" id="6jK-SP-Q1L"/>
                 <outlet property="normalBrowsingExerciseSC" destination="qJk-ud-aja" id="Esy-nA-8oe"/>
+                <outlet property="searchToolbarButton" destination="1GU-Rv-dbo" id="1f1-HM-mRo"/>
                 <outlet property="titleBarContainier" destination="0bv-gL-xJN" id="cC3-3r-axn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>

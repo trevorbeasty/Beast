@@ -48,6 +48,19 @@
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainier;
 
 
+// toolbar buttons
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *launchToolbarButton;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *searchToolbarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addNewToolbarButton;
+
+// programmatically created views
+
+@property (strong) UIBarButtonItem *listToolbarButton;
+
+
+@property (strong) UIView *exerciseSearchFieldContainer; // programmatically created view with embedded text field; used as search bar
+
 
 // IBAction
 
@@ -68,7 +81,7 @@
 static NSString * const cellReuseIdentifier = @"basicCell";
 
 
-
+static NSTimeInterval const toolbarToBottomPositionAnimationTime = .5;
 
 
 
@@ -619,18 +632,76 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     
 }
 
-#pragma mark - Search Functionality
+#pragma mark - Search / List Functionality
 
 
 - (IBAction)didPressSearch:(id)sender{
     
+    // this button toggles between a list and search appearance, so must check state
+    // this method is called by both the seach and list toolbar buttons
     
-    
-    
+    if (_searchIsActive == NO){
+        
+        [self animateToolbarToBottomPositionAndShowListButton];
+        
+        
+        
+        
+        _searchIsActive = YES;
+        
+    } else if (_searchIsActive == YES){
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
     
     
 }
 
+- (void)updateToolbarBarButtonItemsAccordingGivenState{
+    
+    if (_searchIsActive == YES){
+        
+        if (!self.listToolbarButton){
+            
+            UIBarButtonItem *listBBI = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"listBlue32"]
+                                                                        style: UIBarButtonItemStylePlain
+                                                                       target: self
+                                                                       action: @selector(didPressSearch:)];
+            self.listToolbarButton = listBBI;
+            
+        }
+        
+        NSMutableArray *toolbarItems = [[self.actionsToolbar items] mutableCopy];
+        
+        NSUInteger currentSearchButtonIndex = [toolbarItems indexOfObject: self.searchToolbarButton];
+        [toolbarItems replaceObjectAtIndex: currentSearchButtonIndex
+                                withObject: self.listToolbarButton];
+        
+        [self.actionsToolbar setItems: toolbarItems];
+        
+        
+        
+    } else{
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+}
 
 
 
@@ -802,6 +873,38 @@ static NSString * const cellReuseIdentifier = @"basicCell";
     }
     
 }
+
+
+
+#pragma mark - Bottom Controls Animations
+
+- (void)animateToolbarToBottomPositionAndShowListButton{
+    
+    [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
+                     animations: ^{
+                         
+                         CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
+                         
+                         NSArray *verticallySlidingViews = @[self.actionsToolbar, self.normalBrowsingExerciseSC];
+                         for (UIView *view in verticallySlidingViews){
+                             
+                             view.frame = [TJBAssortedUtilities rectByTranslatingRect: view.frame
+                                                                              originX: 0
+                                                                              originY: verticalTranslation];
+                             
+                         }
+    
+                     }
+                     completion: ^(BOOL finished){
+                         
+                         [self updateToolbarBarButtonItemsAccordingGivenState];
+                         
+                     }];
+    
+
+}
+
+
 
 
 
