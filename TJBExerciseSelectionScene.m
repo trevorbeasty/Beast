@@ -24,6 +24,8 @@
 
 #import "TJBAestheticsController.h"
 
+#import "TJBAssortedUtilities.h" // utilities
+
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 {
@@ -284,6 +286,23 @@ typedef enum{
         label.textColor = [UIColor blackColor];
         
     }
+    
+    // detailed line
+    
+    [self drawDetailedLines];
+    
+}
+
+- (void)drawDetailedLines{
+    
+    [self.view layoutSubviews];
+    [self.titleBarContainier layoutSubviews];
+    
+    [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: self.exerciseColumnLabel
+                                           horizontalOffset: 0
+                                                  thickness: 2
+                                             verticalOffset: self.exerciseColumnLabel.frame.size.height / 3.0
+                                                   metaView: self.columnTitleLabelsContainer];
     
 }
 

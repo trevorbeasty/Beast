@@ -12,6 +12,12 @@
 
 @interface TJBCircuitReferenceContainerVC : UIViewController
 
+#pragma mark - Instantiation
+
 - (instancetype)initWithDataObject:(id)dataObject;
+
+#pragma mark - View Math
+
+- (CGFloat)returnButtonBufferHeight;
 
 @end

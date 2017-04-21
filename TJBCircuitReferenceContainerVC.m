@@ -20,6 +20,8 @@
 
 #import "TJBAestheticsController.h"
 
+#import "TJBAssortedUtilities.h" // utilities
+
 @interface TJBCircuitReferenceContainerVC ()
 
 {
@@ -34,6 +36,10 @@
 @property (weak, nonatomic) IBOutlet UIView *titleContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel1;
 @property (weak, nonatomic) IBOutlet UIButton *returnButton;
+@property (weak, nonatomic) IBOutlet UIView *columnHeadersContainer;
+@property (weak, nonatomic) IBOutlet UILabel *restOrTimeColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
 
 // IBAction
 
@@ -101,6 +107,8 @@
     
     [self configureViewAesthetics];
     
+    [self configureColumnLabelsText];
+    
     [self layoutContent];
     
 }
@@ -112,7 +120,8 @@
     
     // meta view
     
-    self.circuitReferenceView.backgroundColor = [UIColor blueColor];
+    self.circuitReferenceView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     // title label
 
@@ -137,6 +146,58 @@
     rbLayer.borderWidth = 1;
     rbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
+    // column label area
+    
+    self.columnHeadersContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    NSArray *columnLabels = @[self.weightColumnLabel, self.repsColumnLabel, self.restOrTimeColumnLabel];
+    for (UILabel *label in columnLabels){
+        
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont boldSystemFontOfSize: 12];
+        label.textColor = [UIColor blackColor];
+        label.numberOfLines = 0;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
+        label.textAlignment = NSTextAlignmentCenter;
+        
+    }
+    
+    // detailed lines
+    
+    [self drawDetailedLines];
+    
+}
+
+- (void)configureColumnLabelsText{
+    
+    
+    if (_editingDataType == TJBRealizedsetGroupingEditingData){
+        
+        self.restOrTimeColumnLabel.text = @"submission \ntime";
+        
+    } else{
+        
+        self.restOrTimeColumnLabel.text = @"rest";
+        
+    }
+    
+}
+
+- (void)drawDetailedLines{
+    
+    [self.view layoutSubviews];
+    [self.columnHeadersContainer layoutSubviews];
+    
+    NSArray *detailedLineLabels = @[self.weightColumnLabel, self.repsColumnLabel];
+    for (UILabel *label in detailedLineLabels){
+        
+        [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: label
+                                               horizontalOffset: 0
+                                                      thickness: .5
+                                                 verticalOffset: label.frame.size.height / 4.0
+                                                       metaView: self.columnHeadersContainer];
+        
+    }
+    
 }
 
 - (void)layoutContent{
@@ -145,7 +206,8 @@
     
     TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithRealizedChain: self.realizedChain
                                                                  realizedSetGrouping: self.rsg
-                                                                     editingDataType: _editingDataType];
+                                                                     editingDataType: _editingDataType
+                                                                    masterController: self];
     self.childRoutineVC = vc;
     
     vc.view.frame = self.circuitReferenceView.bounds;
@@ -170,7 +232,15 @@
     
 }
 
+#pragma mark - View Math
 
+- (CGFloat)returnButtonBufferHeight{
+    
+    [self.view layoutSubviews];
+    
+    return self.circuitReferenceView.frame.size.height - self.returnButton.frame.origin.y;
+    
+}
 
 
 

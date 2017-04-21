@@ -17,9 +17,11 @@ typedef enum {
 
 #import "CoreDataController.h"
 
+@class TJBCircuitReferenceContainerVC; // master controller
+
 @interface TJBCircuitReferenceVC : UIViewController
 
-- (instancetype)initWithRealizedChain:(TJBRealizedChain *)rc realizedSetGrouping:(TJBRealizedSetGrouping)rsg editingDataType:(TJBEditingDataType)editingDataType;
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)rc realizedSetGrouping:(TJBRealizedSetGrouping)rsg editingDataType:(TJBEditingDataType)editingDataType masterController:(TJBCircuitReferenceContainerVC *)masterController;
 
 
 @end

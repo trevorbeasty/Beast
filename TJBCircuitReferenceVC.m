@@ -15,6 +15,8 @@
 #import "TJBCircuitReferenceExerciseComp.h"
 #import "TJBCircuitReferenceRowComp.h"
 
+#import "TJBCircuitReferenceContainerVC.h" // master controller
+
 // aesthetics
 
 #import "TJBAestheticsController.h"
@@ -31,6 +33,7 @@
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 @property (strong) TJBRealizedSetGrouping rsg;
+@property (weak) TJBCircuitReferenceContainerVC *masterController;
 
 // content
 
@@ -48,6 +51,8 @@ static CGFloat const componentToComponentSpacing = 24;
 static CGFloat const componentStyleSpacing = 9;
 static CGFloat const topSpacing;
 
+static CGFloat const breatherRoom = 40;
+
 
 
 
@@ -56,13 +61,14 @@ static CGFloat const topSpacing;
 
 #pragma mark - Instantiation
 
-- (instancetype)initWithRealizedChain:(TJBRealizedChain *)rc realizedSetGrouping:(TJBRealizedSetGrouping)rsg editingDataType:(TJBEditingDataType)editingDataType{
+- (instancetype)initWithRealizedChain:(TJBRealizedChain *)rc realizedSetGrouping:(TJBRealizedSetGrouping)rsg editingDataType:(TJBEditingDataType)editingDataType masterController:(TJBCircuitReferenceContainerVC *)masterController{
     
     self = [super init];
     
     self.realizedChain = rc;
     self.rsg = rsg;
     _editingDataType = editingDataType;
+    self.masterController = masterController;
     
     return self;
     
@@ -80,7 +86,7 @@ static CGFloat const topSpacing;
     self.view = view;
     
     CGFloat contentWidth = [self contentWidth];
-    CGFloat contentHeight = [self totalContentHeight];
+    CGFloat contentHeight = [self scrollViewContentHeight];
     
     // scroll view
     
@@ -221,9 +227,9 @@ static CGFloat const topSpacing;
         
     } else if (_editingDataType == TJBRealizedChainEditingData){
         
-        float numberOfRounds = [self numberOfRounds];
+        float numberOfExercises = (float)self.realizedChain.chainTemplate.numberOfExercises;
         
-        return  [self componentHeight] * numberOfRounds + componentToComponentSpacing * (numberOfRounds - 1.0);
+        return  [self componentHeight] * numberOfExercises + componentToComponentSpacing * (numberOfExercises - 1.0);
         
     } else{
         
@@ -232,6 +238,15 @@ static CGFloat const topSpacing;
     }
     
 }
+
+- (CGFloat)scrollViewContentHeight{
+    
+    CGFloat exactContentHeight = [self totalContentHeight];
+    
+    return exactContentHeight + breatherRoom + [self.masterController returnButtonBufferHeight];
+    
+}
+
 
 - (CGFloat)contentWidth{
     
