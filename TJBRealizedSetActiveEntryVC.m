@@ -66,6 +66,7 @@
 @property (weak, nonatomic) IBOutlet UIView *mainContentContainer;
 @property (weak, nonatomic) IBOutlet UILabel *activeExerciseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *exerciseValueLabel;
+@property (weak, nonatomic) IBOutlet UIView *activeExerciseContainer;
 
 
 // IBAction
@@ -155,6 +156,26 @@
     
     self.view.backgroundColor = [UIColor blackColor];
     
+    // exercise container and sub-labels
+    
+    self.activeExerciseContainer.backgroundColor = [UIColor blackColor];
+    CALayer *aecLayer = self.activeExerciseContainer.layer;
+    aecLayer.masksToBounds = YES;
+    aecLayer.cornerRadius = 4;
+    
+    NSArray *exerciseLabels = @[self.exerciseValueLabel, self.activeExerciseLabel];
+    for (UILabel *lab in exerciseLabels){
+        
+        lab.textColor = [UIColor whiteColor];
+        lab.backgroundColor = [UIColor grayColor];
+        
+    }
+    
+    self.activeExerciseLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.exerciseValueLabel.font = [UIFont boldSystemFontOfSize: 20];
+    
+    // title bars
+    
     self.topTitleBar.backgroundColor = [UIColor darkGrayColor];
     self.bottomTitleBar.backgroundColor = [UIColor darkGrayColor];
     
@@ -165,13 +186,13 @@
     NSArray *bottomButtons = @[self.exerciseButton, self.beginNextSetButton];
     for (UIButton *butt in bottomButtons){
         
-        butt.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        butt.backgroundColor = [UIColor grayColor];
         butt.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
-        [butt setTitleColor: [UIColor darkGrayColor]
+        [butt setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                    forState: UIControlStateNormal];
         
         CALayer *layer = butt.layer;
-        layer.borderColor = [UIColor darkGrayColor].CGColor;
+        layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         layer.borderWidth = 1.0;
         layer.cornerRadius = 25;
         layer.masksToBounds = YES;
@@ -208,20 +229,13 @@
     
     self.scheduledAlertLabel.textColor = [UIColor whiteColor];
     self.scheduledAlertLabel.font = [UIFont systemFontOfSize: 15];
-    self.scheduledAlertLabel.backgroundColor = [UIColor clearColor];
+    self.scheduledAlertLabel.backgroundColor = [UIColor grayColor];
+    
+    // main container
     
     self.mainContentContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    NSArray *exerciseLabels = @[self.exerciseValueLabel, self.activeExerciseLabel];
-    for (UILabel *lab in exerciseLabels){
-        
-        lab.textColor = [UIColor blackColor];
-        lab.backgroundColor = [UIColor clearColor];
-        
-    }
-    
-    self.activeExerciseLabel.font = [UIFont boldSystemFontOfSize: 20];
-    self.exerciseValueLabel.font = [UIFont systemFontOfSize: 35];
+
   
 }
 
