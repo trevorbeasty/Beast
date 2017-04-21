@@ -1088,6 +1088,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 }
 
 
+
 - (void)deriveActiveCellsAndCreateTableView{
     
     // derive the active cells - the 'limit' describes the number of cells that will be shown based on the daily list
@@ -1122,46 +1123,9 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     [self configureTableView];
     
     self.activeTableViewCells = [[NSMutableArray alloc] init];
-    
-    CGFloat totalHeight = 0;
-    
-    for (int i = 0; i < limit; i++){
-        
-        NSIndexPath *path = [NSIndexPath indexPathForRow: i
-                                               inSection: 0];
-        
-        TJBMasterCell *cell = [self cellForIndexPath: path
-                                       shouldDequeue: YES];
-        
-        [self.activeTableViewCells addObject: cell];
-        
-        // height calc
-        
-        CGFloat iterativeHeight = [self tableView: self.tableView
-                          heightForRowAtIndexPath: path];
-        totalHeight += iterativeHeight;
-        
-    }
-    
-    // make sure the total height is as least as long as the table view container
-    
-    [self.view layoutIfNeeded];
-    
-    CGFloat minHeight = self.shadowContainer.frame.size.height - [self contentBreatherRoom];
-    
-    if (totalHeight < minHeight){
-        
-        totalHeight = minHeight;
-        
-    }
-    
-    // give the scroll view the correct dimensions and create a new table view
-    
-    [self.view layoutSubviews];
-    
 
 
-    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, totalHeight + [self contentBreatherRoom]);
+    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, [self totalScrollHeightBasedOnContent]);
     
     // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
     
@@ -1189,8 +1153,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     }
     
     sv.contentOffset = newScrollPosition;
-    
-//    sv.layer.masksToBounds = YES;
+
     sv.scrollEnabled = YES;
     
     newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
@@ -1352,7 +1315,61 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
 }
 
+- (CGFloat)totalScrollHeightBasedOnContent{
+    
+    NSInteger limit;
+    
+    if (self.dailyList.count == 0){
+        
+        limit = 1;
+        
+    } else{
+        
+        limit = self.dailyList.count;
+        
+    }
+    
+    CGFloat totalHeight = 0;
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        TJBMasterCell *cell = [self cellForIndexPath: path
+                                       shouldDequeue: YES];
+        
+        [self.activeTableViewCells addObject: cell];
+        
+        // height calc
+        
+        CGFloat iterativeHeight = [self tableView: self.tableView
+                          heightForRowAtIndexPath: path];
+        totalHeight += iterativeHeight;
+        
+    }
+    
+    // make sure the total height is as least as long as the table view container
+    
+    [self.view layoutIfNeeded];
+    
+    CGFloat minHeight = self.shadowContainer.frame.size.height - [self contentBreatherRoom];
+    
+    if (totalHeight < minHeight){
+        
+        totalHeight = minHeight;
+        
+    }
+    
+    return  totalHeight + [self contentBreatherRoom];
+    
+}
 
+- (void)setScrollViewContentSizeBasedOnDailyList{
+    
+    self.tableViewScrollContainer.contentSize = CGSizeMake(self.tableViewScrollContainer.frame.size.width, [self totalScrollHeightBasedOnContent]);
+    
+}
 
 #pragma mark - Toolbar
 
@@ -1636,6 +1653,8 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
         [self updateCellTitleNumbers];
         
         [self updateNumberOfEntriesLabel];
+        
+        [self setScrollViewContentSizeBasedOnDailyList];
         
     });
     
