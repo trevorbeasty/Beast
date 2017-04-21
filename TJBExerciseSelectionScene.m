@@ -84,6 +84,11 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 static NSTimeInterval const toolbarToBottomPositionAnimationTime = .5;
 
 
+// search bar
+
+static CGFloat const searchBarHorizontalInset = 8;
+static CGFloat const searchBarVerticalInset = 4;
+
 
 @implementation TJBExerciseSelectionScene
 
@@ -643,10 +648,9 @@ static NSTimeInterval const toolbarToBottomPositionAnimationTime = .5;
     if (_searchIsActive == NO){
         
         [self animateToolbarToBottomPositionAndShowListButton];
+        [self animateSearchContainerOnscreen];
         
-        
-        
-        
+
         _searchIsActive = YES;
         
     } else if (_searchIsActive == YES){
@@ -686,6 +690,7 @@ static NSTimeInterval const toolbarToBottomPositionAnimationTime = .5;
         
         [self.actionsToolbar setItems: toolbarItems];
         
+        [self createSearchBar];
         
         
     } else{
@@ -703,8 +708,78 @@ static NSTimeInterval const toolbarToBottomPositionAnimationTime = .5;
     
 }
 
+- (void)createSearchBar{
+    
+    CGRect searchContainerFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
+                                                                      originX: self.columnTitleLabelsContainer.frame.size.width
+                                                                      originY: 0];
+    
+    searchContainerFrame = self.columnTitleLabelsContainer.frame;
+    
+    UIView *searchContainer = [[UIView alloc] initWithFrame: searchContainerFrame];
+    self.exerciseSearchFieldContainer = searchContainer;
+    [self.view addSubview: searchContainer];
+    
+    searchContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    UITextField *searchBar = [[UITextField alloc] init];
+    
+    // search bar aesthetics
+    
+    searchBar.backgroundColor = [UIColor clearColor];
+    
+    CALayer *searchBarLayer = searchBar.layer;
+    searchBarLayer.masksToBounds = YES;
+    searchBarLayer.cornerRadius = 8.0;
+    searchBarLayer.borderWidth = 1.0;
+    searchBarLayer.borderColor = [UIColor blackColor].CGColor;
+    
+    
+    
+    
+    // search bar layout
+    
+    NSString *searchBarKey = @"searchBar";
+    
+    NSDictionary *constraintMapping = [NSDictionary dictionaryWithObject: searchBar
+                                                                  forKey: searchBarKey];
+    
+    [searchContainer addSubview: searchBar];
+    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+    
 
+    NSString *horzConstrVFL = [NSString stringWithFormat: @"H:|-%f-[%@]-%f-|",
+                               searchBarHorizontalInset,
+                               searchBarKey,
+                               searchBarHorizontalInset];
+    [searchContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: horzConstrVFL
+                                                                             options: 0
+                                                                             metrics: nil
+                                                                              views: constraintMapping]];
+    
+    NSString *vertConstrVFL = [NSString stringWithFormat: @"V:|-%f-[%@]-%f-|",
+                               searchBarVerticalInset,
+                               searchBarKey,
+                               searchBarVerticalInset];
+    [searchContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertConstrVFL
+                                                                             options: 0
+                                                                             metrics: nil
+                                                                               views: constraintMapping]];
+    
+    // notification
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(searchTextFieldValueDidChange:)
+                                                 name: UITextFieldTextDidChangeNotification
+                                               object: searchBar];
+    
+}
 
+- (void)searchTextFieldValueDidChange:(NSNotification *)notification{
+    
+    
+    
+}
 
 #pragma mark - Keyboard Notifications
 
@@ -904,7 +979,24 @@ static NSTimeInterval const toolbarToBottomPositionAnimationTime = .5;
 
 }
 
-
+- (void)animateSearchContainerOnscreen{
+    
+    [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
+                     animations: ^{
+                         
+                         
+                         
+                         
+                     }
+                     completion: ^(BOOL finished){
+                         
+                         
+                         
+                         
+                     }];
+    
+    
+}
 
 
 
