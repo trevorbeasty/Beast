@@ -111,7 +111,6 @@ typedef enum{
 
 // core
 
-//@property (nonatomic, strong) NSFetchedResultsController *frc;
 @property (strong) UITableView *activeTableView;
 @property (strong) UIScrollView *activeScrollView;
 
@@ -2188,7 +2187,9 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     [self.activeTableView endUpdates];
     
-    [self updateAllTitleLabelsForNewContent];
+//    [self updateAllTitleLabelsForNewContent];
+    
+    [self selectDateControlCorrespondingToDate: self.tvActiveDate];
     
     
 }
