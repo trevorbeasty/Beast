@@ -88,9 +88,17 @@
                     </constraints>
                     <items>
                         <barButtonItem width="8" style="plain" systemItem="fixedSpace" id="zL9-as-14Y"/>
-                        <barButtonItem image="armFlexBlue32" id="2Rd-sn-UVV" userLabel="launchButton"/>
+                        <barButtonItem image="armFlexBlue32" id="2Rd-sn-UVV" userLabel="launchButton">
+                            <connections>
+                                <action selector="didPressLaunch:" destination="-1" id="TUn-Gu-PQ9"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="74r-UR-baD"/>
-                        <barButtonItem image="searchBlue32" id="1GU-Rv-dbo" userLabel="searchButton"/>
+                        <barButtonItem image="searchBlue32" id="1GU-Rv-dbo" userLabel="searchButton">
+                            <connections>
+                                <action selector="didPressSearch:" destination="-1" id="e2x-vc-v0n"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="z2h-qw-6UH"/>
                         <barButtonItem image="addCircledBlue32" id="m4l-4T-W51" userLabel="addNewButton"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="W7i-5P-sWn"/>

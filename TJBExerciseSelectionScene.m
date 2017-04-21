@@ -8,41 +8,27 @@
 
 #import "TJBExerciseSelectionScene.h"
 
-// core data
 
-#import "CoreDataController.h"
 
-// child VC's
-
-#import "TJBExerciseAdditionChildVC.h"
-#import "TJBSearchExerciseChild.h"
-
-// cells
-
-#import "TJBNoDataCell.h"
-#import "TJBExerciseSelectionCell.h"
-
-#import "TJBAestheticsController.h"
-
+#import "CoreDataController.h" // core data
+#import "TJBNoDataCell.h" // table view cell - no data
+#import "TJBExerciseSelectionCell.h"  // table view cell - no data
+#import "TJBAestheticsController.h" // aesthetics
 #import "TJBAssortedUtilities.h" // utilities
 
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 {
     
-    // state
-    
-    BOOL _exerciseAdditionActive;
-    BOOL _searchIsActive;
+    BOOL _searchIsActive; // state
     
 }
 
-// core
 
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) NSMutableArray *contentExercisesArray;
-@property (strong) TJBExerciseAdditionChildVC *exerciseAdditionChildVC;
-@property (strong) TJBSearchExerciseChild *seChildVC;
+
+//@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController; // core
+@property (nonatomic, strong) NSMutableArray *contentExercisesArray; // core - managed objects supplied to table view as data source
+@property (strong) NSIndexPath *selectedCellIndexPath; // state - table view selection
 
 
 // callback
@@ -66,18 +52,25 @@
 // IBAction
 
 - (IBAction)didPressLeftBarButton:(id)sender;
+- (IBAction)didPressLaunch:(id)sender;
+- (IBAction)didPressSearch:(id)sender;
 
 
 
 @end
 
+
+
+#pragma mark - Constants
+
+
+
 static NSString * const cellReuseIdentifier = @"basicCell";
 
-typedef enum{
-    SearchState,
-    DefaultState,
-    AdditionState
-}TJBExerciseSceneState;
+
+
+
+
 
 @implementation TJBExerciseSelectionScene
 
@@ -88,8 +81,7 @@ typedef enum{
     self = [super init];
     
     self.callbackBlock = block;
-    
-    _exerciseAdditionActive = NO;
+
     _searchIsActive = NO;
     
     return self;
@@ -138,9 +130,9 @@ typedef enum{
     
     [self configureTableView];
     
-    [self fetchAllExercises];
+    [self deriveExerciseContentGivenState];
     
-    [self browsingSCValueDidChange]; // called to force the controller to create the array the table view needs
+//    [self browsingSCValueDidChange]; // called to force the controller to create the array the table view needs
     
     [self viewAesthetics];
     
@@ -162,64 +154,10 @@ typedef enum{
 }
 
 
-- (void)registerForCoreDataNotifications{
-    
-    //// configure managed context notification for updating
-    
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(fetchAllExercises)
-                                                 name: NSManagedObjectContextDidSaveNotification
-                                               object: moc];
-    
-}
 
 
 
 
-- (void)fetchAllExercises{
-    
-    if (self.fetchedResultsController){
-        
-        self.fetchedResultsController = nil;
-        
-    }
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
-    
-    // only apply the compount predicate if the exercise search text field has a non blank entry
-    
-    NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@",
-                                                    @"Placeholder"];
-    
-    request.predicate = noPlaceholderExercisesPredicate;
-    
-    NSSortDescriptor *categoryNameSort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
-                                                                       ascending: YES];
-    
-    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
-                                                               ascending: YES];
-    
-    [request setSortDescriptors: @[categoryNameSort, nameSort]];
-    
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    
-    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: request
-                                                                          managedObjectContext: moc
-                                                                            sectionNameKeyPath: @"category.name"
-                                                                                     cacheName: nil];
-    
-    self.fetchedResultsController = frc;
-    
-    NSError *error = nil;
-    if (![self.fetchedResultsController performFetch: &error])
-    {
-        NSLog(@"Failed to initialize fetchedResultsController: %@\n%@", [error localizedDescription], [error userInfo]);
-        abort();
-    }
-    
-}
 
 - (void)viewAesthetics{
 
@@ -327,13 +265,6 @@ typedef enum{
     
     [self.exerciseTableView registerNib: exerciseSelectionCell
                  forCellReuseIdentifier: @"TJBExerciseSelectionCell"];
-    
-//    UINib *titleNib = [UINib nibWithNibName: @"TJBExerciseSelectionTitleCell"
-//                                     bundle: nil];
-//    
-//    [self.exerciseTableView registerNib: titleNib
-//                 forCellReuseIdentifier: @"TJBExerciseSelectionTitleCell"];
-    
 }
 
 
@@ -369,23 +300,42 @@ typedef enum{
     
 }
 
+- (NSString *)exerciseCategoryNameForSelectedExerciseCategorySegmentedControlIndex{
+    
+    TJBExerciseCategoryType categoryType = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
+    
+    TJBExerciseCategory *ecManagedObject = [[CoreDataController singleton] exerciseCategory: categoryType];
+    
+    return  ecManagedObject.name;
+    
+}
+
+
+
 - (void)browsingSCValueDidChange{
     
-    TJBExerciseCategoryType catType = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
-    NSString *filterString = [[CoreDataController singleton] categoryStingFromEnum: catType];
+//    TJBExerciseCategoryType catType = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
+//    NSString *filterString = [[CoreDataController singleton] categoryStingFromEnum: catType];
+//    
+//    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+//    
+//    NSPredicate *categoryFilter = [NSPredicate predicateWithFormat: @"category.name == %@",
+//                                   filterString];
+//    
+//    returnArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
+//    
+//    [returnArray filterUsingPredicate: categoryFilter];
+//    
+//    self.contentExercisesArray = returnArray;
+//    
+//    [self.exerciseTableView reloadData];
     
-    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
-    
-    NSPredicate *categoryFilter = [NSPredicate predicateWithFormat: @"category.name == %@",
-                                   filterString];
-    
-    returnArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
-    
-    [returnArray filterUsingPredicate: categoryFilter];
-    
-    self.contentExercisesArray = returnArray;
-    
+    [self deriveExerciseContentGivenState]; // content is fetched according to state
     [self.exerciseTableView reloadData];
+    
+    [self deselectCellIfSelectionExists]; // deselect the existing selection, if one exists
+    
+    
     
 }
 
@@ -442,6 +392,7 @@ typedef enum{
                                        date: dateLastExecuted];
         
         cell.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
         
@@ -483,15 +434,25 @@ typedef enum{
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    if (self.contentExercisesArray.count > 0){
+    if (self.contentExercisesArray.count > 0){ // only selects the cell if there is any content to begin with
         
-        TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row ];
+        // first deal with the previously selected cell
         
-        self.callbackBlock(selectedExercise);
+        if (self.selectedCellIndexPath){
+            
+            UITableViewCell *previouslySelectedCell = [self.exerciseTableView cellForRowAtIndexPath: self.selectedCellIndexPath];
+            [self giveCellUnselectedAppearance: previouslySelectedCell];
+            
+        }
+        
+        // then deal with the newly selected cell
+        
+        UITableViewCell *newlySelectedCell = [self.exerciseTableView cellForRowAtIndexPath: indexPath];
+        [self giveCellSelectedAppearance: newlySelectedCell];
+        
+        self.selectedCellIndexPath = indexPath;
         
     }
-
-
 
  
 }
@@ -531,89 +492,51 @@ typedef enum{
     
 }
 
+#pragma mark - Cell Selection
+
+
+
+- (void)giveCellSelectedAppearance:(UITableViewCell *)cell{
+    
+    cell.layer.borderWidth = 4.0;
+    cell.layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    
+}
+
+
+- (void)giveCellUnselectedAppearance:(UITableViewCell *)cell{
+    
+    cell.layer.borderWidth = 0.0;
+    
+}
+
+- (void)deselectCellIfSelectionExists{
+    
+    if (self.selectedCellIndexPath){
+        
+        [self giveCellUnselectedAppearance: [self.exerciseTableView cellForRowAtIndexPath: self.selectedCellIndexPath]];
+        self.selectedCellIndexPath = nil;
+        
+    }
+    
+}
+
 
 #pragma mark - Button Actions
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
-    if (_exerciseAdditionActive == YES){
-        
-        [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
-        
-    }
-    
-    if (_searchIsActive == YES){
-        
-        [self.seChildVC makeSearchTextFieldResignFirstResponder];
-        
-    }
     
     [self dismissViewControllerAnimated: YES
                              completion: nil];
     
 }
 
+
+
 #pragma mark - Exercise Addition and Related Methods
 
-- (IBAction)didPressAddNewExercise:(id)sender {
-    
-    if (_exerciseAdditionActive == NO){
-        
-        if (!self.exerciseAdditionChildVC){
-            
-            __weak TJBExerciseSelectionScene *weakSelf = self;
-            
-            void (^listCallback)(void) = ^{
-                
-                [self configureControllerForState: DefaultState];
-                
-            };
-            
-            void (^eaCallback)(NSString *, NSNumber *, BOOL) = ^(NSString *exerciseName, NSNumber *categoryIndex, BOOL shouldSelect){
-                
-                TJBExerciseCategoryType catType = [self categoryForSCIndex: categoryIndex];
-        
-                TJBExercise *newExercise = [weakSelf processUserRequestAndReturnExerciseWithName: exerciseName
-                                                                                        category: catType];
-                
-                if (newExercise && shouldSelect){
-                    
-                    NSLog(@"add exercise and select");
-                    
-                    [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
-                    
-                    self.callbackBlock(newExercise);
-                    
-                } else{
-                    
-                    NSLog(@"just add exercise");
-                    
-                    [self.exerciseAdditionChildVC clearTextField];
-                    
-                }
-                
-            };
-            
-            TJBExerciseAdditionChildVC *eaChildVC = [[TJBExerciseAdditionChildVC alloc] initWithExerciseAdditionCallback: eaCallback
-                                                                                                            listCallback: listCallback];
-            self.exerciseAdditionChildVC = eaChildVC;
-            
-            [self addChildViewController: eaChildVC];
-            
-//            self.tableViewToTitleBarConstr.constant = 0; // need to change this here in case jumping from SearchState to AdditionState because table view is shifted downward for SearchState
-            [self.view layoutIfNeeded];
-            
-            eaChildVC.view.frame = self.exerciseTableView.frame;
-            [self.view addSubview: eaChildVC.view];
-            
-            [eaChildVC didMoveToParentViewController: self];
-            
-        }
-        
-        [self configureControllerForState: AdditionState];
-        
-    }
-}
+
 
 
 
@@ -698,104 +621,47 @@ typedef enum{
 
 #pragma mark - Search Functionality
 
-- (IBAction)didPressSearchButton:(id)sender{
+
+- (IBAction)didPressSearch:(id)sender{
     
-    if (_searchIsActive == NO){
-        
-        if (!self.seChildVC){
-            
-            __weak TJBExerciseSelectionScene *weakSelf = self;
-            
-            void (^listButtonCallback)(void) = ^{
-                
-                [weakSelf configureControllerForState: DefaultState];
-                
-            };
-            
-            void (^searchTextFieldCallback)(NSString *) = ^(NSString *string){
-                
-                [weakSelf deriveExerciseContentBasedOnSearchString: string];
-                
-            };
-            
-            TJBSearchExerciseChild *seChildVC = [[TJBSearchExerciseChild alloc] initWithListButtonCallback: listButtonCallback
-                                                                                   searchTextFieldCallback: searchTextFieldCallback];
-            self.seChildVC = seChildVC;
-            
-            // add as child VC and give proper frame
-            // will have this child's view overlay the first cell in the table view
-            
-            [self addChildViewController: seChildVC];
-            
-            CGFloat searchTitleHeight = 100;
-            
-            CGRect childViewFrame = self.exerciseTableView.frame;
-            childViewFrame.size.height = searchTitleHeight;
-            
-            seChildVC.view.frame = childViewFrame;
-            [self.view addSubview: seChildVC.view];
-            
-            [seChildVC didMoveToParentViewController: self];
-            
-        }
-        
-        [self configureControllerForState: SearchState];
-        
-    }
+    
+    
+    
+    
     
 }
 
 
-- (void)deriveExerciseContentBasedOnSearchString:(NSString *)searchString{
 
-    NSMutableArray *allExercises = [self.fetchedResultsController.fetchedObjects mutableCopy];
 
-    if ([searchString isEqualToString: @""]){ // if the search text field is blank, show all options
 
-        self.contentExercisesArray = allExercises;
-
-    } else{
-
-        NSPredicate *searchFilterPredicate = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", searchString];
-        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name != %@", @"Placeholder"];
-
-        NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercisesPredicate,
-                                                                                              searchFilterPredicate]];
-
-        NSArray *filteredExercises = [allExercises filteredArrayUsingPredicate: compPred];
-        self.contentExercisesArray = [filteredExercises mutableCopy];
-
-    }
-
-    [self.exerciseTableView reloadData];
-
-}
+#pragma mark - Keyboard Notifications
 
 - (void)keyboardWillAppear:(NSNotification *)notification{
 
-    // these actions should not be taken if exercise addition is active
-
-    if (_exerciseAdditionActive == NO){
-
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
-        CGRect tableviewFrame = self.exerciseTableView.frame;
-        CGFloat tvBottomEdge = tableviewFrame.origin.y + tableviewFrame.size.height;
-        CGFloat bottomTVEdgeToScreenBounds = [UIScreen mainScreen].bounds.size.height - tvBottomEdge;
-        CGFloat reductionInTVHeight = keyboardSize.height - bottomTVEdgeToScreenBounds;
-
-        // update the constraint that controls the vertical distance between the table view and segmented control
-        // will do so by increasing its constant by the reductionInTVHeight
-
-//        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
-//        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight + 8;
-//        self.scToTVVertDist.constant = newConstrConstant;
-
-        // hide views
-
-        [self.view layoutIfNeeded];
-
-    }
+//    // these actions should not be taken if exercise addition is active
+//
+//    if (_exerciseAdditionActive == NO){
+//
+//        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//
+//        CGRect tableviewFrame = self.exerciseTableView.frame;
+//        CGFloat tvBottomEdge = tableviewFrame.origin.y + tableviewFrame.size.height;
+//        CGFloat bottomTVEdgeToScreenBounds = [UIScreen mainScreen].bounds.size.height - tvBottomEdge;
+//        CGFloat reductionInTVHeight = keyboardSize.height - bottomTVEdgeToScreenBounds;
+//
+//        // update the constraint that controls the vertical distance between the table view and segmented control
+//        // will do so by increasing its constant by the reductionInTVHeight
+//
+////        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
+////        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight + 8;
+////        self.scToTVVertDist.constant = newConstrConstant;
+//
+//        // hide views
+//
+//        [self.view layoutIfNeeded];
+//
+//    }
 
 
 
@@ -804,15 +670,15 @@ typedef enum{
 
 - (void)keyboardWillDisappear:(NSNotification *)notification{
 
-    // these actions should not be taken if exercise addition is active
-
-    if (_exerciseAdditionActive == NO){
-
-//        self.scToTVVertDist.constant = 8;
-
-        [self.view layoutIfNeeded];
-
-    }
+//    // these actions should not be taken if exercise addition is active
+//
+//    if (_exerciseAdditionActive == NO){
+//
+////        self.scToTVVertDist.constant = 8;
+//
+//        [self.view layoutIfNeeded];
+//
+//    }
 
 }
 
@@ -821,100 +687,125 @@ typedef enum{
 
 #pragma mark - State Control
 
-- (void)configureControllerForState:(TJBExerciseSceneState)state{
+
+
+
+
+
+#pragma mark - Core Data
+
+- (NSFetchRequest *)fetchRequestGivenState{
     
-        switch (state) {
-            case DefaultState:
-                _searchIsActive = NO;
-                _exerciseAdditionActive = NO;
-                break;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
     
-            case AdditionState:
-                _searchIsActive = NO;
-                _exerciseAdditionActive = YES;
-                break;
-    
-            case SearchState:
-                _searchIsActive = YES;
-                _exerciseAdditionActive = NO;
-                break;
-                
-            default:
-                break;
-        }
-    
-    if (state != SearchState){
+    if (_searchIsActive == NO){
         
-//        self.tableViewToTitleBarConstr.constant = 0;
+        // only apply the compount predicate if the exercise search text field has a non blank entry
         
-        if (self.seChildVC){
-            
-            self.seChildVC.view.hidden = YES;
-            [self.seChildVC makeSearchTextFieldResignFirstResponder];
-            
-        }
+        NSString *selectedCategoryName = [self exerciseCategoryNameForSelectedExerciseCategorySegmentedControlIndex];
         
-    } else{
+        NSPredicate *noPlaceholderExercisesPredicate = [NSPredicate predicateWithFormat: @"category.name = %@",
+                                                        selectedCategoryName];
         
-//        self.tableViewToTitleBarConstr.constant = self.seChildVC.view.frame.size.height;
+        request.predicate = noPlaceholderExercisesPredicate;
         
-        [self deriveExerciseContentBasedOnSearchString: [self.seChildVC searchTextFieldText]];
+        NSSortDescriptor *categoryNameSort = [NSSortDescriptor sortDescriptorWithKey: @"category.name"
+                                                                           ascending: YES];
         
-        if (self.seChildVC){
-            
-            self.seChildVC.view.hidden = NO;
-            [self.seChildVC makeSearchTextFieldFirstResponder];
-            
-        }
+        NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
+                                                                   ascending: YES];
+        
+        [request setSortDescriptors: @[categoryNameSort, nameSort]];
+        
+    } else if (_searchIsActive == YES){
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
     }
     
-    if (state != AdditionState){
-        
-        if (self.exerciseAdditionChildVC){
-            
-            self.exerciseAdditionChildVC.view.hidden = YES;
-            [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
-            self.exerciseTableView.hidden = NO;
-//            self.addNewExerciseButton.enabled = YES;
-//            [self.addNewExerciseButton setImage: [UIImage imageNamed: @"addCircledBlue32"]
-//                                       forState: UIControlStateNormal];
-            
-        }
-        
-    } else{
-        
-        if (self.exerciseAdditionChildVC){
-            
-            self.exerciseAdditionChildVC.view.hidden = NO;
-            [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
-            self.exerciseTableView.hidden = YES;
-//            self.addNewExerciseButton.enabled = NO;
-//            [self.addNewExerciseButton setImage: nil
-//                                       forState: UIControlStateNormal];
-            
-        }
-        
-    }
+
     
-    if (state != DefaultState){
-        
-        self.normalBrowsingExerciseSC.hidden = YES;
-//        self.searchButton.hidden = YES;
-        
-    } else{
-        
-        self.normalBrowsingExerciseSC.hidden = NO;
-//        self.searchButton.hidden = NO;
-        
-        [self browsingSCValueDidChange]; // forces table view content to be derived
-        
-    }
+    return request;
     
-    [self.exerciseTableView reloadData];
-    [self.view layoutIfNeeded];
-  
 }
+
+- (void)deriveExerciseContentGivenState{
+    
+    NSError *error;
+    NSArray *fetchedObjects = [[[CoreDataController singleton] moc] executeFetchRequest: [self fetchRequestGivenState]
+                                                                                       error: &error];
+    self.contentExercisesArray = [fetchedObjects mutableCopy];
+    
+    
+}
+
+
+- (void)registerForCoreDataNotifications{
+    
+        //// configure managed context notification for updating
+    
+        NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(reloadContent)
+                                                     name: NSManagedObjectContextDidSaveNotification
+                                                   object: moc];
+    
+}
+
+- (void)reloadContent{
+    
+    [self deriveExerciseContentGivenState];
+    [self.exerciseTableView reloadData];
+    
+    [self deselectCellIfSelectionExists];
+    
+}
+
+
+#pragma mark - Toolbar Actions
+
+
+
+- (IBAction)didPressLaunch:(id)sender{
+    
+    // if a cell is selected, return the exercise for that cell
+    
+    if (self.selectedCellIndexPath){
+        
+        TJBExercise *exercise = self.contentExercisesArray[self.selectedCellIndexPath.row];
+        self.callbackBlock(exercise);
+        
+    } else{
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"No Exercise Selected"
+                                                                       message: nil
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: nil];
+        
+        [alert addAction: action];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    }
+    
+}
+
+
+
+
 
 @end
 
