@@ -21,7 +21,6 @@
 
 #import "TJBNoDataCell.h"
 #import "TJBExerciseSelectionCell.h"
-#import "TJBExerciseSelectionTitleCell.h"
 
 #import "TJBAestheticsController.h"
 
@@ -43,45 +42,28 @@
 @property (strong) TJBExerciseAdditionChildVC *exerciseAdditionChildVC;
 @property (strong) TJBSearchExerciseChild *seChildVC;
 
+
 // callback
 
 @property (copy) void(^callbackBlock)(TJBExercise *);
 
 // IBOutlet
 
-@property (weak, nonatomic) IBOutlet UIButton *addNewExerciseButton;
 @property (weak, nonatomic) IBOutlet UITableView *exerciseTableView;
 @property (weak, nonatomic) IBOutlet UIButton *leftBarButton;
-//@property (weak, nonatomic) IBOutlet UIButton *rightBarButton;
 @property (weak, nonatomic) IBOutlet UILabel *mainTitleLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *exerciseLabel;
-//@property (weak, nonatomic) IBOutlet UITextField *exerciseTextField;
-//@property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
-//@property (weak, nonatomic) IBOutlet UISegmentedControl *categorySegmentedControl;
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *exerciseAdditionConstraint;
-//@property (weak, nonatomic) IBOutlet UIButton *addButton;
-//@property (weak, nonatomic) IBOutlet UIView *exerciseAdditionContainer;
-//@property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
-//@property (weak, nonatomic) IBOutlet UIButton *addAndSelectButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *normalBrowsingExerciseSC;
-@property (weak, nonatomic) IBOutlet UIButton *searchButton;
-//@property (weak, nonatomic) IBOutlet UITextField *searchTextField;
-//@property (weak, nonatomic) IBOutlet UILabel *searchingAllExercisesLabel;
-//@property (weak, nonatomic) IBOutlet UILabel *secondBarLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scToTVVertDist;
-//@property (weak, nonatomic) IBOutlet UIButton *exerciseAdditionBackButton;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewToTitleBarConstr;
+@property (weak, nonatomic) IBOutlet UIToolbar *actionsToolbar;
+@property (weak, nonatomic) IBOutlet UIView *columnTitleLabelsContainer;
+@property (weak, nonatomic) IBOutlet UILabel *exerciseColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLastExecutedColumbLabel;
+@property (weak, nonatomic) IBOutlet UIView *titleBarContainier;
 
 
 
 // IBAction
 
-- (IBAction)didPressAddNewExercise:(id)sender;
 - (IBAction)didPressLeftBarButton:(id)sender;
-//- (IBAction)didPressAddButton:(id)sender;
-//- (IBAction)didPressAddAndSelect:(id)sender;
-- (IBAction)didPressSearchButton:(id)sender;
-//- (IBAction)didPressExerciseAdditionBackButton:(id)sender;
 
 
 
@@ -150,6 +132,8 @@ typedef enum{
 
 - (void)viewDidLoad{
     
+    [self.view layoutSubviews];
+    
     [self configureTableView];
     
     [self fetchAllExercises];
@@ -175,25 +159,6 @@ typedef enum{
     
 }
 
-
-//- (void)addTapGestureRecognizerToViewForKeyboardNotification{
-//    
-//    //// add gesture recognizer to the view.  It will be used to dismiss the keyboard if the touch is not in the keyboard or text field
-//    //// also register for the UIKeyboardDidShowNotification so that the frame of the keyboard can be stored for later use in analyzing touches
-//    
-//    // tap GR
-//    
-//    UITapGestureRecognizer *singleTapGR = [[UITapGestureRecognizer alloc] initWithTarget: self
-//                                                                                  action: @selector(didSingleTap:)];
-//    
-//    singleTapGR.numberOfTapsRequired = 1;
-//    singleTapGR.cancelsTouchesInView = NO;
-//    singleTapGR.delaysTouchesBegan = NO;
-//    singleTapGR.delaysTouchesEnded = NO;
-//    
-//    [self.view addGestureRecognizer: singleTapGR];
-//    
-//}
 
 - (void)registerForCoreDataNotifications{
     
@@ -258,7 +223,7 @@ typedef enum{
 
     // meta view
     
-    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     // table view
     
@@ -267,7 +232,7 @@ typedef enum{
     // browsing segmented control
     
     self.normalBrowsingExerciseSC.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    self.normalBrowsingExerciseSC.backgroundColor = [UIColor darkGrayColor];
+    self.normalBrowsingExerciseSC.backgroundColor = [UIColor grayColor];
     
     UIFont *font = [UIFont boldSystemFontOfSize: 15];
     NSDictionary *attributes = [NSDictionary dictionaryWithObject: font
@@ -281,21 +246,44 @@ typedef enum{
     scLayer.borderWidth = 1.0;
     scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
-    // title bar buttons
+    // title bar
     
-    NSArray *buttons = @[self.leftBarButton, self.addNewExerciseButton];
-    for (UIButton *b in buttons){
-        
-        b.backgroundColor = [UIColor darkGrayColor];
+    self.titleBarContainier.backgroundColor = [UIColor darkGrayColor];
 
-        
-    }
-    
-    self.leftBarButton.backgroundColor = [UIColor darkGrayColor];
-    
-    // main title label
     
     self.mainTitleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    self.mainTitleLabel.textColor = [UIColor whiteColor];
+    self.mainTitleLabel.backgroundColor = [UIColor clearColor];
+    
+    self.leftBarButton.backgroundColor = [UIColor clearColor];
+    
+    // table view
+    
+    self.exerciseTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+
+    
+    // actions toolbar
+    
+    self.actionsToolbar.barTintColor = [UIColor grayColor];
+    self.actionsToolbar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    CALayer *tbLayer = self.actionsToolbar.layer;
+    tbLayer.cornerRadius = self.actionsToolbar.frame.size.height / 2.0;
+    tbLayer.masksToBounds = YES;
+    tbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    tbLayer.borderWidth = 1.0;
+    
+    // column labels area
+    
+    self.columnTitleLabelsContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    NSArray *columnHeaderLabels = @[self.exerciseColumnLabel, self.dateLastExecutedColumbLabel];
+    for (UILabel *label in columnHeaderLabels){
+        
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont systemFontOfSize: 15];
+        label.textColor = [UIColor blackColor];
+        
+    }
     
 }
 
@@ -321,11 +309,11 @@ typedef enum{
     [self.exerciseTableView registerNib: exerciseSelectionCell
                  forCellReuseIdentifier: @"TJBExerciseSelectionCell"];
     
-    UINib *titleNib = [UINib nibWithNibName: @"TJBExerciseSelectionTitleCell"
-                                     bundle: nil];
-    
-    [self.exerciseTableView registerNib: titleNib
-                 forCellReuseIdentifier: @"TJBExerciseSelectionTitleCell"];
+//    UINib *titleNib = [UINib nibWithNibName: @"TJBExerciseSelectionTitleCell"
+//                                     bundle: nil];
+//    
+//    [self.exerciseTableView registerNib: titleNib
+//                 forCellReuseIdentifier: @"TJBExerciseSelectionTitleCell"];
     
 }
 
@@ -398,21 +386,13 @@ typedef enum{
     
     NSInteger contentCellCount = self.contentExercisesArray.count;
     
-    NSInteger isSearchingCorrection; // when searching, there is not title cell. Must adjust table view count with respect to this
-    
-    if (_searchIsActive){
-        isSearchingCorrection = -1;
-    } else{
-        isSearchingCorrection = 0;
-    }
-    
     if (contentCellCount == 0){
         
-        return 2 + isSearchingCorrection;
+        return 1;
         
     } else{
         
-        return contentCellCount + 1 + isSearchingCorrection;
+        return contentCellCount;
         
     }
  
@@ -421,107 +401,33 @@ typedef enum{
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSInteger contentCellCount = self.contentExercisesArray.count;
-    
-    NSInteger adjustedIndex; // used to reference the content array. It adjust the row of the index path according to vc state
-    
-    if (_searchIsActive == NO){
+
+    if (contentCellCount == 0){
         
-        adjustedIndex = indexPath.row - 1;
+        TJBNoDataCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
         
-    } else{
-        
-        adjustedIndex = indexPath.row;
-        
-    }
-    
-    if (indexPath.row == 0 && _searchIsActive == NO){
-        
-        NSString *filterString;
-        
-        if (_searchIsActive){
-            
-            filterString = @"Searching All";
-            
-        } else{
-            
-            switch (self.normalBrowsingExerciseSC.selectedSegmentIndex) {
-                case 0:
-                    filterString = @"Push";
-                    break;
-                    
-                case 1:
-                    filterString = @"Pull";
-                    break;
-                    
-                case 2:
-                    filterString = @"Leg";
-                    break;
-                    
-                case 3:
-                    filterString = @"Other";
-                    
-                default:
-                    break;
-            }
-            
-        }
-    
-        TJBExerciseSelectionTitleCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionTitleCell"];
-        
-        cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-        
-        cell.titleLabel.text = [NSString stringWithFormat: @"%@ Exercises", filterString];
-        cell.subTitleLabel.text = @"select an exercise";
-        
-        cell.detail1Label.text = @"Name";
-        cell.detail2Label.text = @"Date Last Executed";
-        
+        cell.mainLabel.text = @"No Exercises";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor clearColor];
         
         return cell;
         
     } else{
         
-        if (contentCellCount == 0){
-            
-            TJBNoDataCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
-            
-            cell.mainLabel.text = @"No Exercises";
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.backgroundColor = [UIColor clearColor];
-            
-            return cell;
-            
-        } else{
-            
-            TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
-            
-            TJBExercise *exercise = self.contentExercisesArray[adjustedIndex];
-            
-            cell.exerciseNameLabel.text = exercise.name;
-            
-            NSDate *dateLastExecuted = [self dateLastExecutedForExercise: exercise];
-            
-            // nil may be returned for the date. If so, give the date label an X
-            
-            if (dateLastExecuted){
-                
-                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                df.dateFormat = @"MM / dd / yy";
-                cell.dateLabel.text = [df stringFromDate: dateLastExecuted];
-                
-            } else{
-                
-                cell.dateLabel.text = @"X";
-                
-            }
-            
-            cell.backgroundColor = [UIColor clearColor];
-            
-            return cell;
+        TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
         
-        }
+        TJBExercise *exercise = self.contentExercisesArray[indexPath.row];
+        NSDate *dateLastExecuted = [self dateLastExecutedForExercise: exercise];
+        
+        [cell configureCellWithExerciseName: exercise.name
+                                       date: dateLastExecuted];
+        
+        cell.backgroundColor = [UIColor clearColor];
+        
+        return cell;
+        
     }
+
 }
 
 - (NSDate *)dateLastExecutedForExercise:(TJBExercise *)exercise{
@@ -557,88 +463,48 @@ typedef enum{
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (self.contentExercisesArray.count != 0){
+    
+    if (self.contentExercisesArray.count > 0){
         
-        if (_searchIsActive){
-            
-            TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row];
-            
-            self.callbackBlock(selectedExercise);
-            
-        } else{
-            
-            if (indexPath.row != 0){
-                
-                TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row - 1];
-                
-                self.callbackBlock(selectedExercise);
-                
-            }
-            
-        }
+        TJBExercise *selectedExercise = self.contentExercisesArray[indexPath.row ];
+        
+        self.callbackBlock(selectedExercise);
         
     }
+
+
+
  
 }
 
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    CGFloat titleCellHeight = 90;
-    CGFloat contentCellHeight = 60;
     
-    CGFloat fillHeight;
-    
-    if (_searchIsActive == NO){
+    if (self.contentExercisesArray.count > 0){
         
-        fillHeight = self.exerciseTableView.frame.size.height - titleCellHeight;
+        return YES;
         
     } else{
         
-        fillHeight = self.exerciseTableView.frame.size.height;
+        return NO;
         
     }
-    
-    
-    NSInteger contentCellCount = self.contentExercisesArray.count;
-    BOOL atLeastOneContentCell = contentCellCount >= 1;
-    
-    // the returned height will vary according to several conditions
-    // 1 - whether or not the table view is in search mode, in which case there is no title cell
-    // 2 - whether or not there is content to be displayed - which dictates whether the contentCellHeight or the fillHeight is returned
-    
-    if (_searchIsActive == NO){
         
-        if (indexPath.row == 0){
-            
-            return titleCellHeight;
-            
-        } else{
-            
-            if (atLeastOneContentCell){
-                
-                return  contentCellHeight;
-                
-            } else{
-                
-                return  fillHeight;
-                
-            }
-            
-        }
+
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSInteger contentCount = self.contentExercisesArray.count;
+    
+    if (contentCount == 0){
         
-    } else{ // this is the condition for which search IS active
+        return  self.exerciseTableView.frame.size.height;
         
-        if (atLeastOneContentCell){
-            
-            return  contentCellHeight;
-            
-        } else{
-            
-            return  fillHeight;
-            
-        }
+    } else{
+        
+        return  80;
         
     }
     
@@ -715,7 +581,7 @@ typedef enum{
             
             [self addChildViewController: eaChildVC];
             
-            self.tableViewToTitleBarConstr.constant = 0; // need to change this here in case jumping from SearchState to AdditionState because table view is shifted downward for SearchState
+//            self.tableViewToTitleBarConstr.constant = 0; // need to change this here in case jumping from SearchState to AdditionState because table view is shifted downward for SearchState
             [self.view layoutIfNeeded];
             
             eaChildVC.view.frame = self.exerciseTableView.frame;
@@ -902,9 +768,9 @@ typedef enum{
         // update the constraint that controls the vertical distance between the table view and segmented control
         // will do so by increasing its constant by the reductionInTVHeight
 
-        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
-        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight + 8;
-        self.scToTVVertDist.constant = newConstrConstant;
+//        CGFloat currentConstrConstant = self.scToTVVertDist.constant;
+//        CGFloat newConstrConstant = currentConstrConstant + reductionInTVHeight + 8;
+//        self.scToTVVertDist.constant = newConstrConstant;
 
         // hide views
 
@@ -923,7 +789,7 @@ typedef enum{
 
     if (_exerciseAdditionActive == NO){
 
-        self.scToTVVertDist.constant = 8;
+//        self.scToTVVertDist.constant = 8;
 
         [self.view layoutIfNeeded];
 
@@ -932,88 +798,7 @@ typedef enum{
 }
 
 
-//#pragma  mark - Convenience
-//
-//- (NSString *)selectedCategory{
-//    
-//    NSString *selectedCategory;
-//    
-//    NSInteger categoryIndex = self.categorySegmentedControl.selectedSegmentIndex;
-//    
-//    switch (categoryIndex){
-//        case 0:
-//            selectedCategory = @"Push";
-//            break;
-//            
-//        case 1:
-//            selectedCategory = @"Pull";
-//            break;
-//            
-//        case 2:
-//            selectedCategory = @"Legs";
-//            break;
-//            
-//        case 3:
-//            selectedCategory = @"Other";
-//            break;
-//            
-//        default:
-//            break;
-//            
-//    }
-//    
-//    return selectedCategory;
-//    
-//}
-//
-//#pragma mark - Gesture Recognizer
-//
-//- (void)didSingleTap:(UIGestureRecognizer *)gr{
-//    
-//    //// because this gesture does not register if the touch is in the keyboard or text field, simply have to check if the keyboard is showing, and dismiss it if so
-//    
-//    if ([self.exerciseTextField isFirstResponder]){
-//        
-//        [self.exerciseTextField resignFirstResponder];
-//        
-//    }
-//    
-//    if ([self.searchTextField isFirstResponder]){
-//        
-//        [self.searchTextField resignFirstResponder];
-//        
-//    }
-//}
-//
-//#pragma mark - <UITextFieldDelegate>
-//
-//- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-//    
-//    [textField resignFirstResponder];
-//    
-//    return YES;
-//    
-//}
-//
-//
-//
-//#pragma mark - Core Data
-//
-//- (void)updateFetchedResultsController{
-//    
-//    //// refresh fetched managed objects and all trickle-down
-//    
-//    [self createFetchedResultsController];
-//    
-//    [self.exerciseTableView reloadData];
-//    
-//}
-//
-//#pragma mark - Keyboard View Adjustments
-//
 
-//
-//
 
 #pragma mark - State Control
 
@@ -1041,7 +826,7 @@ typedef enum{
     
     if (state != SearchState){
         
-        self.tableViewToTitleBarConstr.constant = 0;
+//        self.tableViewToTitleBarConstr.constant = 0;
         
         if (self.seChildVC){
             
@@ -1052,7 +837,7 @@ typedef enum{
         
     } else{
         
-        self.tableViewToTitleBarConstr.constant = self.seChildVC.view.frame.size.height;
+//        self.tableViewToTitleBarConstr.constant = self.seChildVC.view.frame.size.height;
         
         [self deriveExerciseContentBasedOnSearchString: [self.seChildVC searchTextFieldText]];
         
@@ -1072,9 +857,9 @@ typedef enum{
             self.exerciseAdditionChildVC.view.hidden = YES;
             [self.exerciseAdditionChildVC makeExerciseTFResignFirstResponder];
             self.exerciseTableView.hidden = NO;
-            self.addNewExerciseButton.enabled = YES;
-            [self.addNewExerciseButton setImage: [UIImage imageNamed: @"new"]
-                                       forState: UIControlStateNormal];
+//            self.addNewExerciseButton.enabled = YES;
+//            [self.addNewExerciseButton setImage: [UIImage imageNamed: @"addCircledBlue32"]
+//                                       forState: UIControlStateNormal];
             
         }
         
@@ -1085,9 +870,9 @@ typedef enum{
             self.exerciseAdditionChildVC.view.hidden = NO;
             [self.exerciseAdditionChildVC makeExerciseTFFirstResponder];
             self.exerciseTableView.hidden = YES;
-            self.addNewExerciseButton.enabled = NO;
-            [self.addNewExerciseButton setImage: nil
-                                       forState: UIControlStateNormal];
+//            self.addNewExerciseButton.enabled = NO;
+//            [self.addNewExerciseButton setImage: nil
+//                                       forState: UIControlStateNormal];
             
         }
         
@@ -1096,12 +881,12 @@ typedef enum{
     if (state != DefaultState){
         
         self.normalBrowsingExerciseSC.hidden = YES;
-        self.searchButton.hidden = YES;
+//        self.searchButton.hidden = YES;
         
     } else{
         
         self.normalBrowsingExerciseSC.hidden = NO;
-        self.searchButton.hidden = NO;
+//        self.searchButton.hidden = NO;
         
         [self browsingSCValueDidChange]; // forces table view content to be derived
         

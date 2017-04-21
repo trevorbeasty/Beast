@@ -10,10 +10,7 @@
 
 @interface TJBExerciseSelectionCell : UITableViewCell
 
-// IBOutlet
-
-@property (weak, nonatomic) IBOutlet UILabel *exerciseNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+- (void)configureCellWithExerciseName:(NSString *)exerciseName date:(NSDate *)date;
 
 
 @end

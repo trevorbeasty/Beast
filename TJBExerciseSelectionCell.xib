@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -20,26 +21,27 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRi-Pa-sme">
-                        <rect key="frame" x="16" y="103" width="220" height="18"/>
+                        <rect key="frame" x="8" y="8" width="314.5" height="206.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YJj-qU-RB6">
-                        <rect key="frame" x="252" y="103" width="220" height="18"/>
+                        <rect key="frame" x="322.5" y="8" width="157.5" height="206.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="lRi-Pa-sme" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Em5-fB-Pu0"/>
+                    <constraint firstItem="lRi-Pa-sme" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="2W6-ve-JuJ"/>
                     <constraint firstItem="YJj-qU-RB6" firstAttribute="bottom" secondItem="lRi-Pa-sme" secondAttribute="bottom" id="Hd9-bX-iHN"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="lRi-Pa-sme" secondAttribute="bottom" id="JS9-au-6KL"/>
                     <constraint firstItem="YJj-qU-RB6" firstAttribute="top" secondItem="lRi-Pa-sme" secondAttribute="top" id="MV1-mF-s2e"/>
-                    <constraint firstItem="lRi-Pa-sme" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="Wqs-bJ-WaA"/>
-                    <constraint firstItem="YJj-qU-RB6" firstAttribute="width" secondItem="lRi-Pa-sme" secondAttribute="width" id="Xpx-Si-faV"/>
-                    <constraint firstItem="YJj-qU-RB6" firstAttribute="leading" secondItem="lRi-Pa-sme" secondAttribute="trailing" constant="16" id="Zcp-EK-jpN"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="YJj-qU-RB6" secondAttribute="trailing" constant="8" id="kp1-9w-qbG"/>
+                    <constraint firstItem="lRi-Pa-sme" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Wqs-bJ-WaA"/>
+                    <constraint firstItem="lRi-Pa-sme" firstAttribute="width" secondItem="YJj-qU-RB6" secondAttribute="width" multiplier="2" id="Xpx-Si-faV"/>
+                    <constraint firstItem="YJj-qU-RB6" firstAttribute="leading" secondItem="lRi-Pa-sme" secondAttribute="trailing" id="Zcp-EK-jpN"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="YJj-qU-RB6" secondAttribute="trailing" id="kp1-9w-qbG"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

@@ -60,9 +60,10 @@
 
 - (void)viewDidLoad{
     
+    [self.view layoutSubviews];
+    
     [self configureViewAesthetics];
     
-//    [self configureSegmentedControl];
     
 }
 
@@ -90,15 +91,15 @@
     NSArray *buttons = @[self.addButton, self.addAndSelectButton];
     for (UIButton *butt in buttons){
         
-        butt.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        butt.backgroundColor = [UIColor grayColor];
         butt.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
-        [butt setTitleColor: [UIColor darkGrayColor]
+        [butt setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                    forState: UIControlStateNormal];
         
         CALayer *bLayer = butt.layer;
         bLayer.masksToBounds = YES;
-        bLayer.cornerRadius = 15;
-        bLayer.borderColor = [UIColor darkGrayColor].CGColor;
+        bLayer.cornerRadius = butt.frame.size.height / 2.0;
+        bLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         bLayer.borderWidth = 1.0;
         
     }
@@ -108,7 +109,7 @@
     // sc
     
     self.exerciseCategorySC.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    self.exerciseCategorySC.backgroundColor = [UIColor darkGrayColor];
+    self.exerciseCategorySC.backgroundColor = [UIColor grayColor];
     
     UIFont *font = [UIFont boldSystemFontOfSize: 15];
     NSDictionary *attributes = [NSDictionary dictionaryWithObject: font
@@ -118,7 +119,7 @@
     
     CALayer *scLayer = self.exerciseCategorySC.layer;
     scLayer.masksToBounds = YES;
-    scLayer.cornerRadius = 25;
+    scLayer.cornerRadius = self.exerciseCategorySC.frame.size.height / 2.0;
     scLayer.borderWidth = 1.0;
     scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     
@@ -130,7 +131,7 @@
     CALayer *tfLayer = self.exerciseNameTF.layer;
     tfLayer.borderColor = [UIColor blackColor].CGColor;
     tfLayer.borderWidth = 1.0;
-    tfLayer.cornerRadius = 25.0;
+    tfLayer.cornerRadius = 4;
     tfLayer.masksToBounds = YES;
     
 }
