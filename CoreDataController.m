@@ -543,6 +543,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
                                                                  inManagedObjectContext: self.moc];
         
         newExercise.name = name;
+        newExercise.showInExerciseList = YES;
+        
         
         // placeholder property
         

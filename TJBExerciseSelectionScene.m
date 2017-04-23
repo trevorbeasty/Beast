@@ -57,6 +57,8 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *launchToolbarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *searchToolbarButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addNewToolbarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
 
 // programmatically created views
 
@@ -71,6 +73,10 @@
 - (IBAction)didPressLeftBarButton:(id)sender;
 - (IBAction)didPressLaunch:(id)sender;
 - (IBAction)didPressSearch:(id)sender;
+- (IBAction)didPressAddNewButton:(id)sender;
+- (IBAction)didPressDeleteButton:(id)sender;
+- (IBAction)didPressEditButton:(id)sender;
+
 
 
 
@@ -121,6 +127,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 - (void)viewDidLoad{
     
     [self.view layoutSubviews];
+    
+    [self updateToolbarAppearanceAccordingToSelectionState]; // no cell is selected upon instantiation, so certain toolbar buttons are disabled
     
     [self configureTableView];
     
@@ -448,6 +456,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
         self.selectedCellIndexPath = indexPath;
         
     }
+    
+    [self updateToolbarAppearanceAccordingToSelectionState];
 
  
 }
@@ -511,6 +521,29 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
         
         [self giveCellUnselectedAppearance: [self.exerciseTableView cellForRowAtIndexPath: self.selectedCellIndexPath]];
         self.selectedCellIndexPath = nil;
+        
+    }
+    
+}
+
+
+- (void)updateToolbarAppearanceAccordingToSelectionState{
+    
+    NSArray *dynamicAppearanceItems = @[self.launchToolbarButton,
+                                        self.deleteButton,
+                                        self.editButton];
+    
+    for (UIBarButtonItem *bbi in dynamicAppearanceItems){
+        
+        if (self.selectedCellIndexPath){
+            
+            bbi.enabled = YES;
+            
+        } else{
+            
+            bbi.enabled = NO;
+            
+        }
         
     }
     
@@ -622,16 +655,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     // this button toggles between a list and search appearance, so must check state
     // this method is called by both the seach and list toolbar buttons
     
-    // deselect current selection if exists
-    
-    if (self.selectedCellIndexPath){
-        
-        UITableViewCell *previouslySelectedCell = [self.exerciseTableView cellForRowAtIndexPath: self.selectedCellIndexPath];
-        [self giveCellUnselectedAppearance: previouslySelectedCell];
-        
-        self.selectedCellIndexPath = nil;
-        
-    }
+    [self deselectCellIfSelectionExists]; // deselect current selection if exists
+    [self updateToolbarAppearanceAccordingToSelectionState];
     
     if (_searchIsActive == NO){
         
@@ -639,13 +664,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
     } else if (_searchIsActive == YES){
         
-        
-        
         [self animateToCategoryBasedBrowseState];
-        
-        
-        
-        
         
     }
     
@@ -904,6 +923,40 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     }
     
 }
+
+
+- (IBAction)didPressAddNewButton:(id)sender{
+}
+
+
+
+
+
+- (IBAction)didPressDeleteButton:(id)sender{
+    
+    
+    
+    
+    
+    
+    
+    
+}
+
+
+
+
+
+
+
+- (IBAction)didPressEditButton:(id)sender{
+}
+
+
+
+
+
+
 
 
 

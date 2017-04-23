@@ -1521,14 +1521,12 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 - (void)configureActiveStateForToolbarButton:(UIBarButtonItem *)bbi{
     
     bbi.enabled = YES;
-    bbi.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     
 }
 
 - (void)configureInactiveStateForToolbarButton:(UIBarButtonItem *)bbi{
     
     bbi.enabled = NO;
-    bbi.tintColor = [UIColor grayColor];
     
 }
 

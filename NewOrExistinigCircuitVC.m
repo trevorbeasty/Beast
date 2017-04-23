@@ -1895,7 +1895,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)giveToolbarButtonDisabledAppearance:(UIBarButtonItem *)bbi{
     
-    bbi.tintColor = [UIColor grayColor];
     bbi.enabled = NO;
     
 }
@@ -1903,7 +1902,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)giveToolbarButtonEnabledAppearance:(UIBarButtonItem *)bbi{
     
-    bbi.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     bbi.enabled = YES;
     
 }

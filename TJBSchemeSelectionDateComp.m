@@ -190,8 +190,8 @@
     
     _hasSelectedAppearance = YES;
     
-    self.monthLabel.textColor = [UIColor darkGrayColor];
-    self.view.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.monthLabel.textColor = [UIColor blackColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     if (_isCircled){
         
