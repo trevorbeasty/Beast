@@ -85,7 +85,7 @@
 static NSString * const cellReuseIdentifier = @"basicCell";
 
 
-static NSTimeInterval const toolbarToBottomPositionAnimationTime = .3;
+static NSTimeInterval const toolbarToBottomPositionAnimationTime = .15;
 
 
 // search bar
@@ -93,6 +93,9 @@ static NSTimeInterval const toolbarToBottomPositionAnimationTime = .3;
 static CGFloat const searchBarHorizontalInset = 8;
 static CGFloat const searchBarVerticalInset = 4;
 
+// bottom controls layour
+
+static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 @implementation TJBExerciseSelectionScene
 
@@ -619,6 +622,17 @@ static CGFloat const searchBarVerticalInset = 4;
     // this button toggles between a list and search appearance, so must check state
     // this method is called by both the seach and list toolbar buttons
     
+    // deselect current selection if exists
+    
+    if (self.selectedCellIndexPath){
+        
+        UITableViewCell *previouslySelectedCell = [self.exerciseTableView cellForRowAtIndexPath: self.selectedCellIndexPath];
+        [self giveCellUnselectedAppearance: previouslySelectedCell];
+        
+        self.selectedCellIndexPath = nil;
+        
+    }
+    
     if (_searchIsActive == NO){
         
         [self animateToSearchBarState];
@@ -627,7 +641,7 @@ static CGFloat const searchBarVerticalInset = 4;
         
         
         
-        
+        [self animateToCategoryBasedBrowseState];
         
         
         
@@ -665,7 +679,13 @@ static CGFloat const searchBarVerticalInset = 4;
         
         
         
+        NSMutableArray *toolbarItems = [[self.actionsToolbar items] mutableCopy];
         
+        NSUInteger currentListButtonIndex = [toolbarItems indexOfObject: self.listToolbarButton];
+        [toolbarItems replaceObjectAtIndex: currentListButtonIndex
+                                withObject: self.searchToolbarButton];
+        
+        [self.actionsToolbar setItems: toolbarItems];
         
         
         
@@ -939,11 +959,59 @@ static CGFloat const searchBarVerticalInset = 4;
                          
                          [self updateToolbarBarButtonItemsAccordingGivenState];
                          
+  
+                         
                      }];
 
 }
 
-
+- (void)animateToCategoryBasedBrowseState{
+    
+    // bottom controls
+    
+    CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
+    
+    [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
+                          delay: 0
+                        options: UIViewAnimationOptionCurveLinear
+                     animations: ^{
+                         
+                         // bottom controls
+                         
+                         NSArray *verticallySlidingViews = @[self.actionsToolbar, self.normalBrowsingExerciseSC];
+                         for (UIView *view in verticallySlidingViews){
+                             
+                             view.frame = [TJBAssortedUtilities rectByTranslatingRect: view.frame
+                                                                              originX: 0
+                                                                              originY: -1 * verticalTranslation];
+                             
+                         }
+                         
+                         // search bar
+                         
+                         self.exerciseSearchFieldContainer.frame = [TJBAssortedUtilities rectByTranslatingRect: self.exerciseSearchFieldContainer.frame
+                                                                                                       originX: self.exerciseSearchFieldContainer.frame.size.width
+                                                                                                       originY: 0];
+                         
+                     }
+                     completion: ^(BOOL finished){
+                         
+                         self.exerciseSegmentedControlBottomSpaceConstr.constant = categorySearchStateSCBottomSpacing;
+                         
+                         self.exerciseSearchFieldContainer.hidden = YES;
+                         
+                         _searchIsActive = NO;
+                         
+                         [self deriveExerciseContentGivenState];
+                         [self.exerciseTableView reloadData];
+                         
+                         [self updateToolbarBarButtonItemsAccordingGivenState];
+                         
+                         
+                         
+                     }];
+    
+}
 
 
 #pragma mark - UITextFieldDelegate
