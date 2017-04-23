@@ -447,6 +447,26 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 #pragma mark - TJBExercise
 
+- (void)deleteExercise:(TJBExercise *)exercise{
+    
+    // delete the managed object if it is not already in any chain templates, realized sets, or target units
+    
+    BOOL isRelatedToOtherManagedObjects = (exercise.chainTemplates.count > 0) || (exercise.targetUnits.count > 0) || (exercise.realizedSets.count > 0);
+    
+    if (isRelatedToOtherManagedObjects){
+        
+        exercise.showInExerciseList = NO;
+        
+    } else{
+        
+        [self.moc deleteObject: exercise];
+        
+    }
+    
+    [self saveContext];
+    
+}
+
 - (void)appendPlaceholderExerciseToSelectedExercisesSet:(NSMutableOrderedSet<TJBExercise *> *)exercises{
     
     int exerciseIndex = (int)exercises.count;

@@ -27,7 +27,7 @@
 
 
 //@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController; // core
-@property (nonatomic, strong) NSMutableArray *contentExercisesArray; // core - managed objects supplied to table view as data source
+@property (nonatomic, strong) NSMutableArray<TJBExercise *> *contentExercisesArray; // core - managed objects supplied to table view as data source
 @property (strong) NSIndexPath *selectedCellIndexPath; // state - table view selection
 @property (copy) NSString *exerciseSearchString;
 
@@ -821,6 +821,10 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                                                                ascending: YES];
     [request setSortDescriptors: @[nameSort]];
     
+    NSCompoundPredicate *compoundPredicate;
+    
+    NSPredicate *showInExerciseListPredicate = [NSPredicate predicateWithFormat: @"showInExerciseList = YES"];
+    
     if (_searchIsActive == NO){
         
         // only apply the compount predicate if the exercise search text field has a non blank entry
@@ -830,7 +834,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
         NSPredicate *exercisesForCategory = [NSPredicate predicateWithFormat: @"category.name = %@",
                                              selectedCategoryName];
         
-        request.predicate = exercisesForCategory;
+        compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[exercisesForCategory, showInExerciseListPredicate]];
         
     } else if (_searchIsActive == YES){
         
@@ -842,16 +846,17 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
             
             NSPredicate *nameContainsString = [NSPredicate predicateWithFormat: @"name CONTAINS[cd] %@", self.exerciseSearchString];
             
-            NSCompoundPredicate *compPred = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercises, nameContainsString]];
-            request.predicate = compPred;
+            compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercises, nameContainsString, showInExerciseListPredicate]];
             
         } else{
             
-            request.predicate = noPlaceholderExercises;
+            compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates: @[noPlaceholderExercises, showInExerciseListPredicate]];
             
         }
         
     }
+    
+    request.predicate = compoundPredicate;
     
     return request;
     
@@ -934,9 +939,17 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 - (IBAction)didPressDeleteButton:(id)sender{
     
+    [self.exerciseTableView beginUpdates];
     
+    [self.exerciseTableView deleteRowsAtIndexPaths: @[self.selectedCellIndexPath]
+                                  withRowAnimation: UITableViewRowAnimationLeft];
     
+    TJBExercise *deletedExercise = self.contentExercisesArray[self.selectedCellIndexPath.row];
     
+    [self.contentExercisesArray removeObject: deletedExercise];
+    [[CoreDataController singleton] deleteExercise: deletedExercise];
+    
+    [self.exerciseTableView endUpdates];
     
     
     

@@ -101,6 +101,8 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 - (NSMutableArray *)placeholderExerciseArrayWithLength:(int)length;
 - (TJBExercise *)exerciseForName:(NSString *)name wasNewlyCreated:(NSNumber **)wasNewlyCreated createAsPlaceholderExercise:(NSNumber *)createAsPlaceholderExercise;
 
+- (void)deleteExercise:(TJBExercise *)exercise;
+
 #pragma mark - Managed Object Deletion
 
 - (void)deleteRealizedChain:(TJBRealizedChain *)rc;
