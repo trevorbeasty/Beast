@@ -1753,15 +1753,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     _cellsNeedUpdating = YES;
     
-//    if (self.tabBarController){
-//        
-//        if (![self.tabBarController.selectedViewController isEqual: self]){
-//            
-//            _cellsNeedUpdating = YES; // when this state BOOL == YES, it means that core data was saved while this was not the active view controller in a tab bar controller. When this is the case, it is necessary for the table view to reload its cells when its view appears
-//            
-//        }
-//        
-//    }
+    return;
 
 }
 

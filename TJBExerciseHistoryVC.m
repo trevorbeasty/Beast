@@ -659,13 +659,15 @@
 
 - (void)coreDataDidUpdate{
     
-    [self deriveContentForActiveExercise];
-    
-    [self preloadCellsForActiveContent];
-    
-    [self configureNumberOfRecordsLabelAccordingToContent];
-    
-    [self.tableView reloadData];
+//    [self deriveContentForActiveExercise];
+//    
+//    [self preloadCellsForActiveContent];
+//    
+//    [self configureNumberOfRecordsLabelAccordingToContent];
+//    
+//    [self.tableView reloadData];
+//    
+//    return;
     
 }
 

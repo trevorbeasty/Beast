@@ -26,7 +26,6 @@
 
 
 
-//@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController; // core
 @property (nonatomic, strong) NSMutableArray<TJBExercise *> *contentExercisesArray; // core - managed objects supplied to table view as data source
 @property (strong) NSIndexPath *selectedCellIndexPath; // state - table view selection
 @property (copy) NSString *exerciseSearchString;
@@ -893,6 +892,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     
     [self deselectCellIfSelectionExists];
     
+    return;
+    
 }
 
 
@@ -958,18 +959,176 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 
 
-
-
+#pragma mark - Edit Actions
 
 
 - (IBAction)didPressEditButton:(id)sender{
+    
+    // present an alert controller giving the user to change the selected exercise category or name
+    
+    TJBExercise *selectedExercise = self.contentExercisesArray[self.selectedCellIndexPath.row];
+    NSString *alertTitle = [NSString stringWithFormat: @"%@", selectedExercise.name];
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: alertTitle
+                                                                   message: @"Would you like to edit the exercise name or category?"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    // cancel action
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
+                                                           style: UIAlertActionStyleCancel
+                                                         handler: nil];
+    [alert addAction: cancelAction];
+    
+    // edit name
+    
+    UIAlertAction *nameAction = [UIAlertAction actionWithTitle: @"Edit name"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: ^(UIAlertAction *action){
+                                                           
+                                                           [self editExerciseNameAlertSequenceForExercise: selectedExercise
+                                                                                   attemptedDuplicateName: nil];
+                                                           
+                                                       }];
+    [alert addAction: nameAction];
+    
+    // edit category
+    
+    UIAlertAction *categoryAction = [UIAlertAction actionWithTitle: @"Edit category"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: ^(UIAlertAction *action){
+                                                          
+                                                           [self editExerciseCategoryAlertSequenceForExercise: selectedExercise];
+                                                           
+                                                       }];
+    [alert addAction: categoryAction];
+    
+    // present alert
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
+    
 }
 
 
+- (void)editExerciseNameAlertSequenceForExercise:(TJBExercise *)exercise attemptedDuplicateName:(NSString *)attemptedDuplicateName{
+    
+    NSString *alertMessage;
+    if (attemptedDuplicateName){
+        
+        alertMessage = [NSString stringWithFormat: @"The exercise '%@' already exists. Please enter a different name", attemptedDuplicateName];
+        
+    } else{
+        
+        alertMessage = @"Enter new name";
+        
+    }
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: exercise.name
+                                                                   message: alertMessage
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    [alert addTextFieldWithConfigurationHandler: ^(UITextField *tf){
+        
+        tf.textAlignment = NSTextAlignmentCenter;
+        tf.autocapitalizationType = UITextAutocapitalizationTypeWords;
+        
+    }];
+    
+    UIAlertAction *submitAction = [UIAlertAction actionWithTitle: @"Submit"
+                                                           style: UIAlertActionStyleDefault
+                                                         handler: ^(UIAlertAction *action){
+                                                             
+                                                             UITextField *nameTF = alert.textFields[0];
+                                                             
+                                                             [self changeNameForExercise: exercise
+                                                                                 newName: nameTF.text];
+                                                             
+                                                         }];
+    [alert addAction: submitAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
+                                                           style: UIAlertActionStyleCancel
+                                                         handler: nil];
+    [alert addAction: cancelAction];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
+    
+}
+
+- (void)changeNameForExercise:(TJBExercise *)exercise newName:(NSString *)newName{
+    
+    BOOL exerciseNameAlreadyExists = [[CoreDataController singleton] exerciseExistsForName: newName];
+    
+    if (exerciseNameAlreadyExists){
+        
+        [self editExerciseNameAlertSequenceForExercise: exercise
+                                attemptedDuplicateName: newName];
+        
+    } else{
+        
+        exercise.name = newName;
+        [[CoreDataController singleton] saveContext];
+        
+    }
+
+}
 
 
+- (void)editExerciseCategoryAlertSequenceForExercise:(TJBExercise *)exercise{
+    
+    // categories
+    
+    CoreDataController *cdc = [CoreDataController singleton];
+    
+    TJBExerciseCategory *pushCat = [cdc exerciseCategory: PushType];
+    TJBExerciseCategory *pullCat = [cdc exerciseCategory: PullType];
+    TJBExerciseCategory *legsCat = [cdc exerciseCategory: LegsType];
+    TJBExerciseCategory *otherCat = [cdc exerciseCategory: OtherType];
+    
+    NSArray *categories = @[pushCat,
+                            pullCat,
+                            legsCat,
+                            otherCat];
+    
+    // alert
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: exercise.name
+                                                                   message: @"Select new category"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    for (TJBExerciseCategory *cat in categories){
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle: cat.name
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: ^(UIAlertAction *action){
+                                                           
+                                                           [self setCategory: cat
+                                                                 forExercise: exercise];
+                                                           
+                                                       }];
+        [alert addAction: action];
+        
+    }
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil]; // coreDataDidUpdateNotification already established so no need to direcly relaod table data
+    
+    return;
+    
+}
 
-
+- (void)setCategory:(TJBExerciseCategory *)category forExercise:(TJBExercise *)exercise{
+    
+    exercise.category = category;
+    
+    [[CoreDataController singleton] saveContext];
+    
+}
 
 
 

@@ -274,6 +274,8 @@
     
     [self.personalRecordsTableView reloadData];
     
+    return;
+    
 }
 
 

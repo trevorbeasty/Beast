@@ -584,8 +584,6 @@ static NSString const *restViewKey = @"restView";
     
         NSArray<TJBPreviousMarksDictionary *> *previousEntries = self.activePreviousMarks[i];
         
-        NSLog(@"number of previous entries: %lu", previousEntries.count);
-        
         TJBActiveRoutineExerciseItemVC *exerciseItemVC = [[TJBActiveRoutineExerciseItemVC alloc] initWithTitleNumber: titleNumber
                                                                                                   targetExerciseName: exercise.name
                                                                                                         targetWeight: weightString
