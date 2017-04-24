@@ -46,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *exerciseColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLastExecutedColumbLabel;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainier;
+@property (weak, nonatomic) IBOutlet UIView *metaTitleAreaContainer;
 
 // constraints
 
@@ -65,6 +66,7 @@
 
 
 @property (strong) UIView *exerciseSearchFieldContainer; // programmatically created view with embedded text field; used as search bar
+@property (strong) UITextField *exerciseSearchTextField; // created programmatically
 
 
 // IBAction
@@ -165,7 +167,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
     // meta view
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.metaTitleAreaContainer.backgroundColor = [UIColor blackColor];
     
     // table view
     
@@ -316,22 +319,6 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 - (void)browsingSCValueDidChange{
     
-//    TJBExerciseCategoryType catType = [self categoryForSCIndex: @(self.normalBrowsingExerciseSC.selectedSegmentIndex)];
-//    NSString *filterString = [[CoreDataController singleton] categoryStingFromEnum: catType];
-//    
-//    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
-//    
-//    NSPredicate *categoryFilter = [NSPredicate predicateWithFormat: @"category.name == %@",
-//                                   filterString];
-//    
-//    returnArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
-//    
-//    [returnArray filterUsingPredicate: categoryFilter];
-//    
-//    self.contentExercisesArray = returnArray;
-//    
-//    [self.exerciseTableView reloadData];
-    
     [self deriveExerciseContentGivenState]; // content is fetched according to state
     [self.exerciseTableView reloadData];
     
@@ -405,29 +392,51 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 - (NSDate *)dateLastExecutedForExercise:(TJBExercise *)exercise{
     
     // returns the date last executed for a given exercise
-    // must find the greatest date for realized sets and realized chains separately, then return the larger one
     
-    // realized set
+    NSOrderedSet<TJBRealizedSet *> *realizedSets = exercise.realizedSets;
     
-    NSDate *realizedSetDate = nil;
-    NSInteger realizedSetCount = exercise.realizedSets.count;
-    
-    if (realizedSetCount > 0){
+    if (realizedSets.count > 0){
         
-        NSOrderedSet *realizedSets = exercise.realizedSets;
-        realizedSetDate = [[realizedSets lastObject] submissionTime];
-        
-    }
-    
-    if (!realizedSetDate){
-        
-        return nil;
+        return [self dateForRealizedSetCollection: realizedSets
+                                            index: (int)realizedSets.count - 1];
         
     } else{
         
-        return realizedSetDate;
+        return nil;
         
     }
+    
+    
+}
+
+- (NSDate *)dateForRealizedSetCollection:(NSOrderedSet<TJBRealizedSet *> *)rsCollection index:(int)index{
+    
+    // recursively finds the largest submission time in the collection
+    // objects are held in chronological order, and thus, the greatest index is evaluated first
+    
+    NSDate *date = rsCollection[index].submissionTime;
+    
+    if (date){
+        
+        return date;
+        
+    } else{
+        
+        if (index == 0){
+            
+            return nil;
+            
+        } else{
+            
+            return [self dateForRealizedSetCollection: rsCollection
+                                                index: index - 1];
+            
+        }
+        
+        
+    }
+    
+    
     
 }
 
@@ -725,6 +734,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     searchContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     UITextField *searchBar = [[UITextField alloc] init];
+    self.exerciseSearchTextField = searchBar;
     
     // search bar aesthetics
     
@@ -1290,6 +1300,11 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                              
                          }
                          
+                         // table view
+                         
+                         CGRect currentTVFrame = self.exerciseTableView.frame;
+                         self.exerciseTableView.frame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y, currentTVFrame.size.width, currentTVFrame.size.height + verticalTranslation);
+                         
                          // search bar
                          
                          self.exerciseSearchFieldContainer.frame = self.columnTitleLabelsContainer.frame;
@@ -1309,6 +1324,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                          
                          [self updateToolbarBarButtonItemsAccordingGivenState];
                          
+                         [self.exerciseSearchTextField becomeFirstResponder];
   
                          
                      }];
@@ -1336,6 +1352,11 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                                                                               originY: -1 * verticalTranslation];
                              
                          }
+                         
+                         // table view
+                         
+                         CGRect currentTVFrame = self.exerciseTableView.frame;
+                         self.exerciseTableView.frame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y, currentTVFrame.size.width, currentTVFrame.size.height - verticalTranslation);
                          
                          // search bar
                          
