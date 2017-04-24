@@ -1619,7 +1619,12 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     [self.tableView deleteRowsAtIndexPaths: @[self.currentlySelectedPath]
                           withRowAnimation: UITableViewRowAnimationLeft];
     
+    NSLog(@"%@", self.currentlySelectedPath);
+    
     [self.activeTableViewCells removeObjectAtIndex: self.currentlySelectedPath.row];
+    
+    NSLog(@"daily list count: %lu", self.dailyList.count);
+    NSLog(@"active table view cells count: %lu", self.activeTableViewCells.count);
     
     if (self.dailyList.count == 1){
         
@@ -1696,21 +1701,17 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 - (void)deleteCoreDataObjectsForIndexPath:(NSIndexPath *)indexPath{
     
     id dailyListObject = self.dailyList[indexPath.row];
+    [self.dailyList removeObject: dailyListObject];
+    [self.masterList removeObject: dailyListObject];
     
     if ([dailyListObject isKindOfClass: [TJBRealizedChain class]]){
         
         TJBRealizedChain *rc = dailyListObject;
-        [self.dailyList removeObject: rc];
-        [self.masterList removeObject: rc];
-        
         [[CoreDataController singleton] deleteRealizedChain: rc];
         
     } else if ([dailyListObject isKindOfClass: [NSArray class]]){
         
         TJBRealizedSetGrouping rsg = dailyListObject;
-        [self.dailyList removeObject: rsg];
-        [self.masterList removeObject: rsg];
-        
         for (TJBRealizedSet *rs in rsg){
             
             [[CoreDataController singleton] deleteRealizeSet: rs];
@@ -1720,9 +1721,6 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     } else if ([dailyListObject isKindOfClass: [TJBRealizedSet class]]){
         
         TJBRealizedSet *rs = dailyListObject;
-        [self.dailyList removeObject: rs];
-        [self.masterList removeObject: rs];
-        
         [[CoreDataController singleton] deleteRealizeSet: rs];
 
     }

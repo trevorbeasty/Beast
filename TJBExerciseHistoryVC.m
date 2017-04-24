@@ -30,6 +30,12 @@
 
 @interface TJBExerciseHistoryVC () <UITableViewDelegate, UITableViewDataSource>
 
+{
+    
+    BOOL _needsUpdating;
+    
+}
+
 
 
 // IBOutlet
@@ -407,21 +413,25 @@
 
 - (void)activeExerciseDidUpdate:(TJBExercise *)exercise{
     
-    [self loadViewIfNeeded];
-    [self replaceTableView];
-    
     self.exercise = exercise;
-    self.exerciseDetailLabel.text = exercise.name;
     
-    [self deriveContentForActiveExercise];
+    _needsUpdating = YES;
     
-    // as is done with the table view, cells are preloaded to combat poor table view performance
-    
-    [self preloadCellsForActiveContent];
-    
-    [self.tableView reloadData];
-    
-    return;
+//    [self loadViewIfNeeded];
+//    [self replaceTableView];
+//    
+//    self.exercise = exercise;
+//    self.exerciseDetailLabel.text = exercise.name;
+//    
+//    [self deriveContentForActiveExercise];
+//    
+//    // as is done with the table view, cells are preloaded to combat poor table view performance
+//    
+//    [self preloadCellsForActiveContent];
+//    
+//    [self.tableView reloadData];
+//    
+//    return;
     
 }
 
@@ -658,6 +668,8 @@
 #pragma mark - Core Data
 
 - (void)coreDataDidUpdate{
+    
+    _needsUpdating = YES;
     
 //    [self deriveContentForActiveExercise];
 //    

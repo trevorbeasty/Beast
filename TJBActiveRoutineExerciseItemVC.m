@@ -51,7 +51,9 @@ static CGFloat const rowHorizontalSpacing = .5;
 
 static CGFloat const bottomCushion = 32;
 
+// content
 
+static int const previousMarksLimit = 5;
 
 
 @implementation TJBActiveRoutineExerciseItemVC
@@ -127,10 +129,10 @@ static CGFloat const bottomCushion = 32;
         
     }
     
-    self.titleExerciseLabel.font = [UIFont boldSystemFontOfSize: 25];
+    self.titleExerciseLabel.font = [UIFont boldSystemFontOfSize: 20];
 
     
-    self.numberLabel.font = [UIFont boldSystemFontOfSize: 25];
+    self.numberLabel.font = [UIFont boldSystemFontOfSize: 20];
     self.numberLabel.backgroundColor = [UIColor grayColor];
     self.numberLabel.textColor = [UIColor whiteColor];
     
@@ -285,6 +287,7 @@ static CGFloat const bottomCushion = 32;
 - (void)createStackViewContent{
     
     int limit = (int)self.previousEntries.count;
+    limit = limit > previousMarksLimit ? previousMarksLimit : limit;
     
     if (limit > 0){
         

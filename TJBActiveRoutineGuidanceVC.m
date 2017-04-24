@@ -124,10 +124,10 @@
 
 #pragma mark - Constants
 
-
+// new content display timing
 
 static float const animationTimeUnit = .4;
-
+static NSTimeInterval const initialNewContentDelay = .25;
 
 // header view (describing round and rest in content scroll view)
 
@@ -965,7 +965,7 @@ static NSString const *restViewKey = @"restView";
                 
                 [weakSelf performSelector: @selector(showNextSetOfTargets)
                                withObject: nil
-                               afterDelay: .25];
+                               afterDelay: initialNewContentDelay];
         
             } else{
                     
@@ -1196,127 +1196,15 @@ static NSString const *restViewKey = @"restView";
     
     _showingFirstTargets = NO;
     
-    // this method derives and displays the new targets. The transition to the new targets is animated to make it apparent to the user that a change has occurred
-    // timer
-    
-//    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [self.futureRestTarget intValue]
-//                                         withForwardIncrementing: YES
-//                                                  lastUpdateDate: nil];
-    
-    // give the timer non red zone colors
-    
-//    self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-    
-    // animate the timer and round label changes - they fly out to the sides, have their values updated, and fly back in
-    
-//    [self roundRestLabelAnimation];
-    
-    // nullify the cancellation restoration exercise index and round index
-    
     self.cancelRestorationExerciseIndex = nil;
     self.cancelRestorationRoundIndex = nil;
     
     // next animation
     
-    [self performSelector: @selector(configureImmediateTargets)
-               withObject: nil
-               afterDelay: animationTimeUnit * 2.0];
+    [self configureImmediateTargets];
     
 }
 
-
-- (void)roundRestLabelAnimation{
-    
-    // the new text to be displayed for the timer and round label
-//    
-//    NSString *newTimerText = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [self.currentRestTarget intValue]];
-//    
-//    
-//    
-//    NSString *newRoundText = [NSString stringWithFormat: @"%d/%d",
-//                              [self.activeRoundIndexForTargets intValue] + 1,
-//                              self.chainTemplate.numberOfRounds];
-//    
-//    // animation - fly the labels offscreen horizontally and then fly them back to original positions
-//    
-//    // must make the gap between the labels equal to the screen width and change both labels relationship with the screen edge appropriately so that the labels' width is maintained
-//    
-////    CGFloat buttonWidth = self.roundTitleLabel.bounds.size.width;
-//    
-//    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-//    
-//    void (^secondAnimation)(void) = ^{
-//        
-//        [UIView animateWithDuration: animationTimeUnit
-//                         animations: ^{
-//                             
-//                             // shift left
-//                             
-//                             NSArray *leftShiftViews = @[weakSelf.timerTitleLabel];
-//                             
-//                             for (UIView *view in leftShiftViews){
-//                                 
-//                                 CGRect viewRect = view.frame;
-//                                 
-//                                 view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-//                                 
-//                             }
-//                             
-//                             // shift right
-//                             
-//                             NSArray *rightShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
-//                             
-//                             for (UIView *view in rightShiftViews){
-//                                 
-//                                 CGRect viewRect = view.frame;
-//                                 
-//                                 view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-//                                 
-//                             }
-//                             
-//                         }
-//                         completion: nil];
-//        
-//    };
-//    
-//    [UIView animateWithDuration: animationTimeUnit
-//                     animations: ^{
-//                         
-//                         // shift left
-//                         
-//                         NSArray *leftShiftViews = @[weakSelf.roundTitleLabel, weakSelf.roundTopLabel];
-//                         
-//                         for (UIView *view in leftShiftViews){
-//                             
-//                             CGRect viewRect = view.frame;
-//                             
-//                             view.frame = CGRectMake(viewRect.origin.x - buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-//                             
-//                         }
-//                         
-//                         // shift right
-//                         
-//                         NSArray *rightShiftViews = @[weakSelf.timerTitleLabel];
-//                         
-//                         for (UIView *view in rightShiftViews){
-//                             
-//                             CGRect viewRect = view.frame;
-//                             
-//                             view.frame = CGRectMake(viewRect.origin.x + buttonWidth, viewRect.origin.y, viewRect.size.width, viewRect.size.height);
-//                             
-//                         }
-//                         
-//                     }
-//                     completion: ^(BOOL completed){
-//                         
-//                         weakSelf.roundTitleLabel.text = newRoundText;
-//                         weakSelf.timerTitleLabel.text = newTimerText;
-//                         
-//                         secondAnimation();
-//                         
-//                     }];
-    
-}
 
 #pragma mark - Convenience
 
