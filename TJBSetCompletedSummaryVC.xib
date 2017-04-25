@@ -39,7 +39,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="weight" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5o-p0-db4">
-                            <rect key="frame" x="0.0" y="51" width="170.5" height="50"/>
+                            <rect key="frame" x="0.0" y="51" width="171" height="50"/>
                             <color key="backgroundColor" red="0.97438395690000001" green="1" blue="0.69670033659999997" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="dAA-4o-izw"/>
@@ -48,7 +48,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B01-y6-c1V">
-                            <rect key="frame" x="172" y="51" width="170.5" height="50"/>
+                            <rect key="frame" x="171.5" y="51" width="171" height="50"/>
                             <color key="backgroundColor" red="0.97438395690000001" green="1" blue="0.69670033659999997" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                             <nil key="highlightedColor"/>
@@ -57,10 +57,10 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="M5o-p0-db4" firstAttribute="leading" secondItem="D3V-oW-gVy" secondAttribute="leading" id="0zT-tf-eds"/>
-                        <constraint firstAttribute="height" constant="101" id="5U3-bH-SfB"/>
+                        <constraint firstAttribute="height" constant="100.5" id="5U3-bH-SfB"/>
                         <constraint firstItem="Ypm-F3-n55" firstAttribute="top" secondItem="D3V-oW-gVy" secondAttribute="top" id="CtH-oH-8MB"/>
-                        <constraint firstItem="B01-y6-c1V" firstAttribute="leading" secondItem="M5o-p0-db4" secondAttribute="trailing" constant="1" id="DBh-Tk-kL2"/>
-                        <constraint firstItem="M5o-p0-db4" firstAttribute="top" secondItem="Ypm-F3-n55" secondAttribute="bottom" constant="1" id="Dvw-tO-0hr"/>
+                        <constraint firstItem="B01-y6-c1V" firstAttribute="leading" secondItem="M5o-p0-db4" secondAttribute="trailing" constant="0.5" id="DBh-Tk-kL2"/>
+                        <constraint firstItem="M5o-p0-db4" firstAttribute="top" secondItem="Ypm-F3-n55" secondAttribute="bottom" constant="0.5" id="Dvw-tO-0hr"/>
                         <constraint firstItem="B01-y6-c1V" firstAttribute="width" secondItem="M5o-p0-db4" secondAttribute="width" id="R9v-vG-3mL"/>
                         <constraint firstItem="B01-y6-c1V" firstAttribute="bottom" secondItem="M5o-p0-db4" secondAttribute="bottom" id="RAZ-ke-hqm"/>
                         <constraint firstItem="B01-y6-c1V" firstAttribute="top" secondItem="M5o-p0-db4" secondAttribute="top" id="ZNI-gG-Zf5"/>

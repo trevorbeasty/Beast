@@ -2138,13 +2138,6 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
 }
 
-#pragma mark - Debugging
-
-- (void)dealloc{
-    
-    NSLog(@"dealloc");
-    
-}
 
 
 

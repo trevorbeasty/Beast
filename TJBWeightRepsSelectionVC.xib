@@ -36,7 +36,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--- lbs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hqd-bG-zir">
-                    <rect key="frame" x="56" y="122" width="123" height="60"/>
+                    <rect key="frame" x="56" y="121" width="123" height="60"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="tYR-Hs-H0z"/>
@@ -63,7 +63,7 @@
                     </segments>
                 </segmentedControl>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="HnF-gb-8PT">
-                    <rect key="frame" x="56" y="182" width="123" height="363"/>
+                    <rect key="frame" x="56" y="181" width="123" height="364"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vib-K0-I1B">
                         <size key="itemSize" width="50" height="50"/>
@@ -87,18 +87,18 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Otr-Cg-8HO" userLabel="leftJumpBarContainer">
-                    <rect key="frame" x="4" y="202" width="44" height="323"/>
+                    <rect key="frame" x="4" y="201" width="44" height="324"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="izE-UW-yWL"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKI-9h-ZsH">
-                    <rect key="frame" x="196" y="202" width="44" height="323"/>
+                    <rect key="frame" x="196" y="201" width="44" height="324"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kFb-NO-8Ye">
-                    <rect key="frame" x="248" y="182" width="123" height="363"/>
+                    <rect key="frame" x="248" y="181" width="123" height="364"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YGx-n0-qjn">
                         <size key="itemSize" width="75" height="75"/>
@@ -112,7 +112,7 @@
                     </connections>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JhK-da-Iip" userLabel="titleBarContainer">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="122"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="121"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6wk-XS-Nbi" userLabel="topTitleBar">
                             <rect key="frame" x="0.0" y="71" width="375" height="50"/>
@@ -169,8 +169,8 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="6wk-XS-Nbi" firstAttribute="leading" secondItem="JhK-da-Iip" secondAttribute="leading" id="9Jd-hr-qVH"/>
-                        <constraint firstAttribute="height" constant="121.5" id="B8A-XY-1Y8"/>
-                        <constraint firstItem="6wk-XS-Nbi" firstAttribute="top" secondItem="Eiu-WQ-6wW" secondAttribute="bottom" constant="1" id="JFj-bD-Ym5"/>
+                        <constraint firstAttribute="height" constant="121" id="B8A-XY-1Y8"/>
+                        <constraint firstItem="6wk-XS-Nbi" firstAttribute="top" secondItem="Eiu-WQ-6wW" secondAttribute="bottom" constant="0.5" id="JFj-bD-Ym5"/>
                         <constraint firstItem="Eiu-WQ-6wW" firstAttribute="top" secondItem="JhK-da-Iip" secondAttribute="top" constant="20" id="j4G-M7-cSV"/>
                         <constraint firstAttribute="trailing" secondItem="Eiu-WQ-6wW" secondAttribute="trailing" id="l9r-Fz-7kI"/>
                         <constraint firstAttribute="trailing" secondItem="6wk-XS-Nbi" secondAttribute="trailing" id="lOV-OD-TXK"/>
@@ -178,16 +178,17 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaB-FC-1Bv" userLabel="thinLabel">
-                    <rect key="frame" x="187" y="122" width="1" height="471"/>
+                    <rect key="frame" x="187" y="121" width="1" height="472"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="1" id="on2-1X-65s"/>
+                        <constraint firstAttribute="width" constant="0.5" id="on2-1X-65s"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--- reps" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAV-Bn-215">
-                    <rect key="frame" x="248" y="122" width="123" height="60"/>
+                    <rect key="frame" x="248" y="121" width="123" height="60"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

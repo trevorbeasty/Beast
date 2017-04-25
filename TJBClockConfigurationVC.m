@@ -206,10 +206,12 @@
 
 - (void)configureViewAesthetics{
     
+    [self.view layoutSubviews];
+    
     // scheduled alert label
     
-    self.scheduledAlertLabel.font = [UIFont systemFontOfSize: 15];
-    self.scheduledAlertLabel.backgroundColor = [UIColor clearColor];
+    self.scheduledAlertLabel.font = [UIFont boldSystemFontOfSize: 15];
+    self.scheduledAlertLabel.backgroundColor = [UIColor grayColor];
     self.scheduledAlertLabel.textColor = [UIColor whiteColor];
     
     // title bars and container
@@ -220,11 +222,11 @@
     
     // meta view
     
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // divider label
     
-    self.thinDividerLabel.backgroundColor = [UIColor darkGrayColor];
+    self.thinDividerLabel.backgroundColor = [UIColor blackColor];
     
     // time labels
     
@@ -236,8 +238,8 @@
     for (UILabel *lab in restTitleLabels){
         
         lab.backgroundColor = [UIColor clearColor];
-        lab.font = [UIFont boldSystemFontOfSize: 20];
-        lab.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        lab.font = [UIFont systemFontOfSize: 15];
+        lab.textColor = [UIColor blackColor];
         
     }
     
@@ -246,7 +248,7 @@
         
         lab.backgroundColor = [UIColor clearColor];
         lab.font = [UIFont systemFontOfSize: 35];
-        lab.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        lab.textColor = [UIColor blackColor];
         
     }
     
@@ -262,33 +264,38 @@
     NSArray *editButtons = @[self.editButtonTargetRest, self.editButtonAlertTiming];
     for (UIButton *butt in editButtons){
         
-        butt.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-        [butt setTitleColor: [UIColor darkGrayColor] forState: UIControlStateNormal];
+        butt.backgroundColor = [UIColor grayColor];
+        [butt setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor] forState: UIControlStateNormal];
         butt.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
         
         CALayer *buttLayer = butt.layer;
         buttLayer.masksToBounds = YES;
-        buttLayer.cornerRadius = 25;
+        buttLayer.cornerRadius = butt.frame.size.height / 2.0;
         buttLayer.borderWidth = 1.0;
-        buttLayer.borderColor = [UIColor darkGrayColor].CGColor;
+        buttLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         
     }
     
     self.returnButton.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     [self.returnButton setTitleColor: [UIColor darkGrayColor] forState: UIControlStateNormal];
     self.returnButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    CALayer *rbLayer = self.returnButton.layer;
+    rbLayer.borderColor = [UIColor darkGrayColor].CGColor;
+    rbLayer.borderWidth = 1.0;
+    rbLayer.masksToBounds = YES;
+    rbLayer.cornerRadius = 4.0;
     
     // timer control buttons container and title label
     
-    self.timerControlsContainer.backgroundColor = [UIColor clearColor];
+    self.timerControlsContainer.backgroundColor = [UIColor grayColor];
     CALayer *tcLayer = self.timerControlsContainer.layer;
     tcLayer.borderWidth = 1.0;
     tcLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     tcLayer.masksToBounds = YES;
-    tcLayer.cornerRadius = 35;
+    tcLayer.cornerRadius = self.timerControlsContainer.frame.size.height / 2.0;
     
     self.timerControlsTitleLabel.font = [UIFont systemFontOfSize: 15];
-    self.timerControlsTitleLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.timerControlsTitleLabel.textColor = [UIColor blackColor];
     self.timerControlsTitleLabel.backgroundColor = [UIColor clearColor];
     
     
