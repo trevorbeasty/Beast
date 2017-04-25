@@ -439,10 +439,6 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
             
             [stagingArray removeAllObjects];
             
-        } else{
-            
-            abort();
-            
         }
     }
     

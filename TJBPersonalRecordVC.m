@@ -60,9 +60,6 @@
     
     [self configureNotifications];
     
-    
-    
-    
     return self;
     
 }

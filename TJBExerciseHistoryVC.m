@@ -46,6 +46,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *exerciseDetailLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberPreviousRecordsLabel;
 
+// programmatically created
+
+@property (strong) UIActivityIndicatorView *aiView;
+
 // core
 
 @property (strong) TJBExercise *exercise;
@@ -99,6 +103,42 @@
 }
 
 #pragma mark - View Life Cycle
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    if (_needsUpdating == YES){
+        
+        if (!self.aiView){
+            
+            [self createActivityIndicator];
+            
+        }
+        
+        self.aiView.hidden = NO;
+        [self.aiView startAnimating];
+        
+    }
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (_needsUpdating){
+        
+        [self deriveContentForActiveExercise];
+        
+        [self preloadCellsForActiveContent];
+        
+        [self configureNumberOfRecordsLabelAccordingToContent];
+        
+        [self.tableView reloadData];
+        
+        _needsUpdating = NO;
+        
+        [self.aiView stopAnimating];
+    }
+    
+}
 
 - (void)viewDidLoad{
     
@@ -224,7 +264,7 @@
         
     }
     
-    // if there is only one entry of fewer, assign the sortedContent and return
+    // if there is only one entry or fewer, assign the sortedContent and return
     
     if (collector.count <= 1){
         
@@ -331,6 +371,8 @@
     
 }
 
+
+
 - (id)objectForSourceArray:(NSArray *)array iterationPosition:(NSInteger)iterationPosition groupSize:(NSInteger)groupSize{
     
     if (groupSize > 1){
@@ -409,29 +451,33 @@
 
 
 
+
+#pragma mark - Activity Indicator View
+
+- (void)createActivityIndicator{
+    
+    [self.view layoutSubviews];
+    
+    UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    self.aiView = aiView;
+    
+    aiView.frame = self.aiView.frame;
+    aiView.hidesWhenStopped = YES;
+    
+    [self.view addSubview: aiView];
+    
+}
+
+
+
 #pragma mark - TJBExerciseHistoryProtocol
 
 - (void)activeExerciseDidUpdate:(TJBExercise *)exercise{
     
     self.exercise = exercise;
+    self.exerciseDetailLabel.text = exercise.name;
     
     _needsUpdating = YES;
-    
-//    [self loadViewIfNeeded];
-//    [self replaceTableView];
-//    
-//    self.exercise = exercise;
-//    self.exerciseDetailLabel.text = exercise.name;
-//    
-//    [self deriveContentForActiveExercise];
-//    
-//    // as is done with the table view, cells are preloaded to combat poor table view performance
-//    
-//    [self preloadCellsForActiveContent];
-//    
-//    [self.tableView reloadData];
-//    
-//    return;
     
 }
 
@@ -545,7 +591,10 @@
             
             // dequeue the realizedSetCell
             
-            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed: @"TJBRealizedChainCell"
+                                                                owner: self
+                                                              options: nil];
+            TJBRealizedChainCell *cell = nibObjects[0];
             
             [self layoutCellToEnsureCorrectWidth: cell
                                        indexPath: indexPath];
@@ -670,16 +719,6 @@
 - (void)coreDataDidUpdate{
     
     _needsUpdating = YES;
-    
-//    [self deriveContentForActiveExercise];
-//    
-//    [self preloadCellsForActiveContent];
-//    
-//    [self configureNumberOfRecordsLabelAccordingToContent];
-//    
-//    [self.tableView reloadData];
-//    
-//    return;
     
 }
 
