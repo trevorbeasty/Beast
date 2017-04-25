@@ -29,7 +29,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jxZ-1K-Udv">
-                    <rect key="frame" x="78" y="549" width="293" height="45"/>
+                    <rect key="frame" x="66" y="549" width="305" height="45"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="7dd-QB-uTV"/>
                     </constraints>
@@ -54,14 +54,14 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9fW-hG-EUr" userLabel="jumpBarContainer">
-                    <rect key="frame" x="4" y="171" width="70" height="354"/>
+                    <rect key="frame" x="8" y="171" width="50" height="354"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="70" id="GAu-YO-yGm"/>
+                        <constraint firstAttribute="width" constant="50" id="GAu-YO-yGm"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uu7-Ji-Bvg" userLabel="selectedValueLabel">
-                    <rect key="frame" x="78" y="91" width="293" height="60"/>
+                    <rect key="frame" x="66" y="91" width="305" height="60"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="iyb-LE-0bb"/>
                     </constraints>
@@ -111,7 +111,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="1Oc-G7-0rK">
-                    <rect key="frame" x="78" y="151" width="293" height="394"/>
+                    <rect key="frame" x="66" y="151" width="305" height="394"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dNT-u7-CQX">
                         <size key="itemSize" width="75" height="75"/>
@@ -135,8 +135,8 @@
                 <constraint firstItem="jxZ-1K-Udv" firstAttribute="top" secondItem="1Oc-G7-0rK" secondAttribute="bottom" constant="4" id="RRw-Nl-g6X"/>
                 <constraint firstItem="073-ai-Swu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="Ssa-A9-0eV"/>
                 <constraint firstItem="1Oc-G7-0rK" firstAttribute="trailing" secondItem="Uu7-Ji-Bvg" secondAttribute="trailing" id="Vnk-Bb-sKP"/>
-                <constraint firstItem="9fW-hG-EUr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="4" id="WL9-7N-8Jy"/>
-                <constraint firstItem="1Oc-G7-0rK" firstAttribute="leading" secondItem="9fW-hG-EUr" secondAttribute="trailing" constant="4" id="Xba-VE-e5X"/>
+                <constraint firstItem="9fW-hG-EUr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="WL9-7N-8Jy"/>
+                <constraint firstItem="1Oc-G7-0rK" firstAttribute="leading" secondItem="9fW-hG-EUr" secondAttribute="trailing" constant="8" id="Xba-VE-e5X"/>
                 <constraint firstAttribute="bottom" secondItem="073-ai-Swu" secondAttribute="bottom" constant="8" id="f4s-ZX-A6B"/>
                 <constraint firstItem="jxZ-1K-Udv" firstAttribute="leading" secondItem="1Oc-G7-0rK" secondAttribute="leading" id="l0p-MV-DDS"/>
                 <constraint firstItem="1Oc-G7-0rK" firstAttribute="top" secondItem="Uu7-Ji-Bvg" secondAttribute="bottom" id="tf5-b8-OZB"/>

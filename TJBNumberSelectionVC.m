@@ -247,6 +247,8 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureViewAesthetics{
     
+    [self.view layoutSubviews];
+    
     // meta views
     
     self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
@@ -255,13 +257,12 @@ static NSString * const reuseIdentifier = @"cell";
     
     // segmented control
     
-    self.multiplierSegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    self.multiplierSegmentedControl.backgroundColor = [UIColor grayColor];
+    self.multiplierSegmentedControl.tintColor = [UIColor grayColor];
+    self.multiplierSegmentedControl.backgroundColor = [UIColor clearColor];
     CALayer *scLayer = self.multiplierSegmentedControl.layer;
     scLayer.masksToBounds = YES;
-    scLayer.cornerRadius = 25.0;
-    scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
-//    scLayer.borderColor = [UIColor grayColor].CGColor;
+    scLayer.cornerRadius = self.multiplierSegmentedControl.frame.size.height / 2.0;
+    scLayer.borderColor = [UIColor grayColor].CGColor;
     scLayer.borderWidth = 1.0;
     
     // title label
@@ -292,12 +293,12 @@ static NSString * const reuseIdentifier = @"cell";
     
     // jump bar container
     
-    self.jumpBarContainer.backgroundColor = [UIColor grayColor];
+    self.jumpBarContainer.backgroundColor = [UIColor clearColor];
     CALayer *jbLayer = self.jumpBarContainer.layer;
     jbLayer.masksToBounds = YES;
-    jbLayer.cornerRadius = 25;
+    jbLayer.cornerRadius = self.jumpBarContainer.frame.size.width / 2.0;
     jbLayer.borderWidth = 1.0;
-    jbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    jbLayer.borderColor = [UIColor grayColor].CGColor;
     
 }
 
@@ -399,9 +400,9 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureUnselectedCellAppearance:(TJBWeightRepsSelectionCell *)cell{
     
-    cell.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    cell.numberLabel.font = [UIFont systemFontOfSize: 15];
-    cell.numberLabel.textColor = [UIColor darkGrayColor];
+    cell.backgroundColor = [UIColor grayColor];
+    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
+    cell.numberLabel.textColor = [UIColor whiteColor];
     
     CALayer *cellLayer = cell.layer;
     cellLayer.masksToBounds = YES;

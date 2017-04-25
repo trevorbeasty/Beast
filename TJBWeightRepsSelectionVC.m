@@ -186,6 +186,8 @@ typedef enum {
 
 - (void)configureViewAesthetics{
     
+    [self.view layoutSubviews];
+    
     // thin divider label
     
     self.thinDividerLabel.backgroundColor = [UIColor blackColor];
@@ -202,20 +204,18 @@ typedef enum {
     NSArray *segmentedControls = @[self.weightSegmentedControl, self.repsSegmentedControl];
     for (UISegmentedControl *sc in segmentedControls){
         
-        sc.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-        sc.backgroundColor = [UIColor grayColor];
+        sc.tintColor = [UIColor grayColor];
+        sc.backgroundColor = [UIColor clearColor];
         
         CALayer *scLayer = sc.layer;
         scLayer.masksToBounds = YES;
-        scLayer.cornerRadius = 22;
+        scLayer.cornerRadius = sc.frame.size.height / 2.0;
         scLayer.borderWidth = 1.0;
-        scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+        scLayer.borderColor = [UIColor grayColor].CGColor;
         
     }
     
     // top labels
-    
-    [self.view layoutIfNeeded];
     
     NSArray *titleLabels = @[self.topTitleLabel];
     for (UILabel *label in titleLabels){
@@ -262,7 +262,6 @@ typedef enum {
         layer.masksToBounds = YES;
         layer.cornerRadius = view.frame.size.width / 2.0;
         layer.borderWidth = 1.0;
-//        layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         layer.borderColor = [UIColor grayColor].CGColor;
         
     }
@@ -374,7 +373,6 @@ typedef enum {
     
     cell.backgroundColor = [UIColor grayColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
-//    cell.numberLabel.textColor = [[TJBAestheticsController singleton] paleLightBlueColor];
     cell.numberLabel.textColor = [UIColor whiteColor];
     
     CALayer *cellLayer = cell.layer;

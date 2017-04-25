@@ -14,12 +14,9 @@
 
 // table view cells
 
-#import "TJBRealizedSetCell.h"
 #import "TJBRealizedChainCell.h"
 #import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
-#import "TJBRealizedSetCollectionCell.h"
-#import "TJBMasterCell.h"
 
 
 // aesthetics
@@ -164,12 +161,6 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    UINib *realizedSetNib = [UINib nibWithNibName: @"TJBRealizedSetCell"
-                                           bundle: nil];
-    
-    [self.tableView registerNib: realizedSetNib
-         forCellReuseIdentifier: @"TJBRealizedSetCell"];
-    
     UINib *realizedChainNib = [UINib nibWithNibName: @"TJBRealizedChainCell"
                                              bundle: nil];
     
@@ -187,12 +178,6 @@
     
     [self.tableView registerNib: noDataCell
          forCellReuseIdentifier: @"TJBNoDataCell"];
-    
-    UINib *realizedSetCollectionCell = [UINib nibWithNibName: @"TJBRealizedSetCollectionCell"
-                                                      bundle: nil];
-    
-    [self.tableView registerNib: realizedSetCollectionCell
-         forCellReuseIdentifier: @"TJBRealizedSetCollectionCell"];
     
 }
 
