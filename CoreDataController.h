@@ -119,6 +119,10 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 - (void)appendPlaceholderExerciseToSelectedExercisesSet:(NSMutableOrderedSet <TJBExercise *> *)exercises;
 
+#pragma mark - Model Object Grouping
+
+- (NSMutableArray *)groupModelObjects:(NSMutableArray *)modelObjects;
+
 @end
 
 

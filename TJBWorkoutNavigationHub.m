@@ -260,8 +260,9 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
-    NSError *error;
+    // only standalone sets are fetched, so that no sets are duplicated
     
+    NSError *error;
     NSArray *fetchedSets = [moc executeFetchRequest: [self realizedSetRequest]
                                               error: &error];
     NSArray *fetchedChains = [moc executeFetchRequest: [self realizedChainRequest]
@@ -270,43 +271,154 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     [interimArray1 addObjectsFromArray: fetchedSets];
     [interimArray1 addObjectsFromArray: fetchedChains];
     
-    [interimArray1 sortUsingComparator: ^(id obj1, id obj2){
+    [self sortModelObjectsByDateProperty: interimArray1];
+    
+    // evaluate if consecutive array objects are realized sets of the same exercises.  Group these using TJBRealizedSetCollection
+    // interim array 2 holds realized chains and TJBRealizedSetGrouping
+    
+    self.masterList = [[CoreDataController singleton] groupModelObjects: interimArray1];
+    
+//    NSMutableArray *interimArray2 = [[NSMutableArray alloc] init];
+//    NSMutableArray *stagingArray = [[NSMutableArray alloc] init];
+//    
+//    // the above task will be completed by stepping through interim array 1
+//    // if interim array 1 only contains 1 object, the logic will not work (it will never even begin iterating).  In this case, simply assign interim array 2
+//    
+//    if (interimArray1.count == 1){
+//        
+//        self.masterList = interimArray1;
+//        return;
+//        
+//    }
+//    
+//    NSInteger limit2 = interimArray1.count - 1;
+//    
+//    for (int i = 0; i < limit2; i++){
+//        
+//        [stagingArray addObject: interimArray1[i]];
+//        
+//        BOOL object1IsRealizedSet = [interimArray1[i] isKindOfClass: [TJBRealizedSet class]];
+//        BOOL object2IsRealizedSet = [interimArray1[i+1] isKindOfClass: [TJBRealizedSet class]];
+//        BOOL objectsAreBothRealizedSets = object1IsRealizedSet && object2IsRealizedSet;
+//        BOOL isLastIteration = i == interimArray1.count - 2;
+//        
+//        // if the for loop is making its last iteration, special logic must be employed.  Otherwise, the last object will not be added
+//        
+//        if (isLastIteration){
+//            
+//            if (objectsAreBothRealizedSets){
+//                
+//                TJBRealizedSet *rs1 = interimArray1[i];
+//                TJBRealizedSet *rs2 = interimArray1[i+1];
+//                
+//                BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
+//                
+//                if (setsHaveSameExercise){
+//                    
+//                    [stagingArray addObject: interimArray1[i+1]];
+//                    
+//                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
+//                    
+//                    [interimArray2 addObject: rsc];
+//                    
+//                } else{
+//                    
+//                    if (stagingArray.count > 1){
+//                        
+//                        TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
+//                        
+//                        [interimArray2 addObject: rsc];
+//                        
+//                        [interimArray2 addObject: interimArray1[i+1]];
+//                        
+//                    } else{
+//                        
+//                        [interimArray2 addObject: interimArray1[i]];
+//                        [interimArray2 addObject: interimArray1[i+1]];
+//                        
+//                    }
+//                    
+//                }
+//                
+//            } else{
+//                
+//                if (stagingArray.count > 1){
+//                    
+//                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
+//                    
+//                    [interimArray2 addObject: rsc];
+//                    
+//                    [interimArray2 addObject: interimArray1[i+1]];
+//                    
+//                } else{
+//                    
+//                    [interimArray2 addObject: interimArray1[i]];
+//                    [interimArray2 addObject: interimArray1[i+1]];
+//                    
+//                }
+//                
+//            }
+//            
+//            continue;
+//            
+//        }
+//        
+//        if (objectsAreBothRealizedSets){
+//            
+//            TJBRealizedSet *rs1 = interimArray1[i];
+//            TJBRealizedSet *rs2 = interimArray1[i+1];
+//            
+//            BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
+//            
+//            if (setsHaveSameExercise){
+//                
+//                continue;
+//                
+//            }
+//            
+//        }
+//        
+//        // the index set will only have length greater than 1 if it has the indices of multiple realized sets
+//        
+//        if (stagingArray.count > 1){
+//            
+//            // give the rsc all realized sets
+//            
+//            TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
+//            
+//            // add the rsc to interim array 2 and clear all objects from the staging array
+//            
+//            [interimArray2 addObject: rsc];
+//            
+//            [stagingArray removeAllObjects];
+//            
+//            
+//        } else if (stagingArray.count == 1){
+//            
+//            // the object is either a lone realized set or realized chain.  Add it to interim array 2
+//            
+//            [interimArray2 addObject: stagingArray[0]];
+//            
+//            // clear all objects from the staging array
+//            
+//            [stagingArray removeAllObjects];
+//            
+//        }
+//    }
+//    
+//    // assign the master list using the appropriate interim array
+//    
+//    self.masterList = interimArray2;
+    
+}
+
+- (void)sortModelObjectsByDateProperty:(NSMutableArray *)modelObjects{
+    
+    [modelObjects sortUsingComparator: ^(id obj1, id obj2){
         
-        NSDate *obj1Date;
-        NSDate *obj2Date;
-        
-        // identify object class type in order to determine the correct key-value path for the date
-        
-        // obj1
-        
-        if ([obj1 isKindOfClass: [TJBRealizedSet class]]){
-            
-            TJBRealizedSet *obj1WithClass = (TJBRealizedSet *)obj1;
-            obj1Date = obj1WithClass.submissionTime;
-            
-            
-        } else if([obj1 isKindOfClass: [TJBRealizedChain class]]){
-            
-            TJBRealizedChain *obj1WithClass = (TJBRealizedChain *)obj1;
-            obj1Date = obj1WithClass.dateCreated;
-            
-        }
-        
-        // obj2
-        
-        if ([obj2 isKindOfClass: [TJBRealizedSet class]]){
-            
-            TJBRealizedSet *obj2WithClass = (TJBRealizedSet *)obj2;
-            obj2Date = obj2WithClass.submissionTime;
-            
-            
-        } else if([obj2 isKindOfClass: [TJBRealizedChain class]]){
-            
-            TJBRealizedChain *obj2WithClass = (TJBRealizedChain *)obj2;
-            obj2Date = obj2WithClass.dateCreated;
-            
-        }
-        
+        NSDate *obj1Date = [self dateForModelObject: obj1];
+        NSDate *obj2Date = [self dateForModelObject: obj2];
+
         // return the appropriate NSComparisonResult
         
         BOOL obj2LaterThanObj1 = [obj2Date timeIntervalSinceDate: obj1Date] > 0;
@@ -322,140 +434,26 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
         }
     }];
     
-    // evaluate if consecutive array objects are realized sets of the same exercises.  Group these using TJBRealizedSetCollection
-    // interim array 2 holds realized chains and TJBRealizedSetGrouping
+}
+
+- (NSDate *)dateForModelObject:(id)modelObject{
     
-    NSMutableArray *interimArray2 = [[NSMutableArray alloc] init];
-    NSMutableArray *stagingArray = [[NSMutableArray alloc] init];
-    
-    // the above task will be completed by stepping through interim array 1
-    // if interim array 1 only contains 1 object, the logic will not work (it will never even begin iterating).  In this case, simply assign interim array 2
-    
-    if (interimArray1.count == 1){
+    if ([modelObject isKindOfClass: [TJBRealizedSet class]]){
         
-        self.masterList = interimArray1;
-        return;
+        TJBRealizedSet *rs = (TJBRealizedSet *)modelObject;
+        return rs.submissionTime;
+        
+        
+    } else if([modelObject isKindOfClass: [TJBRealizedChain class]]){
+        
+        TJBRealizedChain *rc = (TJBRealizedChain *)modelObject;
+        return rc.dateCreated;
+        
+    } else{
+        
+        return nil;
         
     }
-    
-    NSInteger limit2 = interimArray1.count - 1;
-    
-    for (int i = 0; i < limit2; i++){
-        
-        [stagingArray addObject: interimArray1[i]];
-        
-        BOOL object1IsRealizedSet = [interimArray1[i] isKindOfClass: [TJBRealizedSet class]];
-        BOOL object2IsRealizedSet = [interimArray1[i+1] isKindOfClass: [TJBRealizedSet class]];
-        BOOL objectsAreBothRealizedSets = object1IsRealizedSet && object2IsRealizedSet;
-        BOOL isLastIteration = i == interimArray1.count - 2;
-        
-        // if the for loop is making its last iteration, special logic must be employed.  Otherwise, the last object will not be added
-        
-        if (isLastIteration){
-            
-            if (objectsAreBothRealizedSets){
-                
-                TJBRealizedSet *rs1 = interimArray1[i];
-                TJBRealizedSet *rs2 = interimArray1[i+1];
-                
-                BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
-                
-                if (setsHaveSameExercise){
-                    
-                    [stagingArray addObject: interimArray1[i+1]];
-                    
-                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-                    
-                    [interimArray2 addObject: rsc];
-                    
-                } else{
-                    
-                    if (stagingArray.count > 1){
-                        
-                        TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-                        
-                        [interimArray2 addObject: rsc];
-                        
-                        [interimArray2 addObject: interimArray1[i+1]];
-                        
-                    } else{
-                        
-                        [interimArray2 addObject: interimArray1[i]];
-                        [interimArray2 addObject: interimArray1[i+1]];
-                        
-                    }
-                    
-                }
-                
-            } else{
-                
-                if (stagingArray.count > 1){
-                    
-                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-                    
-                    [interimArray2 addObject: rsc];
-                    
-                    [interimArray2 addObject: interimArray1[i+1]];
-                    
-                } else{
-                    
-                    [interimArray2 addObject: interimArray1[i]];
-                    [interimArray2 addObject: interimArray1[i+1]];
-                    
-                }
-                
-            }
-            
-            continue;
-            
-        }
-        
-        if (objectsAreBothRealizedSets){
-            
-            TJBRealizedSet *rs1 = interimArray1[i];
-            TJBRealizedSet *rs2 = interimArray1[i+1];
-            
-            BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
-            
-            if (setsHaveSameExercise){
-                
-                continue;
-                
-            }
-            
-        }
-        
-        // the index set will only have length greater than 1 if it has the indices of multiple realized sets
-        
-        if (stagingArray.count > 1){
-            
-            // give the rsc all realized sets
-            
-            TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-            
-            // add the rsc to interim array 2 and clear all objects from the staging array
-            
-            [interimArray2 addObject: rsc];
-            
-            [stagingArray removeAllObjects];
-            
-            
-        } else if (stagingArray.count == 1){
-            
-            // the object is either a lone realized set or realized chain.  Add it to interim array 2
-            
-            [interimArray2 addObject: stagingArray[0]];
-            
-            // clear all objects from the staging array
-            
-            [stagingArray removeAllObjects];
-            
-        }
-    }
-    
-    // assign the master list using the appropriate interim array
-    
-    self.masterList = interimArray2;
     
 }
 
@@ -583,13 +581,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
         
         // activity indicator
         
-        if (!self.activityIndicatorView){
-            
-            [self createActivityIndicatorAndAddToViewHierarchy];
-            
-        }
-        
-        [self.activityIndicatorView startAnimating];
+        [self showActivityIndicator];
         
         // the following methods are called asynchronously so that the view draws and shows the activity indicator while all tasks execute
         
@@ -597,9 +589,8 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
             
             [self fetchManagedObjectsAndDeriveMasterList];
             
-            [self showWorkoutLogForDate: self.workoutLogActiveDay
-                  animateDateControlBar: YES
-          withDateControlAnimationDelay: contentLoadingSmoothingDelay];
+            [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: self.workoutLogActiveDay
+                                                         shouldAnimateDateControlBar: YES];
             
             _cellsNeedUpdating = NO;
             
@@ -772,26 +763,14 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 #pragma mark - Meta Workout Log Methods
 
-- (void)showWorkoutLogForDate:(NSDate *)date animateDateControlBar:(BOOL)shouldAnimate withDateControlAnimationDelay:(NSTimeInterval)delay{
+- (void)deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate:(NSDate *)date shouldAnimateDateControlBar:(BOOL)shouldAnimate{
     
     self.dateControlActiveDate = date;
     self.workoutLogActiveDay = date;
     
-    // create the date controls corresponding to the passed in date
-    
     [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
     
-//    [self artificiallySelectDate: date];
-    
-    // extract the day component to back solve for the date object index
-    
-    // immediately change the colors of the previously selected and newly selected controls
-    
-//    [self selectDateObjectCorrespondingToIndex: dayAsIndex];
-    
     [self updateActiveDateLabelWithDate: date];
-    
-    // state
     
     NSNumber *dayAsIndex = @([self dayIndexForDate: date]);
     self.selectedDateButtonIndex = dayAsIndex;
@@ -799,8 +778,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
     [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: date];
     [self configureToolbarAppearanceAccordingToStateVariables];
-    
-//    [self prepareNewContentCellsAndRemoveActivityIndicator];
     
     [self deriveDailyList];
     [self updateNumberOfEntriesLabel];
@@ -812,9 +789,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     [self enableControlsAndGiveActiveAppearance];
     self.toolbar.hidden = NO;
     self.toolbarControlArrow.hidden = NO;
-    
-//    [self.view setNeedsDisplay];
-    
+
     if (shouldAnimate){
         
         [self configureInitialDateControlAnimationPosition];
@@ -1112,13 +1087,15 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
     // activity indicator
     
-    if (!self.activityIndicatorView){
-        
-        [self createActivityIndicatorAndAddToViewHierarchy];
-        
-    }
+//    if (!self.activityIndicatorView){
+//        
+//        [self createActivityIndicatorAndAddToViewHierarchy];
+//        
+//    }
+//    
+//    [self.activityIndicatorView startAnimating];
     
-    [self.activityIndicatorView startAnimating];
+    [self showActivityIndicator];
     
     // immediately change the colors of the previously selected and newly selected controls
     
@@ -1385,19 +1362,26 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
 }
 
-- (void)createActivityIndicatorAndAddToViewHierarchy{
+- (void)showActivityIndicator{
     
-    UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+    if (!self.activityIndicatorView){
+        
+        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+        
+        aiView.frame = self.shadowContainer.frame;
+        aiView.hidesWhenStopped = YES;
+        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        
+        aiView.layer.opacity = .9;
+        
+        self.activityIndicatorView = aiView;
+        
+        [self.view addSubview: aiView];
+        
+    }
     
-    aiView.frame = self.shadowContainer.frame;
-    aiView.hidesWhenStopped = YES;
-    aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
-    aiView.layer.opacity = .9;
-    
-    self.activityIndicatorView = aiView;
-    
-    [self.view addSubview: aiView];
+    [self.activityIndicatorView startAnimating];
+
     
 }
 
@@ -1623,19 +1607,27 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 - (IBAction)didPressJumpToLast:(id)sender{
     
-    [self showWorkoutLogForDate: self.lastSelectedWorkoutLogDate
-          animateDateControlBar: NO
-  withDateControlAnimationDelay: 0];
+    [self showActivityIndicator];
+    
+    dispatch_async(dispatch_get_main_queue(),  ^{
+        
+        [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: self.lastSelectedWorkoutLogDate
+                                                     shouldAnimateDateControlBar: NO];
+        
+    });
     
 }
 
 - (IBAction)didPressToday:(id)sender{
-
-    [self showWorkoutLogForDate: [NSDate date]
-          animateDateControlBar: YES
-  withDateControlAnimationDelay: 0];
     
-
+    [self showActivityIndicator];
+    
+    dispatch_async(dispatch_get_main_queue(),  ^{
+        
+        [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: [NSDate date]
+                                                     shouldAnimateDateControlBar: YES];
+        
+    });
     
 }
 

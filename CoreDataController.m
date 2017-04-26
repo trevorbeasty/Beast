@@ -12,6 +12,8 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *moc;
 
+@property (strong) NSCalendar *calendar;
+
 @end
 
 NSString * const ExerciseDataChanged = @"exerciseDataChanged";
@@ -745,9 +747,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         [targetUnitsCopy addObject: iterativeTargetUnit];
         
         tuc.targetUnits = targetUnitsCopy;
-        
-//        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
-        
+
     }
     
     [self saveContext];
@@ -769,9 +769,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         [targetUnitsCopy removeObject: tu];
         
         tuc.targetUnits = targetUnitsCopy;
-        
-//        NSLog(@"number of rounds in target unit collection: %lu", tuc.targetUnits.count);
-        
+
     }
     
     [self saveContext];
@@ -832,10 +830,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     [targetUnitCollectionsCopy addObject: tuc];
     
     chainTemplate.targetUnitCollections = targetUnitCollectionsCopy;
-    
-//    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
-//    NSLog(@"chain template has %lu exercises", chainTemplate.exercises.count);
-    
+
     [self saveContext];
     
 }
@@ -868,11 +863,170 @@ NSString * const placeholderCategoryName = @"Placeholder";
     NSMutableOrderedSet *exercisesCopy = [chainTemplate.exercises mutableCopy];
     [exercisesCopy removeObjectAtIndex: exercisesCopy.count - 1];
     chainTemplate.exercises = exercisesCopy;
-    
-//    NSLog(@"chain template has %lu target unit collections", chainTemplate.targetUnitCollections.count);
-//    NSLog(@"chain template has %lu exercises", chainTemplate.exercises.count);
-    
+
     [self saveContext];
+    
+}
+
+
+#pragma mark - Model Object Grouping
+
+- (NSMutableArray *)groupModelObjects:(NSMutableArray *)modelObjects{
+    
+    if (modelObjects.count <= 1){
+        
+        return modelObjects;
+        
+    }
+    
+    NSMutableArray *returnArray = [[NSMutableArray alloc] init];
+    
+    NSInteger groupSize = 1;
+    
+    NSInteger limit = modelObjects.count;
+    for (NSInteger i = 0; i < limit - 1; i++){
+        
+        id obj1 = modelObjects[i];
+        id obj2 = modelObjects[i + 1];
+        
+        BOOL objectsAreRealizedSetsOfSameDay = [self objectsAreRealizedSetsOfSameDay_obj1: obj1
+                                                                                     obj2: obj2];
+        
+        if (i == limit - 2){
+            
+            // different logic must be applied for the last two objects, otherwise the last object will not be added
+            
+            if (objectsAreRealizedSetsOfSameDay){
+                
+                groupSize += 1;
+                
+                id object = [self objectForSourceArray: modelObjects
+                                     iterationPosition: i + 1
+                                             groupSize: groupSize];
+                
+                [returnArray addObject: object];
+                
+                break;
+                
+            } else{
+                
+                id object1 = [self objectForSourceArray: modelObjects
+                                      iterationPosition: i
+                                              groupSize: groupSize];
+                
+                id object2 = [self objectForSourceArray: modelObjects
+                                      iterationPosition: i + 1
+                                              groupSize: 1];
+                
+                [returnArray addObject: object1];
+                [returnArray addObject: object2];
+                
+                break;
+                
+            }
+            
+            
+        } else{
+            
+            if (objectsAreRealizedSetsOfSameDay){
+                
+                groupSize += 1;
+                continue;
+                
+            } else{
+                
+                id object = [self objectForSourceArray: modelObjects
+                                     iterationPosition: i
+                                             groupSize: groupSize];
+                
+                [returnArray addObject: object];
+                
+                groupSize = 1;
+                
+                continue;
+                
+            }
+        }
+        
+    }
+    
+    return returnArray;
+    
+}
+
+- (id)objectForSourceArray:(NSArray *)array iterationPosition:(NSInteger)iterationPosition groupSize:(NSInteger)groupSize{
+    
+    if (groupSize > 1){
+        
+        NSMutableArray *collector = [[NSMutableArray alloc] init];
+        
+        for (NSInteger i = iterationPosition - (groupSize - 1); i <= iterationPosition; i++){
+            
+            [collector addObject: array[i]];
+            
+        }
+        
+        TJBRealizedSetGrouping rsg = [NSArray arrayWithArray: collector];
+        return rsg;
+        
+    } else{
+        
+        return array[iterationPosition];
+        
+    }
+    
+}
+
+- (NSDate *)dateForObject:(id)object{
+    
+    if ([object isKindOfClass: [TJBRealizedSet class]]){
+        
+        TJBRealizedSet *rs = object;
+        return rs.submissionTime;
+        
+    } else if ([object isKindOfClass: [TJBRealizedChain class]]){
+        
+        TJBRealizedChain *rc = object;
+        return  rc.dateCreated;
+        
+    } else{
+        
+        return nil;
+        
+    }
+    
+}
+
+- (BOOL)objectsAreRealizedSetsOfSameDay_obj1:(id)obj1 obj2:(id)obj2{
+    
+    BOOL obj1IsRealizedSet = [self objectIsRealizedSet: obj1];
+    BOOL obj2IsRealizedSet = [self objectIsRealizedSet: obj2];
+    
+    if (obj1IsRealizedSet && obj2IsRealizedSet){
+        
+        if (!self.calendar){
+            
+            self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+            
+        }
+        
+        TJBRealizedSet *rs1 = obj1;
+        TJBRealizedSet *rs2 = obj2;
+        
+        return [self.calendar isDate: rs1.submissionTime
+                     inSameDayAsDate: rs2.submissionTime];
+        
+    } else{
+        
+        return NO;
+        
+    }
+    
+}
+
+- (BOOL)objectIsRealizedSet:(id)obj{
+    
+    return [obj isKindOfClass: [TJBRealizedSet class]];
     
 }
 
