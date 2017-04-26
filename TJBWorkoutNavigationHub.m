@@ -150,7 +150,7 @@ static const CGFloat toolbarAnimationTime = .2;
 
 // content loading
 
-static NSTimeInterval const contentLoadingSmoothingDelay = 4.0;
+static NSTimeInterval const contentLoadingSmoothingDelay = .3;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
@@ -652,6 +652,8 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 - (void)deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate:(NSDate *)workoutLogDate dateControlDate:(NSDate *)dateControlDate shouldAnimateDateControlBar:(BOOL)shouldAnimate{
     
+    [NSThread sleepForTimeInterval: contentLoadingSmoothingDelay];
+    
     self.dateControlActiveDate = dateControlDate;
     self.workoutLogActiveDay = workoutLogDate;
     
@@ -977,19 +979,43 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: representedDate];
     [self configureToolbarAppearanceAccordingToStateVariables];
     
-    dispatch_async(dispatch_get_main_queue(),  ^{
-        
-        [self deriveDailyList];
-        [self updateNumberOfEntriesLabel];
- 
-        [self deriveActiveCellsAndCreateTableView];
-        [self.tableView reloadData];
-        
-        [self.activityIndicatorView stopAnimating];
-        
-        [self enableControlsAndGiveActiveAppearance];
-        
-    });
+    [self performSelector: @selector(userDateControlObjectSelectionCompletionActions)
+               withObject: nil
+               afterDelay: contentLoadingSmoothingDelay];
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int)contentLoadingSmoothingDelay * 10^9),  dispatch_get_main_queue(),  ^{
+//        
+//        [self deriveDailyList];
+//        [self updateNumberOfEntriesLabel];
+//        
+//        [self deriveActiveCellsAndCreateTableView];
+//        [self.tableView reloadData];
+//        
+//        [self.activityIndicatorView stopAnimating];
+//        
+//        [self enableControlsAndGiveActiveAppearance];
+//        
+//    });
+//    
+//    dispatch_async(dispatch_get_main_queue(),  ^{
+//        
+//
+//        
+//    });
+    
+}
+
+- (void)userDateControlObjectSelectionCompletionActions{
+    
+    [self deriveDailyList];
+    [self updateNumberOfEntriesLabel];
+    
+    [self deriveActiveCellsAndCreateTableView];
+    [self.tableView reloadData];
+    
+    [self.activityIndicatorView stopAnimating];
+    
+    [self enableControlsAndGiveActiveAppearance];
     
 }
 
