@@ -17,13 +17,26 @@
 
 #import "TJBAestheticsController.h" // aesthetics
 
-@interface TJBFreeformModeTabBarController ()
+@interface TJBFreeformModeTabBarController () <UIViewControllerRestoration>
 
 @end
 
+
+
+
+#pragma mark - Constants
+
+static NSString * const restorationID = @"TJBFreeformModeTabBarController";
+
+static NSString * const activeEntryID = @"TJBRealizedSetActiveEntryVC";
+static NSString * const personalRecordsID = @"TJBPersonalRecordsVC";
+static NSString * const exerciseHistoryVC = @"TJBExerciseHistoryVC";
+static NSString * const workoutLogID = @"TJBWorkoutNavigationHub";
+
+
+
+
 @implementation TJBFreeformModeTabBarController
-
-
 
 
 #pragma mark - Instantiation
@@ -45,6 +58,13 @@
 
 
 #pragma mark - Instantiation Helper Methods
+
+- (void)setRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBFreeformModeTabBarController class];
+    
+}
 
 - (void)configureChildViewControllers{
     
@@ -85,8 +105,77 @@
 }
 
 
+#pragma mark - Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    NSArray *childVCs = self.viewControllers;
+    
+    [coder encodeObject: childVCs[0]
+                 forKey: activeEntryID];
+    
+    [coder encodeObject: childVCs[1]
+                 forKey: personalRecordsID];
+    
+    [coder encodeObject: childVCs[2]
+                 forKey: exerciseHistoryVC];
+    
+    [coder encodeObject: childVCs[3]
+                 forKey: workoutLogID];
+    
+}
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    TJBFreeformModeTabBarController *tbc = [[TJBFreeformModeTabBarController alloc] init];
+    
+    return tbc;
+    
+}
+
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    TJBRealizedSetActiveEntryVC *activeEntry = [coder decodeObjectForKey: activeEntryID];
+    TJBPersonalRecordVC *personalRecords = [coder decodeObjectForKey: personalRecordsID];
+    TJBExerciseHistoryVC *exerciseHistory = [coder decodeObjectForKey: exerciseHistoryVC];
+    TJBWorkoutNavigationHub *navigationHub = [coder decodeObjectForKey: workoutLogID];
+    
+    // relationships between child VC's
+    
+    [activeEntry configureSiblingPersonalRecordsVC: personalRecords];
+    [activeEntry configureSiblingExerciseHistoryVC: exerciseHistory];
+    
+    [self setViewControllers: @[activeEntry, personalRecords, exerciseHistory, navigationHub]];
+    
+    [self configureProperties];
+    [self setRestorationProperties];
+    
+}
+
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -646,8 +646,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (CGFloat)toolBarHeightFromBottomOfScreen{
     
-    [self.view layoutSubviews];
-    
     return self.shadowContainer.frame.size.height - self.toolbar.frame.origin.y ;
     
 }
@@ -1832,8 +1830,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
     
-    [self.view layoutSubviews];
-    
     CGFloat cellHeight = [self tableView: self.tableView
                  heightForRowAtIndexPath: indexPath];
     
@@ -1841,7 +1837,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     
     [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
-    [cell layoutSubviews];
+    [cell layoutIfNeeded];
     
 }
 
@@ -1865,8 +1861,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
     
         if (self.dailyList.count == 0){
-            
-            [self.view layoutSubviews];
             
             return self.shadowContainer.frame.size.height - [self contentBreatherRoom];
             

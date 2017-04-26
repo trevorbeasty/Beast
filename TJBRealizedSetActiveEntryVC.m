@@ -50,7 +50,7 @@
 #import "TJBClockConfigurationVC.h"
 
 
-@interface TJBRealizedSetActiveEntryVC () <NSFetchedResultsControllerDelegate>
+@interface TJBRealizedSetActiveEntryVC () <UIViewControllerRestoration>
 
 // IBOutlet
 
@@ -77,11 +77,13 @@
 - (IBAction)didPressClockButton:(id)sender;
 
 // user input
+
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
 
 @property (nonatomic, strong) NSNumber *targetRestTime;
 @property (nonatomic, strong) NSNumber *alertTiming;
+
 @property (nonatomic, strong) TJBExercise *exercise;
 
 // for stopwatch related behaviour
@@ -113,6 +115,27 @@
 
 @end
 
+
+
+
+
+
+#pragma mark - Constants
+
+// restoration
+
+static NSString * const restorationID = @"TJBRealizedSetActiveEntry";
+static NSString * const exerciseNameID = @"activeExerciseName";
+static NSString * const lastTimerDateID = @"lastPrimaryTimerUpdateDate";
+static NSString * const timerRecoveryValueID = @"timerRecoveryValue";
+static NSString * const targetRestID = @"targetRest";
+static NSString * const alertTimingID = @"alertTiming";
+
+
+
+
+
+
 @implementation TJBRealizedSetActiveEntryVC
 
 #pragma mark - Instantiation
@@ -122,8 +145,26 @@
     self = [super init];
     
     [self configureStopwatchWithFreshValues];
+    [self configureRestorationProperties];
     
     return self;
+    
+}
+
+- (instancetype)initForRestoration{
+    
+    self = [super init];
+    
+    return self;
+    
+}
+
+#pragma mark - Init Helper Methods
+
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBRealizedSetActiveEntryVC class];
     
 }
 
@@ -272,12 +313,7 @@
     
     void (^callback)(TJBExercise *) = ^(TJBExercise *selectedExercise){
         
-        weakSelf.exercise = selectedExercise;
-        
-        weakSelf.exerciseValueLabel.text = selectedExercise.name;
-        
-        [weakSelf.personalRecordsVC activeExerciseDidUpdate: selectedExercise];
-        [weakSelf.exerciseHistoryVC activeExerciseDidUpdate: selectedExercise];
+        [weakSelf updateAllGivenSelectedExercise: selectedExercise];
     
         [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
@@ -289,6 +325,17 @@
     [self presentViewController: vc
                        animated: YES
                      completion: nil];
+    
+}
+
+- (void)updateAllGivenSelectedExercise:(TJBExercise *)selectedExercise{
+    
+    self.exercise = selectedExercise;
+    
+    self.exerciseValueLabel.text = selectedExercise.name;
+    
+    [self.personalRecordsVC activeExerciseDidUpdate: selectedExercise];
+    [self.exerciseHistoryVC activeExerciseDidUpdate: selectedExercise];
     
 }
 
@@ -590,6 +637,91 @@
 - (void)configureSiblingExerciseHistoryVC:(TJBExerciseHistoryVC<TJBExerciseHistoryProtocol> *)exerciseHistoryVC{
     
     self.exerciseHistoryVC = exerciseHistoryVC;
+    
+}
+
+
+#pragma mark - Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject: self.exercise.name
+                 forKey: exerciseNameID];
+    
+    [coder encodeObject: self.lastPrimaryTimerUpdateDate
+                 forKey: lastTimerDateID];
+    
+    [coder encodeObject: self.lastPrimaryTimerValue
+                 forKey: timerRecoveryValueID];
+    
+    [coder encodeObject: self.targetRestTime
+                 forKey: targetRestID];
+    
+    [coder encodeObject: self.alertTiming
+                 forKey: alertTimingID];
+    
+    
+}
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    TJBRealizedSetActiveEntryVC *vc = [[TJBRealizedSetActiveEntryVC alloc] initForRestoration];
+    
+    return vc;
+    
+}
+
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [self configureRestorationProperties];
+    
+    NSString *exerciseName = [coder decodeObjectForKey: exerciseNameID];
+    if (exerciseName){
+        
+        NSNumber *wasNewlyCreated;
+        TJBExercise *activeExercise = [[CoreDataController singleton] exerciseForName: exerciseName
+                                                                      wasNewlyCreated: &wasNewlyCreated
+                                                          createAsPlaceholderExercise: nil];
+        
+        if ([wasNewlyCreated boolValue] == NO){
+            
+            [self updateAllGivenSelectedExercise: activeExercise];
+            
+        }
+    }
+    
+    NSDate *lastPrimaryTimerUpdateDate = [coder decodeObjectForKey: lastTimerDateID];
+    NSNumber *lastPrimaryTimerValue = [coder decodeObjectForKey: timerRecoveryValueID];
+    NSNumber *targetRest = [coder decodeObjectForKey: targetRestID];
+    NSNumber *alertTiming = [coder decodeObjectForKey: alertTimingID];
+    
+    if (lastPrimaryTimerUpdateDate && lastPrimaryTimerValue && targetRest && alertTiming){
+        
+        TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+        
+        // update the stopwatch timer value
+        
+        [stopwatch setPrimaryStopWatchToTimeInSeconds: [lastPrimaryTimerValue intValue]
+                              withForwardIncrementing: YES
+                                       lastUpdateDate: lastPrimaryTimerUpdateDate];
+        
+        // update the stopwatch alert parameters
+        
+        [stopwatch setAlertParameters_targetRest: targetRest
+                                     alertTiming: alertTiming];
+        [stopwatch scheduleAlertBasedOnUserPermissions];
+        
+        // update the scheduled alert label
+        
+        int alertTimingValue = [targetRest intValue] - [alertTiming intValue];
+        NSString *formattedAlertValue = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: alertTimingValue];
+        NSString *scheduledAlertString = [NSString stringWithFormat: @"Alert at %@", formattedAlertValue];
+        self.scheduledAlertLabel.text = scheduledAlertString;
+        
+    }
+    
+    
     
 }
 
