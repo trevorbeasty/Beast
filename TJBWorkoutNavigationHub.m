@@ -1450,7 +1450,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     [self showActivityIndicator];
     
-    dispatch_async(dispatch_get_main_queue(),  ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
         
         [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: self.lastSelectedWorkoutLogDate
                                                                  dateControlDate: self.lastSelectedWorkoutLogDate
@@ -1464,15 +1464,16 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     [self showActivityIndicator];
     
-    dispatch_async(dispatch_get_main_queue(),  ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
         
-        NSDate *today = [NSDate date];
+       NSDate *today = [NSDate date];
         
         [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: today
                                                                  dateControlDate: today
                                                      shouldAnimateDateControlBar: YES];
         
     });
+    
     
 }
 
@@ -1898,11 +1899,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 #pragma mark - Table View Cell Selection
 
-- (void)jumpToLastSelection{
-    
-    
-    
-}
+
 
 - (void)updateStateVariablesAndCellAppearanceBasedOnSelectedPath:(NSIndexPath *)selectedPath{
     

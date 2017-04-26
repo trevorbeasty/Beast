@@ -61,7 +61,11 @@
 
 
 
+#pragma mark - Constants
 
+// content loading
+
+static NSTimeInterval const contentLoadingSmoothingInterval = .2;
 
 
 
@@ -101,41 +105,22 @@
 
 #pragma mark - View Life Cycle
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    if (_needsUpdating == YES){
-        
-        if (!self.aiView){
-            
-            [self createActivityIndicator];
-            
-        }
-        
-        self.aiView.hidden = NO;
-        [self.aiView startAnimating];
-        
-    }
-    
-}
 
 - (void)viewDidAppear:(BOOL)animated{
     
     if (_needsUpdating){
         
-        [self deriveContentForActiveExercise];
+        [self showActivityIndicator];
         
-        [self preloadCellsForActiveContent];
-        
-        [self configureNumberOfRecordsLabelAccordingToContent];
-        
-        [self.tableView reloadData];
-        
-        _needsUpdating = NO;
-        
-        [self.aiView stopAnimating];
+        [self performSelector: @selector(loadContentAndRemoveActivityIndicator)
+                   withObject: self
+                   afterDelay: contentLoadingSmoothingInterval];
+    
     }
     
 }
+
+
 
 - (void)viewDidLoad{
     
@@ -155,6 +140,22 @@
 
 
 #pragma mark - View Helper Methods
+
+- (void)loadContentAndRemoveActivityIndicator{
+    
+    [self deriveContentForActiveExercise];
+    
+    [self preloadCellsForActiveContent];
+    
+    [self configureNumberOfRecordsLabelAccordingToContent];
+    
+    [self.tableView reloadData];
+    
+    _needsUpdating = NO;
+    
+    [self.aiView stopAnimating];
+    
+}
 
 - (void)configureTableView{
     
@@ -439,17 +440,24 @@
 
 #pragma mark - Activity Indicator View
 
-- (void)createActivityIndicator{
+- (void)showActivityIndicator{
     
-    [self.view layoutSubviews];
+    if (!self.aiView){
+        
+        UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+        self.aiView = aiView;
+        
+        aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        aiView.frame = self.tableView.frame;
+        aiView.hidesWhenStopped = YES;
+        aiView.layer.opacity = .9;
+        
+        [self.view insertSubview: aiView
+                    aboveSubview: self.tableView];
+        
+    }
     
-    UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-    self.aiView = aiView;
-    
-    aiView.frame = self.aiView.frame;
-    aiView.hidesWhenStopped = YES;
-    
-    [self.view addSubview: aiView];
+    [self.aiView startAnimating];
     
 }
 
@@ -461,6 +469,12 @@
     
     self.exercise = exercise;
     self.exerciseDetailLabel.text = exercise.name;
+    
+    if (self.aiView){
+        
+        self.aiView.hidden = NO;
+        
+    }
     
     _needsUpdating = YES;
     
@@ -570,16 +584,17 @@
         BOOL isRealizedSet = [self.sortedContent[rowIndex] isKindOfClass: [TJBRealizedSet class]];
         BOOL isRealizedChain = [self.sortedContent[rowIndex] isKindOfClass: [TJBRealizedChain class]];
         
+        NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed: @"TJBRealizedChainCell"
+                                                            owner: self
+                                                          options: nil];
+        TJBRealizedChainCell *cell = nibObjects[0];
+        
         if (isRealizedSet){
             
             TJBRealizedSet *realizedSet = self.sortedContent[rowIndex];
             
             // dequeue the realizedSetCell
-            
-            NSArray *nibObjects = [[NSBundle mainBundle] loadNibNamed: @"TJBRealizedChainCell"
-                                                                owner: self
-                                                              options: nil];
-            TJBRealizedChainCell *cell = nibObjects[0];
+
             
             [self layoutCellToEnsureCorrectWidth: cell
                                        indexPath: indexPath];
@@ -598,8 +613,6 @@
             TJBRealizedChain *realizedChain = self.sortedContent[rowIndex];
             
             // dequeue the realizedSetCell
-
-            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
             
             [self layoutCellToEnsureCorrectWidth: cell
                                        indexPath: indexPath];
@@ -616,8 +629,6 @@
         } else{
             
             // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
-            
-            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
             
             [self layoutCellToEnsureCorrectWidth: cell
                                        indexPath: indexPath];
@@ -702,6 +713,12 @@
 #pragma mark - Core Data
 
 - (void)coreDataDidUpdate{
+    
+    if (self.aiView){
+        
+        self.aiView.hidden = NO;
+        
+    }
     
     _needsUpdating = YES;
     
