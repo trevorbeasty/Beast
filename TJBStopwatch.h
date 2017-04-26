@@ -55,7 +55,7 @@
 - (void)pausePrimaryTimer;
 - (void)playPrimaryTimer;
 
-// local notifications
+#pragma mark - Local Notifications
 
 - (void)setAlertParameters_targetRest:(NSNumber *)targetRest alertTiming:(NSNumber *)alertTiming;
 
@@ -64,6 +64,7 @@
 
 - (void)scheduleAlertBasedOnUserPermissions;
 - (void)deleteActiveLocalAlert;
+- (void)clearTargetRestAndAlertTiming;
 
 - (NSString *)alertTextFromTargetValues;
 

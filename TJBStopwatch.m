@@ -483,9 +483,7 @@
         // schedule if the current primary stopwatch value is less than the targetStopwatchValue
         
         if (_primaryElapsedTimeInSeconds < targetStopwatchValue){
-            
-            NSLog(@"seconds until local notification = %.01f", targetStopwatchValue - _primaryElapsedTimeInSeconds);
-            
+
             UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval: targetStopwatchValue - _primaryElapsedTimeInSeconds // this is the remaining time before the alert should sound
                                                                                                             repeats: NO];
             
@@ -509,14 +507,8 @@
                                                                                   content: content
                                                                                   trigger: trigger];
             
-            void (^completionHandler)(NSError *) = ^(NSError *error){
-                
-                NSLog(@"notification center completion handler");
-                
-            };
-            
             [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest: request
-                                                                   withCompletionHandler: completionHandler];
+                                                                   withCompletionHandler: nil];
             
             
         }
@@ -541,11 +533,18 @@
         
     } else{
         
-        alertText = @"No alert";
+        alertText = @"No Alert";
         
     }
     
     return  alertText;
+    
+}
+
+- (void)clearTargetRestAndAlertTiming{
+    
+    self.targetRest = nil;
+    self.alertTiming = nil;
     
 }
 

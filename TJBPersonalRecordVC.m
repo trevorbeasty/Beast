@@ -65,6 +65,7 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
     
     [self configureNotifications];
     [self configureRestorationProperties];
+    [self configureTabBar];
     
     return self;
     
@@ -96,8 +97,6 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
 - (void)viewDidLoad{
     
     [super viewDidLoad];
-    
-    [self configureTabBar];
     
     [self configureTableView];
     

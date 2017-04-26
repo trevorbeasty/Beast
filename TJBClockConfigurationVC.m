@@ -144,6 +144,8 @@
     [self registerTimerValueLabelWithStopwatch];
     [[TJBStopwatch singleton]  updatePrimaryTimerLabels];
     
+    [self configureApplyAndReturnButtonAccordingToSelectionState];
+    
     
 }
 
@@ -183,7 +185,7 @@
     
     if (stopwatchRestTarget){
         
-        self.selectedAlertTiming = stopwatchRestTarget;
+        self.selectedTargetRest = stopwatchRestTarget;
         
         NSString *formattedRest = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [stopwatchRestTarget intValue]];
         self.targetRestValueLabel.text = formattedRest;
@@ -192,7 +194,7 @@
     
     if (stopwatchAlertTiming){
         
-        self.selectedTargetRest = stopwatchAlertTiming;
+        self.selectedAlertTiming = stopwatchAlertTiming;
         
         NSString *formattedAlert = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: [stopwatchAlertTiming intValue]];
         self.alertTiimingValueLabel.text = formattedAlert;
@@ -330,10 +332,12 @@
         
         [TJBStopwatch singleton].targetRest = selectedNumber;
         
+        [weakSelf configureApplyAndReturnButtonAccordingToSelectionState];
+        
         // also need to notify the stopwatch of changes
         
         [weakSelf dismissViewControllerAnimated: YES
-                                 completion: nil];
+                                     completion: nil];
         
     };
     
@@ -368,6 +372,8 @@
         weakSelf.selectedAlertTiming = selectedNumber;
         
         [TJBStopwatch singleton].alertTiming = selectedNumber;
+        
+        [weakSelf configureApplyAndReturnButtonAccordingToSelectionState];
         
         // also need to notify the stopwatch of changes
         
@@ -406,6 +412,15 @@
     
 }
 
+
+- (IBAction)didPressExit:(id)sender{
+    
+    self.cancelBlock();
+    
+}
+
+#pragma mark - Apply & Return
+
 - (IBAction)didPressReturn:(id)sender{
     
     if (self.selectedTargetRest && self.selectedAlertTiming){
@@ -431,20 +446,26 @@
             [alert addAction: action];
             
             [self presentViewController: alert
-                                   animated: YES
-                                 completion: nil];
+                               animated: YES
+                             completion: nil];
             
         }
     }
 }
 
-- (IBAction)didPressExit:(id)sender{
+- (void)configureApplyAndReturnButtonAccordingToSelectionState{
     
-    self.cancelBlock();
+    if (self.selectedAlertTiming && self.selectedAlertTiming){
+        
+        self.returnButton.enabled = YES;
+        
+    } else{
+        
+        self.returnButton.enabled = NO;
+        
+    }
     
 }
-
-
 
 #pragma mark - Stopwatch Interaction
 
@@ -461,7 +482,7 @@
     
 }
 
-#pragma mark - TJBStopwatchObserver Protocol
+#pragma mark - TJBStopwatchObserver
 
 - (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
     
@@ -474,6 +495,7 @@
     
     
 }
+
 
 
 

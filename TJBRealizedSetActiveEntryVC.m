@@ -143,6 +143,7 @@ static NSString * const alertTimingID = @"alertTiming";
     
     [self configureStopwatchWithFreshValues];
     [self configureRestorationProperties];
+    [self configureTabBar];
     
     return self;
     
@@ -153,6 +154,7 @@ static NSString * const alertTimingID = @"alertTiming";
     self = [super init];
     
     [self configureRestorationProperties];
+    [self configureTabBar];
     
     return self;
     
@@ -170,8 +172,6 @@ static NSString * const alertTimingID = @"alertTiming";
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
-    
-    [self configureTabBar];
 
     [self addAppropriateStopwatchObservers];
     
@@ -393,6 +393,7 @@ static NSString * const alertTimingID = @"alertTiming";
     
     [[TJBStopwatch singleton] removePrimaryStopwatchObserver: self.timerLabel];
     [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
+    [[TJBStopwatch singleton] clearTargetRestAndAlertTiming];
     
     // delete the scheduled alert, if one exists, when freeform mode is exited
     
@@ -723,7 +724,6 @@ static NSString * const alertTimingID = @"alertTiming";
             
             [stopwatch setAlertParameters_targetRest: targetRest
                                          alertTiming: alertTiming];
-            [stopwatch scheduleAlertBasedOnUserPermissions];
             
             // update the scheduled alert label
             
@@ -739,8 +739,6 @@ static NSString * const alertTimingID = @"alertTiming";
         }
         
     }
-    
-    
     
 }
 

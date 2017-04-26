@@ -210,6 +210,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     self.workoutLogActiveDay = workoutLogDate;
     self.dateControlActiveDate = dateControlDate;
     
+    [self configureTabBar];
+    
     return self;
     
 }
@@ -503,8 +505,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     [self configureViewAesthetics];
     
     [self configureToolBarAndBarButtons];
-    
-    [self configureTabBar];
     
     return;
     

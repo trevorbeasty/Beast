@@ -85,6 +85,7 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
     
     [self configureNotifications];
     [self configureRestorationProperties];
+    [self configureTabBar];
     
     return self;
     
@@ -138,8 +139,6 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
     [super viewDidLoad];
     
     [self configureTableView];
-    
-    [self configureTabBar];
     
     [self viewAesthetics];
     
