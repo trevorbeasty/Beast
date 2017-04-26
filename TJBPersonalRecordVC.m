@@ -23,12 +23,11 @@
 // table view cells
 
 #import "TJBPersonalRecordCell.h"
-#import "TJBDetailTitleCell.h"
 #import "TJBNoDataCell.h"
 
 #import "TJBAssortedUtilities.h" // utilities
 
-@interface TJBPersonalRecordVC () 
+@interface TJBPersonalRecordVC () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate>
 
 // IBOutlet
 
@@ -44,12 +43,18 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray<TJBRepsWeightRecordPair *> *repsWeightRecordPairs;
+
 @property (strong) TJBExercise *exercise;
 
 @end
 
-@implementation TJBPersonalRecordVC
 
+#pragma mark - Constants
+
+static NSString * const restorationID = @"TJBPersonalRecordsVC";
+
+
+@implementation TJBPersonalRecordVC
 
 
 #pragma mark - Instantiation
@@ -59,6 +64,7 @@
     self = [super init];
     
     [self configureNotifications];
+    [self configureRestorationProperties];
     
     return self;
     
@@ -75,6 +81,13 @@
                                              selector: @selector(coreDataDidUpdate)
                                                  name: NSManagedObjectContextDidSaveNotification
                                                object: moc];
+    
+}
+
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBPersonalRecordVC class];
     
 }
 
@@ -105,11 +118,6 @@
     [self.personalRecordsTableView registerNib: nib
                         forCellReuseIdentifier: @"PRCell"];
     
-    UINib *nib2 = [UINib nibWithNibName: @"TJBDetailTitleCell"
-                                 bundle: nil];
-    
-    [self.personalRecordsTableView registerNib: nib2
-                        forCellReuseIdentifier: @"TJBDetailTitleCell"];
     
     UINib *noDataCell = [UINib nibWithNibName: @"TJBNoDataCell"
                                        bundle: nil];
@@ -403,6 +411,14 @@
     [self fetchManagedObjectsAndDetermineRecordsForActiveExercise];
     
     [self.personalRecordsTableView reloadData];
+    
+}
+
+#pragma mark - Restoration
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    return [[TJBPersonalRecordVC alloc] init];
     
 }
 

@@ -25,7 +25,7 @@
 
 
 
-@interface TJBExerciseHistoryVC () <UITableViewDelegate, UITableViewDataSource>
+@interface TJBExerciseHistoryVC () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 {
     
@@ -67,7 +67,9 @@
 
 static NSTimeInterval const contentLoadingSmoothingInterval = .2;
 
+// restoration
 
+static NSString * const restorationID = @"TJBExerciseHistoryVC";
 
 
 
@@ -82,6 +84,7 @@ static NSTimeInterval const contentLoadingSmoothingInterval = .2;
     self = [super init];
     
     [self configureNotifications];
+    [self configureRestorationProperties];
     
     return self;
     
@@ -100,6 +103,14 @@ static NSTimeInterval const contentLoadingSmoothingInterval = .2;
                                              selector: @selector(coreDataDidUpdate)
                                                  name: NSManagedObjectContextDidSaveNotification
                                                object: moc];
+    
+}
+
+
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBExerciseHistoryVC class];
     
 }
 
@@ -725,7 +736,13 @@ static NSTimeInterval const contentLoadingSmoothingInterval = .2;
 }
 
 
+#pragma mark - Restoration
 
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    return [[TJBExerciseHistoryVC alloc] init];
+    
+}
 
 @end
 
