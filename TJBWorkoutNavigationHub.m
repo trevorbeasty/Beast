@@ -46,7 +46,7 @@ typedef enum{
 
 
 
-@interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate>
+@interface TJBWorkoutNavigationHub () <UITableViewDataSource, UITableViewDelegate, UIViewControllerRestoration>
 
 {
     // state
@@ -150,7 +150,7 @@ static const CGFloat toolbarAnimationTime = .2;
 
 // content loading
 
-static NSTimeInterval const contentLoadingSmoothingDelay = .3;
+static NSTimeInterval const contentLoadingSmoothingDelay = .2;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
@@ -162,8 +162,10 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 // restoration
 
 static NSString * const restorationID = @"TJBWorkoutNavigationHub";
-
-
+static NSString * const workoutLogActiveDateKey = @"workoutLogActiveDateForRestore";
+static NSString * const dateControlActiveDateKey = @"dateControlActiveDateForRestore";
+static NSString * const includeHomeButtonKey = @"includeHomeButtonForRestore";
+static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsForRestore";
 
 
 
@@ -195,7 +197,8 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     _displayedContentNeedsUpdating = YES; // when this property is YES, all model object will be derived and all view objects created after the view appears
     _fetchedObjectsNeedUpdating = NO;
     
-    [self configureCoreDataUpdateNotification];
+    [self configureCoreDataUpdateNotification]; // core data did save notification
+    [self configureRestorationProperties]; // restoration
     
     // controls
     
@@ -439,6 +442,13 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 - (void)viewWillAppear:(BOOL)animated{
     
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken,  ^{
+        
+        [self configureControlsAccordingToState];
+        
+    });
+    
     if (_displayedContentNeedsUpdating){
         
         self.toolbar.hidden = YES;
@@ -463,16 +473,11 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
         
         dispatch_async(dispatch_get_main_queue(),  ^{
             
-            if (!self.masterList){
+            if (!self.masterList || _fetchedObjectsNeedUpdating == YES){
                 
                 [self fetchManagedObjectsAndDeriveMasterList];
                 
-            } else if (_fetchedObjectsNeedUpdating == YES){
-                
-                
-                
             }
-            
             
             
             [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: self.workoutLogActiveDay
@@ -480,6 +485,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
                                                          shouldAnimateDateControlBar: YES];
             
             _displayedContentNeedsUpdating = NO;
+            _fetchedObjectsNeedUpdating = NO;
             
         });
         
@@ -497,8 +503,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     [self configureViewAesthetics];
     
     [self configureToolBarAndBarButtons];
-    
-    [self configureControlsAccordingToState];
     
     return;
     
@@ -905,43 +909,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 
 
-
-- (void)artificiallySelectDate:(NSDate *)date{
-    
-    // extract the day component to back solve for the date object index
-    
-    NSNumber *dayAsIndex = @([self dayIndexForDate: date]);
-    
-    // immediately change the colors of the previously selected and newly selected controls
-    
-    [self selectDateObjectCorrespondingToIndex: dayAsIndex];
-    
-    [self disableControlsAndGiveInactiveAppearance];
-    
-    [self updateActiveDateLabelWithDate: date];
-    
-    // state
-    
-    self.selectedDateButtonIndex = dayAsIndex;
-    self.workoutLogActiveDay = date;
-    
-    [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: date];
-    [self configureToolbarAppearanceAccordingToStateVariables];
-    
-    // the next method is called with a delay so that the stack empties and views are updated (and thus the activity indicator is show)
-    // a delay of .2 seconds is given to assure that the presentation of the activity indicator is clear and doesn't come off as glitchy
-    
-//    [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
-//               withObject: nil
-//               afterDelay: contentLoadingSmoothingDelay];
-    
-    [self prepareNewContentCellsAndRemoveActivityIndicator];
-    
-    [self.view setNeedsDisplay];
-    
-}
-
-
 #pragma mark - Date Control Algorithms and Convenience Methods
 
 - (NSInteger)dayIndexForDate:(NSDate *)date{
@@ -983,26 +950,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
                withObject: nil
                afterDelay: contentLoadingSmoothingDelay];
     
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int)contentLoadingSmoothingDelay * 10^9),  dispatch_get_main_queue(),  ^{
-//        
-//        [self deriveDailyList];
-//        [self updateNumberOfEntriesLabel];
-//        
-//        [self deriveActiveCellsAndCreateTableView];
-//        [self.tableView reloadData];
-//        
-//        [self.activityIndicatorView stopAnimating];
-//        
-//        [self enableControlsAndGiveActiveAppearance];
-//        
-//    });
-//    
-//    dispatch_async(dispatch_get_main_queue(),  ^{
-//        
-//
-//        
-//    });
-    
 }
 
 - (void)userDateControlObjectSelectionCompletionActions{
@@ -1020,6 +967,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 }
 
 
+#pragma mark - Table View Content
 
 - (void)updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate:(NSDate *)representedDate{
     
@@ -1508,7 +1456,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
         
         [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: self.lastSelectedWorkoutLogDate
                                                                  dateControlDate: self.lastSelectedWorkoutLogDate
-                                                     shouldAnimateDateControlBar: NO];
+                                                     shouldAnimateDateControlBar: YES];
         
     });
     
@@ -2105,7 +2053,42 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
 }
 
+#pragma mark - Restoration
 
+
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject: self.workoutLogActiveDay
+                 forKey: workoutLogActiveDateKey];
+    
+    [coder encodeObject: self.dateControlActiveDate
+                 forKey: dateControlActiveDateKey];
+    
+    [coder encodeBool: _includesHomeButton
+               forKey: includeHomeButtonKey];
+    
+    [coder encodeBool: _advancedControlsActive
+               forKey: includeAdvancedControlsKey];
+    
+}
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    return [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
+                                        advancedControlsActive: NO];
+    
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    self.workoutLogActiveDay = [coder decodeObjectForKey: workoutLogActiveDateKey];
+    self.dateControlActiveDate = [coder decodeObjectForKey: dateControlActiveDateKey];
+    
+    _includesHomeButton = [coder decodeBoolForKey: includeHomeButtonKey];
+    _advancedControlsActive = [coder decodeBoolForKey: includeAdvancedControlsKey];
+    
+}
 
 
 @end
