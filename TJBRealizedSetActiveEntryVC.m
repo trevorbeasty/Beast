@@ -81,9 +81,6 @@
 @property (nonatomic, strong) NSNumber *weight;
 @property (nonatomic, strong) NSNumber *reps;
 
-@property (nonatomic, strong) NSNumber *targetRestTime;
-@property (nonatomic, strong) NSNumber *alertTiming;
-
 @property (nonatomic, strong) TJBExercise *exercise;
 
 // for stopwatch related behaviour
@@ -155,6 +152,8 @@ static NSString * const alertTimingID = @"alertTiming";
     
     self = [super init];
     
+    [self configureRestorationProperties];
+    
     return self;
     
 }
@@ -171,6 +170,8 @@ static NSString * const alertTimingID = @"alertTiming";
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
+    [self configureTabBar];
 
     [self addAppropriateStopwatchObservers];
     
@@ -181,6 +182,13 @@ static NSString * const alertTimingID = @"alertTiming";
 }
 
 #pragma mark - View Helper Methods
+
+- (void)configureTabBar{
+    
+    self.tabBarItem.title = @"Active";
+    self.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
+    
+}
 
 - (void)configureStartingDisplayValues{
     
@@ -271,7 +279,7 @@ static NSString * const alertTimingID = @"alertTiming";
     // schedule alert label
     
     self.scheduledAlertLabel.textColor = [UIColor whiteColor];
-    self.scheduledAlertLabel.font = [UIFont systemFontOfSize: 15];
+    self.scheduledAlertLabel.font = [UIFont boldSystemFontOfSize: 15];
     self.scheduledAlertLabel.backgroundColor = [UIColor grayColor];
     
     // main container
@@ -617,6 +625,7 @@ static NSString * const alertTimingID = @"alertTiming";
 - (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
 
     self.lastPrimaryTimerUpdateDate = date;
+    self.lastPrimaryTimerValue = @(timerValue);
 
     
 }
@@ -654,10 +663,12 @@ static NSString * const alertTimingID = @"alertTiming";
     [coder encodeObject: self.lastPrimaryTimerValue
                  forKey: timerRecoveryValueID];
     
-    [coder encodeObject: self.targetRestTime
+    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    
+    [coder encodeObject: [stopwatch targetRest]
                  forKey: targetRestID];
     
-    [coder encodeObject: self.alertTiming
+    [coder encodeObject: [stopwatch alertTiming]
                  forKey: alertTimingID];
     
     
@@ -673,8 +684,6 @@ static NSString * const alertTimingID = @"alertTiming";
 
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [self configureRestorationProperties];
     
     NSString *exerciseName = [coder decodeObjectForKey: exerciseNameID];
     if (exerciseName){
@@ -696,7 +705,9 @@ static NSString * const alertTimingID = @"alertTiming";
     NSNumber *targetRest = [coder decodeObjectForKey: targetRestID];
     NSNumber *alertTiming = [coder decodeObjectForKey: alertTimingID];
     
-    if (lastPrimaryTimerUpdateDate && lastPrimaryTimerValue && targetRest && alertTiming){
+    if (lastPrimaryTimerUpdateDate && lastPrimaryTimerValue){
+        
+        NSLog(@"last update objects (2) exist");
         
         TJBStopwatch *stopwatch = [TJBStopwatch singleton];
         
@@ -706,18 +717,26 @@ static NSString * const alertTimingID = @"alertTiming";
                               withForwardIncrementing: YES
                                        lastUpdateDate: lastPrimaryTimerUpdateDate];
         
-        // update the stopwatch alert parameters
-        
-        [stopwatch setAlertParameters_targetRest: targetRest
-                                     alertTiming: alertTiming];
-        [stopwatch scheduleAlertBasedOnUserPermissions];
-        
-        // update the scheduled alert label
-        
-        int alertTimingValue = [targetRest intValue] - [alertTiming intValue];
-        NSString *formattedAlertValue = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: alertTimingValue];
-        NSString *scheduledAlertString = [NSString stringWithFormat: @"Alert at %@", formattedAlertValue];
-        self.scheduledAlertLabel.text = scheduledAlertString;
+        if (targetRest && alertTiming){
+            
+            // update the stopwatch alert parameters
+            
+            [stopwatch setAlertParameters_targetRest: targetRest
+                                         alertTiming: alertTiming];
+            [stopwatch scheduleAlertBasedOnUserPermissions];
+            
+            // update the scheduled alert label
+            
+            int alertTimingValue = [targetRest intValue] - [alertTiming intValue];
+            NSString *formattedAlertValue = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: alertTimingValue];
+            NSString *scheduledAlertString = [NSString stringWithFormat: @"Alert at %@", formattedAlertValue];
+            self.scheduledAlertLabel.text = scheduledAlertString;
+            
+        } else{
+            
+            self.scheduledAlertLabel.text = @"No Alert";
+            
+        }
         
     }
     

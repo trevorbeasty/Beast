@@ -504,6 +504,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     [self configureToolBarAndBarButtons];
     
+    [self configureTabBar];
+    
     return;
     
 }
@@ -512,6 +514,13 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureTabBar{
+    
+    self.tabBarItem.title = @"Workout Log";
+    self.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
+    
+}
 
 - (void)configureControlsAccordingToState{
     

@@ -59,8 +59,6 @@
     TJBLiftOptionsVC *vc = [[TJBLiftOptionsVC alloc] init];
     self.window.rootViewController = vc;
     
-//    NSLog(@"lift options restoration ID: %@", restor)
-    
     // register as delegate of UNUserNotificationCenter
     
     [UNUserNotificationCenter currentNotificationCenter].delegate = self;

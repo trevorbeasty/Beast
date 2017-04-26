@@ -139,6 +139,8 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
     
     [self configureTableView];
     
+    [self configureTabBar];
+    
     [self viewAesthetics];
     
     if (self.exercise){
@@ -151,6 +153,13 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureTabBar{
+    
+    self.tabBarItem.title = @"History";
+    self.tabBarItem.image = [UIImage imageNamed: @"colosseumBlue25"];
+    
+}
 
 - (void)loadContentAndRemoveActivityIndicator{
     

@@ -26,13 +26,15 @@
 
 #pragma mark - Constants
 
+// restoration
+
 static NSString * const restorationID = @"TJBFreeformModeTabBarController";
 
 static NSString * const activeEntryID = @"TJBRealizedSetActiveEntryVC";
 static NSString * const personalRecordsID = @"TJBPersonalRecordsVC";
 static NSString * const exerciseHistoryVC = @"TJBExerciseHistoryVC";
 static NSString * const workoutLogID = @"TJBWorkoutNavigationHub";
-
+static NSString * const selectedTabIndexID = @"selectedTabIndexID";
 
 
 
@@ -48,13 +50,25 @@ static NSString * const workoutLogID = @"TJBWorkoutNavigationHub";
     
     [self configureChildViewControllers];
     [self configureProperties];
+    [self setRestorationProperties];
     
     
     return self;
     
 }
 
-
+- (instancetype)initForRestoration{
+    
+    self = [super init];
+    
+    
+    [self configureProperties];
+    [self setRestorationProperties];
+    
+    
+    return self;
+    
+}
 
 
 #pragma mark - Instantiation Helper Methods
@@ -71,23 +85,16 @@ static NSString * const workoutLogID = @"TJBWorkoutNavigationHub";
     // tab bar vc's
     
     TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
-    vc1.tabBarItem.title = @"Active";
-    vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
+ 
     
     TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *vc2 = [[TJBPersonalRecordVC alloc] init];
-    vc2.tabBarItem.title = @"PR's";
-    vc2.tabBarItem.image = [UIImage imageNamed: @"trophyBlue25"];
     [vc1 configureSiblingPersonalRecordsVC: vc2];
     
     TJBExerciseHistoryVC <TJBExerciseHistoryProtocol> *vc3 = [[TJBExerciseHistoryVC alloc] init];
-    vc3.tabBarItem.title = @"History";
-    vc3.tabBarItem.image = [UIImage imageNamed: @"colosseumBlue25"];
     [vc1 configureSiblingExerciseHistoryVC: vc3];
     
     TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
                                                                 advancedControlsActive: YES];
-    vc4.tabBarItem.title = @"Workout Log";
-    vc4.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
     
     // tab bar controller
     
@@ -123,11 +130,14 @@ static NSString * const workoutLogID = @"TJBWorkoutNavigationHub";
     [coder encodeObject: childVCs[3]
                  forKey: workoutLogID];
     
+    [coder encodeObject: @(self.selectedIndex)
+                 forKey: selectedTabIndexID];
+    
 }
 
 +(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     
-    TJBFreeformModeTabBarController *tbc = [[TJBFreeformModeTabBarController alloc] init];
+    TJBFreeformModeTabBarController *tbc = [[TJBFreeformModeTabBarController alloc] initForRestoration];
     
     return tbc;
     
@@ -148,8 +158,11 @@ static NSString * const workoutLogID = @"TJBWorkoutNavigationHub";
     
     [self setViewControllers: @[activeEntry, personalRecords, exerciseHistory, navigationHub]];
     
-    [self configureProperties];
-    [self setRestorationProperties];
+    NSNumber *selectedItemIndex = [coder decodeObjectForKey: selectedTabIndexID];
+    self.selectedIndex = [selectedItemIndex integerValue];
+    
+    return;
+    
     
 }
 

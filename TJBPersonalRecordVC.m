@@ -97,6 +97,8 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
     
     [super viewDidLoad];
     
+    [self configureTabBar];
+    
     [self configureTableView];
     
     [self viewAesthetics];
@@ -108,6 +110,13 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
 }
 
 #pragma mark - View Helper Methods
+
+- (void)configureTabBar{
+    
+    self.tabBarItem.title = @"PR's";
+    self.tabBarItem.image = [UIImage imageNamed: @"trophyBlue25"];
+    
+}
 
 
 - (void)configureTableView{
