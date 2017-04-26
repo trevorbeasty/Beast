@@ -53,7 +53,8 @@ typedef enum{
     
     int _activeSelectionIndex;
     BOOL _includesHomeButton;
-    BOOL _cellsNeedUpdating; // used to indicate that core data has saved during this controller's lifetime while a different tab of the tab bar controller was selected
+    BOOL _displayedContentNeedsUpdating; // used to indicate that core data has saved during this controller's lifetime while a different tab of the tab bar controller was selected
+    BOOL _fetchedObjectsNeedUpdating; // determines if the masterList needs to merge changes from the persistent store
     TJBToolbarState _toolbarState;
     
     BOOL _advancedControlsActive;
@@ -149,7 +150,7 @@ static const CGFloat toolbarAnimationTime = .2;
 
 // content loading
 
-static NSTimeInterval const contentLoadingSmoothingDelay = 2.0;
+static NSTimeInterval const contentLoadingSmoothingDelay = 4.0;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
@@ -169,33 +170,30 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 @implementation TJBWorkoutNavigationHub
 
-#pragma mark - Master Notes
-
-// ACTIVE DATE CONTROL DATE
-
-// 1 - dateControlActiveDate is only set upon instantiation or when one of the arrows is pressed. This is true because these are the only two events that can impact the active date control date
-
-// TABLE VIEW CELL SELECTION
-
-// 1 - currentlySelectedWorkoutLogDate and its counterpart require granularity at the day level. These properties are used to jump between different workout logs, which are specified by a month and a day.  The month informs the date control bar of what content should be displayed, while the day informs the date control bar of which day should be selected
-
-// 2 - the previous table view is destroyed when a new date control object is selected, so it is not necessary to manually deselect the previously selected cell
-
-// STATE VARIABLES
-
-// 1 - currentlySelectedWorkoutLogDate and workoutLogActiveDay may seem redundant, but they are necessary to handle selection transitions. The former is specific to cell selections while the latter is specific to only date control bar selections
 
 #pragma mark - Instantiation
 
 
 - (instancetype)initWithHomeButton:(BOOL)includeHomeButton advancedControlsActive:(BOOL)advancedControlsActive{
     
+    NSDate *today = [NSDate date];
+    
+    return [self initWithHomeButton: includeHomeButton
+             advancedControlsActive: advancedControlsActive
+                     workoutLogDate: today
+                    dateControlDate: today];
+    
+}
+
+- (instancetype)initWithHomeButton:(BOOL)includeHomeButton advancedControlsActive:(BOOL)advancedControlsActive workoutLogDate:(NSDate *)workoutLogDate dateControlDate:(NSDate *)dateControlDate{
+    
     self = [super init];
     
-
     // state
     
     _toolbarState = TJBToolbarNotHidden;
+    _displayedContentNeedsUpdating = YES; // when this property is YES, all model object will be derived and all view objects created after the view appears
+    _fetchedObjectsNeedUpdating = NO;
     
     [self configureCoreDataUpdateNotification];
     
@@ -206,10 +204,11 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
     // workout log active date - the current day is initially shown when this controller first appears
     
-    self.workoutLogActiveDay = [NSDate date];
-    _cellsNeedUpdating = YES; // when this property is YES, all model object will be derived and all view objects created after the view appears
+    self.workoutLogActiveDay = workoutLogDate;
+    self.dateControlActiveDate = dateControlDate;
     
     return self;
+    
 }
 
 
@@ -223,7 +222,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 }
 
 
-#pragma mark - Core Data Queries And Algorithms
+#pragma mark - Core Data Fetch Requests
 
 - (NSFetchRequest *)realizedSetRequest{
     
@@ -254,13 +253,16 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
 }
 
+#pragma mark - Core Data Object Fetching and Structuring
+
 - (void)fetchManagedObjectsAndDeriveMasterList{
     
-    NSMutableArray *interimArray1 = [[NSMutableArray alloc] init];
+    // the master list holds model objects for all dates, not just the current month
     
     NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
     
     // only standalone sets are fetched, so that no sets are duplicated
+    // this is achieved through use of a predicate in the realizedSetRequest
     
     NSError *error;
     NSArray *fetchedSets = [moc executeFetchRequest: [self realizedSetRequest]
@@ -268,149 +270,46 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     NSArray *fetchedChains = [moc executeFetchRequest: [self realizedChainRequest]
                                                 error: &error];
     
+    NSMutableArray *interimArray1 = [[NSMutableArray alloc] init];
     [interimArray1 addObjectsFromArray: fetchedSets];
     [interimArray1 addObjectsFromArray: fetchedChains];
     
     [self sortModelObjectsByDateProperty: interimArray1];
     
-    // evaluate if consecutive array objects are realized sets of the same exercises.  Group these using TJBRealizedSetCollection
-    // interim array 2 holds realized chains and TJBRealizedSetGrouping
+    // adjacent TJBRealizedSets of the same day are grouped together because they are displayed collectively in a table view cell
     
     self.masterList = [[CoreDataController singleton] groupModelObjects: interimArray1];
     
-//    NSMutableArray *interimArray2 = [[NSMutableArray alloc] init];
-//    NSMutableArray *stagingArray = [[NSMutableArray alloc] init];
-//    
-//    // the above task will be completed by stepping through interim array 1
-//    // if interim array 1 only contains 1 object, the logic will not work (it will never even begin iterating).  In this case, simply assign interim array 2
-//    
-//    if (interimArray1.count == 1){
-//        
-//        self.masterList = interimArray1;
-//        return;
-//        
-//    }
-//    
-//    NSInteger limit2 = interimArray1.count - 1;
-//    
-//    for (int i = 0; i < limit2; i++){
-//        
-//        [stagingArray addObject: interimArray1[i]];
-//        
-//        BOOL object1IsRealizedSet = [interimArray1[i] isKindOfClass: [TJBRealizedSet class]];
-//        BOOL object2IsRealizedSet = [interimArray1[i+1] isKindOfClass: [TJBRealizedSet class]];
-//        BOOL objectsAreBothRealizedSets = object1IsRealizedSet && object2IsRealizedSet;
-//        BOOL isLastIteration = i == interimArray1.count - 2;
-//        
-//        // if the for loop is making its last iteration, special logic must be employed.  Otherwise, the last object will not be added
-//        
-//        if (isLastIteration){
-//            
-//            if (objectsAreBothRealizedSets){
-//                
-//                TJBRealizedSet *rs1 = interimArray1[i];
-//                TJBRealizedSet *rs2 = interimArray1[i+1];
-//                
-//                BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
-//                
-//                if (setsHaveSameExercise){
-//                    
-//                    [stagingArray addObject: interimArray1[i+1]];
-//                    
-//                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-//                    
-//                    [interimArray2 addObject: rsc];
-//                    
-//                } else{
-//                    
-//                    if (stagingArray.count > 1){
-//                        
-//                        TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-//                        
-//                        [interimArray2 addObject: rsc];
-//                        
-//                        [interimArray2 addObject: interimArray1[i+1]];
-//                        
-//                    } else{
-//                        
-//                        [interimArray2 addObject: interimArray1[i]];
-//                        [interimArray2 addObject: interimArray1[i+1]];
-//                        
-//                    }
-//                    
-//                }
-//                
-//            } else{
-//                
-//                if (stagingArray.count > 1){
-//                    
-//                    TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-//                    
-//                    [interimArray2 addObject: rsc];
-//                    
-//                    [interimArray2 addObject: interimArray1[i+1]];
-//                    
-//                } else{
-//                    
-//                    [interimArray2 addObject: interimArray1[i]];
-//                    [interimArray2 addObject: interimArray1[i+1]];
-//                    
-//                }
-//                
-//            }
-//            
-//            continue;
-//            
-//        }
-//        
-//        if (objectsAreBothRealizedSets){
-//            
-//            TJBRealizedSet *rs1 = interimArray1[i];
-//            TJBRealizedSet *rs2 = interimArray1[i+1];
-//            
-//            BOOL setsHaveSameExercise =  [rs1.exercise.name isEqualToString: rs2.exercise.name];
-//            
-//            if (setsHaveSameExercise){
-//                
-//                continue;
-//                
-//            }
-//            
-//        }
-//        
-//        // the index set will only have length greater than 1 if it has the indices of multiple realized sets
-//        
-//        if (stagingArray.count > 1){
-//            
-//            // give the rsc all realized sets
-//            
-//            TJBRealizedSetGrouping rsc = [NSArray arrayWithArray: stagingArray];
-//            
-//            // add the rsc to interim array 2 and clear all objects from the staging array
-//            
-//            [interimArray2 addObject: rsc];
-//            
-//            [stagingArray removeAllObjects];
-//            
-//            
-//        } else if (stagingArray.count == 1){
-//            
-//            // the object is either a lone realized set or realized chain.  Add it to interim array 2
-//            
-//            [interimArray2 addObject: stagingArray[0]];
-//            
-//            // clear all objects from the staging array
-//            
-//            [stagingArray removeAllObjects];
-//            
-//        }
-//    }
-//    
-//    // assign the master list using the appropriate interim array
-//    
-//    self.masterList = interimArray2;
+
     
 }
+
+- (void)deriveDailyList{
+    
+    //// creats the dailyList from the masterList based on the active date and updates the table view
+    
+    self.dailyList = [[NSMutableArray alloc] init];
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    
+    for (NSObject *object in self.masterList){
+        
+        NSDate *objectDate = [self dateForRecordObject: object];
+        
+        BOOL recordIsForActiveDate = [calendar isDate: objectDate
+                                      inSameDayAsDate: self.workoutLogActiveDay];
+        
+        if (recordIsForActiveDate){
+            
+            [self.dailyList addObject: object];
+            
+        }
+        
+    }
+    
+}
+
+#pragma mark - Model Object Helper Methods
 
 - (void)sortModelObjectsByDateProperty:(NSMutableArray *)modelObjects{
     
@@ -457,30 +356,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
 }
 
-- (void)deriveDailyList{
-    
-    //// creats the dailyList from the masterList based on the active date and updates the table view
-    
-    self.dailyList = [[NSMutableArray alloc] init];
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    
-    for (NSObject *object in self.masterList){
-        
-        NSDate *objectDate = [self dateForRecordObject: object];
-        
-        BOOL recordIsForActiveDate = [calendar isDate: objectDate
-                                      inSameDayAsDate: self.workoutLogActiveDay];
-        
-        if (recordIsForActiveDate){
-            
-            [self.dailyList addObject: object];
-            
-        }
-        
-    }
-    
-}
+
 
 - (NSDate *)dayBeginDateForObject:(id)object{
     
@@ -563,7 +439,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 - (void)viewWillAppear:(BOOL)animated{
     
-    if (_cellsNeedUpdating){
+    if (_displayedContentNeedsUpdating){
         
         self.toolbar.hidden = YES;
         self.toolbarControlArrow.hidden = YES;
@@ -577,7 +453,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 - (void)viewDidAppear:(BOOL)animated{
     
-    if (_cellsNeedUpdating == YES){
+    if (_displayedContentNeedsUpdating == YES){
         
         // activity indicator
         
@@ -587,12 +463,23 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
         
         dispatch_async(dispatch_get_main_queue(),  ^{
             
-            [self fetchManagedObjectsAndDeriveMasterList];
+            if (!self.masterList){
+                
+                [self fetchManagedObjectsAndDeriveMasterList];
+                
+            } else if (_fetchedObjectsNeedUpdating == YES){
+                
+                
+                
+            }
+            
+            
             
             [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: self.workoutLogActiveDay
+                                                                     dateControlDate: self.dateControlActiveDate
                                                          shouldAnimateDateControlBar: YES];
             
-            _cellsNeedUpdating = NO;
+            _displayedContentNeedsUpdating = NO;
             
         });
         
@@ -761,22 +648,18 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
 }
 
-#pragma mark - Meta Workout Log Methods
+#pragma mark - Master Workout Log and Date Controls Method
 
-- (void)deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate:(NSDate *)date shouldAnimateDateControlBar:(BOOL)shouldAnimate{
+- (void)deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate:(NSDate *)workoutLogDate dateControlDate:(NSDate *)dateControlDate shouldAnimateDateControlBar:(BOOL)shouldAnimate{
     
-    self.dateControlActiveDate = date;
-    self.workoutLogActiveDay = date;
+    self.dateControlActiveDate = dateControlDate;
+    self.workoutLogActiveDay = workoutLogDate;
     
     [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
     
-    [self updateActiveDateLabelWithDate: date];
+    [self updateActiveDateLabelWithDate: workoutLogDate];
     
-    NSNumber *dayAsIndex = @([self dayIndexForDate: date]);
-    self.selectedDateButtonIndex = dayAsIndex;
-    self.workoutLogActiveDay = date;
-    
-    [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: date];
+    [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: workoutLogDate];
     [self configureToolbarAppearanceAccordingToStateVariables];
     
     [self deriveDailyList];
@@ -789,8 +672,13 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     [self enableControlsAndGiveActiveAppearance];
     self.toolbar.hidden = NO;
     self.toolbarControlArrow.hidden = NO;
+    
+    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+    BOOL workoutLogDateInDateControlMonth = [calendar isDate: workoutLogDate
+                                                 equalToDate: dateControlDate
+                                           toUnitGranularity: NSCalendarUnitMonth];
 
-    if (shouldAnimate){
+    if (shouldAnimate && workoutLogDateInDateControlMonth){
         
         [self configureInitialDateControlAnimationPosition];
         
@@ -839,14 +727,13 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     
-    //// month title
+    // month title
     
     df.dateFormat = @"MMMM yyyy";
     NSString *monthTitle = [df stringFromDate: self.dateControlActiveDate];
     self.monthTitle.text = monthTitle;
     
-    //// stack view and child VC's
-    
+    // stack view and child VC's
     // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
@@ -857,7 +744,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
     
     const CGFloat stackViewWidth = [self dateSVWidthGivenButtonSpecifications];
-    
     CGRect stackViewRect = CGRectMake(0, 0, stackViewWidth, buttonHeight);
     
     // create the stack view with the proper dimensions and also set the content size of the scroll view
@@ -866,7 +752,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     self.dateStackView = stackView;
     
     self.dateScrollView.contentSize = stackViewRect.size;
-    
     [self.dateScrollView addSubview: stackView];
     
     // configure the stack view's layout properties
@@ -881,9 +766,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
                                               fromDate: self.dateControlActiveDate];
     
     NSDate *iterativeDate;
-    
     CGSize buttonSize = CGSizeMake(buttonWidth, buttonHeight);
-    
     NSDate *today = [NSDate date];
     
     for (int i = 0; i < daysInCurrentMonth.length; i++){
@@ -920,8 +803,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
         
         BOOL recordExistsForIterativeDate = [self recordExistsForDate: iterativeDate];
         
-        
-        
         TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithDayIndex: [NSNumber numberWithInt: i]
                                                                          dayTitle: dayTitle
                                                                              size: buttonSize
@@ -933,11 +814,8 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
                                                             representsHistoricDay: !iterativeDateGreaterThanToday];
         
         [self.circleDateChildren addObject: circleDateVC];
-        
         [self addChildViewController: circleDateVC];
-        
         [stackView addArrangedSubview: circleDateVC.view];
-        
         [circleDateVC didMoveToParentViewController: self];
         
     }
@@ -1085,27 +963,13 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
     
-    // activity indicator
-    
-//    if (!self.activityIndicatorView){
-//        
-//        [self createActivityIndicatorAndAddToViewHierarchy];
-//        
-//    }
-//    
-//    [self.activityIndicatorView startAnimating];
-    
     [self showActivityIndicator];
     
-    // immediately change the colors of the previously selected and newly selected controls
-    
     [self selectDateObjectCorrespondingToIndex: index];
-    
     [self disableControlsAndGiveInactiveAppearance];
     
     [self updateActiveDateLabelWithDate: representedDate];
-    
-    // state
+    self.numberOfEntriesLabel.text = @"";
     
     self.selectedDateButtonIndex = index;
     self.workoutLogActiveDay = representedDate;
@@ -1113,14 +977,19 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: representedDate];
     [self configureToolbarAppearanceAccordingToStateVariables];
     
-    // the next method is called with a delay so that the stack empties and views are updated (and thus the activity indicator is show)
-    // a delay of .2 seconds is given to assure that the presentation of the activity indicator is clear and doesn't come off as glitchy
-    
-    [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
-               withObject: nil
-               afterDelay: contentLoadingSmoothingDelay];
-    
-    [self.view setNeedsDisplay];
+    dispatch_async(dispatch_get_main_queue(),  ^{
+        
+        [self deriveDailyList];
+        [self updateNumberOfEntriesLabel];
+ 
+        [self deriveActiveCellsAndCreateTableView];
+        [self.tableView reloadData];
+        
+        [self.activityIndicatorView stopAnimating];
+        
+        [self enableControlsAndGiveActiveAppearance];
+        
+    });
     
 }
 
@@ -1612,6 +1481,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     dispatch_async(dispatch_get_main_queue(),  ^{
         
         [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: self.lastSelectedWorkoutLogDate
+                                                                 dateControlDate: self.lastSelectedWorkoutLogDate
                                                      shouldAnimateDateControlBar: NO];
         
     });
@@ -1624,7 +1494,10 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
     
     dispatch_async(dispatch_get_main_queue(),  ^{
         
-        [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: [NSDate date]
+        NSDate *today = [NSDate date];
+        
+        [self deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate: today
+                                                                 dateControlDate: today
                                                      shouldAnimateDateControlBar: YES];
         
     });
@@ -1717,7 +1590,7 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
     
     [self deleteCoreDataObjectsForIndexPath: self.currentlySelectedPath];
-    _cellsNeedUpdating = NO; // this is done so that the controller does not attempt to relaod data if it's view were to disappear and reappear. Core data reloading is already handled in the following logic
+    _displayedContentNeedsUpdating = NO; // this is done so that the controller does not attempt to relaod data if it's view were to disappear and reappear. Core data reloading is already handled in the following logic
     
     [self.tableView endUpdates];
     
@@ -1823,10 +1696,8 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 - (void)mocDidSave{
     
-    //// refresh fetched managed objects and all trickle-down
-    // the daily list is derived whenever a date control object is selected. Even when a date control object is not explicitly selected by the user, I programmatically make the selection to select the desired day.
-    
-    _cellsNeedUpdating = YES;
+    _fetchedObjectsNeedUpdating = YES;
+    _displayedContentNeedsUpdating = YES;
     
     return;
 
@@ -1834,16 +1705,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 
 #pragma mark - Button Actions
-
-- (IBAction)didPressLiftButton:(id)sender {
-    
-    TJBLiftOptionsVC *vc = [[TJBLiftOptionsVC alloc] init];
-    
-    [self presentViewController: vc
-                       animated: NO
-                     completion: nil];
-    
-}
 
 - (IBAction)didPressLeftArrow:(id)sender{
     
@@ -1879,7 +1740,6 @@ static NSString * const restorationID = @"TJBWorkoutNavigationHub";
 
 
 #pragma mark - <UITableViewDataSource>
-
 
 
 
