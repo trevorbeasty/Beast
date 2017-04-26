@@ -59,6 +59,8 @@
     TJBLiftOptionsVC *vc = [[TJBLiftOptionsVC alloc] init];
     self.window.rootViewController = vc;
     
+//    NSLog(@"lift options restoration ID: %@", restor)
+    
     // register as delegate of UNUserNotificationCenter
     
     [UNUserNotificationCenter currentNotificationCenter].delegate = self;
@@ -66,6 +68,8 @@
     return YES;
     
 }
+
+#pragma mark - State Restoration
 
 
 // the app delegate must opt in to state restoration via the following 2 methods
@@ -76,23 +80,31 @@
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder{
     
-    return NO;
+    return YES;
 }
 
 - (UIViewController *)application:(UIApplication *)application viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    
-    // UIKit automatically finds TJBWorkoutNavigation hub as part of its restoration effort (see view controller programming guide)
     
     return nil;
     
 }
 
+#pragma mark - App Execution State
+
+- (void)applicationDidEnterBackground:(UIApplication *)application{
+    
+    NSLog(@"app entered background");
+    
+}
+
+
+
+
+
 #pragma mark - UNUserNotificationCenterDelegate
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
-    
-    NSLog(@"internally received local notification");
-    
+
     UIViewController *activeVC = [self topViewController];
     
     NSNumber *alertTiming = [TJBStopwatch singleton].alertTiming;

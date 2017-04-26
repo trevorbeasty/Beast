@@ -8,15 +8,10 @@
 
 #import "TJBLiftOptionsVC.h"
 
-// presented VC's
+#import "TJBWorkoutNavigationHub.h" // workoout log - presented VC
+#import "NewOrExistinigCircuitVC.h" // routine selection - presented VC
+#import "TJBFreeformModeTabBarController.h" // freeform tbc - presented VC
 
-#import "TJBWorkoutNavigationHub.h"
-#import "TJBRealizedSetActiveEntryVC.h"
-#import "NewOrExistinigCircuitVC.h"
-#import "TJBPersonalRecordVC.h"
-#import "TJBPersonalRecordsVCProtocol.h"
-#import "TJBExerciseHistoryVC.h"
-#import "TJBExerciseHistoryProtocol.h"
 
 // aesthetics
 
@@ -28,6 +23,12 @@
 
 
 @interface TJBLiftOptionsVC ()
+
+{
+    
+    BOOL _shouldConfigureSceneAfterViewAppears;
+    
+}
 
 // IBOutlet
 
@@ -48,21 +49,89 @@
 - (IBAction)didPressViewWorkoutLog:(id)sender;
 
 
+
+
 @end
 
+
+
+#pragma mark - Constants
+
+static NSString * const restorationID = @"TJBLiftOptionsVC";
+
+
+
+
 @implementation TJBLiftOptionsVC
+
+
+#pragma mark - Instantiation
+
+- (instancetype)init{
+    
+    self = [super init];
+    
+    
+    [self configureStateRestorationProperties];
+    
+    _shouldConfigureSceneAfterViewAppears = YES;
+    
+    
+    return self;
+}
+
+
+
+
+
+#pragma mark - Instantiation Helper Methods
+
+
+
+
+- (void)configureStateRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBLiftOptionsVC class];
+    
+    
+}
+
+
 
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
     
-    [self configureViewAesthetics];
-    
     [self.view layoutIfNeeded];
     
-    [self configureScene];
+    [self configureViewAesthetics];
     
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (_shouldConfigureSceneAfterViewAppears == YES){
+        
+        [self configureScene];
+        
+        _shouldConfigureSceneAfterViewAppears = NO;
+        
+    }
+    
+    
+    
+}
+
+
+
+#pragma mark - View Life Cycle Helper Methods
 
 - (void)configureScene{
     
@@ -130,41 +199,9 @@
 
 - (IBAction)didPressFreeformButton:(id)sender{
     
-    // tab bar vc's
+    TJBFreeformModeTabBarController *freeformTBC = [[TJBFreeformModeTabBarController alloc] init];
     
-    TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
-    vc1.tabBarItem.title = @"Active";
-    vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
-    
-    TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *vc2 = [[TJBPersonalRecordVC alloc] init];
-    vc2.tabBarItem.title = @"PR's";
-    vc2.tabBarItem.image = [UIImage imageNamed: @"trophyBlue25"];
-    [vc1 configureSiblingPersonalRecordsVC: vc2];
-    
-    TJBExerciseHistoryVC <TJBExerciseHistoryProtocol> *vc3 = [[TJBExerciseHistoryVC alloc] init];
-    vc3.tabBarItem.title = @"History";
-    vc3.tabBarItem.image = [UIImage imageNamed: @"colosseumBlue25"];
-    [vc1 configureSiblingExerciseHistoryVC: vc3];
-    
-    TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
-                                                                advancedControlsActive: YES];
-    vc4.tabBarItem.title = @"Workout Log";
-    vc4.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
-    
-    // tab bar controller
-    
-    UITabBarController *tbc = [[UITabBarController alloc] init];
-    [tbc setViewControllers: @[vc1, vc2, vc3, vc4]];
-    tbc.tabBar.translucent = NO;
-    
-    // tab bar aesthetics
-    
-    UITabBar *tabBar = tbc.tabBar;
-    
-    tabBar.barTintColor = [UIColor darkGrayColor];
-    tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    
-    [self presentViewController: tbc
+    [self presentViewController: freeformTBC
                        animated: YES
                      completion: nil];
     
@@ -186,18 +223,6 @@
 
 
 
-- (void)didPressBack{
-    
-    [self dismissViewControllerAnimated: NO
-                             completion: nil];
-    
-}
-
-
-
-
-
-
 - (IBAction)didPressViewWorkoutLog:(id)sender{
     
     TJBWorkoutNavigationHub *navHub = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: YES
@@ -211,11 +236,33 @@
 }
 
 
+#pragma mark - Restoration
 
 
-
+- (NSString *)restorationID{
+    
+    return restorationID;
+    
+}
 
 
 
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

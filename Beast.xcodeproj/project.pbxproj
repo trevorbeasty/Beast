@@ -42,6 +42,7 @@
 		0B517BCE1DF77C20009981F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BCD1DF77C20009981F9 /* Assets.xcassets */; };
 		0B517BD11DF77C20009981F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B517BCF1DF77C20009981F9 /* LaunchScreen.storyboard */; };
 		0B517BDD1DF8869C009981F9 /* TJBNumberSelectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */; };
+		0B6B20ED1EB0B4D500CF2054 /* TJBFreeformModeTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6B20EC1EB0B4D500CF2054 /* TJBFreeformModeTabBarController.m */; };
 		0B78E7C61E3C165900EB216F /* TJBRealizedSetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7C41E3C165900EB216F /* TJBRealizedSetCell.m */; };
 		0B78E7C71E3C165900EB216F /* TJBRealizedSetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B78E7C51E3C165900EB216F /* TJBRealizedSetCell.xib */; };
 		0B78E7CD1E3C16A300EB216F /* TJBRealizedChainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B78E7CB1E3C16A300EB216F /* TJBRealizedChainCell.m */; };
@@ -177,6 +178,8 @@
 		0B517BD21DF77C20009981F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B517BDB1DF8869C009981F9 /* TJBNumberSelectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBNumberSelectionVC.h; sourceTree = "<group>"; };
 		0B517BDC1DF8869C009981F9 /* TJBNumberSelectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBNumberSelectionVC.m; sourceTree = "<group>"; };
+		0B6B20EB1EB0B4D500CF2054 /* TJBFreeformModeTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBFreeformModeTabBarController.h; sourceTree = "<group>"; };
+		0B6B20EC1EB0B4D500CF2054 /* TJBFreeformModeTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBFreeformModeTabBarController.m; sourceTree = "<group>"; };
 		0B78E7C31E3C165900EB216F /* TJBRealizedSetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBRealizedSetCell.h; sourceTree = "<group>"; };
 		0B78E7C41E3C165900EB216F /* TJBRealizedSetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBRealizedSetCell.m; sourceTree = "<group>"; };
 		0B78E7C51E3C165900EB216F /* TJBRealizedSetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBRealizedSetCell.xib; sourceTree = "<group>"; };
@@ -555,6 +558,15 @@
 			name = NumberSelection;
 			sourceTree = "<group>";
 		};
+		0B6B20EA1EB0B43000CF2054 /* Freeform Tab Bar Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0B6B20EB1EB0B4D500CF2054 /* TJBFreeformModeTabBarController.h */,
+				0B6B20EC1EB0B4D500CF2054 /* TJBFreeformModeTabBarController.m */,
+			);
+			name = "Freeform Tab Bar Controller";
+			sourceTree = "<group>";
+		};
 		0B78E7C21E3C162800EB216F /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -737,6 +749,7 @@
 		0B843C901DFB7E9C0093F057 /* Freeform Lift */ = {
 			isa = PBXGroup;
 			children = (
+				0B6B20EA1EB0B43000CF2054 /* Freeform Tab Bar Controller */,
 				0B2B6BBB1E9C9D6800927A18 /* Active Entry */,
 				0B2B6BAE1E9C715500927A18 /* Exercise History */,
 				0B2B6BAD1E9C714800927A18 /* PR's */,
@@ -1066,6 +1079,7 @@
 				0B843C8F1DFB24C70093F057 /* TJBStopwatch.m in Sources */,
 				0B86FB6D1E102921000D1B5F /* TJBAestheticsController.m in Sources */,
 				0B78E7D91E3F5D3C00EB216F /* TJBPersonalRecordCell.m in Sources */,
+				0B6B20ED1EB0B4D500CF2054 /* TJBFreeformModeTabBarController.m in Sources */,
 				0B47EC001EA78FB800CBC8D8 /* TJBActiveGuidanceTargetsScene.m in Sources */,
 				0B78E8011E67654C00EB216F /* TJBExerciseSelectionCell.m in Sources */,
 				0B843C7E1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.m in Sources */,

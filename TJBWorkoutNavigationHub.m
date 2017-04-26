@@ -133,9 +133,9 @@ typedef enum{
 
 
 
+#pragma mark - Constants
 
-
-// button specification constants
+// date control specifications
 
 static const CGFloat buttonWidth = 60.0;
 static const CGFloat buttonSpacing = 0.0;
@@ -147,12 +147,21 @@ static const CGFloat buttonHeight = 55.0;
 static const CGFloat toolbarToBottomSpacing = 8;
 static const CGFloat toolbarAnimationTime = .2;
 
+// content loading
+
+static NSTimeInterval const contentLoadingSmoothingDelay = 2.0;
+
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
 
 typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
 static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
+
+// restoration
+
+static NSString * const restorationID = @"TJBWorkoutNavigationHub";
+
 
 
 
@@ -183,11 +192,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     self = [super init];
     
-    // for restoration
-    
-    self.restorationClass = [TJBWorkoutNavigationHub class];
-    self.restorationIdentifier = @"TJBWorkoutNavigationHub";
-    
+
     // state
     
     _toolbarState = TJBToolbarNotHidden;
@@ -199,9 +204,10 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     _includesHomeButton = includeHomeButton;
     _advancedControlsActive = advancedControlsActive;
     
-    // core data
+    // workout log active date - the current day is initially shown when this controller first appears
     
-    [self fetchManagedObjectsAndDeriveMasterList];
+    self.workoutLogActiveDay = [NSDate date];
+    _cellsNeedUpdating = YES; // when this property is YES, all model object will be derived and all view objects created after the view appears
     
     return self;
 }
@@ -209,7 +215,12 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 
 #pragma mark - Init Helper Methods
 
-
+- (void)configureRestorationProperties{
+    
+    self.restorationClass = [TJBWorkoutNavigationHub class];
+    self.restorationIdentifier = restorationID;
+    
+}
 
 
 #pragma mark - Core Data Queries And Algorithms
@@ -552,21 +563,49 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 
 #pragma mark - View Life Cycle
 
-// viewWillAppear and viewDidAppear are used to handle the animation that slides the date scroll view from right to left when the workout log becomes visible
-
 - (void)viewWillAppear:(BOOL)animated{
-    
-    // the following is used to update the cells if core data was updated while this controller existed but was not the active view controller (in the tab bar controller). The core data update will have prompted this controller to refetch core data objects and derive the master list. The following logic will then derive the daily list and active cells, showing the activity indicator while doing so
     
     if (_cellsNeedUpdating){
         
-        [self fetchManagedObjectsAndDeriveMasterList];
+        self.toolbar.hidden = YES;
+        self.toolbarControlArrow.hidden = YES;
         
-        [self showWorkoutLogForDate: self.workoutLogActiveDay
-              animateDateControlBar: NO
-                          withDelay: 0];
+        [self disableControlsAndGiveInactiveAppearance];
         
-        _cellsNeedUpdating = NO;
+    }
+    
+}
+
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (_cellsNeedUpdating == YES){
+        
+        // activity indicator
+        
+        if (!self.activityIndicatorView){
+            
+            [self createActivityIndicatorAndAddToViewHierarchy];
+            
+        }
+        
+        [self.activityIndicatorView startAnimating];
+        
+        // the following methods are called asynchronously so that the view draws and shows the activity indicator while all tasks execute
+        
+        dispatch_async(dispatch_get_main_queue(),  ^{
+            
+            [self fetchManagedObjectsAndDeriveMasterList];
+            
+            [self showWorkoutLogForDate: self.workoutLogActiveDay
+                  animateDateControlBar: YES
+          withDateControlAnimationDelay: contentLoadingSmoothingDelay];
+            
+            _cellsNeedUpdating = NO;
+            
+        });
+        
+        return;
         
     }
     
@@ -582,10 +621,6 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     [self configureToolBarAndBarButtons];
     
     [self configureControlsAccordingToState];
-    
-    [self showWorkoutLogForDate: [NSDate date]
-          animateDateControlBar: YES
-                      withDelay: .5];
     
     return;
     
@@ -679,7 +714,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     // scroll view
     
-    self.dateScrollView.backgroundColor = [UIColor clearColor];
+    self.dateScrollView.backgroundColor = [UIColor darkGrayColor];
  
     self.monthTitle.backgroundColor = [UIColor clearColor];
     self.monthTitle.textColor = [UIColor whiteColor];
@@ -737,20 +772,58 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 
 #pragma mark - Meta Workout Log Methods
 
-- (void)showWorkoutLogForDate:(NSDate *)date animateDateControlBar:(BOOL)shouldAnimate withDelay:(NSTimeInterval)delay{
+- (void)showWorkoutLogForDate:(NSDate *)date animateDateControlBar:(BOOL)shouldAnimate withDateControlAnimationDelay:(NSTimeInterval)delay{
     
     self.dateControlActiveDate = date;
     self.workoutLogActiveDay = date;
     
+    // create the date controls corresponding to the passed in date
+    
     [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
-    [self artificiallySelectDate: date];
+    
+//    [self artificiallySelectDate: date];
+    
+    // extract the day component to back solve for the date object index
+    
+    // immediately change the colors of the previously selected and newly selected controls
+    
+//    [self selectDateObjectCorrespondingToIndex: dayAsIndex];
+    
+    [self updateActiveDateLabelWithDate: date];
+    
+    // state
+    
+    NSNumber *dayAsIndex = @([self dayIndexForDate: date]);
+    self.selectedDateButtonIndex = dayAsIndex;
+    self.workoutLogActiveDay = date;
+    
+    [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: date];
+    [self configureToolbarAppearanceAccordingToStateVariables];
+    
+//    [self prepareNewContentCellsAndRemoveActivityIndicator];
+    
+    [self deriveDailyList];
+    [self updateNumberOfEntriesLabel];
+    [self deriveActiveCellsAndCreateTableView];
+    [self.tableView reloadData];
+    
+    [self.activityIndicatorView stopAnimating];
+    
+    [self enableControlsAndGiveActiveAppearance];
+    self.toolbar.hidden = NO;
+    self.toolbarControlArrow.hidden = NO;
+    
+//    [self.view setNeedsDisplay];
     
     if (shouldAnimate){
         
         [self configureInitialDateControlAnimationPosition];
-        [self performSelector: @selector(executeDateControlAnimation)
-                   withObject: self
-                   afterDelay: delay];
+        
+        dispatch_async(dispatch_get_main_queue(),  ^{
+            
+            [self executeDateControlAnimation];
+            
+        });
         
     }
     
@@ -982,10 +1055,34 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     // extract the day component to back solve for the date object index
     
-    NSInteger dayAsIndex = [self dayIndexForDate: date];
+    NSNumber *dayAsIndex = @([self dayIndexForDate: date]);
     
-    [self didSelectObjectWithIndex: @(dayAsIndex)
-                   representedDate: date];
+    // immediately change the colors of the previously selected and newly selected controls
+    
+    [self selectDateObjectCorrespondingToIndex: dayAsIndex];
+    
+    [self disableControlsAndGiveInactiveAppearance];
+    
+    [self updateActiveDateLabelWithDate: date];
+    
+    // state
+    
+    self.selectedDateButtonIndex = dayAsIndex;
+    self.workoutLogActiveDay = date;
+    
+    [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: date];
+    [self configureToolbarAppearanceAccordingToStateVariables];
+    
+    // the next method is called with a delay so that the stack empties and views are updated (and thus the activity indicator is show)
+    // a delay of .2 seconds is given to assure that the presentation of the activity indicator is clear and doesn't come off as glitchy
+    
+//    [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
+//               withObject: nil
+//               afterDelay: contentLoadingSmoothingDelay];
+    
+    [self prepareNewContentCellsAndRemoveActivityIndicator];
+    
+    [self.view setNeedsDisplay];
     
 }
 
@@ -1013,11 +1110,15 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index representedDate:(NSDate *)representedDate{
     
+    // activity indicator
+    
     if (!self.activityIndicatorView){
         
-        [self createAndPresentActivityIndicator];
+        [self createActivityIndicatorAndAddToViewHierarchy];
         
     }
+    
+    [self.activityIndicatorView startAnimating];
     
     // immediately change the colors of the previously selected and newly selected controls
     
@@ -1040,7 +1141,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     [self performSelector: @selector(prepareNewContentCellsAndRemoveActivityIndicator)
                withObject: nil
-               afterDelay: .2];
+               afterDelay: contentLoadingSmoothingDelay];
     
     [self.view setNeedsDisplay];
     
@@ -1176,12 +1277,10 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     // call the table view cellForIndexPath method for all daily list cells and store the results
     
     [self deriveActiveCellsAndCreateTableView];
-    
     [self.tableView reloadData];
     
-    // remove activity indicator and give the buttons active appearance / functionality
-    
-    [self removeActivityIndicator];
+
+    [self.activityIndicatorView stopAnimating];
     
     [self enableControlsAndGiveActiveAppearance];
     
@@ -1286,7 +1385,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
 }
 
-- (void)createAndPresentActivityIndicator{
+- (void)createActivityIndicatorAndAddToViewHierarchy{
     
     UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     
@@ -1300,16 +1399,9 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     [self.view addSubview: aiView];
     
-    [self.activityIndicatorView startAnimating];
-    
 }
 
-- (void)removeActivityIndicator{
-    
-    [self.activityIndicatorView removeFromSuperview];
-    self.activityIndicatorView = nil;
-    
-}
+
 
 - (CGFloat)totalScrollHeightBasedOnContent{
     
@@ -1533,7 +1625,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     
     [self showWorkoutLogForDate: self.lastSelectedWorkoutLogDate
           animateDateControlBar: NO
-                      withDelay: 0];
+  withDateControlAnimationDelay: 0];
     
 }
 
@@ -1541,7 +1633,7 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
 
     [self showWorkoutLogForDate: [NSDate date]
           animateDateControlBar: YES
-                      withDelay: .1];
+  withDateControlAnimationDelay: 0];
     
 
     
@@ -1618,9 +1710,6 @@ static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
     NSLog(@"%@", self.currentlySelectedPath);
     
     [self.activeTableViewCells removeObjectAtIndex: self.currentlySelectedPath.row];
-    
-    NSLog(@"daily list count: %lu", self.dailyList.count);
-    NSLog(@"active table view cells count: %lu", self.activeTableViewCells.count);
     
     if (self.dailyList.count == 1){
         

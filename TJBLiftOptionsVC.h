@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface TJBLiftOptionsVC : UIViewController
+
+@property (readonly) NSString *restorationID;
 
 @end
