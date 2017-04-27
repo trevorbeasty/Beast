@@ -219,7 +219,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
     if (_displayedContentNeedsUpdating == YES){
         
-        
+        [self hideAllBottomControls];
         
     }
     
@@ -229,14 +229,13 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
     [self showActivityIndicator];
     
-    dispatch_async(dispatch_get_main_queue(),  ^{
-        
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
         
         if (_fetchedObjectsNeedUpdating == YES || !self.dcSortedContent){
             
             self.dcSortedContent = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
             self.tvSortedContent = [self chainTemplatesForTVActiveDate];
-        
+            
         }
         
         if (_displayedContentNeedsUpdating){
@@ -270,17 +269,16 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
             
             [self giveControlsEnabledConfiguration];
             [self configureToolbarButtonsAccordingToActiveState];
-
+            
             [self.activeActivityIndicator stopAnimating];
+            [self unhideAllBottomControls];
             
         }
         
         _fetchedObjectsNeedUpdating = NO;
         _displayedContentNeedsUpdating = NO;
         
-        
     });
-
 
     
 }
@@ -307,6 +305,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
     self.view.backgroundColor = [UIColor blackColor];
     
+    
     // container view shadow
     
     UIView *shadowView = self.mainContainer;
@@ -320,7 +319,9 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     shadowLayer.shadowOpacity = 1.0;
     shadowLayer.shadowRadius = 3.0;
     
-    //// date controls
+    // date controls
+    
+    self.dateControlScrollView.backgroundColor = [UIColor darkGrayColor];
     
     // year label
     
@@ -430,32 +431,21 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
 }
 
-#pragma mark - Routine Content Generation Sequence
 
-- (NSFetchRequest *)chainTemplateFetchRequest{
-    
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
-    
-    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
-                                                               ascending: YES];
-    
-    [request setSortDescriptors: @[nameSort]];
-    
-    // predicate
-    // the showInRoutineList property determines if a chain should appear in the routine list
-    
-    NSPredicate *showInRoutineListPred = [NSPredicate predicateWithFormat: @"showInRoutineList == YES"];
-    [request setPredicate: showInRoutineListPred];
-    
-    return request;
-    
-}
-
-
-
-
+#pragma mark - SchemeSelectionDateCompDelegate
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
+    
+    // update the tvActiveDate
+    
+    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+    NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
+                                         fromDate: self.dcActiveDate];
+    [dateComps setMonth: [index intValue] + 1];
+    [dateComps setDay: 1];
+    
+    NSDate *selectedDate = [cal dateFromComponents: dateComps];
+    self.tvActiveDate = selectedDate;
     
     // select the newly selected date control
     
@@ -474,20 +464,18 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     [self giveControlsDisabledConfiguration];
     [self showActivityIndicator];
     
+    // configure labels appropriately
+    
+    [self updateTitleLabelCorrespondingToActiveTVDate];
+    self.numberOfRecordsLabel.text = @"";
+    
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
         
-        // update the tvActiveDate and relaod tvSortedContent
+        // relaod tvSortedContent
         
-        NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-        NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
-                                             fromDate: self.dcActiveDate];
-        [dateComps setMonth: [index intValue] + 1];
-        [dateComps setDay: 1];
-        
-        NSDate *selectedDate = [cal dateFromComponents: dateComps];
-        self.tvActiveDate = selectedDate;
-        
+        self.tvSortedContent = [self chainTemplatesForTVActiveDate];
+
         // content generation
         
         [self clearAllTableViewsAndDirectlyAssociatedObjects];
@@ -499,6 +487,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
         [self configureSelectionAsNil];
         [self giveControlsEnabledConfiguration];
         [self configureToolbarButtonsAccordingToActiveState];
+        [self updateAllTitleLabelsForNewContent];
         
         
     });
@@ -510,6 +499,13 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
 }
 
+
+
+
+
+
+
+#pragma mark - Routine Content Generation Helper Methods
 
 
 - (void)addEmbeddedTableViewToViewHierarchy{
@@ -550,11 +546,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
 }
 
-
-
-
-
-#pragma mark - Routine Content Generation Sequence Helper Methods
 
 - (CGSize)scrollViewContentSize{
     
@@ -678,6 +669,26 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 
 #pragma mark - Model Object Fetching and Manipulation
+
+- (NSFetchRequest *)chainTemplateFetchRequest{
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
+    
+    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
+                                                               ascending: YES];
+    
+    [request setSortDescriptors: @[nameSort]];
+    
+    // predicate
+    // the showInRoutineList property determines if a chain should appear in the routine list
+    
+    NSPredicate *showInRoutineListPred = [NSPredicate predicateWithFormat: @"showInRoutineList == YES"];
+    [request setPredicate: showInRoutineListPred];
+    
+    return request;
+    
+}
+
 
 - (NSMutableArray<TJBChainTemplate *> *)allChainTemplatesFetchedAndSortedAccordingToSortingState{
     
@@ -1274,16 +1285,20 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
         
         [self showActivityIndicator];
         [self giveControlsDisabledConfiguration];
+        [self configureTitleLabelsAccordingToRoutineHistory];
         
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
             
-            [self showChainHistoryForSelectedChainAndUpdateStateVariables];
+            
+            [self clearAllTableViewsAndDirectlyAssociatedObjects];
+            [self showChainHistoryForSelectedChain];
             
             [self.activeActivityIndicator stopAnimating];
             [self hideAllBottomControls];
             [self showViewHistoryReturnButton];
-            [self configureTitleLabelsAccordingToRoutineHistory];
+            
+            _viewingChainHistory = YES;
             
             
         });
@@ -1297,13 +1312,33 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
     [self showActivityIndicator];
     
+    self.routinesByLabel.text = @"My Routines";
+    [self updateTitleLabelCorrespondingToActiveTVDate];
+    self.numberOfRecordsLabel.text = @"";
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
         
-        [self deleteChainHistoryVC];
-        [self hideViewHistoryReturnButton];
+        [self clearAllTableViewsAndDirectlyAssociatedObjects];
+        
+        [self addEmbeddedTableViewToViewHierarchy];
+        
+        [self updateNumberOfRecordsTitleLabel];
+        
+        // visual state
+        
+        [self configureSelectionAsNil];
+        
+        [self giveControlsEnabledConfiguration];
         [self configureToolbarButtonsAccordingToActiveState];
+        
+        [self.activeActivityIndicator stopAnimating];
+        [self unhideAllBottomControls];
+        
+        [self hideViewHistoryReturnButton];
         [self unhideAllBottomControls];
         [self.activeActivityIndicator stopAnimating];
+        
+        _viewingChainHistory = NO;
     
         
     });
@@ -1312,39 +1347,9 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
 }
 
-- (void)deleteChainHistoryVC{
-    
-    if (self.chainHistoryScrollView){
-        
-        [self.chainHistoryScrollView removeFromSuperview];
-        self.chainHistoryScrollView = nil;
-        
-    }
-    
-    if (self.chainHistoryVC){
-        
-        // remove the child view controller as dictated in apple's programming guide
-        
-        [self.chainHistoryVC willMoveToParentViewController: nil];
-        
-        [self.chainHistoryVC.view removeFromSuperview];
-        
-        [self.chainHistoryVC removeFromParentViewController];
-        
-        self.chainHistoryVC = nil;
-        
-    }
-    
-}
 
 
-- (void)showChainHistoryForSelectedChainAndUpdateStateVariables{
-    
-    // clear any existing chain history vc
-    
-
-    [self deleteChainHistoryVC];
-    
+- (void)showChainHistoryForSelectedChain{
     
     // history table view
     
@@ -1388,15 +1393,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
                               atIndex: 0];
     
     [chainHistoryVC didMoveToParentViewController: self];
-    
-    // update state
-    
-    _viewingChainHistory = YES;
-    
-    // only enable certain controls. Will force the user to press back to return to previous browsing mode
-    
-    self.backButton.enabled = YES;
-    self.backButton.layer.opacity = 1.0;
     
 }
 
@@ -1968,8 +1964,9 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 - (void)segmentedControlValueDidChange{
     
     [self showActivityIndicator];
+    self.numberOfRecordsLabel.text = @"";
     
-    dispatch_async(dispatch_get_main_queue(),  ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
         
         // derive all model objects anew
         
@@ -2008,7 +2005,11 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
         
         [self.activeActivityIndicator stopAnimating];
         
+        
+        
+        
     });
+    
     
 }
 

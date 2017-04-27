@@ -175,7 +175,7 @@
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="width" secondItem="tZY-W0-fYd" secondAttribute="width" id="hWz-mk-UM5"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-Ii-eNq">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xgb-Ii-eNq">
                     <rect key="frame" x="125" y="122" width="125" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
@@ -190,7 +190,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 Records" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qa-r8-4d0">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Qa-r8-4d0">
                     <rect key="frame" x="250.5" y="122" width="124.5" height="30"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
@@ -230,7 +230,7 @@
         <image name="doubleDownArrowBlue32" width="32" height="32"/>
         <image name="garbageBlue25" width="25" height="25"/>
         <image name="leftDoubleArrow" width="25" height="25"/>
-        <image name="new" width="32" height="32"/>
+        <image name="new" width="25" height="25"/>
         <image name="rightDoubleArrow" width="25" height="25"/>
         <image name="titleBarHomeButton" width="25" height="25"/>
     </resources>
