@@ -532,7 +532,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 - (void)configureTabBar{
     
     self.tabBarItem.title = @"Workout Log";
-    self.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
+    self.tabBarItem.image = [UIImage imageNamed: @"logBlue25PDF"];
     
 }
 
@@ -1712,6 +1712,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
                                                                style: UIAlertActionStyleDefault
                                                              handler: ^(UIAlertAction *action){
                                                                  
+                                                                 [self reviveExercisesForChainTemplate: ct];
+                                                                 
                                                                  TJBActiveGuidanceTBC *routineGuidanceTBC = [[TJBActiveGuidanceTBC alloc] initWithChainTemplate: ct];
                                                                  
                                                                  [homeVC dismissViewControllerAnimated: YES
@@ -1750,6 +1752,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
                                                                style: UIAlertActionStyleDefault
                                                              handler: ^(UIAlertAction *action){
                                                                  
+                                                                 [self reviveExerciseForRealizedSet: rs];
+                                                                 
                                                                  TJBFreeformModeTabBarController *freeformTBC = [[TJBFreeformModeTabBarController alloc] initWithActiveExercise: rsGroupExercise];
                                                                  
                                                                  [homeVC dismissViewControllerAnimated: YES
@@ -1775,7 +1779,25 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
 }
 
+- (void)reviveExercisesForChainTemplate:(TJBChainTemplate *)ct{
+    
+    for (TJBExercise *exercise in ct.exercises){
+        
+        exercise.showInExerciseList = YES;
+        [[CoreDataController singleton] saveContext];
+        
+    }
+    
+}
 
+
+- (void)reviveExerciseForRealizedSet:(TJBRealizedSet *)rs{
+    
+    rs.exercise.showInExerciseList = YES;
+    [[CoreDataController singleton] saveContext];
+    
+    
+}
 
 
 

@@ -156,7 +156,7 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
 - (void)configureTabBar{
     
     self.tabBarItem.title = @"History";
-    self.tabBarItem.image = [UIImage imageNamed: @"colosseumBlue25"];
+    self.tabBarItem.image = [UIImage imageNamed: @"historyBlue25PDF"];
     
 }
 

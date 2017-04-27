@@ -40,7 +40,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="zAp-Rs-o2h"/>
                             </constraints>
-                            <state key="normal" image="titleBarHomeButton">
+                            <state key="normal" image="homeBlue25PDF">
                                 <color key="titleColor" red="0.093997287690019055" green="0.86543686977369683" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
                             <connections>
@@ -59,7 +59,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="fFG-G1-qPU"/>
                             </constraints>
-                            <state key="normal" image="clock"/>
+                            <state key="normal" image="clockBlue25PDF"/>
                             <connections>
                                 <action selector="didPressClockButton:" destination="-1" eventType="touchUpInside" id="SmZ-yZ-Jiw"/>
                             </connections>
@@ -195,7 +195,7 @@
         </view>
     </objects>
     <resources>
-        <image name="clock" width="25" height="25"/>
-        <image name="titleBarHomeButton" width="25" height="25"/>
+        <image name="clockBlue25PDF" width="25" height="25"/>
+        <image name="homeBlue25PDF" width="25" height="25"/>
     </resources>
 </document>

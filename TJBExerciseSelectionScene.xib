@@ -66,31 +66,31 @@
                     </constraints>
                     <items>
                         <barButtonItem width="8" style="plain" systemItem="fixedSpace" id="zL9-as-14Y"/>
-                        <barButtonItem image="armFlexBlue32" id="2Rd-sn-UVV" userLabel="launchButton">
+                        <barButtonItem image="liftBlue30PDF" id="2Rd-sn-UVV" userLabel="launchButton">
                             <connections>
                                 <action selector="didPressLaunch:" destination="-1" id="TUn-Gu-PQ9"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="74r-UR-baD"/>
-                        <barButtonItem image="searchBlue32" id="1GU-Rv-dbo" userLabel="searchButton">
+                        <barButtonItem image="searchBlue30PDF" id="1GU-Rv-dbo" userLabel="searchButton">
                             <connections>
                                 <action selector="didPressSearch:" destination="-1" id="e2x-vc-v0n"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="z2h-qw-6UH"/>
-                        <barButtonItem image="addCircledBlue32" id="m4l-4T-W51" userLabel="addNewButton">
+                        <barButtonItem image="addBlue30PDF" id="m4l-4T-W51" userLabel="addNewButton">
                             <connections>
                                 <action selector="didPressAddNewButton:" destination="-1" id="o5s-TR-CKr"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="W7i-5P-sWn"/>
-                        <barButtonItem image="garbageBlue32" id="7MX-NO-ZFX" userLabel="deleteButton">
+                        <barButtonItem image="garbageBlue30PDF" id="7MX-NO-ZFX" userLabel="deleteButton">
                             <connections>
                                 <action selector="didPressDeleteButton:" destination="-1" id="rr1-oZ-vJU"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="GHR-LF-gzr"/>
-                        <barButtonItem image="editBlue32" id="hSH-JL-Qub" userLabel="editButton">
+                        <barButtonItem image="editBlue30PDF" id="hSH-JL-Qub" userLabel="editButton">
                             <connections>
                                 <action selector="didPressEditButton:" destination="-1" id="JVU-jS-TSS"/>
                             </connections>
@@ -117,7 +117,7 @@
                                     <constraints>
                                         <constraint firstAttribute="width" constant="60" id="Ds8-kb-rvi"/>
                                     </constraints>
-                                    <state key="normal" image="cancelCircledBlue32">
+                                    <state key="normal" image="cancelBlue25PDF">
                                         <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     </state>
                                     <connections>
@@ -199,11 +199,11 @@
         </view>
     </objects>
     <resources>
-        <image name="addCircledBlue32" width="32" height="32"/>
-        <image name="armFlexBlue32" width="32" height="32"/>
-        <image name="cancelCircledBlue32" width="32" height="32"/>
-        <image name="editBlue32" width="32" height="32"/>
-        <image name="garbageBlue32" width="32" height="32"/>
-        <image name="searchBlue32" width="32" height="32"/>
+        <image name="addBlue30PDF" width="30" height="30"/>
+        <image name="cancelBlue25PDF" width="25" height="25"/>
+        <image name="editBlue30PDF" width="30" height="30"/>
+        <image name="garbageBlue30PDF" width="30" height="30"/>
+        <image name="liftBlue30PDF" width="30" height="30"/>
+        <image name="searchBlue30PDF" width="30" height="30"/>
     </resources>
 </document>

@@ -194,7 +194,7 @@ static NSString * const alertTimingID = @"alertTiming";
 - (void)configureTabBar{
     
     self.tabBarItem.title = @"Active";
-    self.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
+    self.tabBarItem.image = [UIImage imageNamed: @"activeBlue25PDF"];
     
 }
 

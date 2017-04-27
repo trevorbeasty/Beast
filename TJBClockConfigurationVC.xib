@@ -22,7 +22,6 @@
                 <outlet property="restartButton" destination="XL8-If-rBg" id="cMd-GE-D8b"/>
                 <outlet property="returnButton" destination="1OD-rV-EWi" id="0hs-NE-9ht"/>
                 <outlet property="scheduledAlertLabel" destination="6Ry-7P-3jA" id="IIh-XA-4CH"/>
-                <outlet property="soundButtonTitleBar" destination="bjS-8t-Kce" id="V07-Up-LMU"/>
                 <outlet property="targetRestTitleLabel" destination="eeA-ex-LNh" id="UDb-bf-79K"/>
                 <outlet property="targetRestValueLabel" destination="LHh-BV-EnO" id="Rs0-gI-fdi"/>
                 <outlet property="thinDividerLabel" destination="6Qx-DX-QwY" id="rgc-NN-k4Q"/>
@@ -45,13 +44,6 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6K4-Rq-0D0" userLabel="topTitleBar">
                             <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bjS-8t-Kce" userLabel="soundButton">
-                                    <rect key="frame" x="328" y="9" width="32" height="32"/>
-                                    <state key="normal" image="soundBlue32"/>
-                                    <connections>
-                                        <action selector="didPressSound:" destination="-1" eventType="touchUpInside" id="D5a-hU-mYR"/>
-                                    </connections>
-                                </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Timer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZTp-1U-1TH" userLabel="myExercises">
                                     <rect key="frame" x="143" y="13" width="89" height="24"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -60,7 +52,7 @@
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rl-Ur-nwC">
                                     <rect key="frame" x="15" y="13" width="25" height="25"/>
-                                    <state key="normal" image="cancel"/>
+                                    <state key="normal" image="cancelBlue25PDF"/>
                                     <connections>
                                         <action selector="didPressExit:" destination="-1" eventType="touchUpInside" id="c0r-aY-oKA"/>
                                     </connections>
@@ -69,9 +61,7 @@
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="5Rl-Ur-nwC" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="3Is-4s-F2B"/>
-                                <constraint firstAttribute="trailing" secondItem="bjS-8t-Kce" secondAttribute="trailing" constant="15" id="3mg-Jc-sEa"/>
                                 <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="I6m-y1-vsw"/>
-                                <constraint firstItem="bjS-8t-Kce" firstAttribute="centerY" secondItem="6K4-Rq-0D0" secondAttribute="centerY" id="J1x-vs-B2v"/>
                                 <constraint firstItem="5Rl-Ur-nwC" firstAttribute="leading" secondItem="6K4-Rq-0D0" secondAttribute="leading" constant="15" id="SrE-fR-lKv"/>
                                 <constraint firstAttribute="height" constant="50" id="kAy-4k-QDZ"/>
                                 <constraint firstItem="ZTp-1U-1TH" firstAttribute="centerX" secondItem="6K4-Rq-0D0" secondAttribute="centerX" id="z76-fu-VUZ"/>
@@ -120,7 +110,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Qx-DX-QwY" userLabel="thinDividerLabel">
-                    <rect key="frame" x="187" y="151.5" width="1" height="250"/>
+                    <rect key="frame" x="187" y="151.5" width="1" height="200"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="0.5" id="ghb-kA-71x"/>
@@ -185,21 +175,21 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XL8-If-rBg" userLabel="restartButton">
                             <rect key="frame" x="8" y="10" width="109" height="50"/>
-                            <state key="normal" image="restartBlue50"/>
+                            <state key="normal" image="resetBlue50PDF"/>
                             <connections>
                                 <action selector="didPressRestart:" destination="-1" eventType="touchUpInside" id="vmv-bk-S6D"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8kQ-cO-Xdg" userLabel="playButton">
                             <rect key="frame" x="226" y="10" width="109" height="50"/>
-                            <state key="normal" image="playBlue50"/>
+                            <state key="normal" image="playBlue50PDF"/>
                             <connections>
                                 <action selector="didPressPlay:" destination="-1" eventType="touchUpInside" id="2Eu-WR-8Pe"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF8-cg-yf2" userLabel="pauseButton">
                             <rect key="frame" x="117" y="10" width="109" height="50"/>
-                            <state key="normal" image="pauseBlue50"/>
+                            <state key="normal" image="pauseBlue50PDF"/>
                             <connections>
                                 <action selector="didPressPause:" destination="-1" eventType="touchUpInside" id="w4n-aw-Mxg"/>
                             </connections>
@@ -257,7 +247,7 @@
                 <constraint firstItem="1OD-rV-EWi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="YRc-pG-pWR"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Zvl-eg-gqZ"/>
                 <constraint firstItem="y3W-hb-C7R" firstAttribute="leading" secondItem="6Qx-DX-QwY" secondAttribute="trailing" constant="16" id="aKz-ce-HhP"/>
-                <constraint firstItem="b2H-k8-HXR" firstAttribute="bottom" secondItem="6Qx-DX-QwY" secondAttribute="bottom" constant="-50" id="coY-05-yOV"/>
+                <constraint firstItem="b2H-k8-HXR" firstAttribute="bottom" secondItem="6Qx-DX-QwY" secondAttribute="bottom" id="coY-05-yOV"/>
                 <constraint firstItem="y3W-hb-C7R" firstAttribute="top" secondItem="b2H-k8-HXR" secondAttribute="top" id="dTZ-Vf-wLi"/>
                 <constraint firstItem="6Qx-DX-QwY" firstAttribute="top" secondItem="OB7-p7-f6f" secondAttribute="bottom" id="gZg-gD-0gS"/>
                 <constraint firstItem="1OD-rV-EWi" firstAttribute="top" secondItem="OFI-Nm-Gkm" secondAttribute="bottom" constant="50" id="lcK-pB-SgV"/>
@@ -271,10 +261,9 @@
         </view>
     </objects>
     <resources>
-        <image name="cancel" width="25" height="25"/>
-        <image name="pauseBlue50" width="50" height="50"/>
-        <image name="playBlue50" width="50" height="50"/>
-        <image name="restartBlue50" width="50" height="50"/>
-        <image name="soundBlue32" width="32" height="32"/>
+        <image name="cancelBlue25PDF" width="25" height="25"/>
+        <image name="pauseBlue50PDF" width="50" height="50"/>
+        <image name="playBlue50PDF" width="50" height="50"/>
+        <image name="resetBlue50PDF" width="50" height="50"/>
     </resources>
 </document>

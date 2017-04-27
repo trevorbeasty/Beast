@@ -41,8 +41,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *editButtonTargetRest;
 @property (weak, nonatomic) IBOutlet UIButton *editButtonAlertTiming;
 
-@property (weak, nonatomic) IBOutlet UIButton *soundButtonTitleBar;
-
 @property (weak, nonatomic) IBOutlet UIView *topTitleBar;
 @property (weak, nonatomic) IBOutlet UIView *bottomTitleBar;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainer;
@@ -256,7 +254,7 @@
     
     // buttons
     
-    NSArray *iconButtons = @[self.soundButtonTitleBar, self.restartButton, self.pauseButton, self.playButton];
+    NSArray *iconButtons = @[self.restartButton, self.pauseButton, self.playButton];
     for (UIButton *butt in iconButtons){
         
         butt.backgroundColor = [UIColor clearColor];

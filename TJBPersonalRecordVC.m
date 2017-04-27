@@ -113,7 +113,7 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
 - (void)configureTabBar{
     
     self.tabBarItem.title = @"PR's";
-    self.tabBarItem.image = [UIImage imageNamed: @"trophyBlue25"];
+    self.tabBarItem.image = [UIImage imageNamed: @"trophyBlue25PDF"];
     
 }
 
