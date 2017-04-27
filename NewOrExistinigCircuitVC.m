@@ -455,36 +455,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 
 
-- (void)selectDateControlCorrespondingToDate:(NSDate *)date{
-    
-    // must check that the passed-in date is within the year for the current dcActiveDate
-    // if it is not, must reload date controls for the passed-in date
-    // the didSelectObjectAtIndex method does no date checking
-    
-//    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-//    
-//    BOOL correctDateControlsDisplayed = [calendar isDate: date
-//                                             equalToDate: self.dcActiveDate
-//                                       toUnitGranularity: NSCalendarUnitYear];
-//    
-//    // loads the date controls if the dates are incompatible or there are no date control objects currently displayed
-//    
-//    if (correctDateControlsDisplayed == NO || !self.dateStackView){
-//        
-//        [self createAndShowDateControlsForDate: date];
-//        
-//    }
-    
-    
-//    [self didSelectObjectWithIndex: @(dateControlIndex)];
-    
-}
-
-
-
-
-
-
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
     
     // select the newly selected date control
@@ -677,19 +647,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 }
 
 
-//- (void)removeActivityIndicatorIfExists{
-//    
-//    if (self.activeActivityIndicator){
-//        
-//        [self.activeActivityIndicator stopAnimating];
-//        [self.activeActivityIndicator removeFromSuperview];
-//        self.activeActivityIndicator = nil;
-//        
-//        
-//    }
-//    
-//}
-
 
 #pragma mark - Title Labels Describing Content
 
@@ -859,112 +816,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
 }
 
-//
-//- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)chainTemplatesArray{
-//    
-//    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
-//    
-//    TJBChainTemplate *iterativeChainTemplate;
-//    NSDate *iterativeChainTemplateDate;
-//    NSMutableArray *iterativeCollector;
-//    
-//    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    
-//    iterativeChainTemplate = chainTemplatesArray[0];
-//    iterativeChainTemplateDate = [self largestRealizeChainDateForChainTemplate: iterativeChainTemplate];
-//    iterativeCollector = [[NSMutableArray alloc] init];
-//    [iterativeCollector addObject: iterativeChainTemplate];
-//    
-//    for (int i = 12 ; i > 0; i--){
-//        
-////        [iterativeDateComps setMonth: i];
-//        
-//        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
-//        [returnArray addObject: monthArray];
-//        
-//        for (int j = arrayTracker; j < chainTemplatesArray.count; j++){
-//            
-//            iterativeChainTemplate = chainTemplatesArray[j];
-//            iterativeRealizedChain = [self largestRealizeChainInReferenceYearAndMonthForChainTemplate: iterativeChainTemplate
-//                                                                                        referenceDate: [calendar dateFromComponents: iterativeDateComps]];
-//            
-//            // nil will be returned if there are no matches for the relevant month and year.  If there is a match, add the chain to the return array
-//            // if there is no match, then all subsequent arrays will not contain any matches because the dates are in decreasing order, so break the for loop and continue to the next month
-//            
-//            if (iterativeRealizedChain){
-//                
-//                [returnArray[12-i] addObject: iterativeChainTemplate];
-//                
-//            } else{
-//                
-//                arrayTracker = j;  // the for loop begins searching through the passed in chain template collection at this index. This prevents the loop from analyzing chains that will not match the reference month
-//                break;
-//                
-//            }
-//            
-//        }
-//        
-//    }
-//    
-//    return returnArray;
-//    
-//}
-//
-//- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateCreated:(NSMutableArray<TJBChainTemplate *> *)array referenceDate:(NSDate *)referenceDate{
-//    
-//    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
-//    
-//    TJBChainTemplate *iterativeChainTemplate;
-//    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
-//                                                       fromDate: referenceDate];
-//    
-//    //    NSDate *referenceDate;
-//    
-//    int arrayTracker = 0;
-//    
-//    for (int i = 12 ; i > 0; i--){
-//        
-//        [iterativeDateComps setMonth: i];
-//        referenceDate = [calendar dateFromComponents: iterativeDateComps];
-//        
-//        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
-//        [returnArray addObject: monthArray];
-//        
-//        for (int j = arrayTracker; j < array.count; j++){
-//            
-//            iterativeChainTemplate = array[j];
-//            
-//            BOOL iterativeChainInRefYear = [calendar isDate: iterativeChainTemplate.dateCreated
-//                                                equalToDate: referenceDate
-//                                          toUnitGranularity: NSCalendarUnitYear];
-//            
-//            BOOL iterativeChainInRefMonth = [calendar isDate: iterativeChainTemplate.dateCreated
-//                                                 equalToDate: referenceDate
-//                                           toUnitGranularity: NSCalendarUnitMonth];
-//            
-//            BOOL dateCreatedMatchesMonthAndYear = iterativeChainInRefYear && iterativeChainInRefMonth;
-//            
-//            if (dateCreatedMatchesMonthAndYear){
-//                
-//                [returnArray[12-i] addObject: iterativeChainTemplate];
-//                
-//            } else{
-//                
-//                arrayTracker = j;
-//                break;
-//                
-//            }
-//            
-//        }
-//        
-//    }
-//    
-//    return returnArray;
-//    
-//}
 
 
 
@@ -1046,24 +897,10 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 #pragma mark - Date Controls
 
-//- (void)createAndShowDateControlsForDate:(NSDate *)date{
-//    
-//    self.dcActiveDate = date;
-//    NSMutableArray<TJBChainTemplate *> *initialRefArray = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
-//    self.dcSortedContent = initialRefArray;
-//    
-//    
-//}
 
 - (void)incrementDCACtiveYearWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
     
-    int yearDelta;
-    
-    if (incrementDirectionForward){
-        yearDelta = 1;
-    } else{
-        yearDelta = -1;
-    }
+    int yearDelta = incrementDirectionForward ? 1 : -1;
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     NSDateComponents *dateComps = [calendar components: NSCalendarUnitYear
@@ -1076,10 +913,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     [dateComps setDay: 1];
     [dateComps setMonth: 1];
     self.dcActiveDate = [calendar dateFromComponents: dateComps];
-    
-    // source array and date control objects
-    
-    self.dcSortedContent = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
     
     [self configureDateControlsBasedOnDCActiveDate];
     
@@ -1236,41 +1069,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
 }
 
-#pragma mark - Convenience
-
-//- (void)toggleButtonsToOnStateWithViewHistoryEnabled:(BOOL)viewHistoryEnabled{
-//    
-////    NSArray *buttons = @[self.launchButton];
-////    
-////    for (UIButton *b in buttons){
-////        
-////        b.enabled = YES;
-////        b.layer.opacity = 1.0;
-////        
-////    }
-////    
-////    if (viewHistoryEnabled){
-////        
-////        self.previousMarkButton.enabled = YES;
-////        self.previousMarkButton.layer.opacity = 1.0;
-////        
-////    }
-//    
-//}
-//
-//- (void)toggleButtonsToOffState{
-//    
-////    NSArray *buttons = @[self.launchButton,
-////                         self.previousMarkButton];
-////    
-////    for (UIButton *b in buttons){
-////        
-////        b.enabled = NO;
-////        b.layer.opacity = .4;
-////        
-////    }
-//    
-//}
 
 
 #pragma mark - <UITableViewDataSource>
@@ -1283,8 +1081,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
-//    int reversedIndex = 11 - [self.selectedDateObjectIndex intValue];
-    
     NSInteger rowCount = self.tvSortedContent.count;
     
     if (rowCount == 0){
@@ -1475,20 +1271,20 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
     if (_viewingChainHistory == NO){
         
-        // will need to show an activity indicator while loading the history table view because it could have enough cells to require a significant amount of loading time
         
         [self showActivityIndicator];
-        
         [self giveControlsDisabledConfiguration];
         
-        // the chain history table view is handled by a separate controller. I simply add it to a scroll view here and designate it as a a child view controller
-        // this task must be completed after a short delay to allow the view to draw the activity indicator
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
             
             [self showChainHistoryForSelectedChainAndUpdateStateVariables];
+            
+            [self.activeActivityIndicator stopAnimating];
+            [self hideAllBottomControls];
             [self showViewHistoryReturnButton];
             [self configureTitleLabelsAccordingToRoutineHistory];
+            
             
         });
         
@@ -1498,69 +1294,57 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 - (void)didPressHistoryReturnButton{
 
-        
-    // show activity indicator
-    
+
     [self showActivityIndicator];
     
-    // queue the uploading of the new table to allow the view to redraw itself
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
         
-        [self showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables];
+        [self deleteChainHistoryVC];
         [self hideViewHistoryReturnButton];
         [self configureToolbarButtonsAccordingToActiveState];
         [self unhideAllBottomControls];
+        [self.activeActivityIndicator stopAnimating];
+    
         
     });
+    
+
+    
+}
+
+- (void)deleteChainHistoryVC{
+    
+    if (self.chainHistoryScrollView){
+        
+        [self.chainHistoryScrollView removeFromSuperview];
+        self.chainHistoryScrollView = nil;
+        
+    }
+    
+    if (self.chainHistoryVC){
+        
+        // remove the child view controller as dictated in apple's programming guide
+        
+        [self.chainHistoryVC willMoveToParentViewController: nil];
+        
+        [self.chainHistoryVC.view removeFromSuperview];
+        
+        [self.chainHistoryVC removeFromParentViewController];
+        
+        self.chainHistoryVC = nil;
+        
+    }
     
 }
 
 
-
-//- (void)showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables{
-//    
-//    // show the chain options for the current tvActiveDate
-//    
-//    // remove all existing table view objects
-//    
-//    [self clearAllTableViewsAndDirectlyAssociatedObjects];
-//    
-//    // clear all previous table view selections
-//    
-//    [self configureSelectionAsNil];
-//    
-//    // the tvSortedContent is not cleared when the chainHistoryVC is presented, thus, no work has to be done to derive tvSortedContent
-//    
-//    // show the new table view
-//    
-//    // new table view
-//    
-//    [self addEmbeddedTableViewToViewHierarchy];
-//    
-//    // enable all buttons and give enabled appearance
-//    
-//    [self giveControlsEnabledConfiguration];
-//    
-//    // remove the activity indicator
-//    
-//    [self removeActivityIndicatorIfExists];
-//    
-//    // update state and button title
-//    
-//    _viewingChainHistory = NO;
-//    
-//    
-//}
-
 - (void)showChainHistoryForSelectedChainAndUpdateStateVariables{
     
-    [self.view layoutSubviews];
+    // clear any existing chain history vc
     
-    // get rid of all table views before adding current table view
+
+    [self deleteChainHistoryVC];
     
-    [self clearAllTableViewsAndDirectlyAssociatedObjects];
-    [self hideAllBottomControls];
     
     // history table view
     
@@ -1608,10 +1392,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     // update state
     
     _viewingChainHistory = YES;
-    
-    // get rid of the activity indicator and old table view content. The content will be reloaded if it is later required
-    
-    [self.activeActivityIndicator stopAnimating];
     
     // only enable certain controls. Will force the user to press back to return to previous browsing mode
     
@@ -2038,27 +1818,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
         
     if (self.selectedChainTemplate){
         
-//        TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.selectedChainTemplate];
-//        vc1.tabBarItem.title = @"Active";
-//        vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
-//        
-//        TJBWorkoutNavigationHub *vc3 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
-//                                                                    advancedControlsActive: NO];
-//        vc3.tabBarItem.title = @"Workout Log";
-//        vc3.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
-//        
-////        TJBCircuitReferenceContainerVC *vc2 = [[TJBCircuitReferenceContainerVC alloc] initWithRealizedChain: vc1.realizedChain];
-////        vc2.tabBarItem.title = @"Progress";
-////        vc2.tabBarItem.image = [UIImage imageNamed: @"routineProgress"];
-////        
-//        // tab bar
-//        
-//        UITabBarController *tbc = [[UITabBarController alloc] init];
-//        [tbc setViewControllers: @[vc1, vc3]];
-//        tbc.tabBar.translucent = NO;
-//        tbc.tabBar.barTintColor = [UIColor darkGrayColor];
-//        tbc.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-        
         TJBActiveGuidanceTBC *activeGuidanceTBC = [[TJBActiveGuidanceTBC alloc] initWithChainTemplate: self.selectedChainTemplate];
         
         [self presentViewController: activeGuidanceTBC
@@ -2081,10 +1840,13 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
     TJBVoidCallback callback = ^{
         
+        weakSelf.sortBySegmentedControl.selectedSegmentIndex = 0;
+        
+        _fetchedObjectsNeedUpdating = YES;
+        _displayedContentNeedsUpdating = YES;
+        
         [weakSelf dismissViewControllerAnimated: YES
                                      completion: nil];
-        
-        [weakSelf selectDateControlCorrespondingToDate: [NSDate date]];
         
     };
     
@@ -2177,7 +1939,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
     [self.activeTableView endUpdates];
     
-    [self selectDateControlCorrespondingToDate: self.tvActiveDate];
+//    [self selectDateControlCorrespondingToDate: self.tvActiveDate];
     
     
 }
