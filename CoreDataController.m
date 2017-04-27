@@ -901,8 +901,8 @@ NSString * const placeholderCategoryName = @"Placeholder";
         id obj1 = modelObjects[i];
         id obj2 = modelObjects[i + 1];
         
-        BOOL objectsAreRealizedSetsOfSameDay = [self objectsAreRealizedSetsOfSameDay_obj1: obj1
-                                                                                     obj2: obj2];
+        BOOL objectsAreRealizedSetsOfSameDay = [self objectsHaveSimilarExercisesAndDates_obj1: obj1
+                                                                                         obj2: obj2];
         
         if (i == limit - 2){
             
@@ -1009,7 +1009,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     
 }
 
-- (BOOL)objectsAreRealizedSetsOfSameDay_obj1:(id)obj1 obj2:(id)obj2{
+- (BOOL)objectsHaveSimilarExercisesAndDates_obj1:(id)obj1 obj2:(id)obj2{
     
     BOOL obj1IsRealizedSet = [self objectIsRealizedSet: obj1];
     BOOL obj2IsRealizedSet = [self objectIsRealizedSet: obj2];
@@ -1025,8 +1025,12 @@ NSString * const placeholderCategoryName = @"Placeholder";
         TJBRealizedSet *rs1 = obj1;
         TJBRealizedSet *rs2 = obj2;
         
-        return [self.calendar isDate: rs1.submissionTime
-                     inSameDayAsDate: rs2.submissionTime];
+        BOOL objectsHaveSimilarDate = [self.calendar isDate: rs1.submissionTime
+                                            inSameDayAsDate: rs2.submissionTime];
+        
+        BOOL objectsHaveSimilarExercise = [rs1.exercise isEqual: rs2.exercise];
+        
+        return objectsHaveSimilarDate && objectsHaveSimilarExercise;
         
     } else{
         

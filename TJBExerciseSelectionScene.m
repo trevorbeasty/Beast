@@ -447,6 +447,12 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     
     if (self.contentExercisesArray.count > 0){ // only selects the cell if there is any content to begin with
         
+        if (_searchIsActive && self.exerciseSearchTextField){
+            
+            [self.exerciseSearchTextField resignFirstResponder];
+            
+        }
+        
         // first deal with the previously selected cell
         
         if (self.selectedCellIndexPath){
@@ -561,6 +567,12 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 #pragma mark - Button Actions
 
 - (IBAction)didPressLeftBarButton:(id)sender{
+    
+    if (_searchIsActive == YES && self.exerciseSearchTextField){
+        
+        [self.exerciseSearchTextField resignFirstResponder];
+        
+    }
     
     
     [self dismissViewControllerAnimated: YES
