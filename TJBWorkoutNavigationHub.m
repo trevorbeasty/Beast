@@ -150,7 +150,7 @@ static const CGFloat toolbarAnimationTime = .2;
 
 // content loading
 
-static NSTimeInterval const contentLoadingSmoothingDelay = .2;
+static NSTimeInterval const contentLoadingSmoothingDelay = .01;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
@@ -466,7 +466,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
         // the following methods are called asynchronously so that the view draws and shows the activity indicator while all tasks execute
         
-        dispatch_async(dispatch_get_main_queue(),  ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
             
             if (!self.masterList || _fetchedObjectsNeedUpdating == YES){
                 
@@ -483,8 +483,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
             _fetchedObjectsNeedUpdating = NO;
             
         });
-        
-        return;
         
     }
     
@@ -658,7 +656,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate:(NSDate *)workoutLogDate dateControlDate:(NSDate *)dateControlDate shouldAnimateDateControlBar:(BOOL)shouldAnimate{
     
-    [NSThread sleepForTimeInterval: contentLoadingSmoothingDelay];
+//    [NSThread sleepForTimeInterval: contentLoadingSmoothingDelay];
     
     self.dateControlActiveDate = dateControlDate;
     self.workoutLogActiveDay = workoutLogDate;

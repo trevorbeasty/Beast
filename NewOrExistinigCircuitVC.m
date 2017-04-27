@@ -114,7 +114,7 @@ typedef enum{
 
 @property (nonatomic, strong) NSMutableArray <TJBChainTemplate *> *tvSortedContent; // this is the array used by the table view as a data source. It holds a collection of chain templates for each month of the year actively displayed in the table view. It is also the array accessed when a user selects a table view cell. It should be reloaded anytime a date control object is selected that corresponds to a different year than it currently represents
 
-@property (nonatomic, strong) NSMutableArray <NSMutableArray <TJBChainTemplate *> *> *dcSortedContent; // this is the date control sorted content.  It holds a collection of chain template collections that correspond to the year actively displayed in the date controls. It must be derived every time a new date control year is selected.  It is leveraged to draw circles appropriately on the date controls and also is assigned to tvSortedContent when a date control object in a new year is selected
+@property (nonatomic, strong) NSMutableArray <TJBChainTemplate *> *dcSortedContent; // holds all chain templates, sorted according to the sorting state
 
 // these two dates ultimately control what should be displayed for the date control and table view
 
@@ -152,7 +152,9 @@ static CGFloat const historyReturnButtonHeight = 44;
 static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 
+// content generation
 
+static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 
 
@@ -170,7 +172,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     self = [super init];
     
 
-    
+    [self initializeStateVariables];
     
     return self;
 }
@@ -232,16 +234,44 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         
         if (_fetchedObjectsNeedUpdating == YES || !self.dcSortedContent){
             
-
-            
+            self.dcSortedContent = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
+            self.tvSortedContent = [self chainTemplatesForTVActiveDate];
         
-            
         }
         
         if (_displayedContentNeedsUpdating){
             
-            [self createAndShowDateControlsForDate: self.tvActiveDate];
-            [self selectDateControlCorrespondingToDate: self.tvActiveDate];
+            // create the date controls
+            
+            [self configureDateControlsBasedOnDCActiveDate];
+            
+            // configure the correct selection appearance for the date controls
+            
+            int selectedDateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
+            
+            if (self.selectedDateObjectIndex){
+                
+                [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] configureAsNotSelected];
+                
+            }
+            
+            [self.dateControlObjects[selectedDateControlIndex] configureAsSelected];
+            self.selectedDateObjectIndex = @(selectedDateControlIndex);
+            
+            // content generation
+            
+            [self clearAllTableViewsAndDirectlyAssociatedObjects];
+            
+            [self addEmbeddedTableViewToViewHierarchy];
+            
+            [self updateAllTitleLabelsForNewContent];
+            
+            // visual state
+            
+            [self giveControlsEnabledConfiguration];
+            [self configureToolbarButtonsAccordingToActiveState];
+
+            [self.activeActivityIndicator stopAnimating];
             
         }
         
@@ -431,22 +461,22 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     // if it is not, must reload date controls for the passed-in date
     // the didSelectObjectAtIndex method does no date checking
     
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+//    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+//    
+//    BOOL correctDateControlsDisplayed = [calendar isDate: date
+//                                             equalToDate: self.dcActiveDate
+//                                       toUnitGranularity: NSCalendarUnitYear];
+//    
+//    // loads the date controls if the dates are incompatible or there are no date control objects currently displayed
+//    
+//    if (correctDateControlsDisplayed == NO || !self.dateStackView){
+//        
+//        [self createAndShowDateControlsForDate: date];
+//        
+//    }
     
-    BOOL correctDateControlsDisplayed = [calendar isDate: date
-                                             equalToDate: self.dcActiveDate
-                                       toUnitGranularity: NSCalendarUnitYear];
     
-    // loads the date controls if the dates are incompatible or there are no date control objects currently displayed
-    
-    if (correctDateControlsDisplayed == NO || !self.dateStackView){
-        
-        [self createAndShowDateControlsForDate: date];
-        
-    }
-    
-    int dateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
-    [self didSelectObjectWithIndex: @(dateControlIndex)];
+//    [self didSelectObjectWithIndex: @(dateControlIndex)];
     
 }
 
@@ -457,24 +487,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
     
-    NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
-                                         fromDate: self.dcActiveDate];
-    [dateComps setMonth: [index intValue] + 1];
-    [dateComps setDay: 1];
-    
-    NSDate *selectedDate = [cal dateFromComponents: dateComps];
-    self.tvActiveDate = selectedDate;
-    
-    // disable controls and give disabled appearance
-    
-    [self giveControlsDisabledConfiguration];
-    
-    // must show the new selection in the date control objects, show the activity indicator while replacing the old table view, and adjust all state variables accordingly
-    
-    [self configureSelectionAsNil]; // adjusts certain state parameters
-    
-    // date objects
+    // select the newly selected date control
     
     if (self.selectedDateObjectIndex){
         
@@ -486,51 +499,50 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     self.selectedDateObjectIndex = index;
     
     
-    // activity indicator
+    // give view loading appearance
     
+    [self giveControlsDisabledConfiguration];
     [self showActivityIndicator];
     
-    // delayed call to load new table view and get rid of activity indicator. Delay is used to both ensure that the activity indicator actually appears (and spins) and to protect against the activity indicator only being visible for a millisecond or so (which just makes the app look glitchy)
     
-    [self performSelector: @selector(updateTableViewAndRemoveActivityIndicator:)
-               withObject: index
-               afterDelay: .2];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
+        
+        // update the tvActiveDate and relaod tvSortedContent
+        
+        NSCalendar *cal = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+        NSDateComponents *dateComps = [cal components: NSCalendarUnitYear
+                                             fromDate: self.dcActiveDate];
+        [dateComps setMonth: [index intValue] + 1];
+        [dateComps setDay: 1];
+        
+        NSDate *selectedDate = [cal dateFromComponents: dateComps];
+        self.tvActiveDate = selectedDate;
+        
+        // content generation
+        
+        [self clearAllTableViewsAndDirectlyAssociatedObjects];
+        [self addEmbeddedTableViewToViewHierarchy];
+        
+        // view appearance
+        
+        [self.activeActivityIndicator stopAnimating];
+        [self configureSelectionAsNil];
+        [self giveControlsEnabledConfiguration];
+        [self configureToolbarButtonsAccordingToActiveState];
+        
+        
+    });
+    
+
+    
+
+    
     
 }
-
-
-- (void)updateTableViewAndRemoveActivityIndicator:(NSNumber *)index{
-    
-    // get rid of all existing table before adding the new one
-    
-    [self clearAllTableViewsAndDirectlyAssociatedObjects];
-    
-    // table view UI and supporting array
-    // supporting array must be derived before the table view is configured because the supporting array is required to determine table view size and to determine cell content
-    
-    int reversedIndex = 11 - [index intValue]; // must use a reversed index because December is in the 0th position of dcSortedContent
-    self.tvSortedContent = self.dcSortedContent[reversedIndex]; // the chains being used by the tv will always be a subset of those stored in the dcSortedContent array
-    
-    // new table view
-    
-    [self addEmbeddedTableViewToViewHierarchy];
-    
-    // controls state
-    
-    [self giveControlsEnabledConfiguration];
-    [self configureToolbarButtonsAccordingToActiveState];
-    
-    
-    return;
-    
-}
-
 
 
 
 - (void)addEmbeddedTableViewToViewHierarchy{
-    
-    [self.view layoutSubviews];
     
     //// returns a table view embedded inside a scroll view. This is done so that the table view is forced to layout all its content
     
@@ -562,24 +574,9 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     tv.dataSource = self;
     tv.delegate = self;
     
-    // ... other aesthetic properties
-    
-    //// view hierarchy
-    // sv and tv
-    
     [sv addSubview: tv];
     [self.mainContainer insertSubview: sv
                               atIndex: 0];
-    
-    // activity indicator
-    
-    [self removeActivityIndicatorIfExists];
-    
-    // labels
-    
-    [self updateAllTitleLabelsForNewContent];
-    
-    return;
     
 }
 
@@ -680,18 +677,18 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 }
 
 
-- (void)removeActivityIndicatorIfExists{
-    
-    if (self.activeActivityIndicator){
-        
-        [self.activeActivityIndicator stopAnimating];
-        [self.activeActivityIndicator removeFromSuperview];
-        self.activeActivityIndicator = nil;
-        
-        
-    }
-    
-}
+//- (void)removeActivityIndicatorIfExists{
+//    
+//    if (self.activeActivityIndicator){
+//        
+//        [self.activeActivityIndicator stopAnimating];
+//        [self.activeActivityIndicator removeFromSuperview];
+//        self.activeActivityIndicator = nil;
+//        
+//        
+//    }
+//    
+//}
 
 
 #pragma mark - Title Labels Describing Content
@@ -725,7 +722,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 #pragma mark - Model Object Fetching and Manipulation
 
-- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)annualSortedContentForReferenceDate:(NSDate *)referenceDate{
+- (NSMutableArray<TJBChainTemplate *> *)allChainTemplatesFetchedAndSortedAccordingToSortingState{
     
     //// given the chain templates in fetched results and the current sorting selection, derive the sorted content for the year designated by the reference date
     // this method independently evaluates the active index of the segmented control
@@ -743,19 +740,67 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     if (sortByDateLastExecuted){
         
         [self filterAndSortArrayByDateLastExecuted: interimArray];
-        
-        return [self bucketByMonthAccordingToDateLastExecuted: interimArray
-                                                referenceDate: referenceDate];
+        return interimArray;
         
     } else{
         
-        [self filterAndSortArrayByDateCreated: interimArray
-                                referenceDate: referenceDate];
-        
-        return [self bucketByMonthAccordingToDateCreated: interimArray
-                                           referenceDate: referenceDate];
+        [self filterAndSortArrayByDateCreated: interimArray];
+        return interimArray;
         
     }
+    
+}
+
+- (NSMutableArray<TJBChainTemplate *> *)chainTemplatesForTVActiveDate{
+    
+    if (!self.dcSortedContent){
+        
+        self.dcSortedContent = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
+        
+    }
+    
+    NSMutableArray *collector = [[NSMutableArray alloc] init];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+    NSDate *iterativeChainDate;
+    TJBChainTemplate *iterativeChain;
+    
+    for (int i = 0; i < self.dcSortedContent.count; i++){
+        
+        iterativeChain = self.dcSortedContent[i];
+        iterativeChainDate = [self dateForChainTemplateBasedOnSortingState: iterativeChain];
+        
+        BOOL chainDateInActiveMonth = [calendar isDate: iterativeChainDate
+                                           equalToDate: self.tvActiveDate
+                                     toUnitGranularity: NSCalendarUnitMonth];
+        
+        if (chainDateInActiveMonth){
+            
+            [collector addObject: iterativeChain];
+            
+        }
+
+    }
+    
+    
+    return collector;
+    
+}
+
+- (NSDate *)dateForChainTemplateBasedOnSortingState:(TJBChainTemplate *)ct{
+    
+    NSDate *date;
+    
+    if (self.sortBySegmentedControl.selectedSegmentIndex == 1){
+        
+        date = [self largestRealizeChainDateForChainTemplate: ct];
+        
+    } else{
+        
+        date = ct.dateCreated;
+        
+    }
+    
+    return date;
     
 }
 
@@ -790,45 +835,15 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         int dateDifference = [date1 timeIntervalSinceDate: date2];
         BOOL date1IsLater = dateDifference > 0;
         
-        if (date1IsLater){
-            
-            return NSOrderedAscending;
-            
-        } else{
-            
-            return NSOrderedDescending;
-            
-        }
+        return date1IsLater ? NSOrderedAscending : NSOrderedDescending;
         
     }];
     
 }
 
 
-- (void)filterAndSortArrayByDateCreated:(NSMutableArray<TJBChainTemplate *> *)array referenceDate:(NSDate *)referenceDate{
+- (void)filterAndSortArrayByDateCreated:(NSMutableArray<TJBChainTemplate *> *)array{
     
-    // remove all chain templates that don't have realized sets in the active year
-    
-    NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    
-    for (TJBChainTemplate *chainTemplate in array){
-        
-        BOOL isInActiveYear = [calendar isDate: chainTemplate.dateCreated
-                                   equalToDate: referenceDate
-                             toUnitGranularity: NSCalendarUnitYear];
-        
-        if (!isInActiveYear){
-            
-            [indexSet addIndex: [array indexOfObject: chainTemplate]];
-            
-        }
-        
-    }
-    
-    [array removeObjectsAtIndexes: indexSet];
-    
-    // now, only chain templates with realized chains in the active year remain.  Use an NSComparator to order the chain correctly
     
     [array sortUsingComparator: ^(TJBChainTemplate *chain1, TJBChainTemplate *chain2){
         
@@ -838,123 +853,118 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         int dateDifference = [date1 timeIntervalSinceDate: date2];
         BOOL date1IsLater = dateDifference > 0;
         
-        if (date1IsLater){
-            
-            return NSOrderedAscending;
-            
-        } else{
-            
-            return NSOrderedDescending;
-            
-        }
+        return date1IsLater ? NSOrderedAscending : NSOrderedDescending;
         
     }];
     
 }
 
-
-- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)chainTemplatesArray referenceDate:(NSDate *)referenceDate{
-    
-    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
-    
-    TJBChainTemplate *iterativeChainTemplate;
-    TJBRealizedChain *iterativeRealizedChain;
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
-                                                       fromDate: referenceDate];
-    
-    int arrayTracker = 0;
-    
-    for (int i = 12 ; i > 0; i--){
-        
-        [iterativeDateComps setMonth: i];
-        
-        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
-        [returnArray addObject: monthArray];
-        
-        for (int j = arrayTracker; j < chainTemplatesArray.count; j++){
-            
-            iterativeChainTemplate = chainTemplatesArray[j];
-            iterativeRealizedChain = [self largestRealizeChainInReferenceYearAndMonthForChainTemplate: iterativeChainTemplate
-                                                                                        referenceDate: [calendar dateFromComponents: iterativeDateComps]];
-            
-            // nil will be returned if there are no matches for the relevant month and year.  If there is a match, add the chain to the return array
-            // if there is no match, then all subsequent arrays will not contain any matches because the dates are in decreasing order, so break the for loop and continue to the next month
-            
-            if (iterativeRealizedChain){
-                
-                [returnArray[12-i] addObject: iterativeChainTemplate];
-                
-            } else{
-                
-                arrayTracker = j;  // the for loop begins searching through the passed in chain template collection at this index. This prevents the loop from analyzing chains that will not match the reference month
-                break;
-                
-            }
-            
-        }
-        
-    }
-    
-    return returnArray;
-    
-}
-
-- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateCreated:(NSMutableArray<TJBChainTemplate *> *)array referenceDate:(NSDate *)referenceDate{
-    
-    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
-    
-    TJBChainTemplate *iterativeChainTemplate;
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
-                                                       fromDate: referenceDate];
-    
-    //    NSDate *referenceDate;
-    
-    int arrayTracker = 0;
-    
-    for (int i = 12 ; i > 0; i--){
-        
-        [iterativeDateComps setMonth: i];
-        referenceDate = [calendar dateFromComponents: iterativeDateComps];
-        
-        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
-        [returnArray addObject: monthArray];
-        
-        for (int j = arrayTracker; j < array.count; j++){
-            
-            iterativeChainTemplate = array[j];
-            
-            BOOL iterativeChainInRefYear = [calendar isDate: iterativeChainTemplate.dateCreated
-                                                equalToDate: referenceDate
-                                          toUnitGranularity: NSCalendarUnitYear];
-            
-            BOOL iterativeChainInRefMonth = [calendar isDate: iterativeChainTemplate.dateCreated
-                                                 equalToDate: referenceDate
-                                           toUnitGranularity: NSCalendarUnitMonth];
-            
-            BOOL dateCreatedMatchesMonthAndYear = iterativeChainInRefYear && iterativeChainInRefMonth;
-            
-            if (dateCreatedMatchesMonthAndYear){
-                
-                [returnArray[12-i] addObject: iterativeChainTemplate];
-                
-            } else{
-                
-                arrayTracker = j;
-                break;
-                
-            }
-            
-        }
-        
-    }
-    
-    return returnArray;
-    
-}
+//
+//- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)chainTemplatesArray{
+//    
+//    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
+//    
+//    TJBChainTemplate *iterativeChainTemplate;
+//    NSDate *iterativeChainTemplateDate;
+//    NSMutableArray *iterativeCollector;
+//    
+//    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    
+//    iterativeChainTemplate = chainTemplatesArray[0];
+//    iterativeChainTemplateDate = [self largestRealizeChainDateForChainTemplate: iterativeChainTemplate];
+//    iterativeCollector = [[NSMutableArray alloc] init];
+//    [iterativeCollector addObject: iterativeChainTemplate];
+//    
+//    for (int i = 12 ; i > 0; i--){
+//        
+////        [iterativeDateComps setMonth: i];
+//        
+//        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
+//        [returnArray addObject: monthArray];
+//        
+//        for (int j = arrayTracker; j < chainTemplatesArray.count; j++){
+//            
+//            iterativeChainTemplate = chainTemplatesArray[j];
+//            iterativeRealizedChain = [self largestRealizeChainInReferenceYearAndMonthForChainTemplate: iterativeChainTemplate
+//                                                                                        referenceDate: [calendar dateFromComponents: iterativeDateComps]];
+//            
+//            // nil will be returned if there are no matches for the relevant month and year.  If there is a match, add the chain to the return array
+//            // if there is no match, then all subsequent arrays will not contain any matches because the dates are in decreasing order, so break the for loop and continue to the next month
+//            
+//            if (iterativeRealizedChain){
+//                
+//                [returnArray[12-i] addObject: iterativeChainTemplate];
+//                
+//            } else{
+//                
+//                arrayTracker = j;  // the for loop begins searching through the passed in chain template collection at this index. This prevents the loop from analyzing chains that will not match the reference month
+//                break;
+//                
+//            }
+//            
+//        }
+//        
+//    }
+//    
+//    return returnArray;
+//    
+//}
+//
+//- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)bucketByMonthAccordingToDateCreated:(NSMutableArray<TJBChainTemplate *> *)array referenceDate:(NSDate *)referenceDate{
+//    
+//    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *returnArray = [[NSMutableArray alloc] init];
+//    
+//    TJBChainTemplate *iterativeChainTemplate;
+//    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    NSDateComponents *iterativeDateComps = [calendar components: (NSCalendarUnitYear | NSCalendarUnitMonth)
+//                                                       fromDate: referenceDate];
+//    
+//    //    NSDate *referenceDate;
+//    
+//    int arrayTracker = 0;
+//    
+//    for (int i = 12 ; i > 0; i--){
+//        
+//        [iterativeDateComps setMonth: i];
+//        referenceDate = [calendar dateFromComponents: iterativeDateComps];
+//        
+//        NSMutableArray *monthArray = [[NSMutableArray alloc] init];
+//        [returnArray addObject: monthArray];
+//        
+//        for (int j = arrayTracker; j < array.count; j++){
+//            
+//            iterativeChainTemplate = array[j];
+//            
+//            BOOL iterativeChainInRefYear = [calendar isDate: iterativeChainTemplate.dateCreated
+//                                                equalToDate: referenceDate
+//                                          toUnitGranularity: NSCalendarUnitYear];
+//            
+//            BOOL iterativeChainInRefMonth = [calendar isDate: iterativeChainTemplate.dateCreated
+//                                                 equalToDate: referenceDate
+//                                           toUnitGranularity: NSCalendarUnitMonth];
+//            
+//            BOOL dateCreatedMatchesMonthAndYear = iterativeChainInRefYear && iterativeChainInRefMonth;
+//            
+//            if (dateCreatedMatchesMonthAndYear){
+//                
+//                [returnArray[12-i] addObject: iterativeChainTemplate];
+//                
+//            } else{
+//                
+//                arrayTracker = j;
+//                break;
+//                
+//            }
+//            
+//        }
+//        
+//    }
+//    
+//    return returnArray;
+//    
+//}
 
 
 
@@ -966,32 +976,6 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     return chainTemplate.realizedChains.lastObject.dateCreated;
     
-//    NSOrderedSet<TJBRealizedChain *> *realizedChains = chainTemplate.realizedChains;
-//    NSInteger limit = realizedChains.count;
-//    
-//    NSDate *iterativeDate;
-//    
-//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-//    
-//    for (int i = 0; i < limit; i++){
-//        
-//        NSInteger reverseOrder = (limit - 1) - i;
-//        TJBRealizedChain *iterativeChain = realizedChains[reverseOrder];
-//        iterativeDate = iterativeChain.dateCreated;
-//        
-//        BOOL iterativeChainInRefYear = [calendar isDate: iterativeDate
-//                                            equalToDate: referenceDate
-//                                      toUnitGranularity: NSCalendarUnitYear];
-//        
-//        if (iterativeChainInRefYear){
-//            
-//            return iterativeDate;
-//            
-//        }
-//        
-//    }
-//    
-//    return nil;
     
 }
 
@@ -1062,14 +1046,14 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 #pragma mark - Date Controls
 
-- (void)createAndShowDateControlsForDate:(NSDate *)date{
-    
-    self.dcActiveDate = date;
-    NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *initialRefArray = [self annualSortedContentForReferenceDate: date];
-    self.dcSortedContent = initialRefArray;
-    [self configureDateControlsBasedOnDCActiveDate];
-    
-}
+//- (void)createAndShowDateControlsForDate:(NSDate *)date{
+//    
+//    self.dcActiveDate = date;
+//    NSMutableArray<TJBChainTemplate *> *initialRefArray = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
+//    self.dcSortedContent = initialRefArray;
+//    
+//    
+//}
 
 - (void)incrementDCACtiveYearWithIncrementDirectionForward:(BOOL)incrementDirectionForward{
     
@@ -1095,7 +1079,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     // source array and date control objects
     
-    self.dcSortedContent = [self annualSortedContentForReferenceDate: self.dcActiveDate];
+    self.dcSortedContent = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
     
     [self configureDateControlsBasedOnDCActiveDate];
     
@@ -1181,7 +1165,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         // determine if the date control object that is about to be created has content, and thus should have a circle drawn
         
         int reverseIndex = 11 - i;
-        BOOL recordExistsForIterativeMonth = self.dcSortedContent[reverseIndex].count > 0;
+        BOOL recordExistsForIterativeMonth = NO;
         
         TJBSchemeSelectionDateComp *dateControlObject = [[TJBSchemeSelectionDateComp alloc] initWithMonthString: monthString
                                                                                                 representedDate: iterativeDate
@@ -1236,7 +1220,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     for (int i = 0; i < 12; i++){
         
         int reverseIndex = 11 - i;
-        BOOL recordExistsForIterativeMonth = self.dcSortedContent[reverseIndex].count > 0;
+        BOOL recordExistsForIterativeMonth = NO;
         
         if (recordExistsForIterativeMonth){
             
@@ -1534,40 +1518,40 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 
 
-- (void)showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables{
-    
-    // show the chain options for the current tvActiveDate
-    
-    // remove all existing table view objects
-    
-    [self clearAllTableViewsAndDirectlyAssociatedObjects];
-    
-    // clear all previous table view selections
-    
-    [self configureSelectionAsNil];
-    
-    // the tvSortedContent is not cleared when the chainHistoryVC is presented, thus, no work has to be done to derive tvSortedContent
-    
-    // show the new table view
-    
-    // new table view
-    
-    [self addEmbeddedTableViewToViewHierarchy];
-    
-    // enable all buttons and give enabled appearance
-    
-    [self giveControlsEnabledConfiguration];
-    
-    // remove the activity indicator
-    
-    [self removeActivityIndicatorIfExists];
-    
-    // update state and button title
-    
-    _viewingChainHistory = NO;
-    
-    
-}
+//- (void)showChainOptionsForCurrentTVActiveDateAndUpdateStateVariables{
+//    
+//    // show the chain options for the current tvActiveDate
+//    
+//    // remove all existing table view objects
+//    
+//    [self clearAllTableViewsAndDirectlyAssociatedObjects];
+//    
+//    // clear all previous table view selections
+//    
+//    [self configureSelectionAsNil];
+//    
+//    // the tvSortedContent is not cleared when the chainHistoryVC is presented, thus, no work has to be done to derive tvSortedContent
+//    
+//    // show the new table view
+//    
+//    // new table view
+//    
+//    [self addEmbeddedTableViewToViewHierarchy];
+//    
+//    // enable all buttons and give enabled appearance
+//    
+//    [self giveControlsEnabledConfiguration];
+//    
+//    // remove the activity indicator
+//    
+//    [self removeActivityIndicatorIfExists];
+//    
+//    // update state and button title
+//    
+//    _viewingChainHistory = NO;
+//    
+//    
+//}
 
 - (void)showChainHistoryForSelectedChainAndUpdateStateVariables{
     
@@ -1627,7 +1611,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     // get rid of the activity indicator and old table view content. The content will be reloaded if it is later required
     
-    [self removeActivityIndicatorIfExists];
+    [self.activeActivityIndicator stopAnimating];
     
     // only enable certain controls. Will force the user to press back to return to previous browsing mode
     
@@ -2175,7 +2159,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     int dateControlObjectIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
     int reversedIndex = 11 - dateControlObjectIndex; // must use a reversed index because December is in the 0th position of dcSortedContent
-    [self.dcSortedContent[reversedIndex] removeObject: self.selectedChainTemplate];
+//    [self.dcSortedContent[reversedIndex] removeObject: self.selectedChainTemplate];
     
     if (self.tvSortedContent.count == 0){
         
@@ -2221,11 +2205,48 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)segmentedControlValueDidChange{
     
-    // date controls must be reloaded because sorting change has significant changes on what month chain templates are associated with
+    [self showActivityIndicator];
     
-    [self createAndShowDateControlsForDate: self.tvActiveDate];
-    
-    [self selectDateControlCorrespondingToDate: self.tvActiveDate];
+    dispatch_async(dispatch_get_main_queue(),  ^{
+        
+        // derive all model objects anew
+        
+        self.dcSortedContent = [self allChainTemplatesFetchedAndSortedAccordingToSortingState];
+        self.tvSortedContent = [self chainTemplatesForTVActiveDate];
+        
+        // create the date controls
+        
+        [self configureDateControlsBasedOnDCActiveDate];
+        
+        // configure the correct selection appearance for the date controls
+        
+        int selectedDateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
+        
+        if (self.selectedDateObjectIndex){
+            
+            [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] configureAsNotSelected];
+            
+        }
+        
+        [self.dateControlObjects[selectedDateControlIndex] configureAsSelected];
+        self.selectedDateObjectIndex = @(selectedDateControlIndex);
+        
+        // content generation
+        
+        [self clearAllTableViewsAndDirectlyAssociatedObjects];
+        
+        [self addEmbeddedTableViewToViewHierarchy];
+        
+        [self updateAllTitleLabelsForNewContent];
+        
+        // visual state
+        
+        [self giveControlsEnabledConfiguration];
+        [self configureToolbarButtonsAccordingToActiveState];
+        
+        [self.activeActivityIndicator stopAnimating];
+        
+    });
     
 }
 
