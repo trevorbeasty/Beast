@@ -156,7 +156,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 // content generation
 
-static NSTimeInterval const contentLoadingSmoothingDelay = .05;
+static NSTimeInterval const contentLoadingSmoothingDelay = .25;
 
 
 // date controls

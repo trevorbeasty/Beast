@@ -764,10 +764,10 @@
 				0B843CA71DFEF8E50093F057 /* TJBWorkoutNavigationHub.h */,
 				0B843CA81DFEF8E50093F057 /* TJBWorkoutNavigationHub.m */,
 				0B843CA91DFEF8E50093F057 /* TJBWorkoutNavigationHub.xib */,
+				0B3688161E4128F60077290C /* TJBDateSelectionMaster.h */,
 				0B3687E61E3A2A780077290C /* TJBCircleDateVC.h */,
 				0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */,
 				0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */,
-				0B3688161E4128F60077290C /* TJBDateSelectionMaster.h */,
 				0B78E7F11E61236300EB216F /* TJBCellFetchingOperation.h */,
 				0B78E7F21E61236300EB216F /* TJBCellFetchingOperation.m */,
 			);

@@ -150,7 +150,7 @@ static const CGFloat toolbarAnimationTime = .2;
 
 // content loading
 
-static NSTimeInterval const contentLoadingSmoothingDelay = .01;
+static NSTimeInterval const contentLoadingSmoothingDelay = .25;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
@@ -946,25 +946,23 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     [self updateSelectionStateVariablesInResponseToDateDateObjectWithRepresentedDate: representedDate];
     [self configureToolbarAppearanceAccordingToStateVariables];
     
-    [self performSelector: @selector(userDateControlObjectSelectionCompletionActions)
-               withObject: nil
-               afterDelay: contentLoadingSmoothingDelay];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
+        
+        [self deriveDailyList];
+        [self updateNumberOfEntriesLabel];
+        
+        [self deriveActiveCellsAndCreateTableView];
+        [self.tableView reloadData];
+        
+        [self.activityIndicatorView stopAnimating];
+        
+        [self enableControlsAndGiveActiveAppearance];
+        
+        
+    });
     
 }
 
-- (void)userDateControlObjectSelectionCompletionActions{
-    
-    [self deriveDailyList];
-    [self updateNumberOfEntriesLabel];
-    
-    [self deriveActiveCellsAndCreateTableView];
-    [self.tableView reloadData];
-    
-    [self.activityIndicatorView stopAnimating];
-    
-    [self enableControlsAndGiveActiveAppearance];
-    
-}
 
 
 #pragma mark - Table View Content
