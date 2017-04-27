@@ -35,6 +35,7 @@
 
 #import "TJBCellFetchingOperation.h"
 
+#import "TJBAssortedUtilities.h" // utilities
 
 // state
 
@@ -1307,7 +1308,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
         [self animateToolbarToHiddenState];
         
-        [self.toolbarControlArrow setImage: [UIImage imageNamed: @"doubleUpArrowBlue32"]
+        [self.toolbarControlArrow setImage: [UIImage imageNamed: @"upArrowBlue30PDF"]
                                   forState: UIControlStateNormal];
         
         _toolbarState = TJBToolbarHidden;
@@ -1316,7 +1317,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
         [self animateToolbarToNotHiddenState];
         
-        [self.toolbarControlArrow setImage: [UIImage imageNamed: @"doubleDownArrowBlue32"]
+        [self.toolbarControlArrow setImage: [UIImage imageNamed: @"downArrowBlue30PDF"]
                                   forState: UIControlStateNormal];
         
         _toolbarState = TJBToolbarNotHidden;
@@ -1328,23 +1329,29 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 - (void)animateToolbarToHiddenState{
     
     self.toolbarControlArrow.enabled = NO;
+    CGFloat extraVertTranslation = 8;
     
     [UIView animateWithDuration: toolbarAnimationTime
                      animations: ^{
                          
-                         CGRect currentToolbarRect = self.toolbar.frame;
+                         CGFloat verticalDistance = self.shadowContainer.frame.size.height - self.toolbar.frame.origin.y;
                          
-                         CGPoint toolbarOrigin = currentToolbarRect.origin;
-                         CGPoint newOrigin = CGPointMake(toolbarOrigin.x, toolbarOrigin.y + currentToolbarRect.size.height + self.toolbarBottomToContainerConstr.constant);
-                         CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, currentToolbarRect.size.width, currentToolbarRect.size.height);
+                         NSArray *translatingViews = @[self.toolbar, self.toolbarControlArrow];
+                         for (UIView *view in translatingViews){
+                             
+                             
+                             view.frame = [TJBAssortedUtilities rectByTranslatingRect: view.frame
+                                                                              originX: 0
+                                                                              originY: verticalDistance + extraVertTranslation];
+                             
+                         }
                          
-                         self.toolbar.frame = newFrame;
                          
                      }
                      completion: ^(BOOL finished){
                          
                          CGFloat newConstrConst = self.toolbar.frame.size.height;
-                         self.toolbarBottomToContainerConstr.constant = -1 * newConstrConst;
+                         self.toolbarBottomToContainerConstr.constant = -1 * (newConstrConst + extraVertTranslation);
                          
                          self.toolbarControlArrow.enabled = YES;
                          
@@ -1357,22 +1364,26 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     self.toolbarControlArrow.enabled = NO;
     
+    CGFloat translationDist = -1 * self.toolbarBottomToContainerConstr.constant + toolbarToBottomSpacing;
+    
     [UIView animateWithDuration: toolbarAnimationTime
                      animations: ^{
                          
-                         CGRect currentToolbarRect = self.toolbar.frame;
                          
-                         CGPoint toolbarOrigin = currentToolbarRect.origin;
-                         CGPoint newOrigin = CGPointMake(toolbarOrigin.x, toolbarOrigin.y - currentToolbarRect.size.height - toolbarToBottomSpacing);
-                         CGRect newFrame = CGRectMake(newOrigin.x, newOrigin.y, currentToolbarRect.size.width, currentToolbarRect.size.height);
-                         
-                         self.toolbar.frame = newFrame;
+                         NSArray *translatingViews = @[self.toolbar, self.toolbarControlArrow];
+                         for (UIView *view in translatingViews){
+                             
+                             
+                             view.frame = [TJBAssortedUtilities rectByTranslatingRect: view.frame
+                                                                              originX: 0
+                                                                              originY: -1 * translationDist];
+                             
+                         }
                          
                      }
                      completion: ^(BOOL finished){
                          
                          self.toolbarBottomToContainerConstr.constant = toolbarToBottomSpacing;
-                         
                          self.toolbarControlArrow.enabled = YES;
                          
                      }];

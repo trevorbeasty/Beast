@@ -47,31 +47,33 @@
                     <rect key="frame" x="0.0" y="157.5" width="375" height="509.5"/>
                     <subviews>
                         <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFI-cn-6pj">
-                            <rect key="frame" x="74" y="457.5" width="285" height="44"/>
+                            <rect key="frame" x="8" y="457.5" width="351" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="Nfv-Ag-fN3"/>
                             </constraints>
                             <items>
                                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="0Cs-5d-bLg"/>
-                                <barButtonItem image="jumpToLastBlue32" id="bmd-QN-P6s">
+                                <barButtonItem image="liftBlue30PDF" id="mNu-K8-cPz"/>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="2gY-fk-wjs"/>
+                                <barButtonItem image="lastBlue30PDF" id="bmd-QN-P6s">
                                     <connections>
                                         <action selector="didPressJumpToLast:" destination="-1" id="Zou-t9-Yzb"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="mBi-to-Xgx"/>
-                                <barButtonItem image="todayBlue32" id="N5s-kc-Pde">
+                                <barButtonItem image="todayBlue30PDF" id="N5s-kc-Pde">
                                     <connections>
                                         <action selector="didPressToday:" destination="-1" id="jIP-7y-euv"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="64S-wJ-eiD"/>
-                                <barButtonItem image="garbageBlue32" id="vuc-EV-hRy">
+                                <barButtonItem image="garbageBlue30PDF" id="vuc-EV-hRy">
                                     <connections>
                                         <action selector="didPressDelete:" destination="-1" id="Kpr-oT-2gY"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="Nq8-sx-R2l"/>
-                                <barButtonItem image="editBlue32" id="4EO-Jf-1Lb">
+                                <barButtonItem image="editBlue30PDF" id="4EO-Jf-1Lb">
                                     <connections>
                                         <action selector="didPressEdit:" destination="-1" id="ebO-a9-qLa"/>
                                     </connections>
@@ -80,11 +82,11 @@
                             </items>
                         </toolbar>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czS-vj-ufW">
-                            <rect key="frame" x="8" y="457.5" width="50" height="44"/>
+                            <rect key="frame" x="8" y="397.5" width="50" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="fxa-8g-1md"/>
                             </constraints>
-                            <state key="normal" image="doubleDownArrowBlue32"/>
+                            <state key="normal" image="downArrowBlue30PDF"/>
                             <connections>
                                 <action selector="didPressToolbarControlArrow:" destination="-1" eventType="touchUpInside" id="cCn-Jh-wiM"/>
                             </connections>
@@ -93,9 +95,9 @@
                     <color key="backgroundColor" red="0.99626137070235543" green="1" blue="0.7588937688929247" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
                         <constraint firstItem="czS-vj-ufW" firstAttribute="height" secondItem="EFI-cn-6pj" secondAttribute="height" id="E4p-72-1LW"/>
-                        <constraint firstAttribute="bottom" secondItem="czS-vj-ufW" secondAttribute="bottom" constant="8" id="Ggk-oh-72I"/>
                         <constraint firstAttribute="trailing" secondItem="EFI-cn-6pj" secondAttribute="trailing" constant="16" id="Tpk-U6-KJE"/>
-                        <constraint firstItem="EFI-cn-6pj" firstAttribute="leading" secondItem="czS-vj-ufW" secondAttribute="trailing" constant="16" id="k6h-cE-cJe"/>
+                        <constraint firstItem="EFI-cn-6pj" firstAttribute="top" secondItem="czS-vj-ufW" secondAttribute="bottom" constant="16" id="glo-T6-bnW"/>
+                        <constraint firstItem="EFI-cn-6pj" firstAttribute="leading" secondItem="NrZ-JA-Y3W" secondAttribute="leading" constant="8" id="rk5-KV-Ejx"/>
                         <constraint firstAttribute="bottom" secondItem="EFI-cn-6pj" secondAttribute="bottom" constant="8" id="tsO-C0-5zD"/>
                         <constraint firstItem="czS-vj-ufW" firstAttribute="leading" secondItem="NrZ-JA-Y3W" secondAttribute="leading" constant="8" id="wH8-rQ-hEZ"/>
                     </constraints>
@@ -115,7 +117,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="e9Q-KB-5se"/>
                             </constraints>
-                            <state key="normal" image="titleBarHomeButton">
+                            <state key="normal" image="homeBlue25PDF">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
                             <connections>
@@ -127,14 +129,14 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="TCP-ot-UXh"/>
                             </constraints>
-                            <state key="normal" image="rightDoubleArrow"/>
+                            <state key="normal" image="rightArrowBlue25PDF"/>
                             <connections>
                                 <action selector="didPressRightArrow:" destination="-1" eventType="touchUpInside" id="dR6-NA-jGM"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xyd-rd-xY1">
                             <rect key="frame" x="68" y="0.0" width="60" height="50"/>
-                            <state key="normal" image="leftDoubleArrow"/>
+                            <state key="normal" image="leftArrowBlue25PDF"/>
                             <connections>
                                 <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="Wgy-Wn-W4w"/>
                             </connections>
@@ -208,13 +210,14 @@
         </view>
     </objects>
     <resources>
-        <image name="doubleDownArrowBlue32" width="32" height="32"/>
-        <image name="editBlue32" width="32" height="32"/>
-        <image name="garbageBlue32" width="32" height="32"/>
-        <image name="jumpToLastBlue32" width="32" height="32"/>
-        <image name="leftDoubleArrow" width="25" height="25"/>
-        <image name="rightDoubleArrow" width="25" height="25"/>
-        <image name="titleBarHomeButton" width="25" height="25"/>
-        <image name="todayBlue32" width="32" height="32"/>
+        <image name="downArrowBlue30PDF" width="30" height="30"/>
+        <image name="editBlue30PDF" width="30" height="30"/>
+        <image name="garbageBlue30PDF" width="30" height="30"/>
+        <image name="homeBlue25PDF" width="25" height="25"/>
+        <image name="lastBlue30PDF" width="30" height="30"/>
+        <image name="leftArrowBlue25PDF" width="25" height="25"/>
+        <image name="liftBlue30PDF" width="30" height="30"/>
+        <image name="rightArrowBlue25PDF" width="25" height="25"/>
+        <image name="todayBlue30PDF" width="30" height="30"/>
     </resources>
 </document>
