@@ -16,8 +16,6 @@
 
 // VC's to present
 
-//#import "TJBActiveRoutineGuidanceVC.h"
-//#import "TJBWorkoutNavigationHub.h"
 #import "TJBCircuitReferenceContainerVC.h"
 #import "TJBCompleteChainHistoryVC.h"
 #import "TJBCircuitTemplateContainerVC.h"
@@ -33,7 +31,6 @@
 // table view cell
 
 #import "TJBRealizedChainCell.h"
-//#import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
 
 // date control
@@ -57,7 +54,8 @@ typedef enum{
     // user selection flow
     
     BOOL _viewingChainHistory;
-    BOOL _coreDataUpdateRequired;
+    BOOL _fetchedObjectsNeedUpdating;
+    BOOL _displayedContentNeedsUpdating;
     TJBToolbarState _toolbarState;
     
 }
@@ -105,9 +103,6 @@ typedef enum{
 - (IBAction)didPressHistoryButton:(id)sender;
 - (IBAction)didPressDeleteButton:(id)sender;
 - (IBAction)didPressNewRoutine:(id)sender;
-
-
-
 
 // core
 
@@ -174,6 +169,21 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     self = [super init];
     
+
+    
+    
+    return self;
+}
+
+
+#pragma mark - Instantiation Helper Methods
+
+- (void)initializeStateVariables{
+    
+    // configure state variables for fresh state
+    
+    _viewingChainHistory = NO;
+    
     // active dates
     
     NSDate *today = [NSDate date];
@@ -183,17 +193,8 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     // state
     
     _toolbarState = TJBToolBarNotHidden;
-    _coreDataUpdateRequired = NO;
-    
-    
-    return self;
-}
-
-- (void)initializeActiveVariables{
-    
-    //// configure state variables for fresh state
-    
-    _viewingChainHistory = NO;
+    _fetchedObjectsNeedUpdating = NO;
+    _displayedContentNeedsUpdating = YES;
     
 }
 
@@ -208,25 +209,49 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     [self configureSegmentedControlNotifications];
     [self configureCoreDataNotifications];
     
-    [self selectDateControlCorrespondingToDate: [NSDate date]];
-    
     return;
     
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     
-    // core data will be saved many times as a routine is created
-    // this method of updating this controller prevents needless, repetitive updates
-    
-    if (_coreDataUpdateRequired == YES){
+    if (_displayedContentNeedsUpdating == YES){
         
-        [self createAndShowDateControlsForDate: self.tvActiveDate];
-        [self selectDateControlCorrespondingToDate: self.tvActiveDate];
         
-        _coreDataUpdateRequired = NO;
         
     }
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [self showActivityIndicator];
+    
+    dispatch_async(dispatch_get_main_queue(),  ^{
+        
+        
+        if (_fetchedObjectsNeedUpdating == YES || !self.dcSortedContent){
+            
+
+            
+        
+            
+        }
+        
+        if (_displayedContentNeedsUpdating){
+            
+            [self createAndShowDateControlsForDate: self.tvActiveDate];
+            [self selectDateControlCorrespondingToDate: self.tvActiveDate];
+            
+        }
+        
+        _fetchedObjectsNeedUpdating = NO;
+        _displayedContentNeedsUpdating = NO;
+        
+        
+    });
+
+
     
 }
 
@@ -377,6 +402,28 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 #pragma mark - Routine Content Generation Sequence
 
+- (NSFetchRequest *)chainTemplateFetchRequest{
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
+    
+    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
+                                                               ascending: YES];
+    
+    [request setSortDescriptors: @[nameSort]];
+    
+    // predicate
+    // the showInRoutineList property determines if a chain should appear in the routine list
+    
+    NSPredicate *showInRoutineListPred = [NSPredicate predicateWithFormat: @"showInRoutineList == YES"];
+    [request setPredicate: showInRoutineListPred];
+    
+    return request;
+    
+}
+
+
+
+
 
 - (void)selectDateControlCorrespondingToDate:(NSDate *)date{
     
@@ -405,40 +452,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 
 
-- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)annualSortedContentForReferenceDate:(NSDate *)referenceDate{
-    
-    //// given the chain templates in fetched results and the current sorting selection, derive the sorted content for the year designated by the reference date
-    // this method independently evaluates the active index of the segmented control
-    
-    BOOL sortByDateLastExecuted = self.sortBySegmentedControl.selectedSegmentIndex == 1;
-    
-    
-    NSFetchRequest *fr = [self chainTemplateFetchRequest];
-    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-    NSError *error = nil;
-    NSArray *chainTemplates = [moc executeFetchRequest: fr
-                                                 error: &error];
-    NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: chainTemplates];
-    
-    if (sortByDateLastExecuted){
-        
-        [self filterAndSortArrayByDateLastExecuted: interimArray
-                                     referenceDate: referenceDate];
-        
-        return [self bucketByMonthAccordingToDateLastExecuted: interimArray
-                                                referenceDate: referenceDate];
-        
-    } else{
-        
-        [self filterAndSortArrayByDateCreated: interimArray
-                                referenceDate: referenceDate];
-        
-        return [self bucketByMonthAccordingToDateCreated: interimArray
-                                           referenceDate: referenceDate];
-        
-    }
-    
-}
+
 
 
 - (void)didSelectObjectWithIndex:(NSNumber *)index{
@@ -647,24 +661,21 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)showActivityIndicator{
     
-    if (self.activeActivityIndicator){
+    if (!self.activeActivityIndicator){
         
-        [self.activeActivityIndicator removeFromSuperview];
-        self.activeActivityIndicator = nil;
+        UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+        self.activeActivityIndicator = indView;
+        
+        indView.frame = self.mainContainer.frame;
+        indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+        indView.layer.opacity = .9;
+        indView.hidesWhenStopped = YES;
+        
+        [self.view addSubview: indView];
         
     }
     
-    UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
-    self.activeActivityIndicator = indView;
-    
-    indView.frame = self.mainContainer.frame;
-    indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    indView.layer.opacity = .9;
-    indView.hidesWhenStopped = YES;
-    
-    [self.view addSubview: indView];
-    
-    [indView startAnimating];
+    [self.activeActivityIndicator startAnimating];
     
 }
 
@@ -712,38 +723,54 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 }
 
 
-#pragma mark - Content Sorting and Grouping
+#pragma mark - Model Object Fetching and Manipulation
 
-
-- (void)filterAndSortArrayByDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)array referenceDate:(NSDate *)referenceDate{
+- (NSMutableArray<NSMutableArray<TJBChainTemplate *> *> *)annualSortedContentForReferenceDate:(NSDate *)referenceDate{
     
-    // remove all chain templates that don't have realized sets in the active year
+    //// given the chain templates in fetched results and the current sorting selection, derive the sorted content for the year designated by the reference date
+    // this method independently evaluates the active index of the segmented control
+    
+    BOOL sortByDateLastExecuted = self.sortBySegmentedControl.selectedSegmentIndex == 1;
+    
+    
+    NSFetchRequest *fr = [self chainTemplateFetchRequest];
+    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
+    NSError *error = nil;
+    NSArray *chainTemplates = [moc executeFetchRequest: fr
+                                                 error: &error];
+    NSMutableArray<TJBChainTemplate *> *interimArray = [[NSMutableArray alloc] initWithArray: chainTemplates];
+    
+    if (sortByDateLastExecuted){
+        
+        [self filterAndSortArrayByDateLastExecuted: interimArray];
+        
+        return [self bucketByMonthAccordingToDateLastExecuted: interimArray
+                                                referenceDate: referenceDate];
+        
+    } else{
+        
+        [self filterAndSortArrayByDateCreated: interimArray
+                                referenceDate: referenceDate];
+        
+        return [self bucketByMonthAccordingToDateCreated: interimArray
+                                           referenceDate: referenceDate];
+        
+    }
+    
+}
+
+
+- (void)filterAndSortArrayByDateLastExecuted:(NSMutableArray<TJBChainTemplate *> *)array{
     
     NSMutableIndexSet *indexSet = [[NSMutableIndexSet alloc] init];
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     
     for (TJBChainTemplate *chainTemplate in array){
         
         NSOrderedSet *realizedChains = chainTemplate.realizedChains;
         
         BOOL hasNoRealizedChains = [realizedChains count] == 0;
-        BOOL isInActiveYear = NO;
         
-        for (int i = 0; i < realizedChains.count; i++){
-            
-            TJBRealizedChain *realizedChain = realizedChains[i];
-            
-            BOOL iterativeRealizedChainInActiveYear = [calendar isDate: realizedChain.dateCreated
-                                                           equalToDate: referenceDate
-                                                     toUnitGranularity: NSCalendarUnitYear];
-            
-            if (iterativeRealizedChainInActiveYear){
-                isInActiveYear = YES; // if any of the realized chains are in the reference year, this BOOL becomes YES and that chain template is not filtered from the array
-            }
-            
-        }
-        
-        if (hasNoRealizedChains || !isInActiveYear){
+        if (hasNoRealizedChains){
             
             [indexSet addIndex: [array indexOfObject: chainTemplate]];
             
@@ -753,14 +780,12 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
     
     [array removeObjectsAtIndexes: indexSet];
     
-    // now, only chain templates with realized chains in the active year remain.  Use an NSComparator to order the chain correctly
+    // now, only chain templates with realized chains remain
     
     [array sortUsingComparator: ^(TJBChainTemplate *chain1, TJBChainTemplate *chain2){
         
-        NSDate *date1 = [self largestRealizeChainDateInReferenceYearForChainTemplate: chain1
-                                                                       referenceDate: referenceDate];
-        NSDate *date2 = [self largestRealizeChainDateInReferenceYearForChainTemplate: chain2
-                                                                       referenceDate: referenceDate];
+        NSDate *date1 = [self largestRealizeChainDateForChainTemplate: chain1];
+        NSDate *date2 = [self largestRealizeChainDateForChainTemplate: chain2];
         
         int dateDifference = [date1 timeIntervalSinceDate: date2];
         BOOL date1IsLater = dateDifference > 0;
@@ -936,36 +961,37 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 #pragma mark - Content Sorting and Grouping Helper Methods
 
 
-- (NSDate *)largestRealizeChainDateInReferenceYearForChainTemplate:(TJBChainTemplate *)chainTemplate referenceDate:(NSDate *)referenceDate{
+- (NSDate *)largestRealizeChainDateForChainTemplate:(TJBChainTemplate *)chainTemplate{
     
-    //// the goal is to get the largest date for the current year so that dates are correctly ordered.  This algorithm relies on the chain template's chains being in chronological order.  This method assumes there is a realized chain to be referenced
     
-    NSOrderedSet<TJBRealizedChain *> *realizedChains = chainTemplate.realizedChains;
-    NSInteger limit = realizedChains.count;
+    return chainTemplate.realizedChains.lastObject.dateCreated;
     
-    NSDate *iterativeDate;
-    
-    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
-    
-    for (int i = 0; i < limit; i++){
-        
-        NSInteger reverseOrder = (limit - 1) - i;
-        TJBRealizedChain *iterativeChain = realizedChains[reverseOrder];
-        iterativeDate = iterativeChain.dateCreated;
-        
-        BOOL iterativeChainInRefYear = [calendar isDate: iterativeDate
-                                            equalToDate: referenceDate
-                                      toUnitGranularity: NSCalendarUnitYear];
-        
-        if (iterativeChainInRefYear){
-            
-            return iterativeDate;
-            
-        }
-        
-    }
-    
-    return nil;
+//    NSOrderedSet<TJBRealizedChain *> *realizedChains = chainTemplate.realizedChains;
+//    NSInteger limit = realizedChains.count;
+//    
+//    NSDate *iterativeDate;
+//    
+//    NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
+//    
+//    for (int i = 0; i < limit; i++){
+//        
+//        NSInteger reverseOrder = (limit - 1) - i;
+//        TJBRealizedChain *iterativeChain = realizedChains[reverseOrder];
+//        iterativeDate = iterativeChain.dateCreated;
+//        
+//        BOOL iterativeChainInRefYear = [calendar isDate: iterativeDate
+//                                            equalToDate: referenceDate
+//                                      toUnitGranularity: NSCalendarUnitYear];
+//        
+//        if (iterativeChainInRefYear){
+//            
+//            return iterativeDate;
+//            
+//        }
+//        
+//    }
+//    
+//    return nil;
     
 }
 
@@ -1008,26 +1034,9 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 
 
-#pragma mark - Core Data
+#pragma mark - Core Data Notifications
 
-- (NSFetchRequest *)chainTemplateFetchRequest{
 
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName: @"ChainTemplate"];
-    
-    NSSortDescriptor *nameSort = [NSSortDescriptor sortDescriptorWithKey: @"name"
-                                                               ascending: YES];
-    
-    [request setSortDescriptors: @[nameSort]];
-    
-    // predicate
-    // the showInRoutineList property determines if a chain should appear in the routine list
-    
-    NSPredicate *showInRoutineListPred = [NSPredicate predicateWithFormat: @"showInRoutineList == YES"];
-    [request setPredicate: showInRoutineListPred];
-    
-    return request;
-    
-}
 
 
 - (void)configureCoreDataNotifications{
@@ -1042,7 +1051,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 - (void)coreDataUpdateRequiredForRoutineSelection{
     
-    _coreDataUpdateRequired = YES;
+    _fetchedObjectsNeedUpdating = YES;
     
 }
 
@@ -1350,8 +1359,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
         
         if (sortByDateLastExecuted){
             
-            date = [self largestRealizeChainDateInReferenceYearForChainTemplate: chainTemplate
-                                                                  referenceDate: self.tvActiveDate];
+            date = [self largestRealizeChainDateForChainTemplate: chainTemplate];
             
         } else{
             

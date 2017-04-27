@@ -444,13 +444,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)viewWillAppear:(BOOL)animated{
     
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken,  ^{
-        
-        [self configureControlsAccordingToState];
-        
-    });
-    
     if (_displayedContentNeedsUpdating){
         
         self.toolbar.hidden = YES;
@@ -505,6 +498,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     [self configureViewAesthetics];
     
     [self configureToolBarAndBarButtons];
+    
+    [self configureControlsAccordingToState];
     
     return;
     
@@ -2075,8 +2070,10 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     
-    return [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
-                                        advancedControlsActive: NO];
+    // must decode certain state variables, otherwise methods in viewDidLoad will configure the scene incorrectly
+    
+    return [[TJBWorkoutNavigationHub alloc] initWithHomeButton: [coder decodeBoolForKey: includeHomeButtonKey]
+                                        advancedControlsActive: [coder decodeBoolForKey: includeAdvancedControlsKey]];
     
 }
 
@@ -2084,9 +2081,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     self.workoutLogActiveDay = [coder decodeObjectForKey: workoutLogActiveDateKey];
     self.dateControlActiveDate = [coder decodeObjectForKey: dateControlActiveDateKey];
-    
-    _includesHomeButton = [coder decodeBoolForKey: includeHomeButtonKey];
-    _advancedControlsActive = [coder decodeBoolForKey: includeAdvancedControlsKey];
     
 }
 
