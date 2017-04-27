@@ -31,6 +31,8 @@
 #import "TJBLiftOptionsVC.h"
 #import "TJBCircuitReferenceContainerVC.h"
 
+#import "TJBActiveGuidanceTBC.h" // for launching to routine active guidance
+
 // cell preloading
 
 #import "TJBCellFetchingOperation.h"
@@ -80,6 +82,7 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *todayButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *editButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *liftButton;
 
 @property (weak, nonatomic) IBOutlet UILabel *myWorkoutLogLabel;
 @property (weak, nonatomic) IBOutlet UILabel *activeDateLabel;
@@ -103,6 +106,7 @@ typedef enum{
 - (IBAction)didPressJumpToLast:(id)sender;
 - (IBAction)didPressToday:(id)sender;
 - (IBAction)didPressDelete:(id)sender;
+- (IBAction)didPressLiftButton:(id)sender;
 - (IBAction)didPressEdit:(id)sender;
 
 
@@ -312,6 +316,21 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         }
         
     }
+    
+}
+
+- (id)objectForCurrentlySelectedIndexPath{
+    
+    if (self.currentlySelectedPath){
+        
+        return self.dailyList[self.currentlySelectedPath.row];
+        
+    } else{
+        
+        return nil;
+        
+    }
+    
     
 }
 
@@ -1408,14 +1427,17 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     }
     
     // edit button
+    // lift button - active if a cell is selected
     
     if (self.currentlySelectedPath){
         
         [self configureActiveStateForToolbarButton: self.editButton];
+        [self configureActiveStateForToolbarButton: self.liftButton];
         
     } else{
         
         [self configureInactiveStateForToolbarButton: self.editButton];
+        [self configureInactiveStateForToolbarButton: self.liftButton];
         
     }
     
@@ -1439,6 +1461,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         [self configureInactiveStateForToolbarButton: self.deleteButton];
         
     }
+    
+    
     
 }
 
@@ -1548,6 +1572,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     
 }
+
+
 
 - (void)deleteCurrentlySelectedCell{
     
@@ -1660,6 +1686,53 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     }
     
 }
+
+#pragma mark - Lift Button Actions
+
+- (IBAction)didPressLiftButton:(id)sender{
+    
+    id selectedModelObject = [self objectForCurrentlySelectedIndexPath];
+    
+    if ([selectedModelObject isKindOfClass: [TJBRealizedChain class]]){
+        
+        TJBRealizedChain *rc = selectedModelObject;
+        TJBChainTemplate *ct = rc.chainTemplate;
+        
+        UIAlertController *routineAlert = [UIAlertController alertControllerWithTitle: @"Launch Routine?"
+                                                                              message: ct.name
+                                                                       preferredStyle: UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
+                                                               style: UIAlertActionStyleCancel
+                                                             handler: nil];
+        
+        UIAlertAction *launchAction = [UIAlertAction actionWithTitle: @"Launch"
+                                                               style: UIAlertActionStyleDefault
+                                                             handler: ^(UIAlertAction *action){
+                                                                 
+                                                                 TJBActiveGuidanceTBC *routineGuidanceTBC = [[TJBActiveGuidanceTBC alloc] initWithChainTemplate: ct];
+                                                                 
+                                                                 [self presentViewController: routineGuidanceTBC
+                                                                                    animated: YES
+                                                                                  completion: nil];
+                                                                 
+                                                             }];
+        
+        [routineAlert addAction: cancelAction];
+        [routineAlert addAction: launchAction];
+        
+        [self presentViewController: routineAlert
+                           animated: YES
+                         completion: nil];
+        
+
+        
+    }
+    
+    
+}
+
+
 
 
 

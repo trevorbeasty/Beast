@@ -19,6 +19,7 @@
                 <outlet property="jumpToLastButton" destination="bmd-QN-P6s" id="Fgi-3f-Twg"/>
                 <outlet property="leftArrowButton" destination="Xyd-rd-xY1" id="Mcv-NY-SCb"/>
                 <outlet property="leftArrowLeadingSpaceConstr" destination="yIm-EJ-jfK" id="PUy-Nh-k3X"/>
+                <outlet property="liftButton" destination="mNu-K8-cPz" id="5PL-X6-dfV"/>
                 <outlet property="monthTitle" destination="wRK-QI-22E" id="dqm-bf-fxx"/>
                 <outlet property="myWorkoutLogLabel" destination="hCI-UQ-IGw" id="YiO-oA-vie"/>
                 <outlet property="numberOfEntriesLabel" destination="FMO-lj-C2v" id="juT-7x-YfD"/>
@@ -53,7 +54,11 @@
                             </constraints>
                             <items>
                                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="0Cs-5d-bLg"/>
-                                <barButtonItem image="liftBlue30PDF" id="mNu-K8-cPz"/>
+                                <barButtonItem image="liftBlue30PDF" id="mNu-K8-cPz">
+                                    <connections>
+                                        <action selector="didPressLiftButton:" destination="-1" id="C1H-US-eDq"/>
+                                    </connections>
+                                </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="2gY-fk-wjs"/>
                                 <barButtonItem image="lastBlue30PDF" id="bmd-QN-P6s">
                                     <connections>
