@@ -1693,6 +1693,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 - (IBAction)didPressLiftButton:(id)sender{
     
     id selectedModelObject = [self objectForCurrentlySelectedIndexPath];
+    UIViewController *homeVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
     
     if ([selectedModelObject isKindOfClass: [TJBRealizedChain class]]){
         
@@ -1713,7 +1714,10 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
                                                                  
                                                                  TJBActiveGuidanceTBC *routineGuidanceTBC = [[TJBActiveGuidanceTBC alloc] initWithChainTemplate: ct];
                                                                  
-                                                                 [self presentViewController: routineGuidanceTBC
+                                                                 [homeVC dismissViewControllerAnimated: YES
+                                                                                            completion: nil];
+                                                                 
+                                                                 [homeVC presentViewController: routineGuidanceTBC
                                                                                     animated: YES
                                                                                   completion: nil];
                                                                  
@@ -1734,11 +1738,37 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         TJBRealizedSet *rs = rsg[0];
         TJBExercise *rsGroupExercise = rs.exercise;
         
-        TJBFreeformModeTabBarController *freeformTBC = [[TJBFreeformModeTabBarController alloc] initWithActiveExercise: rsGroupExercise];
+        UIAlertController *freeformAlert = [UIAlertController alertControllerWithTitle: @"Launch Freeform Lift?"
+                                                                              message: rsGroupExercise.name
+                                                                       preferredStyle: UIAlertControllerStyleAlert];
         
-        [self presentViewController: freeformTBC
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
+                                                               style: UIAlertActionStyleCancel
+                                                             handler: nil];
+        
+        UIAlertAction *launchAction = [UIAlertAction actionWithTitle: @"Launch"
+                                                               style: UIAlertActionStyleDefault
+                                                             handler: ^(UIAlertAction *action){
+                                                                 
+                                                                 TJBFreeformModeTabBarController *freeformTBC = [[TJBFreeformModeTabBarController alloc] initWithActiveExercise: rsGroupExercise];
+                                                                 
+                                                                 [homeVC dismissViewControllerAnimated: YES
+                                                                                            completion: nil];
+                                                                 
+                                                                 [homeVC presentViewController: freeformTBC
+                                                                                    animated: YES
+                                                                                  completion: nil];
+                                                                 
+                                                             }];
+        
+        [freeformAlert addAction: cancelAction];
+        [freeformAlert addAction: launchAction];
+        
+        [self presentViewController: freeformAlert
                            animated: YES
                          completion: nil];
+        
+
         
     }
     
