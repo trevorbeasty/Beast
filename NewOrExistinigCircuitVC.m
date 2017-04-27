@@ -141,6 +141,8 @@ typedef enum{
 @property (strong) UIScrollView *chainHistoryScrollView;
 @property (strong) UIButton *viewHistoryReturnButton;
 
+@property (strong) NSCalendar *calendar; // for optimization
+
 @end
 
 
@@ -154,11 +156,13 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 // content generation
 
-static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
+static NSTimeInterval const contentLoadingSmoothingDelay = .05;
 
 
+// date controls
 
-
+static const CGFloat buttonWidth = 60.0;
+static const CGFloat buttonSpacing = 0.0;
 
 
 
@@ -827,7 +831,39 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     
 }
 
+- (BOOL)chainTemplateExistsForMonth:(NSDate *)date{
+    
+    for (TJBChainTemplate *ct in self.dcSortedContent){
+        
+        BOOL dateMatch = [self chainTemplate: ct
+                                   isInMonth: date];
+        
+        if (dateMatch){
+            
+            return YES;
+            
+        }
+    }
+    
+    return NO;
+    
+}
 
+- (BOOL)chainTemplate:(TJBChainTemplate *)ct isInMonth:(NSDate *)date{
+    
+    if (!self.calendar){
+        
+        self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+
+    }
+    
+    NSDate *ctDate = [self dateForChainTemplateBasedOnSortingState: ct];
+    
+    return [self.calendar isDate: ctDate
+                     equalToDate: date
+               toUnitGranularity: NSCalendarUnitMonth];
+
+}
 
 
 #pragma mark - Content Sorting and Grouping Helper Methods
@@ -932,13 +968,9 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 - (void)configureDateControlsBasedOnDCActiveDate{
     
-    //// configures the date controls according to the date stored in the 'dcActiveDate' property.  Must be sure to first clear existing date control objects if they exist
+    // configures the date controls according to the date stored in the 'dcActiveDate' property.  Must be sure to first clear existing date control objects if they exist
     
     [self clearTransitoryDateControlObjects];
-    
-    // layout views so that the frame property is accurate
-    
-    [self.view layoutIfNeeded];
     
     NSDate *activeDate = self.dcActiveDate;
     
@@ -946,12 +978,10 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     df.dateFormat = @"YYYY";
     self.yearLabel.text = [df stringFromDate: activeDate];
     
-    //// stack view and child VC's
-    
+    // stack view and child VC's
     // stack view dimensions.  Need to know number of days in month and define widths of contained buttons
     
-    const CGFloat buttonWidth = 60.0;
-    const CGFloat buttonSpacing = 0.0;
+
     const CGFloat buttonHeight = self.dateControlScrollView.frame.size.height;
     
     const CGFloat stackViewWidth = buttonWidth * 12 + 11 * buttonSpacing;
@@ -981,9 +1011,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     [dateComps setDay: 1];
     
     NSDate *iterativeDate;
-    
     CGSize dateControlSize = CGSizeMake(buttonWidth, buttonHeight);
-    
     NSDate *today = [NSDate date];
     
     for (int i = 0; i < 12; i++){
@@ -996,8 +1024,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
         df.dateFormat = @"MMM";
         NSString *monthString = [df stringFromDate: iterativeDate];
         
-        //// create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
-        
+        // create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
         // determine if the month corresponding to the date control that is about to be created is in the future or the past (only controls in the past can be selected)
         
         NSComparisonResult todayMonthCompare = [calendar compareDate: iterativeDate
@@ -1005,11 +1032,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
                                                    toUnitGranularity: NSCalendarUnitMonth];
         
         BOOL iterativeMonthGreaterThanCurrentMonth = todayMonthCompare == NSOrderedDescending;
-        
-        // determine if the date control object that is about to be created has content, and thus should have a circle drawn
-        
-        int reverseIndex = 11 - i;
-        BOOL recordExistsForIterativeMonth = NO;
+        BOOL recordExistsForIterativeMonth = [self chainTemplateExistsForMonth: iterativeDate];
         
         TJBSchemeSelectionDateComp *dateControlObject = [[TJBSchemeSelectionDateComp alloc] initWithMonthString: monthString
                                                                                                 representedDate: iterativeDate
@@ -1052,31 +1075,6 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
     }
     
     self.dateControlObjects = [[NSMutableArray alloc] init];
-    
-}
-
-#pragma mark - Date Controls Helper Methods
-
-- (void)drawCircles{
-    
-    //// this would ideally be called when creating the date objects, but I am getting strange behavior when I try to sort chainTemplates before configuring the date controls
-    
-    for (int i = 0; i < 12; i++){
-        
-        int reverseIndex = 11 - i;
-        BOOL recordExistsForIterativeMonth = NO;
-        
-        if (recordExistsForIterativeMonth){
-            
-            [self.dateControlObjects[i] drawCircle];
-            
-        } else{
-            
-            [self.dateControlObjects[i] deleteCircle];
-            
-        }
-        
-    }
     
 }
 
@@ -1905,8 +1903,7 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
 
 - (void)deleteCurrentlySelectedCell{
     
-    // if the the chain template has realizations, must keep it around but change its showInRoutineListProperty
-    // otherwise, simply delete the chain template
+    // table view animation
     
     [self.activeTableView beginUpdates];
     
@@ -1914,10 +1911,8 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
                           withRowAnimation: UITableViewRowAnimationLeft];
     
     [self.tvSortedContent removeObject: self.selectedChainTemplate];
-    
-    int dateControlObjectIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
-    int reversedIndex = 11 - dateControlObjectIndex; // must use a reversed index because December is in the 0th position of dcSortedContent
-//    [self.dcSortedContent[reversedIndex] removeObject: self.selectedChainTemplate];
+    [self.dcSortedContent removeObject: self.selectedChainTemplate];
+    [[CoreDataController singleton] deleteChainTemplate: self.selectedChainTemplate];
     
     if (self.tvSortedContent.count == 0){
         
@@ -1927,34 +1922,42 @@ static NSTimeInterval const contentLoadingSmoothingDelay = 3.0;
         [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] deleteCircle];
         
     }
-
-    
-    [self deleteChainTemplate: self.selectedChainTemplate];
     
     self.selectedChainTemplate = nil;
     
     [self.activeTableView endUpdates];
     
-//    [self selectDateControlCorrespondingToDate: self.tvActiveDate];
+    // content update
+    
+    [self showActivityIndicator];
+    [self giveControlsDisabledConfiguration];
+    
+    self.routinesByLabel.text = @"My Routines";
+    self.numberOfRecordsLabel.text = @"";
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
+        
+        [self clearAllTableViewsAndDirectlyAssociatedObjects];
+        
+        [self addEmbeddedTableViewToViewHierarchy];
+        
+        [self updateNumberOfRecordsTitleLabel];
+        
+        // visual state
+        
+        [self configureSelectionAsNil];
+        
+        [self giveControlsEnabledConfiguration];
+        [self configureToolbarButtonsAccordingToActiveState];
+        
+        [self.activeActivityIndicator stopAnimating];
+        [self unhideAllBottomControls];
+        
+    });
     
     
 }
 
-- (void)deleteChainTemplate:(TJBChainTemplate *)ct{
-    
-        if (ct.realizedChains.count > 0){
-    
-            ct.showInRoutineList = NO;
-            
-            [[CoreDataController singleton] saveContext];
-    
-        } else{
-    
-            [[CoreDataController singleton] deleteChainTemplate: self.selectedChainTemplate];
-            
-        }
-    
-}
 
 
 

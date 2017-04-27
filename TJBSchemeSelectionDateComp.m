@@ -102,15 +102,12 @@
     
     _isCircled = YES;
     
-    // if a previous circle exists, remove it
-    
     if (self.activeShapeLayer){
         
         [self.activeShapeLayer removeFromSuperlayer];
         
     }
-    
-    //
+
     
     CGPoint center = CGPointMake(_size.width / 2.0, _size.height - 8.0);
     CGFloat radius = 3.0;
