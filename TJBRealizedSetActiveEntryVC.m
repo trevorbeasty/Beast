@@ -139,11 +139,19 @@ static NSString * const alertTimingID = @"alertTiming";
 
 - (instancetype)init{
     
+    return [self initWithActiveExercise: nil];
+    
+}
+
+- (instancetype)initWithActiveExercise:(TJBExercise *)activeExercise{
+    
     self = [super init];
     
     [self configureStopwatchWithFreshValues];
     [self configureRestorationProperties];
     [self configureTabBar];
+    
+    self.exercise = activeExercise;
     
     return self;
     
@@ -196,6 +204,12 @@ static NSString * const alertTimingID = @"alertTiming";
                              forState: UIControlStateNormal];
     
     self.scheduledAlertLabel.text = [[TJBStopwatch singleton] alertTextFromTargetValues];
+    
+    if (self.exercise){
+        
+        self.activeExerciseLabel.text = self.exercise.name;
+        
+    }
     
 }
 

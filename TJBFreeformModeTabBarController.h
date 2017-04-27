@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class TJBExercise; // core data
+
 @interface TJBFreeformModeTabBarController : UITabBarController
+
+- (instancetype)initWithActiveExercise:(TJBExercise *)exercise;
 
 @end

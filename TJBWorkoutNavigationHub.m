@@ -32,6 +32,7 @@
 #import "TJBCircuitReferenceContainerVC.h"
 
 #import "TJBActiveGuidanceTBC.h" // for launching to routine active guidance
+#import "TJBFreeformModeTabBarController.h" // for launching freeform mode
 
 // cell preloading
 
@@ -1726,6 +1727,18 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
                          completion: nil];
         
 
+        
+    } else{
+        
+        TJBRealizedSetGrouping rsg = selectedModelObject;
+        TJBRealizedSet *rs = rsg[0];
+        TJBExercise *rsGroupExercise = rs.exercise;
+        
+        TJBFreeformModeTabBarController *freeformTBC = [[TJBFreeformModeTabBarController alloc] initWithActiveExercise: rsGroupExercise];
+        
+        [self presentViewController: freeformTBC
+                           animated: YES
+                         completion: nil];
         
     }
     

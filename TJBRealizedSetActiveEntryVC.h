@@ -20,11 +20,20 @@
 #import "TJBExerciseHistoryProtocol.h"
 @class TJBExerciseHistoryVC;
 
+@class TJBExercise;
+
 @interface TJBRealizedSetActiveEntryVC : UIViewController <TJBStopwatchObserver>
+
+
+#pragma mark - Instantiation
+
+- (instancetype)initWithActiveExercise:(TJBExercise *)activeExercise;
 
 #pragma mark - Sibling VC's
 
 - (void)configureSiblingPersonalRecordsVC:(TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *)personalRecordsVC;
 - (void)configureSiblingExerciseHistoryVC:(TJBExerciseHistoryVC <TJBExerciseHistoryProtocol> *)exerciseHistoryVC;
+
+
 
 @end

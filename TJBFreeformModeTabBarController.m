@@ -45,10 +45,16 @@ static NSString * const selectedTabIndexID = @"selectedTabIndexID";
 
 - (instancetype)init{
     
+    return [self initWithActiveExercise: nil];
+    
+}
+
+- (instancetype)initWithActiveExercise:(TJBExercise *)exercise{
+    
     self = [super init];
     
     
-    [self configureChildViewControllers];
+    [self configureChildViewControllersWithActiveExercise: exercise];
     [self configureProperties];
     [self setRestorationProperties];
     
@@ -80,13 +86,22 @@ static NSString * const selectedTabIndexID = @"selectedTabIndexID";
     
 }
 
-- (void)configureChildViewControllers{
+- (void)configureChildViewControllersWithActiveExercise:(TJBExercise *)exercise{
     
     // tab bar vc's
     
-    TJBRealizedSetActiveEntryVC *vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
- 
+    TJBRealizedSetActiveEntryVC *vc1;
     
+    if (exercise){
+        
+        vc1 = [[TJBRealizedSetActiveEntryVC alloc] initWithActiveExercise: exercise];
+        
+    } else{
+        
+        vc1 = [[TJBRealizedSetActiveEntryVC alloc] init];
+        
+    }
+ 
     TJBPersonalRecordVC <TJBPersonalRecordsVCProtocol> *vc2 = [[TJBPersonalRecordVC alloc] init];
     [vc1 configureSiblingPersonalRecordsVC: vc2];
     
@@ -95,6 +110,13 @@ static NSString * const selectedTabIndexID = @"selectedTabIndexID";
     
     TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
                                                                 advancedControlsActive: YES];
+    
+    if (exercise){
+        
+        [vc2 activeExerciseDidUpdate: exercise];
+        [vc3 activeExerciseDidUpdate: exercise];
+        
+    }
     
     // tab bar controller
     
