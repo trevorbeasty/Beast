@@ -1790,6 +1790,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
         
     }
     
+    [self updateScrollViewContentSize];
     
 }
 
@@ -1820,8 +1821,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
                          CGFloat controlsHeight = self.sortBySegmentedControl.frame.origin.y + self.sortBySegmentedControl.frame.size.height - self.toolbar.frame.origin.y;
                          self.segmentedControlBottomSpaceConstr.constant = -1 * controlsHeight;
-                         
-                         self.activeScrollView.contentSize = [self scrollViewContentSize];
+                
     
                      }];
     
@@ -1854,8 +1854,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
                          self.arrowControlButton.enabled = YES;
                          
                          self.segmentedControlBottomSpaceConstr.constant = 8;
-                         
-                         self.activeScrollView.contentSize = [self scrollViewContentSize];
+                        
                          
                      }];
     

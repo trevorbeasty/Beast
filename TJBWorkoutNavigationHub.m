@@ -134,7 +134,7 @@ typedef enum{
 @property (strong) NSMutableArray *masterList;
 @property (strong) NSMutableArray *dailyList;
 
-@property (strong) NSMutableArray *activeTableViewCells;
+//@property (strong) NSMutableArray *activeTableViewCells;
 
 @end
 
@@ -468,6 +468,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     if (_displayedContentNeedsUpdating){
         
         [self disableTopControls];
+        [self configureToolbarAppearanceAccordingToStateVariables];
         
     }
     
@@ -687,7 +688,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     [self deriveDailyList];
     [self updateNumberOfEntriesLabel];
     [self deriveActiveCellsAndCreateTableView];
-    [self.tableView reloadData];
     
     [self.activityIndicatorView stopAnimating];
     
@@ -948,7 +948,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     [self disableTopControls];
     
     [self updateActiveDateLabelWithDate: representedDate];
-    self.numberOfEntriesLabel.text = @"";
     
     self.selectedDateButtonIndex = index;
     self.workoutLogActiveDay = representedDate;
@@ -962,7 +961,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         [self updateNumberOfEntriesLabel];
         
         [self deriveActiveCellsAndCreateTableView];
-        [self.tableView reloadData];
         
         [self.activityIndicatorView stopAnimating];
         
@@ -1016,6 +1014,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)deriveActiveCellsAndCreateTableView{
     
+    [self removeTableAndScrollViewIfExist];
+    
     // derive the active cells - the 'limit' describes the number of cells that will be shown based on the daily list
     
     NSInteger limit;
@@ -1043,14 +1043,10 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     // make sure to remove the old table view from the view hierarchy or else it will not deallocate
     
-    [self.tableView removeFromSuperview];
     self.tableView = newTableView;
     [self configureTableView];
-    
-    self.activeTableViewCells = [[NSMutableArray alloc] init];
 
-
-    CGSize contentSize = CGSizeMake(self.shadowContainer.frame.size.width, [self totalScrollHeightBasedOnContent]);
+    CGSize contentSize = [self scrollViewContentSizeForCurrentState];
     
     // table view and container - a new table view is created at every method call because I believe the table view is leaking its old content cells
     
@@ -1091,9 +1087,68 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
 }
 
+- (void)removeTableAndScrollViewIfExist{
+    
+    if (self.tableView){
+        
+        [self.tableView removeFromSuperview];
+        self.tableView = nil;
+        
+    }
+    
+    if (self.tableViewScrollContainer){
+        
+        [self.tableViewScrollContainer removeFromSuperview];
+        self.tableViewScrollContainer = nil;
+        
+    }
+    
+}
+
+- (CGSize)scrollViewContentSizeForCurrentState{
+    
+    CGFloat width = self.shadowContainer.frame.size.width;
+    
+    CGFloat contentNaturalHeight = [self totalScrollHeightBasedOnContent];
+    CGFloat bottomSpaceOccupiedByControls = [self contentBreatherRoom];
+    CGFloat mainContainerHeight = self.shadowContainer.frame.size.height;
+    CGFloat spaceNotOccupiedByControls = mainContainerHeight - bottomSpaceOccupiedByControls;
+    
+    // the following if structure brackets the content height into 3 separate groups
+    
+    if (contentNaturalHeight <= spaceNotOccupiedByControls){
+        
+        return CGSizeMake(width, contentNaturalHeight);
+        
+    } else if (contentNaturalHeight < mainContainerHeight){
+        
+        CGFloat height = mainContainerHeight + bottomSpaceOccupiedByControls;
+        return CGSizeMake(width, height);
+        
+    } else{
+        
+        CGFloat height = contentNaturalHeight + bottomSpaceOccupiedByControls;
+        return CGSizeMake(width,  height);
+        
+    }
+    
+}
+
+- (void)updateActiveScrollViewSizeForCurrentState{
+    
+    if (self.tableViewScrollContainer){
+        
+        self.tableViewScrollContainer.contentSize = [self scrollViewContentSizeForCurrentState];
+        
+    }
+    
+}
+
 - (CGFloat)contentBreatherRoom{
     
-    return self.toolbar.frame.size.height + toolbarToBottomSpacing + 8;
+    CGFloat extraHeight = 8;
+    
+    return self.shadowContainer.frame.size.height - self.toolbarControlArrow.frame.origin.y + extraHeight;
     
 }
 
@@ -1181,10 +1236,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     [self.circleDateChildren[[index intValue]] configureButtonAsSelected];
     
-    // reduce opacity of buttons and disable them until the cells have loaded
-    
-
-    
 }
 
 - (void)showActivityIndicator{
@@ -1237,11 +1288,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         NSIndexPath *path = [NSIndexPath indexPathForRow: i
                                                inSection: 0];
         
-        TJBMasterCell *cell = [self cellForIndexPath: path
-                                       shouldDequeue: YES];
-        
-        [self.activeTableViewCells addObject: cell];
-        
         // height calc
         
         CGFloat iterativeHeight = [self tableView: self.tableView
@@ -1250,19 +1296,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
     }
     
-    // make sure the total height is as least as long as the table view container
-    
-    [self.view layoutIfNeeded];
-    
-    CGFloat minHeight = self.shadowContainer.frame.size.height - [self contentBreatherRoom];
-    
-    if (totalHeight < minHeight){
-        
-        totalHeight = minHeight;
-        
-    }
-    
-    return  totalHeight + [self contentBreatherRoom];
+    return totalHeight;
     
 }
 
@@ -1550,13 +1584,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     [self.tableView deleteRowsAtIndexPaths: @[self.currentlySelectedPath]
                           withRowAnimation: UITableViewRowAnimationLeft];
     
-    NSLog(@"%@", self.currentlySelectedPath);
-    
-    [self.activeTableViewCells removeObjectAtIndex: self.currentlySelectedPath.row];
-    
     if (self.dailyList.count == 1){
-        
-        [self.activeTableViewCells addObject: [self noDataCell]];
         
         [self.tableView insertRowsAtIndexPaths: @[self.currentlySelectedPath]
                               withRowAnimation: UITableViewRowAnimationRight];
@@ -1610,9 +1638,12 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)updateCellTitleNumbers{
     
-    for (int i = 0; i < self.activeTableViewCells.count; i++){
+    for (int i = 0; i < self.dailyList.count; i++){
         
-        UITableViewCell *cell = self.activeTableViewCells[i];
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath: path];
         
         if ([cell isKindOfClass: [TJBRealizedChainCell class]]){
             
@@ -1825,6 +1856,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     [self toggleToolBarPositionAndUpdateRelevantControls];
     
+    [self updateActiveScrollViewSizeForCurrentState];
+    
 }
 
 
@@ -1855,98 +1888,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
 }
 
-- (TJBMasterCell *)cellForIndexPath:(NSIndexPath *)indexPath shouldDequeue:(BOOL)shouldDequeue{
-
-        if (self.dailyList.count == 0){
-            
-            TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
-            
-            cell.mainLabel.text = @"No Entries";
-            cell.backgroundColor = [UIColor clearColor];
-            cell.referenceIndexPath = indexPath;
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
-            return cell;
-            
-        } else{
-            
-            NSNumber *number = [NSNumber numberWithInteger: indexPath.row + 1];
-            
-            int rowIndex = (int)indexPath.row;
-            
-            BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
-            BOOL isRealizedChain = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedChain class]];
-            
-            if (isRealizedSet){
-                
-                TJBRealizedSet *realizedSet = self.dailyList[rowIndex];
-                
-                // dequeue the realizedSetCell
-                
-                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-                
-                [self layoutCellToEnsureCorrectWidth: cell
-                                           indexPath: indexPath];
-    
-                [cell configureWithContentObject: realizedSet
-                                        cellType: RealizedSetCollectionCell
-                                    dateTimeType: TJBTimeOfDay
-                                     titleNumber: number];
-                
-                cell.backgroundColor = [UIColor clearColor];
-                
-                return cell;
-                
-            } else if (isRealizedChain){
-                
-                TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
-                
-                // dequeue the realizedSetCell
-                
-                TJBRealizedChainCell *cell = nil;
-                    
-                cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-                
-                
-                [self layoutCellToEnsureCorrectWidth: cell
-                                           indexPath: indexPath];
-                
-                [cell configureWithContentObject: realizedChain
-                                        cellType: RealizedChainCell
-                                    dateTimeType: TJBTimeOfDay
-                                     titleNumber: number];
-                
-                cell.backgroundColor = [UIColor clearColor];
-                
-                return cell;
-                
-            } else{
-                
-                // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
-                
-                TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
-                
-                [self layoutCellToEnsureCorrectWidth: cell
-                                           indexPath: indexPath];
-                
-                cell.backgroundColor = [UIColor clearColor];
-                
-                TJBRealizedSetGrouping rsg = self.dailyList[rowIndex];
-                
-                [cell configureWithContentObject: rsg
-                                        cellType: RealizedSetCollectionCell
-                                    dateTimeType: TJBTimeOfDay
-                                     titleNumber: number];
-                
-                return cell;
-                
-            }
-        }
-
-    
-}
-
 - (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
     
     CGFloat cellHeight = [self tableView: self.tableView
@@ -1963,7 +1904,92 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    return self.activeTableViewCells[indexPath.row];
+    if (self.dailyList.count == 0){
+        
+        TJBNoDataCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBNoDataCell"];
+        
+        cell.mainLabel.text = @"No Entries";
+        cell.backgroundColor = [UIColor clearColor];
+        cell.referenceIndexPath = indexPath;
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        return cell;
+        
+    } else{
+        
+        NSNumber *number = [NSNumber numberWithInteger: indexPath.row + 1];
+        
+        int rowIndex = (int)indexPath.row;
+        
+        BOOL isRealizedSet = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedSet class]];
+        BOOL isRealizedChain = [self.dailyList[rowIndex] isKindOfClass: [TJBRealizedChain class]];
+        
+        if (isRealizedSet){
+            
+            TJBRealizedSet *realizedSet = self.dailyList[rowIndex];
+            
+            // dequeue the realizedSetCell
+            
+            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            
+            [self layoutCellToEnsureCorrectWidth: cell
+                                       indexPath: indexPath];
+            
+            [cell configureWithContentObject: realizedSet
+                                    cellType: RealizedSetCollectionCell
+                                dateTimeType: TJBTimeOfDay
+                                 titleNumber: number];
+            
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
+            
+        } else if (isRealizedChain){
+            
+            TJBRealizedChain *realizedChain = self.dailyList[rowIndex];
+            
+            // dequeue the realizedSetCell
+            
+            TJBRealizedChainCell *cell = nil;
+            
+            cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            
+            
+            [self layoutCellToEnsureCorrectWidth: cell
+                                       indexPath: indexPath];
+            
+            [cell configureWithContentObject: realizedChain
+                                    cellType: RealizedChainCell
+                                dateTimeType: TJBTimeOfDay
+                                 titleNumber: number];
+            
+            cell.backgroundColor = [UIColor clearColor];
+            
+            return cell;
+            
+        } else{
+            
+            // if it is not a realized set or realized chain, then it is a TJBRealizedSetCollection
+            
+            TJBRealizedChainCell *cell = [self.tableView dequeueReusableCellWithIdentifier: @"TJBRealizedChainCell"];
+            
+            [self layoutCellToEnsureCorrectWidth: cell
+                                       indexPath: indexPath];
+            
+            cell.backgroundColor = [UIColor clearColor];
+            
+            TJBRealizedSetGrouping rsg = self.dailyList[rowIndex];
+            
+            [cell configureWithContentObject: rsg
+                                    cellType: RealizedSetCollectionCell
+                                dateTimeType: TJBTimeOfDay
+                                 titleNumber: number];
+            
+            return cell;
+            
+        }
+    }
     
 }
 
@@ -1971,7 +1997,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-        
+    
     [self updateStateVariablesAndCellAppearanceBasedOnSelectedPath: indexPath];
     
 }
@@ -1981,7 +2007,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
         if (self.dailyList.count == 0){
             
-            return self.shadowContainer.frame.size.height - [self contentBreatherRoom];
+            return self.shadowContainer.frame.size.height;
             
         } else{
             
