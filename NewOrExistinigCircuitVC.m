@@ -48,7 +48,7 @@ typedef enum{
 
 
 
-@interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface NewOrExistinigCircuitVC () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 {
     // user selection flow
@@ -86,7 +86,6 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createNewButton;
 
-//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomSpacingConstr;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentedControlBottomSpaceConstr;
 
 
@@ -125,7 +124,7 @@ typedef enum{
 // table view selection - keeps track of user selections in the presented table view
 
 @property (nonatomic, strong) TJBChainTemplate *selectedChainTemplate;
-@property (nonatomic, strong) NSIndexPath *lastSelectedIndexPath;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
 
 // date control selection - keeps track of user date control selections
 
@@ -165,7 +164,11 @@ static NSTimeInterval const contentLoadingSmoothingDelay = .05;
 static const CGFloat buttonWidth = 60.0;
 static const CGFloat buttonSpacing = 0.0;
 
+// restoration
 
+static NSString * const restorationID = @"NewOrExistingCircuitVC";
+static NSString * const tvActiveDateKey = @"tvActiveDate";
+static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 
 @implementation NewOrExistinigCircuitVC
@@ -174,28 +177,46 @@ static const CGFloat buttonSpacing = 0.0;
 
 - (instancetype)init{
     
+    NSDate *today = [NSDate date];
+    
+    return [self initWithTVActiveDate: today
+                         dcActiveDate: today];
+
+}
+
+- (instancetype)initWithTVActiveDate:(NSDate *)tvActiveDate dcActiveDate:(NSDate *)dcActiveDate{
+    
     self = [super init];
     
-
-    [self initializeStateVariables];
+    [self configureRestorationProperties];
+    
+    [self initializeStateVariablesWithTVActiveDate: tvActiveDate
+                                      dcActiveDate: dcActiveDate];
     
     return self;
+    
 }
 
 
 #pragma mark - Instantiation Helper Methods
 
-- (void)initializeStateVariables{
+- (void)configureRestorationProperties{
+    
+    self.restorationClass = [NewOrExistinigCircuitVC class];
+    self.restorationIdentifier = restorationID;
+    
+}
+
+- (void)initializeStateVariablesWithTVActiveDate:(NSDate *)tvActiveDate dcActiveDate:(NSDate *)dcActiveDate{
     
     // configure state variables for fresh state
     
     _viewingChainHistory = NO;
     
     // active dates
-    
-    NSDate *today = [NSDate date];
-    self.tvActiveDate = today;
-    self.dcActiveDate = today;
+
+    self.tvActiveDate = tvActiveDate;
+    self.dcActiveDate = dcActiveDate;
     
     // state
     
@@ -250,20 +271,7 @@ static const CGFloat buttonSpacing = 0.0;
             // create the date controls
             
             [self configureDateControlsBasedOnDCActiveDate];
-            
-            // configure the correct selection appearance for the date controls
-            
-            int selectedDateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
-            
-            if (self.selectedDateObjectIndex){
-                
-                [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] configureAsNotSelected];
-                
-            }
-            
-            [self.dateControlObjects[selectedDateControlIndex] configureAsSelected];
-            self.selectedDateObjectIndex = @(selectedDateControlIndex);
-            
+        
             // content generation
             
             [self clearAllTableViewsAndDirectlyAssociatedObjects];
@@ -559,6 +567,12 @@ static const CGFloat buttonSpacing = 0.0;
     
 }
 
+- (void)updateScrollViewContentSize{
+    
+    self.activeScrollView.contentSize = [self scrollViewContentSize];
+    
+}
+
 
 - (CGSize)scrollViewContentSize{
     
@@ -571,7 +585,7 @@ static const CGFloat buttonSpacing = 0.0;
     
     // the following if structure brackets the content height into 3 separate groups
     
-    if (contentNaturalHeight < spaceNotOccupiedByControls){
+    if (contentNaturalHeight <= spaceNotOccupiedByControls){
         
         return CGSizeMake(width, contentNaturalHeight);
         
@@ -684,7 +698,7 @@ static const CGFloat buttonSpacing = 0.0;
 - (void)updateTitleLabelCorrespondingToActiveTVDate{
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateFormat = @"MMM yyyy";
+    df.dateFormat = @"MMM yy";
     self.monthYearTitleLabel.text = [df stringFromDate: self.tvActiveDate];
     
 }
@@ -1044,6 +1058,8 @@ static const CGFloat buttonSpacing = 0.0;
     CGSize dateControlSize = CGSizeMake(buttonWidth, buttonHeight);
     NSDate *today = [NSDate date];
     
+   
+    
     for (int i = 0; i < 12; i++){
         
         // configure the month
@@ -1064,12 +1080,33 @@ static const CGFloat buttonSpacing = 0.0;
         BOOL iterativeMonthGreaterThanCurrentMonth = todayMonthCompare == NSOrderedDescending;
         BOOL recordExistsForIterativeMonth = [self chainTemplateExistsForMonth: iterativeDate];
         
+        if (!self.calendar){
+            
+            self.calendar = [[NSCalendar alloc] initWithCalendarIdentifier: NSCalendarIdentifierGregorian];
+            
+        }
+        
+        // determine if iterative control should have selected appearance
+        
+        BOOL controlHasSelectedAppearance = NO;
+        
+        BOOL controlDatesHaveSimilarMonthAndYear = [self.calendar isDate: self.tvActiveDate
+                                                             equalToDate: iterativeDate
+                                                       toUnitGranularity: NSCalendarUnitMonth];
+        
+        if (controlDatesHaveSimilarMonthAndYear){
+            
+            self.selectedDateObjectIndex = @(i);
+            controlHasSelectedAppearance = YES;
+            
+        }
+        
         TJBSchemeSelectionDateComp *dateControlObject = [[TJBSchemeSelectionDateComp alloc] initWithMonthString: monthString
                                                                                                 representedDate: iterativeDate
                                                                                                           index: [NSNumber numberWithInt: i]
                                                                                                       isEnabled: YES
                                                                                                       isCircled: recordExistsForIterativeMonth
-                                                                                          hasSelectedAppearance: NO
+                                                                                          hasSelectedAppearance: controlHasSelectedAppearance
                                                                                                            size: dateControlSize
                                                                                                masterController: self
                                                                                              representsPastDate: !iterativeMonthGreaterThanCurrentMonth];
@@ -1152,9 +1189,9 @@ static const CGFloat buttonSpacing = 0.0;
         
         BOOL isSelectedCell = NO;
         
-        if (self.lastSelectedIndexPath){
+        if (self.selectedIndexPath){
             
-            isSelectedCell = self.lastSelectedIndexPath.row == indexPath.row;
+            isSelectedCell = self.selectedIndexPath.row == indexPath.row;
             
         }
         
@@ -1253,15 +1290,19 @@ static const CGFloat buttonSpacing = 0.0;
     //// change the background color of the selected chain template and change the control state of the buttons to activate them.  Store the selected chain and the index path of the selected row
     
     // deal with unhighlighting
-
-    TJBRealizedChainCell *lastSelectedCell = [tableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
     
-    lastSelectedCell.backgroundColor = [UIColor clearColor];
-    lastSelectedCell.layer.borderWidth = 0.0;
-    
-    self.lastSelectedIndexPath = indexPath;
+    if (self.selectedIndexPath){
+        
+        TJBRealizedChainCell *lastSelectedCell = [tableView cellForRowAtIndexPath: self.selectedIndexPath];
+        
+        lastSelectedCell.backgroundColor = [UIColor clearColor];
+        lastSelectedCell.layer.borderWidth = 0.0;
+        
+    }
     
     // highlight the new cell
+    
+    self.selectedIndexPath = indexPath;
     
     TJBChainTemplate *chainTemplate = self.tvSortedContent[indexPath.row];
     self.selectedChainTemplate = chainTemplate;
@@ -1288,7 +1329,7 @@ static const CGFloat buttonSpacing = 0.0;
     
     if (chainCount == 0){
         
-        return self.mainContainer.frame.size.height - [self breatherRoomForChainTemplateScrollView];
+        return self.mainContainer.frame.size.height;
         
     } else{
         
@@ -1586,12 +1627,12 @@ static const CGFloat buttonSpacing = 0.0;
     
     self.selectedChainTemplate = nil;
     
-    if (self.lastSelectedIndexPath){
+    if (self.selectedIndexPath){
         
-        TJBRealizedChainCell *cell = [self.activeTableView cellForRowAtIndexPath: self.lastSelectedIndexPath];
+        TJBRealizedChainCell *cell = [self.activeTableView cellForRowAtIndexPath: self.selectedIndexPath];
         cell.layer.borderWidth = 0.0;
         cell.backgroundColor = [UIColor clearColor];
-        self.lastSelectedIndexPath = nil;
+        self.selectedIndexPath = nil;
         
     }
     
@@ -1651,7 +1692,7 @@ static const CGFloat buttonSpacing = 0.0;
     
     for (UIBarButtonItem *bbi in buttons){
         
-        if (self.lastSelectedIndexPath){
+        if (self.selectedIndexPath){
             
             [self giveToolbarButtonEnabledAppearance: bbi];
             
@@ -1665,7 +1706,7 @@ static const CGFloat buttonSpacing = 0.0;
     
     // must check whether the selected cell has any realized chains before showing the history button
     
-    if (self.lastSelectedIndexPath){
+    if (self.selectedIndexPath){
         
         BOOL realizationsExist = self.selectedChainTemplate.realizedChains.count > 0;
         
@@ -1936,7 +1977,7 @@ static const CGFloat buttonSpacing = 0.0;
     
     [self.activeTableView beginUpdates];
     
-    [self.activeTableView deleteRowsAtIndexPaths: @[self.lastSelectedIndexPath]
+    [self.activeTableView deleteRowsAtIndexPaths: @[self.selectedIndexPath]
                           withRowAnimation: UITableViewRowAnimationLeft];
     
     [self.tvSortedContent removeObject: self.selectedChainTemplate];
@@ -1945,7 +1986,7 @@ static const CGFloat buttonSpacing = 0.0;
     
     if (self.tvSortedContent.count == 0){
         
-        [self.activeTableView insertRowsAtIndexPaths: @[self.lastSelectedIndexPath]
+        [self.activeTableView insertRowsAtIndexPaths: @[self.selectedIndexPath]
                                     withRowAnimation: UITableViewRowAnimationRight];
         
         [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] deleteCircle];
@@ -1956,38 +1997,32 @@ static const CGFloat buttonSpacing = 0.0;
     
     [self.activeTableView endUpdates];
     
-    // content update
-    
-    [self showActivityIndicator];
-    [self giveControlsDisabledConfiguration];
-    
-    self.routinesByLabel.text = @"My Routines";
-    self.numberOfRecordsLabel.text = @"";
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
-        
-        [self clearAllTableViewsAndDirectlyAssociatedObjects];
-        
-        [self addEmbeddedTableViewToViewHierarchy];
-        
-        [self updateNumberOfRecordsTitleLabel];
-        
-        // visual state
-        
-        [self configureSelectionAsNil];
-        
-        [self giveControlsEnabledConfiguration];
-        [self configureToolbarButtonsAccordingToActiveState];
-        
-        [self.activeActivityIndicator stopAnimating];
-        [self unhideAllBottomControls];
-        
-    });
+    [self updateExistingContentTitleNumbers];
+    [self updateNumberOfRecordsTitleLabel];
+    [self configureSelectionAsNil];
+    [self updateScrollViewContentSize];
     
     
 }
 
-
+- (void)updateExistingContentTitleNumbers{
+    
+    int limit = (int)self.tvSortedContent.count;
+    
+    for (int i = 0; i < limit; i++){
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow: i
+                                               inSection: 0];
+        
+        TJBRealizedChainCell *rcCell = (TJBRealizedChainCell *)[self.activeTableView cellForRowAtIndexPath: path];
+        
+        [rcCell updateTitleNumber: @(i+1)];
+        
+        
+        
+    }
+    
+}
 
 
 
@@ -2008,19 +2043,6 @@ static const CGFloat buttonSpacing = 0.0;
         // create the date controls
         
         [self configureDateControlsBasedOnDCActiveDate];
-        
-        // configure the correct selection appearance for the date controls
-        
-        int selectedDateControlIndex = [self dateControlObjectIndexForDate: self.tvActiveDate];
-        
-        if (self.selectedDateObjectIndex){
-            
-            [self.dateControlObjects[[self.selectedDateObjectIndex intValue]] configureAsNotSelected];
-            
-        }
-        
-        [self.dateControlObjects[selectedDateControlIndex] configureAsSelected];
-        self.selectedDateObjectIndex = @(selectedDateControlIndex);
         
         // content generation
         
@@ -2045,6 +2067,31 @@ static const CGFloat buttonSpacing = 0.0;
     
 }
 
+
+
+
+#pragma mark - Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject: self.tvActiveDate
+                 forKey: tvActiveDateKey];
+    
+    [coder encodeObject: self.dcActiveDate
+                 forKey: dcActiveDateKey];
+    
+}
+
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    NSDate *tvActiveDate = [coder decodeObjectForKey: tvActiveDateKey];
+    NSDate *dcActiveDate = [coder decodeObjectForKey: dcActiveDateKey];
+    
+    return [[NewOrExistinigCircuitVC alloc] initWithTVActiveDate: tvActiveDate
+                                                    dcActiveDate: dcActiveDate];
+    
+}
 
 
 @end
