@@ -1373,30 +1373,24 @@ static NSString const *restViewKey = @"restView";
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
     
-    
-    
-    
+    _selectionIndex = [coder decodeIntForKey: selectionIndexKey];
+    _isLastExerciseOfRoutine = [coder decodeBoolForKey: isLastExerciseOfRoutineKey];
+    _showingFirstTargets = [coder decodeBoolForKey: showingFirstTargetsKey];
+    self.activeRoundIndexForTargets = [coder decodeObjectForKey: activeRoundIndexForTargetsKey];
+    self.activeExerciseIndexForTargets = [coder decodeObjectForKey: activeExerciseIndexForTargetsKey];
+    self.activeRoundIndexForChain = [coder decodeObjectForKey: activeRoundIndexForChainKey];
+    self.activeExerciseIndexForChain = [coder decodeObjectForKey: activeExerciseIndexForChainKey];
+    self.activeLiftTargets = [coder decodeObjectForKey: activeLiftTargetsKey];
+    self.activePreviousMarks = [coder decodeObjectForKey: activePreviousMarksKey];
+    self.futureRestTarget = [coder decodeObjectForKey: futureRestTargetKey];
+    self.currentRestTarget = [coder decodeObjectForKey: currentRestTargetKey];
+    self.cancelRestorationExerciseIndex = [coder decodeObjectForKey: cancelRestorationExerciseIndexKey];
+    self.cancelRestorationRoundIndex = [coder decodeObjectForKey: cancelRestorationRoundIndexKey];
+    self.selectedAlertTiming = [coder decodeObjectForKey: selectedAlertTimingKey];
+    self.dateForTimerRecovery = [coder decodeObjectForKey: dateForTimerRecoveryKey];
     
 }
 
-
-//static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
-//static NSString * const selectionIndexKey = @"selectionIndex";
-//static NSString * const isLastExerciseOfRoutineKey = @"isLastExerciseOfRoutine";
-//static NSString * const showingFirstTargetsKey = @"showingFirstTargets";
-//static NSString * const realizedChainUniqueIDKey = @"realizedChainUniqueID";
-//static NSString * const activeRoundIndexForTargetsKey = @"activeRoundIndexForTargets";
-//static NSString * const activeExerciseIndexForTargetsKey = @"activeExerciseIndexForTargets";
-//static NSString * const activeRoundIndexForChainKey = @"activeRoundIndexForChain";
-//static NSString * const activeExerciseIndexForChainKey = @"activeExerciseIndexForChain";
-//static NSString * const activeLiftTargetsKey = @"activeLiftTargets";
-//static NSString * const activePreviousMarksKey = @"activePreviousMarks";
-//static NSString * const futureRestTargetKey = @"futureRestTarget";
-//static NSString * const currentRestTargetKey = @"currentRestTarget";
-//static NSString * const cancelRestorationExerciseIndexKey = @"cancelRestorationExerciseIndex";
-//static NSString * const cancelRestorationRoundIndexKey = @"cancelRestorationRoundIndex";
-//static NSString * const selectedAlertTimingKey = @"selectedAlertTiming";
-//static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
 
 @end
 
