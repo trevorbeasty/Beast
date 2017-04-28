@@ -156,7 +156,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 // content generation
 
-static NSTimeInterval const contentLoadingSmoothingDelay = .05;
+static NSTimeInterval const contentLoadingSmoothingDelay = 4;
 
 
 // date controls
@@ -243,15 +243,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    if (_displayedContentNeedsUpdating == YES){
-        
-        [self hideAllBottomControls];
-        
-    }
-    
-}
 
 - (void)viewDidAppear:(BOOL)animated{
     
@@ -286,7 +277,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
             [self configureToolbarButtonsAccordingToActiveState];
             
             [self.activeActivityIndicator stopAnimating];
-            [self unhideAllBottomControls];
+//            [self unhideAllBottomControls];
             
         }
         
@@ -488,8 +479,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     // configure labels appropriately
     
     [self updateTitleLabelCorrespondingToActiveTVDate];
-    self.numberOfRecordsLabel.text = @"";
-    
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
         
@@ -508,7 +497,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
         [self configureSelectionAsNil];
         [self giveControlsEnabledConfiguration];
         [self configureToolbarButtonsAccordingToActiveState];
-        [self updateAllTitleLabelsForNewContent];
+        [self updateNumberOfRecordsTitleLabel];
         
         
     });
@@ -671,12 +660,22 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
         UIActivityIndicatorView *indView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
         self.activeActivityIndicator = indView;
         
-        indView.frame = self.mainContainer.frame;
+        indView.frame = self.mainContainer.bounds;
         indView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         indView.layer.opacity = .9;
         indView.hidesWhenStopped = YES;
         
-        [self.view addSubview: indView];
+        // order views correctly
+        
+        [self.mainContainer bringSubviewToFront: self.arrowControlButton];
+        [self.mainContainer insertSubview: self.toolbar
+                             belowSubview: self.arrowControlButton];
+        [self.mainContainer insertSubview: self.sortBySegmentedControl
+                             belowSubview: self.toolbar];
+        [self.mainContainer insertSubview: self.sortByBottomLabel
+                             belowSubview: self.sortBySegmentedControl];
+        [self.mainContainer insertSubview: indView
+                             belowSubview: self.sortByBottomLabel];
         
     }
     
@@ -1383,7 +1382,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
     self.routinesByLabel.text = @"My Routines";
     [self updateTitleLabelCorrespondingToActiveTVDate];
-    self.numberOfRecordsLabel.text = @"";
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, contentLoadingSmoothingDelay * NSEC_PER_SEC),  dispatch_get_main_queue(),  ^{
         
@@ -1646,16 +1644,16 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)giveControlsDisabledConfiguration{
     
-    self.backButton.enabled = NO;
-    self.backButton.layer.opacity = .4;
-    
-    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-    for (UIButton *b in arrows){
-        
-        b.enabled = NO;
-        b.layer.opacity = .4;
-        
-    }
+//    self.backButton.enabled = NO;
+////    self.backButton.layer.opacity = .4;
+//    
+//    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+//    for (UIButton *b in arrows){
+//        
+//        b.enabled = NO;
+////        b.layer.opacity = .4;
+//        
+//    }
 
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
@@ -1667,16 +1665,16 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)giveControlsEnabledConfiguration{
     
-    self.backButton.enabled = YES;
-    self.backButton.layer.opacity = 1.0;
-    
-    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-    for (UIButton *b in arrows){
-        
-        b.enabled = YES;
-        b.layer.opacity = 1.0;
-        
-    }
+//    self.backButton.enabled = YES;
+//    self.backButton.layer.opacity = 1.0;
+//    
+//    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
+//    for (UIButton *b in arrows){
+//        
+//        b.enabled = YES;
+//        b.layer.opacity = 1.0;
+//        
+//    }
     
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
