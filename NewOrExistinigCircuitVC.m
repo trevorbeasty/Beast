@@ -86,7 +86,8 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createNewButton;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomSpacingConstr;
+//@property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomSpacingConstr;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentedControlBottomSpaceConstr;
 
 
 // IBAction
@@ -214,6 +215,8 @@ static const CGFloat buttonSpacing = 0.0;
     
     [self configureSegmentedControlNotifications];
     [self configureCoreDataNotifications];
+    
+    [self configureBasicLabelText];
     
     return;
     
@@ -400,7 +403,7 @@ static const CGFloat buttonSpacing = 0.0;
     
     self.sortByBottomLabel.font = [UIFont boldSystemFontOfSize: 15];
     self.sortByBottomLabel.backgroundColor = [UIColor clearColor];
-    self.sortByBottomLabel.textColor = [UIColor grayColor];
+    self.sortByBottomLabel.textColor = [UIColor blackColor];
     
 }
 
@@ -432,6 +435,12 @@ static const CGFloat buttonSpacing = 0.0;
     
     tableView.delegate = self;
     tableView.dataSource = self;
+    
+}
+
+- (void)configureBasicLabelText{
+    
+    self.sortByBottomLabel.text = @"sort by\ndate";
     
 }
 
@@ -553,21 +562,49 @@ static const CGFloat buttonSpacing = 0.0;
 
 - (CGSize)scrollViewContentSize{
     
-    CGFloat svContentHeight = [self totalTableViewHeightBasedOnTVSortedContent] + [self breatherRoomForChainTemplateScrollView];
+    CGFloat width = self.mainContainer.frame.size.width;
     
-    if (svContentHeight < self.mainContainer.frame.size.height){
-        svContentHeight = self.mainContainer.frame.size.height;
+    CGFloat contentNaturalHeight = [self totalTableViewHeightBasedOnTVSortedContent];
+    CGFloat bottomSpaceOccupiedByControls = [self breatherRoomForChainTemplateScrollView];
+    CGFloat mainContainerHeight = self.mainContainer.frame.size.height;
+    CGFloat spaceNotOccupiedByControls = mainContainerHeight - bottomSpaceOccupiedByControls;
+    
+    // the following if structure brackets the content height into 3 separate groups
+    
+    if (contentNaturalHeight < spaceNotOccupiedByControls){
+        
+        return CGSizeMake(width, contentNaturalHeight);
+        
+    } else if (contentNaturalHeight < mainContainerHeight){
+        
+        CGFloat height = mainContainerHeight + bottomSpaceOccupiedByControls;
+        return CGSizeMake(width, height);
+        
+    } else{
+        
+        CGFloat height = contentNaturalHeight + bottomSpaceOccupiedByControls;
+        return CGSizeMake(width,  height);
+        
     }
     
-    return  CGSizeMake(self.mainContainer.frame.size.width, svContentHeight);
+    
+//    CGFloat svContentHeight = [self totalTableViewHeightBasedOnTVSortedContent] + [self breatherRoomForChainTemplateScrollView];
+//    
+//    if (svContentHeight < self.mainContainer.frame.size.height){
+//        svContentHeight = self.mainContainer.frame.size.height;
+//    }
+//    
+//    return  CGSizeMake(self.mainContainer.frame.size.width, svContentHeight);
     
 }
 
 - (CGFloat)breatherRoomForChainTemplateScrollView{
     
+    // the extra room is intended to allow the contents bottom edge to sit 8 points below the control arrow's bottom edge at all points
+    
     [self.view layoutSubviews];
     
-    CGFloat bottomControlsHeight =  self.mainContainer.frame.size.height - self.arrowControlButton.frame.origin.y;
+    CGFloat bottomControlsHeight =  self.mainContainer.frame.size.height - self.toolbar.frame.origin.y;
     CGFloat extraSpace = 8;
     
     return bottomControlsHeight + extraSpace;
@@ -1740,16 +1777,15 @@ static const CGFloat buttonSpacing = 0.0;
                                                            originY: vertAnimationDist];
                              
                          }
-                         
-                         self.sortByBottomLabel.hidden = YES;
+                        
                          
                      }
                      completion: ^(BOOL finished){
                          
                          self.arrowControlButton.enabled = YES;
     
-                         CGFloat toolbarHeight = self.toolbar.frame.size.height;
-                         self.toolbarBottomSpacingConstr.constant = -1 * toolbarHeight;
+                         CGFloat controlsHeight = self.sortBySegmentedControl.frame.origin.y + self.sortBySegmentedControl.frame.size.height - self.toolbar.frame.origin.y;
+                         self.segmentedControlBottomSpaceConstr.constant = -1 * controlsHeight;
                          
                          self.activeScrollView.contentSize = [self scrollViewContentSize];
     
@@ -1765,7 +1801,7 @@ static const CGFloat buttonSpacing = 0.0;
                          
                          self.arrowControlButton.enabled = NO;
                          
-                         CGFloat vertAnimationDist = self.toolbar.frame.size.height + 8;
+                         CGFloat vertAnimationDist = -1 * self.segmentedControlBottomSpaceConstr.constant + 8;
                          
                          NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortByBottomLabel, self.sortBySegmentedControl];
                          for (UIView *v in viewsToTranslate){
@@ -1783,7 +1819,7 @@ static const CGFloat buttonSpacing = 0.0;
                          
                          self.arrowControlButton.enabled = YES;
                          
-                         self.toolbarBottomSpacingConstr.constant = 8;
+                         self.segmentedControlBottomSpaceConstr.constant = 8;
                          
                          self.activeScrollView.contentSize = [self scrollViewContentSize];
                          

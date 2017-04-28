@@ -24,10 +24,10 @@
                 <outlet property="numberOfRecordsLabel" destination="4Qa-r8-4d0" id="R9a-jA-LwW"/>
                 <outlet property="rightArrowButton" destination="muu-Ne-Y0K" id="fY0-rH-Nyj"/>
                 <outlet property="routinesByLabel" destination="Zf5-hU-YP4" id="a39-Bj-YOA"/>
+                <outlet property="segmentedControlBottomSpaceConstr" destination="X3r-rM-YLk" id="opB-7v-hqg"/>
                 <outlet property="sortByBottomLabel" destination="Fhf-o8-MPj" id="poS-dt-6up"/>
                 <outlet property="sortBySegmentedControl" destination="tyu-rD-VFA" id="gko-Xm-P6y"/>
                 <outlet property="toolbar" destination="5hF-RU-JdV" id="OVA-BE-Gaa"/>
-                <outlet property="toolbarBottomSpacingConstr" destination="En6-Vd-yyB" id="iYr-N5-2Cm"/>
                 <outlet property="topTitleBar" destination="jJx-Ep-SFb" id="6zS-tR-nMP"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yearLabel" destination="yZc-c3-eUK" id="gpZ-IA-MuZ"/>
@@ -48,7 +48,7 @@
                     <rect key="frame" x="0.0" y="152.5" width="375" height="514.5"/>
                     <subviews>
                         <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hF-RU-JdV">
-                            <rect key="frame" x="8" y="410.5" width="359" height="44"/>
+                            <rect key="frame" x="8" y="414.5" width="359" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="MWT-SB-KOu"/>
                             </constraints>
@@ -88,7 +88,7 @@
                             </segments>
                         </segmentedControl>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tzj-yM-dAu" userLabel="arrowControl">
-                            <rect key="frame" x="8" y="350.5" width="50" height="44"/>
+                            <rect key="frame" x="8" y="354.5" width="50" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="c58-q3-j37"/>
                                 <constraint firstAttribute="width" constant="50" id="d8w-Jv-Q6g"/>
@@ -98,7 +98,7 @@
                                 <action selector="didPressArrowControlButton:" destination="-1" eventType="touchUpInside" id="EOw-ha-NmI"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sort by date" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fhf-o8-MPj">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sort by date" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fhf-o8-MPj">
                             <rect key="frame" x="8" y="462.5" width="92" height="43.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
@@ -109,16 +109,16 @@
                     <constraints>
                         <constraint firstItem="5hF-RU-JdV" firstAttribute="top" secondItem="tzj-yM-dAu" secondAttribute="bottom" constant="16" id="2L0-1c-Ut3"/>
                         <constraint firstAttribute="trailing" secondItem="tyu-rD-VFA" secondAttribute="trailing" constant="8" id="5Ti-2N-VLc"/>
-                        <constraint firstItem="Fhf-o8-MPj" firstAttribute="leading" secondItem="cna-Rm-Pq1" secondAttribute="leading" constant="8" id="7SW-Zr-p59"/>
-                        <constraint firstAttribute="bottom" secondItem="5hF-RU-JdV" secondAttribute="bottom" constant="60" id="En6-Vd-yyB"/>
                         <constraint firstItem="tyu-rD-VFA" firstAttribute="bottom" secondItem="Fhf-o8-MPj" secondAttribute="bottom" id="JDU-qN-GQL"/>
                         <constraint firstItem="tyu-rD-VFA" firstAttribute="height" secondItem="5hF-RU-JdV" secondAttribute="height" id="Jpm-BY-Pem"/>
+                        <constraint firstItem="Fhf-o8-MPj" firstAttribute="top" secondItem="5hF-RU-JdV" secondAttribute="bottom" constant="4" id="L6N-MD-ecL"/>
                         <constraint firstItem="tyu-rD-VFA" firstAttribute="leading" secondItem="Fhf-o8-MPj" secondAttribute="trailing" constant="8" id="Mop-B4-TsN"/>
                         <constraint firstAttribute="bottom" secondItem="tyu-rD-VFA" secondAttribute="bottom" constant="8" id="X3r-rM-YLk"/>
                         <constraint firstItem="5hF-RU-JdV" firstAttribute="leading" secondItem="cna-Rm-Pq1" secondAttribute="leading" constant="8" id="kH8-xu-CND"/>
                         <constraint firstAttribute="trailing" secondItem="5hF-RU-JdV" secondAttribute="trailing" constant="8" id="pcj-d8-iH0"/>
                         <constraint firstItem="tyu-rD-VFA" firstAttribute="top" secondItem="Fhf-o8-MPj" secondAttribute="top" id="sV8-L3-7lR"/>
                         <constraint firstItem="5hF-RU-JdV" firstAttribute="leading" secondItem="tzj-yM-dAu" secondAttribute="leading" id="yg3-cW-biX"/>
+                        <constraint firstItem="Fhf-o8-MPj" firstAttribute="leading" secondItem="5hF-RU-JdV" secondAttribute="leading" id="z8p-nM-RrY"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jJx-Ep-SFb" userLabel="topTitleBar">
