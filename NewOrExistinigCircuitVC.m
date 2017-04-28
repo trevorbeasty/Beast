@@ -440,7 +440,7 @@ static const CGFloat buttonSpacing = 0.0;
 
 - (void)configureBasicLabelText{
     
-    self.sortByBottomLabel.text = @"sort by\ndate";
+    self.sortByBottomLabel.text = @"sort by\ndate:";
     
 }
 
@@ -971,6 +971,7 @@ static const CGFloat buttonSpacing = 0.0;
 - (void)coreDataUpdateRequiredForRoutineSelection{
     
     _fetchedObjectsNeedUpdating = YES;
+    _displayedContentNeedsUpdating = YES;
     
 }
 
@@ -1740,7 +1741,7 @@ static const CGFloat buttonSpacing = 0.0;
         
         [self animateToolbarOnscreen];
       
-        [self.arrowControlButton setImage: [UIImage imageNamed: @"doubleDownArrowBlue32"]
+        [self.arrowControlButton setImage: [UIImage imageNamed: @"downArrowBlue30PDF"]
                                  forState: UIControlStateNormal];
         
         _toolbarState = TJBToolBarNotHidden;
@@ -1749,7 +1750,7 @@ static const CGFloat buttonSpacing = 0.0;
         
         [self animateToolbarOffscreen];
         
-        [self.arrowControlButton setImage: [UIImage imageNamed: @"doubleUpArrowBlue32"]
+        [self.arrowControlButton setImage: [UIImage imageNamed: @"upArrowBlue30PDF"]
                                  forState: UIControlStateNormal];
         
         _toolbarState = TJBToolbarHidden;

@@ -37,51 +37,51 @@
                     <rect key="frame" x="0.0" y="90" width="375" height="577"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dEd-qn-1KF">
-                            <rect key="frame" x="8" y="393" width="50" height="44"/>
+                            <rect key="frame" x="8" y="401" width="50" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="syT-MS-LrA"/>
                                 <constraint firstAttribute="width" constant="50" id="vhu-jN-mtH"/>
                             </constraints>
-                            <state key="normal" image="doubleDownArrowBlue32"/>
+                            <state key="normal" image="downArrowBlue30PDF"/>
                             <connections>
                                 <action selector="didPressControlsArrow:" destination="-1" eventType="touchUpInside" id="xie-iG-VV1"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XPt-E1-GwX" userLabel="leftControlsContainer">
-                            <rect key="frame" x="16" y="453" width="343" height="116"/>
+                            <rect key="frame" x="8" y="453" width="359" height="116"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Exercises" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycf-eU-09C">
-                                    <rect key="frame" x="40" y="15" width="88" height="21"/>
+                                    <rect key="frame" x="44" y="15" width="88" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.97479108169999995" green="1" blue="0.97058398140000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D9a-9s-ukM" userLabel="numberExercisesValue">
-                                    <rect key="frame" x="0.0" y="40" width="167.5" height="24"/>
+                                    <rect key="frame" x="0.0" y="40" width="175.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="1gT-dx-0IG">
-                                    <rect key="frame" x="37" y="72" width="94" height="29"/>
+                                    <rect key="frame" x="41" y="72" width="94" height="29"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="Vff-Kw-PW5"/>
                                     </constraints>
                                 </stepper>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJz-j4-7Dv">
-                                    <rect key="frame" x="175.5" y="40" width="167.5" height="24"/>
+                                    <rect key="frame" x="183.5" y="40" width="175.5" height="24"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="# Rounds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bnC-eb-6yL">
-                                    <rect key="frame" x="223" y="15" width="73" height="21"/>
+                                    <rect key="frame" x="235" y="15" width="73" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="zhL-u0-9Sc">
-                                    <rect key="frame" x="213" y="72" width="94" height="29"/>
+                                    <rect key="frame" x="225" y="72" width="94" height="29"/>
                                 </stepper>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -111,10 +111,10 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="XPt-E1-GwX" firstAttribute="top" secondItem="dEd-qn-1KF" secondAttribute="bottom" constant="16" id="0CT-KV-yEC"/>
-                        <constraint firstItem="dEd-qn-1KF" firstAttribute="leading" secondItem="ddm-83-lU1" secondAttribute="leading" constant="8" id="MKd-XL-7PZ"/>
-                        <constraint firstItem="XPt-E1-GwX" firstAttribute="leading" secondItem="ddm-83-lU1" secondAttribute="leading" constant="16" id="VCO-EY-XS9"/>
-                        <constraint firstAttribute="trailing" secondItem="XPt-E1-GwX" secondAttribute="trailing" constant="16" id="WR5-ay-zom"/>
+                        <constraint firstItem="XPt-E1-GwX" firstAttribute="top" secondItem="dEd-qn-1KF" secondAttribute="bottom" constant="8" id="0CT-KV-yEC"/>
+                        <constraint firstItem="XPt-E1-GwX" firstAttribute="leading" secondItem="dEd-qn-1KF" secondAttribute="leading" id="CHB-LF-mk3"/>
+                        <constraint firstItem="XPt-E1-GwX" firstAttribute="leading" secondItem="ddm-83-lU1" secondAttribute="leading" constant="8" id="VCO-EY-XS9"/>
+                        <constraint firstAttribute="trailing" secondItem="XPt-E1-GwX" secondAttribute="trailing" constant="8" id="WR5-ay-zom"/>
                         <constraint firstAttribute="bottom" secondItem="XPt-E1-GwX" secondAttribute="bottom" constant="8" id="eLn-va-105"/>
                     </constraints>
                 </view>
@@ -135,7 +135,7 @@
                                 <constraint firstAttribute="height" constant="60" id="Okl-Y9-ViK"/>
                                 <constraint firstAttribute="width" constant="60" id="nSo-55-Sql"/>
                             </constraints>
-                            <state key="normal" image="trashBlue25">
+                            <state key="normal" image="garbageBlue25PDF">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
                             <connections>
@@ -149,7 +149,7 @@
                                 <constraint firstAttribute="width" constant="60" id="Lic-Y6-J5x"/>
                                 <constraint firstAttribute="height" constant="60" id="oe3-Pn-fuq"/>
                             </constraints>
-                            <state key="normal" image="saveBlue25">
+                            <state key="normal" image="saveBlue25PDF">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
                             <connections>
@@ -183,8 +183,8 @@
         </view>
     </objects>
     <resources>
-        <image name="doubleDownArrowBlue32" width="32" height="32"/>
-        <image name="saveBlue25" width="25" height="25"/>
-        <image name="trashBlue25" width="25" height="25"/>
+        <image name="downArrowBlue30PDF" width="30" height="30"/>
+        <image name="garbageBlue25PDF" width="25" height="25"/>
+        <image name="saveBlue25PDF" width="25" height="25"/>
     </resources>
 </document>

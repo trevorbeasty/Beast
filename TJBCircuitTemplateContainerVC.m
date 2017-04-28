@@ -482,7 +482,7 @@ static CGFloat const bottomControlsSpaceValue = 8;
         
         [self animateControlsContainerOffscreen];
         
-        [self.controlsArrow setImage: [UIImage imageNamed: @"doubleUpArrowBlue32"]
+        [self.controlsArrow setImage: [UIImage imageNamed: @"upArrowBlue30PDF"]
                             forState: UIControlStateNormal];
         
         _advancedControlsHidden = YES;
@@ -491,7 +491,7 @@ static CGFloat const bottomControlsSpaceValue = 8;
         
         [self animateControlsContainerOnscreen];
         
-        [self.controlsArrow setImage: [UIImage imageNamed: @"doubleDownArrowBlue32"]
+        [self.controlsArrow setImage: [UIImage imageNamed: @"downArrowBlue30PDF"]
                             forState: UIControlStateNormal];
         
         _advancedControlsHidden = NO;

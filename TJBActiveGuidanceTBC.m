@@ -61,8 +61,6 @@
     vc2.tabBarItem.image = [UIImage imageNamed: @"targetBlue25"];
     
     TJBActiveGuidanceRoutineHistory *vc3 = [[TJBActiveGuidanceRoutineHistory alloc] initWithChainTemplate: self.chainTemplate];
-    vc3.tabBarItem.title = @"History";
-    vc3.tabBarItem.image = [UIImage imageNamed: @"colosseumBlue25"];
     
     TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
                                                                 advancedControlsActive: NO];

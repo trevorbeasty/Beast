@@ -70,6 +70,8 @@
 
 - (void)viewDidLoad{
     
+    [self configureTabBarAttributes];
+    
     [self configureViewAesthetics];
     
     [self configureLabelText];
@@ -107,6 +109,13 @@
 }
 
 #pragma mark - View Helper Methods
+
+- (void)configureTabBarAttributes{
+    
+    self.tabBarItem.title = @"History";
+    self.tabBarItem.image = [UIImage imageNamed: @"historyBlue25PDF"];
+    
+}
 
 - (void)configureLabelText{
     

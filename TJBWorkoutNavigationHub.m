@@ -1781,6 +1781,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)reviveExercisesForChainTemplate:(TJBChainTemplate *)ct{
     
+    ct.showInRoutineList = YES;
+    
     for (TJBExercise *exercise in ct.exercises){
         
         exercise.showInExerciseList = YES;
