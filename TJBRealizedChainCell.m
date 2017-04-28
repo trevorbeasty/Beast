@@ -58,9 +58,6 @@
 
 @property (strong) NSMutableDictionary *constraintMapping;
 
-
-
-
 @end
 
 // layout constants
@@ -501,18 +498,16 @@ typedef enum{
     // borders
     // for realized set collection one less column is shown (rest) and thus additional consideration must be had
     
-    BOOL isRepsLabelForRealizedSetCollection = dynamicLabelType == TJBRepsType && _cellType == RealizedSetCollectionCell;
-    
-    if (isTrailingLabel == NO && !isRepsLabelForRealizedSetCollection){
+    if (isTrailingLabel == NO){
         
         [self addVerticalBorderToRight: label
                              thickness: .5];
         
     }
     
-    BOOL isRestLabelForRealizedSetCollection = dynamicLabelType == TJBRestType && _cellType == RealizedSetCollectionCell;
+//    BOOL isRestLabelForRealizedSetCollection = dynamicLabelType == TJBRestType && _cellType == RealizedSetCollectionCell;
     
-    if (isBottomRow == NO && !isRestLabelForRealizedSetCollection){
+    if (isBottomRow == NO){
         
         [self addHorizontalBorderBeneath: label
                                thickness: .5];
@@ -524,7 +519,31 @@ typedef enum{
     
     if (dynamicLabelType == TJBRestType && _cellType == RealizedSetCollectionCell){
         
-        label.text = @"";
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        df.dateFormat = @"h:mm a";
+        
+        TJBRealizedSet *rs;
+        
+        if ([self.contentObject isKindOfClass: [NSArray class]]){
+            
+            TJBRealizedSetGrouping rsg = self.contentObject;
+            rs = rsg[roundIndex];
+ 
+        } else{
+            
+            rs = self.contentObject;
+            
+        }
+        
+        if (rs.holdsNullValues == NO){
+            
+            label.text = [df stringFromDate: rs.submissionTime];
+            
+        } else{
+            
+            label.text = @"-";
+            
+        }
         
         return;
         
