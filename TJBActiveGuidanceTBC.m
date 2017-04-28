@@ -53,12 +53,8 @@
 - (void)configureTabBarController{
     
     TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.chainTemplate];
-    vc1.tabBarItem.title = @"Active";
-    vc1.tabBarItem.image = [UIImage imageNamed: @"activeLift"];
     
     TJBActiveGuidanceTargetsScene *vc2 = [[TJBActiveGuidanceTargetsScene alloc] initWithChainTemplate: self.chainTemplate];
-    vc2.tabBarItem.title = @"Targets";
-    vc2.tabBarItem.image = [UIImage imageNamed: @"targetBlue25"];
     
     TJBActiveGuidanceRoutineHistory *vc3 = [[TJBActiveGuidanceRoutineHistory alloc] initWithChainTemplate: self.chainTemplate];
     

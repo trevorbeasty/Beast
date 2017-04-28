@@ -57,6 +57,8 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
         
         self.chainTemplate = ct;
         
+        [self configureTabBarAttributes];
+        
     }
    
     return self;
@@ -66,7 +68,12 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 
 #pragma mark - Init Helper Methods
 
-
+- (void)configureTabBarAttributes{
+    
+    self.tabBarItem.title = @"Targets";
+    self.tabBarItem.image = [UIImage imageNamed: @"targetBlue25PDF"];
+    
+}
 
 
 
@@ -88,6 +95,8 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 
 
 #pragma mark - View Helper Methods
+
+
 
 
 

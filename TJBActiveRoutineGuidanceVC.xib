@@ -51,7 +51,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDc-Ml-LZQ">
                             <rect key="frame" x="30" y="12.5" width="25" height="25"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="titleBarHomeButton">
+                            <state key="normal" image="homeBlue25PDF">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
                             <connections>
@@ -70,7 +70,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eh0-EJ-mqn">
                             <rect key="frame" x="320" y="12.5" width="25" height="25"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <state key="normal" image="clock"/>
+                            <state key="normal" image="clockBlue25PDF"/>
                             <connections>
                                 <action selector="didPressClock:" destination="-1" eventType="touchUpInside" id="6Hk-T6-gep"/>
                             </connections>
@@ -120,7 +120,7 @@
         </view>
     </objects>
     <resources>
-        <image name="clock" width="25" height="25"/>
-        <image name="titleBarHomeButton" width="25" height="25"/>
+        <image name="clockBlue25PDF" width="25" height="25"/>
+        <image name="homeBlue25PDF" width="25" height="25"/>
     </resources>
 </document>

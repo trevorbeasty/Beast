@@ -157,7 +157,7 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 
 // content generation
 
-static NSTimeInterval const contentLoadingSmoothingDelay = .25;
+static NSTimeInterval const contentLoadingSmoothingDelay = .05;
 
 
 // date controls
@@ -588,23 +588,15 @@ static const CGFloat buttonSpacing = 0.0;
     }
     
     
-//    CGFloat svContentHeight = [self totalTableViewHeightBasedOnTVSortedContent] + [self breatherRoomForChainTemplateScrollView];
-//    
-//    if (svContentHeight < self.mainContainer.frame.size.height){
-//        svContentHeight = self.mainContainer.frame.size.height;
-//    }
-//    
-//    return  CGSizeMake(self.mainContainer.frame.size.width, svContentHeight);
-    
 }
 
 - (CGFloat)breatherRoomForChainTemplateScrollView{
     
-    // the extra room is intended to allow the contents bottom edge to sit 8 points below the control arrow's bottom edge at all points
+    // the extra room is intended to allow the contents bottom edge to sit 8 points above the control arrow's top edge at all points
     
     [self.view layoutSubviews];
     
-    CGFloat bottomControlsHeight =  self.mainContainer.frame.size.height - self.toolbar.frame.origin.y;
+    CGFloat bottomControlsHeight =  self.mainContainer.frame.size.height - self.arrowControlButton.frame.origin.y;
     CGFloat extraSpace = 8;
     
     return bottomControlsHeight + extraSpace;

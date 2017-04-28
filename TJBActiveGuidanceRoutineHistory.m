@@ -59,6 +59,8 @@
         
         _shouldFetchDataAndCreateDisplay = YES;
         
+        [self configureTabBarAttributes];
+        
     }
     
     
@@ -66,11 +68,21 @@
     
 }
 
+
+#pragma mark - Init Helper Methods
+
+
+- (void)configureTabBarAttributes{
+    
+    self.tabBarItem.title = @"History";
+    self.tabBarItem.image = [UIImage imageNamed: @"historyBlue25PDF"];
+    
+}
+
+
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
-    
-    [self configureTabBarAttributes];
     
     [self configureViewAesthetics];
     
@@ -110,12 +122,7 @@
 
 #pragma mark - View Helper Methods
 
-- (void)configureTabBarAttributes{
-    
-    self.tabBarItem.title = @"History";
-    self.tabBarItem.image = [UIImage imageNamed: @"historyBlue25PDF"];
-    
-}
+
 
 - (void)configureLabelText{
     

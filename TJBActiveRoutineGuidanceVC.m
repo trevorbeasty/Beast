@@ -182,6 +182,8 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
     [self.view layoutIfNeeded];
     
+    [self configureTabBarAttributes];
+    
     [self configureViewAesthetics];
     
     [self configureImmediateTargets];
@@ -189,6 +191,15 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     [self configureTimer];
     
     [self configureInitialDisplay];
+    
+}
+
+#pragma mark - View Helper Methods
+
+- (void)configureTabBarAttributes{
+    
+    self.tabBarItem.title = @"Active";
+    self.tabBarItem.image = [UIImage imageNamed: @"activeBlue25PDF"];
     
 }
 
