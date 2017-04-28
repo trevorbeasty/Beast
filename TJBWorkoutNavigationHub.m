@@ -156,7 +156,7 @@ static const CGFloat toolbarAnimationTime = .2;
 
 // content loading
 
-static NSTimeInterval const contentLoadingSmoothingDelay = .05;
+static NSTimeInterval const contentLoadingSmoothingDelay = .1;
 
 typedef void (^AnimationBlock)(void);
 typedef void (^AnimationCompletionBlock)(BOOL);
@@ -467,10 +467,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     if (_displayedContentNeedsUpdating){
         
-        self.toolbar.hidden = YES;
-        self.toolbarControlArrow.hidden = YES;
-        
-        [self disableControlsAndGiveInactiveAppearance];
+        [self disableTopControls];
         
     }
     
@@ -677,12 +674,10 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)deriveAndPresentContentAndRemoveActivityIndicatorForWorkoutLogDate:(NSDate *)workoutLogDate dateControlDate:(NSDate *)dateControlDate shouldAnimateDateControlBar:(BOOL)shouldAnimate{
     
-//    [NSThread sleepForTimeInterval: contentLoadingSmoothingDelay];
-    
     self.dateControlActiveDate = dateControlDate;
     self.workoutLogActiveDay = workoutLogDate;
     
-    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: YES];
+    [self configureDateControlsAccordingToActiveDateControlDate];
     
     [self updateActiveDateLabelWithDate: workoutLogDate];
     
@@ -696,9 +691,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     [self.activityIndicatorView stopAnimating];
     
-    [self enableControlsAndGiveActiveAppearance];
-    self.toolbar.hidden = NO;
-    self.toolbarControlArrow.hidden = NO;
+    [self enableTopControls];
     
     NSCalendar *calendar = [NSCalendar calendarWithIdentifier: NSCalendarIdentifierGregorian];
     BOOL workoutLogDateInDateControlMonth = [calendar isDate: workoutLogDate
@@ -748,7 +741,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 
 
-- (void)configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay:(BOOL)shouldSelectActiveDateControlDay{
+- (void)configureDateControlsAccordingToActiveDateControlDate{
 
     [self clearTransitoryDateControlObjects];
     
@@ -811,29 +804,25 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         // create the child vc - exactly what configuration the vc receives is dependent upon the iterative date
         
         BOOL iterativeDateGreaterThanToday = [iterativeDate timeIntervalSinceDate: today] > 0;
-        BOOL isTheActiveDate = NO;
+    
+        BOOL tvActiveDateSimilarToDCActiveDate = [calendar isDate: iterativeDate
+                                                      equalToDate: self.workoutLogActiveDay
+                                                toUnitGranularity: NSCalendarUnitDay];
         
-        if (shouldSelectActiveDateControlDay){
+        BOOL hasSelectedAppearance = tvActiveDateSimilarToDCActiveDate ? YES : NO;
+        
+        if (tvActiveDateSimilarToDCActiveDate){
             
-            isTheActiveDate = [calendar isDate: iterativeDate
-                               inSameDayAsDate: self.workoutLogActiveDay];
-            
-            if (isTheActiveDate){
-                
-                self.selectedDateButtonIndex = [NSNumber numberWithInt: i];
-                
-            }
+            self.selectedDateButtonIndex = @(i);
             
         }
-        
-        
-        
+
         BOOL recordExistsForIterativeDate = [self recordExistsForDate: iterativeDate];
         
         TJBCircleDateVC *circleDateVC = [[TJBCircleDateVC alloc] initWithDayIndex: [NSNumber numberWithInt: i]
                                                                          dayTitle: dayTitle
                                                                              size: buttonSize
-                                                            hasSelectedAppearance: isTheActiveDate
+                                                            hasSelectedAppearance: hasSelectedAppearance
                                                                         isEnabled: YES
                                                                         isCircled: recordExistsForIterativeDate
                                                                  masterController: self
@@ -878,7 +867,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     self.dateControlActiveDate = [calendar dateFromComponents: dateComps];
     
     
-    [self configureDateControlsAccordingToActiveDateControlDateAndSelectActiveDateControlDay: NO];
+    [self configureDateControlsAccordingToActiveDateControlDate];
     
 }
 
@@ -956,7 +945,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     [self showActivityIndicator];
     
     [self selectDateObjectCorrespondingToIndex: index];
-    [self disableControlsAndGiveInactiveAppearance];
+    [self disableTopControls];
     
     [self updateActiveDateLabelWithDate: representedDate];
     self.numberOfEntriesLabel.text = @"";
@@ -977,7 +966,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
         [self.activityIndicatorView stopAnimating];
         
-        [self enableControlsAndGiveActiveAppearance];
+        [self enableTopControls];
         
         
     });
@@ -1096,7 +1085,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     [sv addSubview: newTableView];
     [self.shadowContainer insertSubview: sv
-                           belowSubview: self.toolbar];
+                                atIndex: 0];
     
     return;
     
@@ -1107,24 +1096,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     return self.toolbar.frame.size.height + toolbarToBottomSpacing + 8;
     
 }
-
-- (void)prepareNewContentCellsAndRemoveActivityIndicator{
-    
-    [self deriveDailyList];
-    [self updateNumberOfEntriesLabel];
-    
-    // call the table view cellForIndexPath method for all daily list cells and store the results
-    
-    [self deriveActiveCellsAndCreateTableView];
-    [self.tableView reloadData];
-    
-
-    [self.activityIndicatorView stopAnimating];
-    
-    [self enableControlsAndGiveActiveAppearance];
-    
-}
-
 
 
 
@@ -1158,47 +1129,43 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 
 
-- (void)enableControlsAndGiveActiveAppearance{
+- (void)enableTopControls{
     
-    for (TJBCircleDateVC *circVC in self.circleDateChildren){
-        
-        [circVC configureEnabledAppearance];
-        
-    }
+//    NSArray *buttons = @[self.leftArrowButton, self.rightArrowButton, self.homeButton];
+//    for (UIButton *b in buttons){
+//        
+////        b.enabled = YES;
+//        
+//    }
     
-    NSArray *buttons = @[self.homeButton];
-    for (UIButton *b in buttons){
+    if (self.dateScrollView){
         
-        b.enabled = YES;
-        b.layer.opacity = 1.0;
-        
-    }
-    
-    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-    for (UIButton *b in arrows){
-        
-        b.enabled = YES;
-        b.layer.opacity = 1.0;
+        for (TJBCircleDateVC *circVC in self.circleDateChildren){
+            
+            [circVC configureEnabledAppearance];
+            
+        }
         
     }
     
 }
 
-- (void)disableControlsAndGiveInactiveAppearance{
+- (void)disableTopControls{
     
-    NSArray *buttons = @[self.homeButton];
-    for (UIButton *b in buttons){
-        
-        b.enabled = NO;
-        b.layer.opacity = .4;
-        
-    }
+//    NSArray *buttons = @[self.leftArrowButton, self.rightArrowButton, self.homeButton];
+//    for (UIButton *b in buttons){
+//        
+////        b.enabled = NO;
+//        
+//    }
     
-    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-    for (UIButton *b in arrows){
+    if (self.dateScrollView){
         
-        b.enabled = NO;
-        b.layer.opacity = .4;
+        for (TJBCircleDateVC *circVC in self.circleDateChildren){
+            
+            [circVC configureDisabledAppearance];
+            
+        }
         
     }
     
@@ -1216,11 +1183,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     // reduce opacity of buttons and disable them until the cells have loaded
     
-    for (TJBCircleDateVC *circVC in self.circleDateChildren){
-        
-        [circVC configureDisabledAppearance];
-        
-    }
+
     
 }
 
@@ -1230,7 +1193,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
         UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
         
-        aiView.frame = self.shadowContainer.frame;
+        aiView.frame = self.shadowContainer.bounds;
         aiView.hidesWhenStopped = YES;
         aiView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
@@ -1238,7 +1201,11 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
         self.activityIndicatorView = aiView;
         
-        [self.view addSubview: aiView];
+        [self.shadowContainer insertSubview: self.toolbarControlArrow
+                               aboveSubview: self.toolbar];
+        
+        [self.shadowContainer insertSubview: aiView
+                               belowSubview: self.toolbar];
         
     }
     

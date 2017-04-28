@@ -226,9 +226,10 @@ NSString * const placeholderCategoryName = @"Placeholder";
     }
     else
     {
-        abort();
+        return nil;
     }
 }
+
 
 #pragma mark - Persistent Store Management
 
@@ -414,6 +415,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     realizedChain.firstIncompleteRoundIndex = 0;
     realizedChain.firstIncompleteExerciseIndex = 0;
     realizedChain.chainTemplate = chainTemplate;
+    realizedChain.uniqueID = [[NSUUID UUID] UUIDString];
     
     int exerciseLimit = chainTemplate.numberOfExercises;
     int roundLimit = chainTemplate.numberOfRounds;

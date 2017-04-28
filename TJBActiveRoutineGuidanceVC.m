@@ -49,7 +49,7 @@
 #import "TJBPreviousMarksDictionary.h" // previous marks
 #import "TJBActiveLiftTargetsDictionary.h" // active lift targets
 
-@interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
+@interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver, UIViewControllerRestoration>
 
 {
     
@@ -144,6 +144,10 @@ static CGFloat const componentToComponentSpacing = 16;
 static CGFloat const sequenceCompletedButtonHorizontalInset = 8;
 static CGFloat const sequenceCompletedButtonHeight = 44;
 
+// restoration
+
+static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
+static NSString * const realizedChainIDKey = @"RealizedChainID";
 
 
 
@@ -154,6 +158,8 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
 - (instancetype)initFreshRoutineWithChainTemplate:(TJBChainTemplate *)chainTemplate{
     
     self = [super init];
+    
+    [self configureRestorationProperties];
     
     self.chainTemplate = chainTemplate;
     
@@ -180,10 +186,21 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
     self = [super init];
     
+    [self configureRestorationProperties];
+    
     self.realizedChain = rc;
     self.chainTemplate = rc.chainTemplate;
     
     return self;
+}
+
+#pragma mark - Init Helper Methods
+
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBActiveRoutineGuidanceVC class];
+    
 }
 
 #pragma mark - View Life Cycle
@@ -1069,42 +1086,7 @@ static NSString const *restViewKey = @"restView";
 }
 
 
-- (IBAction)didPressAlertTimingButton:(id)sender{
-    
-//    // present the rest selection scene and store the selected number in the appropriate state variable
-//    
-//    __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
-//    
-//    CancelBlock cancelBlock = ^{
-//        
-//        [weakSelf dismissViewControllerAnimated: NO
-//                                     completion: nil];
-//        
-//    };
-//    
-//    NumberSelectedBlockSingle numberSelectedBlock = ^(NSNumber *number){
-//        
-//        weakSelf.selectedAlertTiming = number;
-//        
-//        NSString *text = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: [number intValue]];
-//        [weakSelf.alertTimingButton setTitle: text
-//                                    forState: UIControlStateNormal];
-//        
-//        [weakSelf dismissViewControllerAnimated: NO
-//                                     completion: nil];
-//        
-//    };
-//    
-//    TJBNumberSelectionVC *vc = [[TJBNumberSelectionVC alloc] initWithNumberTypeIdentifier: TimeIntervalSelection
-//                                                                                    title: @"Select Alert Timing"
-//                                                                              cancelBlock: cancelBlock
-//                                                                      numberSelectedBlock: numberSelectedBlock];
-//    
-//    [self presentViewController: vc
-//                       animated: YES
-//                     completion: nil];
-    
-}
+
 
 
 
@@ -1309,6 +1291,37 @@ static NSString const *restViewKey = @"restView";
                      completion: nil];
     
 }
+
+
+
+#pragma mark - Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject: self.realizedChain.uniqueID
+                 forKey: realizedChainIDKey];
+    
+}
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    
+    NSString *realizedChainUniqueID = [coder decodeObjectForKey: realizedChainIDKey];
+    TJBRealizedChain *rc = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
+    
+    TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initWithPartiallyCompletedRealizedChain: rc];
+    
+    
+    
+    
+    
+    
+    
+    return vc;
+    
+}
+
+
 
 @end
 

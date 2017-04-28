@@ -81,9 +81,11 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 - (BOOL)chainTemplateHasCollectedAllRequisiteUserInput:(TJBChainTemplate *)chainTemplate;
 - (TJBChainTemplate *)chainTemplateWithUniqueID:(NSString *)uniqueID;
 
+
 // realized chain
 
 - (TJBRealizedChain *)realizedChainWithUniqueID:(NSString *)uniqueID;
+
 
 #pragma mark - Managed Object Creation
 

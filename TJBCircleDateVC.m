@@ -238,37 +238,11 @@
 
 - (void)configureEnabledAppearance{
     
-    NSArray *views = @[self.numberLabel, self.dayLabel];
-    for (UIView *v in views){
-        
-        v.layer.opacity = 1.0;
-        
-    }
-    
-    if (_isCircled){
-        
-        [self drawCircleWithOpacity: 1.0];
-        
-    }
-    
     _isEnabled = YES;
     
 }
 
 - (void)configureDisabledAppearance{
-    
-    NSArray *views = @[self.numberLabel, self.dayLabel];
-    for (UIView *v in views){
-        
-        v.layer.opacity = .4;
-        
-    }
-    
-    if (_isCircled){
-        
-        [self drawCircleWithOpacity: .4];
-        
-    }
     
     _isEnabled = NO;
     

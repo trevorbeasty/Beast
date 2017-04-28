@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G31" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="ChainTemplate" representedClassName="TJBChainTemplate" syncable="YES" codeGenerationType="class">
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -28,6 +28,7 @@
         <attribute name="dateCreated" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="firstIncompleteExerciseIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="firstIncompleteRoundIndex" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="chainTemplate" maxCount="1" deletionRule="Nullify" destinationEntity="ChainTemplate" inverseName="realizedChains" inverseEntity="ChainTemplate" syncable="YES"/>
         <relationship name="realizedSetCollections" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="RealizedSetCollection" inverseName="realizedChain" inverseEntity="RealizedSetCollection" syncable="YES"/>
     </entity>
@@ -71,7 +72,7 @@
         <element name="ChainTemplate" positionX="-171" positionY="207" width="128" height="180"/>
         <element name="Exercise" positionX="-504" positionY="-162" width="128" height="150"/>
         <element name="ExerciseCategory" positionX="-794" positionY="-135" width="128" height="73"/>
-        <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="120"/>
+        <element name="RealizedChain" positionX="36" positionY="-54" width="128" height="135"/>
         <element name="RealizedSet" positionX="-182" positionY="-54" width="128" height="180"/>
         <element name="RealizedSetCollection" positionX="16" positionY="-261" width="128" height="88"/>
         <element name="TargetUnit" positionX="-774" positionY="216" width="128" height="238"/>
