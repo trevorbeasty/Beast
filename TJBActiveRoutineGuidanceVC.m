@@ -176,6 +176,16 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
 }
 
+- (instancetype)initWithPartiallyCompletedRealizedChain:(TJBRealizedChain *)rc{
+    
+    self = [super init];
+    
+    self.realizedChain = rc;
+    self.chainTemplate = rc.chainTemplate;
+    
+    return self;
+}
+
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{

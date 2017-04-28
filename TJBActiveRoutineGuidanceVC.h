@@ -19,6 +19,9 @@
 
 @property (nonatomic, strong) TJBRealizedChain *realizedChain;
 
+#pragma mark - Instantiation
+
 - (instancetype)initFreshRoutineWithChainTemplate:(TJBChainTemplate *)chainTemplate;
+- (instancetype)initWithPartiallyCompletedRealizedChain:(TJBRealizedChain *)rc;
 
 @end

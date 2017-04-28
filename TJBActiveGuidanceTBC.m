@@ -18,13 +18,21 @@
 #import "TJBAestheticsController.h" // aesthetics
 
 
-@interface TJBActiveGuidanceTBC ()
-
-// core
-
-@property (strong) TJBChainTemplate *chainTemplate;
+@interface TJBActiveGuidanceTBC () <UIViewControllerRestoration>
 
 @end
+
+
+
+#pragma mark - Constants
+
+static NSString * const restorationID = @"TJBActiveGuidanceTBC";
+static NSString * const activeSceneKey = @"ActiveScene";
+static NSString * const targetsSceneKey = @"TargetsScene";
+static NSString * const historySceneKey = @"HistoryScene";
+static NSString * const workoutLogKey = @"WorkoutLog";
+static NSString * const selectedIndexKey = @"SelectedIndex";
+
 
 @implementation TJBActiveGuidanceTBC
 
@@ -37,11 +45,26 @@
     
     if (self){
         
-        self.chainTemplate = ct;
+        [self configureProperties];
         
-        [self configureTabBarController];
+        [self configureChildControllersForChainTemplate: ct];
+        
+        [self configureRestorationProperties];
         
     }
+    
+    return self;
+    
+}
+
+- (instancetype)initForRestoration{
+    
+    self = [super init];
+    
+    
+    [self configureProperties];
+    
+    [self configureRestorationProperties];
     
     return self;
     
@@ -50,26 +73,76 @@
 
 #pragma mark - Init Helper Methods
 
-- (void)configureTabBarController{
+- (void)configureProperties{
     
-    TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: self.chainTemplate];
+    self.tabBar.barTintColor = [UIColor darkGrayColor];
+    self.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    self.tabBar.translucent = NO;
     
-    TJBActiveGuidanceTargetsScene *vc2 = [[TJBActiveGuidanceTargetsScene alloc] initWithChainTemplate: self.chainTemplate];
+}
+
+- (void)configureChildControllersForChainTemplate:(TJBChainTemplate *)ct{
     
-    TJBActiveGuidanceRoutineHistory *vc3 = [[TJBActiveGuidanceRoutineHistory alloc] initWithChainTemplate: self.chainTemplate];
+    TJBActiveRoutineGuidanceVC *vc1 = [[TJBActiveRoutineGuidanceVC alloc] initFreshRoutineWithChainTemplate: ct];
+    
+    TJBActiveGuidanceTargetsScene *vc2 = [[TJBActiveGuidanceTargetsScene alloc] initWithChainTemplate: ct];
+    
+    TJBActiveGuidanceRoutineHistory *vc3 = [[TJBActiveGuidanceRoutineHistory alloc] initWithChainTemplate: ct];
     
     TJBWorkoutNavigationHub *vc4 = [[TJBWorkoutNavigationHub alloc] initWithHomeButton: NO
                                                                 advancedControlsActive: NO];
-    vc4.tabBarItem.title = @"Workout Log";
-    vc4.tabBarItem.image = [UIImage imageNamed: @"workoutLog"];
-    
 
     [self setViewControllers: @[vc1, vc2, vc3, vc4]];
-    self.tabBar.translucent = NO;
-    self.tabBar.barTintColor = [UIColor darkGrayColor];
-    self.tabBar.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+
     
 }
+
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBActiveGuidanceTBC class];
+    
+    
+}
+
+
+#pragma mark - Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject: self.viewControllers[0]
+                 forKey: activeSceneKey];
+    [coder encodeObject: self.viewControllers[1]
+                 forKey: targetsSceneKey];
+    [coder encodeObject: self.viewControllers[2]
+                 forKey: historySceneKey];
+    [coder encodeObject: self.viewControllers[3]
+                 forKey: workoutLogKey];
+    
+    [coder encodeInteger: self.selectedIndex
+                  forKey: selectedIndexKey];
+    
+}
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    return [[TJBActiveGuidanceTBC alloc] initForRestoration];
+    
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    TJBActiveRoutineGuidanceVC *activeGuidanceVC = [coder decodeObjectForKey: activeSceneKey];
+    TJBActiveGuidanceTargetsScene *targetsVC = [coder decodeObjectForKey: targetsSceneKey];
+    TJBActiveGuidanceRoutineHistory *historyVC = [coder decodeObjectForKey: historySceneKey];
+    TJBWorkoutNavigationHub *workoutLog = [coder decodeObjectForKey: workoutLogKey];
+    
+    [self setViewControllers: @[activeGuidanceVC, targetsVC, historyVC, workoutLog]];
+    
+    self.selectedIndex = [coder decodeIntegerForKey: selectedIndexKey];
+    
+}
+
 
 
 
