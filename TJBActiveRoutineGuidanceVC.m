@@ -49,7 +49,7 @@
 #import "TJBPreviousMarksDictionary.h" // previous marks
 #import "TJBActiveLiftTargetsDictionary.h" // active lift targets
 
-@interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver, UIViewControllerRestoration>
+@interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
 
 {
     
@@ -59,7 +59,7 @@
     
     // used for content view creation / configuration
     
-    BOOL _isLastExerciseOfRoutine;
+//    BOOL _isLastExerciseOfRoutine;
     BOOL _showingFirstTargets;
     
     BOOL _configureTargetsWhenViewAppears;
@@ -143,23 +143,23 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
 
 // restoration
 
-static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
-static NSString * const selectionIndexKey = @"selectionIndex";
-static NSString * const isLastExerciseOfRoutineKey = @"isLastExerciseOfRoutine";
-static NSString * const showingFirstTargetsKey = @"showingFirstTargets";
-static NSString * const realizedChainUniqueIDKey = @"realizedChainUniqueID";
-static NSString * const activeRoundIndexForTargetsKey = @"activeRoundIndexForTargets";
-static NSString * const activeExerciseIndexForTargetsKey = @"activeExerciseIndexForTargets";
-static NSString * const activeRoundIndexForChainKey = @"activeRoundIndexForChain";
-static NSString * const activeExerciseIndexForChainKey = @"activeExerciseIndexForChain";
-static NSString * const activeLiftTargetsKey = @"activeLiftTargets";
-static NSString * const activePreviousMarksKey = @"activePreviousMarks";
-static NSString * const futureRestTargetKey = @"futureRestTarget";
-static NSString * const currentRestTargetKey = @"currentRestTarget";
-static NSString * const cancelRestorationExerciseIndexKey = @"cancelRestorationExerciseIndex";
-static NSString * const cancelRestorationRoundIndexKey = @"cancelRestorationRoundIndex";
-static NSString * const selectedAlertTimingKey = @"selectedAlertTiming";
-static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
+//static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
+//static NSString * const selectionIndexKey = @"selectionIndex";
+//static NSString * const isLastExerciseOfRoutineKey = @"isLastExerciseOfRoutine";
+//static NSString * const showingFirstTargetsKey = @"showingFirstTargets";
+//static NSString * const realizedChainUniqueIDKey = @"realizedChainUniqueID";
+//static NSString * const activeRoundIndexForTargetsKey = @"activeRoundIndexForTargets";
+//static NSString * const activeExerciseIndexForTargetsKey = @"activeExerciseIndexForTargets";
+//static NSString * const activeRoundIndexForChainKey = @"activeRoundIndexForChain";
+//static NSString * const activeExerciseIndexForChainKey = @"activeExerciseIndexForChain";
+//static NSString * const activeLiftTargetsKey = @"activeLiftTargets";
+//static NSString * const activePreviousMarksKey = @"activePreviousMarks";
+//static NSString * const futureRestTargetKey = @"futureRestTarget";
+//static NSString * const currentRestTargetKey = @"currentRestTarget";
+//static NSString * const cancelRestorationExerciseIndexKey = @"cancelRestorationExerciseIndex";
+//static NSString * const cancelRestorationRoundIndexKey = @"cancelRestorationRoundIndex";
+//static NSString * const selectedAlertTimingKey = @"selectedAlertTiming";
+//static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
 
 
 
@@ -171,7 +171,7 @@ static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
     
     self = [super init];
     
-    [self configureRestorationProperties];
+//    [self configureRestorationProperties];
     
     self.chainTemplate = chainTemplate;
     
@@ -185,7 +185,6 @@ static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
     
     _selectionIndex = 0;
     
-    _isLastExerciseOfRoutine = NO;
     _showingFirstTargets = YES;
     
     _configureTargetsWhenViewAppears = YES;
@@ -200,22 +199,34 @@ static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
     
     self = [super init];
     
-    [self configureRestorationProperties];
+//    [self configureRestorationProperties];
     
     self.realizedChain = rc;
     self.chainTemplate = rc.chainTemplate;
+    
+    self.activeRoundIndexForTargets = @(rc.firstIncompleteRoundIndex);
+    self.activeExerciseIndexForTargets = @(rc.firstIncompleteExerciseIndex);
+    
+    self.activeRoundIndexForChain = @(rc.firstIncompleteRoundIndex);
+    self.activeExerciseIndexForChain = @(rc.firstIncompleteExerciseIndex);
+    
+    _selectionIndex = 0;
+    
+    _showingFirstTargets = YES;
+    
+    _configureTargetsWhenViewAppears = YES;
     
     return self;
 }
 
 #pragma mark - Init Helper Methods
 
-- (void)configureRestorationProperties{
-    
-    self.restorationIdentifier = restorationID;
-    self.restorationClass = [TJBActiveRoutineGuidanceVC class];
-    
-}
+//- (void)configureRestorationProperties{
+//    
+//    self.restorationIdentifier = restorationID;
+//    self.restorationClass = [TJBActiveRoutineGuidanceVC class];
+//    
+//}
 
 #pragma mark - View Life Cycle
 
@@ -495,8 +506,6 @@ static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
         return YES;
         
     } else{
-        
-        _isLastExerciseOfRoutine = YES;
         
         return NO;
         
@@ -1320,76 +1329,76 @@ static NSString const *restViewKey = @"restView";
 
 #pragma mark - Restoration
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    [coder encodeObject: self.realizedChain.uniqueID
-                 forKey: realizedChainUniqueIDKey];
-    [coder encodeInt: _selectionIndex
-              forKey: selectionIndexKey];
-    [coder encodeBool: _isLastExerciseOfRoutine
-               forKey: isLastExerciseOfRoutineKey];
-    [coder encodeBool: _showingFirstTargets
-               forKey: showingFirstTargetsKey];
-    [coder encodeObject: self.activeRoundIndexForTargets
-                 forKey: activeRoundIndexForTargetsKey];
-    [coder encodeObject: self.activeExerciseIndexForTargets
-                 forKey: activeRoundIndexForTargetsKey];
-    [coder encodeObject: self.activeRoundIndexForChain
-                 forKey: activeRoundIndexForChainKey];
-    [coder encodeObject: self.activeExerciseIndexForChain
-                 forKey: activeExerciseIndexForChainKey];
-    [coder encodeObject: self.activeLiftTargets
-                 forKey: activeLiftTargetsKey];
-    [coder encodeObject: self.activePreviousMarks
-                 forKey: activePreviousMarksKey];
-    [coder encodeObject: self.futureRestTarget
-                 forKey: futureRestTargetKey];
-    [coder encodeObject: self.currentRestTarget
-                 forKey: currentRestTargetKey];
-    [coder encodeObject: self.cancelRestorationExerciseIndex
-                 forKey: cancelRestorationExerciseIndexKey];
-    [coder encodeObject: self.cancelRestorationRoundIndex
-                 forKey: cancelRestorationRoundIndexKey];
-    [coder encodeObject: self.selectedAlertTiming
-                 forKey: selectedAlertTimingKey];
-    [coder encodeObject: self.dateForTimerRecovery
-                 forKey: dateForTimerRecoveryKey];
-    
-}
-
-
-
-+(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-    
-    
-    NSString *idString = [coder decodeObjectForKey: realizedChainUniqueIDKey];
-    TJBRealizedChain *rc = [[CoreDataController singleton] realizedChainWithUniqueID: idString];
-    
-    TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initWithPartiallyCompletedRealizedChain: rc];
-
-    return vc;
-    
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-    
-    _selectionIndex = [coder decodeIntForKey: selectionIndexKey];
-    _isLastExerciseOfRoutine = [coder decodeBoolForKey: isLastExerciseOfRoutineKey];
-    _showingFirstTargets = [coder decodeBoolForKey: showingFirstTargetsKey];
-    self.activeRoundIndexForTargets = [coder decodeObjectForKey: activeRoundIndexForTargetsKey];
-    self.activeExerciseIndexForTargets = [coder decodeObjectForKey: activeExerciseIndexForTargetsKey];
-    self.activeRoundIndexForChain = [coder decodeObjectForKey: activeRoundIndexForChainKey];
-    self.activeExerciseIndexForChain = [coder decodeObjectForKey: activeExerciseIndexForChainKey];
-    self.activeLiftTargets = [coder decodeObjectForKey: activeLiftTargetsKey];
-    self.activePreviousMarks = [coder decodeObjectForKey: activePreviousMarksKey];
-    self.futureRestTarget = [coder decodeObjectForKey: futureRestTargetKey];
-    self.currentRestTarget = [coder decodeObjectForKey: currentRestTargetKey];
-    self.cancelRestorationExerciseIndex = [coder decodeObjectForKey: cancelRestorationExerciseIndexKey];
-    self.cancelRestorationRoundIndex = [coder decodeObjectForKey: cancelRestorationRoundIndexKey];
-    self.selectedAlertTiming = [coder decodeObjectForKey: selectedAlertTimingKey];
-    self.dateForTimerRecovery = [coder decodeObjectForKey: dateForTimerRecoveryKey];
-    
-}
+//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    [coder encodeObject: self.realizedChain.uniqueID
+//                 forKey: realizedChainUniqueIDKey];
+//    [coder encodeInt: _selectionIndex
+//              forKey: selectionIndexKey];
+//    [coder encodeBool: _isLastExerciseOfRoutine
+//               forKey: isLastExerciseOfRoutineKey];
+//    [coder encodeBool: _showingFirstTargets
+//               forKey: showingFirstTargetsKey];
+//    [coder encodeObject: self.activeRoundIndexForTargets
+//                 forKey: activeRoundIndexForTargetsKey];
+//    [coder encodeObject: self.activeExerciseIndexForTargets
+//                 forKey: activeRoundIndexForTargetsKey];
+//    [coder encodeObject: self.activeRoundIndexForChain
+//                 forKey: activeRoundIndexForChainKey];
+//    [coder encodeObject: self.activeExerciseIndexForChain
+//                 forKey: activeExerciseIndexForChainKey];
+//    [coder encodeObject: self.activeLiftTargets
+//                 forKey: activeLiftTargetsKey];
+//    [coder encodeObject: self.activePreviousMarks
+//                 forKey: activePreviousMarksKey];
+//    [coder encodeObject: self.futureRestTarget
+//                 forKey: futureRestTargetKey];
+//    [coder encodeObject: self.currentRestTarget
+//                 forKey: currentRestTargetKey];
+//    [coder encodeObject: self.cancelRestorationExerciseIndex
+//                 forKey: cancelRestorationExerciseIndexKey];
+//    [coder encodeObject: self.cancelRestorationRoundIndex
+//                 forKey: cancelRestorationRoundIndexKey];
+//    [coder encodeObject: self.selectedAlertTiming
+//                 forKey: selectedAlertTimingKey];
+//    [coder encodeObject: self.dateForTimerRecovery
+//                 forKey: dateForTimerRecoveryKey];
+//    
+//}
+//
+//
+//
+//+(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+//    
+//    
+//    NSString *idString = [coder decodeObjectForKey: realizedChainUniqueIDKey];
+//    TJBRealizedChain *rc = [[CoreDataController singleton] realizedChainWithUniqueID: idString];
+//    
+//    TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initWithPartiallyCompletedRealizedChain: rc];
+//
+//    return vc;
+//    
+//}
+//
+//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+//    
+//    _selectionIndex = [coder decodeIntForKey: selectionIndexKey];
+//    _isLastExerciseOfRoutine = [coder decodeBoolForKey: isLastExerciseOfRoutineKey];
+//    _showingFirstTargets = [coder decodeBoolForKey: showingFirstTargetsKey];
+//    self.activeRoundIndexForTargets = [coder decodeObjectForKey: activeRoundIndexForTargetsKey];
+//    self.activeExerciseIndexForTargets = [coder decodeObjectForKey: activeExerciseIndexForTargetsKey];
+//    self.activeRoundIndexForChain = [coder decodeObjectForKey: activeRoundIndexForChainKey];
+//    self.activeExerciseIndexForChain = [coder decodeObjectForKey: activeExerciseIndexForChainKey];
+//    self.activeLiftTargets = [coder decodeObjectForKey: activeLiftTargetsKey];
+//    self.activePreviousMarks = [coder decodeObjectForKey: activePreviousMarksKey];
+//    self.futureRestTarget = [coder decodeObjectForKey: futureRestTargetKey];
+//    self.currentRestTarget = [coder decodeObjectForKey: currentRestTargetKey];
+//    self.cancelRestorationExerciseIndex = [coder decodeObjectForKey: cancelRestorationExerciseIndexKey];
+//    self.cancelRestorationRoundIndex = [coder decodeObjectForKey: cancelRestorationRoundIndexKey];
+//    self.selectedAlertTiming = [coder decodeObjectForKey: selectedAlertTimingKey];
+//    self.dateForTimerRecovery = [coder decodeObjectForKey: dateForTimerRecoveryKey];
+//    
+//}
 
 
 @end
