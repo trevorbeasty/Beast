@@ -12,7 +12,7 @@
 #import "TJBAestheticsController.h"  // aesthetics
 #import "TJBRealizedChainCell.h" // tableview cell
 
-@interface TJBActiveGuidanceTargetsScene () <UITableViewDelegate, UITableViewDataSource>
+@interface TJBActiveGuidanceTargetsScene () <UITableViewDelegate, UITableViewDataSource, UIViewControllerRestoration>
 
 // IBOutlet
 
@@ -37,7 +37,10 @@
 
 static NSString * const cellReuseID = @"TJBRealizedChainCell";
 
+// restoration
 
+static NSString * const restorationID = @"TJBActiveGuidanceTargetsScene";
+static NSString * const chainTemplateIDStringKey = @"chainTemplateIDString";
 
 
 
@@ -59,6 +62,8 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
         
         [self configureTabBarAttributes];
         
+        [self configureRestorationProperties];
+        
     }
    
     return self;
@@ -67,6 +72,14 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 
 
 #pragma mark - Init Helper Methods
+
+
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBActiveGuidanceTargetsScene class];
+    
+}
 
 - (void)configureTabBarAttributes{
     
@@ -215,9 +228,26 @@ static NSString * const cellReuseID = @"TJBRealizedChainCell";
 
 
 
+#pragma mark - Restoration
 
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject: self.chainTemplate.uniqueID
+                 forKey: chainTemplateIDStringKey];
+    
+}
 
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    
+    NSString *ctID = [coder decodeObjectForKey: chainTemplateIDStringKey];
+    TJBChainTemplate *ct = [[CoreDataController singleton] chainTemplateWithUniqueID: ctID];
+    
+    return [[TJBActiveGuidanceTargetsScene alloc] initWithChainTemplate: ct];
+    
+    
+}
 
 
 

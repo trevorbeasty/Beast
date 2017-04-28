@@ -13,7 +13,7 @@
 
 #import "TJBCompleteChainHistoryVC.h" // child VC
 
-@interface TJBActiveGuidanceRoutineHistory ()
+@interface TJBActiveGuidanceRoutineHistory () <UIViewControllerRestoration>
 
 {
     
@@ -42,6 +42,17 @@
 
 @end
 
+
+
+#pragma mark - Constants
+
+static NSString * const chainTemplateIDKey = @"ChainTemplateID";
+static NSString * const restorationID = @"TJBActiveGuidanceRoutineHistory";
+
+
+
+
+
 @implementation TJBActiveGuidanceRoutineHistory
 
 
@@ -61,6 +72,8 @@
         
         [self configureTabBarAttributes];
         
+        [self configureRestorationProperties];
+        
     }
     
     
@@ -70,6 +83,13 @@
 
 
 #pragma mark - Init Helper Methods
+
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBActiveGuidanceRoutineHistory class];
+    
+}
 
 
 - (void)configureTabBarAttributes{
@@ -263,6 +283,27 @@
 - (void)removeActivityIndicator{
     
     [self.activeAIView stopAnimating];
+    
+}
+
+
+#pragma mark - Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [coder encodeObject: self.chainTemplate.uniqueID
+                 forKey: chainTemplateIDKey];
+
+    
+}
+
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
+    NSString *chainTemplateUniqueID = [coder decodeObjectForKey: chainTemplateIDKey];
+    TJBChainTemplate *ct = [[CoreDataController singleton] chainTemplateWithUniqueID: chainTemplateUniqueID];
+    
+    return [[TJBActiveGuidanceRoutineHistory alloc] initWithChainTemplate: ct];
     
 }
 
