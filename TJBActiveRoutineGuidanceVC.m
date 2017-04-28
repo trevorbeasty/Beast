@@ -56,12 +56,13 @@
     // state
     
     int _selectionIndex;
-    BOOL _advancedControlsActive;
     
     // used for content view creation / configuration
     
     BOOL _isLastExerciseOfRoutine;
     BOOL _showingFirstTargets;
+    
+    BOOL _configureTargetsWhenViewAppears;
     
 }
 
@@ -118,10 +119,6 @@
 
 
 
-
-
-
-
 #pragma mark - Constants
 
 // new content display timing
@@ -147,7 +144,22 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
 // restoration
 
 static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
-static NSString * const realizedChainIDKey = @"RealizedChainID";
+static NSString * const selectionIndexKey = @"selectionIndex";
+static NSString * const isLastExerciseOfRoutineKey = @"isLastExerciseOfRoutine";
+static NSString * const showingFirstTargetsKey = @"showingFirstTargets";
+static NSString * const realizedChainUniqueIDKey = @"realizedChainUniqueID";
+static NSString * const activeRoundIndexForTargetsKey = @"activeRoundIndexForTargets";
+static NSString * const activeExerciseIndexForTargetsKey = @"activeExerciseIndexForTargets";
+static NSString * const activeRoundIndexForChainKey = @"activeRoundIndexForChain";
+static NSString * const activeExerciseIndexForChainKey = @"activeExerciseIndexForChain";
+static NSString * const activeLiftTargetsKey = @"activeLiftTargets";
+static NSString * const activePreviousMarksKey = @"activePreviousMarks";
+static NSString * const futureRestTargetKey = @"futureRestTarget";
+static NSString * const currentRestTargetKey = @"currentRestTarget";
+static NSString * const cancelRestorationExerciseIndexKey = @"cancelRestorationExerciseIndex";
+static NSString * const cancelRestorationRoundIndexKey = @"cancelRestorationRoundIndex";
+static NSString * const selectedAlertTimingKey = @"selectedAlertTiming";
+static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
 
 
 
@@ -175,6 +187,8 @@ static NSString * const realizedChainIDKey = @"RealizedChainID";
     
     _isLastExerciseOfRoutine = NO;
     _showingFirstTargets = YES;
+    
+    _configureTargetsWhenViewAppears = YES;
     
     self.realizedChain = [[CoreDataController singleton] createAndSaveSkeletonRealizedChainForChainTemplate: chainTemplate];
     
@@ -213,11 +227,21 @@ static NSString * const realizedChainIDKey = @"RealizedChainID";
     
     [self configureViewAesthetics];
     
-    [self configureImmediateTargets];
-    
     [self configureTimer];
     
     [self configureInitialDisplay];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (_configureTargetsWhenViewAppears){
+        
+        [self configureImmediateTargets];
+        
+        _configureTargetsWhenViewAppears = NO;
+        
+    }
     
 }
 
@@ -1299,29 +1323,80 @@ static NSString const *restViewKey = @"restView";
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
     
     [coder encodeObject: self.realizedChain.uniqueID
-                 forKey: realizedChainIDKey];
+                 forKey: realizedChainUniqueIDKey];
+    [coder encodeInt: _selectionIndex
+              forKey: selectionIndexKey];
+    [coder encodeBool: _isLastExerciseOfRoutine
+               forKey: isLastExerciseOfRoutineKey];
+    [coder encodeBool: _showingFirstTargets
+               forKey: showingFirstTargetsKey];
+    [coder encodeObject: self.activeRoundIndexForTargets
+                 forKey: activeRoundIndexForTargetsKey];
+    [coder encodeObject: self.activeExerciseIndexForTargets
+                 forKey: activeRoundIndexForTargetsKey];
+    [coder encodeObject: self.activeRoundIndexForChain
+                 forKey: activeRoundIndexForChainKey];
+    [coder encodeObject: self.activeExerciseIndexForChain
+                 forKey: activeExerciseIndexForChainKey];
+    [coder encodeObject: self.activeLiftTargets
+                 forKey: activeLiftTargetsKey];
+    [coder encodeObject: self.activePreviousMarks
+                 forKey: activePreviousMarksKey];
+    [coder encodeObject: self.futureRestTarget
+                 forKey: futureRestTargetKey];
+    [coder encodeObject: self.currentRestTarget
+                 forKey: currentRestTargetKey];
+    [coder encodeObject: self.cancelRestorationExerciseIndex
+                 forKey: cancelRestorationExerciseIndexKey];
+    [coder encodeObject: self.cancelRestorationRoundIndex
+                 forKey: cancelRestorationRoundIndexKey];
+    [coder encodeObject: self.selectedAlertTiming
+                 forKey: selectedAlertTimingKey];
+    [coder encodeObject: self.dateForTimerRecovery
+                 forKey: dateForTimerRecoveryKey];
     
 }
+
+
 
 +(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
     
     
-    NSString *realizedChainUniqueID = [coder decodeObjectForKey: realizedChainIDKey];
-    TJBRealizedChain *rc = [[CoreDataController singleton] realizedChainWithUniqueID: realizedChainUniqueID];
+    NSString *idString = [coder decodeObjectForKey: realizedChainUniqueIDKey];
+    TJBRealizedChain *rc = [[CoreDataController singleton] realizedChainWithUniqueID: idString];
     
     TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initWithPartiallyCompletedRealizedChain: rc];
-    
-    
-    
-    
-    
-    
-    
+
     return vc;
     
 }
 
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    
+    
+    
+    
+}
 
+
+//static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
+//static NSString * const selectionIndexKey = @"selectionIndex";
+//static NSString * const isLastExerciseOfRoutineKey = @"isLastExerciseOfRoutine";
+//static NSString * const showingFirstTargetsKey = @"showingFirstTargets";
+//static NSString * const realizedChainUniqueIDKey = @"realizedChainUniqueID";
+//static NSString * const activeRoundIndexForTargetsKey = @"activeRoundIndexForTargets";
+//static NSString * const activeExerciseIndexForTargetsKey = @"activeExerciseIndexForTargets";
+//static NSString * const activeRoundIndexForChainKey = @"activeRoundIndexForChain";
+//static NSString * const activeExerciseIndexForChainKey = @"activeExerciseIndexForChain";
+//static NSString * const activeLiftTargetsKey = @"activeLiftTargets";
+//static NSString * const activePreviousMarksKey = @"activePreviousMarks";
+//static NSString * const futureRestTargetKey = @"futureRestTarget";
+//static NSString * const currentRestTargetKey = @"currentRestTarget";
+//static NSString * const cancelRestorationExerciseIndexKey = @"cancelRestorationExerciseIndex";
+//static NSString * const cancelRestorationRoundIndexKey = @"cancelRestorationRoundIndex";
+//static NSString * const selectedAlertTimingKey = @"selectedAlertTiming";
+//static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
 
 @end
 
