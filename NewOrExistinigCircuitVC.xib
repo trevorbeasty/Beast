@@ -48,31 +48,31 @@
                     <rect key="frame" x="0.0" y="152.5" width="375" height="514.5"/>
                     <subviews>
                         <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5hF-RU-JdV">
-                            <rect key="frame" x="8" y="462" width="210" height="44"/>
+                            <rect key="frame" x="8" y="410.5" width="359" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="MWT-SB-KOu"/>
                             </constraints>
                             <items>
                                 <barButtonItem width="4" style="plain" systemItem="fixedSpace" id="nYV-8D-kYN"/>
-                                <barButtonItem image="armFlexBlue25" id="YoN-2F-rTq">
+                                <barButtonItem image="liftBlue30PDF" id="YoN-2F-rTq">
                                     <connections>
                                         <action selector="didPressLaunchButton:" destination="-1" id="WMD-fg-r6M"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="saZ-ur-iUm"/>
-                                <barButtonItem image="colosseumBlue25" id="kbO-B9-c26">
+                                <barButtonItem image="historyBlue30PDF" id="kbO-B9-c26">
                                     <connections>
                                         <action selector="didPressHistoryButton:" destination="-1" id="Hrl-CO-4De"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="YH3-dQ-M61"/>
-                                <barButtonItem image="garbageBlue25" id="bkd-iD-1mf">
+                                <barButtonItem image="garbageBlue30PDF" id="bkd-iD-1mf">
                                     <connections>
                                         <action selector="didPressDeleteButton:" destination="-1" id="kTx-ra-Z3o"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="l62-Kq-l2Z"/>
-                                <barButtonItem image="new" id="X5h-d9-jX3">
+                                <barButtonItem image="addBlue30PDF" id="X5h-d9-jX3">
                                     <connections>
                                         <action selector="didPressNewRoutine:" destination="-1" id="Wgl-pA-hQB"/>
                                     </connections>
@@ -81,43 +81,44 @@
                             </items>
                         </toolbar>
                         <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="tyu-rD-VFA">
-                            <rect key="frame" x="226" y="462.5" width="141" height="45"/>
+                            <rect key="frame" x="108" y="462.5" width="259" height="45"/>
                             <segments>
                                 <segment title="Created"/>
-                                <segment title="Executed"/>
+                                <segment title="Last Executed"/>
                             </segments>
                         </segmentedControl>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sort by date" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fhf-o8-MPj">
-                            <rect key="frame" x="226" y="439.5" width="141" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tzj-yM-dAu" userLabel="arrowControl">
-                            <rect key="frame" x="8" y="402" width="50" height="44"/>
+                            <rect key="frame" x="8" y="350.5" width="50" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="c58-q3-j37"/>
                                 <constraint firstAttribute="width" constant="50" id="d8w-Jv-Q6g"/>
                             </constraints>
-                            <state key="normal" image="doubleDownArrowBlue32"/>
+                            <state key="normal" image="downArrowBlue30PDF"/>
                             <connections>
                                 <action selector="didPressArrowControlButton:" destination="-1" eventType="touchUpInside" id="EOw-ha-NmI"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sort by date" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fhf-o8-MPj">
+                            <rect key="frame" x="8" y="462.5" width="92" height="43.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="5hF-RU-JdV" firstAttribute="top" secondItem="tzj-yM-dAu" secondAttribute="bottom" constant="16" id="2L0-1c-Ut3"/>
-                        <constraint firstItem="tyu-rD-VFA" firstAttribute="bottom" secondItem="5hF-RU-JdV" secondAttribute="bottom" id="3Gh-QF-nUN"/>
                         <constraint firstAttribute="trailing" secondItem="tyu-rD-VFA" secondAttribute="trailing" constant="8" id="5Ti-2N-VLc"/>
-                        <constraint firstItem="tyu-rD-VFA" firstAttribute="leading" secondItem="Fhf-o8-MPj" secondAttribute="leading" id="5kw-CD-LAU"/>
-                        <constraint firstAttribute="bottom" secondItem="5hF-RU-JdV" secondAttribute="bottom" constant="8" id="En6-Vd-yyB"/>
-                        <constraint firstItem="tyu-rD-VFA" firstAttribute="top" secondItem="Fhf-o8-MPj" secondAttribute="bottom" constant="2" id="IQ1-dJ-BmL"/>
-                        <constraint firstItem="tzj-yM-dAu" firstAttribute="leading" secondItem="cna-Rm-Pq1" secondAttribute="leading" constant="8" id="J1o-xG-JF3"/>
-                        <constraint firstItem="tyu-rD-VFA" firstAttribute="top" secondItem="5hF-RU-JdV" secondAttribute="top" id="UoP-yA-wM7"/>
-                        <constraint firstItem="tyu-rD-VFA" firstAttribute="trailing" secondItem="Fhf-o8-MPj" secondAttribute="trailing" id="fHx-vY-JfF"/>
+                        <constraint firstItem="Fhf-o8-MPj" firstAttribute="leading" secondItem="cna-Rm-Pq1" secondAttribute="leading" constant="8" id="7SW-Zr-p59"/>
+                        <constraint firstAttribute="bottom" secondItem="5hF-RU-JdV" secondAttribute="bottom" constant="60" id="En6-Vd-yyB"/>
+                        <constraint firstItem="tyu-rD-VFA" firstAttribute="bottom" secondItem="Fhf-o8-MPj" secondAttribute="bottom" id="JDU-qN-GQL"/>
+                        <constraint firstItem="tyu-rD-VFA" firstAttribute="height" secondItem="5hF-RU-JdV" secondAttribute="height" id="Jpm-BY-Pem"/>
+                        <constraint firstItem="tyu-rD-VFA" firstAttribute="leading" secondItem="Fhf-o8-MPj" secondAttribute="trailing" constant="8" id="Mop-B4-TsN"/>
+                        <constraint firstAttribute="bottom" secondItem="tyu-rD-VFA" secondAttribute="bottom" constant="8" id="X3r-rM-YLk"/>
                         <constraint firstItem="5hF-RU-JdV" firstAttribute="leading" secondItem="cna-Rm-Pq1" secondAttribute="leading" constant="8" id="kH8-xu-CND"/>
-                        <constraint firstItem="tyu-rD-VFA" firstAttribute="leading" secondItem="5hF-RU-JdV" secondAttribute="trailing" constant="8" id="yhB-Ou-93t"/>
+                        <constraint firstAttribute="trailing" secondItem="5hF-RU-JdV" secondAttribute="trailing" constant="8" id="pcj-d8-iH0"/>
+                        <constraint firstItem="tyu-rD-VFA" firstAttribute="top" secondItem="Fhf-o8-MPj" secondAttribute="top" id="sV8-L3-7lR"/>
+                        <constraint firstItem="5hF-RU-JdV" firstAttribute="leading" secondItem="tzj-yM-dAu" secondAttribute="leading" id="yg3-cW-biX"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jJx-Ep-SFb" userLabel="topTitleBar">
@@ -134,7 +135,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="gFI-ON-554"/>
                             </constraints>
-                            <state key="normal" image="titleBarHomeButton"/>
+                            <state key="normal" image="homeBlue25PDF"/>
                             <connections>
                                 <action selector="didPressBackButton:" destination="-1" eventType="touchUpInside" id="xPy-Ra-hUc"/>
                             </connections>
@@ -144,14 +145,14 @@
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="Q7h-GX-c2x"/>
                             </constraints>
-                            <state key="normal" image="rightDoubleArrow"/>
+                            <state key="normal" image="rightArrowBlue25PDF"/>
                             <connections>
                                 <action selector="didPressRightArrow:" destination="-1" eventType="touchUpInside" id="Hsz-oo-Zhx"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tZY-W0-fYd">
                             <rect key="frame" x="68" y="0.0" width="60" height="50"/>
-                            <state key="normal" image="leftDoubleArrow"/>
+                            <state key="normal" image="leftArrowBlue25PDF"/>
                             <connections>
                                 <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="46V-Zq-up9"/>
                             </connections>
@@ -225,13 +226,13 @@
         </view>
     </objects>
     <resources>
-        <image name="armFlexBlue25" width="25" height="25"/>
-        <image name="colosseumBlue25" width="25" height="25"/>
-        <image name="doubleDownArrowBlue32" width="32" height="32"/>
-        <image name="garbageBlue25" width="25" height="25"/>
-        <image name="leftDoubleArrow" width="25" height="25"/>
-        <image name="new" width="25" height="25"/>
-        <image name="rightDoubleArrow" width="25" height="25"/>
-        <image name="titleBarHomeButton" width="25" height="25"/>
+        <image name="addBlue30PDF" width="30" height="30"/>
+        <image name="downArrowBlue30PDF" width="30" height="30"/>
+        <image name="garbageBlue30PDF" width="30" height="30"/>
+        <image name="historyBlue30PDF" width="30" height="30"/>
+        <image name="homeBlue25PDF" width="25" height="25"/>
+        <image name="leftArrowBlue25PDF" width="25" height="25"/>
+        <image name="liftBlue30PDF" width="30" height="30"/>
+        <image name="rightArrowBlue25PDF" width="25" height="25"/>
     </resources>
 </document>

@@ -505,22 +505,17 @@ typedef enum{
         
     }
     
-//    BOOL isRestLabelForRealizedSetCollection = dynamicLabelType == TJBRestType && _cellType == RealizedSetCollectionCell;
-    
     if (isBottomRow == NO){
         
         [self addHorizontalBorderBeneath: label
                                thickness: .5];
         
     }
-
-    
-    // for realized sets and realized set grouping, the rest label is blank
     
     if (dynamicLabelType == TJBRestType && _cellType == RealizedSetCollectionCell){
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        df.dateFormat = @"h:mm a";
+        df.dateFormat = @"h:mm";
         
         TJBRealizedSet *rs;
         
@@ -636,14 +631,7 @@ typedef enum{
     
     [self.contentView layoutSubviews]; // must be called, otherwise the dimensions of the xib file and not the 'dimensions with layout applied' will be used
     
-    NSMutableArray *verticalDividerLabels = [[NSMutableArray alloc] init];
-    [verticalDividerLabels addObjectsFromArray: @[self.columnHeader1Label, self.columnHeader2Label]];
-    
-    // for realized set collections, rest column header is hidden, and thus, there should be one less vertical line drawn
-    
-    if (_cellType != RealizedSetCollectionCell){
-        [verticalDividerLabels addObject: self.columnHeader3Label];
-    }
+    NSArray *verticalDividerLabels = @[self.columnHeader1Label, self.columnHeader2Label, self.columnHeader3Label];
     
     for (UILabel *lab in verticalDividerLabels){
         
@@ -667,11 +655,6 @@ typedef enum{
     
 }
 
-- (void)drawDetailedLines{
-    
-    
-    
-}
 
 - (void)configureExerciseLabel:(UILabel *)label{
     
@@ -793,7 +776,7 @@ typedef enum{
     } else{
         
         self.columnHeader1Label.text = @"set #";
-        self.columnHeader4Label.hidden = YES;
+        self.columnHeader4Label.text = @"submit\ntime";
         
     }
     
