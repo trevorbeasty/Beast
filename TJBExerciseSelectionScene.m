@@ -16,7 +16,7 @@
 #import "TJBAestheticsController.h" // aesthetics
 #import "TJBAssortedUtilities.h" // utilities
 
-@interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate>
+@interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
 {
     
@@ -67,9 +67,6 @@
 
 @property (strong) UISearchBar *searchBar; // programmatically created search bar
 
-//@property (strong) UIView *exerciseSearchFieldContainer; // programmatically created view with embedded text field; used as search bar
-//@property (strong) UITextField *exerciseSearchTextField; // created programmatically
-
 
 // IBAction
 
@@ -95,12 +92,6 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 
 static NSTimeInterval const toolbarToBottomPositionAnimationTime = .15;
-
-
-// search bar
-
-static CGFloat const searchBarHorizontalInset = 8;
-static CGFloat const searchBarVerticalInset = 4;
 
 // bottom controls layour
 
@@ -765,18 +756,10 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     searchBar.barStyle = UISearchBarStyleDefault;
     searchBar.barTintColor = [UIColor grayColor];
     searchBar.searchBarStyle = UISearchBarStyleDefault;
-    searchBar.tintColor = [UIColor lightGrayColor];
-
-    
-}
-
-- (void)searchTextFieldValueDidChange:(NSNotification *)notification{
-    
-    UITextField *tf = notification.object;
-    self.exerciseSearchString = tf.text;
-    
-    [self deriveExerciseContentGivenState];
-    [self.exerciseTableView reloadData];
+    searchBar.tintColor = [UIColor whiteColor];
+    searchBar.showsCancelButton = YES;
+    searchBar.translucent = NO;
+    searchBar.opaque = YES;
     
 }
 
@@ -784,9 +767,27 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 #pragma mark - UISearchBarDelegate
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    
+    self.exerciseSearchString = searchBar.text;
+    
+    [self deriveExerciseContentGivenState];
+    [self.exerciseTableView reloadData];
+    
+    
+    
+}
 
-
-
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar{
+    
+    // execute same actions as would be executed if the list button were pressed
+    
+    [self didPressSearch: nil];
+    
+    [self.searchBar resignFirstResponder];
+    
+    
+}
 
 #pragma mark - State Control
 
@@ -1282,6 +1283,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                          CGRect currentTVFrame = self.exerciseTableView.frame;
                          self.exerciseTableView.frame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y, currentTVFrame.size.width, currentTVFrame.size.height + verticalTranslation);
                          
+                         
+                         
                
                          
  
@@ -1302,6 +1305,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                          [self updateToolbarBarButtonItemsAccordingGivenState];
                          
                          [self.searchBar becomeFirstResponder];
+                         
+                         self.columnTitleLabelsContainer.hidden = YES;
   
                          
                      }];
@@ -1309,6 +1314,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 }
 
 - (void)animateToCategoryBasedBrowseState{
+    
+    self.columnTitleLabelsContainer.hidden = NO;
     
     // bottom controls
     
@@ -1361,16 +1368,6 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     
 }
 
-
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
-    [textField resignFirstResponder];
-    
-    return YES;
-    
-}
 
 
 @end

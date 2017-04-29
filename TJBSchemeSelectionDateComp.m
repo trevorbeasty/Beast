@@ -224,15 +224,11 @@
 
 - (void)configureAsEnabled{
     
-//    self.monthLabel.layer.opacity = 1.0;
-    
     _isEnabled = YES;
     
 }
 
 - (void)configureAsDisabled{
-    
-//    self.monthLabel.layer.opacity = .4;
     
     _isEnabled = NO;
     

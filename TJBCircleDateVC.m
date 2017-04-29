@@ -184,7 +184,7 @@
     
     if (_isCircled){
         
-        [self drawCircleWithOpacity: .4];
+        [self drawCircleWithOpacity: 1];
         
     }
     
@@ -208,7 +208,7 @@
     
     if (_isCircled){
         
-        [self drawCircleWithOpacity: .4];
+        [self drawCircleWithOpacity: 1];
         
     }
     
