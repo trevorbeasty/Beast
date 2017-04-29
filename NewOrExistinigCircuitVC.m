@@ -1879,11 +1879,18 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
         
     if (self.selectedChainTemplate){
         
+        UIViewController *homeVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+        
+ 
+        
         TJBActiveGuidanceTBC *activeGuidanceTBC = [[TJBActiveGuidanceTBC alloc] initWithChainTemplate: self.selectedChainTemplate];
         
-        [self presentViewController: activeGuidanceTBC
-                           animated: YES
-                         completion: nil];
+        [homeVC dismissViewControllerAnimated: YES
+                                   completion: nil];
+        
+        [homeVC presentViewController: activeGuidanceTBC
+                             animated: YES
+                           completion: nil];
         
     } else{
         

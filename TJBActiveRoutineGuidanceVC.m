@@ -49,7 +49,7 @@
 #import "TJBPreviousMarksDictionary.h" // previous marks
 #import "TJBActiveLiftTargetsDictionary.h" // active lift targets
 
-@interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver>
+@interface TJBActiveRoutineGuidanceVC () <TJBStopwatchObserver, UIViewControllerRestoration>
 
 {
     
@@ -59,10 +59,10 @@
     
     // used for content view creation / configuration
     
-//    BOOL _isLastExerciseOfRoutine;
     BOOL _showingFirstTargets;
     
     BOOL _configureTargetsWhenViewAppears;
+    BOOL _useStopwatchRecoveryValues;
     
 }
 
@@ -92,7 +92,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary *constraintMapping;
 
-//// state
+// state
 
 @property (nonatomic, strong) NSNumber *activeRoundIndexForTargets;
 @property (nonatomic, strong) NSNumber *activeExerciseIndexForTargets;
@@ -108,7 +108,8 @@
 @property (nonatomic, strong) NSNumber *cancelRestorationExerciseIndex;
 @property (nonatomic, strong) NSNumber *cancelRestorationRoundIndex;
 
-@property (nonatomic, strong) NSNumber *selectedAlertTiming;
+@property (strong) NSNumber *stopwatchLastUpdateTimerValue; // stopwatch recovery for state restoration
+@property (strong) NSDate *stopwatchLastUpdateDate; // stopwatch recovery for state restoration
 
 
 // stopwatch state
@@ -143,24 +144,14 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
 
 // restoration
 
-//static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
-//static NSString * const selectionIndexKey = @"selectionIndex";
-//static NSString * const isLastExerciseOfRoutineKey = @"isLastExerciseOfRoutine";
-//static NSString * const showingFirstTargetsKey = @"showingFirstTargets";
-//static NSString * const realizedChainUniqueIDKey = @"realizedChainUniqueID";
-//static NSString * const activeRoundIndexForTargetsKey = @"activeRoundIndexForTargets";
-//static NSString * const activeExerciseIndexForTargetsKey = @"activeExerciseIndexForTargets";
-//static NSString * const activeRoundIndexForChainKey = @"activeRoundIndexForChain";
-//static NSString * const activeExerciseIndexForChainKey = @"activeExerciseIndexForChain";
-//static NSString * const activeLiftTargetsKey = @"activeLiftTargets";
-//static NSString * const activePreviousMarksKey = @"activePreviousMarks";
-//static NSString * const futureRestTargetKey = @"futureRestTarget";
-//static NSString * const currentRestTargetKey = @"currentRestTarget";
-//static NSString * const cancelRestorationExerciseIndexKey = @"cancelRestorationExerciseIndex";
-//static NSString * const cancelRestorationRoundIndexKey = @"cancelRestorationRoundIndex";
-//static NSString * const selectedAlertTimingKey = @"selectedAlertTiming";
-//static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
-
+static NSString * const restorationID = @"TJBActiveRoutineGuidanceVC";
+static NSString * const realizedChainUniqueIDKey = @"realizedChainUniqueID";
+static NSString * const futureRestTargetKey = @"futureRestTarget";
+static NSString * const currentRestTargetKey = @"currentRestTarget";
+static NSString * const selectedAlertTimingKey = @"selectedAlertTiming";
+static NSString * const dateForTimerRecoveryKey = @"dateForTimerRecovery";
+static NSString * const stopwatchRecoveryTimerValueKey = @"stopwatchRecoveryTimerValue";
+static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpdateDate";
 
 
 @implementation TJBActiveRoutineGuidanceVC
@@ -171,7 +162,8 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
     self = [super init];
     
-//    [self configureRestorationProperties];
+    [self configureRestorationProperties];
+    [self configureTimerForFreshChain];
     
     self.chainTemplate = chainTemplate;
     
@@ -188,6 +180,7 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     _showingFirstTargets = YES;
     
     _configureTargetsWhenViewAppears = YES;
+    _useStopwatchRecoveryValues = NO;
     
     self.realizedChain = [[CoreDataController singleton] createAndSaveSkeletonRealizedChainForChainTemplate: chainTemplate];
     
@@ -195,11 +188,13 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
 }
 
-- (instancetype)initWithPartiallyCompletedRealizedChain:(TJBRealizedChain *)rc{
+- (instancetype)initWithPartiallyCompletedRealizedChain:(TJBRealizedChain *)rc futureRestTarget:(NSNumber *)futureRestTarget{
     
     self = [super init];
     
-//    [self configureRestorationProperties];
+    [self configureRestorationProperties];
+    
+    self.futureRestTarget = futureRestTarget;
     
     self.realizedChain = rc;
     self.chainTemplate = rc.chainTemplate;
@@ -212,25 +207,29 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
     _selectionIndex = 0;
     
-    _showingFirstTargets = YES;
+    _showingFirstTargets = rc.firstIncompleteExerciseIndex == 0 && rc.firstIncompleteRoundIndex == 0;
     
     _configureTargetsWhenViewAppears = YES;
+    _useStopwatchRecoveryValues = YES;
     
     return self;
 }
 
 #pragma mark - Init Helper Methods
 
-//- (void)configureRestorationProperties{
-//    
-//    self.restorationIdentifier = restorationID;
-//    self.restorationClass = [TJBActiveRoutineGuidanceVC class];
-//    
-//}
+- (void)configureRestorationProperties{
+    
+    self.restorationIdentifier = restorationID;
+    self.restorationClass = [TJBActiveRoutineGuidanceVC class];
+    
+}
 
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
+    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
+                                           withTimerLabel: self.timerTitleLabel];
     
     [self.view layoutIfNeeded];
     
@@ -238,15 +237,13 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
     [self configureViewAesthetics];
     
-    [self configureTimer];
-    
     [self configureInitialDisplay];
     
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     
-    if (_configureTargetsWhenViewAppears){
+    if (_configureTargetsWhenViewAppears == YES){
         
         [self configureImmediateTargets];
         
@@ -265,16 +262,14 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
     
 }
 
-- (void)configureTimer{
-    
-    [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
-                                           withTimerLabel: self.timerTitleLabel];
+- (void)configureTimerForFreshChain{
     
     [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
                                          withForwardIncrementing: YES
                                                   lastUpdateDate: nil];
     
 }
+
 
 - (void)configureInitialDisplay{
     
@@ -325,6 +320,19 @@ static CGFloat const sequenceCompletedButtonHeight = 44;
         newView = [self scrollContentViewForTargetArrays_isInitialDisplay: NO];
         
     }
+    
+    // upon state restoration, the restoration timer values should be used in the first pass
+    
+    if (_useStopwatchRecoveryValues == YES){
+        
+        _useStopwatchRecoveryValues = NO;
+        
+    } else{
+        
+        [self configureStopwatchBasedOnCurrentTargets];
+        
+    }
+    
     
     [UIView transitionWithView: self.contentScrollView
                       duration: animationTimeUnit * 2.0
@@ -725,8 +733,6 @@ static NSString const *restViewKey = @"restView";
     heightSum += sequenceCompletedButtonHeight + componentToComponentSpacing * 2.0; // multiplied by two to give room beneath button at bottom
     
     // stopwatch config
-    
-    [self configureStopwatchBasedOnCurrentTargets];
     
     [self.view layoutSubviews];
     CGFloat width = self.contentScrollView.frame.size.width;
@@ -1173,58 +1179,6 @@ static NSString const *restViewKey = @"restView";
     
 }
 
-#pragma mark - <TJBStopwatchObserver>
-
-- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
-    
-    self.dateForTimerRecovery = date;
-    
-    // if an alert timing has been selected, compare the timer value to the alert value
-    
-    if (self.selectedAlertTiming){
-        
-        BOOL inRedZone = [self.selectedAlertTiming floatValue] >= timerValue;
-        
-        float alertValue = [self.selectedAlertTiming floatValue];
-        
-        if (inRedZone){
-            
-            self.timerTitleLabel.backgroundColor = [UIColor redColor];
-            
-        } else{
-            
-            self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
-            
-        }
-        
-        // because the stopwatch observer methods are sent every .1 seconds, the if structure must seek to match timer values over a span of .1 seconds.  Any less of a span might miss the vibration call, and any more may cause it to vibrate twice
-        
-        // the following is called three times so that the phone vibrates a total of three times.  The vibrate calls are spaced at equal intervals
-        
-        // this observer method is stilled called when an alternate scene is being presented
-        
-        if (timerValue <= alertValue + .25 && timerValue > alertValue + .15){
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        }
-        
-        if (timerValue <= alertValue - .15 && timerValue > alertValue - .25){
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        }
-        
-        if (timerValue <= alertValue - .55 && timerValue > alertValue - .65){
-            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        }
-        
-    }
-}
-
-- (void)secondaryTimerDidUpdateWithUpdateDate:(NSDate *)date{
-    
-    
-    
-}
-
-
 
 #pragma mark - New Content Animation
 
@@ -1289,8 +1243,6 @@ static NSString const *restViewKey = @"restView";
         
     };
     
-    NSLog(@"showing first targets: %d", _showingFirstTargets);
-    
     // the user will be allowed to change the rest target only before the routine truly begins.  Once it has begun, rest times are dictated as per user specifications
     // if there is no targeted rest, the user can
     // a value of -1 is held as the rest target when the user is not targeting rest, hence the logic below
@@ -1326,79 +1278,70 @@ static NSString const *restViewKey = @"restView";
 }
 
 
+#pragma mark - Stopwatch
+
+- (void)primaryTimerDidUpdateWithUpdateDate:(NSDate *)date timerValue:(float)timerValue{
+    
+    self.stopwatchLastUpdateTimerValue = @(timerValue);
+    self.stopwatchLastUpdateDate = date;
+    
+}
+
 
 #pragma mark - Restoration
 
-//- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    [coder encodeObject: self.realizedChain.uniqueID
-//                 forKey: realizedChainUniqueIDKey];
-//    [coder encodeInt: _selectionIndex
-//              forKey: selectionIndexKey];
-//    [coder encodeBool: _isLastExerciseOfRoutine
-//               forKey: isLastExerciseOfRoutineKey];
-//    [coder encodeBool: _showingFirstTargets
-//               forKey: showingFirstTargetsKey];
-//    [coder encodeObject: self.activeRoundIndexForTargets
-//                 forKey: activeRoundIndexForTargetsKey];
-//    [coder encodeObject: self.activeExerciseIndexForTargets
-//                 forKey: activeRoundIndexForTargetsKey];
-//    [coder encodeObject: self.activeRoundIndexForChain
-//                 forKey: activeRoundIndexForChainKey];
-//    [coder encodeObject: self.activeExerciseIndexForChain
-//                 forKey: activeExerciseIndexForChainKey];
-//    [coder encodeObject: self.activeLiftTargets
-//                 forKey: activeLiftTargetsKey];
-//    [coder encodeObject: self.activePreviousMarks
-//                 forKey: activePreviousMarksKey];
-//    [coder encodeObject: self.futureRestTarget
-//                 forKey: futureRestTargetKey];
-//    [coder encodeObject: self.currentRestTarget
-//                 forKey: currentRestTargetKey];
-//    [coder encodeObject: self.cancelRestorationExerciseIndex
-//                 forKey: cancelRestorationExerciseIndexKey];
-//    [coder encodeObject: self.cancelRestorationRoundIndex
-//                 forKey: cancelRestorationRoundIndexKey];
-//    [coder encodeObject: self.selectedAlertTiming
-//                 forKey: selectedAlertTimingKey];
-//    [coder encodeObject: self.dateForTimerRecovery
-//                 forKey: dateForTimerRecoveryKey];
-//    
-//}
-//
-//
-//
-//+(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
-//    
-//    
-//    NSString *idString = [coder decodeObjectForKey: realizedChainUniqueIDKey];
-//    TJBRealizedChain *rc = [[CoreDataController singleton] realizedChainWithUniqueID: idString];
-//    
-//    TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initWithPartiallyCompletedRealizedChain: rc];
-//
-//    return vc;
-//    
-//}
-//
-//- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
-//    
-//    _selectionIndex = [coder decodeIntForKey: selectionIndexKey];
-//    _isLastExerciseOfRoutine = [coder decodeBoolForKey: isLastExerciseOfRoutineKey];
-//    _showingFirstTargets = [coder decodeBoolForKey: showingFirstTargetsKey];
-//    self.activeRoundIndexForTargets = [coder decodeObjectForKey: activeRoundIndexForTargetsKey];
-//    self.activeExerciseIndexForTargets = [coder decodeObjectForKey: activeExerciseIndexForTargetsKey];
-//    self.activeRoundIndexForChain = [coder decodeObjectForKey: activeRoundIndexForChainKey];
-//    self.activeExerciseIndexForChain = [coder decodeObjectForKey: activeExerciseIndexForChainKey];
-//    self.activeLiftTargets = [coder decodeObjectForKey: activeLiftTargetsKey];
-//    self.activePreviousMarks = [coder decodeObjectForKey: activePreviousMarksKey];
-//    self.futureRestTarget = [coder decodeObjectForKey: futureRestTargetKey];
-//    self.currentRestTarget = [coder decodeObjectForKey: currentRestTargetKey];
-//    self.cancelRestorationExerciseIndex = [coder decodeObjectForKey: cancelRestorationExerciseIndexKey];
-//    self.cancelRestorationRoundIndex = [coder decodeObjectForKey: cancelRestorationRoundIndexKey];
-//    self.selectedAlertTiming = [coder decodeObjectForKey: selectedAlertTimingKey];
-//    self.dateForTimerRecovery = [coder decodeObjectForKey: dateForTimerRecoveryKey];
-//    
-//}
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+
+    [coder encodeObject: self.realizedChain.uniqueID
+                 forKey: realizedChainUniqueIDKey];
+    [coder encodeObject: self.futureRestTarget
+                 forKey: futureRestTargetKey];
+    [coder encodeObject: self.currentRestTarget
+                 forKey: currentRestTargetKey];
+    [coder encodeObject: self.dateForTimerRecovery
+                 forKey: dateForTimerRecoveryKey];
+    [coder encodeObject: self.stopwatchLastUpdateTimerValue
+                 forKey: stopwatchRecoveryTimerValueKey];
+    [coder encodeObject: self.stopwatchLastUpdateDate
+                 forKey: stopwatchRecoveryUpdateDateKey];
+
+}
+
+
+
++(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+
+    
+    NSString *idString = [coder decodeObjectForKey: realizedChainUniqueIDKey];
+    TJBRealizedChain *rc = [[CoreDataController singleton] realizedChainWithUniqueID: idString];
+    
+    NSNumber *futureRestTarget = [coder decodeObjectForKey: futureRestTargetKey];
+    
+    TJBActiveRoutineGuidanceVC *vc = [[TJBActiveRoutineGuidanceVC alloc] initWithPartiallyCompletedRealizedChain: rc
+                                                                                                futureRestTarget: futureRestTarget];
+
+    return vc;
+
+}
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    NSNumber *stopwatchRecoveryTimerValue = [coder decodeObjectForKey: stopwatchRecoveryTimerValueKey];
+    NSDate *stopwatchRecoveryDate = [coder decodeObjectForKey: stopwatchRecoveryUpdateDateKey];
+    
+    NSLog(@"%@\n%@", stopwatchRecoveryTimerValue, stopwatchRecoveryDate);
+    
+    if (stopwatchRecoveryTimerValueKey && stopwatchRecoveryUpdateDateKey){
+        
+        [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: [stopwatchRecoveryTimerValue intValue]
+                                             withForwardIncrementing: YES
+                                                      lastUpdateDate: stopwatchRecoveryDate];
+        
+    }
+    
+    
+    
+    
+}
 
 
 @end

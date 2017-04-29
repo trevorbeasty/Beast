@@ -22,6 +22,6 @@
 #pragma mark - Instantiation
 
 - (instancetype)initFreshRoutineWithChainTemplate:(TJBChainTemplate *)chainTemplate;
-- (instancetype)initWithPartiallyCompletedRealizedChain:(TJBRealizedChain *)rc;
+//- (instancetype)initWithPartiallyCompletedRealizedChain:(TJBRealizedChain *)rc;
 
 @end
