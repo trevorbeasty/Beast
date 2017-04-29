@@ -16,7 +16,7 @@
 #import "TJBAestheticsController.h" // aesthetics
 #import "TJBAssortedUtilities.h" // utilities
 
-@interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UISearchBarDelegate>
 
 {
     
@@ -65,8 +65,10 @@
 @property (strong) UIBarButtonItem *listToolbarButton;
 
 
-@property (strong) UIView *exerciseSearchFieldContainer; // programmatically created view with embedded text field; used as search bar
-@property (strong) UITextField *exerciseSearchTextField; // created programmatically
+@property (strong) UISearchBar *searchBar; // programmatically created search bar
+
+//@property (strong) UIView *exerciseSearchFieldContainer; // programmatically created view with embedded text field; used as search bar
+//@property (strong) UITextField *exerciseSearchTextField; // created programmatically
 
 
 // IBAction
@@ -127,14 +129,11 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 - (void)viewDidLoad{
     
-    [self.view layoutSubviews];
+//    [self.view layoutIfNeeded];
     
     [self updateToolbarAppearanceAccordingToSelectionState]; // no cell is selected upon instantiation, so certain toolbar buttons are disabled
     
     [self configureTableView];
-    
-    [self createSearchBar];
-    self.exerciseSearchFieldContainer.hidden = YES;
     
     [self deriveExerciseContentGivenState];
     
@@ -143,6 +142,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     [self registerForCoreDataNotifications];
     
     [self configureNormalBrowsingExerciseSC];
+    
+    [self configureStartingDisplayValues];
     
 }
 
@@ -159,7 +160,11 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 
 
-
+- (void)configureStartingDisplayValues{
+    
+    self.dateLastExecutedColumbLabel.text = @"date last\nexecuted";
+    
+}
 
 
 
@@ -224,9 +229,9 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     NSArray *columnHeaderLabels = @[self.exerciseColumnLabel, self.dateLastExecutedColumbLabel];
     for (UILabel *label in columnHeaderLabels){
         
-        label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont systemFontOfSize: 15];
-        label.textColor = [UIColor blackColor];
+        label.backgroundColor = [UIColor grayColor];
+        label.font = [UIFont boldSystemFontOfSize: 15];
+        label.textColor = [UIColor whiteColor];
         
     }
     
@@ -238,13 +243,13 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 - (void)drawDetailedLines{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     [self.titleBarContainier layoutSubviews];
     
     [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: self.exerciseColumnLabel
                                            horizontalOffset: 0
-                                                  thickness: 2
-                                             verticalOffset: self.exerciseColumnLabel.frame.size.height / 3.0
+                                                  thickness: .5
+                                             verticalOffset: 0
                                                    metaView: self.columnTitleLabelsContainer];
     
 }
@@ -447,9 +452,9 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     
     if (self.contentExercisesArray.count > 0){ // only selects the cell if there is any content to begin with
         
-        if (_searchIsActive && self.exerciseSearchTextField){
+        if (_searchIsActive && self.searchBar){
             
-            [self.exerciseSearchTextField resignFirstResponder];
+            [self.searchBar resignFirstResponder];
             
         }
         
@@ -568,9 +573,9 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 - (IBAction)didPressLeftBarButton:(id)sender{
     
-    if (_searchIsActive == YES && self.exerciseSearchTextField){
+    if (_searchIsActive == YES && self.searchBar){
         
-        [self.exerciseSearchTextField resignFirstResponder];
+        [self.searchBar resignFirstResponder];
         
     }
     
@@ -672,11 +677,19 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 - (IBAction)didPressSearch:(id)sender{
     
+    if (!self.searchBar){
+        
+        [self createSearchBar];
+        
+    }
+    
     // this button toggles between a list and search appearance, so must check state
     // this method is called by both the seach and list toolbar buttons
     
     [self deselectCellIfSelectionExists]; // deselect current selection if exists
     [self updateToolbarAppearanceAccordingToSelectionState];
+    
+    [self.view layoutIfNeeded];
     
     if (_searchIsActive == NO){
         
@@ -737,75 +750,22 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
 - (void)createSearchBar{
     
-    [self.view layoutSubviews];
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame: self.titleBarContainier.frame];
+    self.searchBar = searchBar;
     
-    UIView *searchContainer = [[UIView alloc] initWithFrame: self.columnTitleLabelsContainer.frame];
-    self.exerciseSearchFieldContainer = searchContainer;
-    [self.view addSubview: searchContainer];
+    [self.metaTitleAreaContainer insertSubview: searchBar
+                aboveSubview: self.columnTitleLabelsContainer];
     
-    searchContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    
-    UITextField *searchBar = [[UITextField alloc] init];
-    self.exerciseSearchTextField = searchBar;
-    
-    // search bar aesthetics
-    
-    searchBar.backgroundColor = [UIColor clearColor];
-    searchBar.textAlignment = NSTextAlignmentCenter;
-    searchBar.font = [UIFont systemFontOfSize: 15];
-    
-    CALayer *searchBarLayer = searchBar.layer;
-    searchBarLayer.masksToBounds = YES;
-    searchBarLayer.cornerRadius = 8.0;
-    searchBarLayer.borderWidth = 1.0;
-    searchBarLayer.borderColor = [UIColor blackColor].CGColor;
-    
-    
-    
-    
-    // search bar layout
-    
-    NSString *searchBarKey = @"searchBar";
-    
-    NSDictionary *constraintMapping = [NSDictionary dictionaryWithObject: searchBar
-                                                                  forKey: searchBarKey];
-    
-    [searchContainer addSubview: searchBar];
-    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    
-    NSString *horzConstrVFL = [NSString stringWithFormat: @"H:|-%f-[%@]-%f-|",
-                               searchBarHorizontalInset,
-                               searchBarKey,
-                               searchBarHorizontalInset];
-    [searchContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: horzConstrVFL
-                                                                             options: 0
-                                                                             metrics: nil
-                                                                               views: constraintMapping]];
-    
-    NSString *vertConstrVFL = [NSString stringWithFormat: @"V:|-%f-[%@]-%f-|",
-                               searchBarVerticalInset,
-                               searchBarKey,
-                               searchBarVerticalInset];
-    [searchContainer addConstraints: [NSLayoutConstraint constraintsWithVisualFormat: vertConstrVFL
-                                                                             options: 0
-                                                                             metrics: nil
-                                                                               views: constraintMapping]];
-    
-    // notification
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(searchTextFieldValueDidChange:)
-                                                 name: UITextFieldTextDidChangeNotification
-                                               object: searchBar];
-    
-    
-    // delegate
+    [self.metaTitleAreaContainer insertSubview: self.titleBarContainier
+                aboveSubview: searchBar];
     
     searchBar.delegate = self;
     
-
-    
+    searchBar.placeholder = @"Search exercises";
+    searchBar.barStyle = UISearchBarStyleDefault;
+    searchBar.barTintColor = [UIColor grayColor];
+    searchBar.searchBarStyle = UISearchBarStyleDefault;
+    searchBar.tintColor = [UIColor lightGrayColor];
 
     
 }
@@ -820,6 +780,9 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     
 }
 
+
+
+#pragma mark - UISearchBarDelegate
 
 
 
@@ -1289,17 +1252,19 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
 
     // search bar
     
-    CGRect searchContainerStartingFrame = [TJBAssortedUtilities rectByTranslatingRect: self.columnTitleLabelsContainer.frame
-                                                                              originX: self.columnTitleLabelsContainer.frame.size.width
-                                                                              originY: 0];
-    self.exerciseSearchFieldContainer.frame = searchContainerStartingFrame;
+    CGRect searchBarStartingFrame = self.titleBarContainier.frame;
+    self.searchBar.frame = searchBarStartingFrame;
     
-    self.exerciseSearchFieldContainer.hidden = NO;
+    self.searchBar.hidden = NO;
     
     [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
                           delay: 0
                         options: UIViewAnimationOptionCurveLinear
                      animations: ^{
+                         
+                        // search bar
+                         
+                        self.searchBar.frame = self.columnTitleLabelsContainer.frame;
                          
                          // bottom controls
                          
@@ -1317,9 +1282,9 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                          CGRect currentTVFrame = self.exerciseTableView.frame;
                          self.exerciseTableView.frame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y, currentTVFrame.size.width, currentTVFrame.size.height + verticalTranslation);
                          
-                         // search bar
+               
                          
-                         self.exerciseSearchFieldContainer.frame = self.columnTitleLabelsContainer.frame;
+ 
                          
                      }
                      completion: ^(BOOL finished){
@@ -1336,7 +1301,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                          
                          [self updateToolbarBarButtonItemsAccordingGivenState];
                          
-                         [self.exerciseSearchTextField becomeFirstResponder];
+                         [self.searchBar becomeFirstResponder];
   
                          
                      }];
@@ -1372,8 +1337,8 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                          
                          // search bar
                          
-                         self.exerciseSearchFieldContainer.frame = [TJBAssortedUtilities rectByTranslatingRect: self.exerciseSearchFieldContainer.frame
-                                                                                                       originX: self.exerciseSearchFieldContainer.frame.size.width
+                         self.searchBar.frame = [TJBAssortedUtilities rectByTranslatingRect: self.searchBar.frame
+                                                                                                       originX: self.searchBar.frame.size.width
                                                                                                        originY: 0];
                          
                      }
@@ -1381,7 +1346,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
                          
                          self.exerciseSegmentedControlBottomSpaceConstr.constant = categorySearchStateSCBottomSpacing;
                          
-                         self.exerciseSearchFieldContainer.hidden = YES;
+                         self.searchBar.hidden = YES;
                          
                          _searchIsActive = NO;
                          
