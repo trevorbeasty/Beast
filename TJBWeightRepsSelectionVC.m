@@ -64,10 +64,29 @@
 
 @end
 
+
+
+#pragma mark - Constants and Typedefs
+
+
+
+
+
+// type
+
 typedef enum {
     WeightType,
     RepsType,
 } TJBJumpBarType;
+
+
+
+
+
+
+
+
+
 
 @implementation TJBWeightRepsSelectionVC
 
@@ -84,6 +103,7 @@ typedef enum {
     return self;
     
 }
+
 
 #pragma mark - View Life Cycle
 
@@ -688,6 +708,8 @@ static float const numberOfCellsPerRow = 2;
 
     
 }
+
+
 
 
 

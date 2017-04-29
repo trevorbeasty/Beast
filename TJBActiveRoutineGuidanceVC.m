@@ -111,6 +111,8 @@
 @property (strong) NSNumber *stopwatchLastUpdateTimerValue; // stopwatch recovery for state restoration
 @property (strong) NSDate *stopwatchLastUpdateDate; // stopwatch recovery for state restoration
 
+@property (strong) NSMutableArray *temporaryRealizedSets; // holds realized sets after data entry process begin, and becomes nil when data entry ends.  Used to aid in state restoration if app enters background mid data entry
+
 
 // stopwatch state
 
@@ -981,6 +983,14 @@ static NSString const *restViewKey = @"restView";
         self.cancelRestorationRoundIndex = self.activeRoundIndexForChain;
     }
     
+    // for state restoration
+    
+    if (!self.temporaryRealizedSets){
+        
+        self.temporaryRealizedSets = [[NSMutableArray alloc] init];
+        
+    }
+    
     NSString *title = [[self.activeLiftTargets[_selectionIndex] exercise] name];
         
     // cancel block
@@ -1006,6 +1016,8 @@ static NSString const *restViewKey = @"restView";
         TJBRealizedSet *rs = [weakSelf realizedSetForExerciseIndex: exercise
                                                         roundIndex: round];
         
+        [weakSelf.temporaryRealizedSets addObject: rs];
+        
         rs.submittedWeight = [weight floatValue];
         rs.submittedReps = [reps floatValue];
         rs.holdsNullValues = NO;
@@ -1026,6 +1038,8 @@ static NSString const *restViewKey = @"restView";
         // must check that this is not the very last item in the chain
             
         if ([weakSelf allSelectionsMade]){
+            
+            weakSelf.temporaryRealizedSets = nil;
                 
             if (routineNotCompleted){
                     
@@ -1304,6 +1318,24 @@ static NSString const *restViewKey = @"restView";
                  forKey: stopwatchRecoveryTimerValueKey];
     [coder encodeObject: self.stopwatchLastUpdateDate
                  forKey: stopwatchRecoveryUpdateDateKey];
+    
+    // if the user is mid data entry, peel back all submissions
+    
+    if (self.temporaryRealizedSets){
+        
+        TJBRealizedSet *zeroethRS = self.temporaryRealizedSets[0];
+        self.realizedChain.firstIncompleteRoundIndex = zeroethRS.roundIndex;
+        self.realizedChain.firstIncompleteExerciseIndex = zeroethRS.exerciseIndex;
+        
+        for (TJBRealizedSet *rs in self.temporaryRealizedSets){
+            
+            rs.holdsNullValues = YES;
+            
+        }
+        
+        [[CoreDataController singleton] saveContext];
+        
+    }
 
 }
 
@@ -1327,8 +1359,6 @@ static NSString const *restViewKey = @"restView";
     
     NSNumber *stopwatchRecoveryTimerValue = [coder decodeObjectForKey: stopwatchRecoveryTimerValueKey];
     NSDate *stopwatchRecoveryDate = [coder decodeObjectForKey: stopwatchRecoveryUpdateDateKey];
-    
-    NSLog(@"%@\n%@", stopwatchRecoveryTimerValue, stopwatchRecoveryDate);
     
     if (stopwatchRecoveryTimerValueKey && stopwatchRecoveryUpdateDateKey){
         
