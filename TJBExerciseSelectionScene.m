@@ -15,6 +15,7 @@
 #import "TJBExerciseSelectionCell.h"  // table view cell - no data
 #import "TJBAestheticsController.h" // aesthetics
 #import "TJBAssortedUtilities.h" // utilities
+#import "ExerciseAdditionChildVC.h" // exercise addition
 
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
@@ -997,7 +998,22 @@ static CGFloat const searchBarHeightDelta = 30;
 
 - (IBAction)didPressAddNewButton:(id)sender{
     
-    [self addNewExerciseInitialAlert_attemptedDuplicateExerciseName: nil];
+//    [self addNewExerciseInitialAlert_attemptedDuplicateExerciseName: nil];
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
+    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect: blur];
+    visualEffectView.frame = self.view.bounds;
+    
+    [self.view addSubview: visualEffectView];
+    
+    ExerciseAdditionChildVC *eaVC = [[ExerciseAdditionChildVC alloc] init];
+    
+    [self addChildViewController: eaVC];
+    
+    [visualEffectView.contentView addSubview: eaVC.view];
+    
+    [eaVC didMoveToParentViewController: self];
+    
     
 }
 
