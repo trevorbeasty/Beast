@@ -14,6 +14,8 @@
 		0B2B6BB31E9C718500927A18 /* TJBPersonalRecordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2B6BB11E9C718500927A18 /* TJBPersonalRecordVC.xib */; };
 		0B2B6BB71E9C719900927A18 /* TJBExerciseHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B2B6BB51E9C719900927A18 /* TJBExerciseHistoryVC.m */; };
 		0B2B6BB81E9C719900927A18 /* TJBExerciseHistoryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2B6BB61E9C719900927A18 /* TJBExerciseHistoryVC.xib */; };
+		0B2B6BC41EB6A00600927A18 /* ExerciseAdditionChildVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B2B6BC21EB6A00600927A18 /* ExerciseAdditionChildVC.m */; };
+		0B2B6BC51EB6A00600927A18 /* ExerciseAdditionChildVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B2B6BC31EB6A00600927A18 /* ExerciseAdditionChildVC.xib */; };
 		0B3687E91E3A2A780077290C /* TJBCircleDateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */; };
 		0B3687EA1E3A2A780077290C /* TJBCircleDateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */; };
 		0B3688211E4352B80077290C /* TJBSchemeSelectionDateComp.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B36881F1E4352B80077290C /* TJBSchemeSelectionDateComp.m */; };
@@ -106,6 +108,9 @@
 		0B2B6BB61E9C719900927A18 /* TJBExerciseHistoryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseHistoryVC.xib; sourceTree = "<group>"; };
 		0B2B6BB91E9C775800927A18 /* TJBPersonalRecordsVCProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBPersonalRecordsVCProtocol.h; sourceTree = "<group>"; };
 		0B2B6BBA1E9C867700927A18 /* TJBExerciseHistoryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseHistoryProtocol.h; sourceTree = "<group>"; };
+		0B2B6BC11EB6A00600927A18 /* ExerciseAdditionChildVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExerciseAdditionChildVC.h; sourceTree = "<group>"; };
+		0B2B6BC21EB6A00600927A18 /* ExerciseAdditionChildVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExerciseAdditionChildVC.m; sourceTree = "<group>"; };
+		0B2B6BC31EB6A00600927A18 /* ExerciseAdditionChildVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExerciseAdditionChildVC.xib; sourceTree = "<group>"; };
 		0B3687E61E3A2A780077290C /* TJBCircleDateVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircleDateVC.h; sourceTree = "<group>"; };
 		0B3687E71E3A2A780077290C /* TJBCircleDateVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCircleDateVC.m; sourceTree = "<group>"; };
 		0B3687E81E3A2A780077290C /* TJBCircleDateVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCircleDateVC.xib; sourceTree = "<group>"; };
@@ -359,6 +364,16 @@
 			name = "Main New Or Existing Scene";
 			sourceTree = "<group>";
 		};
+		0B2B6BC01EB69FE400927A18 /* Exercise Addition Child */ = {
+			isa = PBXGroup;
+			children = (
+				0B2B6BC11EB6A00600927A18 /* ExerciseAdditionChildVC.h */,
+				0B2B6BC21EB6A00600927A18 /* ExerciseAdditionChildVC.m */,
+				0B2B6BC31EB6A00600927A18 /* ExerciseAdditionChildVC.xib */,
+			);
+			name = "Exercise Addition Child";
+			sourceTree = "<group>";
+		};
 		0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */ = {
 			isa = PBXGroup;
 			children = (
@@ -607,6 +622,7 @@
 		0B78E7F01E49EFC200EB216F /* Exercise Creation / Selection */ = {
 			isa = PBXGroup;
 			children = (
+				0B2B6BC01EB69FE400927A18 /* Exercise Addition Child */,
 				0BE970F91E85C8DB00DF297E /* Main */,
 			);
 			name = "Exercise Creation / Selection";
@@ -846,6 +862,7 @@
 				0B3688321E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.xib in Resources */,
 				0B78E7D41E3D31B100EB216F /* TJBLiftOptionsVC.xib in Resources */,
 				0BA8ACFC1E265ACF00EE10C2 /* TJBCircuitReferenceExerciseComp.xib in Resources */,
+				0B2B6BC51EB6A00600927A18 /* ExerciseAdditionChildVC.xib in Resources */,
 				0BA8AD061E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib in Resources */,
 				0B78E7E71E462B6300EB216F /* TJBWeightRepsSelectionVC.xib in Resources */,
 				0B2B6BB31E9C718500927A18 /* TJBPersonalRecordVC.xib in Resources */,
@@ -923,6 +940,7 @@
 				0B517BC01DF77C20009981F9 /* main.m in Sources */,
 				0B843C861DFAD0A00093F057 /* CoreDataController.m in Sources */,
 				0B78E7D31E3D31B100EB216F /* TJBLiftOptionsVC.m in Sources */,
+				0B2B6BC41EB6A00600927A18 /* ExerciseAdditionChildVC.m in Sources */,
 				0B47EC131EA8CA9500CBC8D8 /* TJBActiveLiftTargetsDictionary.m in Sources */,
 				0B2B6BB21E9C718500927A18 /* TJBPersonalRecordVC.m in Sources */,
 				0BA8AD051E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m in Sources */,

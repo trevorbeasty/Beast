@@ -92,16 +92,9 @@
 
 static NSString * const cellReuseIdentifier = @"basicCell";
 
-
-static NSTimeInterval const toolbarToBottomPositionAnimationTime = 4.0;
-
-// bottom controls layour
-
-static CGFloat categorySearchStateSCBottomSpacing = 8;
-
 // animation
 
-static CGFloat const searchBarHeightDelta = 40;
+static CGFloat const searchBarHeightDelta = 30;
 
 
 
@@ -128,8 +121,6 @@ static CGFloat const searchBarHeightDelta = 40;
 
 
 - (void)viewDidLoad{
-    
-//    [self.view layoutIfNeeded];
     
     [self updateToolbarAppearanceAccordingToSelectionState]; // no cell is selected upon instantiation, so certain toolbar buttons are disabled
     
@@ -837,7 +828,7 @@ static CGFloat const searchBarHeightDelta = 40;
     [self deriveExerciseContentGivenState];
     [self.exerciseTableView reloadData];
     
-    
+    [self.searchBar resignFirstResponder];
     
 }
 
