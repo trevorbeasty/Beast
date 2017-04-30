@@ -40,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *liftOptionsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *viewWorkoutLogButton;
 @property (weak, nonatomic) IBOutlet UIView *contentContainerView;
+@property (weak, nonatomic) IBOutlet UIView *titleContainer;
 
 
 // IBAction
@@ -70,7 +71,6 @@ static NSString * const restorationID = @"TJBLiftOptionsVC";
 - (instancetype)init{
     
     self = [super init];
-    
     
     [self configureStateRestorationProperties];
     
@@ -109,45 +109,16 @@ static NSString * const restorationID = @"TJBLiftOptionsVC";
     
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    
-    
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    
-    if (_shouldConfigureSceneAfterViewAppears == YES){
-        
-        [self configureScene];
-        
-        _shouldConfigureSceneAfterViewAppears = NO;
-        
-    }
-    
-    
-    
-}
 
 
 
 #pragma mark - View Life Cycle Helper Methods
 
-- (void)configureScene{
-    
-    // visual effect
-    
-    UIBlurEffect *blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
-    
-    UIVisualEffectView *veView = [[UIVisualEffectView alloc] initWithEffect: blur];
-    
-    veView.frame = self.contentContainerView.frame;
-    [self.view addSubview: veView];
-    [veView.contentView addSubview: self.contentContainerView];
- 
-}
-
 - (void)configureViewAesthetics{
+    
+    self.titleContainer.backgroundColor = [UIColor blackColor];
+    
+    self.view.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // buttons
     
@@ -157,37 +128,34 @@ static NSString * const restorationID = @"TJBLiftOptionsVC";
     
     for (UIButton *button in buttons){
         
-        button.backgroundColor = [UIColor clearColor];
-        [button setTitleColor: [[TJBAestheticsController singleton] blueButtonColor]
+        button.backgroundColor = [UIColor grayColor];
+        [button setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                      forState: UIControlStateNormal];
         button.titleLabel.font = [UIFont boldSystemFontOfSize: 20.0];
         
         button.layer.masksToBounds = YES;
-        button.layer.cornerRadius = 16.0;
-        button.layer.borderColor = [[TJBAestheticsController singleton] blueButtonColor].CGColor;
+        button.layer.cornerRadius = button.layer.frame.size.height / 2.0;
+        button.layer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         button.layer.borderWidth = 1.0;
         
     }
     
     // labels
     
-    self.titleLabel1.backgroundColor = [UIColor clearColor];
+    self.titleLabel1.backgroundColor = [UIColor darkGrayColor];
     self.titleLabel1.textColor = [UIColor whiteColor];
     self.titleLabel1.font = [UIFont boldSystemFontOfSize: 40.0];
     
-    self.titleLabel2.backgroundColor = [UIColor clearColor];
+    self.titleLabel2.backgroundColor = [UIColor darkGrayColor];
     self.titleLabel2.textColor = [UIColor whiteColor];
     self.titleLabel2.font = [UIFont boldSystemFontOfSize: 20.0];
     
-    NSArray *grayLabels = @[self.analysisOptionsLabel, self.liftOptionsLabel];
-    for (UILabel *label in grayLabels){
+    NSArray *actionTitleLabels = @[self.analysisOptionsLabel, self.liftOptionsLabel];
+    for (UILabel *label in actionTitleLabels){
         
         label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [UIColor blackColor];
         label.font = [UIFont boldSystemFontOfSize: 25];
-        
-        label.layer.masksToBounds = YES;
-        label.layer.cornerRadius = 4.0;
         
     }
     
@@ -236,14 +204,6 @@ static NSString * const restorationID = @"TJBLiftOptionsVC";
 }
 
 
-#pragma mark - Restoration
-
-
-- (NSString *)restorationID{
-    
-    return restorationID;
-    
-}
 
 
 
