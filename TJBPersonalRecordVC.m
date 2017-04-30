@@ -150,42 +150,22 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
         
     }
     
-    self.columnHeaderContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    self.columnHeaderContainer.backgroundColor = [UIColor blackColor];
     
     NSArray *columnHeaderLabels = @[self.repsColumnLabel, self.weightColumnLabel, self.dateColumnLabel];
     for (UILabel *label in columnHeaderLabels){
         
-        label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor blackColor];
-        label.font = [UIFont systemFontOfSize: 15];
+        label.backgroundColor = [UIColor grayColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont boldSystemFontOfSize: 12];
         
     }
     
     self.personalRecordsTableView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
-    [self drawDetailedLines];
-    
 }
 
 
-
-- (void)drawDetailedLines{
-    
-    [self.view layoutSubviews];
-    [self.columnHeaderContainer layoutSubviews];
-    
-    NSArray *lineViews = @[self.repsColumnLabel, self.weightColumnLabel];
-    for (UILabel *label in lineViews){
-        
-        [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: label
-                                               horizontalOffset: 0
-                                                      thickness: 2
-                                                 verticalOffset: self.columnHeaderContainer.frame.size.height / 3.0
-                                                       metaView: self.columnHeaderContainer];
-        
-    }
-    
-}
 
 #pragma mark - <UITableViewDataSource>
 
@@ -241,6 +221,8 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
         
+        [self.personalRecordsTableView layoutIfNeeded];
+        
         return cell;
         
     }
@@ -249,7 +231,7 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
 
 - (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     CGFloat cellHeight = [self tableView: self.personalRecordsTableView
                  heightForRowAtIndexPath: indexPath];

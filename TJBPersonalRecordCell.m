@@ -55,21 +55,13 @@
         
     }
     
-    // detailed lines
+//    self.indentationWidth = 0;
+//    self.separatorInset = UIEdgeInsetsZero;
+//    self.indentationLevel = 0;
     
-    [self drawDetaiLines];
     
 }
 
-- (void)drawDetaiLines{
-    
-    [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: self.weightLabel
-                                           horizontalOffset: 0
-                                                  thickness: 2.0
-                                             verticalOffset: self.weightLabel.frame.size.height / 3.0
-                                                   metaView: self.contentView];
-    
-}
 
 
 @end

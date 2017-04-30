@@ -77,7 +77,7 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UILabel *numberOfRecordsLabel;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-@property (weak, nonatomic) IBOutlet UILabel *sortByBottomLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *sortByBottomLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *arrowControlButton;
 
@@ -237,8 +237,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     [self configureSegmentedControlNotifications];
     [self configureCoreDataNotifications];
     
-    [self configureBasicLabelText];
-    
     return;
     
 }
@@ -386,6 +384,13 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
     self.sortBySegmentedControl.backgroundColor = [UIColor grayColor];
     self.sortBySegmentedControl.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+    
+    UIFont *font = [UIFont boldSystemFontOfSize: 15];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject: font
+                                                           forKey: NSFontAttributeName];
+    [self.sortBySegmentedControl setTitleTextAttributes: attributes
+                                                 forState: UIControlStateNormal];
+    
     CALayer *sbscLayer = self.sortBySegmentedControl.layer;
     sbscLayer.masksToBounds = YES;
     sbscLayer.cornerRadius = 22;
@@ -399,10 +404,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     tbLayer.masksToBounds = YES;
     tbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     tbLayer.borderWidth = 1.0;
-    
-    self.sortByBottomLabel.font = [UIFont boldSystemFontOfSize: 15];
-    self.sortByBottomLabel.backgroundColor = [UIColor clearColor];
-    self.sortByBottomLabel.textColor = [UIColor blackColor];
     
 }
 
@@ -437,11 +438,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
 }
 
-- (void)configureBasicLabelText{
-    
-    self.sortByBottomLabel.text = @"sort by\ndate:";
-    
-}
 
 
 #pragma mark - SchemeSelectionDateCompDelegate
@@ -672,10 +668,8 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
                              belowSubview: self.arrowControlButton];
         [self.mainContainer insertSubview: self.sortBySegmentedControl
                              belowSubview: self.toolbar];
-        [self.mainContainer insertSubview: self.sortByBottomLabel
-                             belowSubview: self.sortBySegmentedControl];
         [self.mainContainer insertSubview: indView
-                             belowSubview: self.sortByBottomLabel];
+                             belowSubview: self.sortBySegmentedControl];
         
     }
     
@@ -1743,7 +1737,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)hideAllBottomControls{
     
-    NSArray *views = @[self.toolbar, self.sortBySegmentedControl, self.sortByBottomLabel, self.arrowControlButton];
+    NSArray *views = @[self.toolbar, self.sortBySegmentedControl, self.arrowControlButton];
     for (UIView *v in views){
         
         v.hidden = YES;
@@ -1754,7 +1748,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)unhideAllBottomControls{
     
-    NSArray *views = @[self.toolbar, self.sortBySegmentedControl, self.sortByBottomLabel, self.arrowControlButton];
+    NSArray *views = @[self.toolbar, self.sortBySegmentedControl, self.arrowControlButton];
     for (UIView *v in views){
         
         v.hidden = NO;
@@ -1802,7 +1796,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
                          CGFloat vertAnimationDist = self.mainContainer.frame.size.height - self.toolbar.frame.origin.y;
                          
-                         NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortByBottomLabel, self.sortBySegmentedControl];
+                         NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortBySegmentedControl];
                          for (UIView *v in viewsToTranslate){
                              
                              v.frame = [self rectByTranslatingRect: v.frame
@@ -1835,7 +1829,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
                          
                          CGFloat vertAnimationDist = -1 * self.segmentedControlBottomSpaceConstr.constant + 8;
                          
-                         NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortByBottomLabel, self.sortBySegmentedControl];
+                         NSArray *viewsToTranslate = @[self.arrowControlButton, self.toolbar, self.sortBySegmentedControl];
                          for (UIView *v in viewsToTranslate){
                              
                              v.frame = [self rectByTranslatingRect: v.frame
@@ -1844,7 +1838,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
                              
                          }
                          
-                         self.sortByBottomLabel.hidden = NO;
+
                          
                      }
                      completion: ^(BOOL finished){
