@@ -34,10 +34,6 @@
 #import "TJBActiveGuidanceTBC.h" // for launching to routine active guidance
 #import "TJBFreeformModeTabBarController.h" // for launching freeform mode
 
-// cell preloading
-
-#import "TJBCellFetchingOperation.h"
-
 #import "TJBAssortedUtilities.h" // utilities
 
 // state
