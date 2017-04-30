@@ -15,7 +15,6 @@
 // table view cells
 
 #import "TJBRealizedChainCell.h"
-#import "TJBWorkoutLogTitleCell.h"
 #import "TJBNoDataCell.h"
 
 
@@ -588,7 +587,6 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
         
         cell.mainLabel.text = @"No Entries";
         cell.backgroundColor = [UIColor clearColor];
-        cell.referenceIndexPath = indexPath;
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         

@@ -1626,10 +1626,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     cell.mainLabel.text = @"No Entries";
     cell.backgroundColor = [UIColor clearColor];
     
-    NSIndexPath *path = [NSIndexPath indexPathForRow: 0
-                                           inSection: 0];
-    cell.referenceIndexPath = path;
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -1910,7 +1906,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
         
         cell.mainLabel.text = @"No Entries";
         cell.backgroundColor = [UIColor clearColor];
-        cell.referenceIndexPath = indexPath;
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         

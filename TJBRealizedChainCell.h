@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TJBMasterCell.h"
+//#import "TJBMasterCell.h"
 
 // core data
 
@@ -32,7 +32,7 @@ typedef enum{
     TJBChainTemplateByDateCreated
 }TJBChainTemplateSortingType;
 
-@interface TJBRealizedChainCell : TJBMasterCell
+@interface TJBRealizedChainCell : UITableViewCell
 
 
 - (void)configureWithContentObject:(id)contentObject cellType:(TJBAdvancedCellType)cellType dateTimeType:(TJBDateTimeType)dateTimeType titleNumber:(NSNumber *)titleNumber;

@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TJBMasterCell.h"
 
-@interface TJBNoDataCell : TJBMasterCell
+@interface TJBNoDataCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *mainLabel;
 
