@@ -51,6 +51,8 @@
 // constraints
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *exerciseSegmentedControlBottomSpaceConstr;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *columnsContainerHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerAreaContainerHeight;
 
 // toolbar buttons
 
@@ -91,11 +93,18 @@
 static NSString * const cellReuseIdentifier = @"basicCell";
 
 
-static NSTimeInterval const toolbarToBottomPositionAnimationTime = .15;
+static NSTimeInterval const toolbarToBottomPositionAnimationTime = 4.0;
 
 // bottom controls layour
 
 static CGFloat categorySearchStateSCBottomSpacing = 8;
+
+// animation
+
+static CGFloat const searchBarHeightDelta = 40;
+
+
+
 
 @implementation TJBExerciseSelectionScene
 
@@ -221,7 +230,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     for (UILabel *label in columnHeaderLabels){
         
         label.backgroundColor = [UIColor grayColor];
-        label.font = [UIFont boldSystemFontOfSize: 15];
+        label.font = [UIFont boldSystemFontOfSize: 12];
         label.textColor = [UIColor whiteColor];
         
     }
@@ -684,11 +693,65 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     
     if (_searchIsActive == NO){
         
-        [self animateToSearchBarState];
+        // constraints and frames
+        
+        CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
+        self.exerciseSegmentedControlBottomSpaceConstr.constant -= verticalTranslation;
+        
+        NSArray *titleAreaHeightConstraints = @[self.columnsContainerHeight, self.headerAreaContainerHeight];
+        for (NSLayoutConstraint *lc in titleAreaHeightConstraints){
+            
+            lc.constant = lc.constant + searchBarHeightDelta;
+            
+        }
+        
+        [self.view layoutIfNeeded];
+        
+        self.searchBar.frame = self.columnTitleLabelsContainer.frame;
+        
+        // state
+        
+        _searchIsActive = YES;
+        
+        [self deriveExerciseContentGivenState];
+        [self.exerciseTableView reloadData];
+        
+        [self updateToolbarBarButtonItemsAccordingGivenState];
+        
+        [self.searchBar becomeFirstResponder];
+        
+        self.columnTitleLabelsContainer.hidden = YES;
+        self.searchBar.hidden = NO;
 
     } else if (_searchIsActive == YES){
         
-        [self animateToCategoryBasedBrowseState];
+        // constraints and frames
+        
+        CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
+        self.exerciseSegmentedControlBottomSpaceConstr.constant += verticalTranslation;
+        
+        NSArray *titleAreaHeightConstraints = @[self.columnsContainerHeight, self.headerAreaContainerHeight];
+        for (NSLayoutConstraint *lc in titleAreaHeightConstraints){
+            
+            lc.constant = lc.constant - searchBarHeightDelta;
+            
+        }
+        
+        [self.view layoutIfNeeded];
+        
+        self.searchBar.frame = self.titleBarContainier.frame;
+        
+        // state
+        
+        self.searchBar.hidden = YES;
+        self.columnTitleLabelsContainer.hidden = NO;
+        
+        _searchIsActive = NO;
+        
+        [self deriveExerciseContentGivenState];
+        [self.exerciseTableView reloadData];
+        
+        [self updateToolbarBarButtonItemsAccordingGivenState];
         
     }
     
@@ -701,7 +764,7 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
         
         if (!self.listToolbarButton){
             
-            UIBarButtonItem *listBBI = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"listBlue32"]
+            UIBarButtonItem *listBBI = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"listBlue30PDF"]
                                                                         style: UIBarButtonItemStylePlain
                                                                        target: self
                                                                        action: @selector(didPressSearch:)];
@@ -1238,133 +1301,6 @@ static CGFloat categorySearchStateSCBottomSpacing = 8;
     exercise.category = category;
     
     [[CoreDataController singleton] saveContext];
-    
-}
-
-
-
-#pragma mark - Bottom Controls Animations
-
-- (void)animateToSearchBarState{
-    
-    // bottom controls
-    
-    CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
-
-    // search bar
-    
-    CGRect searchBarStartingFrame = self.titleBarContainier.frame;
-    self.searchBar.frame = searchBarStartingFrame;
-    
-    self.searchBar.hidden = NO;
-    
-    [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
-                          delay: 0
-                        options: UIViewAnimationOptionCurveLinear
-                     animations: ^{
-                         
-                        // search bar
-                         
-                        self.searchBar.frame = self.columnTitleLabelsContainer.frame;
-                         
-                         // bottom controls
-                         
-                         NSArray *verticallySlidingViews = @[self.actionsToolbar, self.normalBrowsingExerciseSC];
-                         for (UIView *view in verticallySlidingViews){
-                             
-                             view.frame = [TJBAssortedUtilities rectByTranslatingRect: view.frame
-                                                                              originX: 0
-                                                                              originY: verticalTranslation];
-                             
-                         }
-                         
-                         // table view
-                         
-                         CGRect currentTVFrame = self.exerciseTableView.frame;
-                         self.exerciseTableView.frame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y, currentTVFrame.size.width, currentTVFrame.size.height + verticalTranslation);
-                         
-                         
-                         
-               
-                         
- 
-                         
-                     }
-                     completion: ^(BOOL finished){
-                         
-                         CGFloat bottomSpaceConstr = self.exerciseSegmentedControlBottomSpaceConstr.constant;
-                         bottomSpaceConstr -= verticalTranslation;
-                         
-                         self.exerciseSegmentedControlBottomSpaceConstr.constant = bottomSpaceConstr;
-                         
-                         _searchIsActive = YES;
-                         
-                         [self deriveExerciseContentGivenState];
-                         [self.exerciseTableView reloadData];
-                         
-                         [self updateToolbarBarButtonItemsAccordingGivenState];
-                         
-                         [self.searchBar becomeFirstResponder];
-                         
-                         self.columnTitleLabelsContainer.hidden = YES;
-  
-                         
-                     }];
-
-}
-
-- (void)animateToCategoryBasedBrowseState{
-    
-    self.columnTitleLabelsContainer.hidden = NO;
-    
-    // bottom controls
-    
-    CGFloat verticalTranslation = self.normalBrowsingExerciseSC.frame.origin.y - self.actionsToolbar.frame.origin.y;
-    
-    [UIView animateWithDuration: toolbarToBottomPositionAnimationTime
-                          delay: 0
-                        options: UIViewAnimationOptionCurveLinear
-                     animations: ^{
-                         
-                         // bottom controls
-                         
-                         NSArray *verticallySlidingViews = @[self.actionsToolbar, self.normalBrowsingExerciseSC];
-                         for (UIView *view in verticallySlidingViews){
-                             
-                             view.frame = [TJBAssortedUtilities rectByTranslatingRect: view.frame
-                                                                              originX: 0
-                                                                              originY: -1 * verticalTranslation];
-                             
-                         }
-                         
-                         // table view
-                         
-                         CGRect currentTVFrame = self.exerciseTableView.frame;
-                         self.exerciseTableView.frame = CGRectMake(currentTVFrame.origin.x, currentTVFrame.origin.y, currentTVFrame.size.width, currentTVFrame.size.height - verticalTranslation);
-                         
-                         // search bar
-                         
-                         self.searchBar.frame = [TJBAssortedUtilities rectByTranslatingRect: self.searchBar.frame
-                                                                                                       originX: self.searchBar.frame.size.width
-                                                                                                       originY: 0];
-                         
-                     }
-                     completion: ^(BOOL finished){
-                         
-                         self.exerciseSegmentedControlBottomSpaceConstr.constant = categorySearchStateSCBottomSpacing;
-                         
-                         self.searchBar.hidden = YES;
-                         
-                         _searchIsActive = NO;
-                         
-                         [self deriveExerciseContentGivenState];
-                         [self.exerciseTableView reloadData];
-                         
-                         [self updateToolbarBarButtonItemsAccordingGivenState];
-                         
-                         
-                         
-                     }];
     
 }
 
