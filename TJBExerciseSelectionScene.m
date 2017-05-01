@@ -97,7 +97,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 // animation
 
-static CGFloat const searchBarHeightDelta = 30;
+static CGFloat const searchBarHeightDelta = 20;
 
 static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
 
@@ -410,7 +410,15 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
                 
                 [self giveCellSelectedAppearance: cell];
                 
+            } else{
+                
+                [self giveCellUnselectedAppearance: cell];
+                
             }
+            
+        } else{
+            
+            [self giveCellUnselectedAppearance: cell];
             
         }
         
@@ -1052,7 +1060,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
     
     TJBExerciseCategoryType catType = [[CoreDataController singleton] typeForExerciseCategory: exercise.category];
     self.normalBrowsingExerciseSC.selectedSegmentIndex = [self selectedIndexCorrespondingToCategory: catType];
-//    [self browsingSCValueDidChange];
+    [self browsingSCValueDidChange];
     
     NSIndexPath *newExerciseIndexPath = [NSIndexPath indexPathForRow: [self.contentExercisesArray indexOfObject: exercise]
                                                            inSection: 0];
