@@ -182,8 +182,20 @@
     
     BOOL exerciseNameIsDuplicate = [[CoreDataController singleton] exerciseExistsForName: self.exerciseTextField.text];
     BOOL exerciseTextFieldIsBlank = [self.exerciseTextField.text isEqualToString: @""];
+    TJBExercise *delistedExercise = [[CoreDataController singleton] delistedExerciseForName: self.exerciseTextField.text];
     
-    if (exerciseNameIsDuplicate || exerciseTextFieldIsBlank){
+    if (delistedExercise){
+        
+        delistedExercise.showInExerciseList = YES;
+    
+        TJBExerciseCategory *selectedCategory = [[CoreDataController singleton] exerciseCategory: [self exerciseCategoryForSCSelectedIndex]];
+        delistedExercise.category = selectedCategory;
+        
+        [[CoreDataController singleton] saveContext];
+        
+        self.exerciseAddedCallback(delistedExercise);
+        
+    } else if (exerciseNameIsDuplicate || exerciseTextFieldIsBlank){
         
         NSString *alertMessage = exerciseNameIsDuplicate ? @"An exercise with this name already exists" : @"Please enter a name for the new exercise";
         

@@ -207,7 +207,7 @@ static NSString * const alertTimingID = @"alertTiming";
     
     if (self.exercise){
         
-        self.activeExerciseLabel.text = self.exercise.name;
+        self.exerciseValueLabel.text = self.exercise.name;
         
     }
     

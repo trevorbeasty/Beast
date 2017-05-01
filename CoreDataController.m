@@ -679,7 +679,38 @@ NSString * const placeholderCategoryName = @"Placeholder";
 }
 
 
-
+- (TJBExercise *)delistedExerciseForName:(NSString *)name{
+    
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName: @"Exercise"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"name = %@", name];
+    fetch.predicate = predicate;
+    
+    NSError *error =  nil;
+    NSArray *results = [self.moc executeFetchRequest: fetch
+                                               error: &error];
+    
+    NSUInteger arrayLength = [results count];
+    
+    if (arrayLength == 0){
+        
+        return nil;
+        
+    } else{
+        
+        TJBExercise *fetchedExercise = results[0];
+        if (fetchedExercise.showInExerciseList == NO){
+            
+            return fetchedExercise;
+            
+        } else{
+            
+            return nil;
+            
+        }
+        
+    }
+    
+}
 
 
 

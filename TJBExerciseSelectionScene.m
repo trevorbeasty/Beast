@@ -898,6 +898,16 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
                                                              [self.contentExercisesArray removeObject: deletedExercise];
                                                              [[CoreDataController singleton] deleteExercise: deletedExercise];
                                                              
+                                                             if (self.contentExercisesArray.count == 0){
+                                                                 
+                                                                 NSIndexPath *zeroethPath = [NSIndexPath indexPathForRow: 0
+                                                                                                               inSection: 0];
+                                                                 
+                                                                 [self.exerciseTableView insertRowsAtIndexPaths: @[zeroethPath]
+                                                                                               withRowAnimation: UITableViewRowAnimationRight];
+                                                                 
+                                                             }
+                                                             
                                                              [self.exerciseTableView endUpdates];
                                                              
                                                          }];
@@ -1181,6 +1191,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
         
         tf.textAlignment = NSTextAlignmentCenter;
         tf.autocapitalizationType = UITextAutocapitalizationTypeWords;
+        tf.font = [UIFont systemFontOfSize: 15];
         
     }];
     
@@ -1190,8 +1201,21 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
                                                              
                                                              UITextField *nameTF = alert.textFields[0];
                                                              
-                                                             [self changeNameForExercise: exercise
-                                                                                 newName: nameTF.text];
+                                                             BOOL nameAlreadyUsed = [[CoreDataController singleton] exerciseExistsForName: nameTF.text];
+                                                             
+                                                             if (nameAlreadyUsed == NO){
+                                                              
+                                                                 [self changeNameForExercise: exercise
+                                                                                     newName: nameTF.text];
+
+                                                             } else{
+                                                                 
+                                                                 [self editExerciseNameAlertSequenceForExercise: exercise
+                                                                                         attemptedDuplicateName: nameTF.text];
+                                                                 
+                                                             }
+                                                             
+                                                             
                                                              
                                                          }];
     [alert addAction: submitAction];
@@ -1206,6 +1230,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
                      completion: nil];
     
 }
+
 
 - (void)changeNameForExercise:(TJBExercise *)exercise newName:(NSString *)newName{
     
