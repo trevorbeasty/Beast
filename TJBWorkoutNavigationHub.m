@@ -159,7 +159,7 @@ typedef void (^AnimationCompletionBlock)(BOOL);
 
 typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 
-static const NSTimeInterval _maxDateControlAnimationTime = 2.0;
+static const NSTimeInterval _maxDateControlAnimationTime = .5;
 
 // restoration
 
@@ -603,9 +603,10 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)configureViewAesthetics{
 
-    // meta view
+    // meta views
     
     self.view.backgroundColor = [UIColor blackColor];
+    self.shadowContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // title bar container
     
@@ -1073,7 +1074,15 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
     sv.scrollEnabled = YES;
     
-    newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    if (contentSize.height < self.shadowContainer.frame.size.height){
+        
+        newTableView.frame = sv.bounds;
+        
+    } else{
+        
+        newTableView.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+        
+    }
     
     [sv addSubview: newTableView];
     [self.shadowContainer insertSubview: sv
@@ -1115,6 +1124,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     if (contentNaturalHeight <= spaceNotOccupiedByControls){
         
         return CGSizeMake(width, contentNaturalHeight);
+//        return CGSizeMake(width,  mainContainerHeight);
         
     } else if (contentNaturalHeight < mainContainerHeight){
         

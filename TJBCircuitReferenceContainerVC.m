@@ -40,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *restOrTimeColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repsColumnLabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightColumnLabel;
+@property (weak, nonatomic) IBOutlet UILabel *roundLabel;
 
 // IBAction
 
@@ -148,13 +149,13 @@
     
     // column label area
     
-    self.columnHeadersContainer.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
-    NSArray *columnLabels = @[self.weightColumnLabel, self.repsColumnLabel, self.restOrTimeColumnLabel];
+    self.columnHeadersContainer.backgroundColor = [UIColor blackColor];
+    NSArray *columnLabels = @[self.weightColumnLabel, self.repsColumnLabel, self.restOrTimeColumnLabel, self.roundLabel];
     for (UILabel *label in columnLabels){
         
-        label.backgroundColor = [UIColor clearColor];
+        label.backgroundColor = [UIColor grayColor];
         label.font = [UIFont boldSystemFontOfSize: 12];
-        label.textColor = [UIColor blackColor];
+        label.textColor = [UIColor whiteColor];
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         label.textAlignment = NSTextAlignmentCenter;
@@ -163,7 +164,7 @@
     
     // detailed lines
     
-    [self drawDetailedLines];
+//    [self drawDetailedLines];
     
 }
 
@@ -180,25 +181,27 @@
         
     }
     
+    self.weightColumnLabel.text = @"weight\n(lbs)";
+    
 }
 
-- (void)drawDetailedLines{
-    
-    [self.view layoutSubviews];
-    [self.columnHeadersContainer layoutSubviews];
-    
-    NSArray *detailedLineLabels = @[self.weightColumnLabel, self.repsColumnLabel];
-    for (UILabel *label in detailedLineLabels){
-        
-        [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: label
-                                               horizontalOffset: 0
-                                                      thickness: .5
-                                                 verticalOffset: label.frame.size.height / 4.0
-                                                       metaView: self.columnHeadersContainer];
-        
-    }
-    
-}
+//- (void)drawDetailedLines{
+//    
+//    [self.view layoutSubviews];
+//    [self.columnHeadersContainer layoutSubviews];
+//    
+//    NSArray *detailedLineLabels = @[self.weightColumnLabel, self.repsColumnLabel];
+//    for (UILabel *label in detailedLineLabels){
+//        
+//        [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: label
+//                                               horizontalOffset: 0
+//                                                      thickness: .5
+//                                                 verticalOffset: label.frame.size.height / 4.0
+//                                                       metaView: self.columnHeadersContainer];
+//        
+//    }
+//    
+//}
 
 - (void)layoutContent{
     
