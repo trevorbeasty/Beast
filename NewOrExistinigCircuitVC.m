@@ -576,7 +576,8 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
         
     } else if (contentNaturalHeight < mainContainerHeight){
         
-        CGFloat height = mainContainerHeight + bottomSpaceOccupiedByControls;
+        CGFloat extraHeight = bottomSpaceOccupiedByControls - (mainContainerHeight - contentNaturalHeight);
+        CGFloat height = mainContainerHeight + extraHeight;
         return CGSizeMake(width, height);
         
     } else{

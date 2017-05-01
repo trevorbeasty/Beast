@@ -1124,11 +1124,11 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     if (contentNaturalHeight <= spaceNotOccupiedByControls){
         
         return CGSizeMake(width, contentNaturalHeight);
-//        return CGSizeMake(width,  mainContainerHeight);
         
     } else if (contentNaturalHeight < mainContainerHeight){
         
-        CGFloat height = mainContainerHeight + bottomSpaceOccupiedByControls;
+        CGFloat extraHeight = bottomSpaceOccupiedByControls - (mainContainerHeight - contentNaturalHeight);
+        CGFloat height = mainContainerHeight + extraHeight;
         return CGSizeMake(width, height);
         
     } else{
