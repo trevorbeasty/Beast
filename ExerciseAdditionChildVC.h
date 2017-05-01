@@ -24,4 +24,10 @@ typedef void (^NewExerciseCallback)(TJBExercise *);
 
 - (void)refreshWithSelectedExerciseCategory:(TJBExerciseCategoryType)ect;
 
+#pragma mark - Keyboard
+
+- (void)makeTextFieldBecomeFirstResponder;
+- (void)makeTextFieldResignFirstResponder;
+
+
 @end

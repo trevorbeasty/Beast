@@ -67,6 +67,7 @@
 
 @property (strong) UIBarButtonItem *listToolbarButton;
 @property (strong) UIVisualEffectView *exerciseAdditionVEV;
+@property (strong) ExerciseAdditionChildVC *exerciseAdditionChild;
 
 
 @property (strong) UISearchBar *searchBar; // programmatically created search bar
@@ -98,7 +99,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 static CGFloat const searchBarHeightDelta = 30;
 
-
+static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .4;
 
 
 @implementation TJBExerciseSelectionScene
@@ -1063,6 +1064,7 @@ static CGFloat const searchBarHeightDelta = 30;
         ExerciseAdditionChildVC *eaVC = [[ExerciseAdditionChildVC alloc] initWithSelectedCategory: currentlySelectedCategory
                                                                             exerciseAddedCallback: neCallback
                                                                                    cancelCallback: cCallback];
+        self.exerciseAdditionChild = eaVC;
         
         [self addChildViewController: eaVC];
         
@@ -1072,7 +1074,21 @@ static CGFloat const searchBarHeightDelta = 30;
         
     }
     
-    self.exerciseAdditionVEV.hidden = NO;
+    self.exerciseAdditionVEV.hidden = YES;
+    
+    [UIView transitionWithView: self.view
+                      duration: exerciseAdditionSceneTransitionInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        self.exerciseAdditionVEV.hidden = NO;
+                        
+                    }
+                    completion: ^(BOOL finished){
+                        
+                        [self.exerciseAdditionChild makeTextFieldBecomeFirstResponder];
+                        
+                    }];
     
 }
 
@@ -1084,18 +1100,27 @@ static CGFloat const searchBarHeightDelta = 30;
     NSIndexPath *newExerciseIndexPath = [NSIndexPath indexPathForRow: [self.contentExercisesArray indexOfObject: exercise]
                                                            inSection: 0];
     
-    [self dismissViewControllerAnimated: YES
-                             completion: ^{
-                                 
-                                 [self.exerciseTableView scrollToRowAtIndexPath: newExerciseIndexPath
-                                                               atScrollPosition: UITableViewScrollPositionTop
-                                                                       animated: YES];
-                                 
-                             }];
-    
+    [UIView transitionWithView: self.view
+                      duration: exerciseAdditionSceneTransitionInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        [self.exerciseAdditionChild makeTextFieldResignFirstResponder];
+                        self.exerciseAdditionVEV.hidden = YES;
+                        
+                    }completion: ^(BOOL finished){
+                        
+                        
+                        
+                        [self.exerciseTableView scrollToRowAtIndexPath: newExerciseIndexPath
+                                                      atScrollPosition: UITableViewScrollPositionTop
+                                                              animated: YES];
+                        
+                        [self tableView: self.exerciseTableView
+                didSelectRowAtIndexPath: newExerciseIndexPath];
+                        
+                    }];
 
-    
-    
     
 }
 
@@ -1103,132 +1128,19 @@ static CGFloat const searchBarHeightDelta = 30;
 - (void)exerciseCreationWasCancelled{
     
     
-    [self dismissViewControllerAnimated: YES
-                             completion: nil];
+    [UIView transitionWithView: self.view
+                      duration: exerciseAdditionSceneTransitionInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        [self.exerciseAdditionChild makeTextFieldResignFirstResponder];
+                        self.exerciseAdditionVEV.hidden = YES;
+                        
+                    }
+                    completion: nil];
     
     
 }
-
-//- (void)addNewExerciseInitialAlert_attemptedDuplicateExerciseName:(NSString *)duplicateExerciseName{
-//    
-//    NSString *alertMessage;
-//    if (duplicateExerciseName){
-//        
-//        alertMessage = [NSString stringWithFormat: @"The exercise '%@' already exists. Please enter a different name", duplicateExerciseName];
-//        
-//    } else{
-//        
-//        alertMessage = @"Enter new exercise name";
-//        
-//    }
-//    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"New Exercise"
-//                                                                   message: alertMessage
-//                                                            preferredStyle: UIAlertControllerStyleAlert];
-//    
-//    [alert addTextFieldWithConfigurationHandler: ^(UITextField *tf){
-//        
-//        tf.textAlignment = NSTextAlignmentCenter;
-//        tf.autocapitalizationType = UITextAutocapitalizationTypeWords;
-//        
-//    }];
-//    
-//    UIAlertAction *submitAction = [UIAlertAction actionWithTitle: @"Submit"
-//                                                           style: UIAlertActionStyleDefault
-//                                                         handler: ^(UIAlertAction *action){
-//                                                             
-//                                                             UITextField *nameTF = alert.textFields[0];
-//                                                             
-//                                                             [self createNewExerciseWithName: nameTF.text];
-//                                                             
-//                                                         }];
-//    [alert addAction: submitAction];
-//    
-//    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
-//                                                           style: UIAlertActionStyleCancel
-//                                                         handler: nil];
-//    [alert addAction: cancelAction];
-//    
-//    [self presentViewController: alert
-//                       animated: YES
-//                     completion: nil];
-//    
-//}
-//
-//- (void)createNewExerciseWithName:(NSString *)name{
-//    
-//    BOOL exerciseNameAlreadyExists = [[CoreDataController singleton] exerciseExistsForName: name];
-//    
-//    if (exerciseNameAlreadyExists){
-//        
-//        [self addNewExerciseInitialAlert_attemptedDuplicateExerciseName: name];
-//        
-//    } else{
-//        
-//        [self categorySelectionAlertSequenceForExerciseWithName: name];
-//    }
-//    
-//}
-//
-//- (void)categorySelectionAlertSequenceForExerciseWithName:(NSString *)name{
-//    
-//    // categories
-//    
-//    CoreDataController *cdc = [CoreDataController singleton];
-//    
-//    TJBExerciseCategory *pushCat = [cdc exerciseCategory: PushType];
-//    TJBExerciseCategory *pullCat = [cdc exerciseCategory: PullType];
-//    TJBExerciseCategory *legsCat = [cdc exerciseCategory: LegsType];
-//    TJBExerciseCategory *otherCat = [cdc exerciseCategory: OtherType];
-//    
-//    NSArray *categories = @[pushCat,
-//                            pullCat,
-//                            legsCat,
-//                            otherCat];
-//    
-//    // alert
-//    
-//    UIAlertController *alert = [UIAlertController alertControllerWithTitle: name
-//                                                                   message: @"Select the new exercise's category"
-//                                                            preferredStyle: UIAlertControllerStyleAlert];
-//    
-//    for (TJBExerciseCategory *cat in categories){
-//        
-//        UIAlertAction *action = [UIAlertAction actionWithTitle: cat.name
-//                                                         style: UIAlertActionStyleDefault
-//                                                       handler: ^(UIAlertAction *action){
-//                                                           
-//                                                           [self addNewExerciseForName: name
-//                                                                              category: cat];
-//                                                           
-//                                                       }];
-//        [alert addAction: action];
-//        
-//    }
-//    
-//    [self presentViewController: alert
-//                       animated: YES
-//                     completion: nil]; // coreDataDidUpdateNotification already established so no need to direcly relaod table data
-//    
-//    return;
-//    
-//}
-//
-//- (void)addNewExerciseForName:(NSString *)name category:(TJBExerciseCategory *)category{
-//    
-//    NSManagedObjectContext *moc = [[CoreDataController singleton] moc];
-//    TJBExercise *newExercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
-//                                                             inManagedObjectContext: moc];
-//    
-//    newExercise.isPlaceholderExercise = NO;
-//    newExercise.name = name;
-//    newExercise.showInExerciseList = YES;
-//    newExercise.category = category;
-//    
-//    [[CoreDataController singleton] saveContext];
-//    
-//}
-
 
 
 #pragma mark - Edit Actions

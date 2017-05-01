@@ -49,7 +49,7 @@
 
 #pragma mark - Constants
 
-static NSTimeInterval const textFieldFirstResponderdDelay = .3;
+static NSTimeInterval const textFieldFirstResponderdDelay = .1;
 
 
 
@@ -84,28 +84,6 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .3;
     [self configureViewInitialDisplay];
     
     
-    
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    
-    [self.exerciseTextField resignFirstResponder];
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, textFieldFirstResponderdDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
-        
-        [self.exerciseTextField becomeFirstResponder];
-        
-    });
-    
-}
-
-- (void)viewWillDisappear:(BOOL)animated{
-    
-    [self.exerciseTextField resignFirstResponder];
     
 }
 
@@ -184,6 +162,7 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .3;
     self.exerciseTextField.font = [UIFont systemFontOfSize: 15];
     self.exerciseTextField.textColor = [UIColor whiteColor];
     self.exerciseTextField.textAlignment = NSTextAlignmentCenter;
+    self.exerciseTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     
     CALayer *textFieldLayer = self.exerciseTextField.layer;
     textFieldLayer.masksToBounds = YES;
@@ -206,6 +185,8 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .3;
 
 - (IBAction)didPressAdd:(id)sender{
     
+    [self.exerciseTextField resignFirstResponder];
+    
     BOOL exerciseNameIsDuplicate = [[CoreDataController singleton] exerciseExistsForName: self.exerciseTextField.text];
     BOOL exerciseTextFieldIsBlank = [self.exerciseTextField.text isEqualToString: @""];
     
@@ -219,7 +200,11 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .3;
         
         UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
                                                          style: UIAlertActionStyleDefault
-                                                       handler: nil];
+                                                       handler: ^(UIAlertAction *action){
+                                                           
+                                                           [self.exerciseTextField becomeFirstResponder];
+                                                           
+                                                       }];
         [alert addAction: action];
         
         [self presentViewController: alert
@@ -316,6 +301,20 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .3;
     self.categorySegmentedControl.selectedSegmentIndex = [self scIndexForCategory: ect];
     
     self.exerciseTextField.text = @"";
+    
+}
+
+#pragma mark - Keyboard
+
+- (void)makeTextFieldBecomeFirstResponder{
+    
+    [self.exerciseTextField becomeFirstResponder];
+    
+}
+
+- (void)makeTextFieldResignFirstResponder{
+    
+    [self.exerciseTextField resignFirstResponder];
     
 }
 
