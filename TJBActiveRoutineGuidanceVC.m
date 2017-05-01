@@ -165,7 +165,7 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
     self = [super init];
     
     [self configureRestorationProperties];
-    [self configureTimerForFreshChain];
+//    [self configureTimerForFreshChain];
     
     self.chainTemplate = chainTemplate;
     
@@ -232,7 +232,7 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
     
     [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
                                            withTimerLabel: self.timerTitleLabel];
-    
+
     [self.view layoutIfNeeded];
     
     [self configureTabBarAttributes];
@@ -264,13 +264,13 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
     
 }
 
-- (void)configureTimerForFreshChain{
-    
-    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
-                                         withForwardIncrementing: YES
-                                                  lastUpdateDate: nil];
-    
-}
+//- (void)configureTimerForFreshChain{
+//    
+//    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
+//                                         withForwardIncrementing: YES
+//                                                  lastUpdateDate: nil];
+//    
+//}
 
 
 - (void)configureInitialDisplay{

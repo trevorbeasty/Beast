@@ -1192,6 +1192,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
         tf.textAlignment = NSTextAlignmentCenter;
         tf.autocapitalizationType = UITextAutocapitalizationTypeWords;
         tf.font = [UIFont systemFontOfSize: 15];
+        tf.autocorrectionType = UITextAutocorrectionTypeYes;
         
     }];
     

@@ -124,8 +124,8 @@
     
     if (_hasSelectedAppearance){
         
-        shapeLayer.strokeColor = [UIColor darkGrayColor].CGColor;
-        shapeLayer.fillColor = [UIColor darkGrayColor].CGColor;
+        shapeLayer.strokeColor = [UIColor blackColor].CGColor;
+        shapeLayer.fillColor = [UIColor blackColor].CGColor;
         
     } else{
         
