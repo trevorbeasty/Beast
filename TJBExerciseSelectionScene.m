@@ -349,12 +349,12 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
 
 - (void)browsingSCValueDidChange{
     
+    [self deselectCellIfSelectionExists]; // deselect the existing selection, if one exists
+    
     [self deriveExerciseContentGivenState]; // content is fetched according to state
     [self.exerciseTableView reloadData];
     
-    [self deselectCellIfSelectionExists]; // deselect the existing selection, if one exists
-    
-    
+    [self updateToolbarAppearanceAccordingToSelectionState];
     
 }
 
@@ -403,6 +403,16 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
     } else{
         
         TJBExerciseSelectionCell *cell = [self.exerciseTableView dequeueReusableCellWithIdentifier: @"TJBExerciseSelectionCell"];
+        
+        if (self.selectedCellIndexPath){
+            
+            if (self.selectedCellIndexPath.row == indexPath.row){
+                
+                [self giveCellSelectedAppearance: cell];
+                
+            }
+            
+        }
         
         TJBExercise *exercise = self.contentExercisesArray[indexPath.row];
         NSDate *dateLastExecuted = [self dateLastExecutedForExercise: exercise];
@@ -571,27 +581,6 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
 }
 
 
-- (void)updateToolbarAppearanceAccordingToSelectionState{
-    
-    NSArray *dynamicAppearanceItems = @[self.launchToolbarButton,
-                                        self.deleteButton,
-                                        self.editButton];
-    
-    for (UIBarButtonItem *bbi in dynamicAppearanceItems){
-        
-        if (self.selectedCellIndexPath){
-            
-            bbi.enabled = YES;
-            
-        } else{
-            
-            bbi.enabled = NO;
-            
-        }
-        
-    }
-    
-}
 
 
 #pragma mark - Button Actions
@@ -698,49 +687,6 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
     
 }
 
-- (void)updateToolbarBarButtonItemsAccordingGivenState{
-    
-    if (_searchIsActive == YES){
-        
-        if (!self.listToolbarButton){
-            
-            UIBarButtonItem *listBBI = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"listBlue30PDF"]
-                                                                        style: UIBarButtonItemStylePlain
-                                                                       target: self
-                                                                       action: @selector(didPressSearch:)];
-            self.listToolbarButton = listBBI;
-            
-        }
-        
-        NSMutableArray *toolbarItems = [[self.actionsToolbar items] mutableCopy];
-        
-        NSUInteger currentSearchButtonIndex = [toolbarItems indexOfObject: self.searchToolbarButton];
-        [toolbarItems replaceObjectAtIndex: currentSearchButtonIndex
-                                withObject: self.listToolbarButton];
-        
-        [self.actionsToolbar setItems: toolbarItems];
-        
-        
-    } else{
-        
-        
-        
-        NSMutableArray *toolbarItems = [[self.actionsToolbar items] mutableCopy];
-        
-        NSUInteger currentListButtonIndex = [toolbarItems indexOfObject: self.listToolbarButton];
-        [toolbarItems replaceObjectAtIndex: currentListButtonIndex
-                                withObject: self.searchToolbarButton];
-        
-        [self.actionsToolbar setItems: toolbarItems];
-        
-        
-        
-        
-        
-        
-    }
-    
-}
 
 - (void)createSearchBar{
     
@@ -922,22 +868,109 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
 
 - (IBAction)didPressDeleteButton:(id)sender{
     
-    [self.exerciseTableView beginUpdates];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Delete Exercise"
+                                                                   message: @"This action is permanent. Would you like to proceed?"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
+                                                            style: UIAlertActionStyleCancel
+                                                          handler: nil];
+    [alert addAction: cancelAction];
     
-    [self.exerciseTableView deleteRowsAtIndexPaths: @[self.selectedCellIndexPath]
-                                  withRowAnimation: UITableViewRowAnimationLeft];
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle: @"Delete"
+                                                           style: UIAlertActionStyleDestructive
+                                                         handler: ^(UIAlertAction *action){
+                                                             
+                                                             [self.exerciseTableView beginUpdates];
+                                                             
+                                                             [self.exerciseTableView deleteRowsAtIndexPaths: @[self.selectedCellIndexPath]
+                                                                                           withRowAnimation: UITableViewRowAnimationLeft];
+                                                             
+                                                             TJBExercise *deletedExercise = self.contentExercisesArray[self.selectedCellIndexPath.row];
+                                                             
+                                                             [self.contentExercisesArray removeObject: deletedExercise];
+                                                             [[CoreDataController singleton] deleteExercise: deletedExercise];
+                                                             
+                                                             [self.exerciseTableView endUpdates];
+                                                             
+                                                         }];
+    [alert addAction: deleteAction];
     
-    TJBExercise *deletedExercise = self.contentExercisesArray[self.selectedCellIndexPath.row];
-    
-    [self.contentExercisesArray removeObject: deletedExercise];
-    [[CoreDataController singleton] deleteExercise: deletedExercise];
-    
-    [self.exerciseTableView endUpdates];
-    
-    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
     
     
 }
+
+#pragma mark - Toolbar State
+
+- (void)updateToolbarAppearanceAccordingToSelectionState{
+    
+    NSArray *dynamicAppearanceItems = @[self.launchToolbarButton,
+                                        self.deleteButton,
+                                        self.editButton];
+    
+    for (UIBarButtonItem *bbi in dynamicAppearanceItems){
+        
+        if (self.selectedCellIndexPath){
+            
+            bbi.enabled = YES;
+            
+        } else{
+            
+            bbi.enabled = NO;
+            
+        }
+        
+    }
+    
+}
+
+- (void)updateToolbarBarButtonItemsAccordingGivenState{
+    
+    if (_searchIsActive == YES){
+        
+        if (!self.listToolbarButton){
+            
+            UIBarButtonItem *listBBI = [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed: @"listBlue30PDF"]
+                                                                        style: UIBarButtonItemStylePlain
+                                                                       target: self
+                                                                       action: @selector(didPressSearch:)];
+            self.listToolbarButton = listBBI;
+            
+        }
+        
+        NSMutableArray *toolbarItems = [[self.actionsToolbar items] mutableCopy];
+        
+        NSUInteger currentSearchButtonIndex = [toolbarItems indexOfObject: self.searchToolbarButton];
+        [toolbarItems replaceObjectAtIndex: currentSearchButtonIndex
+                                withObject: self.listToolbarButton];
+        
+        [self.actionsToolbar setItems: toolbarItems];
+        
+        
+    } else{
+        
+        
+        
+        NSMutableArray *toolbarItems = [[self.actionsToolbar items] mutableCopy];
+        
+        NSUInteger currentListButtonIndex = [toolbarItems indexOfObject: self.listToolbarButton];
+        [toolbarItems replaceObjectAtIndex: currentListButtonIndex
+                                withObject: self.searchToolbarButton];
+        
+        [self.actionsToolbar setItems: toolbarItems];
+        
+        
+        
+        
+        
+        
+    }
+    
+}
+
+
 
 #pragma mark - Add New Exercise Actions
 
@@ -1220,6 +1253,11 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
         [alert addAction: action];
         
     }
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
+                                                            style: UIAlertActionStyleCancel
+                                                          handler: nil];
+    [alert addAction: cancelAction];
     
     [self presentViewController: alert
                        animated: YES

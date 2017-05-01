@@ -47,12 +47,6 @@
 @end
 
 
-#pragma mark - Constants
-
-static NSTimeInterval const textFieldFirstResponderdDelay = .1;
-
-
-
 @implementation ExerciseAdditionChildVC
 
 #pragma mark - Instantiation
