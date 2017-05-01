@@ -12,6 +12,14 @@
 
 @interface ExerciseAdditionChildVC ()
 
+{
+    
+    // core
+    
+    TJBExerciseCategoryType _initialExerciseCategory;
+    
+}
+
 // IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIView *contentContainer;
@@ -28,14 +36,39 @@
 - (IBAction)didPressCancel:(id)sender;
 - (IBAction)didPressAdd:(id)sender;
 
+// core
+
+@property (copy) NewExerciseCallback exerciseAddedCallback;
+@property (copy) CancelCallback cancelCallback;
+
 
 
 
 @end
 
+
+#pragma mark - Constants
+
+static NSTimeInterval const textFieldFirstResponderdDelay = .3;
+
+
+
 @implementation ExerciseAdditionChildVC
 
+#pragma mark - Instantiation
 
+- (instancetype)initWithSelectedCategory:(TJBExerciseCategoryType)categoryType exerciseAddedCallback:(NewExerciseCallback)eaCallback cancelCallback:(CancelCallback)cCallback{
+    
+    self = [super init];
+    
+    _initialExerciseCategory = categoryType;
+    self.exerciseAddedCallback = eaCallback;
+    self.cancelCallback = cCallback;
+    
+    return self;
+
+    
+}
 
 
 
@@ -48,10 +81,42 @@
     
     [self configureViewAesthetics];
     
+    [self configureViewInitialDisplay];
+    
+    
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [self.exerciseTextField resignFirstResponder];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, textFieldFirstResponderdDelay * NSEC_PER_SEC), dispatch_get_main_queue(),  ^{
+        
+        [self.exerciseTextField becomeFirstResponder];
+        
+    });
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    
+    [self.exerciseTextField resignFirstResponder];
+    
 }
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureViewInitialDisplay{
+    
+    self.categorySegmentedControl.selectedSegmentIndex = [self scIndexForCategory: _initialExerciseCategory];
+    
+}
 
 
 - (void)configureViewAesthetics{
@@ -133,16 +198,126 @@
 
 #pragma mark - Button Actions
 
-- (IBAction)didPressCancel:(id)sender {
+- (IBAction)didPressCancel:(id)sender{
+    
+    self.cancelCallback();
+    
 }
 
-- (IBAction)didPressAdd:(id)sender {
+- (IBAction)didPressAdd:(id)sender{
+    
+    BOOL exerciseNameIsDuplicate = [[CoreDataController singleton] exerciseExistsForName: self.exerciseTextField.text];
+    BOOL exerciseTextFieldIsBlank = [self.exerciseTextField.text isEqualToString: @""];
+    
+    if (exerciseNameIsDuplicate || exerciseTextFieldIsBlank){
+        
+        NSString *alertMessage = exerciseNameIsDuplicate ? @"An exercise with this name already exists" : @"Please enter a name for the new exercise";
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Error"
+                                                                       message: alertMessage
+                                                                preferredStyle: UIAlertControllerStyleAlert];
+        
+        UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
+                                                         style: UIAlertActionStyleDefault
+                                                       handler: nil];
+        [alert addAction: action];
+        
+        [self presentViewController: alert
+                           animated: YES
+                         completion: nil];
+        
+    } else{
+        
+        TJBExercise *newExercise = [NSEntityDescription insertNewObjectForEntityForName: @"Exercise"
+                                                                 inManagedObjectContext: [[CoreDataController singleton] moc]];
+        
+        TJBExerciseCategory *selectedCategory = [[CoreDataController singleton] exerciseCategory: [self exerciseCategoryForSCSelectedIndex]];
+        newExercise.category = selectedCategory;
+        
+        newExercise.isPlaceholderExercise = NO;
+        newExercise.showInExerciseList = YES;
+        newExercise.name = self.exerciseTextField.text;
+        
+        [[CoreDataController singleton] saveContext];
+        
+        self.exerciseAddedCallback(newExercise);
+        
+    }
+    
+    
 }
 
 
+#pragma mark - Segmented Control
 
+- (TJBExerciseCategoryType)exerciseCategoryForSCSelectedIndex{
+    
+    TJBExerciseCategoryType categoryType;
+    
+    switch (self.categorySegmentedControl.selectedSegmentIndex) {
+        case 0:
+            categoryType = PushType;
+            break;
+            
+        case 1:
+            categoryType = PullType;
+            break;
+            
+        case 2:
+            categoryType = LegsType;
+            break;
+            
+        case 3:
+            categoryType = OtherType;
+            break;
+            
+        default:
+            break;
+    }
+    
+    return categoryType;
+    
+}
 
+- (NSInteger)scIndexForCategory:(TJBExerciseCategoryType)categoryType{
+    
+    NSInteger selectedIndex;
+    
+    switch (categoryType) {
+        case PushType:
+            selectedIndex = 0;
+            break;
+            
+        case PullType:
+            selectedIndex = 1;
+            break;
+            
+        case LegsType:
+            selectedIndex = 2;
+            break;
+            
+        case OtherType:
+            selectedIndex = 3;
+            break;
+            
+        default:
+            break;
+    }
+    
+    return selectedIndex;
+    
+}
 
+#pragma mark - Refresh
+
+- (void)refreshWithSelectedExerciseCategory:(TJBExerciseCategoryType)ect{
+    
+    _initialExerciseCategory = ect;
+    self.categorySegmentedControl.selectedSegmentIndex = [self scIndexForCategory: ect];
+    
+    self.exerciseTextField.text = @"";
+    
+}
 
 
 @end

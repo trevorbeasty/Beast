@@ -74,6 +74,7 @@ typedef NSArray<TJBRealizedSet *> *TJBRealizedSetGrouping;
 - (BOOL)exerciseIsPlaceholderExercise:(TJBExercise *)exercise;
 - (BOOL)exerciseExistsForName:(NSString *)name;
 - (TJBExerciseCategory *)exerciseCategory:(TJBExerciseCategoryType)exerciseCategory;
+- (TJBExerciseCategoryType)typeForExerciseCategory:(TJBExerciseCategory *)category;
 - (NSString *)categoryStingFromEnum:(TJBExerciseCategoryType)categoryEnum;
 
 // chain template

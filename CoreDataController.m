@@ -153,6 +153,36 @@ NSString * const placeholderCategoryName = @"Placeholder";
 
 }
 
+- (TJBExerciseCategoryType)typeForExerciseCategory:(TJBExerciseCategory *)category{
+    
+    TJBExerciseCategoryType catType;
+    
+    if ([category.name isEqualToString: [self categoryStingFromEnum: PushType]]){
+        
+        catType = PushType;
+        
+    } else if ([category.name isEqualToString: [self categoryStingFromEnum: PullType]]){
+        
+        catType = PullType;
+        
+    } else if ([category.name isEqualToString: [self categoryStingFromEnum: LegsType]]){
+        
+        catType = LegsType;
+        
+    } else if ([category.name isEqualToString: [self categoryStingFromEnum: OtherType]]){
+        
+        catType = OtherType;
+        
+    } else if ([category.name containsString: [self categoryStingFromEnum: PlaceholderType]]){
+        
+        catType = PlaceholderType;
+        
+    }
+    
+    return catType;
+    
+}
+
 - (NSString *)categoryStingFromEnum:(TJBExerciseCategoryType)categoryEnum{
     
     NSString *categoryName;
