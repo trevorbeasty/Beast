@@ -99,7 +99,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 
 static CGFloat const searchBarHeightDelta = 30;
 
-static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .4;
+static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
 
 
 @implementation TJBExerciseSelectionScene
@@ -611,91 +611,6 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .4;
 }
 
 
-//
-//#pragma mark - Exercise Addition and Related Methods
-//
-//
-//
-//
-//
-//- (TJBExercise *)processUserRequestAndReturnExerciseWithName:(NSString *)exerciseName category:(TJBExerciseCategoryType)category{
-//    
-//    //// action is dependent upon several factors.  Depends on whether user it trying to create an existing exercise, has left the exercise text field blank, or has entered a valid new exercise name
-//    
-//    // conditional actions
-//    
-//    NSString *exerciseString = exerciseName;
-//    
-//    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
-//                                                             style: UIAlertActionStyleDefault
-//                                                           handler: nil];
-//    
-//    BOOL exerciseExists = [[CoreDataController singleton] exerciseExistsForName: exerciseName];
-//    
-//    if (exerciseExists){
-//        
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-//                                                                       message: @"This exercise already exists"
-//                                                                preferredStyle: UIAlertControllerStyleAlert];
-//        
-//        [alert addAction: continueAction];
-//        
-//        [self presentViewController: alert
-//                           animated: YES
-//                         completion: nil];
-//        
-//        return nil;
-//        
-//    } else if([exerciseString isEqualToString: @""]){
-//        
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Invalid Entry"
-//                                                                       message: @"Exercise entry is blank"
-//                                                                preferredStyle: UIAlertControllerStyleAlert];
-//        
-//        [alert addAction: continueAction];
-//        
-//        [self presentViewController: alert
-//                           animated: YES
-//                         completion: nil];
-//        
-//        return nil;
-//        
-//    } else{
-//        
-//        TJBExercise *newExercise = [self addAndReturnNewExerciseWithName: exerciseName
-//                                                                category: category];
-//        
-//        return newExercise;
-//        
-//    }
-//    
-//}
-//
-//- (TJBExercise *)addAndReturnNewExerciseWithName:(NSString *)name category:(TJBExerciseCategoryType)category{
-//    
-//    //// add the new exercise leverage CoreDataController methods.  Save the context when done
-//    
-//    CoreDataController *coreDataController = [CoreDataController singleton];
-//    
-//    NSString *newExerciseName = name;
-//    
-//    NSNumber *wasNewlyCreated = nil;
-//    TJBExercise *newExercise = [coreDataController exerciseForName: newExerciseName
-//                                                   wasNewlyCreated: &wasNewlyCreated
-//                                       createAsPlaceholderExercise: [NSNumber numberWithBool: NO]];
-//    
-//    newExercise.category = [[CoreDataController singleton] exerciseCategory: category];
-//    
-//    [[CoreDataController singleton] saveContext];
-//    
-//    // need to use notification center so all affected fetched results controllers can perform fetch and update table views
-//    
-//    [[NSNotificationCenter defaultCenter] postNotificationName: ExerciseDataChanged
-//                                                        object: nil];
-//    
-//    return newExercise;
-//    
-//}
 
 #pragma mark - Search / List Functionality
 
@@ -1072,7 +987,14 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .4;
         
         [eaVC didMoveToParentViewController: self];
         
+    } else{
+        
+        NSNumber *selectedIndex = @(self.normalBrowsingExerciseSC.selectedSegmentIndex);
+        [self.exerciseAdditionChild refreshWithSelectedExerciseCategory: [self categoryForSCIndex: selectedIndex]];
+        
     }
+    
+
     
     self.exerciseAdditionVEV.hidden = YES;
     
@@ -1082,11 +1004,12 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .4;
                     animations: ^{
                         
                         self.exerciseAdditionVEV.hidden = NO;
+                        [self.exerciseAdditionChild makeTextFieldBecomeFirstResponder];
                         
                     }
                     completion: ^(BOOL finished){
                         
-                        [self.exerciseAdditionChild makeTextFieldBecomeFirstResponder];
+                        
                         
                     }];
     
@@ -1096,6 +1019,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .4;
     
     TJBExerciseCategoryType catType = [[CoreDataController singleton] typeForExerciseCategory: exercise.category];
     self.normalBrowsingExerciseSC.selectedSegmentIndex = [self selectedIndexCorrespondingToCategory: catType];
+//    [self browsingSCValueDidChange];
     
     NSIndexPath *newExerciseIndexPath = [NSIndexPath indexPathForRow: [self.contentExercisesArray indexOfObject: exercise]
                                                            inSection: 0];
@@ -1109,9 +1033,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .4;
                         self.exerciseAdditionVEV.hidden = YES;
                         
                     }completion: ^(BOOL finished){
-                        
-                        
-                        
+       
                         [self.exerciseTableView scrollToRowAtIndexPath: newExerciseIndexPath
                                                       atScrollPosition: UITableViewScrollPositionTop
                                                               animated: YES];

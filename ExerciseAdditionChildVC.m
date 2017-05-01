@@ -163,6 +163,7 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .1;
     self.exerciseTextField.textColor = [UIColor whiteColor];
     self.exerciseTextField.textAlignment = NSTextAlignmentCenter;
     self.exerciseTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    self.exerciseTextField.clearButtonMode = UITextFieldViewModeAlways;
     
     CALayer *textFieldLayer = self.exerciseTextField.layer;
     textFieldLayer.masksToBounds = YES;
@@ -185,8 +186,6 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .1;
 
 - (IBAction)didPressAdd:(id)sender{
     
-    [self.exerciseTextField resignFirstResponder];
-    
     BOOL exerciseNameIsDuplicate = [[CoreDataController singleton] exerciseExistsForName: self.exerciseTextField.text];
     BOOL exerciseTextFieldIsBlank = [self.exerciseTextField.text isEqualToString: @""];
     
@@ -200,11 +199,7 @@ static NSTimeInterval const textFieldFirstResponderdDelay = .1;
         
         UIAlertAction *action = [UIAlertAction actionWithTitle: @"Continue"
                                                          style: UIAlertActionStyleDefault
-                                                       handler: ^(UIAlertAction *action){
-                                                           
-                                                           [self.exerciseTextField becomeFirstResponder];
-                                                           
-                                                       }];
+                                                       handler: nil];
         [alert addAction: action];
         
         [self presentViewController: alert
