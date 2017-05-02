@@ -111,9 +111,9 @@ typedef enum {
     
     [super viewDidLoad];
     
-//    [self.view layoutIfNeeded];
-    
     [self configureCollectionViews];
+    
+    [self.view layoutIfNeeded];
     
     [self configureViewAesthetics];
     

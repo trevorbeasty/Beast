@@ -87,9 +87,11 @@ static NSString * const reuseIdentifier = @"cell";
     
     [self configureCollectionView];
     
-    [self configureViewAesthetics];
-    
     [self configureSegmentedControl];
+    
+    [self.view layoutIfNeeded];
+    
+    [self configureViewAesthetics];
     
     [self configureDisplay];
     

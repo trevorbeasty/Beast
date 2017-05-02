@@ -924,19 +924,21 @@ static NSString const *restViewKey = @"restView";
                                                             preferredStyle: UIAlertControllerStyleAlert];
     
     UIAlertAction *stayAction = [UIAlertAction actionWithTitle: @"Stay"
-                                                         style: UIAlertActionStyleDefault
+                                                         style: UIAlertActionStyleCancel
                                                        handler: nil];
     [alert addAction: stayAction];
     
     __weak TJBActiveRoutineGuidanceVC *weakSelf = self;
     UIAlertAction *leaveAction = [UIAlertAction actionWithTitle: @"Leave"
-                                                          style: UIAlertActionStyleDefault
+                                                          style: UIAlertActionStyleDestructive
                                                         handler: ^(UIAlertAction *action){
                                                             
                                                             // stopwatch courtesty
                                                             
                                                             [[TJBStopwatch singleton] resetAndPausePrimaryTimer];
                                                             [[TJBStopwatch singleton] removePrimaryStopwatchObserver: weakSelf.timerTitleLabel];
+                                                            [[TJBStopwatch singleton] clearTargetRestAndAlertTiming];
+                                                            [[TJBStopwatch singleton] deleteActiveLocalAlert];
                                                             
                                                             UIViewController *homeVC = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
                                                             

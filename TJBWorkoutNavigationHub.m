@@ -1440,11 +1440,19 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     if (self.currentlySelectedPath){
         
         [self configureActiveStateForToolbarButton: self.editButton];
-        [self configureActiveStateForToolbarButton: self.liftButton];
         
     } else{
         
         [self configureInactiveStateForToolbarButton: self.editButton];
+        
+    }
+    
+    if (_advancedControlsActive == YES && self.currentlySelectedPath){
+        
+        [self configureActiveStateForToolbarButton: self.liftButton];
+        
+    } else{
+        
         [self configureInactiveStateForToolbarButton: self.liftButton];
         
     }

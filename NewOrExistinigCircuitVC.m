@@ -2000,6 +2000,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     [self updateNumberOfRecordsTitleLabel];
     [self configureSelectionAsNil];
     [self updateScrollViewContentSize];
+    [self configureToolbarButtonsAccordingToActiveState];
     
     
 }
