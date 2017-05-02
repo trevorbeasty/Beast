@@ -668,7 +668,7 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
 
 - (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     CGFloat cellHeight = [self tableView: self.tableView
                  heightForRowAtIndexPath: indexPath];
@@ -677,7 +677,7 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
     
     
     [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
-    [cell layoutSubviews];
+    [cell layoutIfNeeded];
     
 }
 

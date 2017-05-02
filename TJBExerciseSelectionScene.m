@@ -238,7 +238,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
 - (void)drawDetailedLines{
     
     [self.view layoutIfNeeded];
-    [self.titleBarContainier layoutSubviews];
+    [self.titleBarContainier layoutIfNeeded];
     
     [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: self.exerciseColumnLabel
                                            horizontalOffset: 0

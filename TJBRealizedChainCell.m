@@ -92,8 +92,8 @@ typedef enum{
     _cellType = cellType;
     _dateTimeType = dateTimeType;
     
-    [self.contentView layoutSubviews];
-    [self.columnHeaderContainer layoutSubviews];
+    [self.contentView layoutIfNeeded];
+//    [self.columnHeaderContainer layoutSubviews];
     
     [self configureBasicLabelText];
     [self configureViewAesthetics];
@@ -111,8 +111,8 @@ typedef enum{
     _dateTimeType = dateTimeType;
     _sortingType = sortingType;
     
-    [self.contentView layoutSubviews];
-    [self.columnHeaderContainer layoutSubviews];
+    [self.contentView layoutIfNeeded];
+//    [self.columnHeaderContainer layoutSubviews];
     
     [self configureBasicLabelText];
     [self configureViewAesthetics];
@@ -393,7 +393,7 @@ typedef enum{
     
     // must forcibly layout views before attempting to add borders
     
-    [self.contentView layoutSubviews];
+    [self.contentView layoutIfNeeded];
     
     [self configureLabelAestheticsAndContent: roundLabel
                     isLeadingLabel: YES
@@ -629,7 +629,7 @@ typedef enum{
     
     // detail drawing
     
-    [self.contentView layoutSubviews]; // must be called, otherwise the dimensions of the xib file and not the 'dimensions with layout applied' will be used
+    [self.contentView layoutIfNeeded]; // must be called, otherwise the dimensions of the xib file and not the 'dimensions with layout applied' will be used
     
     NSArray *verticalDividerLabels = @[self.columnHeader1Label, self.columnHeader2Label, self.columnHeader3Label];
     

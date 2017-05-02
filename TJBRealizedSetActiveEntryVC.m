@@ -215,7 +215,7 @@ static NSString * const alertTimingID = @"alertTiming";
 
 - (void)viewAesthetics{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     // meta view
     

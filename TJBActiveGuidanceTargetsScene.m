@@ -99,7 +99,13 @@ static NSString * const chainTemplateIDStringKey = @"chainTemplateIDString";
 
     [self configureTableView];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    
     [self deriveCell];
+    [self.routineTargetTableView reloadData];
     
 }
 
@@ -176,7 +182,17 @@ static NSString * const chainTemplateIDStringKey = @"chainTemplateIDString";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    return 1;
+    if (self.cell){
+        
+        return 1;
+        
+    } else{
+        
+        return 0;
+        
+    }
+    
+
     
 }
 
@@ -196,7 +212,7 @@ static NSString * const chainTemplateIDStringKey = @"chainTemplateIDString";
 
 - (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     CGFloat cellHeight = [self tableView: self.routineTargetTableView
                  heightForRowAtIndexPath: indexPath];
@@ -204,8 +220,8 @@ static NSString * const chainTemplateIDStringKey = @"chainTemplateIDString";
     CGFloat cellWidth = self.routineTargetTableView.frame.size.width;
     
     
-    [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
-    [cell layoutSubviews];
+    cell.contentView.bounds = CGRectMake(0, 0, cellWidth, cellHeight);
+    [cell.contentView layoutIfNeeded];
     
 }
 

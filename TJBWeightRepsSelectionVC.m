@@ -111,7 +111,7 @@ typedef enum {
     
     [super viewDidLoad];
     
-    [self.view layoutSubviews];
+//    [self.view layoutIfNeeded];
     
     [self configureCollectionViews];
     
@@ -206,7 +206,7 @@ typedef enum {
 
 - (void)configureViewAesthetics{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     // thin divider label
     

@@ -594,7 +594,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
     // the extra room is intended to allow the contents bottom edge to sit 8 points above the control arrow's top edge at all points
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     CGFloat bottomControlsHeight =  self.mainContainer.frame.size.height - self.arrowControlButton.frame.origin.y;
     CGFloat extraSpace = 8;
@@ -1249,7 +1249,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     CGFloat cellHeight = [self tableView: self.activeTableView
                  heightForRowAtIndexPath: indexPath];
@@ -1258,7 +1258,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     
     
     [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
-    [cell layoutSubviews];
+    [cell layoutIfNeeded];
     
 }
 
@@ -1317,7 +1317,7 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     NSInteger chainCount = self.tvSortedContent.count;
     

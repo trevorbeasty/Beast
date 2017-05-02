@@ -240,7 +240,7 @@ static NSString * const restorationID = @"TJBPersonalRecordsVC";
     
     
     [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
-    [cell layoutSubviews];
+    [cell layoutIfNeeded];
     
 }
 

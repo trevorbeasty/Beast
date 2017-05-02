@@ -264,13 +264,6 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
     
 }
 
-//- (void)configureTimerForFreshChain{
-//    
-//    [[TJBStopwatch singleton] setPrimaryStopWatchToTimeInSeconds: 0
-//                                         withForwardIncrementing: YES
-//                                                  lastUpdateDate: nil];
-//    
-//}
 
 
 - (void)configureInitialDisplay{
@@ -586,7 +579,7 @@ static NSString const *restViewKey = @"restView";
     NSString *descendingTopViewKey;
     CGFloat heightSum = 0;
     
-    UIView *containerView = [[UIView alloc] init];
+    UIView *containerView = [[UIView alloc] initWithFrame: self.contentScrollView.bounds];
     containerView.backgroundColor = [[TJBAestheticsController singleton] yellowNotebookColor];
     
     // header view describing round and rest
@@ -736,7 +729,6 @@ static NSString const *restViewKey = @"restView";
     
     // stopwatch config
     
-    [self.view layoutSubviews];
     CGFloat width = self.contentScrollView.frame.size.width;
     
     [containerView setFrame: CGRectMake(0, 0, width, heightSum)];

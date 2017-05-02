@@ -207,7 +207,7 @@ static NSString * const restorationID = @"TJBActiveGuidanceRoutineHistory";
     
     childVC.view.backgroundColor = [UIColor clearColor];
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     UIScrollView *sv = [[UIScrollView alloc] initWithFrame: self.tableViewContainer.bounds];
     self.contentScrollView = sv;
@@ -273,7 +273,7 @@ static NSString * const restorationID = @"TJBActiveGuidanceRoutineHistory";
     UIActivityIndicatorView *aiView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
     self.activeAIView = aiView;
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     aiView.frame = self.tableViewContainer.bounds;
     
     [self.tableViewContainer addSubview: aiView];

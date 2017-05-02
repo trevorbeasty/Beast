@@ -106,7 +106,7 @@ static int const previousMarksLimit = 5;
 
 - (void)configureViewAesthetics{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     // meta view
     
@@ -419,7 +419,7 @@ static int const previousMarksLimit = 5;
                                                                            metrics: nil
                                                                              views: constraintMapping]];
     
-    [containerView layoutSubviews];
+    [containerView layoutIfNeeded];
 
     return containerView;
     
@@ -443,7 +443,7 @@ static int const previousMarksLimit = 5;
 
 - (CGFloat)suggestedHeight{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     return self.contentStackView.frame.origin.y + self.stackViewHeight.constant + bottomCushion;
     

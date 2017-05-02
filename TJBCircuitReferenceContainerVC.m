@@ -205,7 +205,7 @@
 
 - (void)layoutContent{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     TJBCircuitReferenceVC *vc = [[TJBCircuitReferenceVC alloc] initWithRealizedChain: self.realizedChain
                                                                  realizedSetGrouping: self.rsg
@@ -239,7 +239,7 @@
 
 - (CGFloat)returnButtonBufferHeight{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     return self.circuitReferenceView.frame.size.height - self.returnButton.frame.origin.y;
     

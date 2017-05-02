@@ -137,7 +137,7 @@ static NSString *realizedChainCellID = @"TJBRealizedChainCell";
 
 - (void)layoutCellToEnsureCorrectWidth:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     CGFloat cellHeight = [self tableView: self.chainHistoryTV
                  heightForRowAtIndexPath: indexPath];
@@ -146,7 +146,7 @@ static NSString *realizedChainCellID = @"TJBRealizedChainCell";
     
     
     [cell setFrame: CGRectMake(0, 0, cellWidth, cellHeight)];
-    [cell layoutSubviews];
+    [cell layoutIfNeeded];
     
 }
 

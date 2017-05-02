@@ -247,7 +247,7 @@ static NSString * const reuseIdentifier = @"cell";
 
 - (void)configureViewAesthetics{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     // meta views
     

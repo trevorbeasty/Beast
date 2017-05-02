@@ -206,7 +206,7 @@
 
 - (void)configureViewAesthetics{
     
-    [self.view layoutSubviews];
+    [self.view layoutIfNeeded];
     
     // scheduled alert label
     

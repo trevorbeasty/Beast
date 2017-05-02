@@ -14,7 +14,7 @@
 
 - (void)configureWithReps:(NSNumber *)reps weight:(NSNumber *)weight date:(NSDate *)date{
     
-    [self.contentView layoutSubviews];
+    [self.contentView layoutIfNeeded];
     
     // view data
 
