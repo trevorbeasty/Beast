@@ -91,7 +91,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
                      Check the error message to determine what the actual problem was.
                      */
                     NSLog(@"Unresolved error %@, %@", error, error.userInfo);
-                    abort();
+                   
                 }
             }];
         }
@@ -109,7 +109,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
         // Replace this implementation with code to handle the error appropriately.
         // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
         NSLog(@"Unresolved error %@, %@", error, error.userInfo);
-        abort();
+        
     }
 }
 
@@ -234,7 +234,7 @@ NSString * const placeholderCategoryName = @"Placeholder";
     }
     else
     {
-        abort();
+        return nil;
     }
 }
 

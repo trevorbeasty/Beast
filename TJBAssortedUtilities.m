@@ -107,15 +107,11 @@
         *exerciseIndexReference = [NSNumber numberWithInt: currentExerciseIndex - 1];
         return YES;
         
-    } else if (atFirstExercise){
+    } else{
         
         *roundIndexReference = [NSNumber numberWithInt: currentRoundIndex - 1];
         *exerciseIndexReference = [NSNumber numberWithInt: numberOfExercises - 1];
         return YES;
-        
-    } else{
-        
-        abort();
         
     }
     

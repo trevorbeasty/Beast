@@ -283,10 +283,10 @@
 		0B26199F1E0DC94B006FB2D9 /* Active Guidance */ = {
 			isa = PBXGroup;
 			children = (
+				0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */,
 				0B47EC021EA792F300CBC8D8 /* Active Guidance TBC */,
 				0B47EBFC1EA78D0500CBC8D8 /* Guidance Routine History */,
 				0B47EBFB1EA78CF600CBC8D8 /* Guidance Targets */,
-				0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */,
 			);
 			name = "Active Guidance";
 			sourceTree = "<group>";
