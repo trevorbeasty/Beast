@@ -68,4 +68,6 @@
 
 - (NSString *)alertTextFromTargetValues;
 
+- (BOOL)alertIsFullyDefined;
+
 @end

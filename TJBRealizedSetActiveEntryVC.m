@@ -374,15 +374,9 @@ static NSString * const alertTimingID = @"alertTiming";
     
     AlertParametersBlock aapCallback = ^(NSNumber *targetRest, NSNumber *alertTiming){
     
-        // update the stopwatch
-        TJBStopwatch *stopwatch = [TJBStopwatch singleton];
-        [stopwatch setAlertParameters_targetRest: targetRest
-                                     alertTiming: alertTiming];
-        [stopwatch scheduleAlertBasedOnUserPermissions];
-        
         // update the scheduled alert label
         int alertTimingValue = [targetRest intValue] - [alertTiming intValue];
-        NSString *formattedAlertValue = [stopwatch minutesAndSecondsStringFromNumberOfSeconds: alertTimingValue];
+        NSString *formattedAlertValue = [[TJBStopwatch singleton] minutesAndSecondsStringFromNumberOfSeconds: alertTimingValue];
         NSString *scheduledAlertString = [NSString stringWithFormat: @"Alert at %@", formattedAlertValue];
         weakSelf.scheduledAlertLabel.text = scheduledAlertString;
         

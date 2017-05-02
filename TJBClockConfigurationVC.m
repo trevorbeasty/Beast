@@ -50,8 +50,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *restartButton;
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
 @property (weak, nonatomic) IBOutlet UIButton *pauseButton;
-@property (weak, nonatomic) IBOutlet UIView *timerControlsContainer;
-@property (weak, nonatomic) IBOutlet UILabel *timerControlsTitleLabel;
+//@property (weak, nonatomic) IBOutlet UIView *timerControlsContainer;
+//@property (weak, nonatomic) IBOutlet UILabel *timerControlsTitleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *clearButton;
 
 @property (weak, nonatomic) IBOutlet UIButton *returnButton;
 
@@ -60,7 +61,7 @@
 
 // IBAction
 
-- (IBAction)didPressSound:(id)sender;
+//- (IBAction)didPressSound:(id)sender;
 - (IBAction)didPressExit:(id)sender;
 
 - (IBAction)didPressEditTargetRest:(id)sender;
@@ -71,6 +72,7 @@
 - (IBAction)didPressPlay:(id)sender;
 
 - (IBAction)didPressReturn:(id)sender;
+- (IBAction)didPressClearButton:(id)sender;
 
 
 // callback
@@ -141,8 +143,6 @@
     
     [self registerTimerValueLabelWithStopwatch];
     [[TJBStopwatch singleton]  updatePrimaryTimerLabels];
-    
-    [self configureApplyAndReturnButtonAccordingToSelectionState];
     
     
 }
@@ -261,7 +261,7 @@
         
     }
     
-    NSArray *editButtons = @[self.editButtonTargetRest, self.editButtonAlertTiming];
+    NSArray *editButtons = @[self.editButtonTargetRest, self.editButtonAlertTiming, self.clearButton];
     for (UIButton *butt in editButtons){
         
         butt.backgroundColor = [UIColor grayColor];
@@ -276,27 +276,17 @@
         
     }
     
-    self.returnButton.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    [self.returnButton setTitleColor: [UIColor darkGrayColor] forState: UIControlStateNormal];
+    self.returnButton.backgroundColor = [UIColor grayColor];
+    [self.returnButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
+                            forState: UIControlStateNormal];
     self.returnButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
     CALayer *rbLayer = self.returnButton.layer;
-    rbLayer.borderColor = [UIColor darkGrayColor].CGColor;
+    rbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     rbLayer.borderWidth = 1.0;
     rbLayer.masksToBounds = YES;
-    rbLayer.cornerRadius = 4.0;
+    rbLayer.cornerRadius = self.returnButton.frame.size.height / 2.0;
     
-    // timer control buttons container and title label
-    
-    self.timerControlsContainer.backgroundColor = [UIColor grayColor];
-    CALayer *tcLayer = self.timerControlsContainer.layer;
-    tcLayer.borderWidth = 1.0;
-    tcLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
-    tcLayer.masksToBounds = YES;
-    tcLayer.cornerRadius = self.timerControlsContainer.frame.size.height / 2.0;
-    
-    self.timerControlsTitleLabel.font = [UIFont systemFontOfSize: 15];
-    self.timerControlsTitleLabel.textColor = [UIColor blackColor];
-    self.timerControlsTitleLabel.backgroundColor = [UIColor clearColor];
+
     
     
 }
@@ -305,9 +295,6 @@
 
 
 #pragma mark - IBAction
-
-- (IBAction)didPressSound:(id)sender {
-}
 
 - (IBAction)didPressEditTargetRest:(id)sender{
     
@@ -329,8 +316,6 @@
         weakSelf.selectedTargetRest = selectedNumber;
         
         [TJBStopwatch singleton].targetRest = selectedNumber;
-        
-        [weakSelf configureApplyAndReturnButtonAccordingToSelectionState];
         
         // also need to notify the stopwatch of changes
         
@@ -370,8 +355,6 @@
         weakSelf.selectedAlertTiming = selectedNumber;
         
         [TJBStopwatch singleton].alertTiming = selectedNumber;
-        
-        [weakSelf configureApplyAndReturnButtonAccordingToSelectionState];
         
         // also need to notify the stopwatch of changes
         
@@ -417,6 +400,23 @@
     
 }
 
+- (IBAction)didPressClearButton:(id)sender{
+    
+    // label text
+    
+    NSString *blank = @"---";
+    self.targetRestValueLabel.text = blank;
+    self.alertTiimingValueLabel.text = blank;
+    
+    // stopwatch
+    
+    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    
+    [stopwatch deleteActiveLocalAlert];
+    [stopwatch clearTargetRestAndAlertTiming];
+    
+}
+
 #pragma mark - Apply & Return
 
 - (IBAction)didPressReturn:(id)sender{
@@ -427,9 +427,26 @@
         
         if (restLessAlert > 0.0){
             
-            [self deregisterTimerValueLabelWithStopwatch];
+            // make sure the timer is running
             
-            self.applyAlertParamBlock(self.selectedTargetRest, self.selectedAlertTiming);
+            [[TJBStopwatch singleton] playPrimaryTimer];
+            
+            if ([[TJBStopwatch singleton] alertIsFullyDefined]){
+                
+                [self deregisterTimerValueLabelWithStopwatch];
+                
+                // update the stopwatch
+                TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+                [stopwatch scheduleAlertBasedOnUserPermissions];
+                
+                self.applyAlertParamBlock(self.selectedTargetRest, self.selectedAlertTiming);
+                
+            } else{
+                
+                [self alertNotFullyDefineAlertSequence];
+                
+            }
+
             
         } else{
             
@@ -448,22 +465,33 @@
                              completion: nil];
             
         }
+    } else{
+        
+        [self alertNotFullyDefineAlertSequence];
+        
     }
 }
 
-- (void)configureApplyAndReturnButtonAccordingToSelectionState{
+
+
+- (void)alertNotFullyDefineAlertSequence{
     
-    if (self.selectedAlertTiming && self.selectedAlertTiming){
-        
-        self.returnButton.enabled = YES;
-        
-    } else{
-        
-        self.returnButton.enabled = NO;
-        
-    }
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Undefined Alert"
+                                                                   message: @"A target rest and alert timing must be selected"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: nil];
+    [alert addAction: continueAction];
+    
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
     
 }
+
+
 
 #pragma mark - Stopwatch Interaction
 

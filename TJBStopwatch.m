@@ -228,6 +228,8 @@
 
 
 
+
+
 #pragma mark - Observers
 
 - (void)addPrimaryStopwatchObserver:(UIViewController<TJBStopwatchObserver> *)viewController withTimerLabel:(UILabel *)timerLabel{
@@ -545,6 +547,12 @@
     
     self.targetRest = nil;
     self.alertTiming = nil;
+    
+}
+
+- (BOOL)alertIsFullyDefined{
+    
+    return self.targetRest && self.alertTiming && _primaryStopwatchIsOn == YES;
     
 }
 
