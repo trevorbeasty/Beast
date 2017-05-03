@@ -105,6 +105,8 @@ static CGFloat const bottomControlsSpaceValue = 8;
     
     [self createPlaceholderChainTemplate];
     
+    [self configureApplicationWillTerminateNotification];
+    
     self.callback = callback;
     
     // state
@@ -117,6 +119,15 @@ static CGFloat const bottomControlsSpaceValue = 8;
 
 
 #pragma mark - Init Helper Methods
+
+- (void)configureApplicationWillTerminateNotification{
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(applicationWillTerminateActions)
+                                                 name: UIApplicationWillTerminateNotification
+                                               object: nil];
+    
+}
 
 - (void)createPlaceholderChainTemplate{
     
@@ -569,7 +580,11 @@ static CGFloat const bottomControlsSpaceValue = 8;
     
 }
 
-
+- (void)applicationWillTerminateActions{
+    
+    [self deleteActiveChainTemplate];
+    
+}
 
 
 
