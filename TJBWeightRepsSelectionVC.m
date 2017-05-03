@@ -210,7 +210,7 @@ typedef enum {
     
     // thin divider label
     
-    self.thinDividerLabel.backgroundColor = [UIColor blackColor];
+    self.thinDividerLabel.backgroundColor = [UIColor clearColor];
     self.thinDividerLabel.text = @"";
     
     // meta view
@@ -224,14 +224,14 @@ typedef enum {
     NSArray *segmentedControls = @[self.weightSegmentedControl, self.repsSegmentedControl];
     for (UISegmentedControl *sc in segmentedControls){
         
-        sc.tintColor = [UIColor grayColor];
-        sc.backgroundColor = [UIColor clearColor];
+        sc.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
+        sc.backgroundColor = [UIColor grayColor];
         
         CALayer *scLayer = sc.layer;
         scLayer.masksToBounds = YES;
         scLayer.cornerRadius = sc.frame.size.height / 2.0;
         scLayer.borderWidth = 1.0;
-        scLayer.borderColor = [UIColor grayColor].CGColor;
+        scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         
     }
     
@@ -251,22 +251,22 @@ typedef enum {
     NSArray *selectedValueLabels = @[self.weightSelectedValueLabel, self.repsSelectedValueLabel];
     for (UILabel *lab in selectedValueLabels){
         
-        lab.backgroundColor = [UIColor clearColor];
-        lab.textColor = [UIColor blackColor];
+        lab.backgroundColor = [UIColor grayColor];
+        lab.textColor = [UIColor whiteColor];
         lab.font = [UIFont boldSystemFontOfSize: 20];
         
     }
     
     // buttons
     
-    self.submitButton.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-    [self.submitButton setTitleColor: [UIColor darkGrayColor]
+    self.submitButton.backgroundColor = [UIColor grayColor];
+    [self.submitButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
                             forState: UIControlStateNormal];
     self.submitButton.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
     CALayer *sbLayer = self.submitButton.layer;
     sbLayer.masksToBounds = YES;
-    sbLayer.cornerRadius = 4;
-    sbLayer.borderColor = [UIColor darkGrayColor].CGColor;
+    sbLayer.cornerRadius = self.submitButton.frame.size.height / 2.0;
+    sbLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
     sbLayer.borderWidth = 1;
     
     self.cancelButton.backgroundColor = [UIColor clearColor];
@@ -276,13 +276,13 @@ typedef enum {
     NSArray *jumpBarContainers = @[self.leftJumpBarContainer, self.rightJumpBarContainer];
     for (UIView *view in jumpBarContainers){
         
-        view.backgroundColor = [UIColor clearColor];
+        view.backgroundColor = [[TJBAestheticsController singleton] paleLightBlueColor];
         
         CALayer *layer = view.layer;
         layer.masksToBounds = YES;
         layer.cornerRadius = view.frame.size.width / 2.0;
         layer.borderWidth = 1.0;
-        layer.borderColor = [UIColor grayColor].CGColor;
+        layer.borderColor = [UIColor darkGrayColor].CGColor;
         
     }
     
@@ -391,20 +391,6 @@ typedef enum {
 
 - (void)configureUnselectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
     
-    cell.backgroundColor = [UIColor grayColor];
-    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
-    cell.numberLabel.textColor = [UIColor whiteColor];
-    
-    CALayer *cellLayer = cell.layer;
-    cellLayer.masksToBounds = YES;
-    cellLayer.cornerRadius = 4.0;
-    cellLayer.borderColor = [UIColor darkGrayColor].CGColor;
-    cellLayer.borderWidth = 1.0;
-    
-}
-
-- (void)configureSelectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
-    
     cell.backgroundColor = [UIColor clearColor];
     cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
     cell.numberLabel.textColor = [UIColor blackColor];
@@ -413,7 +399,21 @@ typedef enum {
     cellLayer.masksToBounds = YES;
     cellLayer.cornerRadius = 4.0;
     cellLayer.borderColor = [UIColor blackColor].CGColor;
-    cellLayer.borderWidth = 4.0;
+    cellLayer.borderWidth = 1.0;
+    
+}
+
+- (void)configureSelectedCellAesthetics:(TJBWeightRepsSelectionCell *)cell{
+    
+    cell.backgroundColor = [UIColor darkGrayColor];
+    cell.numberLabel.font = [UIFont boldSystemFontOfSize: 15];
+    cell.numberLabel.textColor = [[TJBAestheticsController singleton] yellowNotebookColor];
+    
+    CALayer *cellLayer = cell.layer;
+    cellLayer.masksToBounds = YES;
+    cellLayer.cornerRadius = 4.0;
+    cellLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+    cellLayer.borderWidth = 0.0;
     
 }
 

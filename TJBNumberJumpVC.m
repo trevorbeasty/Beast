@@ -151,7 +151,7 @@
     
     label.font = [UIFont boldSystemFontOfSize: 12];
     label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor grayColor];
+    label.textColor = [UIColor darkGrayColor];
     label.textAlignment = NSTextAlignmentCenter;
     
 }
