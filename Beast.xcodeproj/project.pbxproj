@@ -483,6 +483,7 @@
 		0B517BB21DF77C20009981F9 = {
 			isa = PBXGroup;
 			children = (
+				0B517BD81DF77CB6009981F9 /* Model */,
 				0B78E7C21E3C162800EB216F /* Cells */,
 				0B1616D11E080E1E001C8F45 /* General */,
 				0B1616CC1E04D1AC001C8F45 /* Singletons */,
@@ -542,7 +543,6 @@
 				0B78E7CF1E3D317500EB216F /* Lift Options */,
 				0B843CB21DFF64BD0093F057 /* Designed Lift */,
 				0B843C901DFB7E9C0093F057 /* Freeform Lift */,
-				0B517BD81DF77CB6009981F9 /* Model */,
 				0B517BDA1DF88651009981F9 /* NumberSelection */,
 			);
 			name = "View Controllers";

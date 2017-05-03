@@ -18,4 +18,8 @@ typedef void(^TJBVoidCallback)(void);
 
 - initWithCallback:(TJBVoidCallback)callback;
 
+#pragma mark - Core Data Management
+
+- (void)deleteActiveChainTemplate;
+
 @end

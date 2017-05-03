@@ -7,10 +7,6 @@
 //
 
 #import "AppDelegate.h"
-
-//#import "TJBExerciseCategory+CoreDataProperties.h"
-//#import "TJBExercise+CoreDataProperties.h"
-
 // core data
 
 #import "CoreDataController.h"

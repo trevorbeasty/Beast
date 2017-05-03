@@ -560,7 +560,14 @@ static CGFloat const bottomControlsSpaceValue = 8;
     
 }
 
-#pragma mark - <UIViewControllerRestoration>
+#pragma mark - Core Data Management
+
+- (void)deleteActiveChainTemplate{
+    
+    [[CoreDataController singleton] deleteChainTemplate: self.chainTemplate];
+    
+    
+}
 
 
 

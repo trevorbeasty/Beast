@@ -275,7 +275,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
             [self configureToolbarButtonsAccordingToActiveState];
             
             [self.activeActivityIndicator stopAnimating];
-//            [self unhideAllBottomControls];
             
         }
         
@@ -2053,12 +2052,30 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
     
+    [self deletePlaceholderChainTemplateIfExists];
+    
     [coder encodeObject: self.tvActiveDate
                  forKey: tvActiveDateKey];
     
     [coder encodeObject: self.dcActiveDate
                  forKey: dcActiveDateKey];
     
+}
+
+- (void)deletePlaceholderChainTemplateIfExists{
+    
+    UIViewController *presentedVC = [self presentedViewController];
+    
+    if (presentedVC){
+        
+        if ([presentedVC isKindOfClass: [TJBCircuitTemplateContainerVC class]]){
+            
+            TJBCircuitTemplateContainerVC *circuitTemplateVC = (TJBCircuitTemplateContainerVC *)[self presentedViewController];
+            
+            [circuitTemplateVC deleteActiveChainTemplate];
+            
+        }
+    }
 }
 
 
