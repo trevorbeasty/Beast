@@ -53,7 +53,7 @@
                     </segments>
                 </segmentedControl>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="HnF-gb-8PT">
-                    <rect key="frame" x="56" y="187.5" width="123" height="357.5"/>
+                    <rect key="frame" x="56" y="171.5" width="123" height="377"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="vib-K0-I1B">
                         <size key="itemSize" width="50" height="50"/>
@@ -77,18 +77,18 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Otr-Cg-8HO" userLabel="leftJumpBarContainer">
-                    <rect key="frame" x="4" y="207.5" width="44" height="317.5"/>
+                    <rect key="frame" x="4" y="191.5" width="44" height="337"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="izE-UW-yWL"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKI-9h-ZsH">
-                    <rect key="frame" x="196" y="207.5" width="44" height="317.5"/>
+                    <rect key="frame" x="196" y="191.5" width="44" height="337"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="kFb-NO-8Ye">
-                    <rect key="frame" x="248" y="187.5" width="123" height="357.5"/>
+                    <rect key="frame" x="248" y="171.5" width="123" height="377"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="YGx-n0-qjn">
                         <size key="itemSize" width="75" height="75"/>
@@ -192,7 +192,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaB-FC-1Bv" userLabel="thinLabel">
-                    <rect key="frame" x="187" y="187.5" width="1" height="405.5"/>
+                    <rect key="frame" x="187" y="171.5" width="1" height="421.5"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="0.5" id="on2-1X-65s"/>
@@ -220,7 +220,7 @@
                 <constraint firstAttribute="bottom" secondItem="I6v-Cl-mMV" secondAttribute="bottom" constant="8" id="Qri-60-pTT"/>
                 <constraint firstItem="JhK-da-Iip" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="TAZ-qC-7Jy"/>
                 <constraint firstItem="TaB-FC-1Bv" firstAttribute="leading" secondItem="HnF-gb-8PT" secondAttribute="trailing" constant="8" id="YlW-fw-hGC"/>
-                <constraint firstItem="l41-YA-PUS" firstAttribute="top" secondItem="HnF-gb-8PT" secondAttribute="bottom" constant="4" id="btM-m9-XUE"/>
+                <constraint firstItem="l41-YA-PUS" firstAttribute="top" secondItem="HnF-gb-8PT" secondAttribute="bottom" constant="0.5" id="btM-m9-XUE"/>
                 <constraint firstItem="Otr-Cg-8HO" firstAttribute="top" secondItem="HnF-gb-8PT" secondAttribute="top" constant="20" id="dfE-Fc-wjk"/>
                 <constraint firstItem="I6v-Cl-mMV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="jS2-46-8gP"/>
                 <constraint firstItem="aKI-9h-ZsH" firstAttribute="top" secondItem="Otr-Cg-8HO" secondAttribute="top" id="kv2-fK-zUZ"/>
@@ -232,8 +232,8 @@
                 <constraint firstAttribute="trailing" secondItem="I6v-Cl-mMV" secondAttribute="trailing" constant="16" id="tIS-tP-SmV"/>
                 <constraint firstItem="iwf-i4-0Nw" firstAttribute="bottom" secondItem="l41-YA-PUS" secondAttribute="bottom" id="tcD-9r-Y9T"/>
                 <constraint firstItem="Otr-Cg-8HO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="4" id="u6z-qN-2av"/>
-                <constraint firstItem="iwf-i4-0Nw" firstAttribute="top" secondItem="kFb-NO-8Ye" secondAttribute="bottom" constant="4" id="wzd-1q-94W"/>
-                <constraint firstItem="HnF-gb-8PT" firstAttribute="top" secondItem="JhK-da-Iip" secondAttribute="bottom" constant="16" id="xFZ-tX-imd"/>
+                <constraint firstItem="iwf-i4-0Nw" firstAttribute="top" secondItem="kFb-NO-8Ye" secondAttribute="bottom" constant="0.5" id="wzd-1q-94W"/>
+                <constraint firstItem="HnF-gb-8PT" firstAttribute="top" secondItem="JhK-da-Iip" secondAttribute="bottom" constant="0.5" id="xFZ-tX-imd"/>
                 <constraint firstItem="JhK-da-Iip" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="yos-Y1-M6d"/>
             </constraints>
             <point key="canvasLocation" x="104.5" y="129.5"/>

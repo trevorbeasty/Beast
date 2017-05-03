@@ -224,14 +224,14 @@ typedef enum {
     NSArray *segmentedControls = @[self.weightSegmentedControl, self.repsSegmentedControl];
     for (UISegmentedControl *sc in segmentedControls){
         
-        sc.tintColor = [[TJBAestheticsController singleton] paleLightBlueColor];
-        sc.backgroundColor = [UIColor grayColor];
+        sc.tintColor = [UIColor darkGrayColor];
+        sc.backgroundColor = [UIColor clearColor];
         
         CALayer *scLayer = sc.layer;
         scLayer.masksToBounds = YES;
         scLayer.cornerRadius = sc.frame.size.height / 2.0;
         scLayer.borderWidth = 1.0;
-        scLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
+        scLayer.borderColor = [UIColor darkGrayColor].CGColor;
         
     }
     
