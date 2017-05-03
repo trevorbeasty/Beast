@@ -75,6 +75,8 @@
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self configureGestureRecognizer];
 
     if (_isCircled){

@@ -104,6 +104,10 @@ static NSString * const restorationID = @"TJBActiveGuidanceRoutineHistory";
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
+    [super viewDidLoad];
+    
     [self configureViewAesthetics];
     
     [self configureLabelText];
@@ -114,6 +118,8 @@ static NSString * const restorationID = @"TJBActiveGuidanceRoutineHistory";
 
 
 - (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear: animated];
     
     if (_shouldFetchDataAndCreateDisplay){
         

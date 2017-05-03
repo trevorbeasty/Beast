@@ -180,6 +180,8 @@ static NSString * const alertTimingID = @"alertTiming";
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
+    [super viewDidLoad];
 
     [self addAppropriateStopwatchObservers];
     
@@ -662,6 +664,8 @@ static NSString * const alertTimingID = @"alertTiming";
 #pragma mark - Restoration
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
     
     [coder encodeObject: self.exercise.name
                  forKey: exerciseNameID];

@@ -230,6 +230,8 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [[TJBStopwatch singleton] addPrimaryStopwatchObserver: self
                                            withTimerLabel: self.timerTitleLabel];
 
@@ -239,11 +241,11 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
     
     [self configureViewAesthetics];
     
-    [self configureInitialDisplay];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear: animated];
     
     if (_configureTargetsWhenViewAppears == YES){
         
@@ -264,26 +266,6 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
     
 }
 
-
-
-- (void)configureInitialDisplay{
-    
-    // detail title label
-    
-    NSString *exercise;
-    NSString *round;
-    if (self.chainTemplate.numberOfRounds ==1){
-        round = @"round";
-    } else{
-        round = @"rounds";
-    }
-    if (self.chainTemplate.numberOfExercises == 1){
-        exercise = @"exercise";
-    } else{
-        exercise = @"exercises";
-    }
-    
-}
 
 - (void)configureImmediateTargets{
     
@@ -1293,6 +1275,8 @@ static NSString const *restViewKey = @"restView";
 #pragma mark - Restoration
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
 
     [coder encodeObject: self.realizedChain.uniqueID
                  forKey: realizedChainUniqueIDKey];

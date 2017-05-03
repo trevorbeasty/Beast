@@ -103,6 +103,8 @@ static CGFloat const requiredTouchTime = .125;
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self viewAesthetics];
     
     [self configureGestureRecognizers];

@@ -147,6 +147,8 @@ static CGFloat const bottomControlsSpaceValue = 8;
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad{
+    
+    [super viewDidLoad];
 
     [self configureViewAesthetics];
     
@@ -156,11 +158,7 @@ static CGFloat const bottomControlsSpaceValue = 8;
 
 }
 
-- (void)viewDidAppear:(BOOL)animated{
-    
 
-    
-}
 
 #pragma mark - View Helper Methods
 

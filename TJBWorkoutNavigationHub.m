@@ -461,6 +461,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 - (void)viewWillAppear:(BOOL)animated{
     
+    [super viewWillAppear: animated];
+    
     if (_displayedContentNeedsUpdating){
         
         [self disableTopControls];
@@ -472,6 +474,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 
 - (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear: animated];
     
     if (_displayedContentNeedsUpdating == YES){
         
@@ -507,6 +511,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 
 - (void)viewDidLoad{
+    
+    [super viewDidLoad];
     
     [self configureViewAesthetics];
     
@@ -1012,20 +1018,6 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 - (void)deriveActiveCellsAndCreateTableView{
     
     [self removeTableAndScrollViewIfExist];
-    
-    // derive the active cells - the 'limit' describes the number of cells that will be shown based on the daily list
-    
-    NSInteger limit;
-    
-    if (self.dailyList.count == 0){
-        
-        limit = 1;
-        
-    } else{
-        
-        limit = self.dailyList.count;
-        
-    }
     
     // calculate and assign the table view container (scroll view) content size as well
     // must create the new table view first so that the cellForIndexPath method has a valid table to dequeue
@@ -2202,6 +2194,8 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
 
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
+    
+    [super encodeRestorableStateWithCoder: coder];
     
     [coder encodeObject: self.workoutLogActiveDay
                  forKey: workoutLogActiveDateKey];

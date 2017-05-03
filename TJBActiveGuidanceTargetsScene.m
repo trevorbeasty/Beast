@@ -95,6 +95,8 @@ static NSString * const chainTemplateIDStringKey = @"chainTemplateIDString";
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self configureViewAesthetics];
 
     [self configureTableView];

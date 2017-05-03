@@ -209,6 +209,8 @@ static NSString * const nameVCKey = @"TJBRoutineNameVC";
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self createStartingViewControllerHierarchy];
     
 }

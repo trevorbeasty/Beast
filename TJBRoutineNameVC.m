@@ -48,6 +48,8 @@
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self configureViewAesthetics];
     
     [self configureTextFieldFunctionality];

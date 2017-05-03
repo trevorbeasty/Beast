@@ -138,6 +138,8 @@ static NSString * const selectedTabIndexID = @"selectedTabIndexID";
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
     
+    [super encodeRestorableStateWithCoder: coder];
+    
     NSArray *childVCs = self.viewControllers;
     
     [coder encodeObject: childVCs[0]
@@ -158,6 +160,7 @@ static NSString * const selectedTabIndexID = @"selectedTabIndexID";
 }
 
 +(UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder{
+    
     
     TJBFreeformModeTabBarController *tbc = [[TJBFreeformModeTabBarController alloc] initForRestoration];
     

@@ -65,6 +65,8 @@
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self configureViewAesthetics];
     
     [self configureDisplay];
@@ -72,6 +74,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear: animated];
     
     [self configureVisualEffectView];
     

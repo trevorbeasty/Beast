@@ -108,6 +108,8 @@ static CGFloat const breatherRoom = 40;
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self configureViewAesthetics];
     
     [self createChildViewControllersAndLayoutViews];

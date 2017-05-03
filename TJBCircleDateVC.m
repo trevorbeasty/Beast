@@ -73,6 +73,8 @@
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     // configure the center property which will be used to create circle effects
     
     _center = CGPointMake(_size.width / 2.0, _size.height - 6.0);

@@ -71,6 +71,8 @@
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self.view layoutIfNeeded];
     
     [self configureViewAesthetics];

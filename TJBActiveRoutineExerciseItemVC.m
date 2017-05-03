@@ -78,6 +78,8 @@ static int const previousMarksLimit = 5;
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self configureViewData];
     
     [self configureStackView];

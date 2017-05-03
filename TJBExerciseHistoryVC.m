@@ -119,6 +119,8 @@ static NSString * const restorationID = @"TJBExerciseHistoryVC";
 
 - (void)viewDidAppear:(BOOL)animated{
     
+    [super viewDidAppear: animated];
+    
     if (_needsUpdating){
         
         [self showActivityIndicator];

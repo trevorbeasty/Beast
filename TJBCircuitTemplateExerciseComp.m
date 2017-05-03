@@ -74,6 +74,8 @@
 
 - (void)viewDidLoad{
     
+    [super viewDidLoad];
+    
     [self viewAesthetics];
     
     [self configureStackView];

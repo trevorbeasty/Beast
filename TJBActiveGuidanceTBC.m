@@ -110,6 +110,8 @@ static NSString * const selectedIndexKey = @"SelectedIndex";
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder{
     
+    [super encodeRestorableStateWithCoder: coder];
+    
     [coder encodeObject: self.viewControllers[0]
                  forKey: activeSceneKey];
     [coder encodeObject: self.viewControllers[1]
