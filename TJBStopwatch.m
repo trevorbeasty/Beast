@@ -18,7 +18,7 @@
 
 #import "TJBStopwatch.h"
 
-@interface TJBStopwatch ()
+@interface TJBStopwatch () <NSCoding>
 
 {
     float _primaryElapsedTimeInSeconds;
@@ -50,6 +50,17 @@
 
 @end
 
+
+
+#pragma mark - Constants
+
+static NSString * const activeLocalAlertIDKey = @"activeLocalAlertID";
+static NSString * const stopwatchStateKey = @"StopwatchState";
+
+
+
+
+
 @implementation TJBStopwatch
 
 #pragma mark - Singleton
@@ -60,7 +71,17 @@
     
     if (!singleton){
         
-        singleton = [[self alloc] initPrivate];
+        NSData *appStateData = [[NSUserDefaults standardUserDefaults] objectForKey: stopwatchStateKey];
+        
+        if (appStateData){
+            
+            singleton = [NSKeyedUnarchiver unarchiveObjectWithData: appStateData];
+            
+        } else{
+            
+            singleton = [[self alloc] initPrivate];
+            
+        }
         
     }
     
@@ -463,7 +484,7 @@
         
         else{
             
-            NSLog(@"actions for permission denied");
+            
             
         }
         
@@ -504,6 +525,8 @@
             NSUUID *alertID = [NSUUID UUID];
             NSString *alertIDString = [alertID UUIDString];
             self.activeLocalAlertID = alertIDString;
+            
+            [self saveStateToUserDefaults];
             
             UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier: alertIDString
                                                                                   content: content
@@ -555,6 +578,46 @@
     return self.targetRest && self.alertTiming && _primaryStopwatchIsOn == YES;
     
 }
+
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    
+    if (self.activeLocalAlertID){
+        
+        [aCoder encodeObject: self.activeLocalAlertID
+                      forKey: activeLocalAlertIDKey];
+        
+    }
+    
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    
+    self = [self initPrivate];
+    
+    NSString *restoredActiveLocalAlertID = [aDecoder decodeObjectForKey: activeLocalAlertIDKey];
+    
+    if (restoredActiveLocalAlertID){
+        
+        self.activeLocalAlertID = restoredActiveLocalAlertID;
+        
+    }
+    
+    return self;
+    
+}
+
+- (void)saveStateToUserDefaults{
+    
+    
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject: self];
+    [[NSUserDefaults standardUserDefaults] setObject: data
+                                              forKey: stopwatchStateKey];
+    
+    
+}
+
 
 @end
 
