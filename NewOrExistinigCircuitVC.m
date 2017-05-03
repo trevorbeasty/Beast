@@ -1639,17 +1639,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)giveControlsDisabledConfiguration{
     
-//    self.backButton.enabled = NO;
-////    self.backButton.layer.opacity = .4;
-//    
-//    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-//    for (UIButton *b in arrows){
-//        
-//        b.enabled = NO;
-////        b.layer.opacity = .4;
-//        
-//    }
-
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
         [comp configureAsDisabled];
@@ -1660,16 +1649,6 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 
 - (void)giveControlsEnabledConfiguration{
     
-//    self.backButton.enabled = YES;
-//    self.backButton.layer.opacity = 1.0;
-//    
-//    NSArray *arrows = @[self.leftArrowButton, self.rightArrowButton];
-//    for (UIButton *b in arrows){
-//        
-//        b.enabled = YES;
-//        b.layer.opacity = 1.0;
-//        
-//    }
     
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         

@@ -275,6 +275,13 @@ static float const numberOfCellsPerRow = 3;
     
     self.multiplierSegmentedControl.tintColor = [UIColor darkGrayColor];
     self.multiplierSegmentedControl.backgroundColor = [UIColor clearColor];
+    
+    UIFont *font = [UIFont boldSystemFontOfSize: 15];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject: font
+                                                           forKey: NSFontAttributeName];
+    [self.multiplierSegmentedControl setTitleTextAttributes: attributes
+                                                 forState: UIControlStateNormal];
+    
     CALayer *scLayer = self.multiplierSegmentedControl.layer;
     scLayer.masksToBounds = YES;
     scLayer.cornerRadius = self.multiplierSegmentedControl.frame.size.height / 2.0;

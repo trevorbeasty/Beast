@@ -194,9 +194,24 @@ typedef enum {
                                   action: @selector(repsSCValueChanged)
                         forControlEvents: UIControlEventValueChanged];
     
+    
+    UIFont *font = [UIFont boldSystemFontOfSize: 15];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject: font
+                                                           forKey: NSFontAttributeName];
+    NSArray *segControls = @[self.weightSegmentedControl, self.repsSegmentedControl];
+    for (UISegmentedControl *sc in segControls){
+        
+
+        [sc setTitleTextAttributes: attributes
+                          forState: UIControlStateNormal];
+        
+    }
+    
     self.weightSegmentedControl.selectedSegmentIndex = 1;
     
     self.repsSegmentedControl.selectedSegmentIndex = 1;
+    
+    
     
     [self.weightCollectionView reloadData];
     [self.repsCollectionView reloadData];
