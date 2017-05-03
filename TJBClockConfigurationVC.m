@@ -261,7 +261,7 @@
         
     }
     
-    NSArray *editButtons = @[self.editButtonTargetRest, self.editButtonAlertTiming, self.clearButton];
+    NSArray *editButtons = @[self.editButtonTargetRest, self.editButtonAlertTiming];
     for (UIButton *butt in editButtons){
         
         butt.backgroundColor = [UIColor grayColor];
@@ -275,6 +275,18 @@
         buttLayer.borderColor = [[TJBAestheticsController singleton] paleLightBlueColor].CGColor;
         
     }
+    
+    // clear button
+    
+    self.clearButton.backgroundColor = [UIColor redColor];
+    [self.clearButton setTitleColor: [UIColor whiteColor]
+                           forState: UIControlStateNormal];
+    self.clearButton.titleLabel.font = [UIFont boldSystemFontOfSize: 20];
+    CALayer *clearButtLayer = self.clearButton.layer;
+    clearButtLayer.masksToBounds = YES;
+    clearButtLayer.cornerRadius = self.clearButton.frame.size.height / 2.0;
+    clearButtLayer.borderWidth = 1.0;
+    clearButtLayer.borderColor = [UIColor whiteColor].CGColor;
     
     self.returnButton.backgroundColor = [UIColor grayColor];
     [self.returnButton setTitleColor: [[TJBAestheticsController singleton] paleLightBlueColor]
@@ -402,18 +414,40 @@
 
 - (IBAction)didPressClearButton:(id)sender{
     
-    // label text
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Clear Alert?"
+                                                                   message: nil
+                                                            preferredStyle: UIAlertControllerStyleAlert];
     
-    NSString *blank = @"---";
-    self.targetRestValueLabel.text = blank;
-    self.alertTiimingValueLabel.text = blank;
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle: @"Cancel"
+                                                           style: UIAlertActionStyleCancel
+                                                         handler: nil];
+    [alert addAction: cancelAction];
     
-    // stopwatch
+    UIAlertAction *clearAction = [UIAlertAction actionWithTitle: @"Clear"
+                                                          style: UIAlertActionStyleDestructive
+                                                        handler: ^(UIAlertAction *action){
+                                                            
+                                                            // label text
+                                                            
+                                                            NSString *blank = @"---";
+                                                            self.targetRestValueLabel.text = blank;
+                                                            self.alertTiimingValueLabel.text = blank;
+                                                            
+                                                            // stopwatch
+                                                            
+                                                            TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+                                                            
+                                                            [stopwatch deleteActiveLocalAlert];
+                                                            [stopwatch clearTargetRestAndAlertTiming];
+                                                            
+                                                        }];
+    [alert addAction: clearAction];
     
-    TJBStopwatch *stopwatch = [TJBStopwatch singleton];
+    [self presentViewController: alert
+                       animated: YES
+                     completion: nil];
     
-    [stopwatch deleteActiveLocalAlert];
-    [stopwatch clearTargetRestAndAlertTiming];
+
     
 }
 
