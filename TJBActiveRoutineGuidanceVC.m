@@ -326,7 +326,7 @@ static NSString * const stopwatchRecoveryUpdateDateKey = @"stopwatchRecoveryUpda
                         [self.contentScrollView addSubview: newView];
                         self.activeScrollContentView = newView;
                         
-                        self.contentScrollView.hidden = NO;
+//                        self.contentScrollView.hidden = NO;
                         
                     }
                     completion: nil];
@@ -1026,7 +1026,7 @@ static NSString const *restViewKey = @"restView";
                 
                 // this is where the views are updated to reflect new targets. Must ensure the current run loop finishes before calling this next method so that the next method's animation is properly displayed (views only redraw when the run-loop finishes, and thus one must allow the run loop to finish in order to display some interim state
                 
-                self.contentScrollView.hidden = YES;
+//                self.contentScrollView.hidden = YES;
                 
                 self.timerTitleLabel.backgroundColor = [UIColor darkGrayColor];
                 
@@ -1227,6 +1227,12 @@ static NSString const *restViewKey = @"restView";
         
     };
     
+    ClearAlertCallback clearCallback = ^{
+        
+        self.alertValueLabel.text = @"No Alert";
+        
+    };
+    
     // the user will be allowed to change the rest target only before the routine truly begins.  Once it has begun, rest times are dictated as per user specifications
     // if there is no targeted rest, the user can
     // a value of -1 is held as the rest target when the user is not targeting rest, hence the logic below
@@ -1253,6 +1259,7 @@ static NSString const *restViewKey = @"restView";
     
     TJBClockConfigurationVC *clockVC = [[TJBClockConfigurationVC alloc] initWithApplyAlertParametersCallback: apBlock
                                                                                               cancelCallback: cancelCallback
+                                                                                          clearAlertCallback: clearCallback
                                                                                           restTargetIsStatic: restTargetIsStatic];
     
     [self presentViewController: clockVC

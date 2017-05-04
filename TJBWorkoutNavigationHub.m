@@ -764,7 +764,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
     // month title
     
-    df.dateFormat = @"MMMM yyyy";
+    df.dateFormat = @"MMM yyyy";
     NSString *monthTitle = [df stringFromDate: self.dateControlActiveDate];
     self.monthTitle.text = monthTitle;
     

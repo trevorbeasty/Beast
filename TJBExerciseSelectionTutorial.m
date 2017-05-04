@@ -99,13 +99,13 @@
     [TJBAssortedUtilities addHorizontalBorderBeneath: self.tutorialTitleLabel
                                            thickness: 2
                                      widthAdjustment: 32
-                                      verticalOffset: 0
+                                      verticalOffset: 2
                                             metaView: self.view
                                            lineColor: [UIColor whiteColor]];
     [TJBAssortedUtilities addHorizontalBorderBeneath: self.tutorialTitleLabel
                                            thickness: 2
                                      widthAdjustment: 16
-                                      verticalOffset: 4
+                                      verticalOffset: 6
                                             metaView: self.view
                                            lineColor: [UIColor whiteColor]];
     

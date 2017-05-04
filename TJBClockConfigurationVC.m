@@ -79,6 +79,7 @@
 
 @property (copy) VoidBlock cancelBlock;
 @property (copy) AlertParametersBlock applyAlertParamBlock;
+@property (copy) ClearAlertCallback clearCallback;
 
 // core
 
@@ -94,25 +95,22 @@
 #pragma mark - Instantiation
 
 
-- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock{
+- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock clearAlertCallback:(ClearAlertCallback)clearAlertCallback{
     
-    self = [super init];
-    
-    self.cancelBlock = cancelBlock;
-    self.applyAlertParamBlock = applyAlertParamBlock;
-    
-    _restTargetIsStatic = NO;
-    
-    return self;
+    return  [self initWithApplyAlertParametersCallback: applyAlertParamBlock
+                                        cancelCallback: cancelBlock
+                                    clearAlertCallback: clearAlertCallback
+                                    restTargetIsStatic: NO];
     
 }
 
-- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock restTargetIsStatic:(BOOL)restTargetIsStatic{
+- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock clearAlertCallback:(ClearAlertCallback)clearAlertCallback restTargetIsStatic:(BOOL)restTargetIsStatic{
     
     self = [super init];
     
     self.cancelBlock = cancelBlock;
     self.applyAlertParamBlock = applyAlertParamBlock;
+    self.clearCallback = clearAlertCallback;
     
     _restTargetIsStatic = restTargetIsStatic;
     
@@ -430,15 +428,35 @@
                                                             // label text
                                                             
                                                             NSString *blank = @"---";
-                                                            self.targetRestValueLabel.text = blank;
-                                                            self.alertTiimingValueLabel.text = blank;
+
                                                             
                                                             // stopwatch
                                                             
                                                             TJBStopwatch *stopwatch = [TJBStopwatch singleton];
                                                             
                                                             [stopwatch deleteActiveLocalAlert];
-                                                            [stopwatch clearTargetRestAndAlertTiming];
+                                                            
+                                                            if (_restTargetIsStatic == NO){
+                                                                
+                                                                [stopwatch clearTargetRestAndAlertTiming];
+                                                                
+                                                                self.targetRestValueLabel.text = blank;
+                                                                self.alertTiimingValueLabel.text = blank;
+                                                                
+                                                            } else{
+                                                                
+                                                                [stopwatch setAlertTiming: nil];
+                                                                self.alertTimingTitleLabel.text = blank;
+                                                                
+                                                                
+                                                            }
+                                                            
+                            
+                                                            self.scheduledAlertLabel.text = @"No Alert";
+                                                            
+                                                            // callback
+                                                            
+                                                            self.clearCallback();
                                                             
                                                         }];
     [alert addAction: clearAction];

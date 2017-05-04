@@ -10,12 +10,13 @@
 
 typedef  void(^VoidBlock)(void);
 typedef  void(^AlertParametersBlock)(NSNumber *, NSNumber *);
+typedef  void (^ClearAlertCallback)(void);
 
 @interface TJBClockConfigurationVC : UIViewController
 
 // instantiation
 
-- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock;
-- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock restTargetIsStatic:(BOOL)restTargetIsStatic;
+- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock clearAlertCallback:(ClearAlertCallback)clearAlertCallback;
+- (instancetype)initWithApplyAlertParametersCallback:(AlertParametersBlock)applyAlertParamBlock cancelCallback:(VoidBlock)cancelBlock clearAlertCallback:(ClearAlertCallback)clearAlertCallback restTargetIsStatic:(BOOL)restTargetIsStatic;
 
 @end

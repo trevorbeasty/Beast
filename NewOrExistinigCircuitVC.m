@@ -1658,6 +1658,13 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
         
     }
     
+    NSArray *dateControlArrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *but in dateControlArrows){
+        
+        but.enabled = NO;
+        
+    }
+    
 }
 
 - (void)giveControlsEnabledConfiguration{
@@ -1666,6 +1673,13 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
     for (TJBSchemeSelectionDateComp *comp in self.dateControlObjects){
         
         [comp configureAsEnabled];
+        
+    }
+    
+    NSArray *dateControlArrows = @[self.leftArrowButton, self.rightArrowButton];
+    for (UIButton *but in dateControlArrows){
+        
+        but.enabled = YES;
         
     }
     

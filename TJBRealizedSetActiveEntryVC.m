@@ -387,8 +387,15 @@ static NSString * const alertTimingID = @"alertTiming";
         
     };
     
+    ClearAlertCallback clearCallback = ^{
+        
+        self.scheduledAlertLabel.text = @"No Alert";
+        
+    };
+    
     TJBClockConfigurationVC *vc = [[TJBClockConfigurationVC alloc] initWithApplyAlertParametersCallback: aapCallback
-                                                                                         cancelCallback: cancelCallback];
+                                                                                         cancelCallback: cancelCallback
+                                                                                     clearAlertCallback: clearCallback];
     
     [self presentViewController: vc
                        animated: YES
