@@ -8,6 +8,8 @@
 
 #import "TJBExerciseSelectionTutorial.h"
 
+#import "TJBAssortedUtilities.h" // utilities
+
 @interface TJBExerciseSelectionTutorial ()
 
 #pragma mark - IBOutlet
@@ -37,6 +39,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *label3;
 @property (weak, nonatomic) IBOutlet UILabel *label4;
 @property (weak, nonatomic) IBOutlet UILabel *label5;
+@property (weak, nonatomic) IBOutlet UILabel *tutorialTitleLabel;
 
 // exit button
 
@@ -82,10 +85,33 @@
     
     [self configureDisplayContentBasedOnType];
     
+    [self drawDetailedLines];
+    
 }
 
 
 #pragma mark - View Helper Methods
+
+- (void)drawDetailedLines{
+    
+    [self.view layoutIfNeeded];
+    
+    [TJBAssortedUtilities addHorizontalBorderBeneath: self.tutorialTitleLabel
+                                           thickness: 2
+                                     widthAdjustment: 32
+                                      verticalOffset: 0
+                                            metaView: self.view
+                                           lineColor: [UIColor whiteColor]];
+    [TJBAssortedUtilities addHorizontalBorderBeneath: self.tutorialTitleLabel
+                                           thickness: 2
+                                     widthAdjustment: 16
+                                      verticalOffset: 4
+                                            metaView: self.view
+                                           lineColor: [UIColor whiteColor]];
+    
+    
+    
+}
 
 - (void)configureDisplayContentBasedOnType{
     
@@ -101,9 +127,20 @@
         self.label5.text = @"Make corrections to the highlighted entry";
         
         
+    } else if (_tutorialType == TJBRoutineSelectionTutorial){
+        
+        [self.image2 setImage: [UIImage imageNamed: @"historyBlue30PDF"]];
+        [self.image3 setImage: [UIImage imageNamed: @"garbageBlue30PDF"]];
+        [self.image4 setImage: [UIImage imageNamed: @"addBlue30PDF"]];
+        self.image5.hidden = YES;
+        
+        self.label1.text = @"Launch the highlighted routine";
+        self.label2.text = @"View the entire routine history for the highlighted routine";
+        self.label3.text = @"Delete the highlighted routine";
+        self.label4.text = @"Create a new routine";
+        self.label5.hidden = YES;
+        
     }
-    
-    
     
 }
 
@@ -114,19 +151,8 @@
     
     self.view.backgroundColor = [UIColor clearColor];
     
-    // images
     
-//    NSArray *images = @[self.liftImage, self.searchImage, self.addNewImage, self.deleteImage, self.editImage];
-//    for (UIImage *ima in images){
-//        
-//        
-//        
-//        
-//        
-//    }
-    
-    
-    // labels
+    // detail labels
     
     NSArray *labels = @[self.label1, self.label2, self.label3, self.label4, self.label5];
     for (UILabel *lab in labels){
@@ -137,7 +163,11 @@
         
     }
     
+    // title label
     
+    self.tutorialTitleLabel.font = [UIFont boldSystemFontOfSize: 25];
+    self.tutorialTitleLabel.backgroundColor = [UIColor clearColor];
+    self.tutorialTitleLabel.textColor = [UIColor whiteColor];
     
 }
 
@@ -148,6 +178,9 @@
     self.cancelCallback();
     
 }
+
+
+
 @end
 
 

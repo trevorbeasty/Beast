@@ -37,6 +37,8 @@
 
 #import "TJBSchemeSelectionDateComp.h"
 
+#import "TJBExerciseSelectionTutorial.h" // tutorial
+
 
 #pragma mark - Constants
 
@@ -60,9 +62,16 @@ typedef enum{
     
 }
 
-// IBOutlet
+
+// programmatically created
 
 @property (strong) UIActivityIndicatorView *activeActivityIndicator;
+@property (strong) UIVisualEffectView *tutorialVisualEffectView;
+@property (strong) TJBExerciseSelectionTutorial *tutorialChildVC;
+
+
+
+// IBOutlet
 
 @property (weak, nonatomic) IBOutlet UIView *mainContainer;
 @property (weak, nonatomic) IBOutlet UILabel *yearLabel;
@@ -77,7 +86,6 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UILabel *numberOfRecordsLabel;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
-//@property (weak, nonatomic) IBOutlet UILabel *sortByBottomLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *sortBySegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *arrowControlButton;
 
@@ -87,6 +95,7 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *createNewButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentedControlBottomSpaceConstr;
+@property (weak, nonatomic) IBOutlet UIButton *tutorialButton;
 
 
 // IBAction
@@ -103,6 +112,7 @@ typedef enum{
 - (IBAction)didPressHistoryButton:(id)sender;
 - (IBAction)didPressDeleteButton:(id)sender;
 - (IBAction)didPressNewRoutine:(id)sender;
+- (IBAction)didPressTutorialButton:(id)sender;
 
 // core
 
@@ -157,6 +167,10 @@ static CGFloat const historyReturnButtonBottomSpacing = 8;
 // content generation
 
 static NSTimeInterval const contentLoadingSmoothingDelay = .01;
+
+// animation
+
+static NSTimeInterval const tutorialTransitionTimeInterval = .3;
 
 
 // date controls
@@ -2003,6 +2017,78 @@ static NSString * const dcActiveDateKey = @"dcActiveDate";
 }
 
 
+
+#pragma mark - Tutorial
+
+- (IBAction)didPressTutorialButton:(id)sender{
+    
+    if (!self.tutorialVisualEffectView){
+        
+        [self createInfoChildView];
+        
+    }
+    
+    self.tutorialVisualEffectView.hidden = YES;
+    
+    [UIView transitionWithView: self.view
+                      duration: tutorialTransitionTimeInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        self.tutorialVisualEffectView.hidden = NO;
+                        
+                    }
+                    completion: nil];
+    
+    
+    
+}
+
+
+
+
+- (void)createInfoChildView{
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
+    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect: blur];
+    self.tutorialVisualEffectView = visualEffectView;
+    visualEffectView.frame = self.view.bounds;
+    
+    [self.view addSubview: visualEffectView];
+    
+    __weak NewOrExistinigCircuitVC *weakSelf = self;
+    
+    CancelCallbackBlock cancelBlock = ^{
+        
+        [weakSelf hideTutorialScene];
+        
+    };
+    
+    TJBExerciseSelectionTutorial *tutorial = [[TJBExerciseSelectionTutorial alloc] initWithCancelCallback: cancelBlock
+                                                                                             tutorialType: TJBRoutineSelectionTutorial];
+    self.tutorialChildVC = tutorial;
+    
+    [self addChildViewController: tutorial];
+    
+    [visualEffectView.contentView addSubview: tutorial.view];
+    
+    [tutorial didMoveToParentViewController: self];
+    
+}
+
+- (void)hideTutorialScene{
+    
+    [UIView transitionWithView: self.view
+                      duration: tutorialTransitionTimeInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        self.tutorialVisualEffectView.hidden = YES;
+                        
+                    }
+                    completion: nil];
+    
+}
 
 #pragma mark - Segmented Control 
 

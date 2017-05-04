@@ -22,6 +22,7 @@
                 <outlet property="label3" destination="JKK-29-TuR" id="M7O-Cf-gnG"/>
                 <outlet property="label4" destination="cXb-Ve-Q3f" id="D8Q-R9-Y29"/>
                 <outlet property="label5" destination="mIy-DG-uPZ" id="o97-bC-7iA"/>
+                <outlet property="tutorialTitleLabel" destination="41x-oa-Ygh" id="heo-cA-xrz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -91,10 +92,17 @@
                         <action selector="didPressExitButton:" destination="-1" eventType="touchUpInside" id="D9D-7W-UWz"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tutorial" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="41x-oa-Ygh">
+                    <rect key="frame" x="159" y="40" width="57" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="ax3-Hj-OkR" firstAttribute="width" secondItem="ghe-ff-mS1" secondAttribute="width" id="0KB-Ug-hvH"/>
+                <constraint firstItem="41x-oa-Ygh" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="0Zn-lM-aC5"/>
                 <constraint firstItem="Eej-kb-LSx" firstAttribute="trailing" secondItem="ghe-ff-mS1" secondAttribute="trailing" id="2mq-17-bVa"/>
                 <constraint firstItem="Eej-kb-LSx" firstAttribute="top" secondItem="ghe-ff-mS1" secondAttribute="bottom" constant="32" id="4kK-IJ-Ug9"/>
                 <constraint firstItem="ghe-ff-mS1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="24" id="5hX-MO-Acx"/>
@@ -113,6 +121,7 @@
                 <constraint firstItem="P0L-jc-lz6" firstAttribute="trailing" secondItem="KEF-p8-SWp" secondAttribute="trailing" id="YPD-yh-dns"/>
                 <constraint firstItem="JKK-29-TuR" firstAttribute="leading" secondItem="KEF-p8-SWp" secondAttribute="leading" id="aBV-GP-l6d"/>
                 <constraint firstItem="P0L-jc-lz6" firstAttribute="leading" secondItem="KEF-p8-SWp" secondAttribute="leading" id="bfW-Hk-sAF"/>
+                <constraint firstItem="41x-oa-Ygh" firstAttribute="centerY" secondItem="UuO-lr-msi" secondAttribute="centerY" id="etU-UE-chR"/>
                 <constraint firstItem="ax3-Hj-OkR" firstAttribute="leading" secondItem="ghe-ff-mS1" secondAttribute="leading" id="gdO-fp-RQo"/>
                 <constraint firstItem="0xU-vF-wHn" firstAttribute="leading" secondItem="ghe-ff-mS1" secondAttribute="leading" id="hEv-vI-Phd"/>
                 <constraint firstItem="P0L-jc-lz6" firstAttribute="centerY" secondItem="Eej-kb-LSx" secondAttribute="centerY" id="hvU-H0-xKj"/>

@@ -121,6 +121,42 @@
 
 #pragma mark - Detailed Drawing
 
++ (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness widthAdjustment:(CGFloat)widthAdjustment verticalOffset:(CGFloat)verticalOffset metaView:(UIView *)metaView lineColor:(UIColor *)lineColor{
+    
+    
+    CAShapeLayer *sl = [CAShapeLayer layer];
+    
+    // attributes
+    
+    sl.strokeColor = lineColor.CGColor;
+    sl.lineWidth = thickness;
+    sl.fillColor = nil;
+    sl.opacity = 1.0;
+    
+    
+    // path
+    // vertical offset describes the amount by which the line is inset from the labels top and bottom edges
+    // horizontal offset describes the distance to the right from the labels right edge that the line is drawn
+    
+    CGPoint labelOrigin = label.frame.origin;
+    CGSize labelSize = label.frame.size;
+    
+    CGPoint startPoint = CGPointMake(labelOrigin.x - widthAdjustment, labelOrigin.y + labelSize.height + verticalOffset);
+    CGPoint endPoint = CGPointMake(labelOrigin.x + labelSize.width + widthAdjustment,  startPoint.y);
+    
+    UIBezierPath *bp = [[UIBezierPath alloc] init];
+    [bp moveToPoint: startPoint];
+    [bp addLineToPoint: endPoint];
+    
+    sl.path = bp.CGPath;
+    
+    // label layer
+    
+    [metaView.layer addSublayer: sl];
+    
+    
+}
+
 + (void)addVerticalBorderToRight:(UILabel *)label thickness:(CGFloat)thickness metaView:(UIView *)metaView{
     
     CAShapeLayer *sl = [CAShapeLayer layer];

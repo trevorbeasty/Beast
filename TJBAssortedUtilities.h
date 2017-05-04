@@ -29,6 +29,7 @@
 + (void)addVerticalBorderToRight:(UILabel *)label thickness:(CGFloat)thickness metaView:(UIView *)metaView;
 
 + (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness metaView:(UIView *)metaView;
++ (void)addHorizontalBorderBeneath:(UILabel *)label thickness:(CGFloat)thickness widthAdjustment:(CGFloat)widthAdjustment verticalOffset:(CGFloat)verticalOffset metaView:(UIView *)metaView lineColor:(UIColor *)lineColor;
 
 + (void)drawHookLineUnderLabel1:(UILabel *)label1 label2:(UILabel *)label2 verticalOffset:(CGFloat)vertOff thickness:(CGFloat)thickness hookLength:(CGFloat)hookLength metaView:(UIView *)metaView;
 

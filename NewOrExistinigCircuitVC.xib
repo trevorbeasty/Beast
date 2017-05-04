@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -28,6 +28,7 @@
                 <outlet property="sortBySegmentedControl" destination="tyu-rD-VFA" id="gko-Xm-P6y"/>
                 <outlet property="toolbar" destination="5hF-RU-JdV" id="OVA-BE-Gaa"/>
                 <outlet property="topTitleBar" destination="jJx-Ep-SFb" id="6zS-tR-nMP"/>
+                <outlet property="tutorialButton" destination="6eg-MN-efX" id="D0F-Pf-k47"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="yearLabel" destination="yZc-c3-eUK" id="gpZ-IA-MuZ"/>
             </connections>
@@ -115,7 +116,7 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2017" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZc-c3-eUK">
-                            <rect key="frame" x="128" y="16" width="187" height="18"/>
+                            <rect key="frame" x="128" y="16" width="127" height="18"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -131,7 +132,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muu-Ne-Y0K">
-                            <rect key="frame" x="315" y="0.0" width="60" height="50"/>
+                            <rect key="frame" x="255" y="0.0" width="60" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="Q7h-GX-c2x"/>
                             </constraints>
@@ -147,6 +148,16 @@
                                 <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="46V-Zq-up9"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eg-MN-efX">
+                            <rect key="frame" x="315" y="0.0" width="60" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="Fsq-01-ii8"/>
+                            </constraints>
+                            <state key="normal" image="infoBlue25PDF"/>
+                            <connections>
+                                <action selector="didPressTutorialButton:" destination="-1" eventType="touchUpInside" id="ZRw-lG-bb2"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -155,14 +166,18 @@
                         <constraint firstItem="yZc-c3-eUK" firstAttribute="leading" secondItem="tZY-W0-fYd" secondAttribute="trailing" id="2gK-Fs-rHk"/>
                         <constraint firstAttribute="bottom" secondItem="Xaz-HF-NBZ" secondAttribute="bottom" id="4JV-al-WZQ"/>
                         <constraint firstItem="Xaz-HF-NBZ" firstAttribute="leading" secondItem="jJx-Ep-SFb" secondAttribute="leading" id="4p7-8o-kMW"/>
-                        <constraint firstAttribute="trailing" secondItem="muu-Ne-Y0K" secondAttribute="trailing" id="8NM-sV-1Bf"/>
+                        <constraint firstAttribute="trailing" secondItem="muu-Ne-Y0K" secondAttribute="trailing" constant="60" id="8NM-sV-1Bf"/>
                         <constraint firstItem="Xaz-HF-NBZ" firstAttribute="top" secondItem="jJx-Ep-SFb" secondAttribute="top" id="ALJ-jN-zdq"/>
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="leading" secondItem="yZc-c3-eUK" secondAttribute="trailing" id="BVb-HN-cuV"/>
                         <constraint firstAttribute="bottom" secondItem="muu-Ne-Y0K" secondAttribute="bottom" id="KS9-zp-HJl"/>
+                        <constraint firstItem="6eg-MN-efX" firstAttribute="top" secondItem="muu-Ne-Y0K" secondAttribute="top" id="LPU-hR-mwt"/>
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="top" secondItem="jJx-Ep-SFb" secondAttribute="top" id="MnT-tC-VyR"/>
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="top" secondItem="tZY-W0-fYd" secondAttribute="top" id="NrD-dr-IdR"/>
+                        <constraint firstItem="6eg-MN-efX" firstAttribute="bottom" secondItem="muu-Ne-Y0K" secondAttribute="bottom" id="SOA-oc-Rgu"/>
+                        <constraint firstAttribute="trailing" secondItem="6eg-MN-efX" secondAttribute="trailing" id="ZaF-ez-i8l"/>
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="bottom" secondItem="tZY-W0-fYd" secondAttribute="bottom" id="ans-a9-D27"/>
                         <constraint firstItem="yZc-c3-eUK" firstAttribute="centerY" secondItem="jJx-Ep-SFb" secondAttribute="centerY" id="eA1-NJ-U7b"/>
+                        <constraint firstItem="6eg-MN-efX" firstAttribute="leading" secondItem="muu-Ne-Y0K" secondAttribute="trailing" id="eBv-UH-MpY"/>
                         <constraint firstItem="muu-Ne-Y0K" firstAttribute="width" secondItem="tZY-W0-fYd" secondAttribute="width" id="hWz-mk-UM5"/>
                     </constraints>
                 </view>
@@ -221,6 +236,7 @@
         <image name="garbageBlue30PDF" width="30" height="30"/>
         <image name="historyBlue30PDF" width="30" height="30"/>
         <image name="homeBlue25PDF" width="25" height="25"/>
+        <image name="infoBlue25PDF" width="25" height="25"/>
         <image name="leftArrowBlue25PDF" width="25" height="25"/>
         <image name="liftBlue30PDF" width="30" height="30"/>
         <image name="rightArrowBlue25PDF" width="25" height="25"/>
