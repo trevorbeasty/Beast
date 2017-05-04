@@ -40,6 +40,8 @@
     float _previousRoundsStepperValue;
     BOOL _advancedControlsHidden;
     
+    BOOL _shouldDeriveContent;
+    
 }
 
 // IBOutlet
@@ -112,6 +114,7 @@ static CGFloat const bottomControlsSpaceValue = 8;
     // state
     
     _advancedControlsHidden = NO;
+    _shouldDeriveContent = YES;
     
     return self;
     
@@ -152,10 +155,23 @@ static CGFloat const bottomControlsSpaceValue = 8;
 
     [self configureViewAesthetics];
     
-    [self configureStartingContent];
-    
     [self configureSteppers];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear: animated];
+    
+    if (_shouldDeriveContent == YES){
+        
+        [self configureStartingContent];
+        
+        _shouldDeriveContent = NO;
+        
+        
+    }
+    
 }
 
 

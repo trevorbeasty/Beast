@@ -30,6 +30,7 @@
     // state
     
     NumberType _numberTypeIdentifier;
+    BOOL _shouldConfigureJumpBar;
     
 }
 
@@ -91,6 +92,8 @@ static float const numberOfCellsPerRow = 3;
     self.cancelBlock = cancelBlock;
     self.numberSelectedBlock = numberSelectedBlock;
     
+    _shouldConfigureJumpBar = YES;
+    
     return self;
     
 }
@@ -111,7 +114,29 @@ static float const numberOfCellsPerRow = 3;
     
     [self configureDisplay];
     
-    [self configureJumpBar];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear: animated];
+    
+    [self.view layoutIfNeeded];
+    
+    [self.collectionView reloadData];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear: animated];
+    
+    if (_shouldConfigureJumpBar == YES){
+        
+        
+        [self configureJumpBar];
+        
+        _shouldConfigureJumpBar = NO;
+    }
     
 }
 

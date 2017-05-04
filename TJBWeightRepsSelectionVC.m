@@ -22,6 +22,12 @@
 
 @interface TJBWeightRepsSelectionVC () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
+{
+    
+    BOOL _shouldConfigureJumpBar;
+    
+}
+
 // view objects
 
 @property (weak, nonatomic) IBOutlet UICollectionView *weightCollectionView;
@@ -100,6 +106,8 @@ typedef enum {
     self.cancelBlock = cancelBlock;
     self.numberSelectedBlock = numberSelectedBlock;
     
+    _shouldConfigureJumpBar = YES;
+    
     return self;
     
 }
@@ -121,9 +129,35 @@ typedef enum {
     
     [self configureViewData];
     
-    [self configureJumpBars];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear: animated];
+    
+    [self.view layoutIfNeeded];
+    
+    [self.weightCollectionView reloadData];
+    [self.repsCollectionView reloadData];
+    
+
     
 }
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear: animated];
+    
+    if (_shouldConfigureJumpBar == YES){
+        
+        [self configureJumpBars];
+        
+        _shouldConfigureJumpBar = NO;
+        
+    }
+    
+}
+
 
 
 #pragma mark - View Helper Methods

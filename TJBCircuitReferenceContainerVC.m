@@ -27,6 +27,7 @@
 {
     
     TJBEditingDataType _editingDataType;
+    BOOL _shouldLayoutContent;
     
 }
 
@@ -64,6 +65,7 @@
     self = [super init];
     
     [self determineDataTypeAndStoreAccordinglyForDataObject: dataObject];
+    _shouldLayoutContent = YES;
     
     return self;
 }
@@ -112,7 +114,21 @@
     
     [self configureColumnLabelsText];
     
-    [self layoutContent];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    [super viewDidAppear: animated];
+    
+    if (_shouldLayoutContent == YES){
+        
+        
+        [self layoutContent];
+        
+        _shouldLayoutContent = NO;
+    }
+    
+    
     
 }
 
@@ -164,9 +180,6 @@
         
     }
     
-    // detailed lines
-    
-//    [self drawDetailedLines];
     
 }
 
@@ -187,23 +200,6 @@
     
 }
 
-//- (void)drawDetailedLines{
-//    
-//    [self.view layoutSubviews];
-//    [self.columnHeadersContainer layoutSubviews];
-//    
-//    NSArray *detailedLineLabels = @[self.weightColumnLabel, self.repsColumnLabel];
-//    for (UILabel *label in detailedLineLabels){
-//        
-//        [TJBAssortedUtilities drawVerticalDividerToRightOfLabel: label
-//                                               horizontalOffset: 0
-//                                                      thickness: .5
-//                                                 verticalOffset: label.frame.size.height / 4.0
-//                                                       metaView: self.columnHeadersContainer];
-//        
-//    }
-//    
-//}
 
 - (void)layoutContent{
     

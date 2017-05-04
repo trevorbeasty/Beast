@@ -155,7 +155,7 @@
     // text field
     
     self.exerciseTextField.backgroundColor = [UIColor grayColor];
-    self.exerciseTextField.font = [UIFont systemFontOfSize: 15];
+    self.exerciseTextField.font = [UIFont boldSystemFontOfSize: 15];
     self.exerciseTextField.textColor = [UIColor whiteColor];
     self.exerciseTextField.textAlignment = NSTextAlignmentCenter;
     self.exerciseTextField.autocapitalizationType = UITextAutocapitalizationTypeWords;
