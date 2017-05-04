@@ -18,6 +18,8 @@
 
 #import "TJBStopwatch.h"
 
+#import "AppDelegate.h" // app delegate
+
 @interface TJBStopwatch () <NSCoding>
 
 {
@@ -110,6 +112,7 @@ static NSString * const stopwatchStateKey = @"StopwatchState";
                                                     selector: @selector(updateTimerLabels)
                                                     userInfo: nil
                                                      repeats: YES];
+
     
     return self;
     
@@ -467,14 +470,7 @@ static NSString * const stopwatchStateKey = @"StopwatchState";
         
         if (settings.authorizationStatus == UNAuthorizationStatusNotDetermined){
             
-            void (^authorizationRequestHandler)(BOOL, NSError *) = ^(BOOL granted, NSError *error){
-                
-                [self scheduleAlertBasedOnUserPermissions];
-            
-            };
-            
-            [nCenter requestAuthorizationWithOptions: (UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
-                                   completionHandler: authorizationRequestHandler];
+            [self initialLocalNotificationRequestAlertSequence];
             
         } else if (settings.authorizationStatus == UNAuthorizationStatusAuthorized){
             
@@ -484,7 +480,7 @@ static NSString * const stopwatchStateKey = @"StopwatchState";
         
         else{
             
-            
+            return;
             
         }
         
@@ -493,6 +489,38 @@ static NSString * const stopwatchStateKey = @"StopwatchState";
     [nCenter getNotificationSettingsWithCompletionHandler: alertPermissionsHandler];
     
 }
+
+- (void)initialLocalNotificationRequestAlertSequence{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle: @"Target Rest Alerts"
+                                                                   message: @"Push notifications must be enabled in order for target rest alerts to work. Enable push notification in the following prompt if you would like to use rest alerts"
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle: @"Continue"
+                                                             style: UIAlertActionStyleDefault
+                                                           handler: ^(UIAlertAction *action){
+                                                               
+                                                               
+                                                               void (^authorizationRequestHandler)(BOOL, NSError *) = ^(BOOL granted, NSError *error){
+                                                                   
+                                                                   [self scheduleAlertBasedOnUserPermissions];
+                                                                   
+                                                               };
+                                                               
+                                                               [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions: (UNAuthorizationOptionAlert + UNAuthorizationOptionSound)
+                                                                                                                                   completionHandler: authorizationRequestHandler];
+                                                               
+                                                               
+                                                           }];
+    [alert addAction: continueAction];
+    
+    AppDelegate *ad = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [[ad topViewController] presentViewController: alert
+                                         animated: YES
+                                       completion: nil];
+    
+}
+
 
 - (void)scheduleLocalNotificationBasedOnClassIVs{
     
@@ -589,6 +617,7 @@ static NSString * const stopwatchStateKey = @"StopwatchState";
                       forKey: activeLocalAlertIDKey];
         
     }
+
     
 }
 
@@ -603,6 +632,7 @@ static NSString * const stopwatchStateKey = @"StopwatchState";
         self.activeLocalAlertID = restoredActiveLocalAlertID;
         
     }
+    
     
     return self;
     

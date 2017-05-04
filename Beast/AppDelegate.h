@@ -13,5 +13,10 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+
+#pragma mark - API
+
+- (UIViewController *)topViewController;
+
 @end
 
