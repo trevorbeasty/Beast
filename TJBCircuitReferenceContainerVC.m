@@ -175,7 +175,7 @@
     
     if (_editingDataType == TJBRealizedsetGroupingEditingData){
         
-        self.restOrTimeColumnLabel.text = @"submission \ntime";
+        self.restOrTimeColumnLabel.text = @"submit\ntime";
         
     } else{
         

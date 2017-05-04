@@ -36,6 +36,8 @@
 
 #import "TJBAssortedUtilities.h" // utilities
 
+#import "TJBExerciseSelectionTutorial.h"
+
 // state
 
 typedef enum{
@@ -61,10 +63,16 @@ typedef enum{
     
 }
 
-// IBOutlet
+// programmatically created
 
 @property (weak, nonatomic) UITableView *tableView;
 @property (weak, nonatomic) UIScrollView *tableViewScrollContainer;
+@property (strong) UIVisualEffectView *tutorialVisualEffectView;
+@property (strong) TJBExerciseSelectionTutorial *tutorialChildVC;
+
+
+// IBOutlet
+
 @property (weak, nonatomic) IBOutlet UIButton *leftArrowButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightArrowButton;
 @property (weak, nonatomic) IBOutlet UILabel *monthTitle;
@@ -88,6 +96,7 @@ typedef enum{
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomToContainerConstr;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftArrowLeadingSpaceConstr;
 
+@property (weak, nonatomic) IBOutlet UIButton *infoButton;
 
 
 // IBAction
@@ -106,6 +115,7 @@ typedef enum{
 - (IBAction)didPressLiftButton:(id)sender;
 - (IBAction)didPressEdit:(id)sender;
 
+- (IBAction)didPressInfoButton:(id)sender;
 
 // circle dates
 
@@ -149,6 +159,8 @@ static const CGFloat buttonHeight = 55.0;
 
 static const CGFloat toolbarToBottomSpacing = 8;
 static const CGFloat toolbarAnimationTime = .2;
+
+static NSTimeInterval const tutorialTransitionTimeInterval = .3;
 
 // content loading
 
@@ -1535,6 +1547,7 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     
 }
 
+
 #pragma mark - Toolbar Delete Methods
 
 - (IBAction)didPressDelete:(id)sender{
@@ -2188,6 +2201,76 @@ static NSString * const includeAdvancedControlsKey = @"includeAdvancedControlsFo
     return xPosition / xRange;
     
 }
+
+#pragma mark - Tutorial
+
+- (IBAction)didPressInfoButton:(id)sender{
+    
+    if (!self.tutorialVisualEffectView){
+        
+        [self createInfoChildView];
+        
+    }
+    
+    self.tutorialVisualEffectView.hidden = YES;
+    
+    [UIView transitionWithView: self.view
+                      duration: tutorialTransitionTimeInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        self.tutorialVisualEffectView.hidden = NO;
+                        
+                    }
+                    completion: nil];
+    
+}
+
+
+
+- (void)createInfoChildView{
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
+    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect: blur];
+    self.tutorialVisualEffectView = visualEffectView;
+    visualEffectView.frame = self.view.bounds;
+    
+    [self.view addSubview: visualEffectView];
+    
+    __weak TJBWorkoutNavigationHub *weakSelf = self;
+    
+    CancelCallbackBlock cancelBlock = ^{
+        
+        [weakSelf hideTutorialScene];
+        
+    };
+    
+    TJBExerciseSelectionTutorial *tutorial = [[TJBExerciseSelectionTutorial alloc] initWithCancelCallback: cancelBlock
+                                                                                             tutorialType: TJBWorkoutLogTutorial];
+    self.tutorialChildVC = tutorial;
+    
+    [self addChildViewController: tutorial];
+    
+    [visualEffectView.contentView addSubview: tutorial.view];
+    
+    [tutorial didMoveToParentViewController: self];
+    
+}
+
+- (void)hideTutorialScene{
+    
+    [UIView transitionWithView: self.view
+                      duration: tutorialTransitionTimeInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        self.tutorialVisualEffectView.hidden = YES;
+                        
+                    }
+                    completion: nil];
+    
+}
+
 
 #pragma mark - Restoration
 

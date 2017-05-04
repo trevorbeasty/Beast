@@ -24,19 +24,19 @@
 
 // images
 
-@property (weak, nonatomic) IBOutlet UIImageView *liftImage;
-@property (weak, nonatomic) IBOutlet UIImageView *searchImage;
-@property (weak, nonatomic) IBOutlet UIImageView *addNewImage;
-@property (weak, nonatomic) IBOutlet UIImageView *deleteImage;
-@property (weak, nonatomic) IBOutlet UIImageView *editImage;
+@property (weak, nonatomic) IBOutlet UIImageView *image1;
+@property (weak, nonatomic) IBOutlet UIImageView *image2;
+@property (weak, nonatomic) IBOutlet UIImageView *image3;
+@property (weak, nonatomic) IBOutlet UIImageView *image4;
+@property (weak, nonatomic) IBOutlet UIImageView *image5;
 
 // text labels
 
-@property (weak, nonatomic) IBOutlet UILabel *liftLabel;
-@property (weak, nonatomic) IBOutlet UILabel *searchLabel;
-@property (weak, nonatomic) IBOutlet UILabel *addNewLabel;
-@property (weak, nonatomic) IBOutlet UILabel *deleteLabel;
-@property (weak, nonatomic) IBOutlet UILabel *editLabel;
+@property (weak, nonatomic) IBOutlet UILabel *label1;
+@property (weak, nonatomic) IBOutlet UILabel *label2;
+@property (weak, nonatomic) IBOutlet UILabel *label3;
+@property (weak, nonatomic) IBOutlet UILabel *label4;
+@property (weak, nonatomic) IBOutlet UILabel *label5;
 
 // exit button
 
@@ -80,10 +80,32 @@
     
     [self configureViewAesthetics];
     
+    [self configureDisplayContentBasedOnType];
+    
 }
 
 
 #pragma mark - View Helper Methods
+
+- (void)configureDisplayContentBasedOnType{
+    
+    if (_tutorialType == TJBWorkoutLogTutorial){
+        
+        [self.image2 setImage: [UIImage imageNamed: @"lastBlue30PDF"]];
+        [self.image3 setImage: [UIImage imageNamed: @"todayBlue30PDF"]];
+   
+        self.label1.text = @"Launch into active lifting mode for the highlighted entry";
+        self.label2.text = @"Jump to the previously selected day";
+        self.label3.text = @"Jump to today";
+        self.label4.text = @"Delete the highlighted entry";
+        self.label5.text = @"Make corrections to the highlighted entry";
+        
+        
+    }
+    
+    
+    
+}
 
 
 - (void)configureViewAesthetics{
@@ -94,19 +116,19 @@
     
     // images
     
-    NSArray *images = @[self.liftImage, self.searchImage, self.addNewImage, self.deleteImage, self.editImage];
-    for (UIImage *ima in images){
-        
-        
-        
-        
-        
-    }
+//    NSArray *images = @[self.liftImage, self.searchImage, self.addNewImage, self.deleteImage, self.editImage];
+//    for (UIImage *ima in images){
+//        
+//        
+//        
+//        
+//        
+//    }
     
     
     // labels
     
-    NSArray *labels = @[self.liftLabel, self.searchLabel, self.addNewLabel, self.deleteLabel, self.editLabel];
+    NSArray *labels = @[self.label1, self.label2, self.label3, self.label4, self.label5];
     for (UILabel *lab in labels){
         
         lab.backgroundColor = [UIColor clearColor];

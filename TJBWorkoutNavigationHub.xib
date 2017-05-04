@@ -16,6 +16,7 @@
                 <outlet property="deleteButton" destination="vuc-EV-hRy" id="0hd-ju-0HI"/>
                 <outlet property="editButton" destination="4EO-Jf-1Lb" id="fNq-bp-p45"/>
                 <outlet property="homeButton" destination="NKH-wt-CCf" id="2K7-UD-oEB"/>
+                <outlet property="infoButton" destination="uLf-8i-7fs" id="wXm-43-oBK"/>
                 <outlet property="jumpToLastButton" destination="bmd-QN-P6s" id="Fgi-3f-Twg"/>
                 <outlet property="leftArrowButton" destination="Xyd-rd-xY1" id="Mcv-NY-SCb"/>
                 <outlet property="leftArrowLeadingSpaceConstr" destination="yIm-EJ-jfK" id="PUy-Nh-k3X"/>
@@ -111,7 +112,7 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRK-QI-22E">
-                            <rect key="frame" x="128" y="25" width="187" height="0.0"/>
+                            <rect key="frame" x="128" y="25" width="127" height="0.0"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -130,7 +131,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t4e-f8-R8O">
-                            <rect key="frame" x="315" y="0.0" width="60" height="50"/>
+                            <rect key="frame" x="255" y="0.0" width="60" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="60" id="TCP-ot-UXh"/>
                             </constraints>
@@ -146,18 +147,31 @@
                                 <action selector="didPressLeftArrow:" destination="-1" eventType="touchUpInside" id="Wgy-Wn-W4w"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uLf-8i-7fs">
+                            <rect key="frame" x="315" y="0.0" width="60" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="wFu-e9-a4T"/>
+                            </constraints>
+                            <state key="normal" image="infoBlue25PDF"/>
+                            <connections>
+                                <action selector="didPressInfoButton:" destination="-1" eventType="touchUpInside" id="dpA-SY-J2K"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="t4e-f8-R8O" firstAttribute="leading" secondItem="wRK-QI-22E" secondAttribute="trailing" id="2aw-jC-WPL"/>
                         <constraint firstItem="wRK-QI-22E" firstAttribute="centerY" secondItem="H9i-29-7aZ" secondAttribute="centerY" id="3eO-6M-ReL"/>
                         <constraint firstItem="wRK-QI-22E" firstAttribute="leading" secondItem="Xyd-rd-xY1" secondAttribute="trailing" id="6dM-6c-R2D"/>
+                        <constraint firstAttribute="trailing" secondItem="uLf-8i-7fs" secondAttribute="trailing" id="AZY-Hu-yO3"/>
                         <constraint firstItem="t4e-f8-R8O" firstAttribute="width" secondItem="Xyd-rd-xY1" secondAttribute="width" id="AqF-GF-MzN"/>
                         <constraint firstItem="Xyd-rd-xY1" firstAttribute="top" secondItem="H9i-29-7aZ" secondAttribute="top" id="K9e-hZ-aBn"/>
                         <constraint firstAttribute="bottom" secondItem="Xyd-rd-xY1" secondAttribute="bottom" id="MkT-72-Jb4"/>
+                        <constraint firstItem="uLf-8i-7fs" firstAttribute="bottom" secondItem="t4e-f8-R8O" secondAttribute="bottom" id="Mkr-lL-W88"/>
                         <constraint firstAttribute="bottom" secondItem="NKH-wt-CCf" secondAttribute="bottom" id="SJX-uG-FaI"/>
+                        <constraint firstItem="uLf-8i-7fs" firstAttribute="top" secondItem="t4e-f8-R8O" secondAttribute="top" id="WFR-7Y-fih"/>
                         <constraint firstItem="NKH-wt-CCf" firstAttribute="leading" secondItem="H9i-29-7aZ" secondAttribute="leading" id="grn-p0-hbH"/>
-                        <constraint firstAttribute="trailing" secondItem="t4e-f8-R8O" secondAttribute="trailing" id="l2z-ON-RHS"/>
+                        <constraint firstItem="uLf-8i-7fs" firstAttribute="leading" secondItem="t4e-f8-R8O" secondAttribute="trailing" id="knb-qV-g0F"/>
                         <constraint firstItem="t4e-f8-R8O" firstAttribute="top" secondItem="H9i-29-7aZ" secondAttribute="top" id="pGP-xg-9Xt"/>
                         <constraint firstAttribute="bottom" secondItem="t4e-f8-R8O" secondAttribute="bottom" id="ttG-OG-Xbg"/>
                         <constraint firstItem="Xyd-rd-xY1" firstAttribute="leading" secondItem="NKH-wt-CCf" secondAttribute="trailing" constant="8" id="yIm-EJ-jfK"/>
@@ -211,7 +225,7 @@
                 <constraint firstItem="FMO-lj-C2v" firstAttribute="top" secondItem="hCI-UQ-IGw" secondAttribute="top" id="fl6-PN-iP0"/>
                 <constraint firstItem="FMO-lj-C2v" firstAttribute="bottom" secondItem="hCI-UQ-IGw" secondAttribute="bottom" id="lx8-Lk-5fI"/>
             </constraints>
-            <point key="canvasLocation" x="-7" y="64"/>
+            <point key="canvasLocation" x="-7.5" y="63.5"/>
         </view>
     </objects>
     <resources>
@@ -219,6 +233,7 @@
         <image name="editBlue30PDF" width="30" height="30"/>
         <image name="garbageBlue30PDF" width="30" height="30"/>
         <image name="homeBlue25PDF" width="25" height="25"/>
+        <image name="infoBlue25PDF" width="25" height="25"/>
         <image name="lastBlue30PDF" width="30" height="30"/>
         <image name="leftArrowBlue25PDF" width="25" height="25"/>
         <image name="liftBlue30PDF" width="30" height="30"/>

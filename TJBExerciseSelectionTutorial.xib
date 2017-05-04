@@ -11,17 +11,17 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBExerciseSelectionTutorial">
             <connections>
-                <outlet property="addNewImage" destination="ax3-Hj-OkR" id="J2d-Lv-Jkw"/>
-                <outlet property="addNewLabel" destination="JKK-29-TuR" id="wC7-7B-YII"/>
-                <outlet property="deleteImage" destination="0xU-vF-wHn" id="QS8-Qc-CE9"/>
-                <outlet property="deleteLabel" destination="cXb-Ve-Q3f" id="D6g-XU-wL2"/>
-                <outlet property="editImage" destination="HtH-XL-NVa" id="9Rw-aK-fkY"/>
-                <outlet property="editLabel" destination="mIy-DG-uPZ" id="x2o-cz-f0l"/>
-                <outlet property="exitButton" destination="UuO-lr-msi" id="flE-dG-Bk8"/>
-                <outlet property="liftImage" destination="ghe-ff-mS1" id="fnZ-yx-fCE"/>
-                <outlet property="liftLabel" destination="KEF-p8-SWp" id="tAV-Zx-Vv5"/>
-                <outlet property="searchImage" destination="Eej-kb-LSx" id="oz0-he-cBC"/>
-                <outlet property="searchLabel" destination="P0L-jc-lz6" id="w9C-w7-ht1"/>
+                <outlet property="exitButton" destination="UuO-lr-msi" id="v6Z-XO-fao"/>
+                <outlet property="image1" destination="ghe-ff-mS1" id="fX6-fm-YbE"/>
+                <outlet property="image2" destination="Eej-kb-LSx" id="WtH-3c-w4F"/>
+                <outlet property="image3" destination="ax3-Hj-OkR" id="bt4-D3-cca"/>
+                <outlet property="image4" destination="0xU-vF-wHn" id="mgS-Be-TUV"/>
+                <outlet property="image5" destination="HtH-XL-NVa" id="nlY-p3-kYd"/>
+                <outlet property="label1" destination="KEF-p8-SWp" id="1kZ-GO-EPU"/>
+                <outlet property="label2" destination="P0L-jc-lz6" id="EYL-l9-rgh"/>
+                <outlet property="label3" destination="JKK-29-TuR" id="M7O-Cf-gnG"/>
+                <outlet property="label4" destination="cXb-Ve-Q3f" id="D8Q-R9-Y29"/>
+                <outlet property="label5" destination="mIy-DG-uPZ" id="o97-bC-7iA"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -67,13 +67,13 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete an existing exercise" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXb-Ve-Q3f">
-                    <rect key="frame" x="70" y="323.5" width="289" height="20.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete the highlighted exercise" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXb-Ve-Q3f">
+                    <rect key="frame" x="70" y="323.5" width="289" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit an existing exercise" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIy-DG-uPZ">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit the highlighted exercise" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIy-DG-uPZ">
                     <rect key="frame" x="70" y="385" width="289" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
