@@ -49,8 +49,11 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="50"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bDc-Ml-LZQ">
-                            <rect key="frame" x="30" y="12.5" width="25" height="25"/>
+                            <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="IPo-7r-Eq0"/>
+                            </constraints>
                             <state key="normal" image="homeBlue25PDF">
                                 <color key="titleColor" red="0.1746576826" green="0.61088359690000005" blue="0.85943571890000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </state>
@@ -68,8 +71,11 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eh0-EJ-mqn">
-                            <rect key="frame" x="320" y="12.5" width="25" height="25"/>
+                            <rect key="frame" x="315" y="0.0" width="60" height="50"/>
                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="vsq-jR-xnI"/>
+                            </constraints>
                             <state key="normal" image="clockBlue25PDF"/>
                             <connections>
                                 <action selector="didPressClock:" destination="-1" eventType="touchUpInside" id="6Hk-T6-gep"/>
@@ -78,13 +84,15 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="Eh0-EJ-mqn" secondAttribute="trailing" id="257-Y3-haA"/>
+                        <constraint firstItem="bDc-Ml-LZQ" firstAttribute="leading" secondItem="3Db-Io-e3m" secondAttribute="leading" id="AGn-4y-wh1"/>
+                        <constraint firstAttribute="bottom" secondItem="bDc-Ml-LZQ" secondAttribute="bottom" id="Jie-yc-ymh"/>
                         <constraint firstItem="92p-w2-Ae0" firstAttribute="centerY" secondItem="3Db-Io-e3m" secondAttribute="centerY" id="KoN-UC-IhO"/>
-                        <constraint firstItem="Eh0-EJ-mqn" firstAttribute="centerY" secondItem="3Db-Io-e3m" secondAttribute="centerY" id="P0q-wa-UK5"/>
-                        <constraint firstAttribute="trailing" secondItem="Eh0-EJ-mqn" secondAttribute="trailing" constant="30" id="gef-7V-pZ7"/>
+                        <constraint firstItem="Eh0-EJ-mqn" firstAttribute="top" secondItem="3Db-Io-e3m" secondAttribute="top" id="b0e-JB-6A3"/>
                         <constraint firstAttribute="height" constant="50" id="h41-UP-xER"/>
-                        <constraint firstItem="bDc-Ml-LZQ" firstAttribute="centerY" secondItem="3Db-Io-e3m" secondAttribute="centerY" id="k5m-OZ-9Z3"/>
-                        <constraint firstItem="bDc-Ml-LZQ" firstAttribute="leading" secondItem="3Db-Io-e3m" secondAttribute="leading" constant="30" id="lSg-O5-bYL"/>
+                        <constraint firstItem="bDc-Ml-LZQ" firstAttribute="top" secondItem="3Db-Io-e3m" secondAttribute="top" id="i3L-Rv-mk3"/>
                         <constraint firstItem="92p-w2-Ae0" firstAttribute="centerX" secondItem="3Db-Io-e3m" secondAttribute="centerX" id="lyG-Ln-PVW"/>
+                        <constraint firstAttribute="bottom" secondItem="Eh0-EJ-mqn" secondAttribute="bottom" id="oeu-RF-ZP3"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-cq-CI2">
