@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -23,6 +23,7 @@
                 <outlet property="exerciseSegmentedControlBottomSpaceConstr" destination="SIs-bv-zyP" id="1Vz-RK-fp4"/>
                 <outlet property="exerciseTableView" destination="hdc-bj-tBP" id="PkW-tI-NA3"/>
                 <outlet property="headerAreaContainerHeight" destination="NZY-Nd-DCB" id="KBE-hc-s7F"/>
+                <outlet property="infoButton" destination="u5A-VC-Khh" id="3qD-1o-d0U"/>
                 <outlet property="launchToolbarButton" destination="2Rd-sn-UVV" id="j8X-v2-2nG"/>
                 <outlet property="leftBarButton" destination="ajv-jV-md0" id="BsF-7l-vjf"/>
                 <outlet property="mainTitleLabel" destination="3TS-yz-6Zu" id="6jK-SP-Q1L"/>
@@ -126,16 +127,29 @@
                                         <action selector="didPressLeftBarButton:" destination="-1" eventType="touchUpInside" id="86B-ex-l8A"/>
                                     </connections>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5A-VC-Khh">
+                                    <rect key="frame" x="315" y="0.0" width="60" height="50"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="60" id="EcH-3q-ljb"/>
+                                    </constraints>
+                                    <state key="normal" image="infoBlue25PDF"/>
+                                    <connections>
+                                        <action selector="didPressInfoButton:" destination="-1" eventType="touchUpInside" id="p89-7R-2wB"/>
+                                    </connections>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstItem="u5A-VC-Khh" firstAttribute="leading" secondItem="3TS-yz-6Zu" secondAttribute="trailing" id="Cjd-su-URt"/>
                                 <constraint firstAttribute="bottom" secondItem="ajv-jV-md0" secondAttribute="bottom" id="GL7-83-WG5"/>
                                 <constraint firstItem="ajv-jV-md0" firstAttribute="top" secondItem="0bv-gL-xJN" secondAttribute="top" id="UiV-wN-YcY"/>
                                 <constraint firstAttribute="bottom" secondItem="3TS-yz-6Zu" secondAttribute="bottom" id="WL3-PP-3sE"/>
+                                <constraint firstItem="u5A-VC-Khh" firstAttribute="bottom" secondItem="3TS-yz-6Zu" secondAttribute="bottom" id="XvL-kt-NWg"/>
                                 <constraint firstItem="3TS-yz-6Zu" firstAttribute="leading" secondItem="ajv-jV-md0" secondAttribute="trailing" id="Zx4-N4-Xyv"/>
                                 <constraint firstItem="3TS-yz-6Zu" firstAttribute="top" secondItem="0bv-gL-xJN" secondAttribute="top" id="dkN-3g-2sc"/>
                                 <constraint firstItem="ajv-jV-md0" firstAttribute="leading" secondItem="0bv-gL-xJN" secondAttribute="leading" id="fca-ye-VZe"/>
-                                <constraint firstAttribute="trailing" secondItem="3TS-yz-6Zu" secondAttribute="trailing" constant="60" id="les-TE-Dv0"/>
+                                <constraint firstItem="u5A-VC-Khh" firstAttribute="top" secondItem="3TS-yz-6Zu" secondAttribute="top" id="j04-aD-dGA"/>
+                                <constraint firstAttribute="trailing" secondItem="u5A-VC-Khh" secondAttribute="trailing" id="nw1-0w-ZBB"/>
                                 <constraint firstAttribute="height" constant="50" id="obw-wd-A1Y"/>
                             </constraints>
                         </view>
@@ -205,6 +219,7 @@
         <image name="cancelBlue25PDF" width="25" height="25"/>
         <image name="editBlue30PDF" width="30" height="30"/>
         <image name="garbageBlue30PDF" width="30" height="30"/>
+        <image name="infoBlue25PDF" width="25" height="25"/>
         <image name="liftBlue30PDF" width="30" height="30"/>
         <image name="searchBlue30PDF" width="30" height="30"/>
     </resources>

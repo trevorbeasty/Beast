@@ -16,6 +16,7 @@
 #import "TJBAestheticsController.h" // aesthetics
 #import "TJBAssortedUtilities.h" // utilities
 #import "ExerciseAdditionChildVC.h" // exercise addition
+#import "TJBExerciseSelectionTutorial.h" // tutorial
 
 @interface TJBExerciseSelectionScene () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate>
 
@@ -48,6 +49,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLastExecutedColumbLabel;
 @property (weak, nonatomic) IBOutlet UIView *titleBarContainier;
 @property (weak, nonatomic) IBOutlet UIView *metaTitleAreaContainer;
+@property (weak, nonatomic) IBOutlet UIButton *infoButton;
 
 // constraints
 
@@ -68,6 +70,8 @@
 @property (strong) UIBarButtonItem *listToolbarButton;
 @property (strong) UIVisualEffectView *exerciseAdditionVEV;
 @property (strong) ExerciseAdditionChildVC *exerciseAdditionChild;
+@property (strong) UIVisualEffectView *infoVisualEffectView;
+@property (strong) TJBExerciseSelectionTutorial *tutorialChildVC;
 
 
 @property (strong) UISearchBar *searchBar; // programmatically created search bar
@@ -81,6 +85,7 @@
 - (IBAction)didPressAddNewButton:(id)sender;
 - (IBAction)didPressDeleteButton:(id)sender;
 - (IBAction)didPressEditButton:(id)sender;
+- (IBAction)didPressInfoButton:(id)sender;
 
 
 
@@ -100,6 +105,7 @@ static NSString * const cellReuseIdentifier = @"basicCell";
 static CGFloat const searchBarHeightDelta = 20;
 
 static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
+static NSTimeInterval const tutorialPresentationTransitionInterval = .3;
 
 
 @implementation TJBExerciseSelectionScene
@@ -200,6 +206,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
     self.mainTitleLabel.backgroundColor = [UIColor clearColor];
     
     self.leftBarButton.backgroundColor = [UIColor clearColor];
+    self.
     
     // table view
     
@@ -1170,6 +1177,7 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
 
 
 
+
 - (void)editExerciseNameAlertSequenceForExercise:(TJBExercise *)exercise attemptedDuplicateName:(NSString *)attemptedDuplicateName{
     
     NSString *alertMessage;
@@ -1309,6 +1317,77 @@ static NSTimeInterval const exerciseAdditionSceneTransitionInterval = .3;
     
 }
 
+
+#pragma mark - Exercise Selection Tutorial
+
+- (IBAction)didPressInfoButton:(id)sender{
+    
+    if (!self.infoVisualEffectView){
+        
+        [self createInfoChildView];
+        
+    }
+    
+    self.infoVisualEffectView.hidden = YES;
+    
+    [UIView transitionWithView: self.view
+                      duration: tutorialPresentationTransitionInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        self.infoVisualEffectView.hidden = NO;
+                        
+                    }
+                    completion: nil];
+    
+    
+}
+
+
+- (void)createInfoChildView{
+    
+
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle: UIBlurEffectStyleDark];
+    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect: blur];
+    self.infoVisualEffectView = visualEffectView;
+    visualEffectView.frame = self.view.bounds;
+    
+    [self.view addSubview: visualEffectView];
+    
+    __weak TJBExerciseSelectionScene *weakSelf = self;
+    
+    CancelCallbackBlock cancelBlock = ^{
+        
+        [weakSelf hideTutorialScene];
+        
+    };
+    
+    TJBExerciseSelectionTutorial *tutorial = [[TJBExerciseSelectionTutorial alloc] initWithCancelCallback: cancelBlock
+                                                                                             tutorialType: TJBExerciseSelectingTutorial];
+    self.tutorialChildVC = tutorial;
+    
+    [self addChildViewController: tutorial];
+    
+    [visualEffectView.contentView addSubview: tutorial.view];
+    
+    [tutorial didMoveToParentViewController: self];
+
+}
+
+- (void)hideTutorialScene{
+    
+    [UIView transitionWithView: self.view
+                      duration: tutorialPresentationTransitionInterval
+                       options: UIViewAnimationOptionTransitionCrossDissolve
+                    animations: ^{
+                        
+                        self.infoVisualEffectView.hidden = YES;
+                        
+                    }
+                    completion: nil];
+    
+}
 
 
 @end

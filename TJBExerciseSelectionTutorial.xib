@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TJBExerciseSelectionTutorial">
+            <connections>
+                <outlet property="addNewImage" destination="ax3-Hj-OkR" id="J2d-Lv-Jkw"/>
+                <outlet property="addNewLabel" destination="JKK-29-TuR" id="wC7-7B-YII"/>
+                <outlet property="deleteImage" destination="0xU-vF-wHn" id="QS8-Qc-CE9"/>
+                <outlet property="deleteLabel" destination="cXb-Ve-Q3f" id="D6g-XU-wL2"/>
+                <outlet property="editImage" destination="HtH-XL-NVa" id="9Rw-aK-fkY"/>
+                <outlet property="editLabel" destination="mIy-DG-uPZ" id="x2o-cz-f0l"/>
+                <outlet property="exitButton" destination="UuO-lr-msi" id="flE-dG-Bk8"/>
+                <outlet property="liftImage" destination="ghe-ff-mS1" id="fnZ-yx-fCE"/>
+                <outlet property="liftLabel" destination="KEF-p8-SWp" id="tAV-Zx-Vv5"/>
+                <outlet property="searchImage" destination="Eej-kb-LSx" id="oz0-he-cBC"/>
+                <outlet property="searchLabel" destination="P0L-jc-lz6" id="w9C-w7-ht1"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="liftBlue30PDF" translatesAutoresizingMaskIntoConstraints="NO" id="ghe-ff-mS1">
+                    <rect key="frame" x="24" y="132.5" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="nnk-TT-ofv"/>
+                        <constraint firstAttribute="width" constant="30" id="r3Y-zS-lzb"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchBlue30PDF" translatesAutoresizingMaskIntoConstraints="NO" id="Eej-kb-LSx">
+                    <rect key="frame" x="24" y="194.5" width="30" height="30"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="addBlue30PDF" translatesAutoresizingMaskIntoConstraints="NO" id="ax3-Hj-OkR">
+                    <rect key="frame" x="24" y="256.5" width="30" height="30"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="garbageBlue30PDF" translatesAutoresizingMaskIntoConstraints="NO" id="0xU-vF-wHn">
+                    <rect key="frame" x="24" y="318.5" width="30" height="30"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="editBlue30PDF" translatesAutoresizingMaskIntoConstraints="NO" id="HtH-XL-NVa">
+                    <rect key="frame" x="24" y="380.5" width="30" height="30"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the highlighted exercise" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KEF-p8-SWp">
+                    <rect key="frame" x="70" y="137.5" width="289" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search all exercises by name" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P0L-jc-lz6">
+                    <rect key="frame" x="70" y="199.5" width="289" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a new exercise" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JKK-29-TuR">
+                    <rect key="frame" x="70" y="261.5" width="289" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete an existing exercise" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXb-Ve-Q3f">
+                    <rect key="frame" x="70" y="323.5" width="289" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit an existing exercise" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mIy-DG-uPZ">
+                    <rect key="frame" x="70" y="385" width="289" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UuO-lr-msi">
+                    <rect key="frame" x="0.0" y="20" width="60" height="60"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="9PL-Ff-m9c"/>
+                        <constraint firstAttribute="height" constant="60" id="R9M-8B-Zew"/>
+                    </constraints>
+                    <state key="normal" image="cancelBlue25PDF"/>
+                    <connections>
+                        <action selector="didPressExitButton:" destination="-1" eventType="touchUpInside" id="D9D-7W-UWz"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ax3-Hj-OkR" firstAttribute="width" secondItem="ghe-ff-mS1" secondAttribute="width" id="0KB-Ug-hvH"/>
+                <constraint firstItem="Eej-kb-LSx" firstAttribute="trailing" secondItem="ghe-ff-mS1" secondAttribute="trailing" id="2mq-17-bVa"/>
+                <constraint firstItem="Eej-kb-LSx" firstAttribute="top" secondItem="ghe-ff-mS1" secondAttribute="bottom" constant="32" id="4kK-IJ-Ug9"/>
+                <constraint firstItem="ghe-ff-mS1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="24" id="5hX-MO-Acx"/>
+                <constraint firstItem="ax3-Hj-OkR" firstAttribute="trailing" secondItem="ghe-ff-mS1" secondAttribute="trailing" id="7On-Qq-Wij"/>
+                <constraint firstItem="mIy-DG-uPZ" firstAttribute="trailing" secondItem="KEF-p8-SWp" secondAttribute="trailing" id="7XQ-AH-h9y"/>
+                <constraint firstItem="cXb-Ve-Q3f" firstAttribute="trailing" secondItem="KEF-p8-SWp" secondAttribute="trailing" id="8eg-u1-8Ms"/>
+                <constraint firstItem="Eej-kb-LSx" firstAttribute="height" secondItem="ghe-ff-mS1" secondAttribute="height" id="9d8-Gn-8px"/>
+                <constraint firstItem="HtH-XL-NVa" firstAttribute="top" secondItem="0xU-vF-wHn" secondAttribute="bottom" constant="32" id="9fx-sk-UXJ"/>
+                <constraint firstItem="ax3-Hj-OkR" firstAttribute="height" secondItem="ghe-ff-mS1" secondAttribute="height" id="Am6-LK-8nT"/>
+                <constraint firstItem="Eej-kb-LSx" firstAttribute="leading" secondItem="ghe-ff-mS1" secondAttribute="leading" id="BmA-xa-krJ"/>
+                <constraint firstItem="0xU-vF-wHn" firstAttribute="height" secondItem="ghe-ff-mS1" secondAttribute="height" id="Dy0-9m-oOq"/>
+                <constraint firstItem="ax3-Hj-OkR" firstAttribute="top" secondItem="Eej-kb-LSx" secondAttribute="bottom" constant="32" id="OT4-6z-FWt"/>
+                <constraint firstItem="0xU-vF-wHn" firstAttribute="top" secondItem="ax3-Hj-OkR" secondAttribute="bottom" constant="32" id="T0i-RW-vCU"/>
+                <constraint firstItem="JKK-29-TuR" firstAttribute="trailing" secondItem="KEF-p8-SWp" secondAttribute="trailing" id="WoY-ye-5k9"/>
+                <constraint firstItem="KEF-p8-SWp" firstAttribute="centerY" secondItem="ghe-ff-mS1" secondAttribute="centerY" id="YJ7-F5-8RD"/>
+                <constraint firstItem="P0L-jc-lz6" firstAttribute="trailing" secondItem="KEF-p8-SWp" secondAttribute="trailing" id="YPD-yh-dns"/>
+                <constraint firstItem="JKK-29-TuR" firstAttribute="leading" secondItem="KEF-p8-SWp" secondAttribute="leading" id="aBV-GP-l6d"/>
+                <constraint firstItem="P0L-jc-lz6" firstAttribute="leading" secondItem="KEF-p8-SWp" secondAttribute="leading" id="bfW-Hk-sAF"/>
+                <constraint firstItem="ax3-Hj-OkR" firstAttribute="leading" secondItem="ghe-ff-mS1" secondAttribute="leading" id="gdO-fp-RQo"/>
+                <constraint firstItem="0xU-vF-wHn" firstAttribute="leading" secondItem="ghe-ff-mS1" secondAttribute="leading" id="hEv-vI-Phd"/>
+                <constraint firstItem="P0L-jc-lz6" firstAttribute="centerY" secondItem="Eej-kb-LSx" secondAttribute="centerY" id="hvU-H0-xKj"/>
+                <constraint firstItem="UuO-lr-msi" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="ij0-u1-yCE"/>
+                <constraint firstItem="HtH-XL-NVa" firstAttribute="trailing" secondItem="ghe-ff-mS1" secondAttribute="trailing" id="k94-n0-ube"/>
+                <constraint firstAttribute="trailing" secondItem="KEF-p8-SWp" secondAttribute="trailing" constant="16" id="lgS-M6-loh"/>
+                <constraint firstItem="Eej-kb-LSx" firstAttribute="width" secondItem="ghe-ff-mS1" secondAttribute="width" id="lvq-lh-nJ5"/>
+                <constraint firstItem="cXb-Ve-Q3f" firstAttribute="leading" secondItem="KEF-p8-SWp" secondAttribute="leading" id="neT-ja-4ch"/>
+                <constraint firstItem="0xU-vF-wHn" firstAttribute="width" secondItem="ghe-ff-mS1" secondAttribute="width" id="oE8-6Y-R20"/>
+                <constraint firstItem="mIy-DG-uPZ" firstAttribute="leading" secondItem="KEF-p8-SWp" secondAttribute="leading" id="oi2-W2-PDx"/>
+                <constraint firstItem="UuO-lr-msi" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="pdU-Ev-yFi"/>
+                <constraint firstItem="HtH-XL-NVa" firstAttribute="width" secondItem="ghe-ff-mS1" secondAttribute="width" id="qQN-8y-ABS"/>
+                <constraint firstItem="0xU-vF-wHn" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="sFa-IC-84v"/>
+                <constraint firstItem="cXb-Ve-Q3f" firstAttribute="centerY" secondItem="0xU-vF-wHn" secondAttribute="centerY" id="tmB-iT-Jqq"/>
+                <constraint firstItem="HtH-XL-NVa" firstAttribute="leading" secondItem="ghe-ff-mS1" secondAttribute="leading" id="u7b-dy-Y5o"/>
+                <constraint firstItem="mIy-DG-uPZ" firstAttribute="centerY" secondItem="HtH-XL-NVa" secondAttribute="centerY" id="w3W-VB-I57"/>
+                <constraint firstItem="JKK-29-TuR" firstAttribute="centerY" secondItem="ax3-Hj-OkR" secondAttribute="centerY" id="wtM-f7-oiv"/>
+                <constraint firstItem="HtH-XL-NVa" firstAttribute="height" secondItem="ghe-ff-mS1" secondAttribute="height" id="xds-CG-nz1"/>
+                <constraint firstItem="KEF-p8-SWp" firstAttribute="leading" secondItem="ghe-ff-mS1" secondAttribute="trailing" constant="16" id="ysD-Ch-V5x"/>
+                <constraint firstItem="0xU-vF-wHn" firstAttribute="trailing" secondItem="ghe-ff-mS1" secondAttribute="trailing" id="znb-vg-4Wf"/>
+            </constraints>
+            <point key="canvasLocation" x="33.5" y="54.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="addBlue30PDF" width="30" height="30"/>
+        <image name="cancelBlue25PDF" width="25" height="25"/>
+        <image name="editBlue30PDF" width="30" height="30"/>
+        <image name="garbageBlue30PDF" width="30" height="30"/>
+        <image name="liftBlue30PDF" width="30" height="30"/>
+        <image name="searchBlue30PDF" width="30" height="30"/>
+    </resources>
+</document>

@@ -84,6 +84,8 @@
 		0BA8AD051E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD031E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.m */; };
 		0BA8AD061E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BA8AD041E266E4A00EE10C2 /* TJBCircuitReferenceContainerVC.xib */; };
 		0BA8AD1E1E26B4F900EE10C2 /* TJBAssortedUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */; };
+		0BB44E901EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BB44E8E1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.m */; };
+		0BB44E911EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BB44E8F1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.xib */; };
 		0BC12E131E5F10950041D863 /* TJBCompleteChainHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E111E5F10950041D863 /* TJBCompleteChainHistoryVC.m */; };
 		0BC12E141E5F10950041D863 /* TJBCompleteChainHistoryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BC12E121E5F10950041D863 /* TJBCompleteChainHistoryVC.xib */; };
 		0BC12E2D1E8352690041D863 /* TJBNumberJumpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC12E2C1E8352690041D863 /* TJBNumberJumpVC.m */; };
@@ -225,6 +227,9 @@
 		0BA8AD1C1E26B4F900EE10C2 /* TJBAssortedUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBAssortedUtilities.h; sourceTree = "<group>"; };
 		0BA8AD1D1E26B4F900EE10C2 /* TJBAssortedUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBAssortedUtilities.m; sourceTree = "<group>"; };
 		0BA8AD221E2928E900EE10C2 /* TJBCircuitTemplateExerciseComponentProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCircuitTemplateExerciseComponentProtocol.h; sourceTree = "<group>"; };
+		0BB44E8D1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBExerciseSelectionTutorial.h; sourceTree = "<group>"; };
+		0BB44E8E1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBExerciseSelectionTutorial.m; sourceTree = "<group>"; };
+		0BB44E8F1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBExerciseSelectionTutorial.xib; sourceTree = "<group>"; };
 		0BC12E101E5F10950041D863 /* TJBCompleteChainHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TJBCompleteChainHistoryVC.h; sourceTree = "<group>"; };
 		0BC12E111E5F10950041D863 /* TJBCompleteChainHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TJBCompleteChainHistoryVC.m; sourceTree = "<group>"; };
 		0BC12E121E5F10950041D863 /* TJBCompleteChainHistoryVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TJBCompleteChainHistoryVC.xib; sourceTree = "<group>"; };
@@ -380,7 +385,7 @@
 		0B2B6BC61EB79A6900927A18 /* Tutorial / Guide */ = {
 			isa = PBXGroup;
 			children = (
-				0B2B6BCB1EB79B8A00927A18 /* Freefor Lift Tutorial */,
+				0B2B6BCB1EB79B8A00927A18 /* Exercise Selection Tutorial */,
 				0B2B6BCA1EB79B7E00927A18 /* Page VC */,
 				0B2B6BC71EB79B7600927A18 /* TJBTutorialPageVC.h */,
 				0B2B6BC81EB79B7600927A18 /* TJBTutorialPageVC.m */,
@@ -395,11 +400,14 @@
 			name = "Page VC";
 			sourceTree = "<group>";
 		};
-		0B2B6BCB1EB79B8A00927A18 /* Freefor Lift Tutorial */ = {
+		0B2B6BCB1EB79B8A00927A18 /* Exercise Selection Tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				0BB44E8D1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.h */,
+				0BB44E8E1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.m */,
+				0BB44E8F1EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.xib */,
 			);
-			name = "Freefor Lift Tutorial";
+			name = "Exercise Selection Tutorial";
 			sourceTree = "<group>";
 		};
 		0B47EBFA1EA78CD800CBC8D8 /* Main Guidance Scene */ = {
@@ -897,6 +905,7 @@
 				0B2B6BB31E9C718500927A18 /* TJBPersonalRecordVC.xib in Resources */,
 				0B843C7F1DF9FA620093F057 /* TJBRealizedSetActiveEntryVC.xib in Resources */,
 				0B78E7ED1E462F8500EB216F /* TJBWeightRepsSelectionCell.xib in Resources */,
+				0BB44E911EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.xib in Resources */,
 				0B78E7DA1E3F5D3C00EB216F /* TJBPersonalRecordCell.xib in Resources */,
 				0B78E7E11E454DE400EB216F /* TJBNoDataCell.xib in Resources */,
 				0B86FB731E11638E000D1B5F /* NewOrExistinigCircuitVC.xib in Resources */,
@@ -945,6 +954,7 @@
 				0B78E7E61E462B6300EB216F /* TJBWeightRepsSelectionVC.m in Sources */,
 				0B47EC0F1EA8141000CBC8D8 /* TJBPreviousMarksDictionary.m in Sources */,
 				0B2B6BB71E9C719900927A18 /* TJBExerciseHistoryVC.m in Sources */,
+				0BB44E901EBB4B33001D8AC3 /* TJBExerciseSelectionTutorial.m in Sources */,
 				0BC12E321E8FCB9F0041D863 /* TJBClockConfigurationVC.m in Sources */,
 				0B3688311E4DF79B0077290C /* TJBActiveRoutineExerciseItemVC.m in Sources */,
 				0B3688211E4352B80077290C /* TJBSchemeSelectionDateComp.m in Sources */,
