@@ -31,4 +31,4 @@ The user is presented with a streamlined data input scheme that allows them to i
 ## Timer
 For all active scenes, the user has access to a timer which allows them to reset, pause, and play the timer, and set alerts in advance of their target rest mark.  For example, if the user wanted to rest for 3 minutes, they would mark their target rest as 3:00 and their alert timing as 0:30 (30 seconds).  The alert would occur 2:30 after being set, 30 seconds ahead the intended set start time
 
-![2017-05-05 15 19 20](https://cloud.githubusercontent.com/assets/20948524/25761080/895b2b24-31a7-11e7-8b60-a73aeb571cc2.png)
+![2017-05-05 15 46 20](https://cloud.githubusercontent.com/assets/20948524/25761810/20112918-31aa-11e7-9023-274689065ce1.png)
