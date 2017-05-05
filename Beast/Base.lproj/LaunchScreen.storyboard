@@ -21,16 +21,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="morganLunge" translatesAutoresizingMaskIntoConstraints="NO" id="cqM-Ys-I13">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wnm-dN-lYJ">
+                                <rect key="frame" x="0.0" y="20" width="375" height="121.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leeft" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bdg-xq-GMm">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="70" id="yxf-Ka-2uc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Ultimate Workout Log" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kCz-ko-Gvz">
+                                        <rect key="frame" x="0.0" y="70.5" width="375" height="50"/>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="fuk-QI-nmZ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="kCz-ko-Gvz" firstAttribute="top" secondItem="Bdg-xq-GMm" secondAttribute="bottom" constant="0.5" id="02p-8e-pbW"/>
+                                    <constraint firstItem="kCz-ko-Gvz" firstAttribute="leading" secondItem="Wnm-dN-lYJ" secondAttribute="leading" id="93g-nt-ccZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="kCz-ko-Gvz" secondAttribute="trailing" id="SSi-4Q-K5P"/>
+                                    <constraint firstItem="Bdg-xq-GMm" firstAttribute="top" secondItem="Wnm-dN-lYJ" secondAttribute="top" id="UcJ-8b-Me1"/>
+                                    <constraint firstItem="Bdg-xq-GMm" firstAttribute="leading" secondItem="Wnm-dN-lYJ" secondAttribute="leading" id="gVz-dw-iDJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="Bdg-xq-GMm" secondAttribute="trailing" id="nA8-lS-EcF"/>
+                                    <constraint firstAttribute="height" constant="121.5" id="vz8-et-CFl"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zes-qP-gL9">
+                                <rect key="frame" x="0.0" y="141.5" width="375" height="525.5"/>
+                                <color key="backgroundColor" red="0.99626137069999998" green="1" blue="0.75889376890000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="cqM-Ys-I13" secondAttribute="trailing" id="EMR-sz-WKg"/>
-                            <constraint firstItem="cqM-Ys-I13" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="K2g-Na-NFg"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="cqM-Ys-I13" secondAttribute="bottom" id="bF6-S9-BI4"/>
-                            <constraint firstItem="cqM-Ys-I13" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="ghQ-0t-r5j"/>
+                            <constraint firstItem="zes-qP-gL9" firstAttribute="top" secondItem="Wnm-dN-lYJ" secondAttribute="bottom" id="6Z8-pi-A0H"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="zes-qP-gL9" secondAttribute="bottom" id="Fp2-c2-adT"/>
+                            <constraint firstItem="Wnm-dN-lYJ" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="MAr-eU-SR4"/>
+                            <constraint firstAttribute="trailing" secondItem="zes-qP-gL9" secondAttribute="trailing" id="Ud2-ol-DX9"/>
+                            <constraint firstItem="zes-qP-gL9" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="dqn-o5-X0s"/>
+                            <constraint firstAttribute="trailing" secondItem="Wnm-dN-lYJ" secondAttribute="trailing" id="lQV-JD-ypd"/>
+                            <constraint firstItem="Wnm-dN-lYJ" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="myT-li-0gg"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -40,7 +79,4 @@
             <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="morganLunge" width="767" height="1150"/>
-    </resources>
 </document>
