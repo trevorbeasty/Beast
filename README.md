@@ -23,10 +23,12 @@ The user is taken through a routine that they made.  They are shown previous mar
 ![2017-05-05 15 27 06](https://cloud.githubusercontent.com/assets/20948524/25761065/7811a014-31a7-11e7-914f-937b09816882.png)
 
 
-
+## Data Input
+The user is presented with a streamlined data input scheme that allows them to input a weight / rep combo with just 4 touches.  The first touch is to the jump, which scrolls the collection view to the desired position.  The user then taps a cell directly to select a number.  This process occurs for both weight and reps.
 
 ![2017-05-05 15 25 35](https://cloud.githubusercontent.com/assets/20948524/25761074/8023f31a-31a7-11e7-830f-40ea4b058f8d.png)
 
-
+## Timer
+For all active scenes, the user has access to a timer which allows them to reset, pause, and play the timer, and set alerts in advance of their target rest mark.  For example, if the user wanted to rest for 3 minutes, they would mark their target rest as 3:00 and their alert timing as 0:30 (30 seconds).  The alert would occur 2:30 after being set, 30 seconds ahead the intended set start time
 
 ![2017-05-05 15 19 20](https://cloud.githubusercontent.com/assets/20948524/25761080/895b2b24-31a7-11e7-8b60-a73aeb571cc2.png)
